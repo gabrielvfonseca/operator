@@ -1,14 +1,14 @@
 /**
  * Tests provider-native tool collision policy.
- * Protects OpenClaw web_search routing when provider/model compatibility also
+ * Protects Operator web_search routing when provider/model compatibility also
  * advertises native search support.
  */
 import { describe, expect, it, vi } from "vitest";
-import { createOpenClawCodingTools } from "./agent-tools.js";
+import { createOperatorCodingTools } from "./agent-tools.js";
 import type { AnyAgentTool } from "./agent-tools.types.js";
 
 vi.mock("./openclaw-plugin-tools.js", () => ({
-  resolveOpenClawPluginToolsForOptions: () => [{ name: "browser" }],
+  resolveOperatorPluginToolsForOptions: () => [{ name: "browser" }],
 }));
 
 const HTML_ENTITY_TOOL_CALL_ARGUMENTS_ENCODING = "html-entities";
@@ -23,9 +23,9 @@ const baseTools = [
 const testing = {
   applyModelProviderToolPolicy(
     requestedTools: AnyAgentTool[],
-    options?: NonNullable<Parameters<typeof createOpenClawCodingTools>[0]>,
+    options?: NonNullable<Parameters<typeof createOperatorCodingTools>[0]>,
   ): AnyAgentTool[] {
-    const actualTools = createOpenClawCodingTools({
+    const actualTools = createOperatorCodingTools({
       ...options,
       cwd: "/tmp/openclaw-agent-tools-policy-test",
       workspaceDir: "/tmp/openclaw-agent-tools-policy-test",
@@ -33,7 +33,7 @@ const testing = {
         includeBaseCodingTools: true,
         includeShellTools: true,
         includeChannelTools: false,
-        includeOpenClawTools: true,
+        includeOperatorTools: true,
         includePluginTools: true,
       },
     });
@@ -58,7 +58,7 @@ describe("applyModelProviderToolPolicy", () => {
     expect(toolNames(filtered)).toEqual(["read", "web_search", "exec"]);
   });
 
-  it("keeps web_search for OpenRouter xAI model ids so OpenClaw tool routing stays authoritative", () => {
+  it("keeps web_search for OpenRouter xAI model ids so Operator tool routing stays authoritative", () => {
     const filtered = testing.applyModelProviderToolPolicy(baseTools, {
       modelCompat: {
         toolSchemaProfile: XAI_TOOL_SCHEMA_PROFILE,

@@ -1,7 +1,7 @@
 /** Agent-facing inline web chat widget tool. */
 import { createHash } from "node:crypto";
 import { jsonResult, readStringParam } from "openclaw/plugin-sdk/channel-actions";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type { AnyAgentTool } from "openclaw/plugin-sdk/plugin-entry";
 import { escapeHtml } from "openclaw/plugin-sdk/text-utility-runtime";
 import { resolveCanvasHostConfig } from "./config.js";
@@ -12,7 +12,7 @@ export const WIDGET_CODE_MAX_CHARS = 262_144;
 export const WIDGET_MAX_PER_SCOPE = 32;
 
 type ShowWidgetToolOptions = {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   sessionId?: string;
   agentId?: string;
   stateDir?: string;

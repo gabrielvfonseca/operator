@@ -38,12 +38,12 @@ describe("resolveGatewaySystemdServiceName", () => {
 describe("resolveGatewayWindowsTaskName", () => {
   it("returns default task name when no profile is set", () => {
     const result = resolveGatewayWindowsTaskName();
-    expect(result).toBe("OpenClaw Gateway");
+    expect(result).toBe("Operator Gateway");
   });
 
   it("returns profile-specific task name when profile is set", () => {
     const result = resolveGatewayWindowsTaskName("dev");
-    expect(result).toBe("OpenClaw Gateway (dev)");
+    expect(result).toBe("Operator Gateway (dev)");
   });
 });
 
@@ -68,32 +68,32 @@ describe("resolveGatewayProfileSuffix", () => {
 
 describe("resolveGatewayServiceDescription", () => {
   it("returns default description when no profile/version", () => {
-    expect(resolveGatewayServiceDescription({ env: {} })).toBe("OpenClaw Gateway");
+    expect(resolveGatewayServiceDescription({ env: {} })).toBe("Operator Gateway");
   });
 
   it("includes profile when set", () => {
-    expect(resolveGatewayServiceDescription({ env: { OPENCLAW_PROFILE: "work" } })).toBe(
-      "OpenClaw Gateway (profile: work)",
+    expect(resolveGatewayServiceDescription({ env: { OPERATOR_PROFILE: "work" } })).toBe(
+      "Operator Gateway (profile: work)",
     );
   });
 
   it("includes version when set", () => {
     expect(
-      resolveGatewayServiceDescription({ env: { OPENCLAW_SERVICE_VERSION: "2026.1.10" } }),
-    ).toBe("OpenClaw Gateway (v2026.1.10)");
+      resolveGatewayServiceDescription({ env: { OPERATOR_SERVICE_VERSION: "2026.1.10" } }),
+    ).toBe("Operator Gateway (v2026.1.10)");
   });
 
   it("includes profile and version when set", () => {
     expect(
       resolveGatewayServiceDescription({
-        env: { OPENCLAW_PROFILE: "dev", OPENCLAW_SERVICE_VERSION: "1.2.3" },
+        env: { OPERATOR_PROFILE: "dev", OPERATOR_SERVICE_VERSION: "1.2.3" },
       }),
-    ).toBe("OpenClaw Gateway (profile: dev, v1.2.3)");
+    ).toBe("Operator Gateway (profile: dev, v1.2.3)");
   });
   it("prefers explicit description override", () => {
     expect(
       resolveGatewayServiceDescription({
-        env: { OPENCLAW_PROFILE: "work", OPENCLAW_SERVICE_VERSION: "1.0.0" },
+        env: { OPERATOR_PROFILE: "work", OPERATOR_SERVICE_VERSION: "1.0.0" },
         description: "Custom",
       }),
     ).toBe("Custom");
@@ -102,10 +102,10 @@ describe("resolveGatewayServiceDescription", () => {
   it("resolves version from explicit environment map", () => {
     expect(
       resolveGatewayServiceDescription({
-        env: { OPENCLAW_PROFILE: "work", OPENCLAW_SERVICE_VERSION: "local" },
-        environment: { OPENCLAW_SERVICE_VERSION: "remote" },
+        env: { OPERATOR_PROFILE: "work", OPERATOR_SERVICE_VERSION: "local" },
+        environment: { OPERATOR_SERVICE_VERSION: "remote" },
       }),
-    ).toBe("OpenClaw Gateway (profile: work, vremote)");
+    ).toBe("Operator Gateway (profile: work, vremote)");
   });
 });
 

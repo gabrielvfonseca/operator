@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** ACP stdio server that bridges Agent Client Protocol clients to the OpenClaw Gateway. */
+/** ACP stdio server that bridges Agent Client Protocol clients to the Operator Gateway. */
 import { Readable, Writable } from "node:stream";
 import { fileURLToPath } from "node:url";
 import {
@@ -22,7 +22,7 @@ import { startGatewayClientWhenEventLoopReady } from "../gateway/client-start-re
 import { GatewayClient } from "../gateway/client.js";
 import { isMainModule } from "../infra/is-main.js";
 import { routeLogsToStderr } from "../logging/console.js";
-import { closeOpenClawStateDatabase } from "../state/operator-state-db.js";
+import { closeOperatorStateDatabase } from "../state/operator-state-db.js";
 import {
   createSqliteAcpEventLedger,
   migrateFileAcpEventLedgerToSqlite,
@@ -78,7 +78,7 @@ export async function serveAcpGateway(opts: AcpServerOptions = {}): Promise<void
   };
   const closeStateDatabase = () => {
     try {
-      closeOpenClawStateDatabase();
+      closeOperatorStateDatabase();
     } catch (err) {
       console.warn(`acp: state database close failed during shutdown: ${String(err)}`);
     }

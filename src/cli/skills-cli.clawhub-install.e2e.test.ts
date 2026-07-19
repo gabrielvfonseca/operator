@@ -15,7 +15,7 @@ async function readRequestBody(req: IncomingMessage): Promise<string> {
   return Buffer.concat(chunks).toString("utf8");
 }
 
-async function spawnOpenClaw(
+async function spawnOperator(
   args: string[],
   options: { cwd: string; env: NodeJS.ProcessEnv },
 ): Promise<{ status: number | null; stdout: string; stderr: string }> {
@@ -108,20 +108,20 @@ describe("openclaw skills install ClawHub GitHub-backed E2E", () => {
     const registry = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-clawhub-cli-e2e-"));
     try {
-      const result = await spawnOpenClaw(
+      const result = await spawnOperator(
         ["skills", "install", "@demo-owner/aiq-deploy", "--global"],
         {
           cwd: process.cwd(),
           env: {
             ...process.env,
-            OPENCLAW_STATE_DIR: stateDir,
-            OPENCLAW_CONFIG_PATH: path.join(stateDir, "openclaw.json"),
-            OPENCLAW_CLAWHUB_URL: registry,
+            OPERATOR_STATE_DIR: stateDir,
+            OPERATOR_CONFIG_PATH: path.join(stateDir, "openclaw.json"),
+            OPERATOR_CLAWHUB_URL: registry,
             CLAWHUB_TOKEN: "test-token",
             CLAWHUB_GITHUB_CODELOAD_BASE_URL: registry,
             CLAWHUB_DISABLE_TELEMETRY: "",
             CLAWDHUB_DISABLE_TELEMETRY: "",
-            OPENCLAW_DISABLE_BUNDLED_PLUGINS: "1",
+            OPERATOR_DISABLE_BUNDLED_PLUGINS: "1",
           },
         },
       );

@@ -14,7 +14,7 @@ export type {
   ImageGenerationResult,
   ImageGenerationSourceImage,
 } from "../image-generation/types.js";
-export type { OpenClawConfig } from "../config/types.operator.js";
+export type { OperatorConfig } from "../config/types.operator.js";
 
 export { describeFailoverError, isFailoverError } from "../agents/failover-error.js";
 export {

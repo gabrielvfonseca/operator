@@ -6,7 +6,7 @@ import {
   normalizeOptionalLowercaseString,
 } from "@operator/normalization-core/string-coerce";
 import type { ChannelPlugin } from "../../channels/plugins/types.plugin.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   buildChannelOutboundSessionRoute,
   buildThreadAwareOutboundSessionRoute,
@@ -48,7 +48,7 @@ function createSessionRouteTestPlugin(params: {
 }
 
 function buildThreadedChannelRoute(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
   channel: string;
   accountId?: string | null;

@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { hasErrnoCode } from "../infra/errors.js";
-import { resolveOpenClawPackageRootSync } from "../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
 
 type PluginPeerLinkLogger = {
   info?: (message: string) => void;
@@ -16,7 +16,7 @@ type RelinkManagedNpmRootResult = {
   skipped: number;
 };
 
-export type OpenClawPeerLinkAuditIssue = {
+export type OperatorPeerLinkAuditIssue = {
   packageName: string;
   packageDir: string;
   reason: string;
@@ -25,10 +25,10 @@ export type OpenClawPeerLinkAuditIssue = {
 type AuditManagedNpmRootResult = {
   checked: number;
   broken: number;
-  issues: OpenClawPeerLinkAuditIssue[];
+  issues: OperatorPeerLinkAuditIssue[];
 };
 
-type OpenClawPeerLinkResult = "linked" | "skipped" | "unchanged";
+type OperatorPeerLinkResult = "linked" | "skipped" | "unchanged";
 
 function readStringRecord(value: unknown): Record<string, string> {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
@@ -112,12 +112,12 @@ function managedPackageNameFromDir(params: { npmRoot: string; packageDir: string
     .join("/");
 }
 
-async function auditOpenClawPeerDependency(params: {
+async function auditOperatorPeerDependency(params: {
   hostRoot: string;
   packageDir: string;
   npmRoot?: string;
   packageName?: string;
-}): Promise<OpenClawPeerLinkAuditIssue | null> {
+}): Promise<OperatorPeerLinkAuditIssue | null> {
   const packageName =
     params.packageName ??
     (params.npmRoot
@@ -167,12 +167,12 @@ async function auditOpenClawPeerDependency(params: {
   return null;
 }
 
-export async function auditOpenClawPeerDependencyLink(params: {
+export async function auditOperatorPeerDependencyLink(params: {
   packageDir: string;
   packageName?: string;
-}): Promise<OpenClawPeerLinkAuditIssue | null> {
+}): Promise<OperatorPeerLinkAuditIssue | null> {
   const packageName = params.packageName ?? path.basename(params.packageDir);
-  const hostRoot = resolveOpenClawPackageRootSync({
+  const hostRoot = resolveOperatorPackageRootSync({
     argv1: process.argv[1],
     moduleUrl: import.meta.url,
     cwd: process.cwd(),
@@ -184,7 +184,7 @@ export async function auditOpenClawPeerDependencyLink(params: {
       reason: "could not locate operator package root",
     };
   }
-  return await auditOpenClawPeerDependency({
+  return await auditOperatorPeerDependency({
     hostRoot,
     packageDir: params.packageDir,
     packageName,
@@ -222,12 +222,12 @@ async function ensureRealNodeModulesDir(params: {
   return nodeModulesDir;
 }
 
-async function linkOpenClawPeerDependency(params: {
+async function linkOperatorPeerDependency(params: {
   hostRoot: string;
   installedDir: string;
   peerName: string;
   logger: PluginPeerLinkLogger;
-}): Promise<OpenClawPeerLinkResult> {
+}): Promise<OperatorPeerLinkResult> {
   const nodeModulesDir = await ensureRealNodeModulesDir({
     installedDir: params.installedDir,
     logger: params.logger,
@@ -297,7 +297,7 @@ async function readPackageName(packageDir: string): Promise<string | undefined> 
  * Plugin package managers still own third-party dependencies; this only wires
  * the host SDK package into the plugin-local Node graph.
  */
-export async function linkOpenClawPeerDependencies(params: {
+export async function linkOperatorPeerDependencies(params: {
   installedDir: string;
   peerDependencies: Record<string, string>;
   logger: PluginPeerLinkLogger;
@@ -307,7 +307,7 @@ export async function linkOpenClawPeerDependencies(params: {
     return { repaired: 0, skipped: 0 };
   }
 
-  const hostRoot = resolveOpenClawPackageRootSync({
+  const hostRoot = resolveOperatorPackageRootSync({
     argv1: process.argv[1],
     moduleUrl: import.meta.url,
     cwd: process.cwd(),
@@ -322,7 +322,7 @@ export async function linkOpenClawPeerDependencies(params: {
   let repaired = 0;
   let skipped = 0;
   for (const peerName of peers) {
-    const result = await linkOpenClawPeerDependency({
+    const result = await linkOperatorPeerDependency({
       hostRoot,
       installedDir: params.installedDir,
       peerName,
@@ -337,7 +337,7 @@ export async function linkOpenClawPeerDependencies(params: {
   return { repaired, skipped };
 }
 
-export async function relinkOpenClawPeerDependenciesInManagedNpmRoot(params: {
+export async function relinkOperatorPeerDependenciesInManagedNpmRoot(params: {
   npmRoot: string;
   logger: PluginPeerLinkLogger;
 }): Promise<RelinkManagedNpmRootResult> {
@@ -351,7 +351,7 @@ export async function relinkOpenClawPeerDependenciesInManagedNpmRoot(params: {
       continue;
     }
     checked += 1;
-    const result = await linkOpenClawPeerDependencies({
+    const result = await linkOperatorPeerDependencies({
       installedDir: packageDir,
       peerDependencies,
       logger: params.logger,
@@ -363,10 +363,10 @@ export async function relinkOpenClawPeerDependenciesInManagedNpmRoot(params: {
   return { checked, attempted, repaired, skipped };
 }
 
-export async function auditOpenClawPeerDependenciesInManagedNpmRoot(params: {
+export async function auditOperatorPeerDependenciesInManagedNpmRoot(params: {
   npmRoot: string;
 }): Promise<AuditManagedNpmRootResult> {
-  const hostRoot = resolveOpenClawPackageRootSync({
+  const hostRoot = resolveOperatorPackageRootSync({
     argv1: process.argv[1],
     moduleUrl: import.meta.url,
     cwd: process.cwd(),
@@ -376,14 +376,14 @@ export async function auditOpenClawPeerDependenciesInManagedNpmRoot(params: {
   }
 
   let checked = 0;
-  const issues: OpenClawPeerLinkAuditIssue[] = [];
+  const issues: OperatorPeerLinkAuditIssue[] = [];
   for (const packageDir of await listManagedNpmRootPackageDirs(params.npmRoot)) {
     const peerDependencies = await readPackagePeerDependencies(packageDir);
     if (!Object.hasOwn(peerDependencies, "operator")) {
       continue;
     }
     checked += 1;
-    const issue = await auditOpenClawPeerDependency({
+    const issue = await auditOperatorPeerDependency({
       hostRoot,
       npmRoot: params.npmRoot,
       packageDir,

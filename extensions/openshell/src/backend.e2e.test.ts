@@ -15,13 +15,13 @@ import { describe, expect, it } from "vitest";
 import { createOpenShellSandboxBackendFactory } from "./backend.js";
 import { resolveOpenShellPluginConfig } from "./config.js";
 
-const OPENCLAW_OPENSHELL_E2E = process.env.OPENCLAW_E2E_OPENSHELL === "1";
-const OPENCLAW_OPENSHELL_E2E_TIMEOUT_MS = 12 * 60_000;
-const OPENCLAW_OPENSHELL_COMMAND =
-  process.env.OPENCLAW_E2E_OPENSHELL_COMMAND?.trim() || "openshell";
-const OPENCLAW_OPENSHELL_CONFIG_HOME =
-  process.env.OPENCLAW_E2E_OPENSHELL_CONFIG_HOME?.trim() || null;
-const OPENCLAW_OPENSHELL_HOST_IP = process.env.OPENCLAW_E2E_OPENSHELL_HOST_IP?.trim() || null;
+const OPERATOR_OPENSHELL_E2E = process.env.OPERATOR_E2E_OPENSHELL === "1";
+const OPERATOR_OPENSHELL_E2E_TIMEOUT_MS = 12 * 60_000;
+const OPERATOR_OPENSHELL_COMMAND =
+  process.env.OPERATOR_E2E_OPENSHELL_COMMAND?.trim() || "openshell";
+const OPERATOR_OPENSHELL_CONFIG_HOME =
+  process.env.OPERATOR_E2E_OPENSHELL_CONFIG_HOME?.trim() || null;
+const OPERATOR_OPENSHELL_HOST_IP = process.env.OPERATOR_E2E_OPENSHELL_HOST_IP?.trim() || null;
 const ANSI_ESCAPE_RE = new RegExp(`${String.fromCharCode(0x1b)}\\[[0-?]*[ -/]*[@-~]`, "gu");
 
 const CUSTOM_IMAGE_DOCKERFILE = `FROM python:3.13-slim
@@ -197,8 +197,8 @@ async function dockerReady(): Promise<boolean> {
 }
 
 async function resolveOpenShellHostIp(): Promise<string> {
-  if (OPENCLAW_OPENSHELL_HOST_IP) {
-    return OPENCLAW_OPENSHELL_HOST_IP;
+  if (OPERATOR_OPENSHELL_HOST_IP) {
+    return OPERATOR_OPENSHELL_HOST_IP;
   }
   const networks = await runCommand({
     command: "docker",
@@ -227,7 +227,7 @@ async function resolveOpenShellHostIp(): Promise<string> {
     }
   }
   throw new Error(
-    "OpenShell E2E could not resolve the OpenShell Docker network gateway; set OPENCLAW_E2E_OPENSHELL_HOST_IP",
+    "OpenShell E2E could not resolve the OpenShell Docker network gateway; set OPERATOR_E2E_OPENSHELL_HOST_IP",
   );
 }
 
@@ -431,24 +431,24 @@ async function runBackendExec(params: {
 }
 
 describe("openshell sandbox backend e2e", () => {
-  it.runIf(process.platform !== "win32" && OPENCLAW_OPENSHELL_E2E)(
+  it.runIf(process.platform !== "win32" && OPERATOR_OPENSHELL_E2E)(
     "creates a remote-canonical sandbox through OpenShell and executes over SSH",
-    { timeout: OPENCLAW_OPENSHELL_E2E_TIMEOUT_MS },
+    { timeout: OPERATOR_OPENSHELL_E2E_TIMEOUT_MS },
     async () => {
       if (!(await dockerReady())) {
         throw new Error("OpenShell E2E requires a working Docker daemon");
       }
-      if (!(await commandAvailable(OPENCLAW_OPENSHELL_COMMAND))) {
-        throw new Error(`OpenShell CLI is unavailable: ${OPENCLAW_OPENSHELL_COMMAND}`);
+      if (!(await commandAvailable(OPERATOR_OPENSHELL_COMMAND))) {
+        throw new Error(`OpenShell CLI is unavailable: ${OPERATOR_OPENSHELL_COMMAND}`);
       }
-      if (!OPENCLAW_OPENSHELL_CONFIG_HOME) {
+      if (!OPERATOR_OPENSHELL_CONFIG_HOME) {
         throw new Error(
-          "OpenShell E2E requires OPENCLAW_E2E_OPENSHELL_CONFIG_HOME because tests isolate HOME and XDG_CONFIG_HOME",
+          "OpenShell E2E requires OPERATOR_E2E_OPENSHELL_CONFIG_HOME because tests isolate HOME and XDG_CONFIG_HOME",
         );
       }
-      const openshellConfigHome = OPENCLAW_OPENSHELL_CONFIG_HOME;
+      const openshellConfigHome = OPERATOR_OPENSHELL_CONFIG_HOME;
       const hostIp = await resolveOpenShellHostIp();
-      const gatewayName = await activeOpenShellGateway(OPENCLAW_OPENSHELL_COMMAND, {
+      const gatewayName = await activeOpenShellGateway(OPERATOR_OPENSHELL_COMMAND, {
         ...process.env,
         XDG_CONFIG_HOME: openshellConfigHome,
       });
@@ -493,7 +493,7 @@ describe("openshell sandbox backend e2e", () => {
       };
 
       const pluginConfig = resolveOpenShellPluginConfig({
-        command: OPENCLAW_OPENSHELL_COMMAND,
+        command: OPERATOR_OPENSHELL_COMMAND,
         gateway: gatewayName,
         from: dockerfilePath,
         mode: "remote",
@@ -600,7 +600,7 @@ describe("openshell sandbox backend e2e", () => {
         );
 
         const verifyResult = await runCommand({
-          command: OPENCLAW_OPENSHELL_COMMAND,
+          command: OPERATOR_OPENSHELL_COMMAND,
           args: ["sandbox", "ssh-config", backend.runtimeId],
           env,
           timeoutMs: 60_000,
@@ -618,7 +618,7 @@ describe("openshell sandbox backend e2e", () => {
         expect(`${blockedGetResult.stdout}\n${blockedGetResult.stderr}`).toMatch(/403|deny/i);
 
         const allowedGetResult = await runCommand({
-          command: OPENCLAW_OPENSHELL_COMMAND,
+          command: OPERATOR_OPENSHELL_COMMAND,
           args: [
             "sandbox",
             "create",
@@ -646,14 +646,14 @@ describe("openshell sandbox backend e2e", () => {
         expect(allowedGetResult.stdout).toContain('"message":"hello-from-host"');
       } finally {
         await runCommand({
-          command: OPENCLAW_OPENSHELL_COMMAND,
+          command: OPERATOR_OPENSHELL_COMMAND,
           args: ["sandbox", "delete", backend.runtimeId],
           env,
           allowFailure: true,
           timeoutMs: 2 * 60_000,
         });
         await runCommand({
-          command: OPENCLAW_OPENSHELL_COMMAND,
+          command: OPERATOR_OPENSHELL_COMMAND,
           args: ["sandbox", "delete", allowSandboxName],
           env,
           allowFailure: true,

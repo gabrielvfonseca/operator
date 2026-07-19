@@ -3,8 +3,8 @@
 
 export { definePluginEntry } from "./plugin-entry.js";
 export type {
-  OpenClawPluginApi,
-  OpenClawPluginCommandDefinition,
-  OpenClawPluginService,
+  OperatorPluginApi,
+  OperatorPluginCommandDefinition,
+  OperatorPluginService,
   PluginCommandContext,
 } from "../plugins/types.js";

@@ -1,5 +1,5 @@
 // Discord tests cover accounts plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   clearRuntimeConfigSnapshot,
   setRuntimeConfigSnapshot,
@@ -89,7 +89,7 @@ describe("Discord defaultAccount omission contract", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(listDiscordAccountIds(cfg)).toEqual(["default", "work"]);
     expect(resolveDefaultDiscordAccountId(cfg)).toBe("default");
@@ -397,7 +397,7 @@ describe("resolveDiscordAccount runtime config selection", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     const runtimeCfg = {
       channels: {
         discord: {
@@ -410,7 +410,7 @@ describe("resolveDiscordAccount runtime config selection", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     setRuntimeConfigSnapshot(runtimeCfg, sourceCfg);
 
     const resolved = resolveDiscordAccount({ cfg: sourceCfg });
@@ -430,7 +430,7 @@ describe("resolveDiscordAccount runtime config selection", () => {
             token: { source: "env", provider: "default", id: "DISCORD_BOT_TOKEN" },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       accountId: "default",
     });
 

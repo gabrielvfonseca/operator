@@ -3,8 +3,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
-  createOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  type OperatorTestState,
 } from "../../test-utils/operator-test-state.js";
 import { createTrackedTempDirs } from "../../test-utils/tracked-temp-dirs.js";
 import { buildWorkspaceSkillStatus } from "../discovery/status.js";
@@ -30,11 +30,11 @@ import {
 import { readSkillProposalManifest, updateSkillProposalRecord } from "./store.js";
 
 const tempDirs = createTrackedTempDirs();
-let testState: OpenClawTestState;
+let testState: OperatorTestState;
 let stateDir = "";
 
 beforeEach(async () => {
-  testState = await createOpenClawTestState({
+  testState = await createOperatorTestState({
     layout: "state-only",
     prefix: "openclaw-skill-workshop-state-",
   });

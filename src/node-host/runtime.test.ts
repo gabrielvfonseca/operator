@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawPluginNodeHostCommandIo } from "../plugins/types.js";
+import type { OperatorPluginNodeHostCommandIo } from "../plugins/types.js";
 import type { NodeHostClient } from "./client.js";
 import { listRegisteredNodeHostCapsAndCommands } from "./plugin-node-host.js";
 import { prepareNodeHostRuntime } from "./runtime.js";
@@ -10,7 +10,7 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("../infra/path-env.js", () => ({
-  ensureOpenClawCliOnPath: vi.fn(),
+  ensureOperatorCliOnPath: vi.fn(),
 }));
 
 vi.mock("./invoke.js", () => ({
@@ -70,13 +70,13 @@ async function startRuntime() {
 }
 
 function holdInvoke() {
-  let io: OpenClawPluginNodeHostCommandIo | undefined;
+  let io: OperatorPluginNodeHostCommandIo | undefined;
   let release: (() => void) | undefined;
   const held = new Promise<void>((resolve) => {
     release = resolve;
   });
   mocks.handleInvoke.mockImplementationOnce(async (...args: unknown[]) => {
-    io = (args[4] as { pluginCommandIo?: OpenClawPluginNodeHostCommandIo }).pluginCommandIo;
+    io = (args[4] as { pluginCommandIo?: OperatorPluginNodeHostCommandIo }).pluginCommandIo;
     await held;
   });
   return {

@@ -10,7 +10,7 @@ function getAbortReason(signal: AbortSignal): unknown {
 /** Marks AbortErrors produced by abortable() so provider aborts stay retryable. */
 const OPERATOR_ABORTABLE_WRAPPER = Symbol.for("operator.abortable.wrapper");
 
-export function isOpenClawAbortableWrapper(err: unknown): boolean {
+export function isOperatorAbortableWrapper(err: unknown): boolean {
   return err !== null && typeof err === "object" && OPERATOR_ABORTABLE_WRAPPER in err;
 }
 

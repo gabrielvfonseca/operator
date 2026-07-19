@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import type { SessionEntry } from "../../config/sessions.js";
 import {
   applySessionEntryLifecycleMutation,
@@ -88,7 +88,7 @@ describe("session-updates lifecycle hooks", () => {
 
   it("emits compaction lifecycle hooks when newSessionId replaces the session", async () => {
     const { storePath, sessionKey, sessionStore, entry, transcriptPath } = await createFixture();
-    const cfg = { session: { store: storePath } } as OpenClawConfig;
+    const cfg = { session: { store: storePath } } as OperatorConfig;
 
     await incrementCompactionCount({
       cfg,
@@ -133,7 +133,7 @@ describe("session-updates lifecycle hooks", () => {
     hookRunnerMocks.runSessionStart.mockImplementationOnce(heldHook);
 
     await incrementCompactionCount({
-      cfg: { session: { store: storePath } } as OpenClawConfig,
+      cfg: { session: { store: storePath } } as OperatorConfig,
       sessionEntry: entry,
       sessionStore,
       sessionKey,
@@ -164,7 +164,7 @@ describe("session-updates lifecycle hooks", () => {
     await admission?.run(async () => {
       markGatewayRestartDraining();
       await incrementCompactionCount({
-        cfg: { session: { store: storePath } } as OpenClawConfig,
+        cfg: { session: { store: storePath } } as OperatorConfig,
         sessionEntry: entry,
         sessionStore,
         sessionKey,

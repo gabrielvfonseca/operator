@@ -1,5 +1,5 @@
-// OpenClaw Gateway client facade.
-// Injects OpenClaw host dependencies into the shared gateway-client package.
+// Operator Gateway client facade.
+// Injects Operator host dependencies into the shared gateway-client package.
 import { GatewayClient as BaseGatewayClient } from "../../packages/gateway-client/src/index.js";
 import type {
   GatewayClientConnectionMetadata,
@@ -37,11 +37,11 @@ export type {
   GatewayReconnectPausedInfo,
 } from "../../packages/gateway-client/src/index.js";
 
-function createOpenClawGatewayClientHostDeps(
+function createOperatorGatewayClientHostDeps(
   overrides?: GatewayClientHostDeps,
 ): GatewayClientHostDeps {
   return {
-    // This wrapper is the only place the package reaches into OpenClaw runtime
+    // This wrapper is the only place the package reaches into Operator runtime
     // state. Keep device identity, token storage, proxy, and redaction here.
     loadOrCreateDeviceIdentity,
     signDevicePayload,
@@ -66,7 +66,7 @@ export class GatewayClient {
     this.#client = new BaseGatewayClient({
       ...opts,
       clientVersion: opts.clientVersion ?? VERSION,
-      hostDeps: createOpenClawGatewayClientHostDeps(opts.hostDeps),
+      hostDeps: createOperatorGatewayClientHostDeps(opts.hostDeps),
     });
   }
 

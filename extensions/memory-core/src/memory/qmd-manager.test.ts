@@ -213,7 +213,7 @@ import {
 } from "openclaw/plugin-sdk/session-store-runtime";
 import { formatSessionTranscriptMemoryHitKey } from "openclaw/plugin-sdk/session-transcript-hit";
 import { appendSessionTranscriptMessageByIdentity } from "openclaw/plugin-sdk/session-transcript-runtime";
-import { closeOpenClawAgentDatabasesForTest } from "openclaw/plugin-sdk/sqlite-runtime-testing";
+import { closeOperatorAgentDatabasesForTest } from "openclaw/plugin-sdk/sqlite-runtime-testing";
 import { configureMemoryCoreDreamingState } from "../dreaming-state.js";
 import { resolveQmdSessionArtifactIdentity } from "../qmd-session-artifacts.js";
 import {
@@ -228,10 +228,10 @@ const spawnMock = mockedSpawn as unknown as Mock;
 const originalPath = process.env.PATH;
 const originalPathExt = process.env.PATHEXT;
 const originalWindowsPath = process.env.Path;
-const originalQmdStateDir = process.env.OPENCLAW_STATE_DIR;
+const originalQmdStateDir = process.env.OPERATOR_STATE_DIR;
 
 function setQmdStateDir(stateDir: string): void {
-  Reflect.set(process.env, "OPENCLAW_STATE_DIR", stateDir);
+  Reflect.set(process.env, "OPERATOR_STATE_DIR", stateDir);
 }
 
 async function seedQmdSessionTranscript(params: {
@@ -281,9 +281,9 @@ async function seedQmdSessionTranscript(params: {
 
 function restoreQmdStateDir(): void {
   if (originalQmdStateDir === undefined) {
-    Reflect.deleteProperty(process.env, "OPENCLAW_STATE_DIR");
+    Reflect.deleteProperty(process.env, "OPERATOR_STATE_DIR");
   } else {
-    Reflect.set(process.env, "OPENCLAW_STATE_DIR", originalQmdStateDir);
+    Reflect.set(process.env, "OPERATOR_STATE_DIR", originalQmdStateDir);
   }
 }
 
@@ -908,7 +908,7 @@ describe("QmdMemoryManager", () => {
     delete (globalThis as Record<PropertyKey, unknown>)[QMD_EMBED_QUEUE_KEY];
     delete (globalThis as Record<PropertyKey, unknown>)[MEMORY_EMBEDDING_PROVIDERS_KEY];
     resetMemoryCoreDreamingStateForTests();
-    closeOpenClawAgentDatabasesForTest();
+    closeOperatorAgentDatabasesForTest();
   });
 
   it("debounces back-to-back sync calls", async () => {

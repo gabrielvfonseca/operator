@@ -24,7 +24,7 @@ import type {
 } from "../../channels/plugins/types.adapters.js";
 import { resolveMirroredTranscriptText } from "../../config/sessions/transcript-mirror.js";
 import type { ReplyToMode } from "../../config/types.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { fireAndForgetHook } from "../../hooks/fire-and-forget.js";
 import { createInternalHookEvent, triggerInternalHook } from "../../hooks/internal-hooks.js";
 import {
@@ -207,7 +207,7 @@ type PlatformSendRoute = {
 };
 
 type ChannelHandlerParams = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   channel: Exclude<OutboundChannel, "none">;
   to: string;
   accountId?: string;
@@ -232,7 +232,7 @@ type ChannelHandlerParams = {
 
 // Channel docking: outbound delivery delegates to plugin.outbound adapters.
 async function resolveChannelOutboundDirectiveOptions(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   channel: Exclude<OutboundChannel, "none">;
 }): Promise<{ extractMarkdownImages?: boolean }> {
   const outbound = await loadBootstrappedOutboundAdapter(params);
@@ -252,7 +252,7 @@ async function createChannelHandler(params: ChannelHandlerParams): Promise<Chann
 }
 
 async function loadBootstrappedOutboundAdapter(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   channel: Exclude<OutboundChannel, "none">;
 }): Promise<ChannelOutboundAdapter | undefined> {
   let outbound = await loadChannelOutboundAdapter(params.channel);
@@ -320,7 +320,7 @@ async function runChannelMessageSendWithLifecycle<
 }
 
 export async function resolveOutboundDurableFinalDeliverySupport(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   channel: Exclude<OutboundChannel, "none">;
   requirements?: DurableFinalDeliveryRequirements;
 }): Promise<OutboundDurableDeliverySupport> {
@@ -728,7 +728,7 @@ async function persistQueuedPostSendState(params: {
 }
 
 type DeliverOutboundPayloadsCoreParams = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   channel: Exclude<OutboundChannel, "none">;
   to: string;
   accountId?: string;

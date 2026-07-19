@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as configModule from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { projectDefaultInferenceRoute } from "./inference-route.js";
 
@@ -9,30 +9,30 @@ type ConfigSnapshot = {
   valid: boolean;
   path: string;
   hash: string | null;
-  config: OpenClawConfig;
-  sourceConfig: OpenClawConfig;
-  runtimeConfig?: OpenClawConfig;
+  config: OperatorConfig;
+  sourceConfig: OperatorConfig;
+  runtimeConfig?: OperatorConfig;
   issues: Array<{ path?: string; message: string }>;
 };
 
 type CommitTransform = (
-  currentConfig: OpenClawConfig,
+  currentConfig: OperatorConfig,
   context: {
     previousHash: string | null;
     snapshot: ConfigSnapshot;
     attempt: number;
   },
 ) =>
-  | { nextConfig: OpenClawConfig; result?: unknown }
-  | Promise<{ nextConfig: OpenClawConfig; result?: unknown }>;
+  | { nextConfig: OperatorConfig; result?: unknown }
+  | Promise<{ nextConfig: OperatorConfig; result?: unknown }>;
 
 const mocks = vi.hoisted(() => ({
   state: {
     initialSnapshot: {} as ConfigSnapshot,
-    commitConfig: {} as OpenClawConfig,
+    commitConfig: {} as OperatorConfig,
     commitSnapshot: {} as ConfigSnapshot,
     commitPreviousHash: "probe" as string | null,
-    persistedConfig: undefined as OpenClawConfig | undefined,
+    persistedConfig: undefined as OperatorConfig | undefined,
   },
   events: [] as string[],
   readSnapshot: vi.fn<() => Promise<ConfigSnapshot>>(),
@@ -58,7 +58,7 @@ vi.mock("../wizard/setup.shared.js", async (importOriginal) => ({
 }));
 
 vi.mock("../commands/onboard-helpers.js", () => ({
-  applyWizardMetadata: (config: OpenClawConfig) => ({
+  applyWizardMetadata: (config: OperatorConfig) => ({
     ...config,
     wizard: {
       ...config.wizard,
@@ -98,7 +98,7 @@ vi.mock("../infra/exec-approvals.js", () => ({
 
 vi.mock("../agents/agent-scope.js", async (importOriginal) => ({
   ...(await importOriginal<typeof import("../agents/agent-scope.js")>()),
-  resolveAgentDir: (config: OpenClawConfig, agentId: string) =>
+  resolveAgentDir: (config: OperatorConfig, agentId: string) =>
     config.agents?.list?.find((agent) => agent.id === agentId)?.agentDir ?? `/agents/${agentId}`,
 }));
 
@@ -110,7 +110,7 @@ const runtime: RuntimeEnv = {
   exit: vi.fn(),
 };
 
-function snapshot(hash: string | null, config: OpenClawConfig): ConfigSnapshot {
+function snapshot(hash: string | null, config: OperatorConfig): ConfigSnapshot {
   return {
     exists: hash !== null,
     valid: true,
@@ -163,9 +163,9 @@ function codexPluginMetadataSnapshot(homeScope: "agent" | "user") {
 }
 
 function materializePluginDefaults(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   pluginMetadataSnapshot: ReturnType<typeof codexPluginMetadataSnapshot>,
-): OpenClawConfig {
+): OperatorConfig {
   const result = configModule.validateConfigObjectWithPlugins(config, { pluginMetadataSnapshot });
   if (!result.ok) {
     throw new Error(result.issues[0]?.message ?? "test config failed validation");
@@ -205,7 +205,7 @@ describe("applySystemAgentModelSelection", () => {
           },
         ],
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await applySystemAgentModelSelection({
       config,
@@ -233,7 +233,7 @@ describe("applySystemAgentSetup transaction boundaries", () => {
   beforeEach(() => {
     vi.resetAllMocks();
     mocks.events.length = 0;
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       agents: { defaults: { model: { primary: "openai/gpt-5.5" } } },
     };
     mocks.state.initialSnapshot = snapshot("probe", config);
@@ -267,7 +267,7 @@ describe("applySystemAgentSetup transaction boundaries", () => {
         nextConfig,
         quickstartGateway,
       }: {
-        nextConfig: OpenClawConfig;
+        nextConfig: OperatorConfig;
         quickstartGateway: {
           authMode: "token" | "password";
           bind: "loopback" | "lan";
@@ -343,9 +343,9 @@ describe("applySystemAgentSetup transaction boundaries", () => {
     const config = {
       agents: {
         defaults: { model: "openai/gpt-5.5" },
-        list: [{ id: "OpenClaw" }],
+        list: [{ id: "Operator" }],
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     mocks.state.initialSnapshot = snapshot("reserved", config);
 
     await expect(applySystemAgentSetup(baseParams())).rejects.toThrow(
@@ -361,7 +361,7 @@ describe("applySystemAgentSetup transaction boundaries", () => {
         defaults: { model: "openai/gpt-5.5" },
         list: [{ id: "crestodian" }], // reserved retired id
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     mocks.state.initialSnapshot = snapshot("reserved-retired", config);
 
     await expect(applySystemAgentSetup(baseParams())).rejects.toThrow(
@@ -471,10 +471,10 @@ describe("applySystemAgentSetup transaction boundaries", () => {
   it("rejects route drift before opening the config transaction", async () => {
     const current = {
       agents: { defaults: { model: "openai/gpt-5.5" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const verified = {
       agents: { defaults: { model: "anthropic/claude-opus-4-8" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     mocks.state.initialSnapshot = snapshot("probe", current);
     mocks.readVerifiedSnapshot.mockResolvedValue(snapshot("probe", current));
 
@@ -491,11 +491,11 @@ describe("applySystemAgentSetup transaction boundaries", () => {
     const stale = {
       agents: { defaults: { model: "openai/gpt-5.5" } },
       gateway: { port: 18789 },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const current = {
       ...stale,
       gateway: { port: 19000 },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     mocks.state.initialSnapshot = snapshot("same-root", stale);
     mocks.readVerifiedSnapshot.mockResolvedValue(snapshot("same-root", current));
 
@@ -511,7 +511,7 @@ describe("applySystemAgentSetup transaction boundaries", () => {
   it("rejects a setup candidate that changes the exact verified route identity", async () => {
     const initial = {
       agents: { defaults: { model: "openai/gpt-5.5" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const initialSnapshot = snapshot("probe", initial);
     mocks.state.initialSnapshot = initialSnapshot;
     mocks.state.commitConfig = initial;
@@ -539,7 +539,7 @@ describe("applySystemAgentSetup transaction boundaries", () => {
         bind: "loopback",
         auth: { mode: "token", token: "initial-token" },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const concurrent = {
       ...initial,
       gateway: {
@@ -548,7 +548,7 @@ describe("applySystemAgentSetup transaction boundaries", () => {
         bind: "lan",
         auth: { mode: "token" as const, token: "concurrent-token" },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const initialSnapshot = snapshot("hash-1", initial);
     const concurrentSnapshot = snapshot("hash-2", concurrent);
     mocks.state.initialSnapshot = initialSnapshot;
@@ -619,10 +619,10 @@ describe("applySystemAgentSetup transaction boundaries", () => {
   it("revalidates the verified route after the config write", async () => {
     const initial = {
       agents: { defaults: { model: "openai/gpt-5.5" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const drifted = {
       agents: { defaults: { model: "anthropic/claude-opus-4-8" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const initialSnapshot = snapshot("probe", initial);
     const driftedSnapshot = snapshot("persisted", drifted);
     mocks.state.initialSnapshot = initialSnapshot;
@@ -672,7 +672,7 @@ describe("applySystemAgentSetup transaction boundaries", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const initialSnapshot = {
       ...snapshot("probe", sourceConfig),
       runtimeConfig: materializePluginDefaults(sourceConfig, pluginMetadataSnapshot),
@@ -707,10 +707,10 @@ describe("applySystemAgentSetup transaction boundaries", () => {
   it("rejects a materialized route that differs from the inference proof", async () => {
     const sourceConfig = {
       agents: { defaults: { model: "openai/gpt-5.5" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const materializedConfig = {
       agents: { defaults: { model: "anthropic/claude-opus-4-8" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const verifiedSnapshot = snapshot("probe", sourceConfig);
     const persistedSnapshot = () => {
       const persisted = mocks.state.persistedConfig ?? sourceConfig;
@@ -752,10 +752,10 @@ describe("applySystemAgentSetup transaction boundaries", () => {
     const initial = {
       agents: { defaults: { model: "openai/gpt-5.5" } },
       auth: { order: { openai: ["openai:verified"] } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const initialSnapshot = snapshot("probe", initial);
     const expectedInferenceRoute = await projectDefaultInferenceRoute(initial);
-    let currentConfig: OpenClawConfig = initial;
+    let currentConfig: OperatorConfig = initial;
     let currentHash = "probe";
     mocks.state.initialSnapshot = initialSnapshot;
     mocks.state.commitConfig = initial;
@@ -812,12 +812,12 @@ describe("applySystemAgentSetup transaction boundaries", () => {
   it("finalizes setup against the source config held by the commit lock", async () => {
     const sourceConfig = {
       plugins: { entries: { codex: { config: { supervision: { enabled: false } } } } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     mocks.state.commitSnapshot = {
       ...snapshot("probe", mocks.state.commitConfig),
       sourceConfig,
     };
-    const finalizeConfig = vi.fn((config: OpenClawConfig, source: OpenClawConfig) => ({
+    const finalizeConfig = vi.fn((config: OperatorConfig, source: OperatorConfig) => ({
       ...config,
       plugins: source.plugins,
     }));
@@ -847,7 +847,7 @@ describe("applySystemAgentSetup transaction boundaries", () => {
     expect(result.lines).toEqual(
       expect.arrayContaining([
         "Workspace files: workspace exploded",
-        "OpenClaw exec approval: approval exploded; local model harnesses may ask again.",
+        "Operator exec approval: approval exploded; local model harnesses may ask again.",
         "Plugin registry refresh failed: registry exploded",
         "Gateway service: service exploded",
       ]),

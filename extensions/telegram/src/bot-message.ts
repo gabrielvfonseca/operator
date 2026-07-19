@@ -1,5 +1,5 @@
 // Telegram plugin module implements bot message behavior.
-import type { OpenClawConfig, TelegramAccountConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig, TelegramAccountConfig } from "openclaw/plugin-sdk/config-contracts";
 import { resolveTextChunkLimit } from "openclaw/plugin-sdk/reply-chunking";
 import { DEFAULT_GROUP_HISTORY_LIMIT } from "openclaw/plugin-sdk/reply-history";
 import {
@@ -68,7 +68,7 @@ type TelegramMessageProcessorDeps = Omit<
 };
 
 export type TelegramMessageProcessorTurnContext = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   telegramCfg: TelegramAccountConfig;
   onDispatchStart?: () => Promise<void> | void;
   /** One-way cancellation from an outer spool owner into an isolated retry attempt. */
@@ -85,7 +85,7 @@ export type TelegramMessageProcessorTurnContext = {
 
 export function resolveTelegramMessageTurnSettings(params: {
   accountId: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   telegramCfg: TelegramAccountConfig;
   opts: Pick<TelegramBotOptions, "allowFrom" | "groupAllowFrom" | "replyToMode">;
 }) {
@@ -185,7 +185,7 @@ export const createTelegramMessageProcessor = (deps: TelegramMessageProcessorDep
         ? options.receivedAtMs
         : undefined;
     const ingressDebugEnabled =
-      shouldLogVerbose() || process.env.OPENCLAW_DEBUG_TELEGRAM_INGRESS === "1";
+      shouldLogVerbose() || process.env.OPERATOR_DEBUG_TELEGRAM_INGRESS === "1";
     const ingressContextStartMs = ingressReceivedAtMs ? Date.now() : undefined;
     const recordCurrentUpdateProcessingResult = (result: TelegramMessageProcessingResult) => {
       if (options?.spooledReplay === true) {

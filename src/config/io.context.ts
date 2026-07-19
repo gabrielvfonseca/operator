@@ -46,11 +46,11 @@ import {
 } from "./plugin-install-config-migration.js";
 import { applyConfigOverrides } from "./runtime-overrides.js";
 import { resolveShellEnvExpectedKeys } from "./shell-env-expected-keys.js";
-import type { ConfigFileSnapshot, OpenClawConfig } from "./types.js";
+import type { ConfigFileSnapshot, OperatorConfig } from "./types.js";
 import { validateConfigObjectWithPlugins } from "./validation.js";
 
 type ValidationPluginMetadataSnapshotLoader = {
-  load: (config: OpenClawConfig) => PluginMetadataSnapshot;
+  load: (config: OperatorConfig) => PluginMetadataSnapshot;
   getSnapshot: () => PluginMetadataSnapshot | undefined;
 };
 
@@ -59,27 +59,27 @@ export type ConfigIoContext = {
   configPath: string;
   options: ConfigIoFactoryOptions;
   observeLoadConfigSnapshot: (snapshot: ConfigFileSnapshot) => ConfigFileSnapshot;
-  finalizeLoadedRuntimeConfig: (config: OpenClawConfig) => OpenClawConfig;
+  finalizeLoadedRuntimeConfig: (config: OperatorConfig) => OperatorConfig;
   migrateAndStripShippedPluginInstallConfigRecords: (
     configRaw: unknown,
     options?: { persist?: boolean; rootConfigRaw?: unknown },
   ) => ShippedPluginInstallConfigReadMigration;
   retainRuntimeOnlyShippedPluginInstallConfigRecords: (
-    config: OpenClawConfig,
+    config: OperatorConfig,
     sourceRaw: unknown,
-  ) => OpenClawConfig;
+  ) => OperatorConfig;
   createValidationPluginMetadataSnapshotLoader: (params: {
     effectiveConfigRaw: unknown;
     env: NodeJS.ProcessEnv;
   }) => ValidationPluginMetadataSnapshotLoader;
-  resolveRuntimePreflightSourceConfig: (candidate: OpenClawConfig) => OpenClawConfig;
+  resolveRuntimePreflightSourceConfig: (candidate: OperatorConfig) => OperatorConfig;
   ensureShippedPluginInstallConfigRecordsMigratedForWrite: (
     snapshot: ConfigFileSnapshot,
   ) => ShippedPluginInstallConfigWriteMigration;
   rollbackShippedPluginInstallConfigWriteMigration: (
     migration: ShippedPluginInstallConfigWriteMigration,
   ) => boolean;
-  resolveSuspiciousRecoveryBackupCandidate: (parsed: unknown) => OpenClawConfig | null;
+  resolveSuspiciousRecoveryBackupCandidate: (parsed: unknown) => OperatorConfig | null;
 };
 
 export function createConfigIoContext(options: ConfigIoFactoryOptions = {}): ConfigIoContext {
@@ -93,7 +93,7 @@ export function createConfigIoContext(options: ConfigIoFactoryOptions = {}): Con
     return snapshot;
   }
 
-  function finalizeLoadedRuntimeConfig(cfg: OpenClawConfig): OpenClawConfig {
+  function finalizeLoadedRuntimeConfig(cfg: OperatorConfig): OperatorConfig {
     const duplicates = findDuplicateAgentDirs(cfg, { env: deps.env, homedir: deps.homedir });
     if (duplicates.length > 0) {
       throw new DuplicateAgentDirError(duplicates);
@@ -184,9 +184,9 @@ export function createConfigIoContext(options: ConfigIoFactoryOptions = {}): Con
   }
 
   function retainRuntimeOnlyShippedPluginInstallConfigRecords(
-    config: OpenClawConfig,
+    config: OperatorConfig,
     sourceRaw: unknown,
-  ): OpenClawConfig {
+  ): OperatorConfig {
     const installRecords = extractShippedPluginInstallConfigRecords(sourceRaw);
     if (Object.keys(installRecords).length === 0) {
       return config;
@@ -225,7 +225,7 @@ export function createConfigIoContext(options: ConfigIoFactoryOptions = {}): Con
     };
   }
 
-  function resolveRuntimePreflightSourceConfig(candidate: OpenClawConfig): OpenClawConfig {
+  function resolveRuntimePreflightSourceConfig(candidate: OperatorConfig): OperatorConfig {
     const env = { ...deps.env } as NodeJS.ProcessEnv;
     const resolvedIncludes = resolveConfigIncludesForRead(candidate, configPath, { ...deps, env });
     const resolution = resolveConfigForRead(resolvedIncludes, env, deps.lowerPrecedenceEnv);
@@ -279,7 +279,7 @@ export function createConfigIoContext(options: ConfigIoFactoryOptions = {}): Con
     return false;
   }
 
-  function resolveSuspiciousRecoveryBackupCandidate(parsed: unknown): OpenClawConfig | null {
+  function resolveSuspiciousRecoveryBackupCandidate(parsed: unknown): OperatorConfig | null {
     try {
       const candidateEnv = cloneEnvWithPlatformSemantics(deps.env);
       const resolved = resolveConfigIncludesForRead(parsed, configPath, {
@@ -332,10 +332,10 @@ export function resolveModelIdNormalizationPolicies(snapshot: PluginMetadataSnap
 
 export function materializeConfigForLoad(
   context: ConfigIoContext,
-  config: OpenClawConfig,
+  config: OperatorConfig,
   effectiveConfigRaw: unknown,
   pluginMetadata: PluginMetadataSnapshot | undefined,
-): OpenClawConfig {
+): OperatorConfig {
   return context.retainRuntimeOnlyShippedPluginInstallConfigRecords(
     materializeRuntimeConfig(config, "load", {
       manifestRegistry: pluginMetadata?.manifestRegistry,

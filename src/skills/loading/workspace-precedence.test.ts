@@ -4,7 +4,7 @@ import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { withEnv } from "../../test-utils/env.js";
 import { createFixtureSuite } from "../../test-utils/fixture-suite.js";
 import { writeSkill } from "../test-support/e2e-test-helpers.js";
-import type { OpenClawSkillMetadata, SkillEntry } from "../types.js";
+import type { OperatorSkillMetadata, SkillEntry } from "../types.js";
 import { createSyntheticSourceInfo } from "./skill-contract.js";
 import { buildWorkspaceSkillsPrompt } from "./workspace.js";
 
@@ -25,7 +25,7 @@ afterAll(async () => {
 function createSkillEntry(params: {
   name: string;
   description?: string;
-  metadata?: OpenClawSkillMetadata;
+  metadata?: OperatorSkillMetadata;
 }): SkillEntry {
   const filePath = `/skills/${params.name}/SKILL.md`;
   return {

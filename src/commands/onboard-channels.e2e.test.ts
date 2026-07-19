@@ -8,7 +8,7 @@ import {
   loadChannelSetupPluginRegistrySnapshotForChannel,
 } from "../commands/channel-setup/plugin-install.js";
 import { resolveChannelSetupWizardAdapterForPlugin } from "../commands/channel-setup/registry.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { createEmptyPluginRegistry } from "../plugins/registry.js";
 import { setActivePluginRegistry } from "../plugins/runtime.js";
 import { createChannelTestPluginBase, createTestRegistry } from "../test-utils/channel-plugins.js";
@@ -101,7 +101,7 @@ let setupChannels: SetupChannels;
 type SetupChannelsOptions = Parameters<SetupChannels>[3];
 
 function runSetupChannels(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   prompter: WizardPrompter,
   options?: SetupChannelsOptions,
 ) {
@@ -138,7 +138,7 @@ function createUnexpectedQuickstartPrompter(select: WizardPrompter["select"]) {
   };
 }
 
-function createTelegramCfg(botToken: string, enabled?: boolean): OpenClawConfig {
+function createTelegramCfg(botToken: string, enabled?: boolean): OperatorConfig {
   return {
     channels: {
       telegram: {
@@ -146,7 +146,7 @@ function createTelegramCfg(botToken: string, enabled?: boolean): OpenClawConfig 
         ...(typeof enabled === "boolean" ? { enabled } : {}),
       },
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 function createMSTeamsCatalogEntry(): ChannelPluginCatalogEntry {
@@ -183,7 +183,7 @@ function setMinimalOnboardingRegistryForTests(): void {
               cfg,
               input,
             }: {
-              cfg: OpenClawConfig;
+              cfg: OperatorConfig;
               input: { token?: string };
             }) =>
               ({
@@ -195,14 +195,14 @@ function setMinimalOnboardingRegistryForTests(): void {
                     ...(input.token ? { botToken: input.token } : {}),
                   },
                 },
-              }) as OpenClawConfig,
+              }) as OperatorConfig,
           },
           setupWizard: {
             channel: "telegram",
             status: {
               configuredLabel: "configured",
               unconfiguredLabel: "not configured",
-              resolveConfigured: ({ cfg }: { cfg: OpenClawConfig }) =>
+              resolveConfigured: ({ cfg }: { cfg: OperatorConfig }) =>
                 Boolean(cfg.channels?.telegram?.botToken),
             },
             credentials: [
@@ -213,7 +213,7 @@ function setMinimalOnboardingRegistryForTests(): void {
                 envPrompt: "Use TELEGRAM_BOT_TOKEN from env?",
                 keepPrompt: "Keep current Telegram bot token?",
                 inputPrompt: "Enter Telegram bot token",
-                inspect: ({ cfg }: { cfg: OpenClawConfig }) => ({
+                inspect: ({ cfg }: { cfg: OperatorConfig }) => ({
                   accountConfigured: Boolean(cfg.channels?.telegram?.botToken),
                   hasConfiguredValue: Boolean(cfg.channels?.telegram?.botToken),
                 }),
@@ -236,7 +236,7 @@ function setMinimalOnboardingRegistryForTests(): void {
               cfg,
               input,
             }: {
-              cfg: OpenClawConfig;
+              cfg: OperatorConfig;
               input: { account?: string; name?: string };
             }) =>
               ({
@@ -250,16 +250,16 @@ function setMinimalOnboardingRegistryForTests(): void {
                     linked: false,
                   },
                 },
-              }) as OpenClawConfig,
+              }) as OperatorConfig,
           },
           setupWizard: {
             channel: "whatsapp",
             status: {
               configuredLabel: "configured",
               unconfiguredLabel: "not linked",
-              resolveConfigured: ({ cfg }: { cfg: OpenClawConfig }) =>
+              resolveConfigured: ({ cfg }: { cfg: OperatorConfig }) =>
                 Boolean((cfg.channels?.whatsapp as { account?: string } | undefined)?.account),
-              resolveSelectionHint: async ({ cfg }: { cfg: OpenClawConfig }) =>
+              resolveSelectionHint: async ({ cfg }: { cfg: OperatorConfig }) =>
                 (cfg.channels?.whatsapp as { account?: string } | undefined)?.account
                   ? "configured"
                   : "not linked",
@@ -270,7 +270,7 @@ function setMinimalOnboardingRegistryForTests(): void {
                 inputKey: "account",
                 message: "Your personal WhatsApp number",
                 required: true,
-                applySet: ({ cfg, value }: { cfg: OpenClawConfig; value: string }) =>
+                applySet: ({ cfg, value }: { cfg: OperatorConfig; value: string }) =>
                   ({
                     ...cfg,
                     channels: {
@@ -280,7 +280,7 @@ function setMinimalOnboardingRegistryForTests(): void {
                         account: value,
                       },
                     },
-                  }) as OpenClawConfig,
+                  }) as OperatorConfig,
               },
             ],
           },
@@ -367,7 +367,7 @@ function patchTelegramAdapter(overrides: ChannelSetupWizardAdapterPatch) {
     ...overrides,
     getStatus:
       overrides.getStatus ??
-      vi.fn(async ({ cfg }: { cfg: OpenClawConfig }) => ({
+      vi.fn(async ({ cfg }: { cfg: OperatorConfig }) => ({
         channel: "telegram",
         configured: Boolean(cfg.channels?.telegram?.botToken),
         statusLines: [],
@@ -471,7 +471,7 @@ async function runQuickstartTelegramSetupWithInteractive(params: {
   );
 
   try {
-    const cfg = await runSetupChannels({} as OpenClawConfig, prompter, {
+    const cfg = await runSetupChannels({} as OperatorConfig, prompter, {
       quickstartDefaults: true,
       onSelection: selection,
       onAccountId,
@@ -546,7 +546,7 @@ vi.mock("../channels/plugins/bundled.js", () => ({
               cfg,
               input,
             }: {
-              cfg: OpenClawConfig;
+              cfg: OperatorConfig;
               input: { token?: string };
             }) =>
               ({
@@ -558,14 +558,14 @@ vi.mock("../channels/plugins/bundled.js", () => ({
                     ...(input.token ? { botToken: input.token } : {}),
                   },
                 },
-              }) as OpenClawConfig,
+              }) as OperatorConfig,
           },
           setupWizard: {
             channel: "telegram",
             status: {
               configuredLabel: "configured",
               unconfiguredLabel: "not configured",
-              resolveConfigured: ({ cfg }: { cfg: OpenClawConfig }) =>
+              resolveConfigured: ({ cfg }: { cfg: OperatorConfig }) =>
                 Boolean(cfg.channels?.telegram?.botToken),
             },
             credentials: [
@@ -576,7 +576,7 @@ vi.mock("../channels/plugins/bundled.js", () => ({
                 envPrompt: "Use TELEGRAM_BOT_TOKEN from env?",
                 keepPrompt: "Keep current Telegram bot token?",
                 inputPrompt: "Enter Telegram bot token",
-                inspect: ({ cfg }: { cfg: OpenClawConfig }) => ({
+                inspect: ({ cfg }: { cfg: OperatorConfig }) => ({
                   accountConfigured: Boolean(cfg.channels?.telegram?.botToken),
                   hasConfiguredValue: Boolean(cfg.channels?.telegram?.botToken),
                 }),
@@ -595,7 +595,7 @@ vi.mock("../commands/channel-setup/plugin-install.js", async () => {
   const actual = await vi.importActual("../commands/channel-setup/plugin-install.js");
   return {
     ...(actual as Record<string, unknown>),
-    ensureChannelSetupPluginInstalled: vi.fn(async ({ cfg }: { cfg: OpenClawConfig }) => ({
+    ensureChannelSetupPluginInstalled: vi.fn(async ({ cfg }: { cfg: OperatorConfig }) => ({
       cfg,
       installed: true,
     })),
@@ -644,7 +644,7 @@ describe("setupChannels", () => {
       text: text as unknown as WizardPrompter["text"],
     });
 
-    const cfg = await runSetupChannels({} as OpenClawConfig, prompter, {
+    const cfg = await runSetupChannels({} as OperatorConfig, prompter, {
       quickstartDefaults: true,
     });
 
@@ -672,7 +672,7 @@ describe("setupChannels", () => {
       text,
     });
 
-    await runSetupChannels({} as OpenClawConfig, prompter);
+    await runSetupChannels({} as OperatorConfig, prompter);
 
     const sawPrimer = note.mock.calls.some(
       ([message, title]) =>
@@ -714,7 +714,7 @@ describe("setupChannels", () => {
       text,
     });
 
-    await runSetupChannels({} as OpenClawConfig, prompter);
+    await runSetupChannels({} as OperatorConfig, prompter);
 
     const primerMessage =
       note.mock.calls.find(([, title]) => title === "How channels work")?.[0] ?? "";
@@ -764,7 +764,7 @@ describe("setupChannels", () => {
       text,
     });
 
-    await runSetupChannels({} as OpenClawConfig, prompter);
+    await runSetupChannels({} as OperatorConfig, prompter);
 
     expectCalledWithMessage(select, "Select a channel");
     expect(multiselect).not.toHaveBeenCalled();
@@ -814,7 +814,7 @@ describe("setupChannels", () => {
       text,
     });
 
-    await runSetupChannels({} as OpenClawConfig, prompter);
+    await runSetupChannels({} as OperatorConfig, prompter);
 
     expectCalledWithMessage(select, "Select a channel");
     expect(
@@ -861,7 +861,7 @@ describe("setupChannels", () => {
             "@operator/external-chat-plugin": { enabled: true },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       prompter,
     );
 
@@ -911,7 +911,7 @@ describe("setupChannels", () => {
       text,
     });
 
-    await runSetupChannels({} as OpenClawConfig, prompter);
+    await runSetupChannels({} as OperatorConfig, prompter);
 
     expectCalledWithMessage(select, "Select a channel");
     expect(multiselect).not.toHaveBeenCalled();
@@ -938,7 +938,7 @@ describe("setupChannels", () => {
       text,
     });
 
-    await runSetupChannels({} as OpenClawConfig, prompter);
+    await runSetupChannels({} as OperatorConfig, prompter);
 
     expect(ensureChannelSetupPluginInstalled).not.toHaveBeenCalled();
     expect(loadChannelSetupPluginRegistrySnapshotForChannel).not.toHaveBeenCalled();
@@ -953,7 +953,7 @@ describe("setupChannels", () => {
         accountId,
         enabled,
       }: {
-        cfg: OpenClawConfig;
+        cfg: OperatorConfig;
         accountId: string;
         enabled: boolean;
       }) => ({
@@ -1001,7 +1001,7 @@ describe("setupChannels", () => {
               },
               capabilities: { chatTypes: ["direct"] },
               config: {
-                listAccountIds: (cfg: OpenClawConfig) =>
+                listAccountIds: (cfg: OperatorConfig) =>
                   Object.keys(
                     (
                       cfg.channels?.["external-chat"] as
@@ -1009,7 +1009,7 @@ describe("setupChannels", () => {
                         | undefined
                     )?.accounts ?? {},
                   ),
-                resolveAccount: (cfg: OpenClawConfig, accountId: string) =>
+                resolveAccount: (cfg: OperatorConfig, accountId: string) =>
                   (
                     cfg.channels?.["external-chat"] as
                       | {
@@ -1024,7 +1024,7 @@ describe("setupChannels", () => {
                 status: {
                   configuredLabel: "configured",
                   unconfiguredLabel: "needs setup",
-                  resolveConfigured: ({ cfg }: { cfg: OpenClawConfig }) =>
+                  resolveConfigured: ({ cfg }: { cfg: OperatorConfig }) =>
                     Boolean(
                       (cfg.channels?.["external-chat"] as { tenantId?: string } | undefined)
                         ?.tenantId,
@@ -1081,7 +1081,7 @@ describe("setupChannels", () => {
             "external-chat": { enabled: true },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       prompter,
       { allowDisable: true },
     );
@@ -1170,14 +1170,14 @@ describe("setupChannels", () => {
   });
 
   it("applies configureInteractive result cfg/account updates", async () => {
-    const configureInteractive = vi.fn(async ({ cfg }: { cfg: OpenClawConfig }) => ({
+    const configureInteractive = vi.fn(async ({ cfg }: { cfg: OperatorConfig }) => ({
       cfg: {
         ...cfg,
         channels: {
           ...cfg.channels,
           telegram: { ...cfg.channels?.telegram, botToken: "new-token" },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       accountId: "acct-1",
     }));
     const configure = createUnexpectedConfigureCall(
@@ -1196,14 +1196,14 @@ describe("setupChannels", () => {
   });
 
   it("uses configureWhenConfigured when channel is already configured", async () => {
-    const configureWhenConfigured = vi.fn(async ({ cfg }: { cfg: OpenClawConfig }) => ({
+    const configureWhenConfigured = vi.fn(async ({ cfg }: { cfg: OperatorConfig }) => ({
       cfg: {
         ...cfg,
         channels: {
           ...cfg.channels,
           telegram: { ...cfg.channels?.telegram, botToken: "updated-token" },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       accountId: "acct-2",
     }));
     const { cfg, selection, onAccountId, configure } = await runConfiguredTelegramSetup({

@@ -1,5 +1,5 @@
 /**
- * Bundled-channel config schemas for OpenClaw-maintained plugins.
+ * Bundled-channel config schemas for Operator-maintained plugins.
  *
  * Third-party plugins should define plugin-local schemas and import primitives
  * from operator/plugin-sdk/channel-config-schema instead of depending on these

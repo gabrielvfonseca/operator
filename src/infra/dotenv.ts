@@ -187,7 +187,7 @@ const BLOCKED_WORKSPACE_DOTENV_PREFIXES = [
   // Workspace .env must not steer gcloud subprocess interpreters or args.
   "CLOUDSDK_",
   "OPENAI_API_KEY_",
-  // Workspace .env is untrusted; reserve the full OpenClaw runtime namespace
+  // Workspace .env is untrusted; reserve the full Operator runtime namespace
   // for shell/global config so new OPERATOR_* controls are fail-closed by default.
   "OPERATOR_",
   "OPERATOR_CLAWHUB_",

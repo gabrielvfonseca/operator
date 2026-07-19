@@ -3,7 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import {
@@ -47,7 +47,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.loadInstalledPluginIndexInstallRecords.mockResolvedValue({});
-    mocks.replaceConfigFile.mockImplementation(async (params: { nextConfig: OpenClawConfig }) => ({
+    mocks.replaceConfigFile.mockImplementation(async (params: { nextConfig: OperatorConfig }) => ({
       path: "/tmp/openclaw.json",
       previousHash: null,
       snapshot: {} as never,
@@ -73,7 +73,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
       },
     };
     mocks.loadInstalledPluginIndexInstallRecords.mockResolvedValue(existingRecords);
-    const nextConfig: OpenClawConfig = {
+    const nextConfig: OperatorConfig = {
       plugins: {
         entries: {
           demo: { enabled: true },
@@ -123,7 +123,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
   });
 
   it("migrates source records below the canonical index and explicit pending records", async () => {
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: OperatorConfig = {
       plugins: {
         installs: {
           stale: { source: "npm", spec: "stale@1.0.0" },
@@ -136,7 +136,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
       stale: { source: "npm", spec: "stale@2.0.0" },
       codex: { source: "npm", spec: "codex@2.0.0" },
     };
-    const nextConfig: OpenClawConfig = {
+    const nextConfig: OperatorConfig = {
       plugins: {
         installs: {
           ...sourceConfig.plugins?.installs,
@@ -176,7 +176,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
   });
 
   it("preserves source records omitted by a transform callback", async () => {
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: OperatorConfig = {
       plugins: {
         installs: {
           other: { source: "npm", spec: "other@1.0.0" },
@@ -188,9 +188,9 @@ describe("commitConfigWithPendingPluginInstalls", () => {
     mocks.transformConfigFileWithRetry.mockImplementationOnce(async (params: unknown) => {
       const transformParams = params as {
         transform: (
-          config: OpenClawConfig,
+          config: OperatorConfig,
           context: { snapshot: typeof snapshot },
-        ) => { nextConfig: OpenClawConfig };
+        ) => { nextConfig: OperatorConfig };
         commit: (input: unknown) => Promise<unknown>;
       };
       const transformed = transformParams.transform(sourceConfig, { snapshot });
@@ -211,7 +211,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
   });
 
   it("strips only selected pending plugin install records", () => {
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       plugins: {
         installs: {
           legacy: { source: "npm", spec: "legacy@1.0.0" },
@@ -230,7 +230,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
   });
 
   it("selects only unchanged pending plugin install records for migration stripping", () => {
-    const baseConfig: OpenClawConfig = {
+    const baseConfig: OperatorConfig = {
       plugins: {
         installs: {
           legacy: { source: "npm", spec: "legacy@1.0.0" },
@@ -238,7 +238,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
         },
       },
     };
-    const nextConfig: OpenClawConfig = {
+    const nextConfig: OperatorConfig = {
       plugins: {
         installs: {
           legacy: { source: "npm", spec: "legacy@1.0.0" },
@@ -302,7 +302,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
     fs.mkdirSync(nextInstallPath, { recursive: true });
 
     try {
-      await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, async () => {
+      await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
         await commitPluginInstallRecordsWithConfig({
           previousInstallRecords: {
             codex: {
@@ -353,7 +353,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
     fs.mkdirSync(nextInstallPath, { recursive: true });
 
     try {
-      await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, async () => {
+      await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
         await commitPluginInstallRecordsWithConfig({
           previousInstallRecords: {
             codex: {
@@ -404,7 +404,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
     fs.mkdirSync(nextInstallPath, { recursive: true });
 
     try {
-      await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, async () => {
+      await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
         await commitPluginInstallRecordsWithConfig({
           previousInstallRecords: {
             "voice-call": {
@@ -455,7 +455,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
     mocks.replaceConfigFile.mockRejectedValueOnce(new Error("config changed"));
 
     try {
-      await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, async () => {
+      await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
         await expect(
           commitPluginInstallRecordsWithConfig({
             previousInstallRecords: {
@@ -532,7 +532,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
     );
 
     try {
-      await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, async () => {
+      await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
         await expect(
           commitPluginInstallRecordsWithConfig({
             previousInstallRecords: {
@@ -590,7 +590,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
     });
 
     try {
-      await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, async () => {
+      await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
         await commitPluginInstallRecordsWithConfig({
           previousInstallRecords: {},
           nextInstallRecords: {
@@ -631,7 +631,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
     mocks.replaceConfigFile.mockRejectedValueOnce(new Error("config changed"));
 
     try {
-      await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, async () => {
+      await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
         await expect(
           commitPluginInstallRecordsWithConfig({
             previousInstallRecords: {},
@@ -695,7 +695,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
   });
 
   it("uses a plain config write when no pending plugin install records exist", async () => {
-    const nextConfig: OpenClawConfig = {
+    const nextConfig: OperatorConfig = {
       gateway: {
         mode: "local",
       },
@@ -718,7 +718,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
 
   it("supports non-replace config writers without adding an undefined write options argument", async () => {
     const writeConfigFile = vi.fn(async () => undefined);
-    const nextConfig: OpenClawConfig = {
+    const nextConfig: OperatorConfig = {
       gateway: {
         mode: "local",
       },

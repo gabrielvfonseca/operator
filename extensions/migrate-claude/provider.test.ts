@@ -38,16 +38,16 @@ describe("Claude migration provider", () => {
     expect(provider.label).toBe("Claude");
   });
 
-  it("resolves tilde source paths against the OS home when OPENCLAW_HOME is set", () => {
-    const previous = process.env.OPENCLAW_HOME;
-    process.env.OPENCLAW_HOME = path.join(path.sep, "tmp", "openclaw-home");
+  it("resolves tilde source paths against the OS home when OPERATOR_HOME is set", () => {
+    const previous = process.env.OPERATOR_HOME;
+    process.env.OPERATOR_HOME = path.join(path.sep, "tmp", "openclaw-home");
     try {
       expect(resolveHomePath("~/.claude")).toBe(path.join(os.homedir(), ".claude"));
     } finally {
       if (previous === undefined) {
-        delete process.env.OPENCLAW_HOME;
+        delete process.env.OPERATOR_HOME;
       } else {
-        process.env.OPENCLAW_HOME = previous;
+        process.env.OPERATOR_HOME = previous;
       }
     }
   });
@@ -240,7 +240,7 @@ describe("Claude migration provider", () => {
           itemKinds: ["memory"],
         }),
       ),
-    ).rejects.toThrow("source and OpenClaw import destination must be separate");
+    ).rejects.toThrow("source and Operator import destination must be separate");
   });
 
   it.runIf(process.platform !== "win32")(

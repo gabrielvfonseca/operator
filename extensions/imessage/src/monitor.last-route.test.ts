@@ -1610,7 +1610,7 @@ describe("iMessage monitor last-route updates", () => {
   it("repairs anchorless group watch payloads before routing or cursor updates", async () => {
     const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-imsg-anchor-repair-"));
     tempDirs.push(stateDir);
-    vi.stubEnv("OPENCLAW_STATE_DIR", stateDir);
+    vi.stubEnv("OPERATOR_STATE_DIR", stateDir);
 
     let onNotification: ((message: { method: string; params: unknown }) => void) | undefined;
     const client = {

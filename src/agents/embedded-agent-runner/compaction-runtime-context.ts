@@ -4,7 +4,7 @@
 import type { SourceReplyDeliveryMode } from "../../auto-reply/get-reply-options.types.js";
 import type { ReasoningLevel, ThinkLevel } from "../../auto-reply/thinking.js";
 import type { ChatType } from "../../channels/chat-type.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { SkillSnapshot } from "../../skills/types.js";
 import { isDefaultAgentRuntimeId, normalizeOptionalAgentRuntimeId } from "../agent-runtime-id.js";
 import {
@@ -40,7 +40,7 @@ type EmbeddedCompactionRuntimeContext = {
   workspaceDir: string;
   cwd?: string;
   agentDir: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   skillsSnapshot?: SkillSnapshot;
   senderIsOwner?: boolean;
   senderId?: string;
@@ -62,7 +62,7 @@ type EmbeddedCompactionRuntimeContext = {
  * caller-supplied provider/model and optionally applying runtime defaults.
  */
 export function resolveEmbeddedCompactionTarget(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   provider?: string | null;
   modelId?: string | null;
   authProfileId?: string | null;
@@ -204,7 +204,7 @@ function normalizeCompactionConfigKey(value: string): string {
 }
 
 function hasBareConfiguredModelForProvider(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   provider: string;
   model: string;
 }): boolean {
@@ -281,7 +281,7 @@ export function buildEmbeddedCompactionRuntimeContext(params: {
   workspaceDir: string;
   cwd?: string | null;
   agentDir: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   skillsSnapshot?: SkillSnapshot;
   senderIsOwner?: boolean;
   senderId?: string | null;

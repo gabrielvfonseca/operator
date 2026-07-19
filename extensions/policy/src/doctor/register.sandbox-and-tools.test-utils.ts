@@ -1,7 +1,7 @@
 // Imported by register.test.ts to keep its mocked suite in one Vitest module graph.
 import { promises as fs } from "node:fs";
 import { join } from "node:path";
-import { runDoctorLintChecks, type OpenClawConfig } from "openclaw/plugin-sdk/health";
+import { runDoctorLintChecks, type OperatorConfig } from "openclaw/plugin-sdk/health";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { collectPolicyEvidence } from "../policy-state.js";
 import { registerPolicyDoctorChecks } from "./register.js";
@@ -118,7 +118,7 @@ describe("registerPolicyDoctorChecks", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -159,7 +159,7 @@ describe("registerPolicyDoctorChecks", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -241,7 +241,7 @@ describe("registerPolicyDoctorChecks", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -301,7 +301,7 @@ describe("registerPolicyDoctorChecks", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -419,7 +419,7 @@ describe("registerPolicyDoctorChecks", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -455,7 +455,7 @@ describe("registerPolicyDoctorChecks", () => {
           { id: "buddy", sandbox: { mode: "all", backend: "docker" } },
         ],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -508,7 +508,7 @@ describe("registerPolicyDoctorChecks", () => {
       agents: {
         list: [{ id: "sebby", sandbox: { mode: "off" } }],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -568,7 +568,7 @@ describe("registerPolicyDoctorChecks", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -618,7 +618,7 @@ describe("registerPolicyDoctorChecks", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -659,7 +659,7 @@ describe("registerPolicyDoctorChecks", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -712,7 +712,7 @@ describe("registerPolicyDoctorChecks", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -765,7 +765,7 @@ describe("registerPolicyDoctorChecks", () => {
           },
         ],
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -872,7 +872,7 @@ describe("registerPolicyDoctorChecks", () => {
         fs: { workspaceOnly: true },
         elevated: { enabled: false },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -911,7 +911,7 @@ describe("registerPolicyDoctorChecks", () => {
           { id: "buddy", tools: { exec: { host: "sandbox" } } },
         ],
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -967,7 +967,7 @@ describe("registerPolicyDoctorChecks", () => {
           { id: "buddy", tools: { exec: { host: "node" } } },
         ],
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1001,7 +1001,7 @@ describe("registerPolicyDoctorChecks", () => {
           { id: "buddy", tools: { alsoAllow: ["read"] } },
         ],
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1063,7 +1063,7 @@ describe("registerPolicyDoctorChecks", () => {
     const cfg = {
       ...cfgWithPolicy(),
       tools: { alsoAllow: ["read"] },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1094,7 +1094,7 @@ describe("registerPolicyDoctorChecks", () => {
       tools: {
         deny: ["exec", "apply_patch"],
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1142,7 +1142,7 @@ describe("registerPolicyDoctorChecks", () => {
       tools: {
         deny: ["exec", "process", "code_execution", "read", "write", "edit", "apply_patch"],
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1172,7 +1172,7 @@ describe("registerPolicyDoctorChecks", () => {
       tools: {
         deny: ["web_*"],
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1197,7 +1197,7 @@ describe("registerPolicyDoctorChecks", () => {
       tools: {
         deny: ["group:openclaw"],
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1243,7 +1243,7 @@ describe("registerPolicyDoctorChecks", () => {
           },
         ],
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1305,7 +1305,7 @@ describe("registerPolicyDoctorChecks", () => {
       tools: {
         exec: { host: "sandbox" },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1346,7 +1346,7 @@ describe("registerPolicyDoctorChecks", () => {
           sandbox: { mode: "all" },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1387,7 +1387,7 @@ describe("registerPolicyDoctorChecks", () => {
           sandbox: { mode: "non-main" },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1456,7 +1456,7 @@ describe("registerPolicyDoctorChecks", () => {
           allowCommands: ["mcp.help", "mcp.invoke", "system.run"],
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1562,7 +1562,7 @@ describe("registerPolicyDoctorChecks", () => {
           denyCommands: ["system.run"],
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1589,7 +1589,7 @@ describe("registerPolicyDoctorChecks", () => {
       gateway: {
         nodes: {},
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1621,7 +1621,7 @@ describe("registerPolicyDoctorChecks", () => {
     const cfg = {
       ...cfgWithPolicy(),
       gateway: {},
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1655,7 +1655,7 @@ describe("registerPolicyDoctorChecks", () => {
       gateway: {
         tailscale: { mode: "serve" },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1682,7 +1682,7 @@ describe("registerPolicyDoctorChecks", () => {
       gateway: {
         tailscale: { mode: "serve", preserveFunnel: true },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1745,7 +1745,7 @@ describe("registerPolicyDoctorChecks", () => {
         bind: "loopback",
         customBindHost: "0.0.0.0",
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1773,7 +1773,7 @@ describe("registerPolicyDoctorChecks", () => {
         bind: "custom",
         customBindHost: "127.0.0.1",
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1801,7 +1801,7 @@ describe("registerPolicyDoctorChecks", () => {
         bind: "custom",
         customBindHost: "192.168.1.20",
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1836,7 +1836,7 @@ describe("registerPolicyDoctorChecks", () => {
         bind: "custom",
         customBindHost: "   ",
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1866,7 +1866,7 @@ describe("registerPolicyDoctorChecks", () => {
           bind: "custom",
           customBindHost,
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
       await fs.writeFile(configPath, "{}", "utf-8");
       await fs.writeFile(
         join(workspaceDir, "policy.jsonc"),
@@ -1897,7 +1897,7 @@ describe("registerPolicyDoctorChecks", () => {
           url: "wss://remote.example.test:18789",
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1939,7 +1939,7 @@ describe("registerPolicyDoctorChecks", () => {
           url: "wss://remote.example.test:18789",
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1972,7 +1972,7 @@ describe("registerPolicyDoctorChecks", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -2023,7 +2023,7 @@ describe("registerPolicyDoctorChecks", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),

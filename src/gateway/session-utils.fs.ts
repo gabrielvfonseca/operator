@@ -143,8 +143,8 @@ async function yieldTranscriptScan(): Promise<void> {
   });
 }
 
-/** Attach OpenClaw metadata to a transcript message without dropping existing metadata. */
-export function attachOpenClawTranscriptMeta(
+/** Attach Operator metadata to a transcript message without dropping existing metadata. */
+export function attachOperatorTranscriptMeta(
   message: unknown,
   meta: Record<string, unknown>,
 ): unknown {
@@ -721,7 +721,7 @@ export async function readRecentSessionMessagesWithStatsAsync(
   );
   const firstSeq = Math.max(1, totalMessages - messages.length + 1);
   const messagesWithSeq = messages.map((message, index) =>
-    attachOpenClawTranscriptMeta(message, { seq: firstSeq + index }),
+    attachOperatorTranscriptMeta(message, { seq: firstSeq + index }),
   );
   return { messages: messagesWithSeq, totalMessages, transcriptPath: filePath };
 }
@@ -771,7 +771,7 @@ function parsedSessionEntryToMessage(parsed: unknown, seq: number): unknown {
           ? entry.timestamp
           : Number.NaN;
     const idempotencyKey = readTranscriptMessageIdempotencyKey(entry.message);
-    return attachOpenClawTranscriptMeta(entry.message, {
+    return attachOperatorTranscriptMeta(entry.message, {
       ...(typeof entry.id === "string" ? { id: entry.id } : {}),
       ...(idempotencyKey ? { idempotencyKey } : {}),
       ...(Number.isFinite(recordTimestampMs) ? { recordTimestampMs } : {}),

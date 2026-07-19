@@ -12,7 +12,7 @@ import {
   readStringOrNumberParam,
   readStringParam,
   sendMessageWhatsApp,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "./channel-react-action.runtime.js";
 
 const WHATSAPP_CHANNEL = "whatsapp" as const;
@@ -20,7 +20,7 @@ const WHATSAPP_CHANNEL = "whatsapp" as const;
 type WhatsAppMessageActionParams = {
   action: string;
   params: Record<string, unknown>;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
   requesterSenderId?: string | null;
   mediaAccess?: {

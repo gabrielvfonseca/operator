@@ -1,6 +1,6 @@
 /** Helpers for selecting image-generation providers and models in live tests. */
 import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   parseLiveCsvFilter,
   parseProviderModelMap,
@@ -42,7 +42,7 @@ export function parseCsvFilter(raw?: string): Set<string> | null {
   return parseLiveCsvFilter(raw, { lowercase: false });
 }
 
-export function resolveConfiguredLiveImageModels(cfg: OpenClawConfig): Map<string, string> {
+export function resolveConfiguredLiveImageModels(cfg: OperatorConfig): Map<string, string> {
   return resolveConfiguredLiveProviderModels(cfg.agents?.defaults?.imageGenerationModel);
 }
 

@@ -1,5 +1,5 @@
 // Tavily helper module supports config behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { canResolveEnvSecretRefInReadOnlyPath } from "openclaw/plugin-sdk/extension-shared";
 import { resolvePositiveTimeoutSeconds } from "openclaw/plugin-sdk/provider-web-search";
 import { resolveSecretInputString, normalizeSecretInput } from "openclaw/plugin-sdk/secret-input";
@@ -24,7 +24,7 @@ type PluginEntryConfig = {
   };
 };
 
-function resolveTavilySearchConfig(cfg?: OpenClawConfig): TavilySearchConfig {
+function resolveTavilySearchConfig(cfg?: OperatorConfig): TavilySearchConfig {
   const pluginConfig = cfg?.plugins?.entries?.tavily?.config as PluginEntryConfig;
   const pluginWebSearch = pluginConfig?.webSearch;
   if (pluginWebSearch && typeof pluginWebSearch === "object" && !Array.isArray(pluginWebSearch)) {
@@ -41,7 +41,7 @@ type ConfiguredSecretResolution =
 function resolveConfiguredSecret(
   value: unknown,
   path: string,
-  cfg?: OpenClawConfig,
+  cfg?: OperatorConfig,
 ): ConfiguredSecretResolution {
   const resolved = resolveSecretInputString({
     value,
@@ -77,7 +77,7 @@ function resolveConfiguredSecret(
   return envValue ? { status: "available", value: envValue } : { status: "missing" };
 }
 
-export function resolveTavilyApiKey(cfg?: OpenClawConfig): string | undefined {
+export function resolveTavilyApiKey(cfg?: OperatorConfig): string | undefined {
   const search = resolveTavilySearchConfig(cfg);
   const resolved = resolveConfiguredSecret(
     search?.apiKey,
@@ -93,7 +93,7 @@ export function resolveTavilyApiKey(cfg?: OpenClawConfig): string | undefined {
   return normalizeSecretInput(process.env.TAVILY_API_KEY) || undefined;
 }
 
-export function resolveTavilyBaseUrl(cfg?: OpenClawConfig): string {
+export function resolveTavilyBaseUrl(cfg?: OperatorConfig): string {
   const search = resolveTavilySearchConfig(cfg);
   const configured =
     (normalizeOptionalString(search?.baseUrl) ?? "") ||

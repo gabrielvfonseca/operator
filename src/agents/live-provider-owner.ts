@@ -5,11 +5,11 @@
  * same plugin owner without repeating manifest/provider resolution work.
  */
 import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveOwningPluginIdsForProviderRef } from "../plugins/providers.js";
 
 type LiveProviderOwnerContext = {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   ownerCache: Map<string, readonly string[]>;

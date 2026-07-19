@@ -1,6 +1,6 @@
 // Runs plugin message preprocessing hooks before reply prompt construction.
 import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { fireAndForgetHook } from "../../hooks/fire-and-forget.js";
 import { createInternalHookEvent, triggerInternalHook } from "../../hooks/internal-hooks.js";
 import {
@@ -12,7 +12,7 @@ import type { FinalizedMsgContext } from "../templating.js";
 
 export function emitPreAgentMessageHooks(params: {
   ctx: FinalizedMsgContext;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   isFastTestEnv: boolean;
 }): void {
   if (params.isFastTestEnv) {

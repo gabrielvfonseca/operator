@@ -1,6 +1,6 @@
 # @openclaw/memory-wiki
 
-Persistent wiki compiler and Obsidian-friendly knowledge vault for **OpenClaw**.
+Persistent wiki compiler and Obsidian-friendly knowledge vault for **Operator**.
 
 This plugin is separate from the active memory plugin. The active memory plugin still handles recall, promotion, and dreaming. `memory-wiki` compiles durable knowledge into a navigable markdown vault with deterministic indexes, provenance, structured claim/evidence metadata, and optional Obsidian CLI workflows.
 
@@ -35,7 +35,7 @@ Put config under `plugins.entries.memory-wiki.config`:
   obsidian: {
     enabled: true,
     useOfficialCli: true,
-    vaultName: "OpenClaw Wiki",
+    vaultName: "Operator Wiki",
     openAfterWrites: false,
   },
 
@@ -78,7 +78,7 @@ Put config under `plugins.entries.memory-wiki.config`:
 
 ### Per-agent vaults
 
-In agent scope, `vault.path` is a parent directory. OpenClaw appends the
+In agent scope, `vault.path` is a parent directory. Operator appends the
 normalized agent id:
 
 ```json5
@@ -149,7 +149,7 @@ When `render.createBacklinks` is enabled, compile adds deterministic `## Related
 
 When `render.createDashboards` is enabled, compile also maintains report dashboards under `reports/` for open questions, contradictions, low-confidence pages, and stale pages.
 
-Unmanaged raw Markdown can live under `sources/` without OpenClaw page frontmatter. Add `<!-- openclaw:wiki:raw-source -->` near the top of the page body to opt it out of wiki page metadata and freshness lint; generated or source-sync tracked imports still require their structured metadata.
+Unmanaged raw Markdown can live under `sources/` without Operator page frontmatter. Add `<!-- openclaw:wiki:raw-source -->` near the top of the page body to opt it out of wiki page metadata and freshness lint; generated or source-sync tracked imports still require their structured metadata.
 
 ## CLI
 

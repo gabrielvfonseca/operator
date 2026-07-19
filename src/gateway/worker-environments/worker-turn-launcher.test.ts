@@ -11,9 +11,9 @@ import {
 import type { SpawnResult } from "../../process/exec.js";
 import { createDeferred } from "../../shared/deferred.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
-  type OpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
+  type OperatorStateDatabase,
 } from "../../state/openclaw-state-db.js";
 import {
   parseWorkerLaunchDescriptor,
@@ -49,13 +49,13 @@ function hasLoneSurrogate(value: string): boolean {
 
 describe("worker turn launcher", () => {
   let root: string;
-  let database: OpenClawStateDatabase;
+  let database: OperatorStateDatabase;
   let placements: WorkerSessionPlacementStore;
   let sessionFile: string;
 
   beforeEach(async () => {
     root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "openclaw-worker-turn-"));
-    database = openOpenClawStateDatabase({ env: { OPENCLAW_STATE_DIR: root } });
+    database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: root } });
     placements = createWorkerSessionPlacementStore({ database });
     const manager = SessionManager.create(path.join(root, "sessions"), path.join(root, "sessions"));
     const file = manager.getSessionFile();
@@ -66,7 +66,7 @@ describe("worker turn launcher", () => {
   });
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await fs.rm(root, { recursive: true, force: true });
   });
 
@@ -462,7 +462,7 @@ describe("worker turn launcher", () => {
           },
           runLocal,
         ),
-      ).rejects.toThrow(`Cloud worker turns require the OpenClaw runtime, not ${runtimeId}`);
+      ).rejects.toThrow(`Cloud worker turns require the Operator runtime, not ${runtimeId}`);
 
       expect(runLocal).not.toHaveBeenCalled();
       expect(getEnvironment).not.toHaveBeenCalled();

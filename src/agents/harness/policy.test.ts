@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import { resolveAgentHarnessPolicy } from "./policy.js";
 
-function openAIProviderConfig(overrides: Record<string, unknown>): OpenClawConfig {
+function openAIProviderConfig(overrides: Record<string, unknown>): OperatorConfig {
   return {
     models: {
       providers: {
@@ -14,7 +14,7 @@ function openAIProviderConfig(overrides: Record<string, unknown>): OpenClawConfi
         },
       },
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 describe("resolveAgentHarnessPolicy", () => {
@@ -96,7 +96,7 @@ describe("resolveAgentHarnessPolicy", () => {
                 },
               },
             },
-          } as OpenClawConfig,
+          } as OperatorConfig,
           env: {},
         }),
       ).toEqual({ runtime: "auto", runtimeSource: "implicit" });
@@ -156,7 +156,7 @@ describe("resolveAgentHarnessPolicy", () => {
       agentId: undefined,
       sessionKey: "agent:writer:main",
     },
-  ])("keeps $name on OpenClaw", ({ agents, agentId, sessionKey }) => {
+  ])("keeps $name on Operator", ({ agents, agentId, sessionKey }) => {
     const config = openAIProviderConfig({});
     config.agents = agents;
     expect(
@@ -171,7 +171,7 @@ describe("resolveAgentHarnessPolicy", () => {
     ).toEqual({ runtime: "openclaw", runtimeSource: "implicit" });
   });
 
-  it("keeps prepared request overrides on OpenClaw", () => {
+  it("keeps prepared request overrides on Operator", () => {
     expect(
       resolveAgentHarnessPolicy({
         provider: "openai",

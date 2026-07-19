@@ -3,10 +3,10 @@ import { randomUUID } from "node:crypto";
 import { existsSync } from "node:fs";
 import { createRequire } from "node:module";
 import type { DatabaseSync } from "node:sqlite";
-import { withOpenClawStateDatabaseReadOnly } from "../state/operator-state-db-readonly.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
-import { withOpenClawStateStartupMigrationCheckpointDatabase } from "../state/operator-state-db.js";
-import { resolveOpenClawStateSqlitePath } from "../state/operator-state-db.paths.js";
+import { withOperatorStateDatabaseReadOnly } from "../state/operator-state-db-readonly.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import { withOperatorStateStartupMigrationCheckpointDatabase } from "../state/operator-state-db.js";
+import { resolveOperatorStateSqlitePath } from "../state/operator-state-db.paths.js";
 import { VERSION } from "../version.js";
 import {
   executeSqliteQuerySync,
@@ -16,7 +16,7 @@ import {
 import { runSqliteImmediateTransactionSync } from "./sqlite-transaction.js";
 
 type StartupMigrationCheckpointDatabase = Pick<
-  OpenClawStateKyselyDatabase,
+  OperatorStateKyselyDatabase,
   "schema_meta" | "state_leases"
 >;
 
@@ -66,7 +66,7 @@ function withStartupMigrationCheckpointDatabase<T>(
   env: NodeJS.ProcessEnv,
   callback: (db: DatabaseSync) => T,
 ): T {
-  return withOpenClawStateStartupMigrationCheckpointDatabase(callback, { env });
+  return withOperatorStateStartupMigrationCheckpointDatabase(callback, { env });
 }
 
 function writeStartupMigrationCheckpointDatabase<T>(
@@ -104,11 +104,11 @@ export function hasActiveStartupMigrationLease(
 ): boolean {
   const env = params.env ?? process.env;
   const nowMs = params.nowMs ?? Date.now();
-  const pathname = resolveOpenClawStateSqlitePath(env);
+  const pathname = resolveOperatorStateSqlitePath(env);
   if (!existsSync(pathname)) {
     return false;
   }
-  return withOpenClawStateDatabaseReadOnly(
+  return withOperatorStateDatabaseReadOnly(
     ({ db }) => {
       const stateDb = getNodeSqliteKysely<StartupMigrationCheckpointDatabase>(db);
       return Boolean(
@@ -180,7 +180,7 @@ export function acquireStartupMigrationLease(
     );
     if (existing) {
       throw new Error(
-        `OpenClaw startup migrations are already running for this state directory; retry after the other gateway finishes or after ${new Date(existing.expiresAt ?? expiresAt).toISOString()}.`,
+        `Operator startup migrations are already running for this state directory; retry after the other gateway finishes or after ${new Date(existing.expiresAt ?? expiresAt).toISOString()}.`,
       );
     }
     executeSqliteQuerySync(
@@ -221,7 +221,7 @@ export function acquireStartupMigrationLease(
         );
         if (result.numAffectedRows !== 1n) {
           throw new Error(
-            "OpenClaw startup migration lease was lost before startup migrations completed; restart the gateway so migrations can run under a fresh lease.",
+            "Operator startup migration lease was lost before startup migrations completed; restart the gateway so migrations can run under a fresh lease.",
           );
         }
       });
@@ -275,7 +275,7 @@ export function recordSuccessfulStartupMigrations(
       );
       if (!activeLease) {
         throw new Error(
-          "OpenClaw startup migration lease was lost before checkpoint recording; restart the gateway so migrations can run under a fresh lease.",
+          "Operator startup migration lease was lost before checkpoint recording; restart the gateway so migrations can run under a fresh lease.",
         );
       }
     }

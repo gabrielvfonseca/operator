@@ -3,7 +3,7 @@ import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
 } from "../../infra/kysely-sync.js";
-import type { OpenClawAgentDatabase } from "../../state/operator-agent-db.js";
+import type { OperatorAgentDatabase } from "../../state/operator-agent-db.js";
 import type {
   MaterializedSqliteSessionStateDeletePlan,
   SqliteSessionStateDeletePlan,
@@ -72,7 +72,7 @@ function sessionKeySegmentStartsWith(sessionKey: string, prefix: string): boolea
 }
 
 function readSessionTranscriptUpdatedAt(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   sessionId: string,
 ): number | undefined {
   const db = getSessionKysely(database.db);
@@ -90,7 +90,7 @@ function readSessionTranscriptUpdatedAt(
 }
 
 function sqliteTranscriptStateIsReclaimable(params: {
-  database: OpenClawAgentDatabase;
+  database: OperatorAgentDatabase;
   sessionId: string;
   nowMs: number;
   orphanTranscriptMinAgeMs: number;
@@ -100,7 +100,7 @@ function sqliteTranscriptStateIsReclaimable(params: {
 }
 
 function sqliteTranscriptStateHasMarker(params: {
-  database: OpenClawAgentDatabase;
+  database: OperatorAgentDatabase;
   sessionId: string;
   transcriptContentMarker: string;
 }): boolean {
@@ -116,7 +116,7 @@ function sqliteTranscriptStateHasMarker(params: {
   return rows.some((row) => row.event_json.includes(params.transcriptContentMarker));
 }
 
-function readReferencedSqliteSessionIds(database: OpenClawAgentDatabase): Set<string> {
+function readReferencedSqliteSessionIds(database: OperatorAgentDatabase): Set<string> {
   const db = getSessionKysely(database.db);
   const rows = executeSqliteQuerySync(
     database.db,
@@ -139,7 +139,7 @@ function readReferencedSqliteSessionIds(database: OpenClawAgentDatabase): Set<st
 // Projects references after a lifecycle mutation so reset/delete can archive
 // before removing entry rows while still preserving shared session ids.
 export function readReferencedSqliteSessionIdsAfterTargetMutation(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   target: { canonicalKey: string; storeKeys: string[] },
   nextEntry?: SessionEntry,
 ): Set<string> {
@@ -174,7 +174,7 @@ export function readReferencedSqliteSessionIdsAfterTargetMutation(
 }
 
 function readSqliteTranscriptArchiveLines(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   sessionId: string,
 ): string[] {
   const db = getSessionKysely(database.db);
@@ -191,7 +191,7 @@ function readSqliteTranscriptArchiveLines(
 export function planSqliteSessionStateDeleteIfUnreferenced(params: {
   archiveTranscript?: boolean;
   archiveDirectory: string;
-  database: OpenClawAgentDatabase;
+  database: OperatorAgentDatabase;
   reason?: "deleted" | "reset";
   referencedSessionIds: ReadonlySet<string>;
   sessionId: string;
@@ -212,7 +212,7 @@ export function planSqliteSessionStateDeleteIfUnreferenced(params: {
 }
 
 export function deleteMaterializedSqliteSessionStatePlans(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   plans: readonly MaterializedSqliteSessionStateDeletePlan[],
 ): SessionLifecycleArchivedTranscript[] {
   const archivedTranscripts: SessionLifecycleArchivedTranscript[] = [];
@@ -242,7 +242,7 @@ export function deleteMaterializedSqliteSessionStatePlans(
 export function planSqliteSessionStateAfterEntryRemoval(params: {
   archiveDirectory: string;
   archiveTranscript?: boolean;
-  database: OpenClawAgentDatabase;
+  database: OperatorAgentDatabase;
   entry: SessionEntry;
   reason: "deleted" | "reset";
   referencedSessionIds?: ReadonlySet<string>;
@@ -269,7 +269,7 @@ export function planSqliteSessionStateAfterEntryRemoval(params: {
 // Projects removals and upserts before archive materialization so same-call
 // upserts can keep a transcript live without producing a spurious archive.
 export async function projectSqliteSessionEntryLifecycleMutation(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   params: {
     archiveDirectory: string;
     removals: readonly SessionEntryLifecycleRemoval[];
@@ -355,7 +355,7 @@ function collectReferencedSqliteSessionIdsFromStore(
 // Projected deletes must preserve raw session_entries.session_id references for
 // remaining rows whose entry_json cannot be parsed into a SessionEntry.
 export function collectProjectedReferencedSqliteSessionIds(params: {
-  database: OpenClawAgentDatabase;
+  database: OperatorAgentDatabase;
   excludedSessionKeys: Iterable<string>;
   projectedStore: Record<string, SessionEntry>;
 }): Set<string> {
@@ -405,7 +405,7 @@ export function collectSqliteSessionStateIdsForEntry(entry: SessionEntry): strin
   return uniqueStrings(sessionIds);
 }
 
-function deleteSqliteSessionStateRows(database: OpenClawAgentDatabase, sessionId: string): void {
+function deleteSqliteSessionStateRows(database: OperatorAgentDatabase, sessionId: string): void {
   const db = getSessionKysely(database.db);
   // The sessions row cascades canonical transcript tables, but FTS is virtual
   // and its watermark has no cascade; clear both before dropping the owner row.
@@ -421,7 +421,7 @@ function deleteSqliteSessionStateRows(database: OpenClawAgentDatabase, sessionId
 function planSqliteOrphanLifecycleTranscriptStateDeletes(params: {
   archiveRemovedEntryTranscripts: boolean;
   archiveDirectory: string;
-  database: OpenClawAgentDatabase;
+  database: OperatorAgentDatabase;
   excludedSessionIds?: ReadonlySet<string>;
   referencedSessionIds: ReadonlySet<string>;
   transcriptContentMarker: string;
@@ -475,7 +475,7 @@ function planSqliteOrphanLifecycleTranscriptStateDeletes(params: {
 }
 
 export function planSqliteSessionLifecycleArtifactCleanup(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   params: {
     archiveRemovedEntryTranscripts: boolean;
     archiveDirectory: string;
@@ -558,7 +558,7 @@ export function planSqliteSessionLifecycleArtifactCleanup(
 }
 
 export function deletePlannedSqliteLifecycleArtifactEntries(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   entries: readonly SqliteSessionEntryRemovalPlan[],
 ): number {
   let removedEntries = 0;

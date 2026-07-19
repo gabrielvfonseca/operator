@@ -14,7 +14,7 @@ function resolveTeamsSdkVersion(): string {
   }
 }
 
-function resolveOpenClawVersion(): string {
+function resolveOperatorVersion(): string {
   try {
     return getMSTeamsRuntime().version;
   } catch {
@@ -24,10 +24,10 @@ function resolveOpenClawVersion(): string {
 
 /**
  * Build a combined User-Agent string that preserves the Teams SDK identity
- * and appends the OpenClaw version.
+ * and appends the Operator version.
  *
- * Format: "teams.ts[apps]/<sdk-version> OpenClaw/<openclaw-version>"
- * Example: "teams.ts[apps]/2.0.5 OpenClaw/2026.3.22"
+ * Format: "teams.ts[apps]/<sdk-version> Operator/<openclaw-version>"
+ * Example: "teams.ts[apps]/2.0.5 Operator/2026.3.22"
  *
  * This lets the Teams backend track SDK usage while also identifying the
  * host application.
@@ -36,20 +36,20 @@ export function buildUserAgent(): string {
   if (cachedUserAgent) {
     return cachedUserAgent;
   }
-  cachedUserAgent = `teams.ts[apps]/${resolveTeamsSdkVersion()} OpenClaw/${resolveOpenClawVersion()}`;
+  cachedUserAgent = `teams.ts[apps]/${resolveTeamsSdkVersion()} Operator/${resolveOperatorVersion()}`;
   return cachedUserAgent;
 }
 
 /**
  * User-Agent fragment for the Teams SDK App's client. The SDK's Client.clone
  * merges this with its own `teams.ts[apps]/<sdk-version>` identifier, so we
- * only contribute the OpenClaw piece — passing the full `buildUserAgent()`
+ * only contribute the Operator piece — passing the full `buildUserAgent()`
  * would double-print the SDK token.
  *
- * Format: "OpenClaw/<openclaw-version>"
+ * Format: "Operator/<openclaw-version>"
  */
-export function buildOpenClawUserAgentFragment(): string {
-  return `OpenClaw/${resolveOpenClawVersion()}`;
+export function buildOperatorUserAgentFragment(): string {
+  return `Operator/${resolveOperatorVersion()}`;
 }
 
 export function ensureUserAgentHeader(headers?: HeadersInit): Headers {

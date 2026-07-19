@@ -233,14 +233,14 @@ describe("DiscordMessageListener", () => {
 
 describe("discord allowlist helpers", () => {
   it("normalizes slugs", () => {
-    expect(normalizeDiscordSlug("Friends of OpenClaw")).toBe("friends-of-openclaw");
+    expect(normalizeDiscordSlug("Friends of Operator")).toBe("friends-of-openclaw");
     expect(normalizeDiscordSlug("#General")).toBe("general");
     expect(normalizeDiscordSlug("Dev__Chat")).toBe("dev-chat");
   });
 
   it("matches ids by default and names only when enabled", () => {
     const allow = expectNormalizedAllowList(
-      ["123", "steipete", "Friends of OpenClaw"],
+      ["123", "steipete", "Friends of Operator"],
       ["discord:", "user:", "guild:", "channel:"],
     );
     expect(allowListMatches(allow, { id: "123" })).toBe(true);
@@ -286,7 +286,7 @@ describe("discord guild/channel resolution", () => {
       "123": { slug: "friends-of-openclaw" },
     });
     const resolved = resolveDiscordGuildEntry({
-      guild: fakeGuild("123", "Friends of OpenClaw"),
+      guild: fakeGuild("123", "Friends of Operator"),
       guildEntries,
     });
     expect(resolved?.id).toBe("123");
@@ -310,7 +310,7 @@ describe("discord guild/channel resolution", () => {
       "friends-of-openclaw": { slug: "friends-of-openclaw" },
     });
     const resolved = resolveDiscordGuildEntry({
-      guild: fakeGuild("123", "Friends of OpenClaw"),
+      guild: fakeGuild("123", "Friends of Operator"),
       guildEntries,
     });
     expect(resolved?.id).toBe("123");
@@ -322,7 +322,7 @@ describe("discord guild/channel resolution", () => {
       "*": { requireMention: false },
     });
     const resolved = resolveDiscordGuildEntry({
-      guild: fakeGuild("123", "Friends of OpenClaw"),
+      guild: fakeGuild("123", "Friends of Operator"),
       guildEntries,
     });
     expect(resolved?.id).toBe("123");
@@ -671,7 +671,7 @@ describe("discord group DM gating", () => {
       resolveGroupDmAllow({
         channels: ["openclaw-dm"],
         channelId: "1",
-        channelName: "OpenClaw DM",
+        channelName: "Operator DM",
         channelSlug: "openclaw-dm",
       }),
     ).toBe(true);
@@ -1047,7 +1047,7 @@ function makeReactionListenerParams(overrides?: {
   guildEntries?: Record<string, DiscordGuildEntryResolved>;
 }) {
   return {
-    cfg: {} as import("openclaw/plugin-sdk/config-contracts").OpenClawConfig,
+    cfg: {} as import("openclaw/plugin-sdk/config-contracts").OperatorConfig,
     accountId: "acc-1",
     runtime: {} as import("openclaw/plugin-sdk/runtime-env").RuntimeEnv,
     botUserId: overrides?.botUserId ?? "bot-1",

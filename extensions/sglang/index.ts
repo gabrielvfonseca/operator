@@ -1,7 +1,7 @@
-// Sglang plugin entrypoint registers its OpenClaw integration.
+// Sglang plugin entrypoint registers its Operator integration.
 import {
   definePluginEntry,
-  type OpenClawPluginApi,
+  type OperatorPluginApi,
   type ProviderAuthMethodNonInteractiveContext,
 } from "openclaw/plugin-sdk/plugin-entry";
 import { buildProviderReplayFamilyHooks } from "openclaw/plugin-sdk/provider-model-shared";
@@ -23,7 +23,7 @@ export default definePluginEntry({
   id: "sglang",
   name: "SGLang Provider",
   description: "Bundled SGLang provider plugin",
-  register(api: OpenClawPluginApi) {
+  register(api: OperatorPluginApi) {
     api.registerProvider({
       id: PROVIDER_ID,
       label: "SGLang",

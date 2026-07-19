@@ -1,6 +1,6 @@
 // Sms plugin module implements channel behavior.
 import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/account-id";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/account-resolution";
+import type { OperatorConfig } from "openclaw/plugin-sdk/account-resolution";
 import {
   createHybridChannelConfigAdapter,
   createScopedDmSecurityResolver,
@@ -106,10 +106,10 @@ function smsSetupPatch(input: Record<string, unknown>): Record<string, unknown> 
 }
 
 function applySmsAccountConfig(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId: string;
   input: Record<string, unknown>;
-}): OpenClawConfig {
+}): OperatorConfig {
   const patch = smsSetupPatch(params.input);
   const channels = { ...params.cfg.channels };
   const current = { ...(channels[CHANNEL_ID] as Record<string, unknown> | undefined) };
@@ -157,7 +157,7 @@ function createSmsReceipt(params: {
 }
 
 function resolveSmsTextChunkLimit(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
   fallbackLimit?: number;
 }): number {
@@ -167,7 +167,7 @@ function resolveSmsTextChunkLimit(params: {
 }
 
 async function sendSmsText(ctx: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
   to: string;
   text: string;
@@ -313,7 +313,7 @@ export const smsPlugin: ChannelPlugin<ResolvedSmsAccount, SmsProbe> = createChat
   pairing: {
     text: {
       idLabel: "phoneNumber",
-      message: "OpenClaw: your SMS access has been approved.",
+      message: "Operator: your SMS access has been approved.",
       normalizeAllowEntry: normalizeSmsAllowFrom,
       notify: async ({ cfg, id, message, accountId }) => {
         const account = resolveSmsAccount(cfg, accountId);

@@ -6,7 +6,7 @@ vi.mock("../context-engine-capabilities.js", () => ({
   resolveContextEngineCapabilities: async () => ({ llm: undefined }),
 }));
 import { SYSTEM_PROMPT_CACHE_BOUNDARY } from "@operator/ai/internal/shared";
-import type { OpenClawConfig } from "../../../config/config.js";
+import type { OperatorConfig } from "../../../config/config.js";
 import { addSession } from "../../bash-process-registry.js";
 import { createProcessSessionFixture } from "../../bash-process-registry.test-helpers.js";
 import { resetProcessRegistryForTests } from "../../bash-process-registry.test-support.js";
@@ -663,7 +663,7 @@ describe("resolveEmbeddedAgentStreamFn", () => {
 
 describe("resolveAttemptFsWorkspaceOnly", () => {
   it("uses global tools.fs.workspaceOnly when agent has no override", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       tools: {
         fs: { workspaceOnly: true },
       },
@@ -678,7 +678,7 @@ describe("resolveAttemptFsWorkspaceOnly", () => {
   });
 
   it("prefers agent-specific tools.fs.workspaceOnly override", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       tools: {
         fs: { workspaceOnly: true },
       },
@@ -3333,7 +3333,7 @@ describe("buildAfterTurnRuntimeContext", () => {
       const legacy = buildAfterTurnRuntimeContext({
         attempt: {
           sessionId: "session-123",
-          config: {} as OpenClawConfig,
+          config: {} as OperatorConfig,
           skillsSnapshot: undefined,
           provider: "openai",
           modelId: "gpt-5.4",
@@ -3389,7 +3389,7 @@ describe("buildAfterTurnRuntimeContext", () => {
         authProfileId: "openai:p1",
         authProfileIdSource: "user",
         runtimePlan: { auth: runtimeAuthPlan } as never,
-        config: {} as OpenClawConfig,
+        config: {} as OperatorConfig,
         skillsSnapshot: undefined,
         provider: "openai",
         modelId: "gpt-5.4",
@@ -3415,7 +3415,7 @@ describe("buildAfterTurnRuntimeContext", () => {
         sessionKey: "agent:main:session:locked",
         config: {
           agents: { defaults: { compaction: { model: "anthropic/claude-opus-4-6" } } },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         skillsSnapshot: undefined,
         provider: "openai",
         modelId: "gpt-5.5",
@@ -3446,7 +3446,7 @@ describe("buildAfterTurnRuntimeContext", () => {
         sessionId: "ignored-session-id",
         sessionKey: "agent:main:fallback",
         sessionTarget,
-        config: {} as OpenClawConfig,
+        config: {} as OperatorConfig,
         skillsSnapshot: undefined,
         provider: "openai",
         modelId: "gpt-5.4",
@@ -3482,7 +3482,7 @@ describe("buildAfterTurnRuntimeContext", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         skillsSnapshot: undefined,
         provider: "openai",
         modelId: "gpt-5.4",
@@ -3520,7 +3520,7 @@ describe("buildAfterTurnRuntimeContext", () => {
         messageProvider: "slack",
         agentAccountId: "acct-1",
         authProfileId: "openai:p1",
-        config: { plugins: { slots: { contextEngine: "lossless-claw" } } } as OpenClawConfig,
+        config: { plugins: { slots: { contextEngine: "lossless-claw" } } } as OperatorConfig,
         skillsSnapshot: undefined,
         provider: "openai",
         modelId: "gpt-5.4",
@@ -3569,7 +3569,7 @@ describe("buildAfterTurnRuntimeContext", () => {
         messageProvider: "slack",
         agentAccountId: "acct-1",
         authProfileId: "openai:p1",
-        config: { plugins: { slots: { contextEngine: "lossless-claw" } } } as OpenClawConfig,
+        config: { plugins: { slots: { contextEngine: "lossless-claw" } } } as OperatorConfig,
         skillsSnapshot: undefined,
         provider: "openai",
         modelId: "gpt-5.4",
@@ -3600,7 +3600,7 @@ describe("buildAfterTurnRuntimeContext", () => {
         currentThreadTs: "thread-9",
         currentMessageId: "msg-42",
         authProfileId: "openai:p1",
-        config: {} as OpenClawConfig,
+        config: {} as OperatorConfig,
         skillsSnapshot: undefined,
         senderId: "user-123",
         provider: "openai",

@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { createWizardPrompter } from "../../test/helpers/wizard-prompter.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import type { CallGatewayCliOptions } from "../gateway/call.js";
 import { createSuiteLogPathTracker } from "../logging/log-test-helpers.js";
 import { resetLogger, setLoggerOverride } from "../logging/logger.js";
@@ -197,7 +197,7 @@ describe("runGuidedOnboarding", () => {
     );
   });
 
-  it("uses the configured workspace only as inference and OpenClaw context", async () => {
+  it("uses the configured workspace only as inference and Operator context", async () => {
     readConfigFileSnapshot.mockResolvedValueOnce({
       exists: true,
       valid: true,
@@ -578,7 +578,7 @@ describe("runGuidedOnboarding", () => {
     );
   });
 
-  it("keeps OpenClaw unavailable until a manual key passes", async () => {
+  it("keeps Operator unavailable until a manual key passes", async () => {
     promptAuthChoiceGrouped.mockResolvedValue("openai-api-key");
     const text = vi.fn().mockResolvedValueOnce("bad-key").mockResolvedValueOnce("good-key");
     const prompter = createWizardPrompter({
@@ -618,7 +618,7 @@ describe("runGuidedOnboarding", () => {
     expect(runSystemAgentChat).toHaveBeenCalledOnce();
   });
 
-  it("opens OpenClaw chat with the explicit workspace after activation", async () => {
+  it("opens Operator chat with the explicit workspace after activation", async () => {
     const text = vi.fn(async () => "unexpected");
     const prompter = createWizardPrompter({ text });
     const runSystemAgentChat = vi.fn(async () => {});
@@ -673,7 +673,7 @@ describe("runGuidedOnboarding", () => {
     expect(deps.activate).not.toHaveBeenCalled();
   });
 
-  it("converges remote inference before remote OpenClaw without mutating local config", async () => {
+  it("converges remote inference before remote Operator without mutating local config", async () => {
     const localConfig = {
       wizard: { securityAcknowledgedAt: "2026-07-11T00:00:00.000Z" },
       agents: {
@@ -686,7 +686,7 @@ describe("runGuidedOnboarding", () => {
         mode: "remote",
         remote: { url: "wss://configured.example/ws", token: "configured-token" },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const localConfigBefore = structuredClone(localConfig);
     readConfigFileSnapshot.mockResolvedValueOnce({
       exists: true,

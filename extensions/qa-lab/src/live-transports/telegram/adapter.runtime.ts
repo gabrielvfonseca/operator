@@ -1,5 +1,5 @@
 // Qa Lab plugin module implements Telegram live transport adapter behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type { QaRunnerCliRegistration } from "openclaw/plugin-sdk/qa-runner-runtime";
 import {
   assertQaGatewayCredentialLeaseQuarantine,
@@ -203,7 +203,7 @@ export async function createTelegramQaTransportAdapter(
       busMessageIds.clear();
     },
     createGatewayConfig: () =>
-      buildTelegramQaConfig({} as OpenClawConfig, {
+      buildTelegramQaConfig({} as OperatorConfig, {
         groupId: runtimeEnv.groupId,
         sutToken: runtimeEnv.sutToken,
         driverBotId: driverIdentity.id,

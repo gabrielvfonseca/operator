@@ -3,7 +3,7 @@ import { ensureModelAllowlistEntry } from "openclaw/plugin-sdk/provider-onboard"
 import {
   applyAgentDefaultModelPrimary,
   resolveAgentModelPrimaryValue,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "openclaw/plugin-sdk/provider-onboard";
 
 export const OPENAI_DEFAULT_MODEL = "openai/gpt-5.6";
@@ -14,7 +14,7 @@ export const OPENAI_DEFAULT_TTS_VOICE = "alloy";
 export const OPENAI_DEFAULT_AUDIO_TRANSCRIPTION_MODEL = "gpt-4o-transcribe";
 export const OPENAI_DEFAULT_EMBEDDING_MODEL = "text-embedding-3-small";
 
-export function applyOpenAIProviderConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyOpenAIProviderConfig(cfg: OperatorConfig): OperatorConfig {
   const configuredModel = cfg.agents?.defaults?.model;
   const configuredRefs = [
     resolveAgentModelPrimaryValue(configuredModel),
@@ -52,7 +52,7 @@ export function applyOpenAIProviderConfig(cfg: OpenClawConfig): OpenClawConfig {
   };
 }
 
-export function applyOpenAIConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyOpenAIConfig(cfg: OperatorConfig): OperatorConfig {
   const next = applyOpenAIProviderConfig(cfg);
   return resolveAgentModelPrimaryValue(cfg.agents?.defaults?.model) === undefined
     ? applyAgentDefaultModelPrimary(next, OPENAI_DEFAULT_MODEL)

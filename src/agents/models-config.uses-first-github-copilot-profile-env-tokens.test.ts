@@ -1,12 +1,12 @@
 // Verifies GitHub Copilot profile token fallback and implicit provider planning.
 import { describe, expect, it, vi } from "vitest";
-import { planOpenClawModelsJson } from "./models-config.plan.js";
-import { planOpenClawModelsJsonWithDeps } from "./models-config.plan.test-support.js";
+import { planOperatorModelsJson } from "./models-config.plan.js";
+import { planOperatorModelsJsonWithDeps } from "./models-config.plan.test-support.js";
 import type { ProviderConfig } from "./models-config.providers.secrets.js";
 import { createProviderAuthResolver } from "./models-config.providers.secrets.js";
 
 type ResolveImplicitProvidersForModelsJson = NonNullable<
-  NonNullable<Parameters<typeof planOpenClawModelsJsonWithDeps>[1]>["resolveImplicitProviders"]
+  NonNullable<Parameters<typeof planOperatorModelsJsonWithDeps>[1]>["resolveImplicitProviders"]
 >;
 
 vi.mock("./model-auth-env.js", () => ({
@@ -71,7 +71,7 @@ describe("models-config", () => {
   });
 
   it("does not override explicit github-copilot provider config", async () => {
-    const plan = await planOpenClawModelsJson({
+    const plan = await planOperatorModelsJson({
       cfg: {
         models: {
           providers: {
@@ -109,7 +109,7 @@ describe("models-config", () => {
       },
     );
 
-    const plan = await planOpenClawModelsJsonWithDeps(
+    const plan = await planOperatorModelsJsonWithDeps(
       {
         cfg: {
           models: {
@@ -170,7 +170,7 @@ describe("models-config", () => {
       2,
     )}\n`;
 
-    const plan = await planOpenClawModelsJsonWithDeps(
+    const plan = await planOperatorModelsJsonWithDeps(
       {
         cfg: {
           models: {
@@ -256,7 +256,7 @@ function createCopilotImplicitResolver(
 }
 
 async function planCopilotWithImplicitProvider(params: { provider: ProviderConfig }) {
-  return await planOpenClawModelsJsonWithDeps(
+  return await planOperatorModelsJsonWithDeps(
     {
       cfg: { models: { providers: {} } },
       agentDir: "/tmp/openclaw-agent",

@@ -2,7 +2,7 @@
   "name": "@operator/senseaudio-provider",
   "version": "2026.7.2",
   "private": true,
-  "description": "OpenClaw SenseAudio media-understanding provider",
+  "description": "Operator SenseAudio media-understanding provider",
   "type": "module",
   "devDependencies": {
     "@operator/plugin-sdk": "workspace:*"

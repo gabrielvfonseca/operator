@@ -1,8 +1,8 @@
-# OpenClaw Kilo Gateway Provider
+# Operator Kilo Gateway Provider
 
-Official OpenClaw provider plugin for Kilo Gateway.
+Official Operator provider plugin for Kilo Gateway.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/kilocode-provider

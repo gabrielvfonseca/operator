@@ -5,7 +5,7 @@ import fs from "node:fs";
 import os from "node:os";
 import { normalizeProviderIdForAuth } from "@operator/model-catalog-core/provider-id";
 import { normalizeOptionalString as normalizeOptionalPathInput } from "@operator/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { getShellEnvAppliedKeys } from "../infra/shell-env.js";
 import { resolvePluginSetupProvider } from "../plugins/setup-registry.js";
 import type { ProviderAuthEvidence } from "../secrets/provider-env-vars.js";
@@ -35,7 +35,7 @@ type ProviderDirectAuthPlanningEvidence =
     };
 
 export type EnvApiKeyLookupOptions = {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   workspaceDir?: string;
   aliasMap?: Readonly<Record<string, string>>;
   candidateMap?: Readonly<Record<string, readonly string[]>>;

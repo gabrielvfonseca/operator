@@ -410,7 +410,7 @@ describe("createEmbeddedRunAuthController", () => {
   });
 
   it("registers exchanged credentials when sentinels are disabled", async () => {
-    vi.stubEnv("OPENCLAW_SECRET_SENTINELS", "off");
+    vi.stubEnv("OPERATOR_SECRET_SENTINELS", "off");
     const harness = createMutableAuthControllerHarness();
     const setRuntimeApiKey = vi.fn<(provider: string, apiKey: string) => void>();
     const source = mintSecretSentinel("kill-switch-source-secret", {

@@ -519,7 +519,7 @@ function prepareEmbeddedAgentQueueMessage(
 }
 
 /**
- * Abort embedded OpenClaw runs.
+ * Abort embedded Operator runs.
  *
  * - With a sessionId, aborts that single run.
  * - With no sessionId, supports targeted abort modes (for example, compacting runs only).

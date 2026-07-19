@@ -10,7 +10,7 @@ import {
   readStringArrayParam,
   readStringParam,
   type DiscordActionConfig,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "../runtime-api.js";
 import { discordGuildActionRuntime } from "./runtime-deps.js";
 import {
@@ -24,7 +24,7 @@ import {
   readDiscordChannelMoveParams,
 } from "./runtime.shared.js";
 
-type DiscordRoleMutationOpts = { cfg: OpenClawConfig; accountId?: string };
+type DiscordRoleMutationOpts = { cfg: OperatorConfig; accountId?: string };
 type DiscordRoleMutation = (
   params: {
     guildId: string;
@@ -133,7 +133,7 @@ function assertGuildAdminActionEnabled(
 async function resolveGuildIdForGuildAdminAction(params: {
   values: Record<string, unknown>;
   accountId?: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
 }): Promise<string | undefined> {
   const guildId = readStringParam(params.values, "guildId");
   if (guildId) {
@@ -167,7 +167,7 @@ async function resolveGuildAdminActionPermissions(params: {
   action: string;
   values: Record<string, unknown>;
   accountId?: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   guard: GuildAdminActionGuard;
 }) {
   if (params.action !== "channelEdit") {
@@ -209,7 +209,7 @@ async function verifySenderGuildAdminPermission(params: {
   action: string;
   values: Record<string, unknown>;
   accountId?: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
 }) {
   const guard = guildAdminActionGuards[params.action];
   const senderUserId = readStringParam(params.values, "senderUserId");
@@ -284,7 +284,7 @@ async function verifySenderGuildAdminPermission(params: {
 }
 
 async function runRoleMutation(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string;
   values: Record<string, unknown>;
   mutate: DiscordRoleMutation;
@@ -309,7 +309,7 @@ export async function handleDiscordGuildAction(
   action: string,
   params: Record<string, unknown>,
   isActionEnabled: ActionGate<DiscordActionConfig>,
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   options?: DiscordMessagingActionOptions,
 ): Promise<AgentToolResult<unknown>> {
   const accountId = readStringParam(params, "accountId");

@@ -1,5 +1,5 @@
 // Xai tests cover plugin-owned doctor compatibility migrations.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import { legacyConfigRules, normalizeCompatibilityConfig } from "./doctor-contract-api.js";
 
@@ -53,7 +53,7 @@ describe("xAI doctor contract", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(
       legacyConfigRules.filter((rule) => rule.match(readPathForTest(config, rule.path))),
@@ -105,7 +105,7 @@ describe("xAI doctor contract", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(normalizeCompatibilityConfig({ cfg: config })).toEqual({ config, changes: [] });
   });
@@ -140,7 +140,7 @@ describe("xAI doctor contract", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     expect(
       legacyConfigRules.filter((rule) => rule.match(readPathForTest(config, rule.path))),

@@ -1,6 +1,6 @@
 import {
   createModelCatalogPresetAppliers,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "openclaw/plugin-sdk/provider-onboard";
 import {
   buildCohereModelDefinition,
@@ -14,7 +14,7 @@ export const COHERE_DEFAULT_MODEL_REF = `cohere/${COHERE_DEFAULT_MODEL_ID}`;
 
 const coherePresetAppliers = createModelCatalogPresetAppliers({
   primaryModelRef: COHERE_DEFAULT_MODEL_REF,
-  resolveParams: (_cfg: OpenClawConfig) => ({
+  resolveParams: (_cfg: OperatorConfig) => ({
     providerId: "cohere",
     api: "openai-completions",
     baseUrl: COHERE_BASE_URL,
@@ -23,6 +23,6 @@ const coherePresetAppliers = createModelCatalogPresetAppliers({
   }),
 });
 
-export function applyCohereConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyCohereConfig(cfg: OperatorConfig): OperatorConfig {
   return coherePresetAppliers.applyConfig(cfg);
 }

@@ -9,7 +9,7 @@ import type { ReplyPayload } from "../auto-reply/reply-payload.js";
 import type { ReasoningLevel, ThinkLevel } from "../auto-reply/thinking.js";
 import type { ChatType } from "../channels/chat-type.js";
 import type { SessionEntry as StoredSessionEntry } from "../config/sessions.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { streamWithPayloadPatch } from "../llm/providers/stream-wrappers/stream-payload-utils.js";
 import { streamSimple } from "../llm/stream.js";
 import type {
@@ -60,7 +60,7 @@ import {
   isCliRuntimeAliasForProvider,
   resolveCliRuntimeExecutionProvider,
 } from "./model-runtime-aliases.js";
-import { ensureOpenClawModelsJson } from "./models-config.js";
+import { ensureOperatorModelsJson } from "./models-config.js";
 import {
   isOpenAIProvider,
   listOpenAIAuthProfileProvidersForAgentRuntime,
@@ -129,7 +129,7 @@ function resolveReturnedAuthProfileSource(
 // Planning and immediate resolution share one scoped snapshot so provider
 // bindings and cooldown decisions cannot diverge inside a side question.
 function resolveBtwAuthProfileStore(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   provider: string;
   modelId: string;
   agentId?: string;
@@ -393,7 +393,7 @@ async function toSimpleContextMessages(params: {
 type BtwRuntimeAuthPreparation = ReturnType<typeof prepareAgentRuntimeAuth>;
 
 type BtwRuntimeModelMaterialization = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   provider: string;
   modelId: string;
   agentDir: string;
@@ -464,7 +464,7 @@ async function resolveBtwPreparedRuntimeAuth(
 }
 
 async function resolveRuntimeModel(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   provider: string;
   model: string;
   agentId?: string;
@@ -487,7 +487,7 @@ async function resolveRuntimeModel(params: {
   modelRegistry: ReturnType<typeof discoverModels>;
 }> {
   const modelsOptions = params.workspaceDir ? { workspaceDir: params.workspaceDir } : undefined;
-  await ensureOpenClawModelsJson(params.cfg, params.agentDir, modelsOptions);
+  await ensureOperatorModelsJson(params.cfg, params.agentDir, modelsOptions);
   const authStorage = discoverAuthStorage(params.agentDir);
   const modelRegistry = discoverModels(authStorage, params.agentDir, {
     config: params.cfg,
@@ -575,7 +575,7 @@ async function resolveRuntimeModel(params: {
 }
 
 type RunBtwSideQuestionParams = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentDir: string;
   provider: string;
   model: string;
@@ -613,7 +613,7 @@ type RunBtwSideQuestionParams = {
 };
 
 async function runCliBtwSideQuestion(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   model: string;
   question: string;
   sessionId: string;
@@ -790,7 +790,7 @@ export async function runBtwSideQuestion(
         runtime: Awaited<ReturnType<typeof resolveRuntimeModel>>;
         resolvedAttempt: Awaited<ReturnType<typeof resolveBtwPreparedRuntimeAuth>>;
       };
-  let preparedOpenClawFallback:
+  let preparedOperatorFallback:
     | Extract<BtwHarnessSideQuestionDispatch, { kind: "operator" }>
     | undefined;
   const runHarnessSideQuestion = async (
@@ -860,7 +860,7 @@ export async function runBtwSideQuestion(
         ? runtimeAuthPreparation.attempts[0].plan
         : undefined;
     // A native harness owns this deferred auth decision. Resolving it through
-    // OpenClaw would incorrectly require a host credential before handoff.
+    // Operator would incorrectly require a host credential before handoff.
     const resolvedAttempt = implicitHarnessAuthPlan
       ? { plan: implicitHarnessAuthPlan, model: runtime.model }
       : await resolveBtwPreparedRuntimeAuth({
@@ -965,7 +965,7 @@ export async function runBtwSideQuestion(
     if (dispatch.kind === "handled") {
       return dispatch.payload;
     }
-    preparedOpenClawFallback = dispatch;
+    preparedOperatorFallback = dispatch;
   }
   if (harness.id === "codex" && !harness.runSideQuestion) {
     throw new Error(`Selected agent harness "${harness.id}" does not support /btw side questions.`);
@@ -1063,13 +1063,13 @@ export async function runBtwSideQuestion(
     });
   }
 
-  const initialOpenClawFallback = preparedOpenClawFallback;
+  const initialOperatorFallback = preparedOperatorFallback;
   const runtimeSelectionForHarness =
-    initialOpenClawFallback?.runtime ?? (await resolveRuntimeSelection());
+    initialOperatorFallback?.runtime ?? (await resolveRuntimeSelection());
   // Model resolution can canonicalize a legacy provider alias, so reselect against the resolved
   // provider/model instead of reusing the raw route's selection.
   const runtimeHarness =
-    initialOpenClawFallback?.harness ??
+    initialOperatorFallback?.harness ??
     (await prepareHarness(
       runtimeSelectionForHarness.model.provider,
       runtimeSelectionForHarness.model.id,
@@ -1079,7 +1079,7 @@ export async function runBtwSideQuestion(
     if (dispatch.kind === "handled") {
       return dispatch.payload;
     }
-    preparedOpenClawFallback = dispatch;
+    preparedOperatorFallback = dispatch;
   }
   if (runtimeHarness.id === "codex" && !runtimeHarness.runSideQuestion) {
     throw new Error(
@@ -1087,13 +1087,13 @@ export async function runBtwSideQuestion(
     );
   }
 
-  const finalizedOpenClawFallback = preparedOpenClawFallback;
+  const finalizedOperatorFallback = preparedOperatorFallback;
   const effectiveRuntimeSelection =
-    finalizedOpenClawFallback?.runtime ?? runtimeSelectionForHarness;
+    finalizedOperatorFallback?.runtime ?? runtimeSelectionForHarness;
   const { authStorage, model, modelRegistry, authProfileStore, runtimeAuthPreparation } =
     effectiveRuntimeSelection;
   const resolvedAttempt =
-    finalizedOpenClawFallback?.resolvedAttempt ??
+    finalizedOperatorFallback?.resolvedAttempt ??
     (await resolveBtwPreparedRuntimeAuth({
       preparation: runtimeAuthPreparation,
       model,

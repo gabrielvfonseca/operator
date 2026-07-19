@@ -4,7 +4,7 @@ import os from "node:os";
 import nodePath from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { DoctorPrompter } from "../commands/doctor-prompter.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { CORE_HEALTH_CHECKS } from "./doctor-core-checks.js";
 import "./doctor-tool-result-cap-advice.js";
 import { resolveDoctorContributionHealthChecks } from "./doctor-health-contributions.js";
@@ -46,7 +46,7 @@ const mocks = vi.hoisted(() => ({
   maybeScanExtraGatewayServices: vi.fn().mockResolvedValue(undefined),
   noteMacLaunchAgentOverrides: vi.fn(),
   noteMacLaunchctlGatewayEnvOverrides: vi.fn(),
-  noteMacStaleOpenClawUpdateLaunchdJobs: vi.fn(),
+  noteMacStaleOperatorUpdateLaunchdJobs: vi.fn(),
   gatewaySecretInputPathCanWin: vi.fn(),
   readGatewaySecretInputValue: vi.fn((..._args: unknown[]) => undefined as string | undefined),
   checkGatewayHealth: vi.fn(async () => ({
@@ -264,7 +264,7 @@ vi.mock("../gateway/call.js", () => ({
 vi.mock("../commands/doctor-platform-notes.js", () => ({
   noteMacLaunchAgentOverrides: mocks.noteMacLaunchAgentOverrides,
   noteMacLaunchctlGatewayEnvOverrides: mocks.noteMacLaunchctlGatewayEnvOverrides,
-  noteMacStaleOpenClawUpdateLaunchdJobs: mocks.noteMacStaleOpenClawUpdateLaunchdJobs,
+  noteMacStaleOperatorUpdateLaunchdJobs: mocks.noteMacStaleOperatorUpdateLaunchdJobs,
 }));
 
 vi.mock("../gateway/credentials-secret-inputs.js", async (importOriginal) => {
@@ -460,7 +460,7 @@ vi.mock("../commands/doctor-gateway-services.js", () => ({
 vi.mock("../commands/doctor-platform-notes.js", () => ({
   noteMacLaunchAgentOverrides: mocks.noteMacLaunchAgentOverrides,
   noteMacLaunchctlGatewayEnvOverrides: mocks.noteMacLaunchctlGatewayEnvOverrides,
-  noteMacStaleOpenClawUpdateLaunchdJobs: mocks.noteMacStaleOpenClawUpdateLaunchdJobs,
+  noteMacStaleOperatorUpdateLaunchdJobs: mocks.noteMacStaleOperatorUpdateLaunchdJobs,
 }));
 
 function requireDoctorContribution(id: string) {
@@ -556,7 +556,7 @@ describe("doctor health contributions", () => {
     mocks.maybeScanExtraGatewayServices.mockResolvedValue(undefined);
     mocks.noteMacLaunchAgentOverrides.mockClear();
     mocks.noteMacLaunchctlGatewayEnvOverrides.mockClear();
-    mocks.noteMacStaleOpenClawUpdateLaunchdJobs.mockClear();
+    mocks.noteMacStaleOperatorUpdateLaunchdJobs.mockClear();
     mocks.gatewaySecretInputPathCanWin.mockClear();
     mocks.gatewaySecretInputPathCanWin.mockReset();
     mocks.readGatewaySecretInputValue.mockClear();
@@ -700,8 +700,8 @@ describe("doctor health contributions", () => {
     mocks.noteMacLaunchAgentOverrides.mockResolvedValue(undefined);
     mocks.noteMacLaunchctlGatewayEnvOverrides.mockReset();
     mocks.noteMacLaunchctlGatewayEnvOverrides.mockResolvedValue(undefined);
-    mocks.noteMacStaleOpenClawUpdateLaunchdJobs.mockReset();
-    mocks.noteMacStaleOpenClawUpdateLaunchdJobs.mockResolvedValue(undefined);
+    mocks.noteMacStaleOperatorUpdateLaunchdJobs.mockReset();
+    mocks.noteMacStaleOperatorUpdateLaunchdJobs.mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -957,8 +957,8 @@ describe("doctor health contributions", () => {
       cfgForPersistence: {},
       configPath: "/tmp/fake-openclaw.json",
       env: {
-        OPENCLAW_UPDATE_IN_PROGRESS: "1",
-        OPENCLAW_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE: "1",
+        OPERATOR_UPDATE_IN_PROGRESS: "1",
+        OPERATOR_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE: "1",
       },
     } as unknown as Parameters<(typeof contribution)["run"]>[0];
 
@@ -1360,7 +1360,7 @@ describe("doctor health contributions", () => {
           },
         },
         bindings: [{ agentId: "ops", match: { channel: "telegram" } }],
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       mode: "lint" as const,
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
     };
@@ -1395,7 +1395,7 @@ describe("doctor health contributions", () => {
       prompter: buildDoctorPrompter(false),
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
       options: { allowExec: true, nonInteractive: true },
-      env: { OPENCLAW_TEST_GATEWAY_TOKEN: "1" },
+      env: { OPERATOR_TEST_GATEWAY_TOKEN: "1" },
     } as unknown as Parameters<(typeof contribution)["run"]>[0];
 
     await contribution.run(ctx);
@@ -1900,12 +1900,12 @@ describe("doctor health contributions", () => {
   });
 
   it("keeps legacy plugin dependency lint opt-in and read-only", async () => {
-    const previousStateDir = process.env.OPENCLAW_STATE_DIR;
+    const previousStateDir = process.env.OPERATOR_STATE_DIR;
     const tempDir = fs.mkdtempSync(nodePath.join(os.tmpdir(), "openclaw-legacy-plugin-deps-lint-"));
     const stateDir = nodePath.join(tempDir, "state");
     const legacyRuntimeRoot = nodePath.join(stateDir, "plugin-runtime-deps");
     fs.mkdirSync(legacyRuntimeRoot, { recursive: true });
-    process.env.OPENCLAW_STATE_DIR = stateDir;
+    process.env.OPERATOR_STATE_DIR = stateDir;
     try {
       const contributionChecks = await resolveDoctorContributionHealthChecks();
       const check = contributionChecks.find(
@@ -1943,9 +1943,9 @@ describe("doctor health contributions", () => {
       expect(fs.existsSync(legacyRuntimeRoot)).toBe(true);
     } finally {
       if (previousStateDir === undefined) {
-        delete process.env.OPENCLAW_STATE_DIR;
+        delete process.env.OPERATOR_STATE_DIR;
       } else {
-        process.env.OPENCLAW_STATE_DIR = previousStateDir;
+        process.env.OPERATOR_STATE_DIR = previousStateDir;
       }
       fs.rmSync(tempDir, { recursive: true, force: true });
     }
@@ -2938,7 +2938,7 @@ describe("doctor health contributions", () => {
             },
           },
           bindings: [{ agentId: "ops", match: { channel: "telegram" } }],
-        } as unknown as OpenClawConfig,
+        } as unknown as OperatorConfig,
         configResult: { cfg: {} },
         sourceConfigValid: true,
         prompter: buildDoctorPrompter(shouldRepair),
@@ -2992,7 +2992,7 @@ describe("doctor health contributions", () => {
     });
 
     it("reports Nix immutable config mode when selected", async () => {
-      vi.stubEnv("OPENCLAW_NIX_MODE", "1");
+      vi.stubEnv("OPERATOR_NIX_MODE", "1");
 
       await expect(
         runDoctorLintChecks(
@@ -3295,7 +3295,7 @@ describe("doctor health contributions", () => {
   });
 
   it("does not commit deferred cron migration when the config write fails", async () => {
-    const cfg = { agents: { defaults: { models: {} } } } as OpenClawConfig;
+    const cfg = { agents: { defaults: { models: {} } } } as OperatorConfig;
     mocks.replaceConfigFile.mockRejectedValueOnce(new Error("config write failed"));
     const ctx = {
       cfg,
@@ -3321,7 +3321,7 @@ describe("doctor health contributions", () => {
   });
 
   it("commits deferred cron migration after the config write succeeds", async () => {
-    const cfg = { agents: { defaults: { models: {} } } } as OpenClawConfig;
+    const cfg = { agents: { defaults: { models: {} } } } as OperatorConfig;
     const ctx = {
       cfg,
       cfgForPersistence: cfg,
@@ -3385,21 +3385,21 @@ describe("doctor health contributions", () => {
     it.each([
       {
         name: "legacy update parents",
-        env: { OPENCLAW_UPDATE_IN_PROGRESS: "1" },
+        env: { OPERATOR_UPDATE_IN_PROGRESS: "1" },
         shouldWrite: false,
       },
       { name: "ordinary doctor runs", env: {}, shouldWrite: true },
       {
         name: "current update parents",
         env: {
-          OPENCLAW_UPDATE_IN_PROGRESS: "1",
-          OPENCLAW_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE: "1",
+          OPERATOR_UPDATE_IN_PROGRESS: "1",
+          OPERATOR_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE: "1",
         },
         shouldWrite: true,
       },
       {
         name: "falsey update env values",
-        env: { OPENCLAW_UPDATE_IN_PROGRESS: "0" },
+        env: { OPERATOR_UPDATE_IN_PROGRESS: "0" },
         shouldWrite: true,
       },
     ])("handles config writes for $name", async ({ env, shouldWrite }) => {
@@ -3417,10 +3417,10 @@ describe("doctor health contributions", () => {
       }
     });
 
-    it("allows config size drops when OPENCLAW_UPDATE_IN_PROGRESS=1", async () => {
+    it("allows config size drops when OPERATOR_UPDATE_IN_PROGRESS=1", async () => {
       const ctx = buildWriteConfigCtx({
-        OPENCLAW_UPDATE_IN_PROGRESS: "1",
-        OPENCLAW_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE: "1",
+        OPERATOR_UPDATE_IN_PROGRESS: "1",
+        OPERATOR_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE: "1",
       });
       await writeConfigContribution.run(ctx);
       expect(mocks.replaceConfigFile).toHaveBeenCalledWith(
@@ -3434,8 +3434,8 @@ describe("doctor health contributions", () => {
 
     it("skips plugin schema validation during update doctor writes", async () => {
       const ctx = buildWriteConfigCtx({
-        OPENCLAW_UPDATE_IN_PROGRESS: "1",
-        OPENCLAW_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE: "1",
+        OPERATOR_UPDATE_IN_PROGRESS: "1",
+        OPERATOR_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE: "1",
       });
       await writeConfigContribution.run(ctx);
       expect(mocks.replaceConfigFile).toHaveBeenCalledWith(
@@ -3449,8 +3449,8 @@ describe("doctor health contributions", () => {
 
     it("preserves source config version for legacy parent writable update doctor writes", async () => {
       const ctx = buildWriteConfigCtx({
-        OPENCLAW_UPDATE_IN_PROGRESS: "1",
-        OPENCLAW_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE: "1",
+        OPERATOR_UPDATE_IN_PROGRESS: "1",
+        OPERATOR_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE: "1",
       });
       ctx.configResult.sourceLastTouchedVersion = "2026.5.16-beta.4";
 
@@ -3467,9 +3467,9 @@ describe("doctor health contributions", () => {
 
     it("does not preserve source config version for explicit deferral update doctors", async () => {
       const ctx = buildWriteConfigCtx({
-        OPENCLAW_UPDATE_IN_PROGRESS: "1",
-        OPENCLAW_UPDATE_DEFER_CONFIGURED_PLUGIN_INSTALL_REPAIR: "1",
-        OPENCLAW_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE: "1",
+        OPERATOR_UPDATE_IN_PROGRESS: "1",
+        OPERATOR_UPDATE_DEFER_CONFIGURED_PLUGIN_INSTALL_REPAIR: "1",
+        OPERATOR_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE: "1",
       });
       ctx.configResult.sourceLastTouchedVersion = "2026.5.16-beta.4";
 
@@ -3499,8 +3499,8 @@ describe("doctor health contributions", () => {
     it("points update-time config rewrites at the pre-update backup", async () => {
       vi.mocked(fs.existsSync).mockImplementation((value) => String(value).endsWith(".pre-update"));
       const ctx = buildWriteConfigCtx({
-        OPENCLAW_UPDATE_IN_PROGRESS: "1",
-        OPENCLAW_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE: "1",
+        OPERATOR_UPDATE_IN_PROGRESS: "1",
+        OPERATOR_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE: "1",
       });
 
       await writeConfigContribution.run(ctx);
@@ -3523,7 +3523,7 @@ describe("doctor health contributions", () => {
         runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
         options: {},
         env: {
-          OPENCLAW_UPDATE_IN_PROGRESS: "1",
+          OPERATOR_UPDATE_IN_PROGRESS: "1",
         },
       } as DoctorContributionRunContext);
 

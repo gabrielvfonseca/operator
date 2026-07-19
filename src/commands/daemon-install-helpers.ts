@@ -5,14 +5,14 @@ import path from "node:path";
 import type { AuthProfileStore } from "../agents/auth-profiles/types.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import { collectDurableServiceEnvVarSources } from "../config/state-dir-dotenv.js";
-import type { OpenClawConfig } from "../config/types.js";
+import type { OperatorConfig } from "../config/types.js";
 import { coerceSecretRef, resolveSecretInputRef, type SecretRef } from "../config/types.secrets.js";
 import { resolveGatewayLaunchAgentLabel } from "../daemon/constants.js";
 import { resolveGatewayStateDir, resolveGatewayTaskScriptPath } from "../daemon/paths.js";
 import {
   OPERATOR_WRAPPER_ENV_KEY,
   resolveGatewayProgramArguments,
-  resolveOpenClawWrapperPath,
+  resolveOperatorWrapperPath,
 } from "../daemon/program-args.js";
 import {
   addServiceEnvPlanEntries,
@@ -66,7 +66,7 @@ const NON_PERSISTED_CONFIG_SECRET_ENV_TARGET_IDS = new Set([
 ]);
 const EXEC_SECRET_REF_PASS_ENV_ALLOWED_OVERRIDE_ONLY_KEYS = new Set(["HOME"]);
 
-function configContainsSecretRef(config: OpenClawConfig | undefined): boolean {
+function configContainsSecretRef(config: OperatorConfig | undefined): boolean {
   if (!config) {
     return false;
   }
@@ -181,7 +181,7 @@ type ExecSecretRefPassEnvSource = {
 
 function collectConfigSecretRefServiceEnvSources(params: {
   env: Record<string, string | undefined>;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   configContainsSecretRef: boolean;
   stateDirDotEnvEnvironment: Record<string, string | undefined>;
   warn?: DaemonInstallWarnFn;
@@ -236,7 +236,7 @@ function collectConfigSecretRefServiceEnvSources(params: {
 
 function collectExecSecretRefPassEnvServiceEnvVars(params: {
   env: Record<string, string | undefined>;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   configContainsSecretRef: boolean;
   authStore?: AuthProfileStore;
   durableEnvironment: Record<string, string | undefined>;
@@ -341,7 +341,7 @@ function collectExecSecretRefPassEnvServiceEnvVars(params: {
 
 function collectPluginConfigSecretRefs(params: {
   env: Record<string, string | undefined>;
-  config: OpenClawConfig;
+  config: OperatorConfig;
 }): SecretRef[] {
   const context = createResolverContext({
     sourceConfig: params.config,
@@ -592,7 +592,7 @@ function resolveGatewayInstallWorkingDirectory(params: {
 
 async function buildGatewayInstallEnvironment(params: {
   env: Record<string, string | undefined>;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   authStore?: AuthProfileStore;
   warn?: DaemonInstallWarnFn;
   serviceEnvironment: Record<string, string | undefined>;
@@ -726,7 +726,7 @@ export async function buildGatewayInstallPlan(params: {
   platform?: NodeJS.Platform;
   warn?: DaemonInstallWarnFn;
   /** Full config to extract env vars from (env vars + inline env keys). */
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   authStore?: AuthProfileStore;
   existingEnvironmentValueSources?: Record<
     string,
@@ -747,12 +747,12 @@ export async function buildGatewayInstallPlan(params: {
     isSameServicePath(wrapperInput, resolveGatewayTaskScriptPath(params.env), platform);
   if (wrapperPointsAtWindowsTaskScript) {
     params.warn?.(
-      `Ignoring ${OPERATOR_WRAPPER_ENV_KEY} because it points to the Windows task script; using the OpenClaw gateway entrypoint directly to avoid a recursive gateway.cmd wrapper.`,
+      `Ignoring ${OPERATOR_WRAPPER_ENV_KEY} because it points to the Windows task script; using the Operator gateway entrypoint directly to avoid a recursive gateway.cmd wrapper.`,
     );
   }
   const wrapperPath = wrapperPointsAtWindowsTaskScript
     ? undefined
-    : await resolveOpenClawWrapperPath(wrapperInput);
+    : await resolveOperatorWrapperPath(wrapperInput);
   const serviceInputEnv: Record<string, string | undefined> = wrapperPath
     ? { ...params.env, [OPERATOR_WRAPPER_ENV_KEY]: wrapperPath }
     : wrapperPointsAtWindowsTaskScript

@@ -191,7 +191,7 @@ export function assertSupportedTurn(params: SessionPlacementTurnParams): {
           sessionKey: params.sessionKey,
         });
   if (runtime !== OPERATOR_AGENT_RUNTIME_ID) {
-    throw new Error(`Cloud worker turns require the OpenClaw runtime, not ${runtime}`);
+    throw new Error(`Cloud worker turns require the Operator runtime, not ${runtime}`);
   }
   return modelRef;
 }

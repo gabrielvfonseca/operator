@@ -22,12 +22,12 @@ import {
   schedulePluginSessionTurn,
   unschedulePluginSessionTurnsByTag,
 } from "../host-hook-scheduled-turns.js";
-import { loadOpenClawPlugins } from "../loader.js";
+import { loadOperatorPlugins } from "../loader.js";
 import { clearPluginLoaderCache, makeTempDir, writePlugin } from "../loader.test-fixtures.js";
 import { createEmptyPluginRegistry } from "../registry-empty.js";
 import { setActivePluginRegistry } from "../runtime.js";
 import { createPluginRecord } from "../status.test-helpers.js";
-import type { OpenClawPluginApi } from "../types.js";
+import type { OperatorPluginApi } from "../types.js";
 
 const workflowMocks = vi.hoisted(() => ({
   cronAdd: vi.fn(),
@@ -516,11 +516,11 @@ describe("plugin scheduled turns", () => {
 
     const registry = withEnv(
       {
-        OPENCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
-        OPENCLAW_DISABLE_BUNDLED_PLUGINS: undefined,
+        OPERATOR_BUNDLED_PLUGINS_DIR: bundledDir,
+        OPERATOR_DISABLE_BUNDLED_PLUGINS: undefined,
       },
       () =>
-        loadOpenClawPlugins({
+        loadOperatorPlugins({
           cache: false,
           hostServices: { cron },
           config: {
@@ -654,11 +654,11 @@ describe("plugin scheduled turns", () => {
 
     const registry = withEnv(
       {
-        OPENCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
-        OPENCLAW_DISABLE_BUNDLED_PLUGINS: undefined,
+        OPERATOR_BUNDLED_PLUGINS_DIR: bundledDir,
+        OPERATOR_DISABLE_BUNDLED_PLUGINS: undefined,
       },
       () =>
-        loadOpenClawPlugins({
+        loadOperatorPlugins({
           cache: false,
           hostServices: { cron },
           config: {
@@ -1047,7 +1047,7 @@ describe("plugin scheduled turns", () => {
   it("wires schedule and unschedule through the plugin API with stale-registry protection", async () => {
     workflowMocks.cronAdd.mockResolvedValue(makeCronJob({ id: "job-live" }));
     const { config, registry } = createPluginRegistryFixture({}, { hostServices: { cron } });
-    let capturedApi: OpenClawPluginApi | undefined;
+    let capturedApi: OperatorPluginApi | undefined;
     registerTestPlugin({
       registry,
       config,
@@ -1131,7 +1131,7 @@ describe("plugin scheduled turns", () => {
       },
     };
     const { config, registry } = createPluginRegistryFixture({}, { hostServices });
-    let capturedApi: OpenClawPluginApi | undefined;
+    let capturedApi: OperatorPluginApi | undefined;
     registerTestPlugin({
       registry,
       config,

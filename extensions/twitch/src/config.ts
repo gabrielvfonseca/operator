@@ -4,7 +4,7 @@ import {
   normalizeAccountId,
   resolveNormalizedAccountEntry,
 } from "openclaw/plugin-sdk/account-resolution";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { resolveTwitchToken, type TwitchTokenResolution } from "./token.js";
 import type { TwitchAccountConfig } from "./types.js";
 import { isAccountConfigured } from "./utils/twitch.js";
@@ -40,7 +40,7 @@ export function getAccountConfig(
     return null;
   }
 
-  const cfg = coreConfig as OpenClawConfig;
+  const cfg = coreConfig as OperatorConfig;
   const normalizedAccountId = normalizeAccountId(accountId);
   const twitch = cfg.channels?.twitch;
   // Access accounts via unknown to handle union type (single-account vs multi-account)
@@ -110,7 +110,7 @@ export function getAccountConfig(
  *
  * Includes both explicit accounts and implicit "default" from base-level config
  */
-export function listAccountIds(cfg: OpenClawConfig): string[] {
+export function listAccountIds(cfg: OperatorConfig): string[] {
   const twitch = cfg.channels?.twitch;
   // Access accounts via unknown to handle union type (single-account vs multi-account)
   const twitchRaw = twitch as Record<string, unknown> | undefined;
@@ -131,7 +131,7 @@ export function listAccountIds(cfg: OpenClawConfig): string[] {
   });
 }
 
-export function resolveDefaultTwitchAccountId(cfg: OpenClawConfig): string {
+export function resolveDefaultTwitchAccountId(cfg: OperatorConfig): string {
   const preferredRaw =
     typeof cfg.channels?.twitch?.defaultAccount === "string"
       ? cfg.channels.twitch.defaultAccount.trim()
@@ -148,7 +148,7 @@ export function resolveDefaultTwitchAccountId(cfg: OpenClawConfig): string {
 }
 
 export function resolveTwitchAccountContext(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   accountId?: string | null,
 ): ResolvedTwitchAccountContext {
   const resolvedAccountId = accountId?.trim()
@@ -166,7 +166,7 @@ export function resolveTwitchAccountContext(
 }
 
 export function resolveTwitchSnapshotAccountId(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   account: TwitchAccountConfig,
 ): string {
   const twitch = (cfg as Record<string, unknown>).channels as Record<string, unknown> | undefined;

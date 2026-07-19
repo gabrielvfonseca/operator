@@ -1,7 +1,7 @@
 // Verifies optional media/PDF tool factory planning from plugin metadata and auth.
 import path from "node:path";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import {
   clearCurrentPluginMetadataSnapshot,
   getCurrentPluginMetadataSnapshot,
@@ -19,14 +19,14 @@ import { DEFAULT_PLUGIN_TOOLS_ALLOWLIST_ENTRY } from "./tool-policy.js";
 import { loadCapabilityMetadataSnapshot } from "./tools/manifest-capability-availability.js";
 import * as pdfModelConfigModule from "./tools/pdf-tool.model-config.js";
 
-type CreateOpenClawToolsOptions = Parameters<
-  typeof import("./openclaw-tools.js").createOpenClawTools
+type CreateOperatorToolsOptions = Parameters<
+  typeof import("./openclaw-tools.js").createOperatorTools
 >[0];
-let createOpenClawToolsForTestModule: typeof import("./openclaw-tools.js").createOpenClawTools;
+let createOperatorToolsForTestModule: typeof import("./openclaw-tools.js").createOperatorTools;
 let legacyComfyToolNames: string[];
 
-async function createOpenClawToolsForTest(options?: CreateOpenClawToolsOptions) {
-  return createOpenClawToolsForTestModule(options);
+async function createOperatorToolsForTest(options?: CreateOperatorToolsOptions) {
+  return createOperatorToolsForTestModule(options);
 }
 
 function createAuthStore(providers: string[] = []): AuthProfileStore {
@@ -99,7 +99,7 @@ function createInstalledPluginRecord(
   };
 }
 
-function legacyModelProviderConfig(provider: Record<string, unknown>): OpenClawConfig {
+function legacyModelProviderConfig(provider: Record<string, unknown>): OperatorConfig {
   return {
     models: {
       providers: {
@@ -110,7 +110,7 @@ function legacyModelProviderConfig(provider: Record<string, unknown>): OpenClawC
 }
 
 function installSnapshot(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   plugins: PluginManifestRecord[],
   enabledPluginIds = plugins
     .filter((plugin) => plugin.origin !== "bundled")
@@ -162,16 +162,16 @@ function installSnapshot(
 
 describe("optional media tool factory planning", () => {
   beforeAll(async () => {
-    ({ createOpenClawTools: createOpenClawToolsForTestModule } =
+    ({ createOperatorTools: createOperatorToolsForTestModule } =
       await import("./openclaw-tools.js"));
 
     const config = legacyModelProviderConfig({
       workflow: { "1": { inputs: {} } },
       promptNodeId: "1",
     });
-    vi.stubEnv("OPENCLAW_BUNDLED_PLUGINS_DIR", path.join(process.cwd(), "extensions"));
+    vi.stubEnv("OPERATOR_BUNDLED_PLUGINS_DIR", path.join(process.cwd(), "extensions"));
     legacyComfyToolNames = (
-      await createOpenClawToolsForTest({
+      await createOperatorToolsForTest({
         config,
         authProfileStore: createAuthStore(),
         pluginToolAllowlist: ["image_generate", "video_generate", "music_generate"],
@@ -196,7 +196,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("skips unavailable generation and PDF factories from snapshot and run auth facts", () => {
-    const config: OpenClawConfig = {};
+    const config: OperatorConfig = {};
     installSnapshot(config, [
       createPlugin({
         id: "image-owner",
@@ -235,8 +235,8 @@ describe("optional media tool factory planning", () => {
 
   it("does not plan media factories from workspace-scoped metadata without workspace context", () => {
     // Workspace snapshots are process-local facts and must not leak to unrelated runs.
-    const config: OpenClawConfig = {};
-    vi.stubEnv("OPENCLAW_DISABLE_BUNDLED_PLUGINS", "1");
+    const config: OperatorConfig = {};
+    vi.stubEnv("OPERATOR_DISABLE_BUNDLED_PLUGINS", "1");
     installSnapshot(
       config,
       [
@@ -273,7 +273,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("keeps explicit model configs on the factory path", () => {
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       agents: {
         defaults: {
           imageGenerationModel: { primary: "image-owner/model" },
@@ -299,7 +299,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("preserves implicit allow-all from alsoAllow-only policies for built-in media factories", async () => {
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       agents: {
         defaults: {
           imageGenerationModel: { primary: "image-owner/model" },
@@ -326,7 +326,7 @@ describe("optional media tool factory planning", () => {
     });
 
     const toolNames = (
-      await createOpenClawToolsForTest({
+      await createOperatorToolsForTest({
         config,
         agentDir: "/tmp/openclaw-agent-main",
         authProfileStore: createAuthStore(),
@@ -340,7 +340,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("keeps denylists authoritative when alsoAllow-only policies preserve factory construction", () => {
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       agents: {
         defaults: {
           imageGenerationModel: { primary: "image-owner/model" },
@@ -368,7 +368,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("skips tools that the resolved allowlist cannot expose", () => {
-    const config: OpenClawConfig = {};
+    const config: OperatorConfig = {};
     installSnapshot(config, [
       createPlugin({
         id: "image-owner",
@@ -397,7 +397,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("skips tools that the resolved denylist blocks", () => {
-    const config: OpenClawConfig = {};
+    const config: OperatorConfig = {};
     installSnapshot(config, [
       createPlugin({
         id: "image-owner",
@@ -426,7 +426,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("applies global tool policy before optional media factories run", () => {
-    const config: OpenClawConfig = { tools: { deny: ["pdf"] } };
+    const config: OperatorConfig = { tools: { deny: ["pdf"] } };
     installSnapshot(config, [
       createPlugin({
         id: "media-owner",
@@ -444,7 +444,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("applies wildcard deny patterns to optional factory planning", () => {
-    const config: OpenClawConfig = {};
+    const config: OperatorConfig = {};
     installSnapshot(config, [
       createPlugin({
         id: "image-owner",
@@ -483,7 +483,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("keeps auth-backed providers on the factory path", () => {
-    const config: OpenClawConfig = {};
+    const config: OperatorConfig = {};
     installSnapshot(config, [
       createPlugin({
         id: "image-owner",
@@ -522,7 +522,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("keeps manifest provider auth env aliases on the music factory path", () => {
-    const config: OpenClawConfig = {};
+    const config: OperatorConfig = {};
     installSnapshot(config, [
       createPlugin({
         id: "minimax",
@@ -544,11 +544,11 @@ describe("optional media tool factory planning", () => {
   });
 
   it("defers PDF model resolution from the tool-prep hot path", async () => {
-    const config: OpenClawConfig = {};
+    const config: OperatorConfig = {};
     installSnapshot(config, []);
     const resolveSpy = vi.spyOn(pdfModelConfigModule, "resolvePdfModelConfigForTool");
 
-    const tools = await createOpenClawToolsForTest({
+    const tools = await createOperatorToolsForTest({
       config,
       agentDir: "/tmp/openclaw-agent-main",
       authProfileStore: createAuthStore(["anthropic"]),
@@ -559,7 +559,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("keeps enabled external manifest capability providers on the factory path", () => {
-    const config: OpenClawConfig = {};
+    const config: OperatorConfig = {};
     installSnapshot(config, [
       createPlugin({
         id: "external-image",
@@ -606,7 +606,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("keeps manifest-declared image provider auth aliases on the factory path", async () => {
-    const config: OpenClawConfig = {};
+    const config: OperatorConfig = {};
     const plugins = [
       createPlugin({
         id: "openai",
@@ -641,7 +641,7 @@ describe("optional media tool factory planning", () => {
     installSnapshot(config, plugins, undefined, process.cwd());
     expect(
       (
-        await createOpenClawToolsForTest({
+        await createOperatorToolsForTest({
           config,
           workspaceDir: process.cwd(),
           authProfileStore: createAuthStore(["openai"]),
@@ -652,7 +652,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("keeps manifest-declared config-only generation providers on the factory path", () => {
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       plugins: {
         entries: {
           comfy: {
@@ -707,7 +707,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("does not expose manifest-backed generation providers when plugins are globally disabled", async () => {
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       plugins: {
         enabled: false,
         entries: {
@@ -765,7 +765,7 @@ describe("optional media tool factory planning", () => {
       pdf: false,
     });
     const toolNames = (
-      await createOpenClawToolsForTest({
+      await createOperatorToolsForTest({
         config,
         authProfileStore: createAuthStore(),
         pluginToolAllowlist: ["image_generate", "video_generate", "music_generate"],
@@ -779,7 +779,7 @@ describe("optional media tool factory planning", () => {
   it("does not count unresolved SecretRef config signals as configured", async () => {
     vi.stubEnv("COMFY_TEST_API_KEY", "");
     const workspaceDir = process.cwd();
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       plugins: {
         entries: {
           comfy: {
@@ -842,7 +842,7 @@ describe("optional media tool factory planning", () => {
       pdf: false,
     });
     const toolNames = (
-      await createOpenClawToolsForTest({
+      await createOperatorToolsForTest({
         config,
         workspaceDir,
         authProfileStore: createAuthStore(),
@@ -855,7 +855,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("counts configured non-env SecretRef config signals without resolving secrets", () => {
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       plugins: {
         entries: {
           comfy: {
@@ -919,7 +919,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("does not register the image tool without cheap vision availability evidence", async () => {
-    const config: OpenClawConfig = {};
+    const config: OperatorConfig = {};
     const workspaceDir = "/tmp/openclaw-workspace";
     vi.stubEnv("MEDIA_OWNER_API_KEY", "");
     installSnapshot(
@@ -937,7 +937,7 @@ describe("optional media tool factory planning", () => {
 
     expect(
       (
-        await createOpenClawToolsForTest({
+        await createOperatorToolsForTest({
           config,
           agentDir: "/tmp/openclaw-agent",
           workspaceDir,
@@ -972,7 +972,7 @@ describe("optional media tool factory planning", () => {
             },
           },
         },
-      } satisfies OpenClawConfig,
+      } satisfies OperatorConfig,
       expectedToolNames: undefined,
     },
     {
@@ -991,7 +991,7 @@ describe("optional media tool factory planning", () => {
       const toolNames = expectedToolNames
         ? expectedToolNames()
         : (
-            await createOpenClawToolsForTest({
+            await createOperatorToolsForTest({
               config,
               authProfileStore: createAuthStore(),
               pluginToolAllowlist: ["image_generate", "video_generate", "music_generate"],
@@ -1005,7 +1005,7 @@ describe("optional media tool factory planning", () => {
   );
 
   it("honors manifest-declared image provider auth alias base-url guards", () => {
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       models: {
         providers: {
           openai: {
@@ -1045,7 +1045,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("ignores external manifest capability providers excluded by plugin policy", () => {
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       plugins: {
         allow: ["other-plugin"],
       },
@@ -1073,7 +1073,7 @@ describe("optional media tool factory planning", () => {
   });
 
   it("does not use a generic factory plan when metadata has no availability proof", () => {
-    const config: OpenClawConfig = {};
+    const config: OperatorConfig = {};
     installSnapshot(config, []);
 
     expect(

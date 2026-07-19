@@ -1,4 +1,4 @@
-// Defines the top-level OpenClaw configuration type.
+// Defines the top-level Operator configuration type.
 import type { SilentReplyPolicyShape } from "../shared/silent-reply-policy.js";
 import type { TranscriptsConfig } from "../transcripts/config.js";
 import type { AccessGroupsConfig } from "./types.access-groups.js";
@@ -101,12 +101,12 @@ export type SurfaceConfigEntry = {
   silentReply?: SilentReplyPolicyShape;
 };
 
-/** Top-level OpenClaw config as read from user/project config files. */
-export type OpenClawConfig = {
+/** Top-level Operator config as read from user/project config files. */
+export type OperatorConfig = {
   /** JSON schema URL used by editors and generated config files. */
   $schema?: string;
   meta?: {
-    /** Last OpenClaw version that wrote this config. */
+    /** Last Operator version that wrote this config. */
     lastTouchedVersion?: string;
     /** ISO timestamp when this config was last written. */
     lastTouchedAt?: string;
@@ -136,7 +136,7 @@ export type OpenClawConfig = {
   wizard?: {
     /** Last setup wizard completion timestamp. */
     lastRunAt?: string;
-    /** OpenClaw version used by the last completed wizard run. */
+    /** Operator version used by the last completed wizard run. */
     lastRunVersion?: string;
     /** Git commit used by the last completed wizard run, when available. */
     lastRunCommit?: string;
@@ -179,7 +179,7 @@ export type OpenClawConfig = {
   /** Browser automation and browser plugin integration settings. */
   browser?: BrowserConfig;
   ui?: {
-    /** Accent color for OpenClaw UI chrome (hex). */
+    /** Accent color for Operator UI chrome (hex). */
     seamColor?: string;
     assistant?: {
       /** Assistant display name for UI surfaces. */
@@ -265,13 +265,13 @@ export type OpenClawConfig = {
 };
 
 /** Config input shape accepted before model provider defaults are fully materialized. */
-export type OpenClawConfigInput = Omit<OpenClawConfig, "models"> & {
+export type OperatorConfigInput = Omit<OperatorConfig, "models"> & {
   models?: ModelsConfigInput;
 };
 
 declare const openClawConfigStateBrand: unique symbol;
 
-type BrandedConfigState<TState extends string> = OpenClawConfig & {
+type BrandedConfigState<TState extends string> = OperatorConfig & {
   readonly [openClawConfigStateBrand]?: TState;
 };
 

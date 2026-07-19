@@ -9,8 +9,8 @@ import {
   recordSessionSkillCaptureSignals,
 } from "../../config/sessions/skill-suggestions.js";
 import {
-  createOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  type OperatorTestState,
 } from "../../test-utils/operator-test-state.js";
 import { createTrackedTempDirs } from "../../test-utils/tracked-temp-dirs.js";
 import {
@@ -24,7 +24,7 @@ import * as workshopService from "../workshop/service.js";
 import { runSkillResearchAutoCapture } from "./autocapture.js";
 
 const tempDirs = createTrackedTempDirs();
-let testState: OpenClawTestState;
+let testState: OperatorTestState;
 const SESSION_KEY = "agent:main:main";
 
 async function seedSession(sessionKey = SESSION_KEY): Promise<void> {
@@ -39,7 +39,7 @@ function readSession(sessionKey = SESSION_KEY) {
 }
 
 beforeEach(async () => {
-  testState = await createOpenClawTestState({
+  testState = await createOperatorTestState({
     layout: "state-only",
     prefix: "openclaw-skill-workshop-state-",
   });

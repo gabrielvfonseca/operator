@@ -132,7 +132,7 @@ export function addGatewayServiceCommands(parent: Command, opts?: { statusDescri
     .option("--force", "Restart immediately without waiting for active gateway work", false)
     .option(
       "--safe",
-      "Request an OpenClaw-aware restart after active work drains " +
+      "Request an Operator-aware restart after active work drains " +
         "(bounded wait; may force after gateway.reload.deferralTimeoutMs expires; " +
         "set deferralTimeoutMs=0 for indefinite wait)",
       false,

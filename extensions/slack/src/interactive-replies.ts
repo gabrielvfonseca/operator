@@ -1,5 +1,5 @@
 // Slack plugin module implements interactive replies behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
@@ -196,7 +196,7 @@ function resolveInteractiveRepliesFromCapabilities(capabilities: unknown): boole
  * @deprecated Only needed for legacy Slack reply directives. New producers should emit presentation payloads.
  */
 export function isSlackInteractiveRepliesEnabled(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
 }): boolean {
   const account = resolveSlackAccount({

@@ -25,19 +25,19 @@ import {
 } from "./session-files.js";
 
 function captureStateDirEnv() {
-  const stateDir = process.env.OPENCLAW_STATE_DIR;
-  const configPath = process.env.OPENCLAW_CONFIG_PATH;
+  const stateDir = process.env.OPERATOR_STATE_DIR;
+  const configPath = process.env.OPERATOR_CONFIG_PATH;
   return {
     restore() {
       if (stateDir === undefined) {
-        Reflect.deleteProperty(process.env, "OPENCLAW_STATE_DIR");
+        Reflect.deleteProperty(process.env, "OPERATOR_STATE_DIR");
       } else {
-        Reflect.set(process.env, "OPENCLAW_STATE_DIR", stateDir);
+        Reflect.set(process.env, "OPERATOR_STATE_DIR", stateDir);
       }
       if (configPath === undefined) {
-        Reflect.deleteProperty(process.env, "OPENCLAW_CONFIG_PATH");
+        Reflect.deleteProperty(process.env, "OPERATOR_CONFIG_PATH");
       } else {
-        Reflect.set(process.env, "OPENCLAW_CONFIG_PATH", configPath);
+        Reflect.set(process.env, "OPERATOR_CONFIG_PATH", configPath);
       }
     },
   };
@@ -60,7 +60,7 @@ beforeEach(() => {
   tmpDir = path.join(fixtureRoot, `case-${fixtureId++}`);
   fsSync.mkdirSync(tmpDir, { recursive: true });
   envSnapshot = captureStateDirEnv();
-  Reflect.set(process.env, "OPENCLAW_STATE_DIR", tmpDir);
+  Reflect.set(process.env, "OPERATOR_STATE_DIR", tmpDir);
   clearRuntimeConfigSnapshot();
   clearConfigCache();
 });
@@ -458,7 +458,7 @@ describe("listSessionTranscriptCorpusEntriesForAgent", () => {
     fsSync.mkdirSync(sessionsDir, { recursive: true });
     fsSync.writeFileSync(sessionFile, "");
     fsSync.writeFileSync(configPath, JSON.stringify({ session: { store: storePath } }));
-    Reflect.set(process.env, "OPENCLAW_CONFIG_PATH", configPath);
+    Reflect.set(process.env, "OPERATOR_CONFIG_PATH", configPath);
     clearRuntimeConfigSnapshot();
     clearConfigCache();
     await upsertTestSessionEntries(storePath, {
@@ -484,7 +484,7 @@ describe("listSessionTranscriptCorpusEntriesForAgent", () => {
       configPath,
       JSON.stringify({ session: { store: path.join(sessionsDir, "sessions.json") } }),
     );
-    Reflect.set(process.env, "OPENCLAW_CONFIG_PATH", configPath);
+    Reflect.set(process.env, "OPERATOR_CONFIG_PATH", configPath);
     clearRuntimeConfigSnapshot();
     clearConfigCache();
 
@@ -514,7 +514,7 @@ describe("listSessionTranscriptCorpusEntriesForAgent", () => {
     fsSync.writeFileSync(sessionFile, "");
     fsSync.writeFileSync(archivePath, "");
     fsSync.writeFileSync(configPath, JSON.stringify({ session: { store: storePath } }));
-    Reflect.set(process.env, "OPENCLAW_CONFIG_PATH", configPath);
+    Reflect.set(process.env, "OPERATOR_CONFIG_PATH", configPath);
     clearRuntimeConfigSnapshot();
     clearConfigCache();
     await upsertTestSessionEntries(storePath, {
@@ -566,7 +566,7 @@ describe("listSessionTranscriptCorpusEntriesForAgent", () => {
       configPath,
       JSON.stringify({ agents: { list: [{ id: "ops", default: true }] } }),
     );
-    Reflect.set(process.env, "OPENCLAW_CONFIG_PATH", configPath);
+    Reflect.set(process.env, "OPERATOR_CONFIG_PATH", configPath);
     clearRuntimeConfigSnapshot();
     clearConfigCache();
 
@@ -597,7 +597,7 @@ describe("sessionPathForFile", () => {
 });
 
 describe("memory session sync targets", () => {
-  it("parses deprecated canonical OpenClaw transcript paths into sync identity", () => {
+  it("parses deprecated canonical Operator transcript paths into sync identity", () => {
     const sessionFile = path.join(tmpDir, "agents", "main", "sessions", "active.jsonl");
     fsSync.mkdirSync(path.dirname(sessionFile), { recursive: true });
 

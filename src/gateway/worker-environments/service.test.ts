@@ -3,16 +3,16 @@ import os from "node:os";
 import path from "node:path";
 import { expectDefined } from "@operator/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/types.js";
+import type { OperatorConfig } from "../../config/types.js";
 import {
   WorkerProviderError,
   type WorkerProvider,
   type WorkerSshEndpoint,
 } from "../../plugins/types.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
-  type OpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
+  type OperatorStateDatabase,
 } from "../../state/openclaw-state-db.js";
 import type { WorkerInstallationArtifact } from "./bundle.js";
 import type { WorkerConnectionIdentity } from "./connection-identity.js";
@@ -68,10 +68,10 @@ type WorkerLifecycleLease = Parameters<WorkerProvider["inspect"]>[0];
 
 describe("worker environment service", () => {
   let root: string;
-  let database: OpenClawStateDatabase;
+  let database: OperatorStateDatabase;
   let store: WorkerEnvironmentStore;
   let service: WorkerEnvironmentService | undefined;
-  let config: OpenClawConfig;
+  let config: OperatorConfig;
   let nowMs: number;
   let providersEnabled: boolean;
   let prepareInstallation: WorkerEnvironmentServiceOptions["prepareInstallation"];
@@ -79,7 +79,7 @@ describe("worker environment service", () => {
 
   beforeEach(async () => {
     root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "openclaw-worker-service-"));
-    database = openOpenClawStateDatabase({ env: { OPENCLAW_STATE_DIR: root } });
+    database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: root } });
     nowMs = 1_000;
     providersEnabled = true;
     store = createWorkerEnvironmentStore({ database, now: () => nowMs });
@@ -107,7 +107,7 @@ describe("worker environment service", () => {
   afterEach(async () => {
     await service?.stop();
     vi.useRealTimers();
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await fs.rm(root, { recursive: true, force: true });
   });
 
@@ -1101,8 +1101,8 @@ describe("worker environment service", () => {
         WHERE environment_id = 'legacy-b';
     `);
 
-    closeOpenClawStateDatabaseForTest();
-    database = openOpenClawStateDatabase({ env: { OPENCLAW_STATE_DIR: root } });
+    closeOperatorStateDatabaseForTest();
+    database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: root } });
     store = createWorkerEnvironmentStore({ database, now: () => nowMs });
     const liveEvents = createLiveEvents();
     const workerService = createService(createProvider(), { liveEvents });

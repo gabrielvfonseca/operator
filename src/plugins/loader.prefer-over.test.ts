@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { applyPluginAutoEnable } from "../config/plugin-auto-enable.js";
-import { clearPluginLoaderCache, loadOpenClawPlugins } from "./loader.test-fixtures.js";
+import { clearPluginLoaderCache, loadOperatorPlugins } from "./loader.test-fixtures.js";
 import { resetPluginRuntimeStateForTest } from "./runtime.js";
 
 const tempDirs: string[] = [];
@@ -112,8 +112,8 @@ describe("plugin loader preferOver activation", () => {
       preferOver: ["qqbot"],
     });
     const env = {
-      OPENCLAW_STATE_DIR: makeTempDir(),
-      OPENCLAW_BUNDLED_PLUGINS_DIR: bundledRoot,
+      OPERATOR_STATE_DIR: makeTempDir(),
+      OPERATOR_BUNDLED_PLUGINS_DIR: bundledRoot,
     };
     const rawConfig = {
       channels: { qqbot: { appId: "app", clientSecret: "secret" } },
@@ -121,7 +121,7 @@ describe("plugin loader preferOver activation", () => {
     };
     const autoEnabled = applyPluginAutoEnable({ config: rawConfig, env });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       config: autoEnabled.config,
       activationSourceConfig: rawConfig,
@@ -156,11 +156,11 @@ describe("plugin loader preferOver activation", () => {
       channelId: "qqbot",
     });
     const env = {
-      OPENCLAW_STATE_DIR: makeTempDir(),
-      OPENCLAW_BUNDLED_PLUGINS_DIR: bundledRoot,
+      OPERATOR_STATE_DIR: makeTempDir(),
+      OPERATOR_BUNDLED_PLUGINS_DIR: bundledRoot,
     };
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       config: {
         channels: { qqbot: { appId: "app", clientSecret: "secret" } },

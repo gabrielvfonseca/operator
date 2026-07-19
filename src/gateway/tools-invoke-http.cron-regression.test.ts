@@ -71,7 +71,7 @@ vi.mock("../agents/openclaw-tools.js", () => {
     },
   ];
   return {
-    createOpenClawTools: () => tools,
+    createOperatorTools: () => tools,
   };
 });
 

@@ -2,21 +2,21 @@
  * Tests agent directory compatibility helpers.
  */
 import { describe, expect, it } from "vitest";
-import { resolveOpenClawAgentDir } from "./agent-dir-compat.js";
+import { resolveOperatorAgentDir } from "./agent-dir-compat.js";
 
-describe("resolveOpenClawAgentDir", () => {
+describe("resolveOperatorAgentDir", () => {
   it("keeps the shipped Pi env alias for deprecated plugin SDK callers", () => {
     expect(
-      resolveOpenClawAgentDir({
+      resolveOperatorAgentDir({
         PI_CODING_AGENT_DIR: "/tmp/openclaw-legacy-agent",
       }),
     ).toBe("/tmp/openclaw-legacy-agent");
   });
 
-  it("prefers the OpenClaw env override over the deprecated Pi alias", () => {
+  it("prefers the Operator env override over the deprecated Pi alias", () => {
     expect(
-      resolveOpenClawAgentDir({
-        OPENCLAW_AGENT_DIR: "/tmp/openclaw-agent",
+      resolveOperatorAgentDir({
+        OPERATOR_AGENT_DIR: "/tmp/openclaw-agent",
         PI_CODING_AGENT_DIR: "/tmp/openclaw-legacy-agent",
       }),
     ).toBe("/tmp/openclaw-agent");

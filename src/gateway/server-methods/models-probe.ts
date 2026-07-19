@@ -13,7 +13,7 @@ import {
   type AuthProbeStatus,
   runAuthProbes,
 } from "../../commands/models/list.probe.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { GatewayRequestHandlers } from "./types.js";
 
 const DEFAULT_TIMEOUT_MS = 20_000;
@@ -46,7 +46,7 @@ function safeProbeError(status: AuthProbeStatus): string | undefined {
   return status === "ok" ? undefined : PROBE_ERROR_MESSAGES[status];
 }
 
-function modelCandidatesFromConfig(cfg: OpenClawConfig): string[] {
+function modelCandidatesFromConfig(cfg: OperatorConfig): string[] {
   const configured = cfg.agents?.defaults?.model;
   const primary = typeof configured === "string" ? configured : configured?.primary;
   const fallbacks = typeof configured === "string" ? [] : (configured?.fallbacks ?? []);

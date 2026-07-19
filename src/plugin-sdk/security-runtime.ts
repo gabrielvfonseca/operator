@@ -64,7 +64,7 @@ export {
   resolveStrictExistingPathsWithinRoot,
 } from "../infra/root-paths.js";
 
-export { resolvePreferredOpenClawTmpDir } from "../infra/tmp-operator-dir.js";
+export { resolvePreferredOperatorTmpDir } from "../infra/tmp-operator-dir.js";
 export { redactSensitiveText } from "../logging/redact.js";
 export { safeEqualSecret } from "../security/secret-equal.js";
 

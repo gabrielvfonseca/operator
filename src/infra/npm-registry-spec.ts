@@ -6,7 +6,7 @@ import {
   type SemVer,
   valid as validSemver,
 } from "semver";
-import { compareOpenClawSemver, isOpenClawCorrectionSemver } from "./semver.js";
+import { compareOperatorSemver, isOperatorCorrectionSemver } from "./semver.js";
 
 const OPERATOR_RELEASE_PREFIX_RE = /^\d{4}\./;
 const DIST_TAG_RE = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
@@ -90,7 +90,7 @@ function parseRegistryNpmSpecInternal(
         selectorKind: "exact-version",
         selectorIsPrerelease:
           parseSemverPrerelease(exactVersion) !== null &&
-          !isOpenClawStableCorrectionVersion(selector),
+          !isOperatorStableCorrectionVersion(selector),
       },
     };
   }
@@ -118,8 +118,8 @@ export function parseRegistryNpmSpec(rawSpec: string): ParsedRegistryNpmSpec | n
   return parsed.ok ? parsed.parsed : null;
 }
 
-/** Returns whether a user-provided npm spec resolves to the official OpenClaw npm scope. */
-export function isOpenClawOrgNpmSpec(rawSpec: string | undefined): boolean {
+/** Returns whether a user-provided npm spec resolves to the official Operator npm scope. */
+export function isOperatorOrgNpmSpec(rawSpec: string | undefined): boolean {
   const parsed = rawSpec ? parseRegistryNpmSpec(rawSpec) : null;
   return parsed?.name.startsWith("@operator/") === true;
 }
@@ -135,8 +135,8 @@ export function isExactSemverVersion(value: string): boolean {
   return validSemver(value.trim()) !== null;
 }
 
-/** Parses OpenClaw's monthly patch stable/alpha/beta/correction version format. */
-function parseOpenClawReleaseVersion(value: string): SemVer | null {
+/** Parses Operator's monthly patch stable/alpha/beta/correction version format. */
+function parseOperatorReleaseVersion(value: string): SemVer | null {
   const trimmed = value.trim();
   const parsed = OPERATOR_RELEASE_PREFIX_RE.test(trimmed) ? parseSemver(trimmed) : null;
   if (!parsed || parsed.build.length > 0) {
@@ -148,7 +148,7 @@ function parseOpenClawReleaseVersion(value: string): SemVer | null {
 
   const [label, sequence] = parsed.prerelease;
   const isStable = parsed.prerelease.length === 0;
-  const isCorrection = isOpenClawCorrectionSemver(parsed) && typeof label === "number" && label > 0;
+  const isCorrection = isOperatorCorrectionSemver(parsed) && typeof label === "number" && label > 0;
   const isAlpha =
     parsed.prerelease.length === 2 &&
     label === "alpha" &&
@@ -165,29 +165,29 @@ function parseOpenClawReleaseVersion(value: string): SemVer | null {
   return parsed;
 }
 
-/** Returns whether a version is an OpenClaw monthly patch stable correction release. */
-function isOpenClawStableCorrectionVersion(value: string): boolean {
-  const parsed = parseOpenClawReleaseVersion(value);
-  return parsed !== null && isOpenClawCorrectionSemver(parsed);
+/** Returns whether a version is an Operator monthly patch stable correction release. */
+function isOperatorStableCorrectionVersion(value: string): boolean {
+  const parsed = parseOperatorReleaseVersion(value);
+  return parsed !== null && isOperatorCorrectionSemver(parsed);
 }
 
-/** Compares OpenClaw monthly patch release versions across alpha, beta, stable, and corrections. */
-export function compareOpenClawReleaseVersions(left: string, right: string): number | null {
-  const parsedLeft = parseOpenClawReleaseVersion(left);
-  const parsedRight = parseOpenClawReleaseVersion(right);
-  return parsedLeft && parsedRight ? compareOpenClawSemver(parsedLeft, parsedRight) : null;
+/** Compares Operator monthly patch release versions across alpha, beta, stable, and corrections. */
+export function compareOperatorReleaseVersions(left: string, right: string): number | null {
+  const parsedLeft = parseOperatorReleaseVersion(left);
+  const parsedRight = parseOperatorReleaseVersion(right);
+  return parsedLeft && parsedRight ? compareOperatorSemver(parsedLeft, parsedRight) : null;
 }
 
 /** Returns whether an exact semver value is a prerelease, excluding stable correction releases. */
 export function isPrereleaseSemverVersion(value: string): boolean {
   const trimmed = value.trim();
-  return parseSemverPrerelease(trimmed) !== null && !isOpenClawStableCorrectionVersion(trimmed);
+  return parseSemverPrerelease(trimmed) !== null && !isOperatorStableCorrectionVersion(trimmed);
 }
 
 /**
  * Enforces explicit opt-in before an npm spec may resolve to a prerelease.
  * Bare specs and `latest` stay on stable releases unless the resolved version
- * is an OpenClaw stable correction.
+ * is an Operator stable correction.
  */
 export function isPrereleaseResolutionAllowed(params: {
   spec: ParsedRegistryNpmSpec;

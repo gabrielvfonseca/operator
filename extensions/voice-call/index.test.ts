@@ -5,7 +5,7 @@ import path from "node:path";
 import { Command } from "commander";
 import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawPluginApi } from "./api.js";
+import type { OperatorPluginApi } from "./api.js";
 import type { VoiceCallRuntime } from "./runtime-entry.js";
 import type { CallRecord } from "./src/types.js";
 
@@ -35,7 +35,7 @@ type Registered = {
   methods: Map<string, unknown>;
   methodScopes: Map<string, string | undefined>;
   tools: unknown[];
-  service?: Parameters<OpenClawPluginApi["registerService"]>[0];
+  service?: Parameters<OperatorPluginApi["registerService"]>[0];
 };
 type MockCallSource = {
   mock: {
@@ -141,7 +141,7 @@ function setup(
     source: "test",
     config: {},
     pluginConfig: config,
-    runtime: { tts: { textToSpeechTelephony: vi.fn() } } as unknown as OpenClawPluginApi["runtime"],
+    runtime: { tts: { textToSpeechTelephony: vi.fn() } } as unknown as OperatorPluginApi["runtime"],
     logger: noopLogger,
     registerGatewayMethod: (method: string, handler: unknown, opts?: { scope?: string }) => {
       methods.set(method, handler);
@@ -337,7 +337,7 @@ describe("voice-call plugin", () => {
   });
 
   it("does not start the webhook runtime for CLI-only plugin loading", async () => {
-    vi.stubEnv("OPENCLAW_CLI", "1");
+    vi.stubEnv("OPERATOR_CLI", "1");
     const { service } = setup({ provider: "mock" });
 
     await service?.start(createServiceContext());
@@ -347,7 +347,7 @@ describe("voice-call plugin", () => {
 
   it("still starts the webhook runtime for gateway CLI processes", async () => {
     const previousArgv = process.argv;
-    vi.stubEnv("OPENCLAW_CLI", "1");
+    vi.stubEnv("OPERATOR_CLI", "1");
     process.argv = ["node", "openclaw", "gateway", "run"];
     const { service } = setup({ provider: "mock" });
 
@@ -1274,7 +1274,7 @@ describe("voice-call plugin", () => {
         from: "user",
       });
       expect(runtimeStub.manager["initiateCall"]).toHaveBeenCalledWith("+15550009999", undefined, {
-        message: "OpenClaw voice call smoke test.",
+        message: "Operator voice call smoke test.",
         mode: "notify",
       });
       expect(stdout.output()).toContain("live-call: started call-1");

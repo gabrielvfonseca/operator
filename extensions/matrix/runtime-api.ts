@@ -47,7 +47,7 @@ export type {
   ChannelDirectoryEntry,
   ChannelMessageActionContext,
 } from "openclaw/plugin-sdk/channel-contract";
-export type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+export type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 export { formatZonedTimestamp } from "openclaw/plugin-sdk/time-runtime";
 export type { PluginRuntime, RuntimeLogger } from "openclaw/plugin-sdk/plugin-runtime";
 export type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";

@@ -136,19 +136,19 @@ function setup(
 }
 
 const GOOGLE_MEET_ENV_KEYS = [
-  "OPENCLAW_GOOGLE_MEET_CLIENT_ID",
+  "OPERATOR_GOOGLE_MEET_CLIENT_ID",
   "GOOGLE_MEET_CLIENT_ID",
-  "OPENCLAW_GOOGLE_MEET_CLIENT_SECRET",
+  "OPERATOR_GOOGLE_MEET_CLIENT_SECRET",
   "GOOGLE_MEET_CLIENT_SECRET",
-  "OPENCLAW_GOOGLE_MEET_REFRESH_TOKEN",
+  "OPERATOR_GOOGLE_MEET_REFRESH_TOKEN",
   "GOOGLE_MEET_REFRESH_TOKEN",
-  "OPENCLAW_GOOGLE_MEET_ACCESS_TOKEN",
+  "OPERATOR_GOOGLE_MEET_ACCESS_TOKEN",
   "GOOGLE_MEET_ACCESS_TOKEN",
-  "OPENCLAW_GOOGLE_MEET_ACCESS_TOKEN_EXPIRES_AT",
+  "OPERATOR_GOOGLE_MEET_ACCESS_TOKEN_EXPIRES_AT",
   "GOOGLE_MEET_ACCESS_TOKEN_EXPIRES_AT",
-  "OPENCLAW_GOOGLE_MEET_DEFAULT_MEETING",
+  "OPERATOR_GOOGLE_MEET_DEFAULT_MEETING",
   "GOOGLE_MEET_DEFAULT_MEETING",
-  "OPENCLAW_GOOGLE_MEET_PREVIEW_ACK",
+  "OPERATOR_GOOGLE_MEET_PREVIEW_ACK",
   "GOOGLE_MEET_PREVIEW_ACK",
 ] as const;
 
@@ -672,7 +672,7 @@ describe("google-meet plugin", () => {
     expect(config.chrome).toEqual({
       audioBackend: "blackhole-2ch",
       launch: true,
-      guestName: "OpenClaw Agent",
+      guestName: "Operator Agent",
       reuseExistingTab: true,
       autoJoin: true,
       joinTimeoutMs: 30000,
@@ -989,13 +989,13 @@ describe("google-meet plugin", () => {
 
   it("uses env fallbacks for OAuth, preview, and default meeting values", () => {
     const config = resolveGoogleMeetConfigFromTestEnv({
-      OPENCLAW_GOOGLE_MEET_CLIENT_ID: "client-id",
+      OPERATOR_GOOGLE_MEET_CLIENT_ID: "client-id",
       GOOGLE_MEET_CLIENT_SECRET: "client-secret",
-      OPENCLAW_GOOGLE_MEET_REFRESH_TOKEN: "refresh-token",
+      OPERATOR_GOOGLE_MEET_REFRESH_TOKEN: "refresh-token",
       GOOGLE_MEET_ACCESS_TOKEN: "access-token",
-      OPENCLAW_GOOGLE_MEET_ACCESS_TOKEN_EXPIRES_AT: "123456",
+      OPERATOR_GOOGLE_MEET_ACCESS_TOKEN_EXPIRES_AT: "123456",
       GOOGLE_MEET_DEFAULT_MEETING: "https://meet.google.com/abc-defg-hij",
-      OPENCLAW_GOOGLE_MEET_PREVIEW_ACK: "true",
+      OPERATOR_GOOGLE_MEET_PREVIEW_ACK: "true",
     });
     expect(config.defaults).toEqual({ meeting: "https://meet.google.com/abc-defg-hij" });
     expect(config.preview).toEqual({ enrollmentAcknowledged: true });
@@ -1010,8 +1010,8 @@ describe("google-meet plugin", () => {
 
   it.each(["0x10", "1e3"])("ignores non-decimal env numeric fallbacks: %s", (expiresAt) => {
     const config = resolveGoogleMeetConfigFromTestEnv({
-      OPENCLAW_GOOGLE_MEET_ACCESS_TOKEN: "access-token",
-      OPENCLAW_GOOGLE_MEET_ACCESS_TOKEN_EXPIRES_AT: expiresAt,
+      OPERATOR_GOOGLE_MEET_ACCESS_TOKEN: "access-token",
+      OPERATOR_GOOGLE_MEET_ACCESS_TOKEN_EXPIRES_AT: expiresAt,
     });
 
     expect(config.oauth).toEqual({ accessToken: "access-token" });
@@ -1172,7 +1172,7 @@ describe("google-meet plugin", () => {
       type: "string",
       enum: ["agent", "bidi", "transcribe"],
       description:
-        "Join mode. agent uses realtime transcription, the configured OpenClaw agent, and regular TTS. bidi uses the realtime voice model directly. transcribe joins observe-only.",
+        "Join mode. agent uses realtime transcription, the configured Operator agent, and regular TTS. bidi uses the realtime voice model directly. transcribe joins observe-only.",
     });
   });
 
@@ -3560,7 +3560,7 @@ describe("google-meet plugin", () => {
                 lobbyWaiting: true,
                 manualActionRequired: true,
                 manualActionReason: "meet-admission-required",
-                manualActionMessage: "Admit the OpenClaw browser participant in Google Meet.",
+                manualActionMessage: "Admit the Operator browser participant in Google Meet.",
                 title: "Meet",
                 url: "https://meet.google.com/abc-defg-hij",
               }),
@@ -4750,7 +4750,7 @@ describe("google-meet plugin", () => {
                     inCall: false,
                     manualActionRequired: true,
                     manualActionReason: "meet-admission-required",
-                    manualActionMessage: "Admit the OpenClaw browser participant in Google Meet.",
+                    manualActionMessage: "Admit the Operator browser participant in Google Meet.",
                     title: "Meet",
                     url: "https://meet.google.com/abc-defg-hij?authuser=me%40example.com&hl=en",
                   }),
@@ -4987,7 +4987,7 @@ describe("google-meet plugin", () => {
               inCall: false,
               manualActionRequired: true,
               manualActionReason: "meet-admission-required",
-              manualActionMessage: "Admit the OpenClaw browser participant in Google Meet.",
+              manualActionMessage: "Admit the Operator browser participant in Google Meet.",
               title: "Meet",
               url: "https://meet.google.com/abc-defg-hij?authuser=me%40example.com&hl=en",
             }),
@@ -6334,7 +6334,7 @@ describe("google-meet plugin", () => {
           manualActionRequired: true,
           manualActionReason: "google-login-required",
           manualActionMessage:
-            "Sign in to Google in the OpenClaw browser profile, then retry the Meet join.",
+            "Sign in to Google in the Operator browser profile, then retry the Meet join.",
           title: "Sign in - Google Accounts",
           url: "https://accounts.google.com/signin",
         },
@@ -6456,7 +6456,7 @@ describe("google-meet plugin", () => {
                             manualActionRequired: true,
                             manualActionReason: "google-login-required",
                             manualActionMessage:
-                              "Sign in to Google in the OpenClaw browser profile, then retry the Meet join.",
+                              "Sign in to Google in the Operator browser profile, then retry the Meet join.",
                             title: "Sign in - Google Accounts",
                             url: "https://accounts.google.com/signin",
                           },

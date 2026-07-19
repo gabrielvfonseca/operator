@@ -2,7 +2,7 @@
 import type { Bot } from "grammy";
 import { resolveChannelStreamingBlockEnabled } from "openclaw/plugin-sdk/channel-outbound";
 import type {
-  OpenClawConfig,
+  OperatorConfig,
   ReplyToMode,
   TelegramAccountConfig,
 } from "openclaw/plugin-sdk/config-contracts";
@@ -60,7 +60,7 @@ function resolveDraftPartialText(
 export function createTelegramDraftController(params: {
   accountId: string;
   bot: Bot;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   chatId: number;
   draftReplyToMessageId?: number;
   forceBlockStreamingForReasoning: boolean;

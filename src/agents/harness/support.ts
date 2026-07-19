@@ -5,7 +5,7 @@ import {
   resolveModelProviderRouteOverridePresence,
 } from "../../config/model-provider-config.js";
 import type { ModelApi } from "../../config/types.models.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type {
   ProviderModelRouteRuntimePolicy,
   ProviderRouteOverridePresence,
@@ -75,7 +75,7 @@ export function buildAgentHarnessSupportContext(params: {
   /** Prepared provider facts take precedence over config rediscovery. */
   modelProvider?: AgentHarnessSupportContext["modelProvider"];
   requestedRuntime: AgentHarnessSupportContext["requestedRuntime"];
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
   sessionKey?: string;
   /** Finalized route/auth selection; missing runtimePolicy stays undeclared. */
@@ -174,7 +174,7 @@ function resolveHarnessRouteRuntimePolicy(params: {
   provider: string;
   modelId?: string;
   modelProvider?: AgentHarnessSupportContext["modelProvider"];
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }): { owned: boolean; policy?: ProviderModelRouteRuntimePolicy } {
   const resolution = resolveProviderModelRoutes({
     provider: params.provider,
@@ -211,7 +211,7 @@ function resolveHarnessRouteRuntimePolicy(params: {
 export function resolveAutoAgentHarnessId(params: {
   provider: string;
   modelId?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
   sessionKey?: string;
 }): string | undefined {

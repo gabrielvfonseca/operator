@@ -6,9 +6,9 @@ export type {
 export { isInternalDiagnosticEventMetadata } from "openclaw/plugin-sdk/diagnostic-runtime";
 export {
   emptyPluginConfigSchema,
-  type OpenClawPluginApi,
-  type OpenClawPluginHttpRouteHandler,
-  type OpenClawPluginService,
-  type OpenClawPluginServiceContext,
+  type OperatorPluginApi,
+  type OperatorPluginHttpRouteHandler,
+  type OperatorPluginService,
+  type OperatorPluginServiceContext,
 } from "openclaw/plugin-sdk/plugin-entry";
 export { redactSensitiveText } from "openclaw/plugin-sdk/security-runtime";

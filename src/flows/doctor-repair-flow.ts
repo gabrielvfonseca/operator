@@ -1,6 +1,6 @@
 // Doctor repair flow builds and runs repair actions for doctor findings.
 import { uniqueStrings } from "@operator/normalization-core/string-normalization";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { scrubDoctorErrorMessage } from "./doctor-error-message.js";
 import { normalizeHealthCheck } from "./health-check-adapter.js";
 import { listHealthChecks } from "./health-check-registry.js";
@@ -25,7 +25,7 @@ interface DoctorRepairRunOptions {
 }
 
 interface DoctorRepairRunResult {
-  readonly config: OpenClawConfig;
+  readonly config: OperatorConfig;
   readonly findings: readonly HealthFinding[];
   readonly remainingFindings: readonly HealthFinding[];
   readonly changes: readonly string[];
@@ -267,7 +267,7 @@ function hasHealthRepairOutput(result: HealthRepairResult | HealthCheckRunResult
 }
 
 function repairRunResult(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   findings: readonly HealthFinding[],
   remainingFindings: readonly HealthFinding[],
   changes: readonly string[],

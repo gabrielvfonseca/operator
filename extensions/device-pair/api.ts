@@ -8,7 +8,7 @@ export {
   revokeDeviceBootstrapToken,
   type DeviceBootstrapProfile,
 } from "openclaw/plugin-sdk/device-bootstrap";
-export { definePluginEntry, type OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+export { definePluginEntry, type OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 export {
   resolveGatewayBindUrl,
   resolveGatewayPort,
@@ -17,7 +17,7 @@ export {
 } from "openclaw/plugin-sdk/core";
 export { resolveAdvertisedLanHost } from "openclaw/plugin-sdk/gateway-runtime";
 export {
-  resolvePreferredOpenClawTmpDir,
+  resolvePreferredOperatorTmpDir,
   runPluginCommandWithTimeout,
 } from "openclaw/plugin-sdk/sandbox";
 export { renderQrPngBase64, renderQrPngDataUrl, writeQrPngTempFile } from "./qr-image.js";

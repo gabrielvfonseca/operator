@@ -1,8 +1,8 @@
-# OpenClaw Firecrawl Plugin
+# Operator Firecrawl Plugin
 
-Official OpenClaw plugin for Firecrawl.
+Official Operator plugin for Firecrawl.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/firecrawl-plugin

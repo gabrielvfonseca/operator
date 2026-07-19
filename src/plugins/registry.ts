@@ -11,10 +11,10 @@ import type {
   PluginHttpRouteRegistration as RegistryTypesPluginHttpRouteRegistration,
   PluginRegistryParams,
 } from "./registry-types.js";
-import type { OpenClawPluginGatewayRuntimeScopeSurface } from "./types.js";
+import type { OperatorPluginGatewayRuntimeScopeSurface } from "./types.js";
 
 export type PluginHttpRouteRegistration = RegistryTypesPluginHttpRouteRegistration & {
-  gatewayRuntimeScopeSurface?: OpenClawPluginGatewayRuntimeScopeSurface;
+  gatewayRuntimeScopeSurface?: OperatorPluginGatewayRuntimeScopeSurface;
 };
 
 export type { PluginRecord, PluginRegistry } from "./registry-types.js";

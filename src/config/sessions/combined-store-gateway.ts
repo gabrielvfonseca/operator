@@ -8,7 +8,7 @@ import {
   resolveStoredSessionKeyForAgentStore,
 } from "../../gateway/session-store-key.js";
 import { normalizeAgentId } from "../../routing/session-key.js";
-import type { OpenClawConfig } from "../types.operator.js";
+import type { OperatorConfig } from "../types.operator.js";
 import { resolveStorePath } from "./paths.js";
 import { listSessionEntries } from "./session-accessor.js";
 import {
@@ -37,7 +37,7 @@ function loadGatewayStoreEntries(params: {
 }
 
 function mergeSessionEntryIntoCombined(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   combined: Record<string, SessionEntry>;
   entry: SessionEntry;
   agentId: string;
@@ -79,7 +79,7 @@ function mergeSessionEntryIntoCombined(params: {
 
 /** Loads and canonicalizes session entries for gateway views across one or more agent stores. */
 export function loadCombinedSessionStoreForGateway(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   opts: { agentId?: string; configuredAgentsOnly?: boolean } = {},
 ): {
   storePath: string;

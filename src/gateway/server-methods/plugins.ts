@@ -10,7 +10,7 @@ import {
   validatePluginsSetEnabledParams,
   validatePluginsUninstallParams,
 } from "../../../packages/gateway-protocol/src/index.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { searchInstallablePluginPackages } from "../../plugins/catalog-search.js";
 import {
   formatManagedPluginLifecycleError,
@@ -26,7 +26,7 @@ import type { GatewayRequestHandlers } from "./types.js";
 import { assertValidParams } from "./validation.js";
 
 function pluginPolicyRestartRequired(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   changedPaths: readonly string[];
 }): boolean {
   const plan = buildGatewayReloadPlan([...params.changedPaths]);

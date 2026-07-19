@@ -1,11 +1,11 @@
 // Doctor launchctl environment tests cover macOS gateway platform warnings for env overrides.
 import fs from "node:fs";
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import {
   collectMacGatewayPlatformWarnings,
   noteMacLaunchctlGatewayEnvOverrides,
-  noteMacStaleOpenClawUpdateLaunchdJobs,
+  noteMacStaleOperatorUpdateLaunchdJobs,
 } from "./doctor-platform-notes.js";
 
 function requireNoteCall(noteFn: { mock: { calls: unknown[][] } }, index = 0): unknown[] {
@@ -20,7 +20,7 @@ describe("noteMacLaunchctlGatewayEnvOverrides", () => {
   it("collects clear unsetenv instructions for token override", async () => {
     const noteFn = vi.fn();
     const getenv = vi.fn(async (name: string) =>
-      name === "OPENCLAW_GATEWAY_TOKEN" ? "launchctl-token" : undefined,
+      name === "OPERATOR_GATEWAY_TOKEN" ? "launchctl-token" : undefined,
     );
     const cfg = {
       gateway: {
@@ -28,21 +28,21 @@ describe("noteMacLaunchctlGatewayEnvOverrides", () => {
           token: "config-token",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     await noteMacLaunchctlGatewayEnvOverrides(cfg, { platform: "darwin", getenv, noteFn });
     const [warning] = requireNoteCall(noteFn);
 
     expect(warning).toContain("Host-wide launchctl gateway auth overrides detected");
-    expect(warning).toContain("OPENCLAW_GATEWAY_TOKEN");
-    expect(warning).toContain("launchctl unsetenv OPENCLAW_GATEWAY_TOKEN");
-    expect(warning).not.toContain("OPENCLAW_GATEWAY_PASSWORD");
+    expect(warning).toContain("OPERATOR_GATEWAY_TOKEN");
+    expect(warning).toContain("launchctl unsetenv OPERATOR_GATEWAY_TOKEN");
+    expect(warning).not.toContain("OPERATOR_GATEWAY_PASSWORD");
   });
 
   it("prints clear unsetenv instructions for token override", async () => {
     const noteFn = vi.fn();
     const getenv = vi.fn(async (name: string) =>
-      name === "OPENCLAW_GATEWAY_TOKEN" ? "launchctl-token" : undefined,
+      name === "OPERATOR_GATEWAY_TOKEN" ? "launchctl-token" : undefined,
     );
     const cfg = {
       gateway: {
@@ -50,7 +50,7 @@ describe("noteMacLaunchctlGatewayEnvOverrides", () => {
           token: "config-token",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     await noteMacLaunchctlGatewayEnvOverrides(cfg, { platform: "darwin", getenv, noteFn });
 
@@ -61,15 +61,15 @@ describe("noteMacLaunchctlGatewayEnvOverrides", () => {
     expect(title).toBe("Gateway (macOS)");
     expect(message).toContain("Host-wide launchctl gateway auth overrides detected");
     expect(message).toContain("Current managed Gateway installs do not need these values");
-    expect(message).toContain("OPENCLAW_GATEWAY_TOKEN");
-    expect(message).toContain("launchctl unsetenv OPENCLAW_GATEWAY_TOKEN");
-    expect(message).not.toContain("OPENCLAW_GATEWAY_PASSWORD");
+    expect(message).toContain("OPERATOR_GATEWAY_TOKEN");
+    expect(message).toContain("launchctl unsetenv OPERATOR_GATEWAY_TOKEN");
+    expect(message).not.toContain("OPERATOR_GATEWAY_PASSWORD");
   });
 
   it("does nothing when config has no gateway credentials", async () => {
     const noteFn = vi.fn();
     const getenv = vi.fn(async () => "launchctl-token");
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
 
     await noteMacLaunchctlGatewayEnvOverrides(cfg, { platform: "darwin", getenv, noteFn });
 
@@ -80,12 +80,12 @@ describe("noteMacLaunchctlGatewayEnvOverrides", () => {
   it("treats SecretRef-backed credentials as configured", async () => {
     const noteFn = vi.fn();
     const getenv = vi.fn(async (name: string) =>
-      name === "OPENCLAW_GATEWAY_PASSWORD" ? "launchctl-password" : undefined,
+      name === "OPERATOR_GATEWAY_PASSWORD" ? "launchctl-password" : undefined,
     );
     const cfg = {
       gateway: {
         auth: {
-          password: { source: "env", provider: "default", id: "OPENCLAW_GATEWAY_PASSWORD" },
+          password: { source: "env", provider: "default", id: "OPERATOR_GATEWAY_PASSWORD" },
         },
       },
       secrets: {
@@ -93,13 +93,13 @@ describe("noteMacLaunchctlGatewayEnvOverrides", () => {
           default: { source: "env" },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     await noteMacLaunchctlGatewayEnvOverrides(cfg, { platform: "darwin", getenv, noteFn });
 
     expect(noteFn).toHaveBeenCalledTimes(1);
     const [message] = requireNoteCall(noteFn);
-    expect(message).toContain("OPENCLAW_GATEWAY_PASSWORD");
+    expect(message).toContain("OPERATOR_GATEWAY_PASSWORD");
   });
 
   it("does nothing on non-darwin platforms", async () => {
@@ -111,7 +111,7 @@ describe("noteMacLaunchctlGatewayEnvOverrides", () => {
           token: "config-token",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     await noteMacLaunchctlGatewayEnvOverrides(cfg, { platform: "linux", getenv, noteFn });
 
@@ -120,11 +120,11 @@ describe("noteMacLaunchctlGatewayEnvOverrides", () => {
   });
 });
 
-describe("noteMacStaleOpenClawUpdateLaunchdJobs", () => {
+describe("noteMacStaleOperatorUpdateLaunchdJobs", () => {
   it("uses service env for gateway platform stale updater warnings", async () => {
     const serviceEnv = {
-      OPENCLAW_STATE_DIR: "/tmp/openclaw-daemon",
-      OPENCLAW_LAUNCHD_LABEL: "ai.openclaw.manual-update.gateway",
+      OPERATOR_STATE_DIR: "/tmp/openclaw-daemon",
+      OPERATOR_LAUNCHD_LABEL: "ai.openclaw.manual-update.gateway",
     };
     const service = {
       readCommand: vi.fn(async () => ({
@@ -134,7 +134,7 @@ describe("noteMacStaleOpenClawUpdateLaunchdJobs", () => {
     };
     const findJobs = vi.fn(async () => []);
 
-    await collectMacGatewayPlatformWarnings({} as OpenClawConfig, {
+    await collectMacGatewayPlatformWarnings({} as OperatorConfig, {
       platform: "darwin",
       service,
       findJobs,
@@ -143,16 +143,16 @@ describe("noteMacStaleOpenClawUpdateLaunchdJobs", () => {
     expect(service.readCommand).toHaveBeenCalledTimes(1);
     expect(findJobs).toHaveBeenCalledWith(
       expect.objectContaining({
-        OPENCLAW_STATE_DIR: "/tmp/openclaw-daemon",
-        OPENCLAW_LAUNCHD_LABEL: "ai.openclaw.manual-update.gateway",
+        OPERATOR_STATE_DIR: "/tmp/openclaw-daemon",
+        OPERATOR_LAUNCHD_LABEL: "ai.openclaw.manual-update.gateway",
       }),
     );
   });
 
   it("uses service env for doctor stale updater notes", async () => {
     const serviceEnv = {
-      OPENCLAW_STATE_DIR: "/tmp/openclaw-daemon",
-      OPENCLAW_LAUNCHD_LABEL: "ai.openclaw.manual-update.gateway",
+      OPERATOR_STATE_DIR: "/tmp/openclaw-daemon",
+      OPERATOR_LAUNCHD_LABEL: "ai.openclaw.manual-update.gateway",
     };
     const service = {
       readCommand: vi.fn(async () => ({
@@ -162,7 +162,7 @@ describe("noteMacStaleOpenClawUpdateLaunchdJobs", () => {
     };
     const findJobs = vi.fn(async () => []);
 
-    await noteMacStaleOpenClawUpdateLaunchdJobs({
+    await noteMacStaleOperatorUpdateLaunchdJobs({
       platform: "darwin",
       service,
       findJobs,
@@ -171,8 +171,8 @@ describe("noteMacStaleOpenClawUpdateLaunchdJobs", () => {
     expect(service.readCommand).toHaveBeenCalledTimes(1);
     expect(findJobs).toHaveBeenCalledWith(
       expect.objectContaining({
-        OPENCLAW_STATE_DIR: "/tmp/openclaw-daemon",
-        OPENCLAW_LAUNCHD_LABEL: "ai.openclaw.manual-update.gateway",
+        OPERATOR_STATE_DIR: "/tmp/openclaw-daemon",
+        OPERATOR_LAUNCHD_LABEL: "ai.openclaw.manual-update.gateway",
       }),
     );
   });
@@ -193,7 +193,7 @@ describe("noteMacStaleOpenClawUpdateLaunchdJobs", () => {
       },
     ]);
 
-    await noteMacStaleOpenClawUpdateLaunchdJobs({
+    await noteMacStaleOperatorUpdateLaunchdJobs({
       platform: "darwin",
       service,
       findJobs,
@@ -203,7 +203,7 @@ describe("noteMacStaleOpenClawUpdateLaunchdJobs", () => {
     expect(findJobs).toHaveBeenCalledTimes(1);
     const [message, title] = requireNoteCall(noteFn);
     expect(title).toBe("Gateway (macOS)");
-    expect(message).toContain("Stale OpenClaw updater launchd job(s) detected");
+    expect(message).toContain("Stale Operator updater launchd job(s) detected");
     expect(message).toContain("ai.openclaw.update.2026.5.12");
     expect(message).toContain("ai.openclaw.manual-update.1717168800");
     expect(message).toContain("launchctl remove <label>");
@@ -217,7 +217,7 @@ describe("noteMacStaleOpenClawUpdateLaunchdJobs", () => {
     };
     const findJobs = vi.fn(async () => []);
 
-    await noteMacStaleOpenClawUpdateLaunchdJobs({
+    await noteMacStaleOperatorUpdateLaunchdJobs({
       platform: "darwin",
       service,
       findJobs,
@@ -234,7 +234,7 @@ describe("collectMacGatewayPlatformWarnings", () => {
       .spyOn(fs, "existsSync")
       .mockImplementation((candidate) => String(candidate).includes("disable-launchagent"));
     try {
-      const warnings = await collectMacGatewayPlatformWarnings({} as OpenClawConfig, {
+      const warnings = await collectMacGatewayPlatformWarnings({} as OperatorConfig, {
         platform: "darwin",
         service: { readCommand: vi.fn(async () => null) },
         findJobs: vi.fn(async () => []),
@@ -251,7 +251,7 @@ describe("collectMacGatewayPlatformWarnings", () => {
     const exists = vi.spyOn(fs, "existsSync").mockReturnValue(false);
     try {
       await expect(
-        collectMacGatewayPlatformWarnings({} as OpenClawConfig, {
+        collectMacGatewayPlatformWarnings({} as OperatorConfig, {
           platform: "darwin",
           service: { readCommand: vi.fn(async () => null) },
           findJobs: vi.fn(async () => []),

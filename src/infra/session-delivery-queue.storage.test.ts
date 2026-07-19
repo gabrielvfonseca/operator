@@ -1,6 +1,6 @@
 // Covers session delivery queue persistence state transitions.
 import { describe, expect, it } from "vitest";
-import { openOpenClawStateDatabase } from "../state/openclaw-state-db.js";
+import { openOperatorStateDatabase } from "../state/openclaw-state-db.js";
 import { withTempDir } from "../test-helpers/temp-dir.js";
 import {
   advanceSessionDeliveryAgentRun,
@@ -30,8 +30,8 @@ describe("session-delivery queue storage", () => {
   }
 
   function readSessionQueueStatus(tempDir: string, id: string): string | undefined {
-    const { db } = openOpenClawStateDatabase({
-      env: { ...process.env, OPENCLAW_STATE_DIR: tempDir },
+    const { db } = openOperatorStateDatabase({
+      env: { ...process.env, OPERATOR_STATE_DIR: tempDir },
     });
     const row = db
       .prepare("SELECT status FROM delivery_queue_entries WHERE queue_name = 'session' AND id = ?")
@@ -163,8 +163,8 @@ describe("session-delivery queue storage", () => {
         idempotencyKey: "restart:repair-corrupt-pending",
       };
       const id = await enqueueSessionDelivery(payload, tempDir);
-      const { db } = openOpenClawStateDatabase({
-        env: { ...process.env, OPENCLAW_STATE_DIR: tempDir },
+      const { db } = openOperatorStateDatabase({
+        env: { ...process.env, OPERATOR_STATE_DIR: tempDir },
       });
       db.prepare(
         `UPDATE delivery_queue_entries

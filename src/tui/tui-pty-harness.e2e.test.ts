@@ -82,14 +82,14 @@ async function writeTuiPtyFixtureScript(dir: string) {
       import type { TuiBackend } from ${JSON.stringify(tuiModuleUrl.replace("/tui.ts", "/tui-backend.ts"))};
       import { runTui } from ${JSON.stringify(tuiModuleUrl)};
 
-      const actionLogPath = process.env.OPENCLAW_TUI_PTY_LOG_PATH;
-      const gatewayStatus = process.env.OPENCLAW_TUI_PTY_GATEWAY_STATUS ?? "fixture gateway ok";
-      const startupDelayMs = Number(process.env.OPENCLAW_TUI_PTY_STARTUP_DELAY_MS ?? 0);
-      const footerModel = process.env.OPENCLAW_TUI_PTY_MODEL;
-      const footerThinkingLevel = process.env.OPENCLAW_TUI_PTY_THINKING_LEVEL;
+      const actionLogPath = process.env.OPERATOR_TUI_PTY_LOG_PATH;
+      const gatewayStatus = process.env.OPERATOR_TUI_PTY_GATEWAY_STATUS ?? "fixture gateway ok";
+      const startupDelayMs = Number(process.env.OPERATOR_TUI_PTY_STARTUP_DELAY_MS ?? 0);
+      const footerModel = process.env.OPERATOR_TUI_PTY_MODEL;
+      const footerThinkingLevel = process.env.OPERATOR_TUI_PTY_THINKING_LEVEL;
       const xaiLimitError = '403 {"code":"The caller does not have permission to execute the specified operation","error":"Your team team-redacted has either used all available credits or reached its monthly spending limit. To continue making API requests, please purchase more credits or raise your spending limit."}';
       let currentModel = footerModel ?? "fixture-provider/fixture-model";
-      let fastMode = process.env.OPENCLAW_TUI_PTY_FAST_MODE === "true";
+      let fastMode = process.env.OPERATOR_TUI_PTY_FAST_MODE === "true";
       let pendingPluginApproval: {
         id: string;
         request: {
@@ -498,8 +498,8 @@ async function startTuiFixture(opts: { env?: NodeJS.ProcessEnv } = {}) {
     activeRuns,
     cwd: process.cwd(),
     env: {
-      OPENCLAW_THEME: "dark",
-      OPENCLAW_TUI_PTY_LOG_PATH: logPath,
+      OPERATOR_THEME: "dark",
+      OPERATOR_TUI_PTY_LOG_PATH: logPath,
       NO_COLOR: undefined,
       ...opts.env,
     },
@@ -545,8 +545,8 @@ describe.sequential("TUI PTY harness", () => {
     async () => {
       const compactFooter = await startTuiFixture({
         env: {
-          OPENCLAW_TUI_PTY_MODEL: "gpt-5.6-sol@openai:setup-64cddea3-938c-431e-be3b-aa47090577c7",
-          OPENCLAW_TUI_PTY_THINKING_LEVEL: "high",
+          OPERATOR_TUI_PTY_MODEL: "gpt-5.6-sol@openai:setup-64cddea3-938c-431e-be3b-aa47090577c7",
+          OPERATOR_TUI_PTY_THINKING_LEVEL: "high",
         },
       });
       try {
@@ -563,7 +563,7 @@ describe.sequential("TUI PTY harness", () => {
     "shows startup activity while post-connect initialization is pending",
     async () => {
       const slow = await startTuiFixture({
-        env: { OPENCLAW_TUI_PTY_STARTUP_DELAY_MS: "400" },
+        env: { OPERATOR_TUI_PTY_STARTUP_DELAY_MS: "400" },
       });
       try {
         await slow.run.waitForOutput("starting up", STARTUP_TIMEOUT_MS);

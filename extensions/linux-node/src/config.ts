@@ -1,4 +1,4 @@
-import type { OpenClawPluginNodeHostCommandAvailabilityContext } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginNodeHostCommandAvailabilityContext } from "openclaw/plugin-sdk/plugin-entry";
 import { buildPluginConfigSchema } from "openclaw/plugin-sdk/plugin-entry";
 import { z } from "zod";
 
@@ -52,7 +52,7 @@ export function resolveLinuxNodePluginConfig(value: unknown): ResolvedLinuxNodeP
 }
 
 export function resolveLinuxNodePluginConfigFromHost(
-  config: OpenClawPluginNodeHostCommandAvailabilityContext["config"],
+  config: OperatorPluginNodeHostCommandAvailabilityContext["config"],
 ): ResolvedLinuxNodePluginConfig | null {
   try {
     return resolveLinuxNodePluginConfig(config.plugins?.entries?.["linux-node"]?.config);

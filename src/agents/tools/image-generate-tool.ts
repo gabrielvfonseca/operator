@@ -7,7 +7,7 @@ import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
 import { Type } from "typebox";
 import { findCapabilityProviderById } from "../../../packages/media-generation-core/src/capability-model-ref.js";
 import { getRuntimeConfig } from "../../config/config.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { resolveImageGenerationMaxInputImages } from "../../image-generation/capabilities.js";
 import { parseImageGenerationModelRef } from "../../image-generation/model-ref.js";
 import {
@@ -246,7 +246,7 @@ const ImageGenerateToolSchema = Type.Object({
 });
 
 function resolveImageGenerationModelConfigForTool(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   workspaceDir?: string;
   agentDir?: string;
   authStore?: AuthProfileStore;
@@ -267,7 +267,7 @@ if (process.env.VITEST || process.env.NODE_ENV === "test") {
   };
 }
 
-function hasExplicitImageGenerationModelConfig(cfg?: OpenClawConfig): boolean {
+function hasExplicitImageGenerationModelConfig(cfg?: OperatorConfig): boolean {
   return hasToolModelConfig(coerceToolModelConfig(cfg?.agents?.defaults?.imageGenerationModel));
 }
 
@@ -736,7 +736,7 @@ const defaultScheduleImageGenerateBackgroundWork = createDefaultMediaGenerateBac
 });
 
 async function executeImageGenerationJob(params: {
-  effectiveCfg: OpenClawConfig;
+  effectiveCfg: OperatorConfig;
   prompt: string;
   agentDir?: string;
   model?: string;
@@ -896,7 +896,7 @@ async function executeImageGenerationJob(params: {
 }
 
 export function createImageGenerateTool(options?: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentDir?: string;
   authProfileStore?: AuthProfileStore;
   agentSessionKey?: string;

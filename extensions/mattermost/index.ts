@@ -1,12 +1,12 @@
-// Mattermost plugin entrypoint registers its OpenClaw integration.
+// Mattermost plugin entrypoint registers its Operator integration.
 import {
   defineBundledChannelEntry,
   loadBundledEntryExportSync,
 } from "openclaw/plugin-sdk/channel-entry-contract";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/channel-entry-contract";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/channel-entry-contract";
 
-function registerSlashCommandRoute(api: OpenClawPluginApi): void {
-  const register = loadBundledEntryExportSync<(api: OpenClawPluginApi) => void>(import.meta.url, {
+function registerSlashCommandRoute(api: OperatorPluginApi): void {
+  const register = loadBundledEntryExportSync<(api: OperatorPluginApi) => void>(import.meta.url, {
     specifier: "./slash-route-api.js",
     exportName: "registerSlashCommandRoute",
   });

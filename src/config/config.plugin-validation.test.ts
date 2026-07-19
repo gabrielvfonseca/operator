@@ -132,10 +132,10 @@ describe("config plugin validation", () => {
   const suiteEnv = () =>
     ({
       HOME: suiteHome,
-      OPENCLAW_HOME: undefined,
-      OPENCLAW_STATE_DIR: path.join(suiteHome, ".openclaw"),
-      OPENCLAW_BUNDLED_PLUGINS_DIR: undefined,
-      OPENCLAW_VERSION: undefined,
+      OPERATOR_HOME: undefined,
+      OPERATOR_STATE_DIR: path.join(suiteHome, ".openclaw"),
+      OPERATOR_BUNDLED_PLUGINS_DIR: undefined,
+      OPERATOR_VERSION: undefined,
       VITEST: "true",
     }) satisfies NodeJS.ProcessEnv;
 
@@ -404,7 +404,7 @@ describe("config plugin validation", () => {
       expectNoMissingCodexPluginWarning(res.warnings);
     });
 
-    it("still warns when only one provider model route is pinned to OpenClaw", () => {
+    it("still warns when only one provider model route is pinned to Operator", () => {
       const res = validateWithMissingCodexPlugin({
         models: {
           providers: {
@@ -1765,7 +1765,7 @@ describe("config plugin validation", () => {
       {
         env: {
           ...suiteEnv(),
-          OPENCLAW_BUNDLED_PLUGINS_DIR: path.join(suiteHome, "missing-bundled-plugins"),
+          OPERATOR_BUNDLED_PLUGINS_DIR: path.join(suiteHome, "missing-bundled-plugins"),
         },
       },
     );
@@ -1789,7 +1789,7 @@ describe("config plugin validation", () => {
     const res = validateRemovedPluginConfig(removedId);
     expect(res.ok).toBe(true);
     const message =
-      "plugin removed: skill-workshop (stale plugin config ignored; Skill Workshop is built into OpenClaw skills now. Use skills.workshop settings and openclaw skills workshop commands, then remove this plugins config entry)";
+      "plugin removed: skill-workshop (stale plugin config ignored; Skill Workshop is built into Operator skills now. Use skills.workshop settings and openclaw skills workshop commands, then remove this plugins config entry)";
     expectPathMessage(res.warnings, `plugins.entries.${removedId}`, message);
     expectPathMessage(res.warnings, "plugins.allow", message);
     expectPathMessage(res.warnings, "plugins.deny", message);
@@ -1886,7 +1886,7 @@ describe("config plugin validation", () => {
       {
         env: {
           ...suiteEnv(),
-          OPENCLAW_BUNDLED_PLUGINS_DIR: path.join(process.cwd(), "extensions"),
+          OPERATOR_BUNDLED_PLUGINS_DIR: path.join(process.cwd(), "extensions"),
         },
       },
     );
@@ -1939,7 +1939,7 @@ describe("config plugin validation", () => {
       {
         env: {
           ...suiteEnv(),
-          OPENCLAW_BUNDLED_PLUGINS_DIR: path.join(process.cwd(), "extensions"),
+          OPERATOR_BUNDLED_PLUGINS_DIR: path.join(process.cwd(), "extensions"),
         },
       },
     );
@@ -1989,7 +1989,7 @@ describe("config plugin validation", () => {
       {
         env: {
           ...suiteEnv(),
-          OPENCLAW_BUNDLED_PLUGINS_DIR: path.join(process.cwd(), "extensions"),
+          OPERATOR_BUNDLED_PLUGINS_DIR: path.join(process.cwd(), "extensions"),
         },
       },
     );

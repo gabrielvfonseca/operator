@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import {
   buildTuiLastSessionScopeKey,
   clearTuiLastSessionPointers,
@@ -21,7 +21,7 @@ async function makeTempStateDir() {
 }
 
 afterEach(async () => {
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorStateDatabaseForTest();
   await Promise.all(tempDirs.splice(0).map((dir) => fs.rm(dir, { recursive: true, force: true })));
 });
 
@@ -45,7 +45,7 @@ describe("tui last session state", () => {
       code: "ENOENT",
     });
 
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await expect(readTuiLastSessionKey({ scopeKey, stateDir })).resolves.toBe("agent:main:tui-123");
   });
 

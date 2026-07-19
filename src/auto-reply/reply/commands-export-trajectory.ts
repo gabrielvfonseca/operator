@@ -7,9 +7,9 @@ import type { ExecApprovalRequest } from "../../infra/exec-approvals.js";
 import type { ReplyPayload } from "../types.js";
 import { parseExportCommandOutputPath } from "./commands-export-common.js";
 import {
-  buildCurrentOpenClawCliArgv,
-  buildCurrentOpenClawCliCommand,
-  buildCurrentOpenClawCliExecEnv,
+  buildCurrentOperatorCliArgv,
+  buildCurrentOperatorCliCommand,
+  buildCurrentOperatorCliExecEnv,
 } from "./commands-operator-cli.js";
 import {
   deliverPrivateCommandReply,
@@ -199,7 +199,7 @@ async function requestTrajectoryExportApproval(
     });
     const result = await execTool.execute("chat-export-trajectory", {
       command: request.command,
-      env: buildCurrentOpenClawCliExecEnv(),
+      env: buildCurrentOperatorCliExecEnv(),
       security: "allowlist",
       ask: "always",
       background: true,
@@ -294,8 +294,8 @@ function buildTrajectoryExportExecRequest(
   }
   const args = ["sessions", "export-trajectory", "--request-json-base64", encodedRequest, "--json"];
   return {
-    argv: buildCurrentOpenClawCliArgv(args),
-    command: buildCurrentOpenClawCliCommand(args),
+    argv: buildCurrentOperatorCliArgv(args),
+    command: buildCurrentOperatorCliCommand(args),
     displayCommand: ["operator", ...args].join(" "),
     encodedRequest,
     request,

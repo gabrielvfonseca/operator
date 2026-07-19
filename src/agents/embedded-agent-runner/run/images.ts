@@ -104,7 +104,7 @@ function normalizeRefForDedupe(raw: string): string {
   return process.platform === "win32" ? normalizeLowercaseStringOrEmpty(raw) : raw;
 }
 
-function isOpenClawCliImageCachePath(filePath: string): boolean {
+function isOperatorCliImageCachePath(filePath: string): boolean {
   const parts = filePath.replaceAll("\\", "/").split("/");
   return parts.some((part, index) => {
     if (part === ".operator-cli-images") {
@@ -358,7 +358,7 @@ export function detectImageReferences(prompt: string): DetectedImageRef[] {
       return;
     }
     const resolved = trimmed.startsWith("~") ? resolveUserPath(trimmed) : trimmed;
-    if (isOpenClawCliImageCachePath(resolved)) {
+    if (isOperatorCliImageCachePath(resolved)) {
       return;
     }
     seen.add(dedupeKey);
@@ -430,7 +430,7 @@ export function detectImageReferences(prompt: string): DetectedImageRef[] {
     // Use fileURLToPath for proper handling (e.g., file://localhost/path)
     try {
       const resolved = safeFileURLToPath(raw);
-      if (isOpenClawCliImageCachePath(resolved)) {
+      if (isOperatorCliImageCachePath(resolved)) {
         continue;
       }
       seen.add(dedupeKey);

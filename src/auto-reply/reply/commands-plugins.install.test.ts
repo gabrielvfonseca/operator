@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { withTempHome } from "../../config/home-env.test-harness.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import { expectObjectFields, mockFirstObjectArg } from "../../test-utils/mock-call-assertions.js";
 import { createCommandWorkspaceHarness } from "./commands-filesystem.test-support.js";
 import { handlePluginsCommand } from "./commands-plugins.js";
@@ -68,7 +68,7 @@ function buildPluginsParams(
   commandBodyNormalized: string,
   workspaceDir: string,
   options: {
-    cfg?: OpenClawConfig;
+    cfg?: OperatorConfig;
     gatewayClientScopes?: string[];
     omitGatewayClientScopes?: boolean;
     senderIsOwner?: boolean;
@@ -155,7 +155,7 @@ describe("handleCommands /plugins install", () => {
   });
 
   it("installs an arbitrary npm package after a trailing --force acknowledgement", async () => {
-    const policyConfig: OpenClawConfig = {
+    const policyConfig: OperatorConfig = {
       commands: { text: true, plugins: true },
       plugins: { enabled: true },
       security: {
@@ -218,7 +218,7 @@ describe("handleCommands /plugins install", () => {
   });
 
   it("allows npm packages matched by the official catalog", async () => {
-    const policyConfig: OpenClawConfig = {
+    const policyConfig: OperatorConfig = {
       commands: { text: true, plugins: true },
       plugins: { enabled: true },
       security: {
@@ -868,8 +868,8 @@ describe("handleCommands /plugins install", () => {
   });
 
   it("refuses plugin installs in Nix mode before package installer side effects", async () => {
-    const previousNixMode = process.env.OPENCLAW_NIX_MODE;
-    process.env.OPENCLAW_NIX_MODE = "1";
+    const previousNixMode = process.env.OPERATOR_NIX_MODE;
+    process.env.OPERATOR_NIX_MODE = "1";
     try {
       await withTempHome("openclaw-command-plugins-home-", async () => {
         const workspaceDir = await workspaceHarness.createWorkspace();
@@ -879,7 +879,7 @@ describe("handleCommands /plugins install", () => {
           throw new Error("expected plugin install result");
         }
 
-        expect(result.reply?.text).toContain("OPENCLAW_NIX_MODE=1");
+        expect(result.reply?.text).toContain("OPERATOR_NIX_MODE=1");
         expect(result.reply?.text).toContain("nix-openclaw#quick-start");
         expect(installPluginFromNpmSpecMock).not.toHaveBeenCalled();
         expect(installPluginFromPathMock).not.toHaveBeenCalled();
@@ -889,9 +889,9 @@ describe("handleCommands /plugins install", () => {
       });
     } finally {
       if (previousNixMode === undefined) {
-        delete process.env.OPENCLAW_NIX_MODE;
+        delete process.env.OPERATOR_NIX_MODE;
       } else {
-        process.env.OPENCLAW_NIX_MODE = previousNixMode;
+        process.env.OPERATOR_NIX_MODE = previousNixMode;
       }
     }
   });

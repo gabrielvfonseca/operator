@@ -5,7 +5,7 @@ import {
   defineStableChannelIngressIdentity,
 } from "openclaw/plugin-sdk/channel-ingress-runtime";
 import { resolveInboundMentionDecision } from "openclaw/plugin-sdk/channel-mention-gating";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   createChannelHistoryWindow,
   type HistoryEntry as SdkHistoryEntry,
@@ -91,7 +91,7 @@ export function createSdkAccessAdapter(): AccessPort {
         channelId: "qqbot",
         accountId: input.accountId,
         identity: qqbotIngressIdentity,
-        cfg: input.cfg as OpenClawConfig,
+        cfg: input.cfg as OperatorConfig,
       }).message({
         subject: { stableId: input.senderId },
         conversation: {
@@ -143,7 +143,7 @@ async function resolveQQBotSlashCommandAuthorized(params: {
     channelId: "qqbot",
     accountId: params.accountId,
     identity: qqbotIngressIdentity,
-    cfg: params.cfg as OpenClawConfig,
+    cfg: params.cfg as OperatorConfig,
   }).message({
     subject: { stableId: params.senderId },
     conversation: {

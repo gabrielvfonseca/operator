@@ -8,7 +8,7 @@ import {
   UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE_ENV,
 } from "../commands/doctor/shared/update-phase.js";
 import { resolveIsNixMode } from "../config/paths.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { buildGatewayConnectionDetails } from "../gateway/call.js";
 import type { UpdatePostInstallDoctorResult } from "../infra/update-doctor-result.js";
 import type { RuntimeEnv } from "../runtime.js";
@@ -22,7 +22,7 @@ type PluginVersionDriftReport =
   import("../plugins/plugin-version-drift.js").PluginVersionDriftReport;
 
 type DoctorConfigResult = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   path?: string;
   shouldWriteConfig?: boolean;
   sourceConfigValid?: boolean;
@@ -38,8 +38,8 @@ export type DoctorHealthFlowContext = {
   options: DoctorOptions;
   prompter: DoctorPrompter;
   configResult: DoctorConfigResult;
-  cfg: OpenClawConfig;
-  cfgForPersistence: OpenClawConfig;
+  cfg: OperatorConfig;
+  cfgForPersistence: OperatorConfig;
   sourceConfigValid: boolean;
   configPath: string;
   env?: NodeJS.ProcessEnv;
@@ -93,7 +93,7 @@ function isUpdateDoctorRun(env: NodeJS.ProcessEnv | Record<string, string | unde
   return value === "1" || value === "true";
 }
 
-function resolveDoctorMode(cfg: OpenClawConfig): DoctorFlowMode {
+function resolveDoctorMode(cfg: OperatorConfig): DoctorFlowMode {
   return cfg.gateway?.mode === "remote" ? "remote" : "local";
 }
 
@@ -723,7 +723,7 @@ async function runGatewayServicesHealth(ctx: DoctorHealthFlowContext): Promise<v
   const {
     noteMacLaunchAgentOverrides,
     noteMacLaunchctlGatewayEnvOverrides,
-    noteMacStaleOpenClawUpdateLaunchdJobs,
+    noteMacStaleOperatorUpdateLaunchdJobs,
   } = await import("../commands/doctor-platform-notes.js");
   await maybeScanExtraGatewayServices(ctx.options, ctx.runtime, ctx.prompter);
   const updateDoctorRun = isUpdateDoctorRun(ctx.env ?? process.env);
@@ -742,7 +742,7 @@ async function runGatewayServicesHealth(ctx: DoctorHealthFlowContext): Promise<v
     },
   );
   await noteMacLaunchAgentOverrides();
-  await noteMacStaleOpenClawUpdateLaunchdJobs();
+  await noteMacStaleOperatorUpdateLaunchdJobs();
   await noteMacLaunchctlGatewayEnvOverrides(ctx.cfg);
 }
 
@@ -834,7 +834,7 @@ type ToolResultCapTarget = {
 };
 
 async function collectToolResultCapFindings(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
 ): Promise<readonly HealthFinding[]> {
   const { resolveAgentContextLimits } = await loadAgentScopeModule();
   const { normalizeAgentId } = await import("../routing/session-key.js");
@@ -886,7 +886,7 @@ async function collectToolResultCapFindings(
 }
 
 async function collectToolResultCapTargetAdvice(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   readOnlyCatalog?: boolean;
   targets: readonly ToolResultCapTarget[];
 }): Promise<
@@ -1085,7 +1085,7 @@ async function hasActiveGatewayExecCredential(
 }
 
 async function collectWorkspaceStatusPluginVersionDrift(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   options?: Pick<DoctorOptions, "allowExec" | "deep" | "nonInteractive">;
 }): Promise<PluginVersionDriftReport | undefined> {
   if (params.cfg.gateway?.mode !== "remote") {
@@ -1367,7 +1367,7 @@ async function collectWriteConfigHealthFindings(
     findings.push({
       checkId: "core/doctor/write-config",
       severity: "warning",
-      message: "Doctor config writes are disabled because OpenClaw is running in Nix mode.",
+      message: "Doctor config writes are disabled because Operator is running in Nix mode.",
       ...(configPath ? { path: configPath } : {}),
       requirement: "mutable-config-write-path",
       fixHint:
@@ -1760,7 +1760,7 @@ function resolveDoctorHealthContributions(): DoctorHealthContribution[] {
       label: "Disk space",
       healthChecks: {
         id: "core/doctor/disk-space",
-        description: "Low disk space around the OpenClaw state directory is a finding.",
+        description: "Low disk space around the Operator state directory is a finding.",
         defaultEnabled: false,
         async detect(ctx) {
           const { collectDiskSpaceHealthFindings } =

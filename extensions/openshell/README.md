@@ -1,8 +1,8 @@
 # @operator/openshell-sandbox
 
-Official NVIDIA OpenShell sandbox backend for OpenClaw.
+Official NVIDIA OpenShell sandbox backend for Operator.
 
-This plugin lets OpenClaw use OpenShell-managed sandboxes with mirrored local workspaces and SSH command execution.
+This plugin lets Operator use OpenShell-managed sandboxes with mirrored local workspaces and SSH command execution.
 
 ## Install
 
@@ -22,4 +22,4 @@ Use the OpenShell docs for credentials, workspace mirroring, runtime selection, 
 
 - Plugin id: `openshell`
 - Package: `@operator/openshell-sandbox`
-- Minimum OpenClaw host: `2026.5.12-beta.1`
+- Minimum Operator host: `2026.5.12-beta.1`

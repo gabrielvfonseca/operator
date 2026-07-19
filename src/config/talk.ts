@@ -12,7 +12,7 @@ import type {
   TalkProviderConfig,
   TalkRealtimeConfig,
 } from "./types.gateway.js";
-import type { OpenClawConfig } from "./types.operator.js";
+import type { OperatorConfig } from "./types.operator.js";
 import { coerceSecretRef } from "./types.secrets.js";
 
 function normalizeTalkSecretInput(value: unknown): TalkProviderConfig["apiKey"] | undefined {
@@ -256,7 +256,7 @@ export function normalizeTalkSection(value: TalkConfig | undefined): TalkConfig 
 }
 
 /** Return a config copy with `talk` normalized when a valid Talk section is present. */
-export function normalizeTalkConfig(config: OpenClawConfig): OpenClawConfig {
+export function normalizeTalkConfig(config: OperatorConfig): OperatorConfig {
   if (!config.talk) {
     return config;
   }

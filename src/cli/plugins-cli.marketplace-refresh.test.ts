@@ -1,4 +1,4 @@
-// Covers the hosted OpenClaw marketplace feed refresh command.
+// Covers the hosted Operator marketplace feed refresh command.
 import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -315,7 +315,7 @@ describe("plugins marketplace refresh", () => {
 
   it("emits bounded diagnostics for refresh without raw feed URLs", async () => {
     const timelinePath = await createTimelinePath();
-    vi.stubEnv("OPENCLAW_DIAGNOSTICS_TIMELINE_PATH", timelinePath);
+    vi.stubEnv("OPERATOR_DIAGNOSTICS_TIMELINE_PATH", timelinePath);
     const config = {
       diagnostics: { flags: ["timeline"] },
       marketplaces: {

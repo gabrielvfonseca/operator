@@ -18,7 +18,7 @@ vi.mock("node:child_process", async (importOriginal) => {
 import { createSandboxContext } from "./sandbox-exec-server.test-helpers.js";
 import { httpRequest } from "./sandbox-exec-server/http.js";
 import { startProcess } from "./sandbox-exec-server/processes.js";
-import type { ManagedProcess, OpenClawExecServer } from "./sandbox-exec-server/types.js";
+import type { ManagedProcess, OperatorExecServer } from "./sandbox-exec-server/types.js";
 
 type FakeSocket = WebSocket & { send: ReturnType<typeof vi.fn> };
 
@@ -39,8 +39,8 @@ function createFakeSocket(): FakeSocket {
   }) as unknown as FakeSocket;
 }
 
-function createExecServer(sandbox: SandboxContext): OpenClawExecServer {
-  return { sandbox } as OpenClawExecServer;
+function createExecServer(sandbox: SandboxContext): OperatorExecServer {
+  return { sandbox } as OperatorExecServer;
 }
 
 function processStartParams(processId: string) {

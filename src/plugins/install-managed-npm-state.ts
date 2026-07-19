@@ -8,7 +8,7 @@ import {
   type ManagedNpmRootPeerDependencySnapshot,
   readManagedNpmRootPeerDependencySnapshot,
   removeManagedNpmRootDependency,
-  repairManagedNpmRootOpenClawPeer,
+  repairManagedNpmRootOperatorPeer,
   restoreManagedNpmRootPeerDependencySnapshot,
 } from "../infra/npm-managed-root.js";
 import { parseRegistryNpmSpec, validateRegistryNpmSpec } from "../infra/npm-registry-spec.js";
@@ -23,8 +23,8 @@ import {
 import { loadPluginInstallRuntime } from "./install-shared.js";
 import type { PluginInstallLogger } from "./install-types.js";
 import { hasRetainedManagedNpmInstallMarker } from "./managed-npm-retention.js";
-import type { OpenClawPackageManifest } from "./manifest.js";
-import { relinkOpenClawPeerDependenciesInManagedNpmRoot } from "./plugin-peer-link.js";
+import type { OperatorPackageManifest } from "./manifest.js";
+import { relinkOperatorPeerDependenciesInManagedNpmRoot } from "./plugin-peer-link.js";
 
 const rollbackSnapshotCopyMode = fsConstants.COPYFILE_FICLONE;
 const MANAGED_NPM_PROJECT_QUARANTINE_DIR = "_operator-quarantined-npm-projects";
@@ -56,7 +56,7 @@ export async function rollbackManagedNpmPluginInstall(params: {
         npmRoot: params.npmRoot,
         snapshot: params.snapshot,
       });
-      await relinkOpenClawPeerDependenciesInManagedNpmRoot({
+      await relinkOperatorPeerDependenciesInManagedNpmRoot({
         npmRoot: params.npmRoot,
         logger: params.logger,
       });
@@ -179,7 +179,7 @@ export async function rollbackManagedNpmPluginInstall(params: {
   }
   if (params.packageName !== "operator") {
     try {
-      await repairManagedNpmRootOpenClawPeer({
+      await repairManagedNpmRootOperatorPeer({
         npmRoot: params.npmRoot,
         timeoutMs: params.timeoutMs,
         logger: params.logger,
@@ -191,7 +191,7 @@ export async function rollbackManagedNpmPluginInstall(params: {
     }
   }
   try {
-    await relinkOpenClawPeerDependenciesInManagedNpmRoot({
+    await relinkOperatorPeerDependenciesInManagedNpmRoot({
       npmRoot: params.npmRoot,
       logger: params.logger,
     });
@@ -371,7 +371,7 @@ async function shouldCopyManagedNpmRollbackSnapshotEntry(params: {
   }
 
   const relativeParts = path.relative(params.nodeModulesDir, params.sourcePath).split(path.sep);
-  const isPluginLocalOpenClawPeer =
+  const isPluginLocalOperatorPeer =
     (relativeParts.length === 3 &&
       relativeParts[1] === "node_modules" &&
       relativeParts[2] === "operator") ||
@@ -379,7 +379,7 @@ async function shouldCopyManagedNpmRollbackSnapshotEntry(params: {
       relativeParts[0]?.startsWith("@") &&
       relativeParts[2] === "node_modules" &&
       relativeParts[3] === "operator");
-  if (!isPluginLocalOpenClawPeer) {
+  if (!isPluginLocalOperatorPeer) {
     return true;
   }
 
@@ -662,7 +662,7 @@ export async function resolveManagedNpmGenerationUseForInstall(params: {
 }
 
 export function resolveRequiredPlatformPackageNames(
-  packageMetadata?: OpenClawPackageManifest,
+  packageMetadata?: OperatorPackageManifest,
 ): { ok: true; packageNames: string[] } | { ok: false; error: string } {
   const raw = packageMetadata?.install?.requiredPlatformPackages as unknown;
   if (raw === undefined) {

@@ -1,11 +1,11 @@
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginMetadataSnapshot } from "../plugins/plugin-metadata-snapshot.js";
 import "./models-config.plan.js";
 import type { ProviderConfig } from "./models-config.providers.secrets.js";
 
 type ResolveImplicitProvidersForModelsJson = (params: {
   agentDir: string;
-  config: OpenClawConfig;
+  config: OperatorConfig;
   env: NodeJS.ProcessEnv;
   workspaceDir?: string;
   explicitProviders: Record<string, ProviderConfig>;
@@ -15,12 +15,12 @@ type ResolveImplicitProvidersForModelsJson = (params: {
   providerDiscoveryEntriesOnly?: boolean;
 }) => Promise<Record<string, ProviderConfig>>;
 
-type PlanParams = Parameters<typeof import("./models-config.plan.js").planOpenClawModelsJson>[0];
+type PlanParams = Parameters<typeof import("./models-config.plan.js").planOperatorModelsJson>[0];
 type PlanResult = Awaited<
-  ReturnType<typeof import("./models-config.plan.js").planOpenClawModelsJson>
+  ReturnType<typeof import("./models-config.plan.js").planOperatorModelsJson>
 >;
 type ResolveProvidersParams = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentDir: string;
   env: NodeJS.ProcessEnv;
   workspaceDir?: string;
@@ -32,7 +32,7 @@ type ResolveProvidersParams = {
 type PlanDeps = { resolveImplicitProviders?: ResolveImplicitProvidersForModelsJson };
 
 type ModelsConfigPlanTestApi = {
-  planOpenClawModelsJsonWithDeps(params: PlanParams, deps?: PlanDeps): Promise<PlanResult>;
+  planOperatorModelsJsonWithDeps(params: PlanParams, deps?: PlanDeps): Promise<PlanResult>;
   resolveProvidersForModelsJsonWithDeps(
     params: ResolveProvidersParams,
     deps?: PlanDeps,
@@ -45,10 +45,10 @@ function getTestApi(): ModelsConfigPlanTestApi {
   ] as ModelsConfigPlanTestApi;
 }
 
-export const planOpenClawModelsJsonWithDeps = async (
+export const planOperatorModelsJsonWithDeps = async (
   params: PlanParams,
   deps?: PlanDeps,
-): Promise<PlanResult> => await getTestApi().planOpenClawModelsJsonWithDeps(params, deps);
+): Promise<PlanResult> => await getTestApi().planOperatorModelsJsonWithDeps(params, deps);
 
 export const resolveProvidersForModelsJsonWithDeps = async (
   params: ResolveProvidersParams,

@@ -293,7 +293,7 @@ function formatDiagnosticsExportSuccess(aggregated: string): string {
       lines.push(`Generated at: ${manifest.generatedAt}`);
     }
     if (typeof manifest.operatorVersion === "string") {
-      lines.push(`OpenClaw version: ${manifest.operatorVersion}`);
+      lines.push(`Operator version: ${manifest.operatorVersion}`);
     }
     const contents = formatDiagnosticsContents(manifest);
     if (contents.length > 0) {

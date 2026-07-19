@@ -38,7 +38,7 @@ import { listOpenAIAuthProfileProvidersForAgentRuntime } from "../../agents/open
 import { resolveDefaultAgentWorkspaceDir } from "../../agents/workspace.js";
 import { getChannelPlugin } from "../../channels/plugins/index.js";
 import type { SessionEntry } from "../../config/sessions.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { getCurrentPluginMetadataSnapshot } from "../../plugins/current-plugin-metadata-snapshot.js";
 import { resolveAgentRuntimeLabel } from "../../status/agent-runtime-label.js";
 import type { ReplyPayload } from "../types.js";
@@ -103,7 +103,7 @@ function normalizeRuntimeChoiceId(runtime: string | undefined): string {
 }
 
 function buildRuntimeChoice(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   provider: string;
   runtime: string;
   cli?: boolean;
@@ -115,7 +115,7 @@ function buildRuntimeChoice(params: {
     label,
     description:
       id === "operator"
-        ? "Use the built-in OpenClaw runtime."
+        ? "Use the built-in Operator runtime."
         : params.cli
           ? `Run ${params.provider} models through ${label}.`
           : `Use the ${label} runtime selected by the effective harness policy.`,
@@ -123,7 +123,7 @@ function buildRuntimeChoice(params: {
 }
 
 function buildDefaultRuntimeChoice(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId?: string;
   provider: string;
   modelId?: string;
@@ -152,7 +152,7 @@ function addRuntimeChoice(
 }
 
 export async function buildModelsProviderData(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   agentId?: string,
   options: { view?: "default" | "all"; workspaceDir?: string } = {},
 ): Promise<ModelsProviderData> {
@@ -468,7 +468,7 @@ function parseModelsArgs(raw: string): ParsedModelsCommand {
 
 function resolveProviderLabel(params: {
   provider: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId?: string;
   agentDir?: string;
   workspaceDir?: string;
@@ -501,7 +501,7 @@ function resolveProviderLabel(params: {
 export function formatModelsAvailableHeader(params: {
   provider: string;
   total: number;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId?: string;
   agentDir?: string;
   workspaceDir?: string;
@@ -547,7 +547,7 @@ function buildProviderInfos(params: {
 }
 
 export async function resolveModelsCommandReply(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   commandBodyNormalized: string;
   surface?: string;
   currentModel?: string;

@@ -123,7 +123,7 @@ function collectGatewayServiceStartRepairIssues(
     // reinstall/repair before pretending restart succeeded.
     issues.push({
       code: "version-mismatch",
-      message: `service was installed by OpenClaw ${serviceVersion}, current CLI is ${VERSION}`,
+      message: `service was installed by Operator ${serviceVersion}, current CLI is ${VERSION}`,
     });
   }
   const servicePort =
@@ -341,7 +341,7 @@ function withFutureConfigGuard(service: GatewayService): GatewayService {
     ...service,
     stage: async (args) => {
       // Service mutations rewrite durable launchd/systemd/schtasks files, so
-      // block them when config was produced by a newer OpenClaw.
+      // block them when config was produced by a newer Operator.
       await assertFutureConfigActionAllowed("rewrite the gateway service");
       return await service.stage(args);
     },

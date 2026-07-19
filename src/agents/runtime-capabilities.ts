@@ -11,7 +11,7 @@ import {
   supportsAutomaticThreadBindingSpawn,
 } from "../channels/thread-bindings-policy.js";
 import { resolveChannelCapabilities } from "../config/channel-capabilities.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveChannelPromptCapabilities } from "./channel-tools.js";
 
 const THREAD_BOUND_SUBAGENT_SPAWN_CAPABILITY = "threadbound-subagent-spawn";
@@ -38,7 +38,7 @@ function mergeRuntimeCapabilities(
 
 /** Collects the effective runtime capabilities for a channel/account pair. */
 export function collectRuntimeChannelCapabilities(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   channel?: string | null;
   accountId?: string | null;
 }): string[] | undefined {

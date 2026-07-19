@@ -1,16 +1,16 @@
-// Resolves cleanup inputs from current OpenClaw config and state paths.
+// Resolves cleanup inputs from current Operator config and state paths.
 import {
   getRuntimeConfig,
   resolveConfigPath,
   resolveOAuthDir,
   resolveStateDir,
 } from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { buildCleanupPlan } from "./cleanup-utils.js";
 
 /** Build the cleanup plan for the current runtime config/state/credential paths on disk. */
 export function resolveCleanupPlanFromDisk(): {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   stateDir: string;
   configPath: string;
   oauthDir: string;

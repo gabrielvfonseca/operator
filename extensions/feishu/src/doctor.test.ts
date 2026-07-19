@@ -14,22 +14,22 @@ import {
   readSessionTranscriptEvents,
 } from "openclaw/plugin-sdk/session-transcript-runtime";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../runtime-api.js";
+import type { OperatorConfig } from "../runtime-api.js";
 import { feishuDoctor } from "./doctor.js";
 
 const runFeishuDoctorSequence = feishuDoctor.runConfigSequence!;
 
 type EnvSnapshot = {
   HOME?: string;
-  OPENCLAW_HOME?: string;
-  OPENCLAW_STATE_DIR?: string;
+  OPERATOR_HOME?: string;
+  OPERATOR_STATE_DIR?: string;
 };
 
 function captureEnv(): EnvSnapshot {
   return {
     HOME: process.env.HOME,
-    OPENCLAW_HOME: process.env.OPENCLAW_HOME,
-    OPENCLAW_STATE_DIR: process.env.OPENCLAW_STATE_DIR,
+    OPERATOR_HOME: process.env.OPERATOR_HOME,
+    OPERATOR_STATE_DIR: process.env.OPERATOR_STATE_DIR,
   };
 }
 
@@ -44,7 +44,7 @@ function restoreEnv(snapshot: EnvSnapshot) {
   }
 }
 
-function feishuConfig(): OpenClawConfig {
+function feishuConfig(): OperatorConfig {
   return {
     channels: {
       feishu: {
@@ -52,13 +52,13 @@ function feishuConfig(): OpenClawConfig {
         appSecret: "secret_xxx",
       },
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 function stateDir(): string {
-  const dir = process.env.OPENCLAW_STATE_DIR;
+  const dir = process.env.OPERATOR_STATE_DIR;
   if (!dir) {
-    throw new Error("OPENCLAW_STATE_DIR is not set");
+    throw new Error("OPERATOR_STATE_DIR is not set");
   }
   return dir;
 }
@@ -147,9 +147,9 @@ describe("Feishu doctor state repair", () => {
     envSnapshot = captureEnv();
     tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-feishu-doctor-"));
     process.env.HOME = tempHome;
-    process.env.OPENCLAW_HOME = tempHome;
-    process.env.OPENCLAW_STATE_DIR = path.join(tempHome, ".openclaw");
-    fs.mkdirSync(process.env.OPENCLAW_STATE_DIR, { recursive: true, mode: 0o700 });
+    process.env.OPERATOR_HOME = tempHome;
+    process.env.OPERATOR_STATE_DIR = path.join(tempHome, ".openclaw");
+    fs.mkdirSync(process.env.OPERATOR_STATE_DIR, { recursive: true, mode: 0o700 });
   });
 
   afterEach(() => {
@@ -201,7 +201,7 @@ describe("Feishu doctor state repair", () => {
       cfg: {
         ...feishuConfig(),
         session: { store: customStorePath },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       env: process.env,
       shouldRepair: false,
     });
@@ -589,7 +589,7 @@ describe("Feishu doctor state repair", () => {
         ...feishuConfig(),
         agents: { list: [{ id: "support", default: true }] },
         session: { store: customStorePath },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       env: process.env,
       shouldRepair: true,
     });

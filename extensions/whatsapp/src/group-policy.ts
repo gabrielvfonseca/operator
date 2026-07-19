@@ -5,10 +5,10 @@ import {
   resolveScopeToolsPolicy,
   type GroupToolPolicyConfig,
 } from "openclaw/plugin-sdk/channel-policy";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 
 type WhatsAppGroupContext = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
   groupId?: string | null;
   senderId?: string | null;

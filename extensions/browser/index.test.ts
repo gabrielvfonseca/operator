@@ -9,10 +9,10 @@ import {
   browserSecurityAuditCollectors,
   registerBrowserPlugin,
 } from "./plugin-registration.js";
-import type { OpenClawPluginApi } from "./runtime-api.js";
+import type { OperatorPluginApi } from "./runtime-api.js";
 import setupPlugin from "./setup-api.js";
 
-type BrowserAutoEnableProbe = Parameters<OpenClawPluginApi["registerAutoEnableProbe"]>[0];
+type BrowserAutoEnableProbe = Parameters<OperatorPluginApi["registerAutoEnableProbe"]>[0];
 
 const runtimeApiMocks = vi.hoisted(() => ({
   createBrowserPluginService: vi.fn(() => ({ id: "browser-control", start: vi.fn() })),
@@ -82,7 +82,7 @@ function createApi() {
     source: "test",
     rootDir: "/plugins/browser",
     config: {},
-    runtime: { state: { openKeyedStore } } as unknown as OpenClawPluginApi["runtime"],
+    runtime: { state: { openKeyedStore } } as unknown as OperatorPluginApi["runtime"],
     registerCli,
     registerGatewayMethod,
     registerService,
@@ -271,7 +271,7 @@ describe("browser plugin", () => {
       descriptors: [
         {
           name: "browser",
-          description: "Manage OpenClaw's dedicated browser (Chrome/Chromium)",
+          description: "Manage Operator's dedicated browser (Chrome/Chromium)",
           hasSubcommands: true,
         },
       ],
@@ -333,7 +333,7 @@ describe("browser plugin", () => {
   });
 
   it("eager-loads the browser control service when explicitly requested", async () => {
-    vi.stubEnv("OPENCLAW_EAGER_BROWSER_CONTROL_SERVER", "1");
+    vi.stubEnv("OPERATOR_EAGER_BROWSER_CONTROL_SERVER", "1");
     const { api, registerService } = createApi();
     registerBrowserPlugin(api);
 
@@ -348,7 +348,7 @@ describe("browser plugin", () => {
 
   for (const value of ["false", "", "disabled"]) {
     it(`keeps browser control service env value ${JSON.stringify(value)} lazy`, async () => {
-      vi.stubEnv("OPENCLAW_EAGER_BROWSER_CONTROL_SERVER", value);
+      vi.stubEnv("OPERATOR_EAGER_BROWSER_CONTROL_SERVER", value);
       const { api, registerService } = createApi();
       registerBrowserPlugin(api);
 

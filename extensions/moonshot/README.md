@@ -1,6 +1,6 @@
-# Moonshot OpenClaw provider
+# Moonshot Operator provider
 
-Official OpenClaw provider plugin for Moonshot.
+Official Operator provider plugin for Moonshot.
 
 ## Install
 
@@ -10,4 +10,4 @@ openclaw plugins install @operator/moonshot-provider
 
 ## Docs
 
-See `docs/providers/moonshot.md` in the OpenClaw repository, or the published docs at `https://docs.openclaw.ai/providers/moonshot`.
+See `docs/providers/moonshot.md` in the Operator repository, or the published docs at `https://docs.openclaw.ai/providers/moonshot`.

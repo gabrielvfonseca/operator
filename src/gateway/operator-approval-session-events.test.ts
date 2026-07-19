@@ -4,8 +4,8 @@ import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildApprovalResolutionRef } from "../infra/approval-resolution-ref.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  type OpenClawStateDatabaseOptions,
+  closeOperatorStateDatabaseForTest,
+  type OperatorStateDatabaseOptions,
 } from "../state/openclaw-state-db.js";
 import { ExecApprovalManager } from "./exec-approval-manager.js";
 import { createOperatorApprovalSessionEventRuntime } from "./operator-approval-session-events.js";
@@ -24,10 +24,10 @@ const SIBLING_SESSION_KEY = "agent:main:parent:sibling";
 const tempDirs: string[] = [];
 type NewOperatorApproval = Parameters<typeof insertOperatorApproval>[0]["approval"];
 
-function createDatabaseOptions(): OpenClawStateDatabaseOptions {
+function createDatabaseOptions(): OperatorStateDatabaseOptions {
   const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-approval-events-"));
   tempDirs.push(stateDir);
-  return { env: { ...process.env, OPENCLAW_STATE_DIR: stateDir } };
+  return { env: { ...process.env, OPERATOR_STATE_DIR: stateDir } };
 }
 
 function createClient(params: {
@@ -119,7 +119,7 @@ function createTerminalRecord(
 
 function createRuntime(params: {
   clients: GatewayClient[];
-  databaseOptions?: OpenClawStateDatabaseOptions;
+  databaseOptions?: OperatorStateDatabaseOptions;
   now?: () => number;
   controlUiBasePath?: string;
   reconcileTerminal?: Parameters<
@@ -141,7 +141,7 @@ function createRuntime(params: {
 }
 
 function insertPendingApproval(params: {
-  databaseOptions: OpenClawStateDatabaseOptions;
+  databaseOptions: OperatorStateDatabaseOptions;
   id: string;
   audienceSessionKeys: string[];
   createdAtMs: number;
@@ -172,7 +172,7 @@ describe("operator approval session events", () => {
   afterEach(() => {
     vi.useRealTimers();
     vi.restoreAllMocks();
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     for (const dir of tempDirs.splice(0)) {
       fs.rmSync(dir, { force: true, recursive: true });
     }

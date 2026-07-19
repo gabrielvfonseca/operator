@@ -1,8 +1,8 @@
-# OpenClaw Qianfan Provider
+# Operator Qianfan Provider
 
-Official OpenClaw provider plugin for Qianfan.
+Official Operator provider plugin for Qianfan.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/qianfan-provider

@@ -7,7 +7,7 @@ import {
   normalizeOptionalString,
 } from "@operator/normalization-core/string-coerce";
 import { note } from "../../packages/terminal-core/src/note.js";
-import { replaceConfigFile, type OpenClawConfig } from "../config/config.js";
+import { replaceConfigFile, type OperatorConfig } from "../config/config.js";
 import { resolveGatewayPort, resolveIsNixMode } from "../config/paths.js";
 import { resolveSecretInputRef } from "../config/types.secrets.js";
 import {
@@ -156,7 +156,7 @@ function resolveGatewayServiceWrapperPath(
 }
 
 async function buildExpectedGatewayServicePlan(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   command: GatewayServiceCommandConfig;
   serviceInstallEnv: NodeJS.ProcessEnv;
   port: number;
@@ -176,7 +176,7 @@ async function buildExpectedGatewayServicePlan(params: {
 }
 
 async function buildGatewayServiceAuditInputs(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   command: GatewayServiceCommandConfig;
   serviceInstallEnv: NodeJS.ProcessEnv;
 }) {
@@ -465,12 +465,12 @@ async function cleanupLegacyLinuxUserServices(
  * stay staged except for running Windows services, which must be activated to replace a fallback.
  */
 export async function maybeRepairGatewayServiceConfig(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   mode: "local" | "remote",
   runtime: RuntimeEnv,
   prompter: DoctorPrompter,
   options: GatewayServiceConfigRepairOptions = {},
-): Promise<OpenClawConfig> {
+): Promise<OperatorConfig> {
   if (resolveIsNixMode(process.env)) {
     note("Nix mode detected; skip service updates.", "Gateway");
     return cfg;
@@ -667,7 +667,7 @@ export async function maybeRepairGatewayServiceConfig(
     })
   ) {
     note(
-      "Update-mode doctor detected gateway service drift but left the live systemd unit unchanged. Review the service file and run `operator gateway install --force` when you want OpenClaw to replace operator-owned systemd directives.",
+      "Update-mode doctor detected gateway service drift but left the live systemd unit unchanged. Review the service file and run `operator gateway install --force` when you want Operator to replace operator-owned systemd directives.",
       "Gateway service config",
     );
     return cfg;
@@ -768,7 +768,7 @@ export async function maybeRepairGatewayServiceConfig(
       );
       return cfg;
     }
-    const nextCfg: OpenClawConfig = {
+    const nextCfg: OperatorConfig = {
       ...cfg,
       gateway: {
         ...cfg.gateway,
@@ -913,7 +913,7 @@ export async function maybeScanExtraGatewayServices(
         note(failed.map((line) => `- ${line}`).join("\n"), "Legacy gateway cleanup skipped");
       }
       if (removed.length > 0) {
-        runtime.log("Legacy gateway services removed. Installing OpenClaw gateway next.");
+        runtime.log("Legacy gateway services removed. Installing Operator gateway next.");
       }
     }
   }

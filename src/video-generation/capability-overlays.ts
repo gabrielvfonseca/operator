@@ -1,5 +1,5 @@
 // Video capability overlays merge config overrides into provider capabilities.
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveVideoGenerationModeCapabilities } from "./capabilities.js";
 import type { GenerateVideoParams } from "./runtime-types.js";
 import type {
@@ -141,7 +141,7 @@ export async function resolveProviderWithModelCapabilities(params: {
   provider: VideoGenerationProvider;
   providerId: string;
   model: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentDir?: string;
   authStore?: GenerateVideoParams["authStore"];
   timeoutMs?: number;

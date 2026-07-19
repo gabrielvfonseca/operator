@@ -4,7 +4,7 @@
 import { expectDefined } from "@operator/normalization-core";
 import type { AgentMessage } from "openclaw/plugin-sdk/agent-core";
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import * as loggingConfigModule from "../logging/config.js";
 import { redactTranscriptMessage } from "./transcript-redact.js";
 
@@ -21,16 +21,16 @@ function textMessage(text: string): AgentMessage {
   } as unknown as AgentMessage;
 }
 
-function cfg(mode: "tools" | "off", patterns?: string[]): OpenClawConfig {
+function cfg(mode: "tools" | "off", patterns?: string[]): OperatorConfig {
   return {
     logging: {
       redactSensitive: mode,
       ...(patterns ? { redactPatterns: patterns } : {}),
     },
-  } satisfies OpenClawConfig;
+  } satisfies OperatorConfig;
 }
 
-function googleCompatCfg(): OpenClawConfig {
+function googleCompatCfg(): OperatorConfig {
   return {
     ...cfg("tools"),
     models: {
@@ -42,7 +42,7 @@ function googleCompatCfg(): OpenClawConfig {
         },
       },
     },
-  } satisfies OpenClawConfig;
+  } satisfies OperatorConfig;
 }
 
 const EMAIL_PATTERN = String.raw`([\w]|[-.])+@([\w]|[-.])+\.\w+`;

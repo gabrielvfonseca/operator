@@ -27,7 +27,7 @@ function createDedupe(root: string, overrides?: { ttlMs?: number }) {
     pluginId: "test-persistent-dedupe",
     namespacePrefix: "test-dedupe",
     stateMaxEntries: 1000,
-    env: { ...process.env, OPENCLAW_STATE_DIR: root },
+    env: { ...process.env, OPERATOR_STATE_DIR: root },
   });
 }
 
@@ -180,7 +180,7 @@ describe("createPersistentDedupe", () => {
       pluginId: "test-persistent-dedupe",
       namespacePrefix: "test-bounds",
       stateMaxEntries: Number.NaN,
-      env: { ...process.env, OPENCLAW_STATE_DIR: root },
+      env: { ...process.env, OPERATOR_STATE_DIR: root },
     });
 
     expect(await dedupe.checkAndRecord("m1", { namespace: "a", now: 100 })).toBe(true);
@@ -197,7 +197,7 @@ describe("createPersistentDedupe", () => {
       memoryMaxSize: 100,
       fileMaxEntries: 1000,
       resolveFilePath: () => legacyPath,
-      env: { ...process.env, OPENCLAW_STATE_DIR: root },
+      env: { ...process.env, OPERATOR_STATE_DIR: root },
     });
 
     expect(await dedupe.checkAndRecord("sqlite-only", { namespace: "x" })).toBe(true);
@@ -330,7 +330,7 @@ describe("createClaimableDedupe", () => {
       pluginId: "test-claimable-dedupe",
       namespacePrefix: "test-claimable-dedupe",
       stateMaxEntries: 1000,
-      env: { ...process.env, OPENCLAW_STATE_DIR: root },
+      env: { ...process.env, OPERATOR_STATE_DIR: root },
     });
 
     await expect(writer.claim("m1", { namespace: "acct" })).resolves.toEqual({ kind: "claimed" });
@@ -342,7 +342,7 @@ describe("createClaimableDedupe", () => {
       pluginId: "test-claimable-dedupe",
       namespacePrefix: "test-claimable-dedupe",
       stateMaxEntries: 1000,
-      env: { ...process.env, OPENCLAW_STATE_DIR: root },
+      env: { ...process.env, OPERATOR_STATE_DIR: root },
     });
 
     expect(await reader.hasRecent("m1", { namespace: "acct" })).toBe(true);
@@ -357,7 +357,7 @@ describe("createClaimableDedupe", () => {
       pluginId: "test-claimable-dedupe",
       namespacePrefix: "test-claimable-dedupe",
       stateMaxEntries: 1000,
-      env: { ...process.env, OPENCLAW_STATE_DIR: root },
+      env: { ...process.env, OPERATOR_STATE_DIR: root },
     });
     await expect(afterForget.claim("m1", { namespace: "acct" })).resolves.toEqual({
       kind: "claimed",

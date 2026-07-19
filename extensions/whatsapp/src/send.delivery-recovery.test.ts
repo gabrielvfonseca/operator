@@ -7,7 +7,7 @@ import {
   releasePinnedPluginChannelRegistry,
   setActivePluginRegistry,
 } from "openclaw/plugin-sdk/channel-test-helpers";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { drainPendingDeliveries } from "openclaw/plugin-sdk/delivery-queue-runtime";
 import { PlatformMessageNotDispatchedError } from "openclaw/plugin-sdk/error-runtime";
 import { withStateDirEnv } from "openclaw/plugin-sdk/test-env";
@@ -25,7 +25,7 @@ vi.mock("./connection-controller-runtime-context.js", () => ({
     runtimeContextMocks.controllers.get(accountId) ?? null,
 }));
 
-const cfg = { channels: { whatsapp: {} } } as OpenClawConfig;
+const cfg = { channels: { whatsapp: {} } } as OperatorConfig;
 const accountId = "default";
 
 async function drainDefaultWhatsAppDeliveries(stateDir: string) {

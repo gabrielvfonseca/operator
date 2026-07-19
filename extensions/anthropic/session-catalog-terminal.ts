@@ -1,6 +1,6 @@
 // Claude catalog terminal ownership: validated local and paired-node resume plans.
 import fs from "node:fs/promises";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import type { SessionCatalogTerminalPlan } from "openclaw/plugin-sdk/session-catalog";
 import { CLAUDE_LOCAL_SESSION_HOST_ID } from "./session-catalog-adoption.js";
 import { resolveClaudeTerminalExecutable } from "./session-catalog-executable.js";
@@ -16,7 +16,7 @@ type ClaudeTerminalDependencies = {
     Array<{ threadId: string; source?: string; filePath: string; cwd?: string }>
   >;
   resolveNodeClaudeRecord: (params: {
-    runtime: OpenClawPluginApi["runtime"];
+    runtime: OperatorPluginApi["runtime"];
     nodeId: string;
     threadId: string;
   }) => Promise<{ source?: string; cwd?: string }>;
@@ -69,7 +69,7 @@ export function terminalEligibility(
 
 export async function openClaudeCatalogTerminal(
   params: {
-    api: OpenClawPluginApi;
+    api: OperatorPluginApi;
     hostId: string;
     threadId: string;
   } & ClaudeTerminalDependencies,

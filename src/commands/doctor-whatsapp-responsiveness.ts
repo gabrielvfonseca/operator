@@ -3,7 +3,7 @@ import { spawnSync } from "node:child_process";
 import path from "node:path";
 import { note } from "../../packages/terminal-core/src/note.js";
 import { formatCliCommand } from "../cli/command-format.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { HealthFinding } from "../flows/health-checks.js";
 import { sleep } from "../utils/sleep.js";
 import type { StatusSummary } from "./status.types.js";
@@ -55,7 +55,7 @@ function parsePsPidLine(line: string): LocalTuiProcess | null {
   return { pid, command };
 }
 
-/** Lists local OpenClaw TUI processes that can contend with gateway responsiveness. */
+/** Lists local Operator TUI processes that can contend with gateway responsiveness. */
 function listLocalTuiProcesses(): LocalTuiProcess[] {
   if (process.platform === "win32") {
     return [];
@@ -80,7 +80,7 @@ function listLocalTuiProcesses(): LocalTuiProcess[] {
   return processes;
 }
 
-function hasWhatsappEnabled(cfg: OpenClawConfig): boolean {
+function hasWhatsappEnabled(cfg: OperatorConfig): boolean {
   const whatsapp = cfg.channels?.whatsapp;
   if (!whatsapp || whatsapp.enabled === false) {
     return false;
@@ -98,7 +98,7 @@ function formatPidList(processes: LocalTuiProcess[]): string {
 
 /** Collects read-only structured findings for WhatsApp responsiveness pressure. */
 export function collectWhatsappResponsivenessHealthFindings(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   status?: Pick<StatusSummary, "eventLoop"> | null;
   listLocalTuiProcesses?: () => LocalTuiProcess[];
 }): readonly HealthFinding[] {
@@ -193,7 +193,7 @@ if (process.env.VITEST || process.env.NODE_ENV === "test") {
 
 /** Emits WhatsApp responsiveness warnings and optionally stops contending local TUI clients. */
 export async function noteWhatsappResponsivenessHealth(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   status?: Pick<StatusSummary, "eventLoop"> | null;
   shouldRepair: boolean;
   listLocalTuiProcesses?: () => LocalTuiProcess[];

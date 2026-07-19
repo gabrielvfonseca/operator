@@ -1,5 +1,5 @@
 import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { matchPluginCommand } from "../../plugins/commands.js";
 import { isNativeCommandTurn, resolveCommandTurnContext } from "../command-turn-context.js";
 import {
@@ -12,7 +12,7 @@ import { isExplicitSourceReplyCommand } from "./source-reply-delivery-mode.js";
 
 export function shouldBypassPluginOwnedBindingForCommand(
   ctx: FinalizedMsgContext,
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
 ): boolean {
   const commandTurn = resolveCommandTurnContext(ctx);
   if (

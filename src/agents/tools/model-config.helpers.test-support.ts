@@ -1,11 +1,11 @@
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { AuthProfileStore } from "../auth-profiles/types.js";
 import "./model-config.helpers.js";
 
 type ModelConfigHelpersTestApi = {
   hasDirectProviderApiKeyAuthForTool(params: {
     provider: string;
-    cfg?: OpenClawConfig;
+    cfg?: OperatorConfig;
     workspaceDir?: string;
     agentDir?: string;
     authStore?: AuthProfileStore;

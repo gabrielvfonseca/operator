@@ -1,7 +1,7 @@
 {
   "id": "synology-chat",
   "name": "Synology Chat",
-  "description": "Synology Chat channel plugin for OpenClaw channels and direct messages.",
+  "description": "Synology Chat channel plugin for Operator channels and direct messages.",
   "icon": "https://cdn.simpleicons.org/synology",
   "activation": {
     "onStartup": false
@@ -14,7 +14,7 @@
       "SYNOLOGY_NAS_HOST",
       "SYNOLOGY_ALLOWED_USER_IDS",
       "SYNOLOGY_RATE_LIMIT",
-      "OPENCLAW_BOT_NAME"
+      "OPERATOR_BOT_NAME"
     ]
   },
   "configSchema": {

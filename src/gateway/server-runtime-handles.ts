@@ -1,6 +1,6 @@
 // Gateway mutable runtime handles.
 // Provides stop-safe defaults for timers, sidecars, subscriptions, and services.
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { HeartbeatRunner } from "../infra/heartbeat-runner.js";
 import type { ChannelHealthMonitor } from "./channel-health-monitor.js";
 import type { GatewayHotReloadStatus } from "./config-reload-status.types.js";
@@ -63,7 +63,7 @@ export function createGatewayServerMutableState(): GatewayServerMutableState {
     skillCuratorCleanup: () => {},
     heartbeatRunner: {
       stop: () => {},
-      updateConfig: (_cfg: OpenClawConfig) => {},
+      updateConfig: (_cfg: OperatorConfig) => {},
     } satisfies HeartbeatRunner,
     stopGatewayUpdateCheck: () => {},
     tailscaleCleanup: null as (() => Promise<void>) | null,

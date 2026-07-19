@@ -95,7 +95,7 @@ export async function buildHermesPlan(ctx: MigrationProviderContext): Promise<Mi
           id: "manual:auth-reauthenticate:qwen-oauth",
           source: source.configPath ?? source.root,
           message: "Hermes Qwen OAuth uses the external Qwen CLI credential store.",
-          recommendation: "Authenticate qwen-oauth in OpenClaw after migration.",
+          recommendation: "Authenticate qwen-oauth in Operator after migration.",
         }),
       );
     }
@@ -185,7 +185,7 @@ export async function buildHermesPlan(ctx: MigrationProviderContext): Promise<Mi
       (item) => item.kind === "auth" && item.details?.sourceKind === "hermes-auth-json",
     )
       ? [
-          "Hermes and OpenClaw must not keep using the same imported OpenAI OAuth refresh grant after migration; reauthenticate one side before running both.",
+          "Hermes and Operator must not keep using the same imported OpenAI OAuth refresh grant after migration; reauthenticate one side before running both.",
         ]
       : []),
     ...(items.some((item) => item.status === "conflict")
@@ -195,7 +195,7 @@ export async function buildHermesPlan(ctx: MigrationProviderContext): Promise<Mi
       : []),
     ...(source.archivePaths.length > 0
       ? [
-          "Some Hermes files are archive-only. They will be copied into the migration report for manual review, not loaded into OpenClaw.",
+          "Some Hermes files are archive-only. They will be copied into the migration report for manual review, not loaded into Operator.",
         ]
       : []),
     ...(items.some((item) => item.kind === "manual")

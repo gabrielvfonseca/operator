@@ -6,15 +6,15 @@ import {
 } from "../../config/config.js";
 import { PLUGIN_APPROVAL_DESCRIPTION_MAX_LENGTH } from "../../infra/plugin-approvals.js";
 import {
-  createOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  type OperatorTestState,
 } from "../../test-utils/operator-test-state.js";
 import { createTrackedTempDirs } from "../../test-utils/tracked-temp-dirs.js";
 import { resolveSkillWorkshopToolApproval } from "./policy.js";
 import { proposeCreateSkill } from "./service.js";
 
 const tempDirs = createTrackedTempDirs();
-let testState: OpenClawTestState;
+let testState: OperatorTestState;
 const pendingApprovalConfig = {
   skills: {
     workshop: {
@@ -24,7 +24,7 @@ const pendingApprovalConfig = {
 };
 
 beforeEach(async () => {
-  testState = await createOpenClawTestState({
+  testState = await createOperatorTestState({
     layout: "state-only",
     prefix: "openclaw-skill-workshop-policy-",
   });

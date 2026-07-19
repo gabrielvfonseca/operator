@@ -73,7 +73,7 @@ export function installEmbeddedRunnerFastRunE2eMocks(
     runAttempt: vi.fn(),
   });
   vi.doMock("../harness/selection.js", () => ({
-    agentHarnessBuildsOpenClawTools: vi.fn(
+    agentHarnessBuildsOperatorTools: vi.fn(
       (harnessId: string) => harnessId === "codex" || harnessId === "copilot",
     ),
     selectAgentHarness: vi.fn(createMockAgentHarness),

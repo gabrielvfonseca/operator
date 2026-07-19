@@ -1,9 +1,9 @@
 // Defines plugin install security scan result types.
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 
 /** Overrides that intentionally loosen install safety policy for trusted/operator paths. */
 export type InstallSafetyOverrides = {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   dangerouslyForceUnsafeInstall?: boolean;
   trustedSourceLinkedOfficialInstall?: boolean;
 };

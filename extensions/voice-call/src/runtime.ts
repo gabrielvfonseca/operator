@@ -1,5 +1,5 @@
 // Voice Call plugin module implements runtime behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import { isLoopbackHost } from "openclaw/plugin-sdk/gateway-runtime";
 import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
@@ -63,7 +63,7 @@ type Logger = {
 type ResolvedRealtimeProvider = ResolvedRealtimeVoiceProvider;
 
 const REALTIME_VOICE_CONSULT_SYSTEM_PROMPT = [
-  "You are the configured OpenClaw agent receiving delegated requests from a live phone voice bridge.",
+  "You are the configured Operator agent receiving delegated requests from a live phone voice bridge.",
   "Act on behalf of the caller using the normal available tools when the caller asks you to do work.",
   "Prioritize completing the user's request and returning a fast, speakable result over exhaustive investigation.",
   "For tool-backed status checks, prefer one or two bounded read-only queries before answering.",
@@ -87,7 +87,7 @@ const loadRealtimeHandler = createLazyRuntimeModule(() => import("./webhook/real
 
 function resolveVoiceCallConsultSessionKey(call: {
   config: VoiceCallConfig;
-  coreSession?: OpenClawConfig["session"];
+  coreSession?: OperatorConfig["session"];
   sessionKey?: string;
   from?: string;
   to?: string;
@@ -228,7 +228,7 @@ async function resolveProvider(config: VoiceCallConfig): Promise<VoiceCallProvid
 
 async function resolveRealtimeProvider(params: {
   config: VoiceCallConfig;
-  fullConfig: OpenClawConfig;
+  fullConfig: OperatorConfig;
 }): Promise<ResolvedRealtimeProvider> {
   const { resolveConfiguredRealtimeVoiceProvider } = await loadRealtimeVoiceRuntime();
   return resolveConfiguredRealtimeVoiceProvider({
@@ -238,7 +238,7 @@ async function resolveRealtimeProvider(params: {
   });
 }
 
-function listRealtimeAgentIds(config: VoiceCallConfig, coreConfig: OpenClawConfig): string[] {
+function listRealtimeAgentIds(config: VoiceCallConfig, coreConfig: OperatorConfig): string[] {
   const agentIds = new Set<string>([normalizeAgentId(config.agentId)]);
   for (const agent of coreConfig.agents?.list ?? []) {
     agentIds.add(normalizeAgentId(agent.id));
@@ -253,7 +253,7 @@ function listRealtimeAgentIds(config: VoiceCallConfig, coreConfig: OpenClawConfi
 
 async function createRealtimeInstructionsResolver(params: {
   config: VoiceCallConfig;
-  coreConfig: OpenClawConfig;
+  coreConfig: OperatorConfig;
   agentRuntime: CoreAgentDeps;
 }): Promise<(call: CallRecord) => string> {
   const genericConfig: VoiceCallConfig = {
@@ -293,7 +293,7 @@ async function createRealtimeInstructionsResolver(params: {
 export async function createVoiceCallRuntime(params: {
   config: VoiceCallConfig;
   coreConfig: CoreConfig;
-  fullConfig?: OpenClawConfig;
+  fullConfig?: OperatorConfig;
   agentRuntime: CoreAgentDeps;
   stateRuntime?: VoiceCallStateRuntime["state"];
   ttsRuntime?: TelephonyTtsRuntime;
@@ -316,7 +316,7 @@ export async function createVoiceCallRuntime(params: {
   };
 
   const config = resolveVoiceCallConfig(rawConfig);
-  const cfg = fullConfig ?? (coreConfig as OpenClawConfig);
+  const cfg = fullConfig ?? (coreConfig as OperatorConfig);
 
   if (!config.enabled) {
     throw new Error("Voice call disabled. Enable the plugin entry in config.");
@@ -349,7 +349,7 @@ export async function createVoiceCallRuntime(params: {
     manager,
     provider,
     coreConfig,
-    fullConfig ?? (coreConfig as OpenClawConfig),
+    fullConfig ?? (coreConfig as OperatorConfig),
     agentRuntime,
     log,
   );

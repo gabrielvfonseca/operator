@@ -1,6 +1,6 @@
 // ClickClack tests cover non-interactive setup validation and config writes.
 import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/account-id";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { createNonExitingRuntimeEnv } from "openclaw/plugin-sdk/plugin-test-runtime";
 import { describe, expect, it, vi } from "vitest";
 
@@ -16,7 +16,7 @@ import {
 } from "./setup-core.js";
 
 function validate(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   accountId?: string;
   input: Parameters<NonNullable<typeof clickClackSetupAdapter.validateInput>>[0]["input"];
 }) {
@@ -80,7 +80,7 @@ describe("ClickClack setup adapter", () => {
               workspace: "default",
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         input: { useEnv: true },
       }),
     ).toBeNull();
@@ -93,7 +93,7 @@ describe("ClickClack setup adapter", () => {
               workspace: "default",
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         input: { useEnv: true },
       }),
     ).toBe("ClickClack base URL must be a valid http(s) URL.");
@@ -137,7 +137,7 @@ describe("ClickClack setup adapter", () => {
 
     expect(
       clickClackSetupAdapter.applyAccountConfig({
-        cfg: { channels: { clickclack: { name: "Legacy" } } } as OpenClawConfig,
+        cfg: { channels: { clickclack: { name: "Legacy" } } } as OperatorConfig,
         accountId: "Work Team",
         input: {
           name: "Work",
@@ -195,7 +195,7 @@ describe("ClickClack setup adapter", () => {
           workspace: "default",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const withToken = clickClackSetupAdapter.applyAccountConfig({
       cfg: {
@@ -205,7 +205,7 @@ describe("ClickClack setup adapter", () => {
             tokenFile: "/run/secrets/old-token",
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       accountId: DEFAULT_ACCOUNT_ID,
       input: {
         token: "ccb_new",
@@ -224,7 +224,7 @@ describe("ClickClack setup adapter", () => {
             token: "ccb_old",
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       accountId: DEFAULT_ACCOUNT_ID,
       input: {
         tokenFile: "/run/secrets/new-token",
@@ -247,7 +247,7 @@ describe("ClickClack setup adapter", () => {
             tokenFile: "/run/secrets/old-token",
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       accountId: DEFAULT_ACCOUNT_ID,
       input: { useEnv: true },
     });
@@ -267,7 +267,7 @@ describe("ClickClack setup adapter", () => {
             tokenFile: "/run/secrets/default-token",
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       accountId: "work",
       input: {
         token: "ccb_work",
@@ -290,7 +290,7 @@ describe("ClickClack setup adapter", () => {
           tokenFile: "/run/secrets/clickclack",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(
       applyClickClackCredentialConfig({
@@ -312,7 +312,7 @@ describe("ClickClack setup adapter", () => {
           workspace: "default",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const runtime = createNonExitingRuntimeEnv();
 
     await clickClackSetupAdapter.afterAccountConfigWritten?.({

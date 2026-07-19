@@ -6,7 +6,7 @@ import { listAgentIds, resolveDefaultAgentId } from "../../agents/agent-scope.js
 import { resolveAgentSessionDirsFromAgentsDirSync } from "../../agents/session-dirs.js";
 import { DEFAULT_AGENT_ID, normalizeAgentId } from "../../routing/session-key.js";
 import { resolveStateDir } from "../paths.js";
-import type { OpenClawConfig } from "../types.operator.js";
+import type { OperatorConfig } from "../types.operator.js";
 import { resolveAgentsDirFromSessionStorePath, resolveStorePath } from "./paths.js";
 import { resolveSqliteTargetFromSessionStorePath } from "./session-sqlite-target.js";
 
@@ -95,7 +95,7 @@ function resolveValidatedManagedFilePathSync(params: {
 }
 
 /** Lists agent ids whose session stores should be considered configured. */
-export function listConfiguredSessionStoreAgentIds(cfg: OpenClawConfig): string[] {
+export function listConfiguredSessionStoreAgentIds(cfg: OperatorConfig): string[] {
   const ids = new Set(listAgentIds(cfg).map((agentId) => normalizeAgentId(agentId)));
   const addAcpAgentId = (agentId: string | undefined) => {
     const raw = agentId?.trim() ?? "";
@@ -183,7 +183,7 @@ function isValidatedRecoveryCandidateSessionsDir(params: {
 }
 
 function resolveSessionStoreDiscoveryState(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   env: NodeJS.ProcessEnv,
 ): {
   configuredTargets: SessionStoreTarget[];
@@ -240,7 +240,7 @@ function resolveExplicitSessionStoreTarget(params: {
 
 /** Resolves all configured and discoverable agent session stores synchronously. */
 export function resolveAllAgentSessionStoreTargetsSync(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   params: { env?: NodeJS.ProcessEnv } = {},
 ): SessionStoreTarget[] {
   const env = params.env ?? process.env;
@@ -312,7 +312,7 @@ export function resolveAllAgentSessionStoreTargetsSync(
  * Callers must validate the selected artifact before performing filesystem mutations.
  */
 export function resolveAllAgentSessionStoreCandidateTargetsSync(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   params: { env?: NodeJS.ProcessEnv } = {},
 ): SessionStoreTarget[] {
   const env = params.env ?? process.env;
@@ -385,7 +385,7 @@ export function resolveAllAgentSessionStoreCandidateTargetsSync(
 
 /** Resolves session store targets for one agent, including retired/manual stores. */
 export function resolveAgentSessionStoreTargetsSync(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   agentId: string,
   params: { env?: NodeJS.ProcessEnv } = {},
 ): SessionStoreTarget[] {
@@ -471,7 +471,7 @@ export function resolveAgentSessionStoreTargetsSync(
 
 /** Resolves session store targets from explicit CLI-style selection options. */
 export function resolveSessionStoreTargets(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   opts: SessionStoreSelectionOptions,
   params: { env?: NodeJS.ProcessEnv } = {},
 ): SessionStoreTarget[] {

@@ -1,6 +1,6 @@
 import { resolveDefaultAgentId } from "../../agents/agent-scope.js";
 import { getReplyPayloadMetadata, type ReplyPayload } from "../../auto-reply/reply-payload.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { projectChatDisplayMessage } from "../chat-display-projection.js";
 import type { GatewayRequestContext } from "./types.js";
 
@@ -28,7 +28,7 @@ function nextChatSeq(context: { agentRunSeq: Map<string, number> }, runId: strin
 }
 
 function resolveGlobalAwareNodeChatDeliveryKeys(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   sessionKey: string;
   agentId?: string;
 }): string[] {
@@ -53,7 +53,7 @@ export function sendGlobalAwareNodeChatPayload(params: {
   payload: unknown;
 }): void {
   const deliveryKeys = resolveGlobalAwareNodeChatDeliveryKeys({
-    cfg: params.context.getRuntimeConfig?.() ?? ({} as OpenClawConfig),
+    cfg: params.context.getRuntimeConfig?.() ?? ({} as OperatorConfig),
     sessionKey: params.sessionKey,
     agentId: params.agentId,
   });

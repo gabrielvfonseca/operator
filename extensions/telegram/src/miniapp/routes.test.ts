@@ -1,12 +1,12 @@
 import crypto from "node:crypto";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { Readable } from "node:stream";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-type OpenClawPluginHttpRouteParams = Parameters<OpenClawPluginApi["registerHttpRoute"]>[0];
+type OperatorPluginHttpRouteParams = Parameters<OperatorPluginApi["registerHttpRoute"]>[0];
 
 const issueDeviceBootstrapToken = vi.hoisted(() =>
   vi.fn(async () => ({ token: "issued", expiresAtMs: Date.now() + 600_000 })),
@@ -50,8 +50,8 @@ class MockResponse {
   }
 }
 
-function createRoute(cfg: OpenClawConfig): OpenClawPluginHttpRouteParams {
-  let route: OpenClawPluginHttpRouteParams | null = null;
+function createRoute(cfg: OperatorConfig): OperatorPluginHttpRouteParams {
+  let route: OperatorPluginHttpRouteParams | null = null;
   const api = createTestPluginApi({
     config: cfg,
     registerHttpRoute(params) {
@@ -66,7 +66,7 @@ function createRoute(cfg: OpenClawConfig): OpenClawPluginHttpRouteParams {
 }
 
 async function callRoute(params: {
-  route: OpenClawPluginHttpRouteParams;
+  route: OperatorPluginHttpRouteParams;
   method: string;
   url: string;
   body?: string;
@@ -85,7 +85,7 @@ async function callRoute(params: {
   return res;
 }
 
-function config(allowFrom: string[] = ["123456"]): OpenClawConfig {
+function config(allowFrom: string[] = ["123456"]): OperatorConfig {
   return {
     channels: {
       telegram: {

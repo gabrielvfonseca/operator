@@ -2,10 +2,10 @@
 import { randomUUID } from "node:crypto";
 import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
 import { createSubsystemLogger } from "../logging/subsystem.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
 } from "../state/operator-state-db.js";
 import {
   executeSqliteQuerySync,
@@ -24,7 +24,7 @@ const MAX_PROCESS_INSTANCE_ID_LENGTH = 120;
 const MAX_REASON_LENGTH = 200;
 
 const handoffLog = createSubsystemLogger("restart-handoff");
-type GatewayRestartHandoffDatabase = Pick<OpenClawStateKyselyDatabase, "gateway_restart_handoff">;
+type GatewayRestartHandoffDatabase = Pick<OperatorStateKyselyDatabase, "gateway_restart_handoff">;
 
 type GatewayRestartHandoffRestartKind = "full-process" | "update-process";
 type GatewayRestartHandoffSource =
@@ -258,7 +258,7 @@ function normalizeGatewayRestartHandoffRow(row: {
 
 function readGatewayRestartHandoffRowSync(env: NodeJS.ProcessEnv) {
   try {
-    const { db } = openOpenClawStateDatabase({ env });
+    const { db } = openOperatorStateDatabase({ env });
     const stateDb = getNodeSqliteKysely<GatewayRestartHandoffDatabase>(db);
     return executeSqliteQueryTakeFirstSync(
       db,
@@ -333,7 +333,7 @@ export function writeGatewayRestartHandoffSync(opts: {
   };
 
   try {
-    runOpenClawStateWriteTransaction(
+    runOperatorStateWriteTransaction(
       ({ db }) => {
         const stateDb = getNodeSqliteKysely<GatewayRestartHandoffDatabase>(db);
         executeSqliteQuerySync(

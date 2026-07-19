@@ -10,7 +10,7 @@ import { replaceSessionEntry } from "../config/sessions/session-accessor.js";
 import type { SessionEntry } from "../config/sessions/types.js";
 import { callGateway } from "../gateway/call.js";
 import { onAgentEvent } from "../infra/agent-events.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import { captureEnv, setTestEnvValue, withEnv } from "../test-utils/env.js";
 import { cleanupSessionStateForTest } from "../test-utils/session-state-cleanup.js";
 import { scheduleOrphanRecovery } from "./subagent-orphan-recovery.js";
@@ -61,7 +61,7 @@ function expectFields(value: unknown, expected: Record<string, unknown>): void {
 }
 
 describe("subagent registry persistence", () => {
-  const envSnapshot = captureEnv(["OPENCLAW_STATE_DIR"]);
+  const envSnapshot = captureEnv(["OPERATOR_STATE_DIR"]);
   let tempStateDir: string | null = null;
 
   const resolveAgentIdFromSessionKey = (sessionKey: string) => {
@@ -129,7 +129,7 @@ describe("subagent registry persistence", () => {
     // Each persisted-registry fixture gets its own state dir so session and
     // subagent SQLite stores use the same production paths.
     tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-subagent-"));
-    setTestEnvValue("OPENCLAW_STATE_DIR", tempStateDir);
+    setTestEnvValue("OPERATOR_STATE_DIR", tempStateDir);
     const runs = (persisted.runs ?? {}) as Record<string, SubagentRunRecord>;
     saveSubagentRegistryToSqlite(new Map(Object.entries(runs)));
     if (opts?.seedChildSessions !== false) {
@@ -214,7 +214,7 @@ describe("subagent registry persistence", () => {
   });
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     testing.setDepsForTest();
     resetSubagentRegistryForTests({ persist: false });
     await cleanupSessionStateForTest();
@@ -227,7 +227,7 @@ describe("subagent registry persistence", () => {
 
   it("persists completed subagent timing into the child session entry", async () => {
     tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-subagent-"));
-    setTestEnvValue("OPENCLAW_STATE_DIR", tempStateDir);
+    setTestEnvValue("OPERATOR_STATE_DIR", tempStateDir);
 
     const now = Date.now();
     const startedAt = now;
@@ -264,7 +264,7 @@ describe("subagent registry persistence", () => {
 
   it("rejects a stale timing write after session ownership changes", async () => {
     tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-subagent-"));
-    setTestEnvValue("OPENCLAW_STATE_DIR", tempStateDir);
+    setTestEnvValue("OPERATOR_STATE_DIR", tempStateDir);
 
     const startedAt = Date.now();
     const storePath = await writeChildSessionEntry({
@@ -302,7 +302,7 @@ describe("subagent registry persistence", () => {
 
   it("does not overwrite durable completion with a provisional killed status", async () => {
     tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-subagent-"));
-    setTestEnvValue("OPENCLAW_STATE_DIR", tempStateDir);
+    setTestEnvValue("OPERATOR_STATE_DIR", tempStateDir);
 
     const startedAt = Date.now();
     const completedAt = startedAt + 500;
@@ -347,7 +347,7 @@ describe("subagent registry persistence", () => {
 
   it("skips cleanup when cleanupHandled was persisted", async () => {
     tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-subagent-"));
-    setTestEnvValue("OPENCLAW_STATE_DIR", tempStateDir);
+    setTestEnvValue("OPERATOR_STATE_DIR", tempStateDir);
 
     const persisted = {
       version: 2,
@@ -407,10 +407,10 @@ describe("subagent registry persistence", () => {
       },
       { seedChildSessions: false },
     );
-    const previousFlag = process.env.OPENCLAW_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE;
+    const previousFlag = process.env.OPERATOR_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE;
     let cloneSpy: { mockRestore(): void } | undefined;
     try {
-      process.env.OPENCLAW_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE = "1";
+      process.env.OPERATOR_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE = "1";
       getSubagentRunsSnapshotForRead(new Map());
       cloneSpy = vi.spyOn(globalThis, "structuredClone");
       const snapshot = getSubagentRunsSnapshotForRead(new Map());
@@ -420,16 +420,16 @@ describe("subagent registry persistence", () => {
     } finally {
       cloneSpy?.mockRestore();
       if (previousFlag === undefined) {
-        delete process.env.OPENCLAW_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE;
+        delete process.env.OPERATOR_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE;
       } else {
-        process.env.OPENCLAW_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE = previousFlag;
+        process.env.OPERATOR_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE = previousFlag;
       }
     }
   });
 
   it("normalizes newly registered session keys to canonical trimmed values", async () => {
     tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-subagent-"));
-    setTestEnvValue("OPENCLAW_STATE_DIR", tempStateDir);
+    setTestEnvValue("OPERATOR_STATE_DIR", tempStateDir);
 
     vi.mocked(callGateway).mockResolvedValueOnce({
       status: "pending",
@@ -781,7 +781,7 @@ describe("subagent registry persistence", () => {
 
   it("removes attachments when pruning orphaned restored runs", async () => {
     tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-subagent-"));
-    setTestEnvValue("OPENCLAW_STATE_DIR", tempStateDir);
+    setTestEnvValue("OPERATOR_STATE_DIR", tempStateDir);
     const attachmentsRootDir = path.join(tempStateDir, "attachments");
     const attachmentsDir = path.join(attachmentsRootDir, "ghost");
     await fs.mkdir(attachmentsDir, { recursive: true });
@@ -852,7 +852,7 @@ describe("subagent registry persistence", () => {
 
     resetSubagentRegistryForTests({ persist: false });
 
-    const resolved = withEnv({ OPENCLAW_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE: "1" }, () =>
+    const resolved = withEnv({ OPERATOR_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE: "1" }, () =>
       getSubagentRunByChildSessionKey(childSessionKey),
     );
 
@@ -898,7 +898,7 @@ describe("subagent registry persistence", () => {
 
     resetSubagentRegistryForTests({ persist: false });
 
-    const resolved = withEnv({ OPENCLAW_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE: "1" }, () =>
+    const resolved = withEnv({ OPERATOR_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE: "1" }, () =>
       getLatestSubagentRunByChildSessionKey(childSessionKey),
     );
 
@@ -911,7 +911,7 @@ describe("subagent registry persistence", () => {
 
   it("resume guard prunes orphan runs before announce retry", async () => {
     tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-subagent-"));
-    setTestEnvValue("OPENCLAW_STATE_DIR", tempStateDir);
+    setTestEnvValue("OPERATOR_STATE_DIR", tempStateDir);
     const runId = "run-orphan-resume-guard";
     const childSessionKey = "agent:main:subagent:ghost-resume";
     const now = Date.now();

@@ -1,5 +1,5 @@
 // Discord plugin module implements listeners behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { requestHeartbeat } from "openclaw/plugin-sdk/heartbeat-runtime";
 import type { PluginStateSyncKeyedStore } from "openclaw/plugin-sdk/plugin-state-runtime";
 import { resolveAgentRoute } from "openclaw/plugin-sdk/routing";
@@ -112,7 +112,7 @@ export class DiscordPresenceListener extends PresenceUpdateListener {
 
   constructor(
     private readonly params: {
-      cfg: OpenClawConfig;
+      cfg: OperatorConfig;
       logger?: Logger;
       accountId: string;
       botUserId?: string;
@@ -471,7 +471,7 @@ type ThreadUpdateEvent = Parameters<ThreadUpdateListener["handle"]>[0];
 
 export class DiscordThreadUpdateListener extends ThreadUpdateListener {
   constructor(
-    private cfg: OpenClawConfig,
+    private cfg: OperatorConfig,
     private accountId: string,
     private logger?: Logger,
   ) {

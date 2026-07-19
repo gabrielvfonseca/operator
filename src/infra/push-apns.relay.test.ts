@@ -74,8 +74,8 @@ describe("push-apns.relay", () => {
     it("lets env overrides win and clamps tiny timeout values", () => {
       const resolved = resolveApnsRelayConfigFromEnv(
         {
-          OPENCLAW_APNS_RELAY_BASE_URL: " https://relay-override.example.com/base/ ",
-          OPENCLAW_APNS_RELAY_TIMEOUT_MS: "999",
+          OPERATOR_APNS_RELAY_BASE_URL: " https://relay-override.example.com/base/ ",
+          OPERATOR_APNS_RELAY_TIMEOUT_MS: "999",
         } as NodeJS.ProcessEnv,
         {
           push: {
@@ -97,8 +97,8 @@ describe("push-apns.relay", () => {
 
     it("caps oversized timeout values before they reach AbortSignal.timeout", () => {
       const resolved = resolveApnsRelayConfigFromEnv({
-        OPENCLAW_APNS_RELAY_BASE_URL: "https://relay.example.com",
-        OPENCLAW_APNS_RELAY_TIMEOUT_MS: String(Number.MAX_SAFE_INTEGER),
+        OPERATOR_APNS_RELAY_BASE_URL: "https://relay.example.com",
+        OPERATOR_APNS_RELAY_TIMEOUT_MS: String(Number.MAX_SAFE_INTEGER),
       } as NodeJS.ProcessEnv);
 
       expectRelayConfig(resolved, {
@@ -111,8 +111,8 @@ describe("push-apns.relay", () => {
       "falls back for non-decimal env timeout %s",
       (timeoutMs) => {
         const resolved = resolveApnsRelayConfigFromEnv({
-          OPENCLAW_APNS_RELAY_BASE_URL: "https://relay.example.com",
-          OPENCLAW_APNS_RELAY_TIMEOUT_MS: timeoutMs,
+          OPERATOR_APNS_RELAY_BASE_URL: "https://relay.example.com",
+          OPERATOR_APNS_RELAY_TIMEOUT_MS: timeoutMs,
         } as NodeJS.ProcessEnv);
 
         expectRelayConfig(resolved, {
@@ -125,7 +125,7 @@ describe("push-apns.relay", () => {
     it("retains numeric timeout config values", () => {
       const resolved = resolveApnsRelayConfigFromEnv(
         {
-          OPENCLAW_APNS_RELAY_BASE_URL: "https://relay.example.com",
+          OPERATOR_APNS_RELAY_BASE_URL: "https://relay.example.com",
         } as NodeJS.ProcessEnv,
         {
           push: {
@@ -146,9 +146,9 @@ describe("push-apns.relay", () => {
 
     it("allows loopback http URLs for alternate truthy env values", () => {
       const resolved = resolveApnsRelayConfigFromEnv({
-        OPENCLAW_APNS_RELAY_BASE_URL: "http://[::1]:8787",
-        OPENCLAW_APNS_RELAY_ALLOW_HTTP: "yes",
-        OPENCLAW_APNS_RELAY_TIMEOUT_MS: "nope",
+        OPERATOR_APNS_RELAY_BASE_URL: "http://[::1]:8787",
+        OPERATOR_APNS_RELAY_ALLOW_HTTP: "yes",
+        OPERATOR_APNS_RELAY_TIMEOUT_MS: "nope",
       } as NodeJS.ProcessEnv);
 
       expectRelayConfig(resolved, {
@@ -160,25 +160,25 @@ describe("push-apns.relay", () => {
     it.each([
       {
         name: "unsupported protocol",
-        env: { OPENCLAW_APNS_RELAY_BASE_URL: "ftp://relay.example.com" },
+        env: { OPERATOR_APNS_RELAY_BASE_URL: "ftp://relay.example.com" },
         expected: "unsupported protocol",
       },
       {
         name: "http non-loopback host",
         env: {
-          OPENCLAW_APNS_RELAY_BASE_URL: "http://relay.example.com",
-          OPENCLAW_APNS_RELAY_ALLOW_HTTP: "true",
+          OPERATOR_APNS_RELAY_BASE_URL: "http://relay.example.com",
+          OPERATOR_APNS_RELAY_ALLOW_HTTP: "true",
         },
         expected: "loopback hosts",
       },
       {
         name: "query string",
-        env: { OPENCLAW_APNS_RELAY_BASE_URL: "https://relay.example.com/path?debug=1" },
+        env: { OPERATOR_APNS_RELAY_BASE_URL: "https://relay.example.com/path?debug=1" },
         expected: "query and fragment are not allowed",
       },
       {
         name: "userinfo",
-        env: { OPENCLAW_APNS_RELAY_BASE_URL: "https://user:pass@relay.example.com/path" },
+        env: { OPERATOR_APNS_RELAY_BASE_URL: "https://user:pass@relay.example.com/path" },
         expected: "userinfo is not allowed",
       },
     ])("rejects invalid relay URL: $name", ({ env, expected }) => {

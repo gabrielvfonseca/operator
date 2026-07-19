@@ -166,7 +166,7 @@ const {
         active: false,
         queued: false,
         reason: "no_active_run",
-        message: "There is no active OpenClaw run to steer.",
+        message: "There is no active Operator run to steer.",
         speak: true,
         show: true,
         suppress: false,
@@ -397,7 +397,7 @@ describe("DiscordVoiceManager", () => {
       active: false,
       queued: false,
       reason: "no_active_run",
-      message: "There is no active OpenClaw run to steer.",
+      message: "There is no active Operator run to steer.",
       speak: true,
       show: true,
       suppress: false,
@@ -2877,7 +2877,7 @@ describe("DiscordVoiceManager", () => {
       | undefined;
     expect(bridgeParams?.cfg).toBe(cfg);
     expect(bridgeParams?.autoRespondToAudio).toBe(false);
-    expect(bridgeParams?.instructions).toContain("same OpenClaw agent");
+    expect(bridgeParams?.instructions).toContain("same Operator agent");
     expect(bridgeParams?.instructions).toContain("short natural backchannel");
     expect(bridgeParams?.tools?.map((tool) => tool.name)).toContain("openclaw_agent_consult");
     expect(bridgeParams?.tools?.map((tool) => tool.name)).toContain("openclaw_agent_control");
@@ -3157,7 +3157,7 @@ describe("DiscordVoiceManager", () => {
         name: "openclaw_agent_consult",
         args: {
           question: [
-            "Speak this exact OpenClaw answer to the Discord voice channel, without adding, removing, or rephrasing words.",
+            "Speak this exact Operator answer to the Discord voice channel, without adding, removing, or rephrasing words.",
             'Answer: "direct internal answer"',
           ].join("\n"),
         },
@@ -3551,7 +3551,7 @@ describe("DiscordVoiceManager", () => {
       sessionId: "embedded-active",
       active: true,
       aborted: true,
-      message: "Cancelled the active OpenClaw run.",
+      message: "Cancelled the active Operator run.",
       speak: true,
       show: true,
       suppress: false,
@@ -3589,16 +3589,16 @@ describe("DiscordVoiceManager", () => {
         force: true,
       }),
     );
-    await vi.waitFor(() => expectUserMessageIncludes("Cancelled the active OpenClaw run."));
+    await vi.waitFor(() => expectUserMessageIncludes("Cancelled the active Operator run."));
     expect(textToSpeechMock).not.toHaveBeenCalledWith(
-      expect.objectContaining({ text: "Cancelled the active OpenClaw run." }),
+      expect.objectContaining({ text: "Cancelled the active Operator run." }),
     );
 
     const stopCallsAfterControl = player.stop.mock.calls.length;
-    bridgeParams?.onTranscript?.("assistant", "Cancelled the active OpenClaw run.", true);
+    bridgeParams?.onTranscript?.("assistant", "Cancelled the active Operator run.", true);
     expect(player.stop).toHaveBeenCalledTimes(stopCallsAfterControl);
     bridgeParams?.audioSink?.sendAudio(Buffer.alloc(24_000));
-    bridgeParams?.onTranscript?.("assistant", "Cancelled the active OpenClaw run.", true);
+    bridgeParams?.onTranscript?.("assistant", "Cancelled the active Operator run.", true);
     expect(player.stop).toHaveBeenCalledTimes(stopCallsAfterControl + 1);
   });
 
@@ -4000,7 +4000,7 @@ describe("DiscordVoiceManager", () => {
     expectUserMessageIncludes("wake answer");
   });
 
-  it("accepts OpenClaw as a default wake name before realtime agent-proxy consults", async () => {
+  it("accepts Operator as a default wake name before realtime agent-proxy consults", async () => {
     agentCommandMock.mockResolvedValueOnce({ payloads: [{ text: "openclaw wake answer" }] });
     const manager = createManager(
       {
@@ -4039,14 +4039,14 @@ describe("DiscordVoiceManager", () => {
       "u-owner",
     );
     ownerTurn?.sendInputAudio(Buffer.alloc(8));
-    await emitFinalRealtimeUserTranscript(bridgeParams, "OpenClaw, how is it going");
+    await emitFinalRealtimeUserTranscript(bridgeParams, "Operator, how is it going");
 
     expect(controlRealtimeVoiceAgentRunMock).toHaveBeenCalledWith({
       sessionKey: "discord:g1:c1",
       text: "how is it going",
     });
     expect(lastAgentCommandArgs().message).toContain("how is it going");
-    expect(lastAgentCommandArgs().message).not.toContain("OpenClaw");
+    expect(lastAgentCommandArgs().message).not.toContain("Operator");
     expectUserMessageIncludes("openclaw wake answer");
   });
 
@@ -4098,10 +4098,10 @@ describe("DiscordVoiceManager", () => {
       "u-owner",
     );
     fallbackTurn?.sendInputAudio(Buffer.alloc(8));
-    await emitFinalRealtimeUserTranscript(bridgeParams, "OpenClaw, fallback still wakes");
+    await emitFinalRealtimeUserTranscript(bridgeParams, "Operator, fallback still wakes");
 
     expect(lastAgentCommandArgs().message).toContain("fallback still wakes");
-    expect(lastAgentCommandArgs().message).not.toContain("OpenClaw");
+    expect(lastAgentCommandArgs().message).not.toContain("Operator");
     expectUserMessageIncludes("fallback wake answer");
   });
 
@@ -4432,7 +4432,7 @@ describe("DiscordVoiceManager", () => {
       "u-owner",
     );
     fallbackTurn?.sendInputAudio(Buffer.alloc(8));
-    await emitFinalRealtimeUserTranscript(bridgeParams, "OpenClaw, ship it");
+    await emitFinalRealtimeUserTranscript(bridgeParams, "Operator, ship it");
 
     expect(agentCommandMock).not.toHaveBeenCalled();
   });
@@ -5008,7 +5008,7 @@ describe("DiscordVoiceManager", () => {
       "call-late",
       {
         status: "already_delivered",
-        message: "OpenClaw already delivered this answer to Discord voice. Do not repeat it.",
+        message: "Operator already delivered this answer to Discord voice. Do not repeat it.",
       },
       { suppressResponse: true },
     );
@@ -5031,7 +5031,7 @@ describe("DiscordVoiceManager", () => {
         "call-late-unsuppressed",
         {
           status: "already_delivered",
-          message: "OpenClaw already delivered this answer to Discord voice. Do not repeat it.",
+          message: "Operator already delivered this answer to Discord voice. Do not repeat it.",
         },
       ]);
     });
@@ -5089,7 +5089,7 @@ describe("DiscordVoiceManager", () => {
       "call-cancelled",
       {
         status: "cancelled",
-        message: "OpenClaw cancelled this consult before completion. Do not restart it.",
+        message: "Operator cancelled this consult before completion. Do not restart it.",
       },
       { suppressResponse: true },
     );
@@ -5253,7 +5253,7 @@ describe("DiscordVoiceManager", () => {
         "call-late",
         {
           status: "already_delivered",
-          message: "OpenClaw already delivered this answer to Discord voice. Do not repeat it.",
+          message: "Operator already delivered this answer to Discord voice. Do not repeat it.",
         },
         { suppressResponse: true },
       ),
@@ -5423,7 +5423,7 @@ describe("DiscordVoiceManager", () => {
       "call-new",
       {
         status: "already_delivered",
-        message: "OpenClaw already delivered this answer to Discord voice. Do not repeat it.",
+        message: "Operator already delivered this answer to Discord voice. Do not repeat it.",
       },
       { suppressResponse: true },
     );
@@ -5570,7 +5570,7 @@ describe("DiscordVoiceManager", () => {
       sessionKey: "agent:main:discord:channel:1001",
     });
     resolveRealtimeBootstrapContextInstructionsMock.mockResolvedValue(
-      "OpenClaw realtime voice profile context:\n\n### IDENTITY.md\nName: Wilfred",
+      "Operator realtime voice profile context:\n\n### IDENTITY.md\nName: Wilfred",
     );
     const manager = createManager({
       groupPolicy: "open",
@@ -5598,7 +5598,7 @@ describe("DiscordVoiceManager", () => {
           instructions?: string;
         }
       | undefined;
-    expect(bridgeParams?.instructions).toContain("OpenClaw realtime voice profile context");
+    expect(bridgeParams?.instructions).toContain("Operator realtime voice profile context");
     expect(bridgeParams?.instructions).toContain("Name: Wilfred");
     expect(bridgeParams?.instructions).toContain("short natural backchannel");
     expect(bridgeParams?.instructions).toContain("Call openclaw_agent_consult");

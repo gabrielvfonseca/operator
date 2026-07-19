@@ -6,10 +6,10 @@ import { resolveSessionModelRef } from "../../agents/session-model-ref.js";
 import { resolvePersistedSessionRuntimeId } from "../../agents/session-runtime-compat.js";
 import { resolveEffectiveAgentRuntime } from "../../agents/thinking-runtime.js";
 import type { SessionEntry } from "../../config/sessions.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 
 export function resolveWorkerPlacementSessionRuntime(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   entry: SessionEntry;
   agentId: string;
   sessionKey: string;

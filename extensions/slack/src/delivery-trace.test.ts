@@ -9,7 +9,7 @@
 // @slack/web-api ChatStreamer so the SDK's buffered-ack contract is captured as-is:
 // append() returns null and issues NO network call until its local buffer crosses
 // buffer_size (256 chars), and stop() can be the first network call for short replies.
-// Refresh goldens with OPENCLAW_TRACE_UPDATE=1 (see delivery-trace harness docs).
+// Refresh goldens with OPERATOR_TRACE_UPDATE=1 (see delivery-trace harness docs).
 import { ChatStreamer } from "@slack/web-api/dist/chat-stream.js";
 import {
   expectDeliveryTraceMatchesGolden,
@@ -19,7 +19,7 @@ import {
   type TraceEvent,
   type TraceNormalizer,
 } from "openclaw/plugin-sdk/channel-contract-testing";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type { ReplyDispatchKind, ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
 import { afterAll, afterEach, describe, it, vi } from "vitest";
 import type { PreparedSlackMessage } from "./monitor/message-handler/types.js";
@@ -429,7 +429,7 @@ function createRecordingSlackClient(): Record<string, unknown> {
 }
 
 function createPreparedTraceMessage(scenario: SlackTraceScenarioName): PreparedSlackMessage {
-  const cfg = { channels: { slack: { enabled: true } } } as OpenClawConfig;
+  const cfg = { channels: { slack: { enabled: true } } } as OperatorConfig;
   const client = traceState.client;
   if (!client) {
     throw new Error("trace Slack client not initialized");

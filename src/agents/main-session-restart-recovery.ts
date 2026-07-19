@@ -24,7 +24,7 @@ import {
   type SessionTranscriptTurnLifecyclePatch,
 } from "../config/sessions/session-accessor.js";
 import { appendAssistantMessageToSessionTranscript } from "../config/sessions/transcript.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { GatewayRecoveryRuntime } from "../gateway/server-instance-runtime.types.js";
 import { readSessionMessagesAsync } from "../gateway/session-transcript-readers.js";
 import { resolveGatewaySessionStoreTarget } from "../gateway/session-utils.js";
@@ -148,8 +148,8 @@ function resolveEntryTranscriptLockPaths(params: {
 }
 
 export async function markRestartAbortedMainSessions(params: {
-  cfg?: OpenClawConfig;
-  additionalCfgs?: Iterable<OpenClawConfig | undefined>;
+  cfg?: OperatorConfig;
+  additionalCfgs?: Iterable<OperatorConfig | undefined>;
   stateDir?: string;
   sessionKeys?: Iterable<string>;
   sessionIds?: Iterable<string>;
@@ -194,7 +194,7 @@ export async function markRestartAbortedMainSessions(params: {
       : { ...process.env, OPERATOR_STATE_DIR: params.stateDir };
   const stateDir = resolveStateDir(env);
   const configs = [params.cfg, ...(params.additionalCfgs ?? [])].filter(
-    (cfg): cfg is OpenClawConfig => Boolean(cfg),
+    (cfg): cfg is OperatorConfig => Boolean(cfg),
   );
   for (const cfg of configs) {
     try {
@@ -327,7 +327,7 @@ export async function markRestartAbortedMainSessions(params: {
 }
 
 export async function markStartupOrphanedMainSessionsForRecovery(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   stateDir?: string;
   activeSessionIds?: Iterable<string>;
   activeSessionKeys?: Iterable<string>;
@@ -1385,7 +1385,7 @@ async function writeUnresumableSessionNotice(params: {
 }
 
 async function failUnresumableMainSession(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   entry: SessionEntry;
   expectedRecoverySourceRunId?: string;
   gatewayRuntime: GatewayRecoveryRuntime;
@@ -1484,7 +1484,7 @@ export async function markRestartAbortedMainSessionsFromLocks(params: {
 }
 
 function resolveRecoveryDispatchSessionKey(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   sessionKey: string;
   storePath: string;
 }): string | undefined {
@@ -1507,7 +1507,7 @@ function resolveRecoveryDispatchSessionKey(params: {
 }
 
 async function recoverStore(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   storePath: string;
   resumedSessionKeys: Set<string>;
   expectedClaim?: ExpectedRestartRecoveryClaim;
@@ -1816,7 +1816,7 @@ async function recoverStore(params: {
 }
 
 async function resolveRestartRecoveryStorePaths(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   stateDir?: string;
 }): Promise<string[]> {
   const storePaths = new Set<string>();
@@ -1834,7 +1834,7 @@ async function resolveRestartRecoveryStorePaths(params: {
 }
 
 export async function recoverRestartAbortedMainSessions(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   stateDir?: string;
   resumedSessionKeys?: Set<string>;
   activeSessionIds?: Iterable<string>;
@@ -1869,7 +1869,7 @@ export async function recoverRestartAbortedMainSessions(params: {
 /** Retries one exact durable Control UI row from its owning per-agent SQLite store. */
 export async function retryRestartAbortedMainSessionRecovery(params: {
   canonicalSessionKey?: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   expectedRecoveryRunId: string;
   expectedRecoverySourceRunId: string;
   expectedSessionId: string;
@@ -1922,7 +1922,7 @@ export async function retryRestartAbortedMainSessionRecovery(params: {
 }
 
 export async function recoverStartupOrphanedMainSessions(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   stateDir?: string;
   activeSessionIds?: Iterable<string>;
   activeSessionKeys?: Iterable<string>;
@@ -1955,7 +1955,7 @@ export async function recoverStartupOrphanedMainSessions(params: {
 }
 
 export function scheduleRestartAbortedMainSessionRecovery(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   delayMs?: number;
   maxRetries?: number;
   stateDir?: string;

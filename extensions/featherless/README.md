@@ -1,8 +1,8 @@
-# OpenClaw Featherless AI Provider
+# Operator Featherless AI Provider
 
-Official OpenClaw provider plugin for Featherless AI's OpenAI-compatible API.
+Official Operator provider plugin for Featherless AI's OpenAI-compatible API.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/featherless-provider

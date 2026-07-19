@@ -1,4 +1,4 @@
-import type { OpenClawConfig, TelegramAccountConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig, TelegramAccountConfig } from "openclaw/plugin-sdk/config-contracts";
 // Telegram plugin module owns buffered reply payload delivery decisions.
 import { normalizeMessagePresentation } from "openclaw/plugin-sdk/interactive-runtime";
 import {
@@ -55,7 +55,7 @@ function hasExecApprovalPayload(payload: ReplyPayload): boolean {
 }
 
 export function createTelegramReplyDelivery(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   context: TelegramMessageContext;
   delivery: TelegramDeliveryController;
   draft: TelegramDraftController;

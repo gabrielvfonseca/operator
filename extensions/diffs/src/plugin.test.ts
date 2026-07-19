@@ -3,7 +3,7 @@ import os from "node:os";
 import { join } from "node:path";
 import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
 import { afterAll, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig, OpenClawPluginApi, OpenClawPluginToolContext } from "../api.js";
+import type { OperatorConfig, OperatorPluginApi, OperatorPluginToolContext } from "../api.js";
 import { registerDiffsPlugin } from "./plugin.js";
 
 const { createDiffsToolMock } = vi.hoisted(() => ({
@@ -34,17 +34,17 @@ describe("diffs plugin language-pack discovery", () => {
           join(languagePackRoot, "openclaw.plugin.json"),
           '{"id":"diffs-language-pack"}\n',
         );
-        const config = { plugins: {} } as OpenClawConfig;
+        const config = { plugins: {} } as OperatorConfig;
         let registeredToolFactory:
           | ((
-              ctx: OpenClawPluginToolContext,
+              ctx: OperatorPluginToolContext,
             ) => RegisteredTool | RegisteredTool[] | null | undefined)
           | undefined;
         const api = createTestPluginApi({
           rootDir: diffsRoot,
           config,
           runtime: { config: { current: () => config } } as never,
-          registerTool(tool: Parameters<OpenClawPluginApi["registerTool"]>[0]) {
+          registerTool(tool: Parameters<OperatorPluginApi["registerTool"]>[0]) {
             registeredToolFactory = typeof tool === "function" ? tool : () => tool;
           },
         });
@@ -55,7 +55,7 @@ describe("diffs plugin language-pack discovery", () => {
           sessionId: "session-1",
           messageChannel: "test",
           agentAccountId: "default",
-        } satisfies OpenClawPluginToolContext;
+        } satisfies OperatorPluginToolContext;
 
         registeredToolFactory?.(context);
         expect(createDiffsToolMock).toHaveBeenLastCalledWith(

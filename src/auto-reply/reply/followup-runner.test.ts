@@ -7,7 +7,7 @@ import { expectDefined } from "@operator/normalization-core";
 import { DELIVERY_NO_REPLY_RUNTIME_CONTRACT } from "openclaw/plugin-sdk/agent-runtime-test-contracts";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { setCliSessionBinding } from "../../agents/cli-session.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import type { SessionEntry } from "../../config/sessions/types.js";
 import { resetAgentEventsForTest } from "../../infra/agent-events.js";
 import {
@@ -53,7 +53,7 @@ let replyRunTestingForTest: typeof import("./reply-run-registry.test-support.js"
 let cliBackendsTestingForTest: typeof import("../../agents/cli-backends.test-support.js").testing;
 let setReplyPayloadMetadataForTest: typeof import("../reply-payload.js").setReplyPayloadMetadata;
 let getReplyPayloadMetadataForTest: typeof import("../reply-payload.js").getReplyPayloadMetadata;
-const FOLLOWUP_DEBUG = process.env.OPENCLAW_DEBUG_FOLLOWUP_RUNNER_TEST === "1";
+const FOLLOWUP_DEBUG = process.env.OPERATOR_DEBUG_FOLLOWUP_RUNNER_TEST === "1";
 const FOLLOWUP_TEST_QUEUES = new Map<
   string,
   {
@@ -793,7 +793,7 @@ describe("createFollowupRunner reply-lane admission", () => {
     };
     registerFollowupTestSessionStore(storePath, { main: admittedEntry });
     runEmbeddedAgentMock.mockResolvedValueOnce({ payloads: [], meta: {} });
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           model: {
@@ -845,7 +845,7 @@ describe("createFollowupRunner reply-lane admission", () => {
       updatedAt: 2,
     };
     runEmbeddedAgentMock.mockResolvedValueOnce({ payloads: [], meta: {} });
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           model: {
@@ -1463,7 +1463,7 @@ describe("createFollowupRunner auto fallback primary probes", () => {
 
 describe("createFollowupRunner runtime config", () => {
   it("keeps a locked Codex harness pinned when a CLI backend shares its id", async () => {
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: {
@@ -1524,7 +1524,7 @@ describe("createFollowupRunner runtime config", () => {
   });
 
   it("routes queued followups through CLI runtime dispatch when the model selects a CLI backend", async () => {
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: {
@@ -1642,7 +1642,7 @@ describe("createFollowupRunner runtime config", () => {
     const realAgentEvents = await vi.importActual<typeof import("../../infra/agent-events.js")>(
       "../../infra/agent-events.js",
     );
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: {
@@ -1706,7 +1706,7 @@ describe("createFollowupRunner runtime config", () => {
   });
 
   it("reuses CLI session bindings for queued room-event followups", async () => {
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: {
@@ -1753,7 +1753,7 @@ describe("createFollowupRunner runtime config", () => {
       createQueuedRun({
         currentInboundEventKind: "room_event",
         currentInboundAudio: true,
-        currentInboundContext: { text: "[OpenClaw room event]" },
+        currentInboundContext: { text: "[Operator room event]" },
         run: {
           config: runtimeConfig,
           sessionId: "session-cli-room-event",
@@ -1782,7 +1782,7 @@ describe("createFollowupRunner runtime config", () => {
   });
 
   it("stores queued room-event CLI sessions created from the first ambient run", async () => {
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: {
@@ -1829,7 +1829,7 @@ describe("createFollowupRunner runtime config", () => {
     await runner(
       createQueuedRun({
         currentInboundEventKind: "room_event",
-        currentInboundContext: { text: "[OpenClaw room event]" },
+        currentInboundContext: { text: "[Operator room event]" },
         run: {
           config: runtimeConfig,
           sessionId: "session-cli-room-event",
@@ -1853,7 +1853,7 @@ describe("createFollowupRunner runtime config", () => {
   });
 
   it("does not replace queued room-event CLI session bindings when reuse fails", async () => {
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: {
@@ -1901,7 +1901,7 @@ describe("createFollowupRunner runtime config", () => {
     await runner(
       createQueuedRun({
         currentInboundEventKind: "room_event",
-        currentInboundContext: { text: "[OpenClaw room event]" },
+        currentInboundContext: { text: "[Operator room event]" },
         run: {
           config: runtimeConfig,
           sessionId: "session-cli-room-event",
@@ -1923,7 +1923,7 @@ describe("createFollowupRunner runtime config", () => {
   });
 
   it("passes prepared media user turns to CLI runtime dispatch", async () => {
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: {
@@ -1974,7 +1974,7 @@ describe("createFollowupRunner runtime config", () => {
   });
 
   it("disables routed delivery mirrors for CLI-owned followup payloads", async () => {
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: {
@@ -2024,7 +2024,7 @@ describe("createFollowupRunner runtime config", () => {
   });
 
   it("does not deliver durable reasoning for a queued CLI followup when reasoning payloads are disabled", async () => {
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: {
@@ -2087,7 +2087,7 @@ describe("createFollowupRunner runtime config", () => {
   // predates this change, shared with the embedded runner) and that
   // suppression is intentionally out of scope here — see route-reply.test.ts.
   it("passes the durable reasoning payload through to routing for a queued CLI followup when reasoning payloads are enabled", async () => {
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: {
@@ -2142,7 +2142,7 @@ describe("createFollowupRunner runtime config", () => {
     const realAgentEvents = await vi.importActual<typeof import("../../infra/agent-events.js")>(
       "../../infra/agent-events.js",
     );
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: {
@@ -2200,7 +2200,7 @@ describe("createFollowupRunner runtime config", () => {
     const realAgentEvents = await vi.importActual<typeof import("../../infra/agent-events.js")>(
       "../../infra/agent-events.js",
     );
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: {
@@ -2275,7 +2275,7 @@ describe("createFollowupRunner runtime config", () => {
     const realAgentEvents = await vi.importActual<typeof import("../../infra/agent-events.js")>(
       "../../infra/agent-events.js",
     );
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: { "claude-cli": { command: "claude" } },
@@ -2362,7 +2362,7 @@ describe("createFollowupRunner runtime config", () => {
         lifecyclePhases.push(phase);
       }
     });
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: {
@@ -2450,7 +2450,7 @@ describe("createFollowupRunner runtime config", () => {
   });
 
   it("revalidates immutable Ultra for embedded and CLI followup fallback candidates", async () => {
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: {
@@ -2716,7 +2716,7 @@ describe("createFollowupRunner runtime config", () => {
         lifecycleEvents.push(evt.data);
       }
     });
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: {
@@ -2787,7 +2787,7 @@ describe("createFollowupRunner runtime config", () => {
   });
 
   it("uses the active runtime snapshot for queued embedded followup runs", async () => {
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: OperatorConfig = {
       models: {
         providers: {
           openai: {
@@ -2802,7 +2802,7 @@ describe("createFollowupRunner runtime config", () => {
         },
       },
     };
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       models: {
         providers: {
           openai: {
@@ -3148,7 +3148,7 @@ describe("createFollowupRunner runtime config", () => {
   });
 
   it("resolves queued embedded followups before preflight helpers read config", async () => {
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: OperatorConfig = {
       skills: {
         entries: {
           whisper: {
@@ -3161,7 +3161,7 @@ describe("createFollowupRunner runtime config", () => {
         },
       },
     };
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       skills: {
         entries: {
           whisper: {
@@ -3207,7 +3207,7 @@ describe("createFollowupRunner runtime config", () => {
       payloads: [],
       meta: {},
     });
-    const sourceConfig: OpenClawConfig = {};
+    const sourceConfig: OperatorConfig = {};
     const runner = createFollowupRunner({
       typing: createMockTypingController(),
       typingMode: "instant",
@@ -3407,7 +3407,7 @@ describe("createFollowupRunner progress forwarding", () => {
     const realAgentEvents = await vi.importActual<typeof import("../../infra/agent-events.js")>(
       "../../infra/agent-events.js",
     );
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: {
@@ -3482,7 +3482,7 @@ describe("createFollowupRunner progress forwarding", () => {
     const realAgentEvents = await vi.importActual<typeof import("../../infra/agent-events.js")>(
       "../../infra/agent-events.js",
     );
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           cliBackends: {
@@ -5143,7 +5143,7 @@ describe("createFollowupRunner messaging delivery and dedupe", () => {
       messages: {
         responseUsage: "tokens",
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const { onBlockReply } = await runMessagingCase({
       agentResult: {
@@ -5192,7 +5192,7 @@ describe("createFollowupRunner messaging delivery and dedupe", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const { onBlockReply } = await runMessagingCase({
       agentResult: {
@@ -5236,7 +5236,7 @@ describe("createFollowupRunner messaging delivery and dedupe", () => {
       messages: {
         responseUsage: "tokens",
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const { onBlockReply } = await runMessagingCase({
       agentResult: {
@@ -5310,7 +5310,7 @@ describe("createFollowupRunner messaging delivery and dedupe", () => {
                   },
                 },
               },
-            } as OpenClawConfig,
+            } as OperatorConfig,
           },
         }),
       ),

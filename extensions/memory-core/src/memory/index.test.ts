@@ -14,7 +14,7 @@ import {
 import { appendSessionTranscriptMessageByIdentity } from "openclaw/plugin-sdk/session-transcript-runtime";
 import { resolveOperatorAgentSqlitePath } from "openclaw/plugin-sdk/sqlite-runtime";
 import {
-  closeOpenClawAgentDatabasesForTest,
+  closeOperatorAgentDatabasesForTest,
   closeOperatorStateDatabaseForTest,
   openOperatorAgentDatabase,
 } from "openclaw/plugin-sdk/sqlite-runtime-testing";
@@ -47,7 +47,7 @@ let providerCloseGate: Promise<void> | null = null;
 let providerInitGate: Promise<void> | null = null;
 let providerCalls: Array<{ provider?: string; model?: string; outputDimensionality?: number }> = [];
 let forceNoProvider = false;
-const originalMemoryIndexStateDir = process.env.OPENCLAW_STATE_DIR;
+const originalMemoryIndexStateDir = process.env.OPERATOR_STATE_DIR;
 
 const identityAliasFixture = vi.hoisted(() => ({
   provider: "identity-alias-test",
@@ -64,14 +64,14 @@ function createLocalWorkerExitError(): Error {
 }
 
 function setMemoryIndexStateDir(stateDir: string): void {
-  Reflect.set(process.env, "OPENCLAW_STATE_DIR", stateDir);
+  Reflect.set(process.env, "OPERATOR_STATE_DIR", stateDir);
 }
 
 function restoreMemoryIndexStateDir(): void {
   if (originalMemoryIndexStateDir === undefined) {
-    Reflect.deleteProperty(process.env, "OPENCLAW_STATE_DIR");
+    Reflect.deleteProperty(process.env, "OPERATOR_STATE_DIR");
   } else {
-    Reflect.set(process.env, "OPENCLAW_STATE_DIR", originalMemoryIndexStateDir);
+    Reflect.set(process.env, "OPERATOR_STATE_DIR", originalMemoryIndexStateDir);
   }
 }
 
@@ -292,7 +292,7 @@ describe("memory index", () => {
     vi.useRealTimers();
     await Promise.all(Array.from(managersForCleanup).map((manager) => manager.close()));
     await closeAllMemorySearchManagers();
-    closeOpenClawAgentDatabasesForTest();
+    closeOperatorAgentDatabasesForTest();
     closeOperatorStateDatabaseForTest();
     clearRegistry();
     managersForCleanup.clear();
@@ -650,7 +650,7 @@ describe("memory index", () => {
     agentDb.db
       .prepare("INSERT INTO cache_entries (scope, key, value_json, updated_at) VALUES (?, ?, ?, ?)")
       .run("test", "keep-me", JSON.stringify({ value: "keep-me" }), 1);
-    closeOpenClawAgentDatabasesForTest();
+    closeOperatorAgentDatabasesForTest();
 
     const manager = await getFreshManager(
       createCfg({

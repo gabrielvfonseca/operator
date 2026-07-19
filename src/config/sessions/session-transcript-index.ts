@@ -12,7 +12,7 @@ import {
   executeSqliteQueryTakeFirstSync,
   getNodeSqliteKysely,
 } from "../../infra/kysely-sync.js";
-import type { DB as OpenClawAgentKyselyDatabase } from "../../state/operator-agent-db.generated.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../../state/operator-agent-db.generated.js";
 import {
   isCanonicalSessionTranscriptEntry,
   isSessionTranscriptLeafControl,
@@ -25,7 +25,7 @@ import {
 } from "./transcript-visible-events.js";
 
 type TranscriptIndexDatabase = Pick<
-  OpenClawAgentKyselyDatabase,
+  OperatorAgentKyselyDatabase,
   "sessions" | "session_transcript_fts" | "session_transcript_index_state" | "transcript_events"
 >;
 

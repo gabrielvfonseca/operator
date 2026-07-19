@@ -1,5 +1,5 @@
 /**
- * Amazon Bedrock Converse streaming runtime. It maps OpenClaw messages/tools,
+ * Amazon Bedrock Converse streaming runtime. It maps Operator messages/tools,
  * thinking, cache points, images, and usage into Bedrock Converse Stream calls.
  */
 import {
@@ -110,9 +110,9 @@ function normalizeAdaptiveClaudeToolChoice(
   return toolChoice;
 }
 
-// OpenClaw synthesizes these caps when the provider's real output limit is unknown.
+// Operator synthesizes these caps when the provider's real output limit is unknown.
 // Keep them out of Bedrock adaptive requests so Bedrock can use its native default.
-const OPENCLAW_FALLBACK_MODEL_MAX_TOKENS = new Set([4096, 8192, 16_384]);
+const OPERATOR_FALLBACK_MODEL_MAX_TOKENS = new Set([4096, 8192, 16_384]);
 
 function resolveAdaptiveBedrockMaxTokens(
   model: Model<"bedrock-converse-stream">,
@@ -121,7 +121,7 @@ function resolveAdaptiveBedrockMaxTokens(
   if (baseMaxTokens !== undefined) {
     return baseMaxTokens;
   }
-  return OPENCLAW_FALLBACK_MODEL_MAX_TOKENS.has(model.maxTokens) ? undefined : model.maxTokens;
+  return OPERATOR_FALLBACK_MODEL_MAX_TOKENS.has(model.maxTokens) ? undefined : model.maxTokens;
 }
 
 /** Stream a Bedrock Converse request using Bedrock-specific options. */
@@ -384,7 +384,7 @@ function formatBedrockError(error: unknown): string {
   return message;
 }
 
-/** Stream a Bedrock Converse request from the generic OpenClaw stream options. */
+/** Stream a Bedrock Converse request from the generic Operator stream options. */
 export const streamSimpleBedrock: StreamFunction<"bedrock-converse-stream", SimpleStreamOptions> = (
   model: Model<"bedrock-converse-stream">,
   context: Context,
@@ -703,13 +703,13 @@ function mapThinkingLevelToEffort(
 
 /**
  * Resolve cache retention preference.
- * Defaults to "short" and uses OPENCLAW_CACHE_RETENTION for backward compatibility.
+ * Defaults to "short" and uses OPERATOR_CACHE_RETENTION for backward compatibility.
  */
 function resolveCacheRetention(cacheRetention?: CacheRetention): CacheRetention {
   if (cacheRetention) {
     return cacheRetention;
   }
-  if (typeof process !== "undefined" && process.env.OPENCLAW_CACHE_RETENTION === "long") {
+  if (typeof process !== "undefined" && process.env.OPERATOR_CACHE_RETENTION === "long") {
     return "long";
   }
   return "short";

@@ -82,7 +82,7 @@ export type ManagedProcess = {
 };
 
 /** Shared exec-server instance leased by Codex native sandbox environments. */
-export type OpenClawExecServer = {
+export type OperatorExecServer = {
   environmentId: string;
   authPath: string;
   refCount: number;

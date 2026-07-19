@@ -39,7 +39,7 @@ export function createCodexAttemptLifecycleController(
     fastModeAutoStartedAtMs,
     fastModeAutoProgressState,
   } = connection;
-  const { state, activeTurnItemIds, pendingOpenClawDynamicToolCompletionIds, turnWatches } =
+  const { state, activeTurnItemIds, pendingOperatorDynamicToolCompletionIds, turnWatches } =
     turnRuntime;
   const releaseTurnAfterTerminalDynamicTool = (value: {
     call: CodexDynamicToolCallParams;
@@ -55,7 +55,7 @@ export function createCodexAttemptLifecycleController(
           state.currentTurnHadNonTerminalDynamicToolResult,
         activeAppServerTurnRequests: state.activeAppServerTurnRequests,
         activeTurnItemIdsCount: activeTurnItemIds.size,
-        pendingOpenClawDynamicToolCompletionIdsCount: pendingOpenClawDynamicToolCompletionIds.size,
+        pendingOperatorDynamicToolCompletionIdsCount: pendingOperatorDynamicToolCompletionIds.size,
       })
     ) {
       return;
@@ -101,7 +101,7 @@ export function createCodexAttemptLifecycleController(
       const action = resolveTerminalDynamicToolBatchAction({
         activeAppServerTurnRequests: state.activeAppServerTurnRequests,
         activeTurnItemIdsCount: activeTurnItemIds.size,
-        pendingOpenClawDynamicToolCompletionIdsCount: pendingOpenClawDynamicToolCompletionIds.size,
+        pendingOperatorDynamicToolCompletionIdsCount: pendingOperatorDynamicToolCompletionIds.size,
         currentTurnHadNonTerminalDynamicToolResult:
           state.currentTurnHadNonTerminalDynamicToolResult,
         hasPendingTerminalDynamicToolRelease: state.pendingTerminalDynamicToolRelease !== undefined,

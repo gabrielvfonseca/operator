@@ -1,4 +1,4 @@
-// Applies OpenClaw's conversational setup: config, workspace files, gateway.
+// Applies Operator's conversational setup: config, workspace files, gateway.
 import { isDeepStrictEqual } from "node:util";
 import {
   readConfigFileSnapshot,
@@ -9,7 +9,7 @@ import {
 } from "../config/config.js";
 import { applyMergePatch } from "../config/merge-patch.js";
 import type { AgentModelEntryConfig } from "../config/types.agent-defaults.js";
-import type { ConfigFileSnapshot, OpenClawConfig } from "../config/types.operator.js";
+import type { ConfigFileSnapshot, OperatorConfig } from "../config/types.operator.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { enablePluginInConfig } from "../plugins/enable.js";
 import { normalizeAgentId } from "../routing/session-key.js";
@@ -49,7 +49,7 @@ export type SystemAgentSetupApplyParams = {
   /** Provider-auth config produced in the isolated manual-key flow. */
   configPatch?: unknown;
   /** Success-gated final normalization against the config held by the write lock. */
-  finalizeConfig?: (config: OpenClawConfig, sourceConfig: OpenClawConfig) => OpenClawConfig;
+  finalizeConfig?: (config: OperatorConfig, sourceConfig: OperatorConfig) => OperatorConfig;
   /** Plugin whose enablement belongs to the successful setup transaction. */
   enablePluginId?: string;
   /** Refresh an installed plugin after its success-gated enablement commits. */
@@ -108,7 +108,7 @@ export function createQuickstartNotePrompter(runtime: RuntimeEnv): WizardPrompte
   };
 }
 
-function applySecurityAcknowledgement(config: OpenClawConfig): OpenClawConfig {
+function applySecurityAcknowledgement(config: OperatorConfig): OperatorConfig {
   if (config.wizard?.securityAcknowledgedAt) {
     return config;
   }
@@ -121,7 +121,7 @@ function applySecurityAcknowledgement(config: OpenClawConfig): OpenClawConfig {
 }
 
 type SystemAgentModelSelectionParams = {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   model: string;
   agentRuntimeId?: string;
   /** Pin the selected model to the exact credential that passed inference. */
@@ -137,7 +137,7 @@ type SystemAgentModelSelectionModules = {
 function applySystemAgentModelSelectionWithModules(
   params: SystemAgentModelSelectionParams,
   modules: SystemAgentModelSelectionModules,
-): OpenClawConfig {
+): OperatorConfig {
   const { agentScope, modelConfig, runtimePolicy } = modules;
   const nextConfig = structuredClone(params.config);
   const agentId = agentScope.resolveDefaultAgentId(nextConfig);
@@ -215,7 +215,7 @@ function applySystemAgentModelSelectionWithModules(
 
 export async function createSystemAgentModelSelectionUpdater(
   params: Omit<SystemAgentModelSelectionParams, "config">,
-): Promise<(config: OpenClawConfig) => OpenClawConfig> {
+): Promise<(config: OperatorConfig) => OperatorConfig> {
   const [agentScope, modelConfig, runtimePolicy] = await Promise.all([
     import("../agents/agent-scope.js"),
     import("../commands/models/shared.js"),
@@ -227,7 +227,7 @@ export async function createSystemAgentModelSelectionUpdater(
 
 export async function applySystemAgentModelSelection(
   params: SystemAgentModelSelectionParams,
-): Promise<OpenClawConfig> {
+): Promise<OperatorConfig> {
   const update = await createSystemAgentModelSelectionUpdater(params);
   return update(params.config);
 }
@@ -273,7 +273,7 @@ export async function applySystemAgentSetup(
   const snapshotConfig = requireValidSystemAgentSetupSnapshot(snapshot);
 
   if (hasExpectedConfigHash && resolveConfigSnapshotHash(snapshot) !== expectedConfigHash) {
-    throw new Error("OpenClaw config changed while AI access was being tested. Try setup again.");
+    throw new Error("Operator config changed while AI access was being tested. Try setup again.");
   }
 
   const guardModules =
@@ -283,7 +283,7 @@ export async function applySystemAgentSetup(
           import("../agents/model-selection.js"),
         ] as const)
       : undefined;
-  const assertExpectedTarget = (config: OpenClawConfig): void => {
+  const assertExpectedTarget = (config: OperatorConfig): void => {
     if (!guardModules) {
       return;
     }
@@ -343,8 +343,8 @@ export async function applySystemAgentSetup(
     if (!currentRoute || !sameDefaultInferenceRoute(currentRoute, expectedRoute)) {
       throw new Error(
         phase === "before"
-          ? "The default-agent inference route changed before setup could start, so no workspace or Gateway settings were changed. Retry setup from the current OpenClaw session."
-          : "The default-agent inference route changed after the config write, so no further setup effects were applied. Retry setup from the current OpenClaw session.",
+          ? "The default-agent inference route changed before setup could start, so no workspace or Gateway settings were changed. Retry setup from the current Operator session."
+          : "The default-agent inference route changed after the config write, so no further setup effects were applied. Retry setup from the current Operator session.",
       );
     }
   };
@@ -352,7 +352,7 @@ export async function applySystemAgentSetup(
 
   const prompter = createQuickstartNotePrompter(runtime);
   const { configureGatewayForSetup } = await import("../wizard/setup.gateway-config.js");
-  const buildSetupCandidate = async (currentBaseConfig: OpenClawConfig) => {
+  const buildSetupCandidate = async (currentBaseConfig: OperatorConfig) => {
     let setupBaseConfig = currentBaseConfig;
     if (enablePluginId) {
       const enabled = enablePluginInConfig(setupBaseConfig, enablePluginId);
@@ -362,7 +362,7 @@ export async function applySystemAgentSetup(
       setupBaseConfig = enabled.config;
     }
     if (configPatch !== undefined) {
-      setupBaseConfig = applyMergePatch(setupBaseConfig, configPatch) as OpenClawConfig;
+      setupBaseConfig = applyMergePatch(setupBaseConfig, configPatch) as OperatorConfig;
     }
 
     let candidate = applyLocalSetupWorkspaceConfig(setupBaseConfig, workspace);
@@ -401,7 +401,7 @@ export async function applySystemAgentSetup(
           const currentSnapshot = requireValidSystemAgentSetupSnapshot(context.snapshot);
           if (hasExpectedConfigHash && context.previousHash !== expectedConfigHash) {
             throw new Error(
-              "OpenClaw config changed while AI access was being tested. Try setup again.",
+              "Operator config changed while AI access was being tested. Try setup again.",
             );
           }
           await assertVerifiedRoute(context.snapshot);
@@ -424,7 +424,7 @@ export async function applySystemAgentSetup(
               !isDeepStrictEqual(expectedSourceRoute.route, params.expectedInferenceRoute.route))
           ) {
             throw new Error(
-              "The setup candidate no longer preserves the exact verified inference route, so it was not saved. Retry setup from the current OpenClaw session.",
+              "The setup candidate no longer preserves the exact verified inference route, so it was not saved. Retry setup from the current Operator session.",
             );
           }
           // This is the auth/config operation's linearization point. Never hold
@@ -440,7 +440,7 @@ export async function applySystemAgentSetup(
   const nextConfig = committed.nextConfig;
   const settings = committed.result?.settings;
   if (!settings) {
-    throw new Error("OpenClaw setup committed without resolved Gateway settings.");
+    throw new Error("Operator setup committed without resolved Gateway settings.");
   }
   if (params.expectedInferenceRoute) {
     const afterRead = await readConfigFileSnapshotWithPluginMetadata();
@@ -454,7 +454,7 @@ export async function applySystemAgentSetup(
       const issue = expectedRuntime.issues[0];
       const detail = issue ? ` (${issue.path ? `${issue.path}: ` : ""}${issue.message})` : "";
       throw new Error(
-        `OpenClaw could not validate the setup route after its config write${detail}. No further setup effects were applied. Retry setup from the current OpenClaw session.`,
+        `Operator could not validate the setup route after its config write${detail}. No further setup effects were applied. Retry setup from the current Operator session.`,
       );
     }
     const expectedPersistedRoute = await projectDefaultInferenceRoute(expectedRuntime.config);
@@ -463,7 +463,7 @@ export async function applySystemAgentSetup(
     // metadata change that would make the committed config run differently.
     if (!isDeepStrictEqual(expectedPersistedRoute.route, params.expectedInferenceRoute.route)) {
       throw new Error(
-        "The materialized inference route no longer matches the exact verified route, so no further setup effects were applied. Retry setup from the current OpenClaw session.",
+        "The materialized inference route no longer matches the exact verified route, so no further setup effects were applied. Retry setup from the current Operator session.",
       );
     }
   }
@@ -504,7 +504,7 @@ export async function applySystemAgentSetup(
     (error) => lines.push(`Workspace files: ${formatErrorMessage(error)}`),
   );
 
-  // Setup approval includes consent for OpenClaw's local model harnesses.
+  // Setup approval includes consent for Operator's local model harnesses.
   // Keep the grant agent-scoped; regular agents retain interactive approvals.
   await runCommittedFollowUp(
     async () => {
@@ -524,7 +524,7 @@ export async function applySystemAgentSetup(
     },
     (error) =>
       lines.push(
-        `OpenClaw exec approval: ${formatErrorMessage(error)}; local model harnesses may ask again.`,
+        `Operator exec approval: ${formatErrorMessage(error)}; local model harnesses may ask again.`,
       ),
   );
 

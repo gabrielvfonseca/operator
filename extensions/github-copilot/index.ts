@@ -1,5 +1,5 @@
-// Github Copilot plugin entrypoint registers its OpenClaw integration.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+// Github Copilot plugin entrypoint registers its Operator integration.
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { resolvePluginConfigObject } from "openclaw/plugin-sdk/plugin-config-runtime";
 import {
   definePluginEntry,
@@ -55,7 +55,7 @@ async function loadGithubCopilotRuntime() {
   return await import("./register.runtime.js");
 }
 
-function applyCopilotDefaultModel(cfg: OpenClawConfig): OpenClawConfig {
+function applyCopilotDefaultModel(cfg: OperatorConfig): OperatorConfig {
   const defaults = cfg.agents?.defaults;
   const existingModel = defaults?.model;
   const existingPrimary =
@@ -133,7 +133,7 @@ function resolveExistingCopilotAuthResult(agentDir?: string): ProviderAuthResult
 // or tenant fallback), so only the host is stored here. Mirror of
 // clearGithubCopilotDomainConfigPatch; both are provider-owned and live with the
 // plugin rather than the shared SDK.
-function buildGithubCopilotDomainConfigPatch(domain: string): Partial<OpenClawConfig> {
+function buildGithubCopilotDomainConfigPatch(domain: string): Partial<OperatorConfig> {
   const normalized = normalizeGithubCopilotDomain(domain);
   return {
     models: {
@@ -141,26 +141,26 @@ function buildGithubCopilotDomainConfigPatch(domain: string): Partial<OpenClawCo
         [PROVIDER_ID]: { params: { githubDomain: normalized } },
       },
     },
-  } as unknown as Partial<OpenClawConfig>;
+  } as unknown as Partial<OperatorConfig>;
 }
 
 // Removes a previously persisted enterprise domain so config falls back to the
 // "no config == github.com" default. Undefined leaves are deleted on merge.
-function clearGithubCopilotDomainConfigPatch(): Partial<OpenClawConfig> {
+function clearGithubCopilotDomainConfigPatch(): Partial<OperatorConfig> {
   return {
     models: {
       providers: {
         [PROVIDER_ID]: { params: { githubDomain: undefined } },
       },
     },
-  } as unknown as Partial<OpenClawConfig>;
+  } as unknown as Partial<OperatorConfig>;
 }
 
 function applyGithubCopilotDomainToConfig(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   domain: string,
   previousDomain: string,
-): OpenClawConfig {
+): OperatorConfig {
   const isEnterprise = domain !== PUBLIC_GITHUB_COPILOT_DOMAIN;
   const shouldClear = !isEnterprise && previousDomain !== PUBLIC_GITHUB_COPILOT_DOMAIN;
   if (!isEnterprise && !shouldClear) {
@@ -266,7 +266,7 @@ async function resolveCopilotNonInteractiveToken(
 
 async function runGitHubCopilotNonInteractiveAuth(
   ctx: ProviderAuthMethodNonInteractiveContext,
-): Promise<OpenClawConfig | null> {
+): Promise<OperatorConfig | null> {
   const opts = ctx.opts as Record<string, unknown> | undefined;
   const flagValue = normalizeOptionalSecretInput(opts?.githubCopilotToken);
   const resolved = await resolveCopilotNonInteractiveToken(ctx, flagValue);
@@ -352,7 +352,7 @@ export default definePluginEntry({
     };
     configureCopilotTokenCacheStore(openTokenCacheStore);
 
-    function resolveCurrentPluginConfig(config?: OpenClawConfig): GithubCopilotPluginConfig {
+    function resolveCurrentPluginConfig(config?: OperatorConfig): GithubCopilotPluginConfig {
       const runtimePluginConfig = resolvePluginConfigObject(config, "github-copilot");
       if (runtimePluginConfig) {
         return runtimePluginConfig as GithubCopilotPluginConfig;

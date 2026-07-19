@@ -292,7 +292,7 @@ async function hashSelectedArtifactFiles(
     throw new Error("Codex runtime launcher selection changed");
   }
   const packageRoot = descriptor.packageRoot;
-  const resolvedPackageRoot = await resolvePackageRoot(descriptor.nativePath);
+  const resolvedPackageRoot = await resolveOperatorPackageRoot(descriptor.nativePath);
   if (resolvedPackageRoot !== packageRoot) {
     throw new Error("Codex runtime package selection changed");
   }
@@ -453,7 +453,7 @@ async function resolvePosixInvocationPaths(params: {
   return paths;
 }
 
-async function resolvePackageRoot(nativePath: string): Promise<string | undefined> {
+async function resolveOperatorPackageRoot(nativePath: string): Promise<string | undefined> {
   const binDir = path.dirname(nativePath);
   if (path.basename(binDir) !== "bin") {
     return undefined;
@@ -554,7 +554,7 @@ async function captureFilesystemDescriptor(params: {
     throw new Error("Codex runtime did not resolve a native executable");
   }
   const nativePath = await fs.realpath(await resolveCommandPath(nativeCandidate, env, spawnCwd));
-  const packageRoot = await resolvePackageRoot(nativePath);
+  const packageRoot = await resolveOperatorPackageRoot(nativePath);
   const configuredCodeModeHost = readEffectiveSpawnEnvironmentValue(
     env,
     CODE_MODE_HOST_PATH_ENV,

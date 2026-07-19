@@ -3,8 +3,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { afterAll, beforeAll, beforeEach, vi } from "vitest";
-import { openOpenClawStateDatabase } from "../../state/operator-state-db.js";
-import { resolvePreferredOpenClawTmpDir } from "../tmp-operator-dir.js";
+import { openOperatorStateDatabase } from "../../state/operator-state-db.js";
+import { resolvePreferredOperatorTmpDir } from "../tmp-operator-dir.js";
 import type { DeliverFn, RecoveryLogger } from "./delivery-queue.js";
 
 /** Installs Vitest hooks that provide a fresh delivery-queue state dir per case. */
@@ -14,7 +14,7 @@ export function installDeliveryQueueTmpDirHooks(): { readonly tmpDir: () => stri
   let fixtureCount = 0;
 
   beforeAll(() => {
-    fixtureRoot = fs.mkdtempSync(path.join(resolvePreferredOpenClawTmpDir(), "operator-dq-suite-"));
+    fixtureRoot = fs.mkdtempSync(path.join(resolvePreferredOperatorTmpDir(), "operator-dq-suite-"));
   });
 
   beforeEach(() => {
@@ -36,7 +36,7 @@ export function installDeliveryQueueTmpDirHooks(): { readonly tmpDir: () => stri
 }
 
 export function readQueuedEntry(tmpDir: string, id: string): Record<string, unknown> {
-  const { db } = openOpenClawStateDatabase({ env: { ...process.env, OPERATOR_STATE_DIR: tmpDir } });
+  const { db } = openOperatorStateDatabase({ env: { ...process.env, OPERATOR_STATE_DIR: tmpDir } });
   const row = db
     .prepare(
       "SELECT entry_json FROM delivery_queue_entries WHERE queue_name = 'outbound' AND id = ?",
@@ -49,7 +49,7 @@ export function readQueuedEntry(tmpDir: string, id: string): Record<string, unkn
 }
 
 export function readQueuedEntries(tmpDir: string): Record<string, unknown>[] {
-  const { db } = openOpenClawStateDatabase({ env: { ...process.env, OPERATOR_STATE_DIR: tmpDir } });
+  const { db } = openOperatorStateDatabase({ env: { ...process.env, OPERATOR_STATE_DIR: tmpDir } });
   const rows = db
     .prepare(
       `
@@ -96,7 +96,7 @@ export function setQueuedEntryState(
   if (state.recoveryState !== undefined) {
     entry.recoveryState = state.recoveryState;
   }
-  const { db } = openOpenClawStateDatabase({ env: { ...process.env, OPERATOR_STATE_DIR: tmpDir } });
+  const { db } = openOperatorStateDatabase({ env: { ...process.env, OPERATOR_STATE_DIR: tmpDir } });
   db.prepare(
     `
       UPDATE delivery_queue_entries

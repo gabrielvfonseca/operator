@@ -9,11 +9,11 @@ import {
   getNodeSqliteKysely,
 } from "../../infra/kysely-sync.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
-import type { DB as OpenClawStateDatabase } from "../../state/operator-state-db.generated.js";
+import type { DB as OperatorStateDatabase } from "../../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
-  type OpenClawStateDatabaseOptions,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
+  type OperatorStateDatabaseOptions,
 } from "../../state/operator-state-db.js";
 import { normalizeSkillIndexName } from "../discovery/skill-index.js";
 import { readSkillProposalManifest, readSkillProposalRecord } from "./store.js";
@@ -34,7 +34,7 @@ let loggedArchivedSkillReadFailure = false;
 type SkillLifecycleState = "active" | "archived" | "stale";
 
 type CuratorDatabase = Pick<
-  OpenClawStateDatabase,
+  OperatorStateDatabase,
   "skill_curator_state" | "skill_lifecycle" | "skill_usage"
 >;
 
@@ -82,12 +82,12 @@ export type SkillCuratorStatus = {
   overlaps: SkillOverlapCandidate[];
 };
 
-type CuratorOptions = OpenClawStateDatabaseOptions & {
+type CuratorOptions = OperatorStateDatabaseOptions & {
   nowMs?: number;
 };
 
-function curatorDb(options: OpenClawStateDatabaseOptions = {}) {
-  const database = openOpenClawStateDatabase(options);
+function curatorDb(options: OperatorStateDatabaseOptions = {}) {
+  const database = openOperatorStateDatabase(options);
   return {
     database,
     kysely: getNodeSqliteKysely<CuratorDatabase>(database.db),
@@ -106,7 +106,7 @@ function recordSkillUsage(
   event: Pick<DiagnosticSkillUsedEvent, "agentId" | "skillName" | "skillSource" | "ts"> & {
     skillFile?: string;
   },
-  options: OpenClawStateDatabaseOptions = {},
+  options: OperatorStateDatabaseOptions = {},
 ): void {
   const rawSkillFile = event.skillFile?.trim();
   // Lifecycle identity is the canonical file. Name-only usage would refresh unrelated
@@ -117,7 +117,7 @@ function recordSkillUsage(
   }
   const skillFile = canonicalizePath(path.resolve(rawSkillFile));
   const skillKey = canonicalSkillKey(event.skillName);
-  runOpenClawStateWriteTransaction(({ db }) => {
+  runOperatorStateWriteTransaction(({ db }) => {
     const kysely = getNodeSqliteKysely<CuratorDatabase>(db);
     executeSqliteQuerySync(
       db,
@@ -154,7 +154,7 @@ function recordSkillUsage(
 }
 
 /** Register once per Gateway lifetime; listener failures never reach tool execution. */
-function registerSkillUsageTracking(options: OpenClawStateDatabaseOptions = {}): () => void {
+function registerSkillUsageTracking(options: OperatorStateDatabaseOptions = {}): () => void {
   return onTrustedInternalDiagnosticEvent((event, metadata, privateData) => {
     if (!metadata.trusted || event.type !== "skill.used") {
       return;
@@ -203,7 +203,7 @@ export function startSkillCuratorMaintenance(options: {
 }
 
 async function loadCuratedSkills(
-  options: OpenClawStateDatabaseOptions = {},
+  options: OperatorStateDatabaseOptions = {},
 ): Promise<CuratedSkill[]> {
   const manifest = await readSkillProposalManifest({ env: options.env });
   const byFile = new Map<string, CuratedSkill>();
@@ -310,8 +310,8 @@ function desiredLifecycleState(ageMs: number): SkillLifecycleState {
   return "active";
 }
 
-function writeSweepAttempt(nowMs: number, options: OpenClawStateDatabaseOptions): void {
-  runOpenClawStateWriteTransaction(({ db }) => {
+function writeSweepAttempt(nowMs: number, options: OperatorStateDatabaseOptions): void {
+  runOperatorStateWriteTransaction(({ db }) => {
     const kysely = getNodeSqliteKysely<CuratorDatabase>(db);
     executeSqliteQuerySync(
       db,
@@ -332,9 +332,9 @@ function writeSweepAttempt(nowMs: number, options: OpenClawStateDatabaseOptions)
 function writeSweepFailure(
   nowMs: number,
   error: unknown,
-  options: OpenClawStateDatabaseOptions,
+  options: OperatorStateDatabaseOptions,
 ): void {
-  runOpenClawStateWriteTransaction(({ db }) => {
+  runOperatorStateWriteTransaction(({ db }) => {
     const kysely = getNodeSqliteKysely<CuratorDatabase>(db);
     executeSqliteQuerySync(
       db,
@@ -366,7 +366,7 @@ async function runSkillCuratorSweep(
   try {
     const curated = await loadCuratedSkills(options);
     const existingCurated: CuratedSkill[] = [];
-    const result = runOpenClawStateWriteTransaction(({ db }) => {
+    const result = runOperatorStateWriteTransaction(({ db }) => {
       const kysely = getNodeSqliteKysely<CuratorDatabase>(db);
       const lifecycleQuery = kysely.selectFrom("skill_lifecycle").selectAll();
       const lifecycleRows = executeSqliteQuerySync(db, lifecycleQuery).rows;
@@ -446,7 +446,7 @@ async function runSkillCuratorSweep(
       durationMs: Math.max(0, Date.now() - startedAtMs),
       overlaps: detectOverlapCandidates(existingCurated),
     };
-    runOpenClawStateWriteTransaction(({ db }) => {
+    runOperatorStateWriteTransaction(({ db }) => {
       const kysely = getNodeSqliteKysely<CuratorDatabase>(db);
       executeSqliteQuerySync(
         db,
@@ -490,7 +490,7 @@ function parseOverlapCandidates(value: string | null | undefined): SkillOverlapC
 }
 
 export function getSkillCuratorStatus(
-  options: OpenClawStateDatabaseOptions = {},
+  options: OperatorStateDatabaseOptions = {},
 ): SkillCuratorStatus {
   const { database, kysely } = curatorDb(options);
   const state = executeSqliteQueryTakeFirstSync(
@@ -539,9 +539,9 @@ export function getSkillCuratorStatus(
   };
 }
 
-function updateLifecyclePin(skill: string, pinned: boolean, options: OpenClawStateDatabaseOptions) {
+function updateLifecyclePin(skill: string, pinned: boolean, options: OperatorStateDatabaseOptions) {
   const skillKey = canonicalSkillKey(skill);
-  const firstSkillFile = runOpenClawStateWriteTransaction(({ db }) => {
+  const firstSkillFile = runOperatorStateWriteTransaction(({ db }) => {
     const kysely = getNodeSqliteKysely<CuratorDatabase>(db);
     const first = executeSqliteQueryTakeFirstSync(
       db,
@@ -569,18 +569,18 @@ function updateLifecyclePin(skill: string, pinned: boolean, options: OpenClawSta
   return getSkillCuratorStatus(options).skills.find((entry) => entry.skillFile === firstSkillFile)!;
 }
 
-export function pinCuratedSkill(skill: string, options: OpenClawStateDatabaseOptions = {}) {
+export function pinCuratedSkill(skill: string, options: OperatorStateDatabaseOptions = {}) {
   return updateLifecyclePin(skill, true, options);
 }
 
-export function unpinCuratedSkill(skill: string, options: OpenClawStateDatabaseOptions = {}) {
+export function unpinCuratedSkill(skill: string, options: OperatorStateDatabaseOptions = {}) {
   return updateLifecyclePin(skill, false, options);
 }
 
 export function restoreCuratedSkill(skill: string, options: CuratorOptions = {}) {
   const skillKey = canonicalSkillKey(skill);
   const nowMs = options.nowMs ?? Date.now();
-  const firstSkillFile = runOpenClawStateWriteTransaction(({ db }) => {
+  const firstSkillFile = runOperatorStateWriteTransaction(({ db }) => {
     const kysely = getNodeSqliteKysely<CuratorDatabase>(db);
     const first = executeSqliteQueryTakeFirstSync(
       db,
@@ -617,7 +617,7 @@ export function restoreCuratedSkill(skill: string, options: CuratorOptions = {})
 }
 
 export function getArchivedSkillFiles(
-  options: OpenClawStateDatabaseOptions = {},
+  options: OperatorStateDatabaseOptions = {},
 ): ReadonlySet<string> {
   try {
     const { database, kysely } = curatorDb(options);

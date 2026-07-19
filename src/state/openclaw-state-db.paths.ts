@@ -1,4 +1,4 @@
-// State database path helpers resolve shared OpenClaw state DB paths.
+// State database path helpers resolve shared Operator state DB paths.
 import os from "node:os";
 import path from "node:path";
 import { isMainThread, threadId } from "node:worker_threads";
@@ -6,12 +6,12 @@ import { resolveStateDir } from "../config/paths.js";
 import { parseStrictNonNegativeInteger } from "../infra/parse-finite-number.js";
 
 /**
- * Path helpers for the shared OpenClaw SQLite state database.
+ * Path helpers for the shared Operator SQLite state database.
  *
  * Tests get worker-scoped temp state roots unless they explicitly provide
  * `OPERATOR_STATE_DIR`, which prevents parallel Vitest workers from sharing WAL files.
  */
-function resolveOpenClawStateRootDir(env: NodeJS.ProcessEnv): string {
+function resolveOperatorStateRootDir(env: NodeJS.ProcessEnv): string {
   if (env.OPERATOR_STATE_DIR?.trim()) {
     return resolveStateDir(env);
   }
@@ -31,11 +31,11 @@ function resolveOpenClawStateRootDir(env: NodeJS.ProcessEnv): string {
 }
 
 /** Resolve the directory that contains the shared state SQLite file. */
-export function resolveOpenClawStateSqliteDir(env: NodeJS.ProcessEnv = process.env): string {
-  return path.join(resolveOpenClawStateRootDir(env), "state");
+export function resolveOperatorStateSqliteDir(env: NodeJS.ProcessEnv = process.env): string {
+  return path.join(resolveOperatorStateRootDir(env), "state");
 }
 
 /** Resolve the shared state SQLite file path. */
-export function resolveOpenClawStateSqlitePath(env: NodeJS.ProcessEnv = process.env): string {
-  return path.join(resolveOpenClawStateSqliteDir(env), "operator.sqlite");
+export function resolveOperatorStateSqlitePath(env: NodeJS.ProcessEnv = process.env): string {
+  return path.join(resolveOperatorStateSqliteDir(env), "operator.sqlite");
 }

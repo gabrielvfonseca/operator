@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 import fsSync from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { PlatformMessageNotDispatchedError } from "openclaw/plugin-sdk/error-runtime";
 import { redactIdentifier } from "openclaw/plugin-sdk/logging-core";
 import { MEDIA_FFMPEG_MAX_AUDIO_DURATION_SECS } from "openclaw/plugin-sdk/media-runtime";
@@ -24,7 +24,7 @@ let sendTypingWhatsApp: typeof import("./send.js").sendTypingWhatsApp;
 let resetLogger: typeof import("openclaw/plugin-sdk/runtime-env").resetLogger;
 let setLoggerOverride: typeof import("openclaw/plugin-sdk/runtime-env").setLoggerOverride;
 
-const WHATSAPP_TEST_CFG: OpenClawConfig = {
+const WHATSAPP_TEST_CFG: OperatorConfig = {
   channels: { whatsapp: {} },
 };
 
@@ -233,7 +233,7 @@ describe("web outbound", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     });
 
     expect(result).toEqual({
@@ -338,7 +338,7 @@ describe("web outbound", () => {
 
     expect(error).toBeInstanceOf(PlatformMessageNotDispatchedError);
     expect(error).toMatchObject({
-      code: "OPENCLAW_PLATFORM_MESSAGE_NOT_DISPATCHED",
+      code: "OPERATOR_PLATFORM_MESSAGE_NOT_DISPATCHED",
       message: expect.stringMatching(
         /No active WhatsApp Web listener.*channels login.*account work/,
       ),
@@ -748,7 +748,7 @@ describe("web outbound", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     await sendMessageWhatsApp("+1555", "pic", {
       verbose: false,

@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { buildCommandsMessagePaginated } from "openclaw/plugin-sdk/command-status";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   applyModelOverrideToSessionEntry,
   ModelSelectionLockedError,
@@ -41,7 +41,7 @@ export async function handleTelegramModelCallback(params: {
   messageThreadId?: number;
   resolvedThreadId?: number;
   senderId: string;
-  runtimeCfg: OpenClawConfig;
+  runtimeCfg: OperatorConfig;
   telegramDeps: RegisterTelegramHandlerParams["telegramDeps"];
   actions: TelegramCallbackMessageActions;
   messageRuntime: TelegramHandlerMessageRuntime;

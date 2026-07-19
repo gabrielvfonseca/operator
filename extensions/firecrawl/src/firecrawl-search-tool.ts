@@ -1,5 +1,5 @@
 // Firecrawl plugin module implements firecrawl search tool behavior.
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-runtime";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-runtime";
 import {
   jsonResult,
   readPositiveIntegerParam,
@@ -73,7 +73,7 @@ const FirecrawlSearchToolSchema = Type.Object(
   { additionalProperties: false },
 );
 
-export function createFirecrawlSearchTool(api: OpenClawPluginApi) {
+export function createFirecrawlSearchTool(api: OperatorPluginApi) {
   return {
     name: "firecrawl_search",
     label: "Firecrawl Search",

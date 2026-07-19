@@ -143,10 +143,10 @@ async function resolveQaFlowChannelGroups(
   }
   // Package-only live lanes mount the QA harness without its dev tree. Load
   // Crabline only for Crabline-owned runs so unrelated transports stay isolated.
-  const { OPENCLAW_CRABLINE_DEFAULT_CHANNEL, resolveOpenClawCrablineChannelDriverSelection } =
+  const { OPERATOR_CRABLINE_DEFAULT_CHANNEL, resolveOperatorCrablineChannelDriverSelection } =
     await import("@operator/crabline");
   const channels = resolveQaSuiteScenarioChannels({
-    defaultChannel: OPENCLAW_CRABLINE_DEFAULT_CHANNEL,
+    defaultChannel: OPERATOR_CRABLINE_DEFAULT_CHANNEL,
     explicitChannel: runParams.channelDriverSelection?.channel,
     scenarios: [...scenarios],
   });
@@ -157,7 +157,7 @@ async function resolveQaFlowChannelGroups(
         channel: singleChannel,
         channelDriverSelection:
           runParams.channelDriverSelection ??
-          resolveOpenClawCrablineChannelDriverSelection({ channel: singleChannel }),
+          resolveOperatorCrablineChannelDriverSelection({ channel: singleChannel }),
         scenarios: [...scenarios],
       },
     ];
@@ -166,10 +166,10 @@ async function resolveQaFlowChannelGroups(
   // launch one flow partition per channel and aggregate them at this owner.
   return channels.map((channel) => ({
     channel,
-    channelDriverSelection: resolveOpenClawCrablineChannelDriverSelection({ channel }),
+    channelDriverSelection: resolveOperatorCrablineChannelDriverSelection({ channel }),
     scenarios: scenarios.filter(
       (scenario) =>
-        (normalizeQaSuiteScenarioChannel(scenario) ?? OPENCLAW_CRABLINE_DEFAULT_CHANNEL) ===
+        (normalizeQaSuiteScenarioChannel(scenario) ?? OPERATOR_CRABLINE_DEFAULT_CHANNEL) ===
         channel,
     ),
   }));
@@ -437,7 +437,7 @@ function renderUnifiedQaSuiteReport(params: {
   startedAt: Date;
 }) {
   return renderQaMarkdownReport({
-    title: "OpenClaw QA Scenario Suite",
+    title: "Operator QA Scenario Suite",
     startedAt: params.startedAt,
     finishedAt: params.finishedAt,
     checks: [],

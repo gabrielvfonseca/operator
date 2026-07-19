@@ -11,7 +11,7 @@ import { setQQBotRuntime } from "../bridge/runtime.js";
 function stateEnv(stateDir: string, env?: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
   return {
     ...(env ?? process.env),
-    OPENCLAW_STATE_DIR: stateDir,
+    OPERATOR_STATE_DIR: stateDir,
   };
 }
 

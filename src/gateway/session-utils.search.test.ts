@@ -9,15 +9,15 @@ import {
   addSubagentRunForTests,
   resetSubagentRegistryForTests,
 } from "../agents/subagent-registry.test-helpers.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import type { SessionEntry } from "../config/sessions.js";
 import {
   appendTranscriptMessageSync,
   replaceSessionEntry,
 } from "../config/sessions/session-accessor.js";
 import { registerAgentRunContext, resetAgentEventsForTest } from "../infra/agent-events.js";
-import { closeOpenClawAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import {
   buildGatewaySessionInfo,
   filterAndSortSessionEntries,
@@ -62,7 +62,7 @@ const FREE_OPENAI_USAGE: TranscriptUsageFixture = {
 function createModelDefaultsConfig(params: {
   primary: string;
   models?: Record<string, Record<string, never>>;
-}): OpenClawConfig {
+}): OperatorConfig {
   return {
     agents: {
       defaults: {
@@ -70,17 +70,17 @@ function createModelDefaultsConfig(params: {
         models: params.models,
       },
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 function closeSessionSqliteDatabasesForTest(): void {
-  closeOpenClawAgentDatabasesForTest();
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorAgentDatabasesForTest();
+  closeOperatorStateDatabaseForTest();
 }
 
 function createLegacyRuntimeListConfig(
   models?: Record<string, Record<string, never>>,
-): OpenClawConfig {
+): OperatorConfig {
   return createModelDefaultsConfig({
     primary: "google-gemini-cli/gemini-3.1-pro-preview",
     ...(models ? { models } : {}),
@@ -97,7 +97,7 @@ function createLegacyRuntimeStore(model: string): Record<string, SessionEntry> {
   };
 }
 
-function buildLegacyRuntimeRow(cfg: OpenClawConfig, model: string) {
+function buildLegacyRuntimeRow(cfg: OperatorConfig, model: string) {
   const store = createLegacyRuntimeStore(model);
   return buildGatewaySessionInfo({
     cfg,
@@ -112,7 +112,7 @@ function createOpenAiPricingConfig(params: {
   id: string;
   label: string;
   cost: { input: number; output: number; cacheRead: number; cacheWrite: number };
-}): OpenClawConfig {
+}): OperatorConfig {
   return {
     session: { mainKey: "main" },
     agents: { list: [{ id: "main", default: true }] },
@@ -130,7 +130,7 @@ function createOpenAiPricingConfig(params: {
         },
       },
     },
-  } as unknown as OpenClawConfig;
+  } as unknown as OperatorConfig;
 }
 
 type DefaultTranscriptFixtureParams<T> = {
@@ -205,7 +205,7 @@ const withAnthropicTranscriptFixture = <T>(params: DefaultTranscriptFixtureParam
 const withFreeOpenAiTranscriptFixture = <T>(params: DefaultTranscriptFixtureParams<T>) =>
   withTranscriptFixture(FREE_OPENAI_USAGE, params);
 
-function createAnthropicContext1mConfig(): OpenClawConfig {
+function createAnthropicContext1mConfig(): OperatorConfig {
   return {
     session: { mainKey: "main" },
     agents: {
@@ -216,11 +216,11 @@ function createAnthropicContext1mConfig(): OpenClawConfig {
         },
       },
     },
-  } as unknown as OpenClawConfig;
+  } as unknown as OperatorConfig;
 }
 
 function listSingleSession(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   storePath: string;
   key: string;
   entry: SessionEntry;
@@ -235,7 +235,7 @@ function listSingleSession(params: {
   });
 }
 
-function listMainSession(params: { cfg: OpenClawConfig; storePath: string; entry: SessionEntry }) {
+function listMainSession(params: { cfg: OperatorConfig; storePath: string; entry: SessionEntry }) {
   return listSingleSession({
     cfg: params.cfg,
     storePath: params.storePath,
@@ -415,7 +415,7 @@ describe("listSessionsFromStore search", () => {
   const baseCfg = {
     session: { mainKey: "main" },
     agents: { list: [{ id: "main", default: true }] },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 
   const makeStore = (): Record<string, SessionEntry> => ({
     "agent:main:work-project": {
@@ -440,7 +440,7 @@ describe("listSessionsFromStore search", () => {
 
   function listSearchSessions(params: {
     opts: Parameters<typeof listSessionsFromStore>[0]["opts"];
-    cfg?: OpenClawConfig;
+    cfg?: OperatorConfig;
     store?: Record<string, SessionEntry>;
   }) {
     return listSessionsFromStore({
@@ -451,7 +451,7 @@ describe("listSessionsFromStore search", () => {
     });
   }
 
-  function listConfiguredMainSession(cfg: OpenClawConfig, entry: SessionEntry) {
+  function listConfiguredMainSession(cfg: OperatorConfig, entry: SessionEntry) {
     return listSearchSessions({
       cfg,
       store: mainSessionStore(entry),
@@ -817,7 +817,7 @@ describe("listSessionsFromStore search", () => {
                 },
               },
             },
-          } as unknown as OpenClawConfig,
+          } as unknown as OperatorConfig,
           storePath,
           key: MAIN_SESSION_KEY,
           entry,
@@ -925,7 +925,7 @@ describe("listSessionsFromStore search", () => {
             agents: {
               list: [{ id: "main", default: true }],
             },
-          } as unknown as OpenClawConfig,
+          } as unknown as OperatorConfig,
           storePath,
           entry: anthropicUsageEntry(now, {
             sessionId: "sess-pricing",

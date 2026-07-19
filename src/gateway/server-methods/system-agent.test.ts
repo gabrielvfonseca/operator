@@ -1,8 +1,8 @@
-// OpenClaw gateway tests cover activation serialization and chat sessions.
+// Operator gateway tests cover activation serialization and chat sessions.
 
 import { expectDefined } from "@operator/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import type { SystemAgentApprovalRequestPayload } from "../../infra/system-agent-approvals.js";
 import { getCommandLaneSnapshot } from "../../process/command-queue.js";
 import { resetCommandQueueStateForTest } from "../../process/command-queue.test-support.js";
@@ -54,7 +54,7 @@ function makeContext(sessions: Map<string, SystemAgentChatSession>): GatewayRequ
   return { systemAgentSessions: sessions } as unknown as GatewayRequestContext;
 }
 
-const verifiedConfig: OpenClawConfig = {
+const verifiedConfig: OperatorConfig = {
   agents: { defaults: { model: "openai/gpt-5.5@openai:verified" } },
   auth: {
     profiles: {
@@ -228,7 +228,7 @@ describe("openclaw.setup.activate", () => {
           payload: undefined,
           error: {
             code: "UNAVAILABLE",
-            message: "OpenClaw setup is already in progress; try again when it finishes.",
+            message: "Operator setup is already in progress; try again when it finishes.",
             retryable: true,
           },
         },
@@ -312,7 +312,7 @@ describe("openclaw.chat", () => {
       ok: false,
       error: {
         code: "UNAVAILABLE",
-        message: "OpenClaw requires working inference: no configured model",
+        message: "Operator requires working inference: no configured model",
       },
     });
     expect(sessions.size).toBe(0);

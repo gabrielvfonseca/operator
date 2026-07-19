@@ -302,7 +302,7 @@ function startChrome(params: Record<string, unknown>) {
     if (bridgeCommand) {
       if (mode === "agent") {
         throw new Error(
-          "Chrome agent mode requires audioInputCommand and audioOutputCommand so OpenClaw can run STT and regular TTS directly.",
+          "Chrome agent mode requires audioInputCommand and audioOutputCommand so Operator can run STT and regular TTS directly.",
         );
       }
       const bridge = runCommandWithTimeout(bridgeCommand, timeoutMs);
@@ -358,7 +358,7 @@ function startChrome(params: Record<string, unknown>) {
             status: "chrome-opened",
             browserUrl: url,
             notes: [
-              "Browser page control is handled by OpenClaw browser automation when using chrome-node.",
+              "Browser page control is handled by Operator browser automation when using chrome-node.",
             ],
           }
         : undefined,

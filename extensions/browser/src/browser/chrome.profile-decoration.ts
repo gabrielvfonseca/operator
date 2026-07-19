@@ -1,5 +1,5 @@
 /**
- * OpenClaw-managed Chrome profile decoration.
+ * Operator-managed Chrome profile decoration.
  *
  * Applies managed-browser policy, a stable profile name, color, download
  * directory, and clean-exit markers to Chrome's profile files.
@@ -8,8 +8,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { loadJsonFile, saveJsonFile } from "openclaw/plugin-sdk/json-store";
 import {
-  DEFAULT_OPENCLAW_BROWSER_COLOR,
-  DEFAULT_OPENCLAW_BROWSER_PROFILE_NAME,
+  DEFAULT_OPERATOR_BROWSER_COLOR,
+  DEFAULT_OPERATOR_BROWSER_PROFILE_NAME,
 } from "./constants.js";
 
 const CHROME_NETWORK_PREDICTION_DISABLED = 2;
@@ -120,12 +120,12 @@ export function isProfileDecorated(
 }
 
 /** Return whether this profile was initialized with Chromium's automation keychain. */
-export function usesOpenClawMockKeychain(userDataDir: string): boolean {
+export function usesOperatorMockKeychain(userDataDir: string): boolean {
   const localState = safeReadJson(path.join(userDataDir, "Local State"));
   return readDefaultProfileInfo(localState)?.openclaw_mock_keychain === true;
 }
 
-/** Disable Chromium network prediction in an OpenClaw-managed Chrome profile. */
+/** Disable Chromium network prediction in an Operator-managed Chrome profile. */
 export function ensureProfileNetworkPredictionDisabled(userDataDir: string) {
   const preferencesPath = path.join(userDataDir, "Default", "Preferences");
   const prefs = safeReadJson(preferencesPath) ?? {};
@@ -139,12 +139,12 @@ export function ensureProfileNetworkPredictionDisabled(userDataDir: string) {
  * Best-effort profile decoration (name + lobster-orange). Chrome preference keys
  * vary by version; we keep this conservative and idempotent.
  */
-export function decorateOpenClawProfile(
+export function decorateOperatorProfile(
   userDataDir: string,
   opts?: { name?: string; color?: string; downloadDir?: string; mockKeychain?: boolean },
 ) {
-  const desiredName = opts?.name ?? DEFAULT_OPENCLAW_BROWSER_PROFILE_NAME;
-  const desiredColor = (opts?.color ?? DEFAULT_OPENCLAW_BROWSER_COLOR).toUpperCase();
+  const desiredName = opts?.name ?? DEFAULT_OPERATOR_BROWSER_PROFILE_NAME;
+  const desiredColor = (opts?.color ?? DEFAULT_OPERATOR_BROWSER_COLOR).toUpperCase();
   const desiredColorInt = parseHexRgbToSignedArgbInt(desiredColor);
 
   const localStatePath = path.join(userDataDir, "Local State");

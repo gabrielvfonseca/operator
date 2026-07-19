@@ -8,7 +8,7 @@ import {
   resetConfigRuntimeState,
   setRuntimeConfigSnapshot,
 } from "../config/config.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { clearSecretsRuntimeSnapshot } from "../secrets/runtime.js";
 
 function withStableOwnerDisplaySecretForTest(cfg: unknown): unknown {
@@ -32,7 +32,7 @@ function withStableOwnerDisplaySecretForTest(cfg: unknown): unknown {
   };
 }
 
-/** Writes a temp OpenClaw config, installs it as runtime state, then restores globals. */
+/** Writes a temp Operator config, installs it as runtime state, then restores globals. */
 export async function withTempConfig(params: {
   cfg: unknown;
   run: () => Promise<void>;
@@ -40,7 +40,7 @@ export async function withTempConfig(params: {
 }): Promise<void> {
   const prevConfigPath = process.env.OPERATOR_CONFIG_PATH;
 
-  const testConfig = withStableOwnerDisplaySecretForTest(params.cfg) as OpenClawConfig;
+  const testConfig = withStableOwnerDisplaySecretForTest(params.cfg) as OperatorConfig;
   const dir = await mkdtemp(path.join(os.tmpdir(), params.prefix ?? "operator-test-config-"));
   const configPath = path.join(dir, "operator.json");
 

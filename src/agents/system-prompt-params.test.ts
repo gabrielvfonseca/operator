@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { setActiveNodeContext } from "../infra/active-node-context.js";
 import { buildSystemPromptParams } from "./system-prompt-params.js";
 
@@ -16,7 +16,7 @@ async function makeRepoRoot(root: string): Promise<void> {
   await fs.mkdir(path.join(root, ".git"), { recursive: true });
 }
 
-function buildParams(params: { config?: OpenClawConfig; workspaceDir?: string; cwd?: string }) {
+function buildParams(params: { config?: OperatorConfig; workspaceDir?: string; cwd?: string }) {
   return buildSystemPromptParams({
     config: params.config,
     workspaceDir: params.workspaceDir,
@@ -74,7 +74,7 @@ describe("buildSystemPromptParams", () => {
     await fs.mkdir(workspaceDir, { recursive: true });
     await makeRepoRoot(workspaceDir);
 
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       agents: {
         defaults: {
           repoRoot,
@@ -96,7 +96,7 @@ describe("buildSystemPromptParams", () => {
     await fs.mkdir(workspaceDir, { recursive: true });
     await makeRepoRoot(repoRoot);
 
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       agents: {
         defaults: {
           repoRoot: path.join(temp, "missing"),

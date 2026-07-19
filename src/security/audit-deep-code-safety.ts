@@ -1,5 +1,5 @@
 // Audits code paths for deep safety risks that require manual review.
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { createLazyRuntimeModule } from "../shared/lazy-runtime.js";
 import type { SecurityAuditFinding } from "./audit.types.js";
 
@@ -8,7 +8,7 @@ const loadAuditDeepModule = createLazyRuntimeModule(() => import("./audit.deep.r
 
 /** Collect plugin and installed-skill code safety findings when deep audit is enabled. */
 export async function collectDeepCodeSafetyFindings(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   stateDir: string;
   deep: boolean;
   summaryCache?: Map<string, Promise<unknown>>;

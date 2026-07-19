@@ -1,4 +1,4 @@
-// Builds PATH values for OpenClaw child processes.
+// Builds PATH values for Operator child processes.
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -10,7 +10,7 @@ import { resolveBrewPathDirs } from "./brew.js";
 import { isTruthyEnvValue } from "./env.js";
 import { tryProcessCwd } from "./safe-cwd.js";
 
-type EnsureOpenClawPathOpts = {
+type EnsureOperatorPathOpts = {
   /** Executable whose directory should stay first for shebang-compatible child processes. */
   execPath?: string;
   /** Working directory used only when project-local bin fallback is explicitly enabled. */
@@ -144,7 +144,7 @@ function mergePath(params: { existing: string; prepend?: string[]; append?: stri
 }
 
 function candidateBinDirs(
-  opts: EnsureOpenClawPathOpts,
+  opts: EnsureOperatorPathOpts,
   existingPathParts: ReadonlySet<string>,
 ): { prepend: string[]; append: string[] } {
   const execPath = opts.execPath ?? process.execPath;
@@ -156,7 +156,7 @@ function candidateBinDirs(
   const append: string[] = [];
 
   // Keep the active runtime directory ahead of PATH hardening so shebang-based
-  // subprocesses keep using the same Node/Bun the current OpenClaw process is on.
+  // subprocesses keep using the same Node/Bun the current Operator process is on.
   try {
     const execDir = path.dirname(execPath);
     if (isExecutable(execPath)) {
@@ -244,7 +244,7 @@ function candidateBinDirs(
  * Best-effort PATH bootstrap so skills that require the `operator` CLI can run
  * under launchd/minimal environments (and inside the macOS app bundle).
  */
-export function ensureOpenClawCliOnPath(opts: EnsureOpenClawPathOpts = {}) {
+export function ensureOperatorCliOnPath(opts: EnsureOperatorPathOpts = {}) {
   if (isTruthyEnvValue(process.env.OPERATOR_PATH_BOOTSTRAPPED)) {
     return;
   }

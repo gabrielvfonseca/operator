@@ -17,9 +17,9 @@ import { formatErrorMessage } from "../infra/errors.js";
 import { hasRetryableConnectionErrorCode } from "../infra/retryable-network-errors.js";
 import { normalizeBlockedLivenessWaitStatus } from "../shared/agent-liveness.js";
 import {
-  isOpenClawInternalSourceReplyMirrorAssistantMessage,
-  isOpenClawMessageToolMirrorAssistantMessage,
-  isTranscriptOnlyOpenClawAssistantMessage,
+  isOperatorInternalSourceReplyMirrorAssistantMessage,
+  isOperatorMessageToolMirrorAssistantMessage,
+  isTranscriptOnlyOperatorAssistantMessage,
 } from "../shared/transcript-only-operator-assistant.js";
 import {
   buildAgentRunTerminalOutcomeFromWaitResult,
@@ -163,8 +163,8 @@ function normalizePendingRunIds(runIds: Iterable<string>): string[] {
 
 function isWaitedReplyTranscriptArtifact(message: unknown): boolean {
   return (
-    isTranscriptOnlyOpenClawAssistantMessage(message) ||
-    isOpenClawMessageToolMirrorAssistantMessage(message) ||
+    isTranscriptOnlyOperatorAssistantMessage(message) ||
+    isOperatorMessageToolMirrorAssistantMessage(message) ||
     isInterSessionInputMessage(message)
   );
 }
@@ -261,7 +261,7 @@ function resolveLatestAssistantReplySnapshot(
     }
     if (
       opts?.stopAtTranscriptArtifact === true &&
-      isOpenClawInternalSourceReplyMirrorAssistantMessage(candidate)
+      isOperatorInternalSourceReplyMirrorAssistantMessage(candidate)
     ) {
       // Internal source replies still need the outer A2A flow to deliver them.
       // The source seq prevents a late old result from crossing a new turn.

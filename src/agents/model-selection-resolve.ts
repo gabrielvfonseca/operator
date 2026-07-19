@@ -5,7 +5,7 @@
  * handling before checking aliases, allowlists, catalogs, and plugin manifests.
  */
 import { resolveAgentModelFallbackValues } from "../config/model-input.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { ModelCatalogEntry } from "./model-catalog.types.js";
 import type { ModelManifestNormalizationContext, ModelRef } from "./model-selection-normalize.js";
 import {
@@ -24,14 +24,14 @@ export {
   resolveModelRefFromString,
 } from "./model-selection-shared.js";
 
-function resolveDefaultFallbackModels(cfg: OpenClawConfig): string[] {
+function resolveDefaultFallbackModels(cfg: OperatorConfig): string[] {
   return resolveAgentModelFallbackValues(cfg.agents?.defaults?.model);
 }
 
 /** Returns whether a normalized model ref is available, allowed, or fallback-backed. */
 export function getModelRefStatus(
   params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     catalog: ModelCatalogEntry[];
     ref: ModelRef;
     defaultProvider: string;
@@ -53,7 +53,7 @@ export function getModelRefStatus(
 /** Resolves a raw model string into an allowed model ref or an explanatory error. */
 export function resolveAllowedModelRef(
   params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     catalog: ModelCatalogEntry[];
     raw: string;
     defaultProvider: string;

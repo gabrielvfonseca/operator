@@ -1,5 +1,5 @@
 // Whatsapp plugin module implements message line behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   getPrimaryIdentityId,
   getReplyContext,
@@ -28,7 +28,7 @@ function formatReplyContext(msg: AdmittedWebInboundMessage) {
 }
 
 export function buildInboundLine(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   msg: AdmittedWebInboundMessage;
   agentId: string;
   previousTimestamp?: number;

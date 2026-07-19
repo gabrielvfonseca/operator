@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import path from "node:path";
 import { resolveStorePath } from "../../config/sessions/paths.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   createCorePluginStateSyncKeyedStore,
   MAX_PLUGIN_STATE_ENTRIES_PER_PLUGIN,
@@ -48,7 +48,7 @@ export type StoredSkillHistoryScanState = StoredSkillHistoryScanSnapshot & {
 
 export type SkillHistoryScanScope = {
   agentId: string;
-  config: OpenClawConfig;
+  config: OperatorConfig;
   direction?: SkillHistoryScanDirection;
   env?: NodeJS.ProcessEnv;
   workspaceDir: string;

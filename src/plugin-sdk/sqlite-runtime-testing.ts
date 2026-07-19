@@ -23,10 +23,10 @@ export {
 } from "../trajectory/runtime-store.sqlite.js";
 export { type TrajectoryEvent as SqliteTrajectoryRuntimeEventForTest } from "../trajectory/types.js";
 export {
-  closeOpenClawAgentDatabasesForTest,
-  openOpenClawAgentDatabase,
+  closeOperatorAgentDatabasesForTest,
+  openOperatorAgentDatabase,
 } from "../state/operator-agent-db.js";
 export {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
 } from "../state/operator-state-db.js";

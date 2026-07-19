@@ -1,4 +1,4 @@
-/** Loads and normalizes OpenClaw plugin manifests, including contracts and config schemas. */
+/** Loads and normalizes Operator plugin manifests, including contracts and config schemas. */
 import fs from "node:fs";
 import path from "node:path";
 import { normalizeModelCatalog } from "@operator/model-catalog-core/model-catalog-normalize";
@@ -1791,7 +1791,7 @@ export function loadPluginManifest(
   if (CORE_RESERVED_PLUGIN_IDS.has(id)) {
     return cacheResult({
       ok: false,
-      error: `plugin manifest id "${id}" is reserved by OpenClaw core`,
+      error: `plugin manifest id "${id}" is reserved by Operator core`,
       manifestPath,
     });
   }
@@ -1993,7 +1993,7 @@ export type PluginPackageInstall = {
   requiredPlatformPackages?: string[];
 };
 
-type OpenClawPackageStartup = {
+type OperatorPackageStartup = {
   /**
    * Opt-in for channel plugins whose `setupEntry` fully covers the gateway
    * startup surface needed before the server starts listening.
@@ -2001,35 +2001,35 @@ type OpenClawPackageStartup = {
   deferConfiguredChannelFullLoadUntilAfterListen?: boolean;
 };
 
-type OpenClawPackageSetupFeatures = {
+type OperatorPackageSetupFeatures = {
   configPromotion?: boolean;
   legacyStateMigrations?: boolean;
   legacySessionSurfaces?: boolean;
 };
 
-type OpenClawPackageCompat = {
+type OperatorPackageCompat = {
   pluginApi?: string;
 };
 
-export type OpenClawPackageBuild = {
+export type OperatorPackageBuild = {
   bundledDist?: boolean;
 };
 
-export type OpenClawPackageManifest = {
+export type OperatorPackageManifest = {
   extensions?: string[];
   runtimeExtensions?: string[];
   setupEntry?: string;
   runtimeSetupEntry?: string;
-  setupFeatures?: OpenClawPackageSetupFeatures;
+  setupFeatures?: OperatorPackageSetupFeatures;
   plugin?: {
     id?: string;
     label?: string;
   };
   channel?: PluginPackageChannel;
-  compat?: OpenClawPackageCompat;
+  compat?: OperatorPackageCompat;
   install?: PluginPackageInstall;
-  startup?: OpenClawPackageStartup;
-  build?: OpenClawPackageBuild;
+  startup?: OperatorPackageStartup;
+  build?: OperatorPackageBuild;
 };
 
 export const DEFAULT_PLUGIN_ENTRY_CANDIDATES = [
@@ -2053,11 +2053,11 @@ export type PackageManifest = {
   description?: string;
   dependencies?: Record<string, string>;
   optionalDependencies?: Record<string, string>;
-} & Partial<Record<ManifestKey, OpenClawPackageManifest>>;
+} & Partial<Record<ManifestKey, OperatorPackageManifest>>;
 
 export function getPackageManifestMetadata(
   manifest: PackageManifest | undefined,
-): OpenClawPackageManifest | undefined {
+): OperatorPackageManifest | undefined {
   if (!manifest) {
     return undefined;
   }
@@ -2067,18 +2067,18 @@ export function getPackageManifestMetadata(
 export function resolvePackageExtensionEntries(
   manifest: PackageManifest | undefined,
 ): PackageExtensionResolution {
-  const rawOpenClaw = manifest?.[MANIFEST_KEY] as unknown;
-  if (rawOpenClaw === undefined || rawOpenClaw === null) {
+  const rawOperator = manifest?.[MANIFEST_KEY] as unknown;
+  if (rawOperator === undefined || rawOperator === null) {
     return { status: "missing", entries: [] };
   }
-  if (!isRecord(rawOpenClaw)) {
+  if (!isRecord(rawOperator)) {
     return {
       status: "invalid",
       entries: [],
       error: "package.json operator must be an object",
     };
   }
-  const raw = rawOpenClaw.extensions;
+  const raw = rawOperator.extensions;
   if (raw === undefined || raw === null) {
     return { status: "missing", entries: [] };
   }

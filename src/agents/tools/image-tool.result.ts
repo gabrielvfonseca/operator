@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { resolveImageSanitizationLimits } from "../image-sanitization.js";
 import type { AgentToolResult } from "../runtime/index.js";
 import { sanitizeToolResultImages } from "../tool-images.js";
@@ -30,7 +30,7 @@ export function buildImageToolReferenceDetails(
 
 export async function buildNativeImageToolResult(
   images: readonly LoadedImageForTool[],
-  config?: OpenClawConfig,
+  config?: OperatorConfig,
 ): Promise<AgentToolResult<unknown>> {
   const result: AgentToolResult<unknown> = {
     content: [

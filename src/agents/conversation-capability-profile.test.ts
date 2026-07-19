@@ -4,13 +4,13 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { replaceSessionEntry } from "../config/sessions/session-accessor.js";
 import type { SessionEntry } from "../config/sessions/types.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { INTERNAL_MESSAGE_CHANNEL } from "../utils/message-channel.js";
 import { resolveConversationCapabilityProfile } from "./conversation-capability-profile.js";
 
 describe("resolveConversationCapabilityProfile", () => {
   it("prepares a direct conversation profile with sender tool restrictions", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       tools: {
         toolsBySender: {
           "id:guest": { deny: ["exec", "process"] },
@@ -54,7 +54,7 @@ describe("resolveConversationCapabilityProfile", () => {
   });
 
   it("exempts owner WebChat from wildcard sender tool restrictions", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       tools: {
         toolsBySender: {
           "*": { deny: ["exec", "process"] },
@@ -74,7 +74,7 @@ describe("resolveConversationCapabilityProfile", () => {
   });
 
   it("exempts owner WebChat identified through the message channel", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       tools: {
         toolsBySender: {
           "*": { deny: ["exec", "process"] },
@@ -94,7 +94,7 @@ describe("resolveConversationCapabilityProfile", () => {
   });
 
   it("keeps wildcard sender tool restrictions for non-owner WebChat", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       tools: {
         toolsBySender: {
           "*": { deny: ["exec", "process"] },
@@ -114,7 +114,7 @@ describe("resolveConversationCapabilityProfile", () => {
   });
 
   it("keeps wildcard sender tool restrictions for owners on external channels", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       tools: {
         toolsBySender: {
           "*": { deny: ["exec", "process"] },
@@ -134,7 +134,7 @@ describe("resolveConversationCapabilityProfile", () => {
   });
 
   it("prepares a shared conversation profile with group per-sender restrictions", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       channels: {
         whatsapp: {
           groups: {

@@ -6,7 +6,7 @@ import { promptYesNo } from "../../cli/prompt.js";
 import { readConfigFileSnapshot, replaceConfigFile } from "../../config/config.js";
 import { formatConfigIssueLines } from "../../config/issue-format.js";
 import type { AgentModelEntryConfig } from "../../config/types.agent-defaults.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   ClawHubRequestError,
   fetchClawHubPromotion,
@@ -122,7 +122,7 @@ type ResolvedAuthChoice = {
   packageNames: string[];
 };
 
-function resolveManifestPluginPackageNames(pluginId: string, cfg: OpenClawConfig): string[] {
+function resolveManifestPluginPackageNames(pluginId: string, cfg: OperatorConfig): string[] {
   const snapshot = loadManifestMetadataSnapshot({ config: cfg });
   return [
     ...new Set(
@@ -149,7 +149,7 @@ function resolveCatalogPluginPackageNames(entry: ProviderInstallCatalogEntry): s
 function resolveAuthChoice(
   promotion: ClawHubPromotion,
   provider: string,
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
 ): ResolvedAuthChoice | undefined {
   const authChoiceId = promotion.authChoiceId?.trim();
   if (!authChoiceId) {
@@ -168,7 +168,7 @@ function resolveAuthChoice(
   const entry = manifestEntry ?? catalogEntry;
   if (!entry) {
     throw new Error(
-      `Promotion "${promotion.slug}" requires auth choice "${authChoiceId}", which this OpenClaw version does not know. Update OpenClaw and retry.`,
+      `Promotion "${promotion.slug}" requires auth choice "${authChoiceId}", which this Operator version does not know. Update Operator and retry.`,
     );
   }
   if (entry.providerId !== provider) {
@@ -205,7 +205,7 @@ function requirePromotionPlugins(
     ? `auth choice "${authChoice.entry.choiceId}"`
     : "a missing auth choice";
   throw new Error(
-    `Promotion "${promotion.slug}" requires plugin package "${unsupported[0]}", but ${authChoiceLabel} does not provide it in this OpenClaw version. Update OpenClaw and retry.`,
+    `Promotion "${promotion.slug}" requires plugin package "${unsupported[0]}", but ${authChoiceLabel} does not provide it in this Operator version. Update Operator and retry.`,
   );
 }
 
@@ -258,7 +258,7 @@ async function ensureProviderAuth(params: {
   }
   const applied = await applyAuthChoiceLoadedPluginProvider({
     authChoice: catalogEntry.choiceId,
-    config: structuredClone(snapshot.sourceConfig ?? snapshot.config) as OpenClawConfig,
+    config: structuredClone(snapshot.sourceConfig ?? snapshot.config) as OperatorConfig,
     prompter: createClackPrompter(),
     runtime,
     setDefaultModel: false,
@@ -366,7 +366,7 @@ export async function promosClaimCommand(
       }
       registered.push(key);
     }
-    let next: OpenClawConfig = {
+    let next: OperatorConfig = {
       ...base,
       agents: {
         ...base.agents,

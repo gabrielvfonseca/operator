@@ -2,7 +2,7 @@
 import type { Model } from "openclaw/plugin-sdk/llm";
 import { streamSimple } from "openclaw/plugin-sdk/llm";
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { applyExtraParamsToAgent } from "./embedded-agent-runner/extra-params.js";
 import { isLiveTestEnabled } from "./live-test-helpers.js";
 import { isLiveAuthDrift, isLiveBillingDrift } from "./live-test-provider-drift.test-support.js";
@@ -32,7 +32,7 @@ describeLive("embedded agent extra params (live)", () => {
       maxTokens: 128_000,
     };
 
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       agents: {
         defaults: {
           models: {

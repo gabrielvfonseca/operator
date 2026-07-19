@@ -177,7 +177,7 @@ export function closeWaSocket(
 ): void {
   try {
     if (typeof sock?.end === "function") {
-      sock.end(new Error("OpenClaw WhatsApp socket close"));
+      sock.end(new Error("Operator WhatsApp socket close"));
       return;
     }
     sock?.ws?.close?.();

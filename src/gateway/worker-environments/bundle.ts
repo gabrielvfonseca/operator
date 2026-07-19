@@ -6,7 +6,7 @@ import path from "node:path";
 import * as tar from "tar";
 import { resolveStateDir } from "../../config/paths.js";
 import { isExactSemverVersion } from "../../infra/npm-registry-spec.js";
-import { resolveOpenClawPackageRootSync } from "../../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../../infra/operator-root.js";
 import { runCommandWithTimeout } from "../../process/exec.js";
 import { VERSION } from "../../version.js";
 import {
@@ -65,17 +65,17 @@ function normalizeProtocolFeatures(features: readonly string[]): string[] {
   return [...new Set(normalized)].toSorted(comparePaths);
 }
 
-function resolvePackageRoot(packageRoot: string | undefined): string {
+function resolveOperatorPackageRoot(packageRoot: string | undefined): string {
   if (packageRoot) {
     return path.resolve(packageRoot);
   }
-  const resolved = resolveOpenClawPackageRootSync({
+  const resolved = resolveOperatorPackageRootSync({
     moduleUrl: import.meta.url,
     argv1: process.argv[1],
     cwd: process.cwd(),
   });
   if (!resolved) {
-    throw new Error("Unable to locate the running OpenClaw package root for worker bundling");
+    throw new Error("Unable to locate the running Operator package root for worker bundling");
   }
   return resolved;
 }
@@ -187,7 +187,7 @@ async function verifyPublishedNpmRelease(params: {
           `--registry=${OPERATOR_NPM_REGISTRY}`,
         ],
         cwd: temporaryRoot,
-        failureMessage: `OpenClaw ${params.version} is not published; use the worker bundle install`,
+        failureMessage: `Operator ${params.version} is not published; use the worker bundle install`,
         runCommand,
       }),
     );
@@ -213,7 +213,7 @@ async function verifyPublishedNpmRelease(params: {
       ],
       cwd: temporaryRoot,
       failureMessage:
-        "Unable to verify the installed OpenClaw package; use the worker bundle install",
+        "Unable to verify the installed Operator package; use the worker bundle install",
       runCommand,
     });
     const packed = Array.isArray(packedValue) ? parseNpmPackageIdentity(packedValue[0]) : undefined;
@@ -226,7 +226,7 @@ async function verifyPublishedNpmRelease(params: {
       packedTarballIntegrity = await hashNpmTarballIntegrity(packedTarballPath);
     } catch {
       throw new Error(
-        "Unable to verify the installed OpenClaw package; use the worker bundle install",
+        "Unable to verify the installed Operator package; use the worker bundle install",
       );
     }
     if (
@@ -236,7 +236,7 @@ async function verifyPublishedNpmRelease(params: {
       packedTarballIntegrity !== published.integrity
     ) {
       throw new Error(
-        `Installed OpenClaw ${params.version} does not match the published package; use the worker bundle install`,
+        `Installed Operator ${params.version} does not match the published package; use the worker bundle install`,
       );
     }
     const extractedRoot = path.join(temporaryRoot, "package");
@@ -255,7 +255,7 @@ async function verifyPublishedNpmRelease(params: {
     });
     if (packedBundle.bundleHash !== params.bundleHash) {
       throw new Error(
-        `Published OpenClaw ${params.version} does not match the prepared worker bundle; use the worker bundle install`,
+        `Published Operator ${params.version} does not match the prepared worker bundle; use the worker bundle install`,
       );
     }
     return published.integrity;
@@ -428,13 +428,13 @@ async function writeTarball(params: {
 async function prepareWorkerBundle(
   options: WorkerBundleProducerOptions,
 ): Promise<WorkerBundleArtifact> {
-  const packageRoot = resolvePackageRoot(options.packageRoot);
+  const packageRoot = resolveOperatorPackageRoot(options.packageRoot);
   const cacheDir = options.cacheDir
     ? path.resolve(options.cacheDir)
     : path.join(resolveStateDir(), "cache", "worker-bundles");
   const operatorVersion = (options.operatorVersion ?? VERSION).trim();
   if (!operatorVersion) {
-    throw new Error("Worker bundle requires a non-empty OpenClaw version");
+    throw new Error("Worker bundle requires a non-empty Operator version");
   }
   const protocolFeatures = normalizeProtocolFeatures(options.protocolFeatures ?? []);
   await fs.mkdir(cacheDir, { recursive: true });
@@ -498,7 +498,7 @@ export async function resolveWorkerNpmInstallationArtifact(params: {
       `Worker npm install requires the exact published gateway version; expected ${version}`,
     );
   }
-  const packageRoot = resolvePackageRoot(params.packageRoot);
+  const packageRoot = resolveOperatorPackageRoot(params.packageRoot);
   const packageInstall = params.isPackageInstall
     ? await params.isPackageInstall(packageRoot)
     : await isReleasedPackageInstall(packageRoot);

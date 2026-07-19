@@ -1,5 +1,5 @@
 /** Shared session MCP runtime constants and create-runtime factory type. */
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginManifestRegistry } from "../plugins/manifest-registry.js";
 import type { SessionMcpRequesterScope, SessionMcpRuntime } from "./agent-bundle-mcp-types.js";
 import type { McpServerConnectionResolved } from "./mcp-connection-resolver.js";
@@ -16,7 +16,7 @@ export type CreateSessionMcpRuntime = (params: {
   sessionKey?: string;
   workspaceDir: string;
   agentDir?: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   manifestRegistry?: Pick<PluginManifestRegistry, "plugins">;
   includeServerNames?: ReadonlySet<string>;
   excludeServerNames?: ReadonlySet<string>;
@@ -27,7 +27,7 @@ export type CreateSessionMcpRuntime = (params: {
   configFingerprint?: string;
 }) => SessionMcpRuntime;
 
-export function resolveSessionMcpRuntimeIdleTtlMs(cfg?: OpenClawConfig): number {
+export function resolveSessionMcpRuntimeIdleTtlMs(cfg?: OperatorConfig): number {
   const raw = cfg?.mcp?.sessionIdleTtlMs;
   if (typeof raw === "number" && Number.isFinite(raw) && raw >= 0) {
     return Math.floor(raw);

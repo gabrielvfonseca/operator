@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type { ProviderRuntimeModel } from "openclaw/plugin-sdk/core";
 // Microsoft Foundry image provider routes MAI image deployments to the MAI API.
 import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
@@ -49,7 +49,7 @@ const MAI_IMAGE_OUTPUT_MIME = "image/png";
 const MB = 1024 * 1024;
 const MAI_IMAGE_UPLOAD_MIME_TYPES = new Set(["image/jpeg", "image/jpg", "image/png"]);
 
-type ModelProviderConfig = NonNullable<NonNullable<OpenClawConfig["models"]>["providers"]>[string];
+type ModelProviderConfig = NonNullable<NonNullable<OperatorConfig["models"]>["providers"]>[string];
 
 function readProviderConfig(req: ImageGenerationRequest): ModelProviderConfig | undefined {
   return req.cfg.models?.providers?.[PROVIDER_ID];

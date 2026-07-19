@@ -8,7 +8,7 @@ import {
   serializeDurableMessagePayloadOutcomes,
   type SerializedDurableMessagePayloadOutcome,
 } from "../../channels/message/runtime.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { OutboundMediaAccess } from "../../media/load-options.js";
 import type { PollInput } from "../../polls.js";
 import { normalizePollInput } from "../../polls.js";
@@ -86,7 +86,7 @@ type MessageSendParams = {
   payloads?: ReplyPayload[];
   mediaAccess?: OutboundMediaAccess;
   deps?: OutboundSendDeps;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   gateway?: OutboundMessageGatewayOptionsInput;
   idempotencyKey?: string;
   mirror?: OutboundMirror;
@@ -123,7 +123,7 @@ type MessagePollParams = {
   silent?: boolean;
   isAnonymous?: boolean;
   dryRun?: boolean;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   gateway?: OutboundMessageGatewayOptionsInput;
   idempotencyKey?: string;
 };
@@ -192,7 +192,7 @@ function assertPollOptionSupport(params: {
 }
 
 async function resolveRequiredChannel(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   channel?: string;
 }): Promise<string> {
   const selection = await resolveMessageChannelSelection({
@@ -202,7 +202,7 @@ async function resolveRequiredChannel(params: {
   return selection.channel;
 }
 
-function resolveRequiredPlugin(channel: string, cfg: OpenClawConfig) {
+function resolveRequiredPlugin(channel: string, cfg: OperatorConfig) {
   const plugin = resolveOutboundChannelPlugin({ channel, cfg });
   if (!plugin) {
     throw new Error(`Unknown channel: ${channel}`);
@@ -258,7 +258,7 @@ function deriveRequiredMessageSendCapabilities(params: {
 }
 
 async function assertRequiredMessageSendDurability(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   channel: Exclude<string, "none">;
   payloads: ReplyPayload[];
   replyToId?: string | null;
@@ -306,7 +306,7 @@ async function callMessageGateway<T>(params: {
   });
 }
 
-async function resolveMessageConfig(cfg?: OpenClawConfig): Promise<OpenClawConfig> {
+async function resolveMessageConfig(cfg?: OperatorConfig): Promise<OperatorConfig> {
   if (cfg) {
     return cfg;
   }

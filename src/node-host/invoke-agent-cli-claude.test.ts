@@ -112,7 +112,7 @@ describe("Claude CLI node command", () => {
       decodeClaudeCliNodeRunParams(
         JSON.stringify({
           argv: ["-p"],
-          env: { [["OPENCLAW", "GATEWAY", "TOKEN"].join("_")]: "" },
+          env: { [["OPERATOR", "GATEWAY", "TOKEN"].join("_")]: "" },
           idleTimeoutMs: 1_000,
           timeoutMs: 2_000,
         }),

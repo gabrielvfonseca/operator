@@ -30,7 +30,7 @@ import { resolveSupportedThinkingLevel, type ThinkLevel } from "../auto-reply/th
 import { toAgentModelListLike } from "../config/model-input.js";
 import type { SessionEntry } from "../config/sessions.js";
 import { hasSessionAutoModelFallbackProvenance } from "../config/sessions/model-override-provenance.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   formatUsageWindowSummary,
   loadProviderUsageSummary,
@@ -70,7 +70,7 @@ const USAGE_OAUTH_ONLY_PROVIDERS = new Set([
 const CODEX_APP_SERVER_HOME_DIRNAME = "codex-home";
 
 function resolveStatusChannelFeatureLine(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   statusChannel: string;
   statusAccountId?: string;
   sessionEntry?: SessionEntry;
@@ -121,7 +121,7 @@ const loadStatusPluginHealthRuntime = createLazyRuntimeModule(
 // Context lookup stays synchronous/non-refreshing so status output does not
 // trigger provider/catalog IO while rendering a command response.
 function resolveStatusRuntimeContextTokens(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   provider: string;
   model: string;
 }): number | undefined {
@@ -157,7 +157,7 @@ function shouldLoadUsageSummary(params: {
 
 function resolveCodexSyntheticUsageAuthProfileId(params: {
   profileId: string | undefined;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentDir?: string;
 }): string | undefined {
   const normalizedProfileId = params.profileId?.trim();
@@ -206,7 +206,7 @@ function formatSessionTaskLine(sessionKey: string): string | undefined {
 }
 
 async function resolveStatusHarnessId(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   provider: string;
   model: string;
   agentId: string;

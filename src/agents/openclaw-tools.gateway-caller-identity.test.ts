@@ -6,7 +6,7 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("./openclaw-plugin-tools.js", () => ({
-  resolveOpenClawPluginToolsForOptions: () => [
+  resolveOperatorPluginToolsForOptions: () => [
     {
       name: "synthetic_direct_cron_plugin",
       label: "Synthetic direct cron plugin",
@@ -21,10 +21,10 @@ vi.mock("./openclaw-plugin-tools.js", () => ({
   ],
 }));
 
-import { createOpenClawTools } from "./openclaw-tools.js";
+import { createOperatorTools } from "./openclaw-tools.js";
 
-function requireTool(name: string, overrides?: Parameters<typeof createOpenClawTools>[0]) {
-  const tool = createOpenClawTools({
+function requireTool(name: string, overrides?: Parameters<typeof createOperatorTools>[0]) {
+  const tool = createOperatorTools({
     agentSessionKey: "agent:main:discord:channel:123",
     disableMessageTool: true,
     pluginToolAllowlist: [name],
@@ -38,7 +38,7 @@ function requireTool(name: string, overrides?: Parameters<typeof createOpenClawT
   return tool;
 }
 
-describe("createOpenClawTools Gateway caller identity", () => {
+describe("createOperatorTools Gateway caller identity", () => {
   it("wraps plugin tools so direct cron Gateway calls inherit the agent identity", async () => {
     mocks.observedIdentities.length = 0;
 

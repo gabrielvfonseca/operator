@@ -30,7 +30,7 @@ const STATE_SQLITE_CONFLICTING_OPTION_NAMES = [
   "only",
 ] as const;
 
-/** Register maintenance commands that inspect or mutate local OpenClaw state. */
+/** Register maintenance commands that inspect or mutate local Operator state. */
 export function registerMaintenanceCommands(program: Command) {
   program
     .command("doctor")

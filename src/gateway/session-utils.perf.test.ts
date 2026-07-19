@@ -4,7 +4,7 @@ import path from "node:path";
 import { expectDefined } from "@operator/normalization-core";
 import { beforeAll, describe, test, expect, vi } from "vitest";
 import * as thinking from "../auto-reply/thinking.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { resetConfigRuntimeState, setRuntimeConfigSnapshot } from "../config/config.js";
 import type { SessionEntry } from "../config/sessions.js";
 import { createEmptyPluginRegistry } from "../plugins/registry-empty.js";
@@ -31,7 +31,7 @@ describe("listSessionsFromStore resolver cache", () => {
       setActivePluginRegistry(createEmptyPluginRegistry());
       const cfg = {
         agents: { defaults: { model: { primary: "google-vertex/gemini-3-flash-preview" } } },
-      } as OpenClawConfig;
+      } as OperatorConfig;
       resetConfigRuntimeState();
       setRuntimeConfigSnapshot(cfg);
       listSessionsFromStore({
@@ -72,11 +72,11 @@ describe("listSessionsFromStore resolver cache", () => {
     await withStateDirEnv("openclaw-perf-", async ({ stateDir }) => {
       resetPluginRuntimeStateForTest();
       setActivePluginRegistry(createEmptyPluginRegistry());
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           defaults: { model: { primary: "google-vertex/gemini-3-flash-preview" } },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
       resetConfigRuntimeState();
       setRuntimeConfigSnapshot(cfg);
 

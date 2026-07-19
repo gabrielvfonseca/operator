@@ -10,7 +10,7 @@ import {
   type ChannelSetupAdapter,
   type ChannelSetupInput,
   type ChannelSetupWizard,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "openclaw/plugin-sdk/setup";
 import {
   normalizeOptionalString,
@@ -35,11 +35,11 @@ function isConfigured(account: TlonResolvedAccount): boolean {
 
 type TlonSetupWizardBaseParams = {
   resolveConfigured: (params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     accountId?: string;
   }) => boolean | Promise<boolean>;
   resolveStatusLines?: (params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     accountId?: string;
     configured: boolean;
   }) => string[] | Promise<string[]>;
@@ -129,7 +129,7 @@ export function createTlonSetupWizardBase(params: TlonSetupWizardBaseParams): Ch
 }
 
 export async function resolveTlonSetupConfigured(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   accountId?: string,
 ): Promise<boolean> {
   if (accountId) {
@@ -144,7 +144,7 @@ export async function resolveTlonSetupConfigured(
 }
 
 export async function resolveTlonSetupStatusLines(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   accountId?: string,
 ): Promise<string[]> {
   const configured = await resolveTlonSetupConfigured(cfg, accountId);
@@ -153,10 +153,10 @@ export async function resolveTlonSetupStatusLines(
 }
 
 export function applyTlonSetupConfig(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId: string;
   input: TlonSetupInput;
-}): OpenClawConfig {
+}): OperatorConfig {
   const { cfg, accountId, input } = params;
   const useDefault = accountId === DEFAULT_ACCOUNT_ID;
   const namedConfig = prepareScopedSetupConfig({

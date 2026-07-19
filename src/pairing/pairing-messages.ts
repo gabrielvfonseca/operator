@@ -12,7 +12,7 @@ export function buildPairingReply(params: {
   const { channel, idLine, code } = params;
   const approveCommand = formatCliCommand(`operator pairing approve ${channel} ${code}`);
   return [
-    "OpenClaw: access not configured.",
+    "Operator: access not configured.",
     "",
     idLine,
     "Pairing code:",

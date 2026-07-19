@@ -1,7 +1,7 @@
 import { isRecord } from "@operator/normalization-core/record-coerce";
 import { uniqueStrings } from "@operator/normalization-core/string-normalization";
 import { normalizeConfiguredMcpServers } from "../config/mcp-config-normalize.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizePluginsConfig } from "../plugins/config-state.js";
 import {
   isManifestPluginAvailableForControlPlane,
@@ -69,7 +69,7 @@ function denylistBlocksPluginTool(params: {
 }
 
 function collectConfiguredMcpServerNames(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   toolDenylist?: string[];
 }): string[] {
   const servers = normalizeConfiguredMcpServers(params.config?.mcp?.servers);
@@ -96,7 +96,7 @@ function collectConfiguredMcpServerNames(params: {
 
 function collectAvailableManifestToolNames(params: {
   plugin: PluginManifestRecord;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   env: NodeJS.ProcessEnv;
   denylist: ToolDenylist;
 }): string[] {
@@ -122,7 +122,7 @@ function collectAvailableManifestToolNames(params: {
 }
 
 function collectDeclaredPluginContext(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   workspaceDir?: string;
   toolDenylist?: string[];
   env?: NodeJS.ProcessEnv;
@@ -171,7 +171,7 @@ function collectDeclaredPluginContext(params: {
 }
 
 export function buildDeclaredToolAllowlistContext(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   workspaceDir?: string;
   toolDenylist?: string[];
   env?: NodeJS.ProcessEnv;

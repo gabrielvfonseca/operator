@@ -29,7 +29,7 @@ function createSessionTranscript(params: {
   messages?: string[];
 }): string {
   // Tests write the canonical session envelope first so loaders exercise the
-  // same JSONL record order used by persisted OpenClaw sessions.
+  // same JSONL record order used by persisted Operator sessions.
   const sessionFile =
     params.filePath ??
     path.join(
@@ -106,7 +106,7 @@ function expectBranchSummary(value: unknown, summary: string) {
 }
 
 async function withCliSessionState<T>(stateDir: string, run: () => Promise<T>): Promise<T> {
-  return await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, run);
+  return await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, run);
 }
 
 describe("loadCliSessionHistoryMessages", () => {
@@ -826,7 +826,7 @@ describe("loadCliSessionReseedMessages", () => {
 });
 
 describe("buildCliSessionHistoryPrompt", () => {
-  it("renders OpenClaw transcript history around the next user message", () => {
+  it("renders Operator transcript history around the next user message", () => {
     const prompt = buildCliSessionHistoryPrompt({
       messages: [
         { role: "user", content: "old ask" },
@@ -859,7 +859,7 @@ describe("buildCliSessionHistoryPrompt", () => {
       maxHistoryChars: 20,
     });
 
-    expect(prompt).toContain("[OpenClaw reseed history truncated; older turns dropped]");
+    expect(prompt).toContain("[Operator reseed history truncated; older turns dropped]");
     expect(prompt).toContain("<next_user_message>\ncurrent ask must survive\n</next_user_message>");
     // Older 100-char prefix must be dropped by the tail slice; the
     // post-cap rendered tail is shorter than the dropped prefix.
@@ -874,7 +874,7 @@ describe("buildCliSessionHistoryPrompt", () => {
     });
 
     expect(prompt).toContain(
-      "<conversation_history>\n[OpenClaw reseed history truncated; older turns dropped]\ntail\n</conversation_history>",
+      "<conversation_history>\n[Operator reseed history truncated; older turns dropped]\ntail\n</conversation_history>",
     );
   });
 
@@ -907,7 +907,7 @@ describe("buildCliSessionHistoryPrompt", () => {
     expect(prompt).toBeDefined();
     expect(prompt).toContain("FINAL_USER_MARKER");
     expect(prompt).toContain("FINAL_ASSISTANT_MARKER");
-    expect(prompt).toContain("[OpenClaw reseed history truncated; older turns dropped]");
+    expect(prompt).toContain("[Operator reseed history truncated; older turns dropped]");
     // The oldest 8000-char block must have been dropped — a head-slice
     // would have kept it instead of the recent tail.
     expect(prompt).not.toContain("x".repeat(8000));
@@ -937,7 +937,7 @@ describe("buildCliSessionHistoryPrompt", () => {
     // Recent tail still preserved within the post-summary budget.
     expect(prompt).toContain("POST_SUMMARY_FINAL_USER");
     expect(prompt).toContain("POST_SUMMARY_FINAL_ASSISTANT");
-    expect(prompt).toContain("[OpenClaw reseed history truncated; older turns dropped]");
+    expect(prompt).toContain("[Operator reseed history truncated; older turns dropped]");
     // Head of post-summary tail (oldest 8000-char `z` block) must be
     // dropped so the cap is honored.
     expect(prompt).not.toContain("z".repeat(8000));
@@ -975,7 +975,7 @@ describe("buildCliSessionHistoryPrompt", () => {
     expect(prompt).toContain("Compaction summary:");
     // The leading truncation marker is present so the prompt announces
     // what was discarded.
-    expect(prompt).toContain("[OpenClaw reseed history truncated; older turns dropped]");
+    expect(prompt).toContain("[Operator reseed history truncated; older turns dropped]");
     // The cap is honored: the rendered <conversation_history> block
     // must not blow past `maxHistoryChars` plus a small wrapper allowance.
     const historyMatch = prompt?.match(
@@ -1002,7 +1002,7 @@ describe("buildCliSessionHistoryPrompt", () => {
     });
 
     expect(prompt).toContain(
-      "<conversation_history>\n[OpenClaw reseed history truncated; older turns dropped]\nCompaction summary: aa\n</conversation_history>",
+      "<conversation_history>\n[Operator reseed history truncated; older turns dropped]\nCompaction summary: aa\n</conversation_history>",
     );
   });
 
@@ -1040,7 +1040,7 @@ describe("buildCliSessionHistoryPrompt", () => {
     const renderedHistory = historyMatch?.[1] ?? "";
     expect(renderedHistory.length).toBeLessThanOrEqual(maxHistoryChars);
     // Marker is still present so the prompt announces what was discarded.
-    expect(prompt).toContain("[OpenClaw reseed history truncated; older turns dropped]");
+    expect(prompt).toContain("[Operator reseed history truncated; older turns dropped]");
     // Near-cap summaries still reserve room for the newest exact turns.
     expect(prompt).toContain("POST_SUMMARY_TAIL_USER");
     expect(prompt).toContain("POST_SUMMARY_TAIL_ASSISTANT");

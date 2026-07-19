@@ -9,8 +9,8 @@ import { CODEX_INTERACTIVE_THREAD_SOURCE_KINDS } from "./app-server/protocol.js"
 import { createIsolatedCodexAppServerClient } from "./app-server/shared-client.js";
 
 const LIVE =
-  process.env.OPENCLAW_LIVE_TEST === "1" &&
-  process.env.OPENCLAW_LIVE_CODEX_THREAD_COEXISTENCE === "1";
+  process.env.OPERATOR_LIVE_TEST === "1" &&
+  process.env.OPERATOR_LIVE_CODEX_THREAD_COEXISTENCE === "1";
 const describeLive = LIVE ? describe : describe.skip;
 
 async function withClient<T>(
@@ -107,7 +107,7 @@ describeLive("native Codex thread coexistence", () => {
           }
           await first.request(
             "thread/name/set",
-            { threadId: response.thread.id, name: "OpenClaw coexistence source" },
+            { threadId: response.thread.id, name: "Operator coexistence source" },
             { timeoutMs: 60_000 },
           );
           return response;
@@ -161,7 +161,7 @@ describeLive("native Codex thread coexistence", () => {
           expect(response.thread.id).not.toBe(started.thread.id);
           await second.request(
             "thread/name/set",
-            { threadId: response.thread.id, name: "OpenClaw coexistence fork" },
+            { threadId: response.thread.id, name: "Operator coexistence fork" },
             { timeoutMs: 60_000 },
           );
           await second.request(
@@ -194,7 +194,7 @@ describeLive("native Codex thread coexistence", () => {
             expect.arrayContaining([
               expect.objectContaining({
                 id: forked.thread.id,
-                name: "OpenClaw coexistence fork",
+                name: "Operator coexistence fork",
               }),
             ]),
           );

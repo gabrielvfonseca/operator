@@ -15,9 +15,9 @@ import type {
   WorkerTranscriptCommits,
 } from "../../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
-  type OpenClawStateDatabase,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
+  type OperatorStateDatabase,
 } from "../../state/operator-state-db.js";
 
 type TranscriptCommitDb = Pick<
@@ -227,12 +227,12 @@ function insertPendingCommit(db: DatabaseSync, input: NormalizedCommitInput): vo
 }
 
 export function createWorkerTranscriptCommitStore(
-  options: { database?: OpenClawStateDatabase; now?: () => number } = {},
+  options: { database?: OperatorStateDatabase; now?: () => number } = {},
 ) {
-  const path = (options.database ?? openOpenClawStateDatabase()).path;
+  const path = (options.database ?? openOperatorStateDatabase()).path;
   const now = options.now ?? Date.now;
   const write = <T>(operation: (db: DatabaseSync) => T): T =>
-    runOpenClawStateWriteTransaction(({ db }) => operation(db), { path });
+    runOperatorStateWriteTransaction(({ db }) => operation(db), { path });
 
   const begin = (rawInput: WorkerTranscriptCommitInput): WorkerTranscriptCommitBeginResult => {
     const input = normalizeInput(rawInput, now());

@@ -29,13 +29,13 @@ import { createCodexTestModel } from "./test-support.js";
 
 let tempDir: string;
 
-function setOpenClawCodingToolsFactoryForTests(
+function setOperatorCodingToolsFactoryForTests(
   factory: NonNullable<typeof dynamicToolBuildState.openClawCodingToolsFactory>,
 ): void {
   dynamicToolBuildState.openClawCodingToolsFactory = factory;
 }
 
-function resetOpenClawCodingToolsFactoryForTests(): void {
+function resetOperatorCodingToolsFactoryForTests(): void {
   dynamicToolBuildState.openClawCodingToolsFactory = undefined;
 }
 
@@ -153,7 +153,7 @@ describe("Codex app-server dynamic tool build", () => {
   });
 
   afterEach(async () => {
-    resetOpenClawCodingToolsFactoryForTests();
+    resetOperatorCodingToolsFactoryForTests();
     vi.restoreAllMocks();
     vi.unstubAllEnvs();
     await fs.rm(tempDir, { recursive: true, force: true });
@@ -222,7 +222,7 @@ describe("Codex app-server dynamic tool build", () => {
         },
       },
     } as never;
-    setOpenClawCodingToolsFactoryForTests(() => [
+    setOperatorCodingToolsFactoryForTests(() => [
       createRuntimeDynamicTool("web_search"),
       createRuntimeDynamicTool("message"),
     ]);
@@ -251,7 +251,7 @@ describe("Codex app-server dynamic tool build", () => {
     params.chatType = "direct";
     params.messageActionTurnCapability = "turn-capability-1";
     let receivedOptions: unknown;
-    setOpenClawCodingToolsFactoryForTests((options) => {
+    setOperatorCodingToolsFactoryForTests((options) => {
       receivedOptions = options;
       return [createRuntimeDynamicTool("message")];
     });
@@ -266,13 +266,13 @@ describe("Codex app-server dynamic tool build", () => {
     });
   });
 
-  it("preserves the host-provided OpenClaw tool through the Codex allowlist", async () => {
+  it("preserves the host-provided Operator tool through the Codex allowlist", async () => {
     const workspaceDir = path.join(tempDir, "workspace");
     const params = createParams(path.join(tempDir, "session.jsonl"), workspaceDir);
     params.disableTools = false;
     params.runtimePlan = createCodexRuntimePlanFixture();
     params.toolsAllow = ["openclaw"];
-    setOpenClawCodingToolsFactoryForTests(() => [
+    setOperatorCodingToolsFactoryForTests(() => [
       { ...createRuntimeDynamicTool("openclaw"), catalogMode: "direct-only" },
     ]);
 
@@ -297,7 +297,7 @@ describe("Codex app-server dynamic tool build", () => {
     params.disableTools = false;
     params.runtimePlan = createCodexRuntimePlanFixture();
     params.toolsAllow = toolsAllow;
-    setOpenClawCodingToolsFactoryForTests(() => [
+    setOperatorCodingToolsFactoryForTests(() => [
       { ...createRuntimeDynamicTool("openclaw"), catalogMode: "direct-only" },
     ]);
 
@@ -316,7 +316,7 @@ describe("Codex app-server dynamic tool build", () => {
     params.runtimePlan = createCodexRuntimePlanFixture();
     const computerContextEpoch = { value: 0 };
     let receivedEpoch: { value: number } | undefined;
-    setOpenClawCodingToolsFactoryForTests((options) => {
+    setOperatorCodingToolsFactoryForTests((options) => {
       receivedEpoch = (options as { computerContextEpoch?: { value: number } })
         .computerContextEpoch;
       return [createRuntimeDynamicTool("message")];
@@ -332,7 +332,7 @@ describe("Codex app-server dynamic tool build", () => {
     const params = createParams(path.join(tempDir, "session.jsonl"), workspaceDir);
     params.disableTools = false;
     params.runtimePlan = createCodexRuntimePlanFixture();
-    setOpenClawCodingToolsFactoryForTests(() => [createRuntimeDynamicTool("message")]);
+    setOperatorCodingToolsFactoryForTests(() => [createRuntimeDynamicTool("message")]);
     let webSearchAllowed = true;
 
     const tools = await buildDynamicToolsForTest(params, workspaceDir, {
@@ -351,7 +351,7 @@ describe("Codex app-server dynamic tool build", () => {
     params.disableTools = false;
     params.runtimePlan = createCodexRuntimePlanFixture();
     params.toolsAllow = ["message"];
-    setOpenClawCodingToolsFactoryForTests(() => [
+    setOperatorCodingToolsFactoryForTests(() => [
       createRuntimeDynamicTool("web_search"),
       createRuntimeDynamicTool("message"),
     ]);
@@ -378,7 +378,7 @@ describe("Codex app-server dynamic tool build", () => {
     params.disableTools = false;
     params.runtimePlan = createCodexRuntimePlanFixture();
     params.toolsAllow = ["message"];
-    setOpenClawCodingToolsFactoryForTests(() => [createRuntimeDynamicTool("message")]);
+    setOperatorCodingToolsFactoryForTests(() => [createRuntimeDynamicTool("message")]);
     let persistentWebSearchAllowed = true;
     let webSearchAllowed = true;
 
@@ -409,7 +409,7 @@ describe("Codex app-server dynamic tool build", () => {
         },
       },
     } as never;
-    setOpenClawCodingToolsFactoryForTests(() => [createRuntimeDynamicTool("message")]);
+    setOperatorCodingToolsFactoryForTests(() => [createRuntimeDynamicTool("message")]);
     let persistentWebSearchAllowed = false;
     let webSearchAllowed = true;
 
@@ -441,7 +441,7 @@ describe("Codex app-server dynamic tool build", () => {
         },
       },
     } as never;
-    setOpenClawCodingToolsFactoryForTests(() => [createRuntimeDynamicTool("message")]);
+    setOperatorCodingToolsFactoryForTests(() => [createRuntimeDynamicTool("message")]);
     let persistentWebSearchAllowed = true;
 
     await buildDynamicToolsForTest(params, workspaceDir, {
@@ -465,7 +465,7 @@ describe("Codex app-server dynamic tool build", () => {
         },
       },
     } as never;
-    setOpenClawCodingToolsFactoryForTests(() => [
+    setOperatorCodingToolsFactoryForTests(() => [
       createRuntimeDynamicTool("web_search"),
       createRuntimeDynamicTool("message"),
     ]);
@@ -480,7 +480,7 @@ describe("Codex app-server dynamic tool build", () => {
     const params = createParams(path.join(tempDir, "session.jsonl"), workspaceDir);
     params.disableTools = false;
     params.runtimePlan = createCodexRuntimePlanFixture();
-    setOpenClawCodingToolsFactoryForTests(() => [
+    setOperatorCodingToolsFactoryForTests(() => [
       createRuntimeDynamicTool("web_search"),
       createRuntimeDynamicTool("message"),
     ]);
@@ -505,8 +505,8 @@ describe("Codex app-server dynamic tool build", () => {
   it("exposes app-server-owned tools directly for forced private QA Codex runtime", () => {
     const tools = ["read", "write", "image_generate", "message"].map((name) => ({ name }));
     const privateQaCodexEnv = {
-      OPENCLAW_BUILD_PRIVATE_QA: "1",
-      OPENCLAW_QA_FORCE_RUNTIME: "codex",
+      OPERATOR_BUILD_PRIVATE_QA: "1",
+      OPERATOR_QA_FORCE_RUNTIME: "codex",
     };
 
     expect(filterCodexDynamicTools(tools, {}, privateQaCodexEnv).map((tool) => tool.name)).toEqual([
@@ -572,7 +572,7 @@ describe("Codex app-server dynamic tool build", () => {
         return Reflect.get(target, property, receiver);
       },
     });
-    setOpenClawCodingToolsFactoryForTests(() => sourceTools);
+    setOperatorCodingToolsFactoryForTests(() => sourceTools);
     const sessionFile = path.join(tempDir, "session.jsonl");
     const workspaceDir = path.join(tempDir, "workspace");
     const params = createParams(sessionFile, workspaceDir);
@@ -589,7 +589,7 @@ describe("Codex app-server dynamic tool build", () => {
       ...createRuntimeDynamicTool("dofbot_move_angles"),
       parameters: { type: "array", items: { type: "number" } },
     };
-    setOpenClawCodingToolsFactoryForTests(() => [brokenTool, messageTool]);
+    setOperatorCodingToolsFactoryForTests(() => [brokenTool, messageTool]);
     const sessionFile = path.join(tempDir, "session.jsonl");
     const workspaceDir = path.join(tempDir, "workspace");
     const params = createParams(sessionFile, workspaceDir);
@@ -616,7 +616,7 @@ describe("Codex app-server dynamic tool build", () => {
 
   it("limits Codex memory flush runs to managed read and write tools", async () => {
     const factoryOptions: unknown[] = [];
-    setOpenClawCodingToolsFactoryForTests((options) => {
+    setOperatorCodingToolsFactoryForTests((options) => {
       factoryOptions.push(options);
       return [
         createRuntimeDynamicTool("read"),
@@ -663,7 +663,7 @@ describe("Codex app-server dynamic tool build", () => {
   });
 
   it("keeps persistent search disabled during a memory flush when config disables it", async () => {
-    setOpenClawCodingToolsFactoryForTests(() => [
+    setOperatorCodingToolsFactoryForTests(() => [
       createRuntimeDynamicTool("read"),
       createRuntimeDynamicTool("write"),
       createRuntimeDynamicTool("web_search"),
@@ -687,8 +687,8 @@ describe("Codex app-server dynamic tool build", () => {
     expect(persistentWebSearchAllowed).toBe(false);
   });
 
-  it("exposes OpenClaw sandbox shell tools under distinct names for non-Docker sandbox backends", async () => {
-    setOpenClawCodingToolsFactoryForTests(() => [
+  it("exposes Operator sandbox shell tools under distinct names for non-Docker sandbox backends", async () => {
+    setOperatorCodingToolsFactoryForTests(() => [
       createRuntimeDynamicTool("read"),
       createRuntimeDynamicTool("write"),
       createRuntimeDynamicTool("edit"),
@@ -717,8 +717,8 @@ describe("Codex app-server dynamic tool build", () => {
     );
   });
 
-  it("exposes Docker sandbox shell tools when OpenClaw sandboxing disables native Code Mode", async () => {
-    setOpenClawCodingToolsFactoryForTests(() => [
+  it("exposes Docker sandbox shell tools when Operator sandboxing disables native Code Mode", async () => {
+    setOperatorCodingToolsFactoryForTests(() => [
       createRuntimeDynamicTool("exec"),
       createRuntimeDynamicTool("process"),
       createRuntimeDynamicTool("message"),
@@ -771,7 +771,7 @@ describe("Codex app-server dynamic tool build", () => {
       details: { status: "running" },
     });
     const processTool = createRuntimeDynamicTool("process");
-    setOpenClawCodingToolsFactoryForTests(() => [
+    setOperatorCodingToolsFactoryForTests(() => [
       execTool,
       processTool,
       createRuntimeDynamicTool("message"),
@@ -882,7 +882,7 @@ describe("Codex app-server dynamic tool build", () => {
       details: { status: "completed" },
     });
     const processTool = createRuntimeDynamicTool("process");
-    setOpenClawCodingToolsFactoryForTests(() => [
+    setOperatorCodingToolsFactoryForTests(() => [
       execTool,
       processTool,
       createRuntimeDynamicTool("message"),
@@ -992,11 +992,11 @@ describe("Codex app-server dynamic tool build", () => {
     expect(allowlistedTools.map((tool) => tool.name)).toEqual(["message"]);
   });
 
-  it("restores the policy-filtered OpenClaw shell when a finite allowlist disables native Code Mode", async () => {
+  it("restores the policy-filtered Operator shell when a finite allowlist disables native Code Mode", async () => {
     const execTool = createRuntimeDynamicTool("exec");
     const processTool = createRuntimeDynamicTool("process");
     const messageTool = createRuntimeDynamicTool("message");
-    setOpenClawCodingToolsFactoryForTests(() => [execTool, processTool, messageTool]);
+    setOperatorCodingToolsFactoryForTests(() => [execTool, processTool, messageTool]);
     const workspaceDir = path.join(tempDir, "workspace");
     const params = createParams(path.join(tempDir, "restricted-session.jsonl"), workspaceDir);
     params.disableTools = false;
@@ -1051,7 +1051,7 @@ describe("Codex app-server dynamic tool build", () => {
   });
 
   it("exposes Docker sandbox shell tools when native Code Mode cannot honor sandbox paths", async () => {
-    setOpenClawCodingToolsFactoryForTests(() => [
+    setOperatorCodingToolsFactoryForTests(() => [
       createRuntimeDynamicTool("exec"),
       createRuntimeDynamicTool("process"),
       createRuntimeDynamicTool("message"),
@@ -1078,7 +1078,7 @@ describe("Codex app-server dynamic tool build", () => {
   });
 
   it("exposes node shell but not sandbox shell tools when sandbox routing is disabled", async () => {
-    setOpenClawCodingToolsFactoryForTests(() => [
+    setOperatorCodingToolsFactoryForTests(() => [
       createRuntimeDynamicTool("exec"),
       createRuntimeDynamicTool("process"),
       createRuntimeDynamicTool("message"),
@@ -1104,7 +1104,7 @@ describe("Codex app-server dynamic tool build", () => {
   });
 
   it("does not expose sandbox_exec without a matching process follow-up tool", async () => {
-    setOpenClawCodingToolsFactoryForTests(() => [
+    setOperatorCodingToolsFactoryForTests(() => [
       createRuntimeDynamicTool("exec"),
       createRuntimeDynamicTool("message"),
     ]);
@@ -1123,7 +1123,7 @@ describe("Codex app-server dynamic tool build", () => {
   });
 
   it("honors Codex dynamic tool excludes for sandbox shell exposure", async () => {
-    setOpenClawCodingToolsFactoryForTests(() => [
+    setOperatorCodingToolsFactoryForTests(() => [
       createRuntimeDynamicTool("exec"),
       createRuntimeDynamicTool("process"),
       createRuntimeDynamicTool("message"),
@@ -1164,7 +1164,7 @@ describe("Codex app-server dynamic tool build", () => {
     params.messageActionTurnCapability = "turn-capability-1";
     params.runtimePlan = createCodexRuntimePlanFixture();
     const factoryOptions: unknown[] = [];
-    setOpenClawCodingToolsFactoryForTests((options) => {
+    setOperatorCodingToolsFactoryForTests((options) => {
       factoryOptions.push(options);
       return [];
     });
@@ -1188,7 +1188,7 @@ describe("Codex app-server dynamic tool build", () => {
     params.senderIsOwner = true;
     params.runtimePlan = createCodexRuntimePlanFixture();
     const factoryOptions: unknown[] = [];
-    setOpenClawCodingToolsFactoryForTests((options) => {
+    setOperatorCodingToolsFactoryForTests((options) => {
       factoryOptions.push(options);
       return [];
     });
@@ -1209,7 +1209,7 @@ describe("Codex app-server dynamic tool build", () => {
     params.currentMessagingTarget = "user:U123";
     params.runtimePlan = createCodexRuntimePlanFixture();
     const factoryOptions: unknown[] = [];
-    setOpenClawCodingToolsFactoryForTests((options) => {
+    setOperatorCodingToolsFactoryForTests((options) => {
       factoryOptions.push(options);
       return [];
     });
@@ -1232,7 +1232,7 @@ describe("Codex app-server dynamic tool build", () => {
     params.approvalReviewerDeviceId = "device-ios-reviewer";
     params.runtimePlan = createCodexRuntimePlanFixture();
     const factoryOptions: unknown[] = [];
-    setOpenClawCodingToolsFactoryForTests((options) => {
+    setOperatorCodingToolsFactoryForTests((options) => {
       factoryOptions.push(options);
       return [];
     });
@@ -1255,7 +1255,7 @@ describe("Codex app-server dynamic tool build", () => {
     params.allocateToolOutcomeOrdinal = allocateToolOutcomeOrdinal;
     params.runtimePlan = createCodexRuntimePlanFixture();
     const factoryOptions: unknown[] = [];
-    setOpenClawCodingToolsFactoryForTests((options) => {
+    setOperatorCodingToolsFactoryForTests((options) => {
       factoryOptions.push(options);
       return [];
     });
@@ -1280,7 +1280,7 @@ describe("Codex app-server dynamic tool build", () => {
       agentId: "main",
       sessionId: params.sessionId,
     });
-    setOpenClawCodingToolsFactoryForTests(() => [wrappedTool]);
+    setOperatorCodingToolsFactoryForTests(() => [wrappedTool]);
 
     const tools = await buildDynamicToolsForTest(params, workspaceDir, { sandbox: null as never });
 
@@ -1308,7 +1308,7 @@ describe("Codex app-server dynamic tool build", () => {
     params.config = runtimeConfig;
     params.runtimePlan = createCodexRuntimePlanFixture();
     const factoryOptions: unknown[] = [];
-    setOpenClawCodingToolsFactoryForTests((options) => {
+    setOperatorCodingToolsFactoryForTests((options) => {
       factoryOptions.push(options);
       return [];
     });
@@ -1365,7 +1365,7 @@ describe("Codex app-server dynamic tool build", () => {
     params.toolAuthProfileStore = toolAuthProfileStore;
     params.runtimePlan = createCodexRuntimePlanFixture();
     const factoryOptions: unknown[] = [];
-    setOpenClawCodingToolsFactoryForTests((options) => {
+    setOperatorCodingToolsFactoryForTests((options) => {
       factoryOptions.push(options);
       return [];
     });
@@ -1401,7 +1401,7 @@ describe("Codex app-server dynamic tool build", () => {
       },
     };
     const factoryOptions: unknown[] = [];
-    setOpenClawCodingToolsFactoryForTests((options) => {
+    setOperatorCodingToolsFactoryForTests((options) => {
       factoryOptions.push(options);
       return [];
     });
@@ -1414,15 +1414,15 @@ describe("Codex app-server dynamic tool build", () => {
   });
 
   it("enables gateway subagent binding for forced private QA Codex runs", async () => {
-    vi.stubEnv("OPENCLAW_BUILD_PRIVATE_QA", "1");
-    vi.stubEnv("OPENCLAW_QA_FORCE_RUNTIME", "codex");
+    vi.stubEnv("OPERATOR_BUILD_PRIVATE_QA", "1");
+    vi.stubEnv("OPERATOR_QA_FORCE_RUNTIME", "codex");
     const sessionFile = path.join(tempDir, "session.jsonl");
     const workspaceDir = path.join(tempDir, "workspace");
     const params = createParams(sessionFile, workspaceDir);
     params.disableTools = false;
     params.runtimePlan = createCodexRuntimePlanFixture();
     const factoryOptions: unknown[] = [];
-    setOpenClawCodingToolsFactoryForTests((options) => {
+    setOperatorCodingToolsFactoryForTests((options) => {
       factoryOptions.push(options);
       return [createRuntimeDynamicTool("sessions_spawn")];
     });
@@ -1517,7 +1517,7 @@ describe("Codex app-server dynamic tool build", () => {
     expect(shouldEnableCodexAppServerNativeToolSurface(runtimePolicyParams)).toBe(true);
   });
 
-  it("disables Codex native tool surfaces whenever an OpenClaw sandbox is active", () => {
+  it("disables Codex native tool surfaces whenever an Operator sandbox is active", () => {
     const workspaceDir = path.join(tempDir, "workspace");
     const params = createParams(path.join(tempDir, "session.jsonl"), workspaceDir);
     params.disableTools = false;
@@ -1622,9 +1622,9 @@ describe("Codex app-server dynamic tool build", () => {
     const params = createParams(path.join(tempDir, "session.jsonl"), workspaceDir);
     params.disableTools = false;
     params.runtimePlan = createCodexRuntimePlanFixture();
-    // Mirror production createOpenClawCodingTools: attempt-fresh tool instances
+    // Mirror production createOperatorCodingTools: attempt-fresh tool instances
     // per build, never a shared object reused across delivery modes.
-    setOpenClawCodingToolsFactoryForTests(() => [
+    setOperatorCodingToolsFactoryForTests(() => [
       {
         ...createRuntimeDynamicTool("message"),
         parameters: {

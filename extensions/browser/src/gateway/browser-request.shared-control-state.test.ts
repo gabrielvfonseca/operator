@@ -2,11 +2,11 @@
 import { expectDefined } from "@operator/normalization-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { getFreePort } from "../browser/test-port.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 
 const mocks = vi.hoisted(() => ({
-  runtimeConfig: {} as OpenClawConfig,
-  runtimeSourceConfig: null as OpenClawConfig | null,
+  runtimeConfig: {} as OperatorConfig,
+  runtimeSourceConfig: null as OperatorConfig | null,
   ensureBrowserControlAuth: vi.fn(async () => ({ auth: {} })),
   resolveBrowserControlAuth: vi.fn(() => ({})),
   shouldAutoGenerateBrowserAuth: vi.fn(() => false),
@@ -40,11 +40,11 @@ vi.mock("../browser/chrome.js", () => ({
   formatChromeCdpDiagnostic: vi.fn(() => "not reachable"),
   isChromeCdpReady: mocks.isChromeCdpReady,
   isChromeReachable: mocks.isChromeReachable,
-  launchOpenClawChrome: vi.fn(async () => {
+  launchOperatorChrome: vi.fn(async () => {
     throw new Error("launch should not be needed for status");
   }),
-  resolveOpenClawUserDataDir: vi.fn(() => "/tmp/openclaw-browser"),
-  stopOpenClawChrome: vi.fn(async () => {}),
+  resolveOperatorUserDataDir: vi.fn(() => "/tmp/openclaw-browser"),
+  stopOperatorChrome: vi.fn(async () => {}),
 }));
 
 const { startBrowserControlServerFromConfig, stopBrowserControlServer } =
@@ -58,7 +58,7 @@ function browserConfig(params: {
   executablePath?: string;
   headless?: boolean;
   noSandbox?: boolean;
-}): OpenClawConfig {
+}): OperatorConfig {
   return {
     gateway: {
       port: params.gatewayPort,

@@ -2905,8 +2905,8 @@ describe("mcp loopback server", () => {
   });
 
   it("times out stalled request bodies and closes uploads after flushing 408", async () => {
-    const previousTimeout = process.env.OPENCLAW_MCP_LOOPBACK_BODY_TIMEOUT_MS;
-    process.env.OPENCLAW_MCP_LOOPBACK_BODY_TIMEOUT_MS = "20";
+    const previousTimeout = process.env.OPERATOR_MCP_LOOPBACK_BODY_TIMEOUT_MS;
+    process.env.OPERATOR_MCP_LOOPBACK_BODY_TIMEOUT_MS = "20";
     try {
       server = await ensureMcpLoopbackServer(0);
       const runtime = getActiveMcpLoopbackRuntime();
@@ -2926,16 +2926,16 @@ describe("mcp loopback server", () => {
       });
     } finally {
       if (previousTimeout === undefined) {
-        delete process.env.OPENCLAW_MCP_LOOPBACK_BODY_TIMEOUT_MS;
+        delete process.env.OPERATOR_MCP_LOOPBACK_BODY_TIMEOUT_MS;
       } else {
-        process.env.OPENCLAW_MCP_LOOPBACK_BODY_TIMEOUT_MS = previousTimeout;
+        process.env.OPERATOR_MCP_LOOPBACK_BODY_TIMEOUT_MS = previousTimeout;
       }
     }
   });
 
   it("keeps delayed valid MCP request bodies open when timeout config exceeds Node's timer ceiling", async () => {
-    const previousTimeout = process.env.OPENCLAW_MCP_LOOPBACK_BODY_TIMEOUT_MS;
-    process.env.OPENCLAW_MCP_LOOPBACK_BODY_TIMEOUT_MS = "2147483648";
+    const previousTimeout = process.env.OPERATOR_MCP_LOOPBACK_BODY_TIMEOUT_MS;
+    process.env.OPERATOR_MCP_LOOPBACK_BODY_TIMEOUT_MS = "2147483648";
     try {
       server = await ensureMcpLoopbackServer(0);
       const runtime = getActiveMcpLoopbackRuntime();
@@ -2957,9 +2957,9 @@ describe("mcp loopback server", () => {
       });
     } finally {
       if (previousTimeout === undefined) {
-        delete process.env.OPENCLAW_MCP_LOOPBACK_BODY_TIMEOUT_MS;
+        delete process.env.OPERATOR_MCP_LOOPBACK_BODY_TIMEOUT_MS;
       } else {
-        process.env.OPENCLAW_MCP_LOOPBACK_BODY_TIMEOUT_MS = previousTimeout;
+        process.env.OPERATOR_MCP_LOOPBACK_BODY_TIMEOUT_MS = previousTimeout;
       }
     }
   });
@@ -3022,8 +3022,8 @@ describe("createMcpLoopbackServerConfig", () => {
     expect(config.mcpServers?.openclaw?.url).toBe("http://127.0.0.1:23119/mcp");
     expect(config.mcpServers?.openclaw?.alwaysLoad).toBe(true);
     expect(config.mcpServers?.openclaw?.headers).toEqual({
-      Authorization: "Bearer ${OPENCLAW_MCP_TOKEN}",
-      "x-openclaw-cli-capture-key": "${OPENCLAW_MCP_CLI_CAPTURE_KEY}",
+      Authorization: "Bearer ${OPERATOR_MCP_TOKEN}",
+      "x-openclaw-cli-capture-key": "${OPERATOR_MCP_CLI_CAPTURE_KEY}",
     });
   });
 
@@ -3032,7 +3032,7 @@ describe("createMcpLoopbackServerConfig", () => {
       mcpServers?: Record<string, { headers?: Record<string, string> }>;
     };
     expect(config.mcpServers?.openclaw?.headers).toEqual({
-      Authorization: "Bearer ${OPENCLAW_MCP_TOKEN}",
+      Authorization: "Bearer ${OPERATOR_MCP_TOKEN}",
     });
   });
 

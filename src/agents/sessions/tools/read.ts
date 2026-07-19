@@ -119,7 +119,7 @@ function quotePosixShellArg(value: string): string {
   return `'${value.replaceAll("'", "'\\''")}'`;
 }
 
-function getOpenClawDocsClassification(
+function getOperatorDocsClassification(
   absolutePath: string,
 ): CompactReadClassification | undefined {
   const packageRoot = dirname(getReadmePath());
@@ -155,7 +155,7 @@ function getCompactReadClassification(
     return { kind: "skill", label: basename(dirname(absolutePath)) || fileName };
   }
 
-  const docsClassification = getOpenClawDocsClassification(absolutePath);
+  const docsClassification = getOperatorDocsClassification(absolutePath);
   if (docsClassification) {
     return docsClassification;
   }

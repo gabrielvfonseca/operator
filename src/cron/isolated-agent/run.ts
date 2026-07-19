@@ -15,7 +15,7 @@ import type { SessionEntry } from "../../config/sessions.js";
 import { resolveSessionWorkStartError } from "../../config/sessions/lifecycle.js";
 import { formatSqliteSessionFileMarker } from "../../config/sessions/sqlite-marker.js";
 import type { AgentDefaultsConfig } from "../../config/types.agent-defaults.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   assertAgentRunLifecycleGenerationCurrent,
   claimAgentRunContext,
@@ -208,7 +208,7 @@ async function loadWebSearchRuntime() {
   return await webSearchRuntimeLoader.load();
 }
 
-function hasConfiguredAuthProfiles(cfg: OpenClawConfig): boolean {
+function hasConfiguredAuthProfiles(cfg: OperatorConfig): boolean {
   return (
     Boolean(cfg.auth?.profiles && Object.keys(cfg.auth.profiles).length > 0) ||
     Boolean(cfg.auth?.order && Object.keys(cfg.auth.order).length > 0)
@@ -364,7 +364,7 @@ function canPromptForMessageTool(params: {
 }
 
 async function createCronToolsAllowPreflightDiagnostics(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   jobId: string;
   provider: string;
   model: string;
@@ -424,7 +424,7 @@ async function createCronToolsAllowPreflightDiagnostics(params: {
 
 /** Resolves the delivery plan and concrete target for one isolated cron run. */
 async function resolveCronDeliveryContext(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   job: CronJob;
   agentId: string;
 }) {
@@ -518,7 +518,7 @@ async function loadUsageFormatRuntime() {
 }
 
 type RunCronAgentTurnParams = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   deps: CliDeps;
   job: CronJob;
   message: string;
@@ -545,7 +545,7 @@ type WithRunSession = (
 
 type PreparedCronRunContext = {
   input: RunCronAgentTurnParams;
-  cfgWithAgentDefaults: OpenClawConfig;
+  cfgWithAgentDefaults: OperatorConfig;
   agentId: string;
   agentCfg: AgentDefaultsConfig;
   agentDir: string;
@@ -616,7 +616,7 @@ async function prepareCronRunContext(params: {
     defaults: runtimeCfg.agents?.defaults,
     agentConfigOverride,
   });
-  const cfgWithAgentDefaults: OpenClawConfig = {
+  const cfgWithAgentDefaults: OperatorConfig = {
     ...runtimeCfg,
     agents: Object.assign({}, runtimeCfg.agents, { defaults: agentCfg }),
   };
@@ -1618,7 +1618,7 @@ async function disposeCronRunContext(params: {
 
 /** Runs one isolated cron agent turn, including setup, execution, delivery, and persistence. */
 export async function runCronIsolatedAgentTurn(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   deps: CliDeps;
   job: CronJob;
   message: string;

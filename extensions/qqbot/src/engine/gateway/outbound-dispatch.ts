@@ -12,7 +12,7 @@
 
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "openclaw/plugin-sdk/agent-runtime";
 import { buildChannelInboundEventContext } from "openclaw/plugin-sdk/channel-inbound";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { isSilentReplyPayloadText, SILENT_REPLY_TOKEN } from "openclaw/plugin-sdk/reply-chunking";
 import type { FinalizedMsgContext } from "openclaw/plugin-sdk/reply-runtime";
 import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
@@ -138,7 +138,7 @@ export async function dispatchOutbound(
   const { runtime, cfg, account, log } = deps;
   const { event, qualifiedTarget } = inbound;
 
-  const openClawCfg = cfg as OpenClawConfig;
+  const openClawCfg = cfg as OperatorConfig;
   const routeAgentId = inbound.route.agentId ?? resolveDefaultAgentId(openClawCfg);
   const workspaceDir = resolveAgentWorkspaceDir(openClawCfg, routeAgentId);
   const gatewayMediaContext = workspaceDir
@@ -788,7 +788,7 @@ async function buildCtxPayload(
       id: inbound.peerId,
     },
     route: {
-      agentId: inbound.route.agentId ?? resolveDefaultAgentId(cfg as OpenClawConfig),
+      agentId: inbound.route.agentId ?? resolveDefaultAgentId(cfg as OperatorConfig),
       routeSessionKey: inbound.route.sessionKey,
       accountId: inbound.route.accountId,
     },

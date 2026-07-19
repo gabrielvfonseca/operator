@@ -78,7 +78,7 @@ describe("prepareGoogleSimpleCompletionModel", () => {
     expect(ensureCustomApiRegistered).not.toHaveBeenCalled();
   });
 
-  it("registers an OpenClaw-owned Google simple-completion api alias", () => {
+  it("registers an Operator-owned Google simple-completion api alias", () => {
     const model = makeGoogleModel();
 
     const result = prepareGoogleSimpleCompletionModel(model);

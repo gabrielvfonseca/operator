@@ -11,7 +11,7 @@ import {
   fetchMattermostUser,
   normalizeMattermostBaseUrl,
 } from "./client.js";
-import type { OpenClawConfig } from "./runtime-api.js";
+import type { OperatorConfig } from "./runtime-api.js";
 
 type MattermostOpaqueTargetResolution = {
   kind: "user" | "channel";
@@ -129,7 +129,7 @@ function parseMattermostApiStatus(err: unknown): number | undefined {
 
 export async function resolveMattermostOpaqueTarget(params: {
   input: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   accountId?: string | null;
   token?: string;
   baseUrl?: string;

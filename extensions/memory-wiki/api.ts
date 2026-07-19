@@ -4,7 +4,7 @@ export {
   definePluginEntry,
   type AnyAgentTool,
   type OperatorConfig,
-  type OpenClawPluginApi,
-  type OpenClawPluginConfigSchema,
+  type OperatorPluginApi,
+  type OperatorPluginConfigSchema,
 } from "openclaw/plugin-sdk/plugin-entry";
 export { z } from "zod";

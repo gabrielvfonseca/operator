@@ -8,10 +8,10 @@ import {
   resolveAgentIdFromSessionKey,
 } from "../../routing/session-key.js";
 import { runQueuedStoreWrite, type StoreWriterQueue } from "../../shared/store-writer-queue.js";
-import type { DB as OpenClawAgentKyselyDatabase } from "../../state/operator-agent-db.generated.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../../state/operator-agent-db.generated.js";
 import {
-  resolveOpenClawAgentSqlitePath,
-  type OpenClawAgentDatabaseOptions,
+  resolveOperatorAgentSqlitePath,
+  type OperatorAgentDatabaseOptions,
 } from "../../state/operator-agent-db.js";
 import type {
   SessionAccessScope,
@@ -24,7 +24,7 @@ import { normalizeStoreSessionKey } from "./store-entry.js";
 import type { SessionEntry } from "./types.js";
 
 type SessionSqliteDatabase = Pick<
-  OpenClawAgentKyselyDatabase,
+  OperatorAgentKyselyDatabase,
   | "conversations"
   | "session_conversations"
   | "session_entries"
@@ -69,7 +69,7 @@ export async function runExclusiveSqliteSessionWrite<T>(
   fn: () => Promise<T>,
 ): Promise<T> {
   const databaseOptions = toDatabaseOptions(scope);
-  const storePath = resolveOpenClawAgentSqlitePath(databaseOptions);
+  const storePath = resolveOperatorAgentSqlitePath(databaseOptions);
   const startedAt = Date.now();
   try {
     const result = await runQueuedStoreWrite({
@@ -193,7 +193,7 @@ function resolveSqliteAgentId(params: {
 export function resolveSqliteTranscriptArchiveDirectory(
   scope: Pick<ResolvedSqliteReadScope, "agentId" | "env" | "path">,
 ): string {
-  const databasePath = resolveOpenClawAgentSqlitePath(toDatabaseOptions(scope));
+  const databasePath = resolveOperatorAgentSqlitePath(toDatabaseOptions(scope));
   const databaseDir = path.dirname(databasePath);
   if (path.basename(databaseDir) !== "agent") {
     return databaseDir;
@@ -237,7 +237,7 @@ export function resolveSqliteTranscriptReadScope(
 
 export function toDatabaseOptions(
   scope: Pick<ResolvedSqliteReadScope, "agentId" | "env" | "path">,
-): OpenClawAgentDatabaseOptions {
+): OperatorAgentDatabaseOptions {
   return {
     agentId: scope.agentId,
     ...(scope.env ? { env: scope.env } : {}),
@@ -257,6 +257,6 @@ export function formatSqliteSessionMarkerForScope(scope: ResolvedTranscriptScope
   return formatSqliteSessionFileMarker({
     agentId: scope.agentId,
     sessionId: scope.sessionId,
-    storePath: scope.path ?? resolveOpenClawAgentSqlitePath(toDatabaseOptions(scope)),
+    storePath: scope.path ?? resolveOperatorAgentSqlitePath(toDatabaseOptions(scope)),
   });
 }

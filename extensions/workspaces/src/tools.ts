@@ -1,8 +1,8 @@
 import { jsonResult } from "openclaw/plugin-sdk/core";
 import type {
   AnyAgentTool,
-  OpenClawPluginApi,
-  OpenClawPluginToolContext,
+  OperatorPluginApi,
+  OperatorPluginToolContext,
 } from "openclaw/plugin-sdk/plugin-entry";
 import { getPluginRuntimeGatewayRequestScope } from "openclaw/plugin-sdk/plugin-runtime";
 import { Type } from "typebox";
@@ -29,8 +29,8 @@ import {
 import { WorkspaceStore } from "./store.js";
 
 type WorkspaceToolParams = {
-  api: OpenClawPluginApi;
-  context?: OpenClawPluginToolContext;
+  api: OperatorPluginApi;
+  context?: OperatorPluginToolContext;
   store?: WorkspaceStore;
   broadcast?: WorkspaceBroadcast;
   dataRead?: ResolveBindingOptions;
@@ -406,7 +406,7 @@ function appendMissingTabsToOrder(doc: WorkspaceDoc): void {
   }
 }
 
-function contextOwner(ctx: OpenClawPluginToolContext | undefined): string {
+function contextOwner(ctx: OperatorPluginToolContext | undefined): string {
   const record = (ctx ?? {}) as Record<string, unknown>;
   return (
     (typeof record.agentId === "string" && record.agentId) ||
@@ -416,7 +416,7 @@ function contextOwner(ctx: OpenClawPluginToolContext | undefined): string {
   );
 }
 
-function actorFromContext(ctx: OpenClawPluginToolContext | undefined): WorkspaceActor {
+function actorFromContext(ctx: OperatorPluginToolContext | undefined): WorkspaceActor {
   const normalized =
     contextOwner(ctx)
       .replace(/[^A-Za-z0-9._-]+/g, "-")

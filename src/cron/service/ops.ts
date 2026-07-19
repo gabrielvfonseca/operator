@@ -8,7 +8,7 @@ import { enqueueCommandInLane } from "../../process/command-queue.js";
 import { runWithGatewayIndependentRootWorkContinuation } from "../../process/gateway-work-admission.js";
 import { CommandLane } from "../../process/lanes.js";
 import { DEFAULT_AGENT_ID } from "../../routing/session-key.js";
-import { resolveOpenClawStateSqlitePath } from "../../state/operator-state-db.paths.js";
+import { resolveOperatorStateSqlitePath } from "../../state/operator-state-db.paths.js";
 import {
   clearCronJobActive,
   isCronActiveJobMarkerCurrent,
@@ -298,7 +298,7 @@ export async function status(state: CronServiceState) {
       enabled: state.deps.cronEnabled,
       storePath: state.deps.storePath,
       storage: "sqlite" as const,
-      sqlitePath: resolveOpenClawStateSqlitePath(),
+      sqlitePath: resolveOperatorStateSqlitePath(),
       jobs: state.store?.jobs.length ?? 0,
       nextWakeAtMs: state.deps.cronEnabled ? (nextWakeAtMs(state) ?? null) : null,
     };

@@ -207,7 +207,7 @@ function buildUserTurnSenderMeta(
   };
 }
 
-function readOpenClawMessageMeta(message: AgentMessage): Record<string, unknown> | undefined {
+function readOperatorMessageMeta(message: AgentMessage): Record<string, unknown> | undefined {
   const meta = (message as unknown as Record<string, unknown>)["__operator"];
   return meta && typeof meta === "object" && !Array.isArray(meta)
     ? (meta as Record<string, unknown>)
@@ -339,8 +339,8 @@ export function mergePreparedUserTurnMessageForRuntime(params: {
   }
   const runtimeMessage = params.runtimeMessage as unknown as Record<string, unknown>;
   const preparedMessage = params.preparedMessage as unknown as Record<string, unknown>;
-  const runtimeMeta = readOpenClawMessageMeta(params.runtimeMessage);
-  const preparedMeta = readOpenClawMessageMeta(params.preparedMessage);
+  const runtimeMeta = readOperatorMessageMeta(params.runtimeMessage);
+  const preparedMeta = readOperatorMessageMeta(params.preparedMessage);
   return {
     ...runtimeMessage,
     ...preparedMessage,
@@ -359,14 +359,14 @@ export function restorePreparedUserTurnOperationalMetaForRuntime(params: {
   if (!params.preparedMessage || !isUserMessage(params.runtimeMessage)) {
     return params.runtimeMessage;
   }
-  const preparedMeta = readOpenClawMessageMeta(params.preparedMessage);
+  const preparedMeta = readOperatorMessageMeta(params.preparedMessage);
   const senderIsOwner = preparedMeta?.senderIsOwner;
   if (typeof senderIsOwner !== "boolean") {
     return params.runtimeMessage;
   }
   return {
     ...(params.runtimeMessage as unknown as Record<string, unknown>),
-    __operator: { ...readOpenClawMessageMeta(params.runtimeMessage), senderIsOwner },
+    __operator: { ...readOperatorMessageMeta(params.runtimeMessage), senderIsOwner },
   } as unknown as AgentMessage;
 }
 
@@ -384,7 +384,7 @@ export function preparePersistedUserTurnMessageForTranscriptWrite(
   const provenance = normalizeInputProvenance(
     (message as unknown as { provenance?: unknown }).provenance,
   );
-  const senderIsOwner = readOpenClawMessageMeta(message)?.senderIsOwner;
+  const senderIsOwner = readOperatorMessageMeta(message)?.senderIsOwner;
   const nextMessage = params.beforeMessageWrite({
     message,
     ...(params.agentId ? { agentId: params.agentId } : {}),
@@ -405,7 +405,7 @@ export function preparePersistedUserTurnMessageForTranscriptWrite(
     ...(typeof senderIsOwner === "boolean"
       ? {
           __operator: {
-            ...readOpenClawMessageMeta(nextUserMessage),
+            ...readOperatorMessageMeta(nextUserMessage),
             senderIsOwner,
           },
         }

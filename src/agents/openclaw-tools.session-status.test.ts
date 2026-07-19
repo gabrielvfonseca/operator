@@ -18,7 +18,7 @@ const loadSessionStoreMock = vi.fn();
 const updateSessionStoreMock = vi.fn();
 const callGatewayMock = vi.fn();
 const buildStatusMessageMock = vi.hoisted(() =>
-  vi.fn((_params?: unknown) => "OpenClaw\n🧠 Model: GPT-5.4"),
+  vi.fn((_params?: unknown) => "Operator\n🧠 Model: GPT-5.4"),
 );
 const resolveQueueSettingsMock = vi.hoisted(() =>
   vi.fn((_params?: unknown) => ({ mode: "interrupt" })),
@@ -244,8 +244,8 @@ function formatPrimaryModelLabel(provider: string | undefined, model: string): s
 
 function formatStatusLines(primary: string, taskLineOverride: string | undefined): string {
   return taskLineOverride
-    ? `OpenClaw\n🧠 Model: ${primary}\n${taskLineOverride}`
-    : `OpenClaw\n🧠 Model: ${primary}`;
+    ? `Operator\n🧠 Model: ${primary}\n${taskLineOverride}`
+    : `Operator\n🧠 Model: ${primary}`;
 }
 
 function createCommandsStatusRuntimeModuleMock() {
@@ -536,7 +536,7 @@ describe("session_status tool", () => {
     const result = await tool.execute("call1", {});
     const details = result.details as { ok?: boolean; statusText?: string };
     expect(details.ok).toBe(true);
-    expect(details.statusText).toContain("OpenClaw");
+    expect(details.statusText).toContain("Operator");
     expect(details.statusText).toContain("🧠 Model:");
     expect(details.statusText).not.toContain("OAuth/token status");
   });
@@ -734,7 +734,7 @@ describe("session_status tool", () => {
     const details = result.details as { ok?: boolean; sessionKey?: string; statusText?: string };
     expect(details.ok).toBe(true);
     expect(details.sessionKey).toBe("agent:admin:main");
-    expect(details.statusText).toContain("OpenClaw");
+    expect(details.statusText).toContain("Operator");
   });
 
   it("uses runSessionKey thinking level for implicit no-arg status lookups (#82669)", async () => {
@@ -817,7 +817,7 @@ describe("session_status tool", () => {
     const details = result.details as { ok?: boolean; sessionKey?: string; statusText?: string };
     expect(details.ok).toBe(true);
     expect(details.sessionKey).toBe("agent:main:main");
-    expect(details.statusText).toContain("OpenClaw");
+    expect(details.statusText).toContain("Operator");
   });
 
   it("reports origin, active, and persisted delivery route metadata for semantic current", async () => {
@@ -1135,7 +1135,7 @@ describe("session_status tool", () => {
     const details = result.details as { ok?: boolean; sessionKey?: string; statusText?: string };
     expect(details.ok).toBe(true);
     expect(details.sessionKey).toBe("agent:main:scope:scopy:direct:scopy");
-    expect(details.statusText).toContain("OpenClaw");
+    expect(details.statusText).toContain("Operator");
     expect(details.statusText).toContain("🧠 Model:");
   });
 
@@ -1152,7 +1152,7 @@ describe("session_status tool", () => {
     const details = result.details as { ok?: boolean; sessionKey?: string; statusText?: string };
     expect(details.ok).toBe(true);
     expect(details.sessionKey).toBe("agent:main:telegram:group:-5096326138");
-    expect(details.statusText).toContain("OpenClaw");
+    expect(details.statusText).toContain("Operator");
     expect(details.statusText).toContain("🧠 Model:");
     expect(
       callGatewayMock.mock.calls.some(([arg]) => {
@@ -1171,7 +1171,7 @@ describe("session_status tool", () => {
     const details = result.details as { ok?: boolean; sessionKey?: string; statusText?: string };
     expect(details.ok).toBe(true);
     expect(details.sessionKey).toBe("agent:main:scope:scopy:direct:scopy");
-    expect(details.statusText).toContain("OpenClaw");
+    expect(details.statusText).toContain("Operator");
     expect(details.statusText).toContain("🧠 Model:");
   });
 

@@ -307,7 +307,7 @@ export const TOOL_DISPLAY_CONFIG: ToolDisplayConfig = {
     },
     operator: {
       emoji: "🦀",
-      title: "OpenClaw",
+      title: "Operator",
       detailKeys: ["action", "path", "model"],
     },
     gateway: {

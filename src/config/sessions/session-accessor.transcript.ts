@@ -104,7 +104,7 @@ export function readTranscriptStatsSync(scope: SessionTranscriptReadScope): Sess
 /** Reads the latest visible assistant text without materializing the whole transcript. */
 export function readLatestTranscriptAssistantText(
   scope: SessionTranscriptReadScope,
-  options: { includeTranscriptOnlyOpenClawAssistant?: boolean } = {},
+  options: { includeTranscriptOnlyOperatorAssistant?: boolean } = {},
 ): LatestTranscriptAssistantText | undefined {
   return loadLatestSqliteAssistantText(scope, options);
 }

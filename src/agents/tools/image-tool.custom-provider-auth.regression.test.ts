@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import type { ModelDefinitionConfig } from "../../config/types.models.js";
 import type { ImageDescriptionRequest } from "../../plugin-sdk/media-understanding.js";
 import { getApiKeyForModel, hasUsableCustomProviderApiKey } from "../model-auth.js";
@@ -56,7 +56,7 @@ function makeVisionModel(id: string): ModelDefinitionConfig {
   };
 }
 
-function createUserReportedConfig(params?: { includeApiKey?: boolean }): OpenClawConfig {
+function createUserReportedConfig(params?: { includeApiKey?: boolean }): OperatorConfig {
   const includeApiKey = params?.includeApiKey ?? true;
   return {
     agents: {
@@ -77,7 +77,7 @@ function createUserReportedConfig(params?: { includeApiKey?: boolean }): OpenCla
   };
 }
 
-function createBedrockSdkConfig(): OpenClawConfig {
+function createBedrockSdkConfig(): OperatorConfig {
   return {
     agents: { defaults: { model: { primary: `${BEDROCK_PROVIDER}/text-1` } } },
     models: {

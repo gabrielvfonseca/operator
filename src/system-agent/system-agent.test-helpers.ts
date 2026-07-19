@@ -1,12 +1,12 @@
 import { resolveCliBackendConfig } from "../agents/cli-backends.js";
-// OpenClaw test helpers build runtime environments for rescue tests.
+// Operator test helpers build runtime environments for rescue tests.
 import {
   fingerprintAuthProfileOwnerShape,
   fingerprintOpaqueRuntimeOwner,
   fingerprintResolvedAuthProfileCredential,
   fingerprintResolvedProviderAuth,
 } from "../agents/execution-auth-binding.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { resolveSystemAgentConfiguredRouteFromConfig } from "./inference-route.js";
 import {
@@ -22,7 +22,7 @@ type SystemAgentVerifiedInferenceTestFixture = {
 
 /** Build exact, revalidatable proof for a test config without reading host credentials. */
 export async function createSystemAgentVerifiedInferenceTestFixture(
-  config: OpenClawConfig,
+  config: OperatorConfig,
 ): Promise<SystemAgentVerifiedInferenceTestFixture> {
   const configuredRoute = await resolveSystemAgentConfiguredRouteFromConfig(config);
   if (!configuredRoute) {
@@ -85,7 +85,7 @@ export async function createSystemAgentVerifiedInferenceTestFixture(
     const authProfileOwnerFingerprint = profileId
       ? fingerprintAuthProfileOwnerShape({ profileId, credential })
       : undefined;
-    const resolveRuntimeOwnerFingerprint = (currentConfig: OpenClawConfig) => {
+    const resolveRuntimeOwnerFingerprint = (currentConfig: OperatorConfig) => {
       const backend = resolveCliBackendConfig(configuredRoute.provider, currentConfig, {
         agentId: "operator",
       });
@@ -169,7 +169,7 @@ export async function createSystemAgentVerifiedInferenceTestFixture(
 }
 
 /**
- * Test helpers for capturing OpenClaw runtime output.
+ * Test helpers for capturing Operator runtime output.
  *
  * Tests use this lightweight runtime instead of the real CLI runtime so exits
  * become thrown errors and logs are easy to assert.

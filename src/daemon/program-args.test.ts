@@ -183,7 +183,7 @@ describe("resolveGatewayProgramArguments", () => {
   it("uses trusted Windows where.exe when resolving the Node runtime", async () => {
     const repoIndexPath = path.resolve("/repo/src/index.ts");
     const repoEntryPath = path.resolve("/repo/src/entry.ts");
-    const launcherPath = String.raw`D:\OpenClaw\openclaw.exe`;
+    const launcherPath = String.raw`D:\Operator\openclaw.exe`;
     process.argv = [launcherPath, repoIndexPath];
     process.execPath = launcherPath;
     vi.stubEnv("SystemRoot", String.raw`D:\Windows`);
@@ -240,7 +240,7 @@ describe("resolveGatewayProgramArguments", () => {
         port: 18789,
         wrapperPath,
       }),
-    ).rejects.toThrow("OPENCLAW_WRAPPER must point to an executable file");
+    ).rejects.toThrow("OPERATOR_WRAPPER must point to an executable file");
   });
 });
 

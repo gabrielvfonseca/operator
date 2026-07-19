@@ -1,6 +1,6 @@
 import path from "node:path";
 import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { packageNameMatchesId } from "../infra/install-safe-path.js";
 import type { InstallPolicySource } from "../security/install-policy.js";
 import { matchesExpectedPluginId, validatePluginId } from "./install-paths.js";
@@ -8,14 +8,14 @@ import {
   buildDirectoryInstallResult,
   defaultLogger,
   emitSuccessfulPluginInstallSecurityEvent,
-  ensureOpenClawExtensions,
-  formatUnresolvedOpenClawPeerLinkError,
+  ensureOperatorExtensions,
+  formatUnresolvedOperatorPeerLinkError,
   hasPackageRuntimeDependencies,
   loadPluginInstallRuntime,
   runInstallSourceScan,
   sourceFamilyForInstallPolicyKind,
   sourceFamilyForInstallPolicySource,
-  validateOpenClawPackageInstallCompatibility,
+  validateOperatorPackageInstallCompatibility,
 } from "./install-shared.js";
 import {
   PLUGIN_INSTALL_ERROR_CODE,
@@ -27,7 +27,7 @@ import {
   type PluginInstallPolicyRequest,
 } from "./install-types.js";
 import { validatePackageExtensionEntriesForInstall } from "./package-entry-resolution.js";
-import { linkOpenClawPeerDependencies } from "./plugin-peer-link.js";
+import { linkOperatorPeerDependencies } from "./plugin-peer-link.js";
 
 type ValidatedPackagePlugin = {
   manifest: PackageManifest;
@@ -47,7 +47,7 @@ export async function validatePackagePluginInstallSource(params: {
   allowSourceTypeScriptEntries?: boolean;
   dangerouslyForceUnsafeInstall?: boolean;
   trustedSourceLinkedOfficialInstall?: boolean;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   installPolicyRequest?: PluginInstallPolicyRequest;
   logger: PluginInstallLogger;
   mode: "install" | "update";
@@ -113,7 +113,7 @@ export async function validatePackagePluginInstallSource(params: {
   }
 
   const packageMetadata = params.runtime.getPackageManifestMetadata(manifest);
-  const compatibilityError = validateOpenClawPackageInstallCompatibility({
+  const compatibilityError = validateOperatorPackageInstallCompatibility({
     runtime: params.runtime,
     pluginId,
     packageMetadata,
@@ -122,7 +122,7 @@ export async function validatePackagePluginInstallSource(params: {
     return compatibilityError;
   }
 
-  const extensionsResult = ensureOpenClawExtensions({
+  const extensionsResult = ensureOperatorExtensions({
     manifest,
   });
   if (!extensionsResult.ok) {
@@ -208,7 +208,7 @@ export async function scanAndLinkInstalledPackage(params: {
   mode?: "install" | "update";
   requestKind?: PluginInstallPolicyRequest["kind"];
   requestedSpecifier?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   source?: InstallPolicySource;
   logger: PluginInstallLogger;
 }): Promise<Extract<InstallPluginResult, { ok: false }> | null> {
@@ -244,7 +244,7 @@ export async function scanAndLinkInstalledPackage(params: {
   if (scanResult) {
     return scanResult;
   }
-  const peerLinkRepair = await linkOpenClawPeerDependencies({
+  const peerLinkRepair = await linkOperatorPeerDependencies({
     installedDir: params.installedDir,
     peerDependencies: params.peerDependencies,
     logger: params.logger,
@@ -252,7 +252,7 @@ export async function scanAndLinkInstalledPackage(params: {
   if (peerLinkRepair.skipped > 0) {
     return {
       ok: false,
-      error: formatUnresolvedOpenClawPeerLinkError(params.pluginId),
+      error: formatUnresolvedOperatorPeerLinkError(params.pluginId),
     };
   }
   return null;

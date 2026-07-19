@@ -3,7 +3,7 @@
 import { ErrorCode, type CallToolResult, type Tool } from "@modelcontextprotocol/sdk/types.js";
 import { expectDefined } from "@operator/normalization-core";
 import { describe, expect, it, vi } from "vitest";
-import { OpenClawSchema } from "../config/zod-schema.js";
+import { OperatorSchema } from "../config/zod-schema.js";
 import { startNodeHostMcpManager } from "./mcp.js";
 
 function tool(name: string, description?: string): Tool {
@@ -99,7 +99,7 @@ describe("node host MCP manager", () => {
   });
 
   it("parses nodeHost.mcp config, isolates failures, filters tools, and shuts down", async () => {
-    const parsed = OpenClawSchema.parse({
+    const parsed = OperatorSchema.parse({
       nodeHost: {
         mcp: {
           servers: {

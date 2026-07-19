@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type {
   PluginStateEntry,
   PluginStateKeyedStore,
@@ -69,7 +69,7 @@ export function createActivityTestConfig(params?: {
   userId?: string;
   clientSecret?: string;
   applicationId?: string;
-}): OpenClawConfig {
+}): OperatorConfig {
   return {
     channels: {
       discord: {

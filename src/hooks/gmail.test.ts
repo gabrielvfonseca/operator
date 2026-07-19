@@ -1,6 +1,6 @@
 // Gmail hook tests cover Gmail hook configuration and setup helpers.
 import { describe, expect, it } from "vitest";
-import { type OpenClawConfig, DEFAULT_GATEWAY_PORT } from "../config/config.js";
+import { type OperatorConfig, DEFAULT_GATEWAY_PORT } from "../config/config.js";
 import {
   buildDefaultHookUrl,
   buildGogWatchServeLogArgs,
@@ -18,11 +18,11 @@ const baseConfig = {
       pushToken: "push-token",
     },
   },
-} satisfies OpenClawConfig;
+} satisfies OperatorConfig;
 
 describe("gmail hook config", () => {
   function resolveWithGmailOverrides(
-    overrides: Partial<NonNullable<OpenClawConfig["hooks"]>["gmail"]>,
+    overrides: Partial<NonNullable<OperatorConfig["hooks"]>["gmail"]>,
   ) {
     return resolveGmailHookRuntimeConfig(
       {

@@ -208,12 +208,12 @@ describe("runDaemonRestart health checks", () => {
 
   beforeEach(() => {
     envSnapshot = captureEnv([
-      "OPENCLAW_CONTAINER_HINT",
-      "OPENCLAW_PROFILE",
-      "OPENCLAW_STATE_DIR",
-      "OPENCLAW_SYSTEMD_UNIT",
+      "OPERATOR_CONTAINER_HINT",
+      "OPERATOR_PROFILE",
+      "OPERATOR_STATE_DIR",
+      "OPERATOR_SYSTEMD_UNIT",
     ]);
-    delete process.env.OPENCLAW_CONTAINER_HINT;
+    delete process.env.OPERATOR_CONTAINER_HINT;
     service.readCommand.mockReset();
     service.readRuntime.mockReset();
     service.readRuntime.mockResolvedValue({ status: "stopped" });
@@ -343,13 +343,13 @@ describe("runDaemonRestart health checks", () => {
   });
 
   it("uses the installed service environment for managed restart health", async () => {
-    process.env.OPENCLAW_STATE_DIR = "/tmp/openclaw-caller-state";
-    process.env.OPENCLAW_SYSTEMD_UNIT = "openclaw-gateway-maintenance.service";
+    process.env.OPERATOR_STATE_DIR = "/tmp/openclaw-caller-state";
+    process.env.OPERATOR_SYSTEMD_UNIT = "openclaw-gateway-maintenance.service";
     service.readCommand.mockResolvedValue({
       programArguments: ["openclaw", "gateway", "--port", "18789"],
       environment: {
-        OPENCLAW_STATE_DIR: "/tmp/openclaw-service-state",
-        OPENCLAW_SYSTEMD_UNIT: "openclaw-gateway.service",
+        OPERATOR_STATE_DIR: "/tmp/openclaw-service-state",
+        OPERATOR_SYSTEMD_UNIT: "openclaw-gateway.service",
       },
     });
 
@@ -359,19 +359,19 @@ describe("runDaemonRestart health checks", () => {
       waitForGatewayHealthyRestart,
       "waitForGatewayHealthyRestart",
     ) as { env?: NodeJS.ProcessEnv };
-    expect(waitParams.env?.OPENCLAW_STATE_DIR).toBe("/tmp/openclaw-service-state");
-    expect(waitParams.env?.OPENCLAW_SYSTEMD_UNIT).toBe("openclaw-gateway-maintenance.service");
+    expect(waitParams.env?.OPERATOR_STATE_DIR).toBe("/tmp/openclaw-service-state");
+    expect(waitParams.env?.OPERATOR_SYSTEMD_UNIT).toBe("openclaw-gateway-maintenance.service");
   });
 
   it("re-reads the installed service environment after restart repair", async () => {
     service.readCommand
       .mockResolvedValueOnce({
         programArguments: ["openclaw", "gateway", "--port", "18789"],
-        environment: { OPENCLAW_STATE_DIR: "/tmp/openclaw-stale-state" },
+        environment: { OPERATOR_STATE_DIR: "/tmp/openclaw-stale-state" },
       })
       .mockResolvedValue({
         programArguments: ["openclaw", "gateway", "--port", "19001"],
-        environment: { OPENCLAW_STATE_DIR: "/tmp/openclaw-repaired-state" },
+        environment: { OPERATOR_STATE_DIR: "/tmp/openclaw-repaired-state" },
       });
     repairLoadedGatewayServiceForStart.mockResolvedValue({
       result: "restarted",
@@ -402,7 +402,7 @@ describe("runDaemonRestart health checks", () => {
       expect.objectContaining({
         port: 19_001,
         env: expect.objectContaining({
-          OPENCLAW_STATE_DIR: "/tmp/openclaw-repaired-state",
+          OPERATOR_STATE_DIR: "/tmp/openclaw-repaired-state",
         }),
       }),
     );
@@ -474,7 +474,7 @@ describe("runDaemonRestart health checks", () => {
         await params.repairLoadedService?.({
           json: true,
           stdout: process.stdout,
-          state: { command: { environment: { OPENCLAW_SERVICE_VERSION: "2026.4.24" } } },
+          state: { command: { environment: { OPERATOR_SERVICE_VERSION: "2026.4.24" } } },
           issues: [{ code: "version-mismatch", message: "old service" }],
         });
       },
@@ -494,7 +494,7 @@ describe("runDaemonRestart health checks", () => {
     expect(repairParams.service).toBe(service);
     expect(repairParams.json).toBe(true);
     expect(repairParams.state?.command?.environment).toEqual({
-      OPENCLAW_SERVICE_VERSION: "2026.4.24",
+      OPERATOR_SERVICE_VERSION: "2026.4.24",
     });
     expect(repairParams.issues).toHaveLength(1);
     expect(repairParams.issues?.[0]?.code).toBe("version-mismatch");

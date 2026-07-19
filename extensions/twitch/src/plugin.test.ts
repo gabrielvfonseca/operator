@@ -1,6 +1,6 @@
 // Twitch tests cover plugin plugin behavior.
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../api.js";
+import type { OperatorConfig } from "../api.js";
 import { twitchPlugin } from "./plugin.js";
 
 describe("twitchPlugin pairing", () => {
@@ -16,7 +16,7 @@ describe("twitchPlugin outbound session routing", () => {
       cfg: {},
       agentId: "ops",
       accountId: "stream",
-      target: "twitch:channel:OpenClaw",
+      target: "twitch:channel:Operator",
     });
 
     expect(route).toMatchObject({
@@ -68,7 +68,7 @@ describe("twitchPlugin.status.buildAccountSnapshot", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const snapshot = await twitchPlugin.status?.buildAccountSnapshot?.({
       account: secondary,
@@ -103,7 +103,7 @@ describe("twitchPlugin.config", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(twitchPlugin.config.defaultAccountId?.(cfg)).toBe("secondary");
     expect(twitchPlugin.config.resolveAccount(cfg).accountId).toBe("secondary");

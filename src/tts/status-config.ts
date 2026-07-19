@@ -6,7 +6,7 @@ import {
   normalizeOptionalString,
 } from "@operator/normalization-core/string-coerce";
 import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
-import type { OpenClawConfig } from "../config/types.js";
+import type { OperatorConfig } from "../config/types.js";
 import type { TtsAutoMode, TtsConfig, TtsProvider } from "../config/types.tts.js";
 import { tryReadJsonSync } from "../infra/json-files.js";
 import { resolveConfigDir, resolveUserPath } from "../utils.js";
@@ -219,7 +219,7 @@ function resolveStatusProviderDetails(raw: TtsConfig, provider: TtsProvider) {
 }
 
 export function resolveStatusTtsSnapshot(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   sessionAuto?: string;
   agentId?: string;
   channelId?: string;

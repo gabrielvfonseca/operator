@@ -4,7 +4,7 @@ import { normalizeUniqueStringEntries } from "@operator/normalization-core/strin
 import { resolveChannelDmAllowFrom } from "../../../channels/plugins/dm-access.js";
 import { normalizeAnyChannelId } from "../../../channels/registry.js";
 import { GENERATED_BUNDLED_CHANNEL_CONFIG_METADATA } from "../../../config/bundled-channel-config-metadata.generated.js";
-import type { OpenClawConfig } from "../../../config/types.operator.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import { getDoctorChannelCapabilities } from "../channel-capabilities.js";
 import { asObjectRecord } from "./object.js";
 
@@ -145,8 +145,8 @@ function migrateRecord(params: {
 }
 
 /** Copy legacy allowFrom entries into groupAllowFrom where channel metadata permits fallback. */
-export function maybeRepairGroupAllowFromFallback(cfg: OpenClawConfig): {
-  config: OpenClawConfig;
+export function maybeRepairGroupAllowFromFallback(cfg: OperatorConfig): {
+  config: OperatorConfig;
   changes: string[];
 } {
   const channels = asObjectRecord(cfg.channels);

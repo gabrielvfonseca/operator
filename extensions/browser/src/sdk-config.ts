@@ -11,7 +11,7 @@ export { mutateConfigFile } from "openclaw/plugin-sdk/config-mutation";
 export {
   type BrowserConfig,
   type BrowserProfileConfig,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "openclaw/plugin-sdk/config-contracts";
 export {
   normalizePluginsConfig,

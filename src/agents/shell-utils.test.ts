@@ -226,7 +226,7 @@ describe("getShellEnv", () => {
     envSnapshot.restore();
   });
 
-  it("returns an env object with the OpenClaw bin dir on PATH", () => {
+  it("returns an env object with the Operator bin dir on PATH", () => {
     process.env.PATH = "/usr/bin";
     const env = getShellEnv();
 
@@ -240,7 +240,7 @@ describe("detectRuntimeShell", () => {
 
   beforeEach(() => {
     envSnapshot = captureEnv([
-      "OPENCLAW_SHELL",
+      "OPERATOR_SHELL",
       "SHELL",
       "POWERSHELL_DISTRIBUTION_CHANNEL",
       "BASH_VERSION",
@@ -250,7 +250,7 @@ describe("detectRuntimeShell", () => {
       "NU_VERSION",
       "NUSHELL_VERSION",
     ]);
-    delete process.env.OPENCLAW_SHELL;
+    delete process.env.OPERATOR_SHELL;
     delete process.env.POWERSHELL_DISTRIBUTION_CHANNEL;
     delete process.env.BASH_VERSION;
     delete process.env.ZSH_VERSION;

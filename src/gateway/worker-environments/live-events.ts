@@ -14,7 +14,7 @@ import {
   onSessionIdentityMutation,
   type SessionIdentityMutation,
 } from "../../config/sessions/session-accessor.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   claimAgentRunContext,
   emitAgentEventForOwner,
@@ -86,7 +86,7 @@ export type WorkerLiveEventApplicationResult =
 type WorkerLiveEventFailure = Extract<WorkerLiveEventApplicationResult, { ok: false }>;
 
 type WorkerLiveEventReceiverOptions = {
-  getConfig: () => OpenClawConfig;
+  getConfig: () => OperatorConfig;
   maxActiveRuns?: number;
   maxPendingBytes?: number;
   maxSessions?: number;
@@ -104,7 +104,7 @@ function capacityExceeded(): WorkerLiveEventFailure {
 }
 
 function resolveLiveEventTarget(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   sessionId: string,
 ): LiveEventTarget | undefined {
   const target = resolveWorkerSessionTarget(config, sessionId);
@@ -119,7 +119,7 @@ function resolveLiveEventTarget(
 }
 
 function prepareBoundLiveSession(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   binding: WorkerLiveSessionBinding,
 ): BoundLiveSession | undefined {
   if (!isValidLiveSessionBinding(binding)) {
@@ -139,7 +139,7 @@ function isValidLiveSessionBinding(binding: WorkerLiveSessionBinding): boolean {
 }
 
 function prepareBoundLiveSessionSafely(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   binding: WorkerLiveSessionBinding,
 ): BoundLiveSession | undefined {
   try {
@@ -295,7 +295,7 @@ export function createWorkerLiveEventReceiver(options: WorkerLiveEventReceiverOp
 
   const bindSessionWithConfig = (
     binding: WorkerLiveSessionBinding,
-    config: OpenClawConfig,
+    config: OperatorConfig,
   ): boolean => {
     if (!isValidLiveSessionBinding(binding)) {
       return false;
@@ -360,7 +360,7 @@ export function createWorkerLiveEventReceiver(options: WorkerLiveEventReceiverOp
   const bindSession = (binding: WorkerLiveSessionBinding): boolean =>
     bindSessionWithConfig(binding, committedConfig);
 
-  const rebindAll = (config: OpenClawConfig): void => {
+  const rebindAll = (config: OperatorConfig): void => {
     committedConfig = config;
     for (const binding of sessionBindings.values()) {
       bindSessionWithConfig(binding, committedConfig);

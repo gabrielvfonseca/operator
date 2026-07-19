@@ -13,7 +13,7 @@ export {
   type ChannelResolveKind,
   type ChannelResolveResult,
   type ChannelStatusAdapter,
-  type OpenClawConfig,
+  type OperatorConfig,
   type OutboundDeliveryResult,
   type RuntimeEnv,
   type WizardPrompter,

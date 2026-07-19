@@ -1,5 +1,5 @@
 // Discord plugin module implements subagent hooks behavior.
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/channel-plugin-common";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/channel-plugin-common";
 import {
   formatThreadBindingDisabledError,
   formatThreadBindingSpawnDisabledError,
@@ -92,7 +92,7 @@ function normalizeThreadBindingTargetKind(raw?: string): ThreadBindingTargetKind
 }
 
 export async function handleDiscordSubagentSpawning(
-  api: OpenClawPluginApi,
+  api: OperatorPluginApi,
   event: DiscordSubagentSpawningEvent,
 ): Promise<DiscordSubagentSpawningResult> {
   if (!event.threadRequested) {

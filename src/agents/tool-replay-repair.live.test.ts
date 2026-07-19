@@ -21,14 +21,14 @@ import {
   type CompleteSimpleContent,
 } from "./live-test-helpers.js";
 import { getApiKeyForModel, requireApiKey } from "./model-auth.js";
-import { ensureOpenClawModelsJson } from "./models-config.js";
+import { ensureOperatorModelsJson } from "./models-config.js";
 import { transformTransportMessages } from "./transport-message-transform.js";
 
 const LIVE = isLiveTestEnabled();
 const REQUIRE_PROFILE_KEYS = isLiveProfileKeyModeEnabled();
 const DEFAULT_TARGET_MODEL_REFS = "openai/gpt-5.6-luna,google/gemini-3-flash-preview";
 const TARGET_MODEL_REFS = parseTargetModelRefs(
-  process.env.OPENCLAW_LIVE_TOOL_REPLAY_REPAIR_MODELS ?? DEFAULT_TARGET_MODEL_REFS,
+  process.env.OPERATOR_LIVE_TOOL_REPLAY_REPAIR_MODELS ?? DEFAULT_TARGET_MODEL_REFS,
 );
 const describeLive = LIVE ? describe : describe.skip;
 
@@ -77,7 +77,7 @@ function parseTargetModelRefs(raw: string | undefined): TargetModelRef[] {
     const modelId = rest.join("/").trim();
     if (!provider?.trim() || !modelId) {
       throw new Error(
-        `Invalid OPENCLAW_LIVE_TOOL_REPLAY_REPAIR_MODELS entry: ${JSON.stringify(ref)}`,
+        `Invalid OPERATOR_LIVE_TOOL_REPLAY_REPAIR_MODELS entry: ${JSON.stringify(ref)}`,
       );
     }
     refs.push({ ref, provider: provider.trim(), modelId });
@@ -245,7 +245,7 @@ describeLive("tool replay repair live", () => {
       `accepts repaired displaced and missing tool results with ${target.ref}`,
       async () => {
         const cfg = getRuntimeConfig();
-        await ensureOpenClawModelsJson(cfg);
+        await ensureOperatorModelsJson(cfg);
 
         const agentDir = resolveDefaultAgentDir(cfg);
         const authStorage = discoverAuthStorage(agentDir);
@@ -358,7 +358,7 @@ describeLive("tool replay repair live", () => {
       `accepts transport replay after dropping aborted assistant tool calls with ${target.ref}`,
       async () => {
         const cfg = getRuntimeConfig();
-        await ensureOpenClawModelsJson(cfg);
+        await ensureOperatorModelsJson(cfg);
 
         const agentDir = resolveDefaultAgentDir(cfg);
         const authStorage = discoverAuthStorage(agentDir);

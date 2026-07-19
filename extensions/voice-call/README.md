@@ -1,6 +1,6 @@
 # @operator/voice-call
 
-Official Voice Call plugin for **OpenClaw**.
+Official Voice Call plugin for **Operator**.
 
 Providers:
 
@@ -122,7 +122,7 @@ streaming speech on calls. Override examples and provider caveats live here:
 ## CLI
 
 ```bash
-openclaw voicecall call --to "+15555550123" --message "Hello from OpenClaw"
+openclaw voicecall call --to "+15555550123" --message "Hello from Operator"
 openclaw voicecall continue --call-id <id> --message "Any questions?"
 openclaw voicecall speak --call-id <id> --message "One moment"
 openclaw voicecall end --call-id <id>

@@ -6,7 +6,7 @@ import {
 } from "@operator/normalization-core/string-coerce";
 import { getChannelPlugin } from "../channels/plugins/index.js";
 import { isCommandFlagEnabled } from "../config/commands.flags.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { listPluginCommands } from "../plugins/commands.js";
 import type { SkillCommandSpec } from "../skills/types.js";
 import {
@@ -53,7 +53,7 @@ function groupCommandsByCategory(
 }
 
 /** Builds the compact slash-command help text shown by `/help`. */
-export function buildHelpMessage(cfg?: OpenClawConfig): string {
+export function buildHelpMessage(cfg?: OperatorConfig): string {
   const lines = ["ℹ️ Help", ""];
 
   lines.push("Session");
@@ -187,7 +187,7 @@ function formatCommandList(items: CommandsListItem[]): string {
 
 /** Builds `/commands` text, returning only the rendered message body. */
 export function buildCommandsMessage(
-  cfg?: OpenClawConfig,
+  cfg?: OperatorConfig,
   skillCommands?: SkillCommandSpec[],
   options?: CommandsMessageOptions,
 ): string {
@@ -197,7 +197,7 @@ export function buildCommandsMessage(
 
 /** Builds `/commands` text and pagination metadata for surfaces with native list controls. */
 export function buildCommandsMessagePaginated(
-  cfg?: OpenClawConfig,
+  cfg?: OperatorConfig,
   skillCommands?: SkillCommandSpec[],
   options?: CommandsMessageOptions,
 ): CommandsMessageResult {

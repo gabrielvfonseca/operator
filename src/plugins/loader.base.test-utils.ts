@@ -21,7 +21,7 @@ import {
   clearPluginInteractiveHandlers,
   resolvePluginInteractiveNamespaceMatch,
 } from "./interactive-registry.js";
-import { loadOpenClawPlugins, resolveRuntimePluginRegistry } from "./loader.js";
+import { loadOperatorPlugins, resolveRuntimePluginRegistry } from "./loader.js";
 import {
   EMPTY_PLUGIN_SCHEMA,
   makeTempDir,
@@ -61,7 +61,7 @@ import {
 afterEach(globalAfterEach0);
 afterAll(globalAfterAll1);
 
-describe("loadOpenClawPlugins", () => {
+describe("loadOperatorPlugins", () => {
   it("emits loader startup trace timings for normal plugin load and register", () => {
     useNoBundledPlugins();
     const plugin = writePlugin({
@@ -142,7 +142,7 @@ describe("loadOpenClawPlugins", () => {
     // Case 3: config.env.vars participates in the same effective env as config IO.
     delete probe.envConfigProbeResult;
     withEnv({ ENV_CONFIG_PROBE_SECRET: undefined }, () => {
-      loadOpenClawPlugins({
+      loadOperatorPlugins({
         cache: false,
         workspaceDir: plugin.dir,
         config: {
@@ -200,7 +200,7 @@ describe("loadOpenClawPlugins", () => {
     });
     const { details, startupTrace } = createStartupTraceRecorder();
 
-    loadOpenClawPlugins({
+    loadOperatorPlugins({
       cache: false,
       config: {
         plugins: {
@@ -398,7 +398,7 @@ describe("loadOpenClawPlugins", () => {
     const manifestRegistry = loadPluginManifestRegistry({ config });
     fs.rmSync(path.join(plugin.dir, "operator.plugin.json"));
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       config,
       manifestRegistry,
@@ -429,7 +429,7 @@ describe("loadOpenClawPlugins", () => {
     );
 
     const registry = withEnv({ OPERATOR_STATE_DIR: stateDir }, () =>
-      loadOpenClawPlugins({
+      loadOperatorPlugins({
         cache: false,
         config: {
           plugins: {
@@ -457,7 +457,7 @@ describe("loadOpenClawPlugins", () => {
     });
     process.env.OPERATOR_BUNDLED_PLUGINS_DIR = bundledDir;
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       config: {
         plugins: {
@@ -548,7 +548,7 @@ describe("loadOpenClawPlugins", () => {
     );
     process.env.OPERATOR_BUNDLED_PLUGINS_DIR = bundledDir;
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       config: {
         plugins: {
@@ -607,7 +607,7 @@ describe("loadOpenClawPlugins", () => {
           },
         },
       } satisfies PluginLoadConfig,
-      assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+      assert: (registry: ReturnType<typeof loadOperatorPlugins>) => {
         expectTelegramLoaded(registry);
       },
     },
@@ -623,7 +623,7 @@ describe("loadOpenClawPlugins", () => {
           enabled: true,
         },
       } satisfies PluginLoadConfig,
-      assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+      assert: (registry: ReturnType<typeof loadOperatorPlugins>) => {
         expectTelegramLoaded(registry);
       },
     },
@@ -639,7 +639,7 @@ describe("loadOpenClawPlugins", () => {
           allow: ["browser"],
         },
       } satisfies PluginLoadConfig,
-      assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+      assert: (registry: ReturnType<typeof loadOperatorPlugins>) => {
         const telegram = registry.plugins.find((entry) => entry.id === "telegram");
         expect(telegram?.status).toBe("loaded");
         expect(telegram?.error).toBeUndefined();
@@ -660,7 +660,7 @@ describe("loadOpenClawPlugins", () => {
           },
         },
       } satisfies PluginLoadConfig,
-      assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+      assert: (registry: ReturnType<typeof loadOperatorPlugins>) => {
         const telegram = registry.plugins.find((entry) => entry.id === "telegram");
         expect(telegram?.status).toBe("disabled");
         expect(telegram?.error).toBe("disabled in config");
@@ -670,7 +670,7 @@ describe("loadOpenClawPlugins", () => {
     "handles bundled telegram plugin enablement and override rules: $name",
     ({ config, assert }) => {
       setupBundledTelegramPlugin();
-      const registry = loadOpenClawPlugins({
+      const registry = loadOperatorPlugins({
         cache: false,
         workspaceDir: cachedBundledTelegramDir,
         config,
@@ -696,7 +696,7 @@ describe("loadOpenClawPlugins", () => {
       env: {},
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       workspaceDir: cachedBundledTelegramDir,
       config: autoEnabled.config,
@@ -728,7 +728,7 @@ describe("loadOpenClawPlugins", () => {
       env: {},
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       workspaceDir: cachedBundledTelegramDir,
       config: autoEnabled.config,
@@ -759,7 +759,7 @@ describe("loadOpenClawPlugins", () => {
       },
     } satisfies PluginLoadConfig;
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       workspaceDir: cachedBundledTelegramDir,
       config: {
@@ -800,7 +800,7 @@ describe("loadOpenClawPlugins", () => {
       },
     } satisfies PluginLoadConfig;
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       workspaceDir: bundledDir,
       config,
@@ -848,7 +848,7 @@ describe("loadOpenClawPlugins", () => {
   };`,
         });
 
-        const registry = loadOpenClawPlugins({
+        const registry = loadOperatorPlugins({
           cache: false,
           workspaceDir: plugin.dir,
           config: {
@@ -885,7 +885,7 @@ describe("loadOpenClawPlugins", () => {
   };`,
         });
 
-        const registry = loadOpenClawPlugins({
+        const registry = loadOperatorPlugins({
           cache: false,
           workspaceDir: plugin.dir,
           config: {
@@ -926,7 +926,7 @@ describe("loadOpenClawPlugins", () => {
   };`,
         });
 
-        const registry = loadOpenClawPlugins({
+        const registry = loadOperatorPlugins({
           cache: false,
           workspaceDir: plugin.dir,
           config: {
@@ -968,7 +968,7 @@ describe("loadOpenClawPlugins", () => {
   };`,
         });
 
-        const registry = loadOpenClawPlugins({
+        const registry = loadOperatorPlugins({
           cache: false,
           workspaceDir: plugin.dir,
           config: {
@@ -1002,7 +1002,7 @@ describe("loadOpenClawPlugins", () => {
   };`,
         });
 
-        const registry = loadOpenClawPlugins({
+        const registry = loadOperatorPlugins({
           cache: false,
           workspaceDir: plugin.dir,
           coreGatewayMethodNames: ["config.openFile"],
@@ -1039,7 +1039,7 @@ describe("loadOpenClawPlugins", () => {
   };`,
         });
 
-        const registry = loadOpenClawPlugins({
+        const registry = loadOperatorPlugins({
           cache: false,
           config: {
             plugins: {
@@ -1073,7 +1073,7 @@ describe("loadOpenClawPlugins", () => {
   module.exports = { id: "skipped-scoped-only", register() { throw new Error("skipped plugin should not load"); } };`,
         });
 
-        const registry = loadOpenClawPlugins({
+        const registry = loadOperatorPlugins({
           cache: false,
           config: {
             plugins: {
@@ -1100,7 +1100,7 @@ describe("loadOpenClawPlugins", () => {
   module.exports = { id: "manifest-only-plugin", register() { throw new Error("manifest-only snapshot should not register"); } };`,
         });
 
-        const registry = loadOpenClawPlugins({
+        const registry = loadOperatorPlugins({
           cache: false,
           activate: false,
           loadModules: false,
@@ -1149,7 +1149,7 @@ describe("loadOpenClawPlugins", () => {
           "utf-8",
         );
 
-        const registry = loadOpenClawPlugins({
+        const registry = loadOperatorPlugins({
           cache: false,
           activate: false,
           loadModules: false,
@@ -1202,7 +1202,7 @@ describe("loadOpenClawPlugins", () => {
           "utf-8",
         );
 
-        const registry = loadOpenClawPlugins({
+        const registry = loadOperatorPlugins({
           cache: false,
           activate: false,
           loadModules: false,
@@ -1241,7 +1241,7 @@ describe("loadOpenClawPlugins", () => {
   module.exports = { id: "throws-after-import", register() {} };`,
         });
 
-        const registry = loadOpenClawPlugins({
+        const registry = loadOperatorPlugins({
           cache: false,
           activate: false,
           config: {
@@ -1272,7 +1272,7 @@ describe("loadOpenClawPlugins", () => {
         Reflect.set(
           globalThis,
           reenterFnMarker,
-          (options: Parameters<typeof loadOpenClawPlugins>[0]) => loadOpenClawPlugins(options),
+          (options: Parameters<typeof loadOperatorPlugins>[0]) => loadOperatorPlugins(options),
         );
         const pluginDir = makeTempDir();
         const pluginFile = path.join(pluginDir, "reentrant-snapshot.cjs");
@@ -1286,7 +1286,7 @@ describe("loadOpenClawPlugins", () => {
               allow: ["reentrant-snapshot"],
             },
           },
-        } satisfies Parameters<typeof loadOpenClawPlugins>[0];
+        } satisfies Parameters<typeof loadOperatorPlugins>[0];
         writePlugin({
           id: "reentrant-snapshot",
           dir: pluginDir,
@@ -1307,7 +1307,7 @@ describe("loadOpenClawPlugins", () => {
   };`,
         });
 
-        const registry = loadOpenClawPlugins(nestedOptions);
+        const registry = loadOperatorPlugins(nestedOptions);
 
         try {
           const reentryError = Reflect.get(globalThis, marker) as
@@ -1350,7 +1350,7 @@ describe("loadOpenClawPlugins", () => {
               allow: ["runtime-registry-reentry"],
             },
           },
-        } satisfies Parameters<typeof loadOpenClawPlugins>[0];
+        } satisfies Parameters<typeof loadOperatorPlugins>[0];
         writePlugin({
           id: "runtime-registry-reentry",
           dir: pluginDir,
@@ -1364,7 +1364,7 @@ describe("loadOpenClawPlugins", () => {
   };`,
         });
 
-        const registry = loadOpenClawPlugins(nestedOptions);
+        const registry = loadOperatorPlugins(nestedOptions);
 
         try {
           expect(Reflect.get(globalThis, marker)).toBe("undefined");
@@ -1399,12 +1399,12 @@ describe("loadOpenClawPlugins", () => {
           },
         };
 
-        const full = loadOpenClawPlugins(options);
-        const scoped = loadOpenClawPlugins({
+        const full = loadOperatorPlugins(options);
+        const scoped = loadOperatorPlugins({
           ...options,
           onlyPluginIds: ["allowed-cache-scope"],
         });
-        const scopedAgain = loadOpenClawPlugins({
+        const scopedAgain = loadOperatorPlugins({
           ...options,
           onlyPluginIds: ["allowed-cache-scope"],
         });
@@ -1431,7 +1431,7 @@ describe("loadOpenClawPlugins", () => {
         setActivePluginRegistry(previousRegistry, "existing-registry");
         resetGlobalHookRunner();
 
-        const scoped = loadOpenClawPlugins({
+        const scoped = loadOperatorPlugins({
           cache: false,
           activate: false,
           workspaceDir: plugin.dir,
@@ -1467,7 +1467,7 @@ describe("loadOpenClawPlugins", () => {
       body: `module.exports = { id: "extra-empty-scope", register() {} };`,
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       activate: false,
       config: {
@@ -1492,10 +1492,10 @@ describe("loadOpenClawPlugins", () => {
 
     const discovery = await import("./discovery.js");
     const manifestRegistry = await import("./manifest-registry.js");
-    const discoverySpy = vi.spyOn(discovery, "discoverOpenClawPlugins");
+    const discoverySpy = vi.spyOn(discovery, "discoverOperatorPlugins");
     const manifestSpy = vi.spyOn(manifestRegistry, "loadPluginManifestRegistry");
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       activate: false,
       config: {
@@ -1540,7 +1540,7 @@ describe("loadOpenClawPlugins", () => {
     clearPluginCommands();
     clearPluginInteractiveHandlers();
 
-    const scoped = loadOpenClawPlugins({
+    const scoped = loadOperatorPlugins({
       cache: false,
       activate: false,
       workspaceDir: plugin.dir,
@@ -1565,7 +1565,7 @@ describe("loadOpenClawPlugins", () => {
     expect(getPluginCommandSpecs("telegram")).toStrictEqual([]);
     expect(resolvePluginInteractiveNamespaceMatch("telegram", "pair:device")).toBeNull();
 
-    const active = loadOpenClawPlugins({
+    const active = loadOperatorPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {
@@ -1615,7 +1615,7 @@ describe("loadOpenClawPlugins", () => {
         };`,
     });
 
-    loadOpenClawPlugins({
+    loadOperatorPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {
@@ -1628,7 +1628,7 @@ describe("loadOpenClawPlugins", () => {
     });
     expect(listRegisteredAgentHarnessIdsForTest()).toEqual(["codex"]);
 
-    loadOpenClawPlugins({
+    loadOperatorPlugins({
       cache: false,
       workspaceDir: makeTempDir(),
       config: {
@@ -1656,7 +1656,7 @@ describe("loadOpenClawPlugins", () => {
         };`,
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {
@@ -1694,7 +1694,7 @@ describe("loadOpenClawPlugins", () => {
     });
 
     clearInternalHooks();
-    const scoped = loadOpenClawPlugins({
+    const scoped = loadOperatorPlugins({
       cache: false,
       activate: false,
       workspaceDir: plugin.dir,
@@ -1749,8 +1749,8 @@ describe("loadOpenClawPlugins", () => {
       onlyPluginIds: ["internal-hook-reload"],
     };
 
-    loadOpenClawPlugins(loadOptions);
-    loadOpenClawPlugins(loadOptions);
+    loadOperatorPlugins(loadOptions);
+    loadOperatorPlugins(loadOptions);
 
     const event = createInternalHookEvent("gateway", "startup", "gateway:startup");
     await triggerInternalHook(event);
@@ -1792,7 +1792,7 @@ describe("loadOpenClawPlugins", () => {
 
     clearInternalHooks();
 
-    loadOpenClawPlugins({
+    loadOperatorPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {

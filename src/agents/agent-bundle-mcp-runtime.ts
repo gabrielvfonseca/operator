@@ -10,7 +10,7 @@ import {
 import type { ServerCapabilities } from "@modelcontextprotocol/sdk/types.js";
 import { redactSensitiveUrlLikeString } from "@operator/net-policy/redact-sensitive-url";
 import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { toErrorObject } from "../infra/errors.js";
 import { logWarn } from "../logger.js";
 import type { PluginManifestRegistry } from "../plugins/manifest-registry.js";
@@ -56,7 +56,7 @@ import {
 } from "./mcp-connection-resolver.js";
 import { createMcpJsonSchemaValidator } from "./mcp-json-schema-validator.js";
 import { sanitizeMcpMetadataText } from "./mcp-metadata.js";
-import { OpenClawStdioClientTransport } from "./mcp-stdio-transport.js";
+import { OperatorStdioClientTransport } from "./mcp-stdio-transport.js";
 import { resolveMcpTransport } from "./mcp-transport.js";
 
 type BundleMcpSession = {
@@ -342,7 +342,7 @@ async function disposeSession(session: BundleMcpSession) {
     // gets its AbortSignal triggered by teardown. Stdio owns a process group,
     // so force it dead before disposal can report completion.
     const transportClose =
-      session.transport instanceof OpenClawStdioClientTransport
+      session.transport instanceof OperatorStdioClientTransport
         ? session.transport.forceClose()
         : session.transport.close();
     await settleWithin(Promise.allSettled([transportClose, session.client.close()]), timeoutMs);
@@ -358,7 +358,7 @@ export function createSessionMcpRuntime(params: {
   sessionKey?: string;
   workspaceDir: string;
   agentDir?: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   manifestRegistry?: Pick<PluginManifestRegistry, "plugins">;
   includeServerNames?: ReadonlySet<string>;
   excludeServerNames?: ReadonlySet<string>;

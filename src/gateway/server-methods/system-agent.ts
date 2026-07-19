@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { KeyedAsyncQueue } from "operator/plugin-sdk/keyed-async-queue";
-// OpenClaw gateway methods host the setup/repair conversation for clients.
+// Operator gateway methods host the setup/repair conversation for clients.
 import {
   ErrorCodes,
   errorShape,
@@ -39,7 +39,7 @@ import { assertValidParams } from "./validation.js";
  * the pre-inference phase; a new chat session starts only after a live model
  * turn succeeds.
  *
- * Sessions are process-local by design — OpenClaw state is an in-flight
+ * Sessions are process-local by design — Operator state is an in-flight
  * conversation, not persisted data. The map is bounded; the oldest session is
  * evicted first, and `reset: true` starts a session over explicitly.
  */
@@ -68,12 +68,12 @@ function getSystemAgentSessionQueue(
 
 async function runSystemAgentGatewayTask<T>(task: () => Promise<T>): Promise<T> {
   // Track every accepted RPC as active, never queued: restart draining snapshots
-  // active ids, so a queued OpenClaw request could otherwise outlive its socket.
+  // active ids, so a queued Operator request could otherwise outlive its socket.
   setCommandLaneConcurrency(CommandLane.SystemAgent, Number.MAX_SAFE_INTEGER);
   return await enqueueCommandInLane(CommandLane.SystemAgent, () =>
     // Bound expensive detection, activation, and agent turns without hiding
     // accepted work from restart draining. This also makes session eviction and
-    // setup writes atomic with respect to other OpenClaw gateway requests.
+    // setup writes atomic with respect to other Operator gateway requests.
     systemAgentGatewayExecutionQueue.enqueue(SYSTEM_AGENT_GATEWAY_EXECUTION_KEY, task),
   );
 }
@@ -88,7 +88,7 @@ export async function runExclusiveSystemAgentSetupActivation<T>(
 ): Promise<T> {
   if (systemAgentSetupActivationInProgress) {
     throw new SystemAgentSetupActivationBusyError(
-      "OpenClaw setup is already in progress; try again when it finishes.",
+      "Operator setup is already in progress; try again when it finishes.",
     );
   }
   systemAgentSetupActivationInProgress = true;
@@ -140,11 +140,11 @@ function queueDelegatedApproval(params: {
   }
   const manager = params.context.systemAgentApprovalManager;
   if (!manager) {
-    throw new Error("OpenClaw approval registry unavailable");
+    throw new Error("Operator approval registry unavailable");
   }
   const description = describeSystemAgentPersistentOperation(params.proposal.operation);
   const request: SystemAgentApprovalRequestPayload = {
-    title: "OpenClaw change",
+    title: "Operator change",
     description,
     command: description,
     proposalHash: params.proposal.hash,
@@ -184,7 +184,7 @@ function queueDelegatedApproval(params: {
       }
       await params.session.engine.resolveOperatorApproval(decision, params.proposal.hash);
     },
-    afterDecisionErrorLabel: "OpenClaw approval apply failed",
+    afterDecisionErrorLabel: "Operator approval apply failed",
   });
   return record.id;
 }
@@ -356,7 +356,7 @@ export const systemAgentHandlers: GatewayRequestHandlers = {
           respond(
             false,
             undefined,
-            errorShape(ErrorCodes.INVALID_REQUEST, "OpenClaw session belongs to another caller."),
+            errorShape(ErrorCodes.INVALID_REQUEST, "Operator session belongs to another caller."),
           );
           return;
         }
@@ -391,7 +391,7 @@ export const systemAgentHandlers: GatewayRequestHandlers = {
               undefined,
               errorShape(
                 ErrorCodes.UNAVAILABLE,
-                `OpenClaw requires working inference: ${inference.error}`,
+                `Operator requires working inference: ${inference.error}`,
               ),
             );
             return;

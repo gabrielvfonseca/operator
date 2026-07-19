@@ -20,9 +20,9 @@ describe("prepareCliBundleMcpConfig codex", () => {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
             headers: {
-              Authorization: "Bearer ${OPENCLAW_MCP_TOKEN}",
-              "x-session-key": "${OPENCLAW_MCP_SESSION_KEY}",
-              "x-openclaw-cli-capture-key": "${OPENCLAW_MCP_CLI_CAPTURE_KEY}",
+              Authorization: "Bearer ${OPERATOR_MCP_TOKEN}",
+              "x-session-key": "${OPERATOR_MCP_SESSION_KEY}",
+              "x-openclaw-cli-capture-key": "${OPERATOR_MCP_CLI_CAPTURE_KEY}",
             },
           },
         },
@@ -35,14 +35,14 @@ describe("prepareCliBundleMcpConfig codex", () => {
       "exec",
       "--json",
       "-c",
-      'mcp_servers={ openclaw = { url = "http://127.0.0.1:23119/mcp", default_tools_approval_mode = "approve", bearer_token_env_var = "OPENCLAW_MCP_TOKEN", env_http_headers = { x-session-key = "OPENCLAW_MCP_SESSION_KEY", x-openclaw-cli-capture-key = "OPENCLAW_MCP_CLI_CAPTURE_KEY" } } }',
+      'mcp_servers={ openclaw = { url = "http://127.0.0.1:23119/mcp", default_tools_approval_mode = "approve", bearer_token_env_var = "OPERATOR_MCP_TOKEN", env_http_headers = { x-session-key = "OPERATOR_MCP_SESSION_KEY", x-openclaw-cli-capture-key = "OPERATOR_MCP_CLI_CAPTURE_KEY" } } }',
     ]);
     expect(prepared.backend.resumeArgs).toEqual([
       "exec",
       "resume",
       "{sessionId}",
       "-c",
-      'mcp_servers={ openclaw = { url = "http://127.0.0.1:23119/mcp", default_tools_approval_mode = "approve", bearer_token_env_var = "OPENCLAW_MCP_TOKEN", env_http_headers = { x-session-key = "OPENCLAW_MCP_SESSION_KEY", x-openclaw-cli-capture-key = "OPENCLAW_MCP_CLI_CAPTURE_KEY" } } }',
+      'mcp_servers={ openclaw = { url = "http://127.0.0.1:23119/mcp", default_tools_approval_mode = "approve", bearer_token_env_var = "OPERATOR_MCP_TOKEN", env_http_headers = { x-session-key = "OPERATOR_MCP_SESSION_KEY", x-openclaw-cli-capture-key = "OPERATOR_MCP_CLI_CAPTURE_KEY" } } }',
     ]);
     expect(prepared.cleanup).toBeUndefined();
   });

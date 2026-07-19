@@ -1,5 +1,5 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import { RUN_STALE_TAKEOVER_MS } from "../../logging/diagnostic-run-activity.js";
 import type { ReplyPayload } from "../types.js";
 import {
@@ -40,7 +40,7 @@ function createVisibleDispatchParams(replyResolver: () => Promise<ReplyPayload>)
         stuckSessionWarnMs: 1_000,
         stuckSessionAbortMs: 1_000,
       },
-    } as OpenClawConfig,
+    } as OperatorConfig,
     dispatcher: createDispatcher(),
     replyResolver,
   };

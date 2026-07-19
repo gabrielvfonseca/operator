@@ -2,20 +2,20 @@ import type { DatabaseSync } from "node:sqlite";
 import type { Insertable, Selectable } from "kysely";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../../infra/kysely-sync.js";
 import { isLockOwnerDefinitelyStale } from "../../infra/stale-lock-file.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
 } from "../../state/operator-state-db.js";
 import type { ManagedWorktreeOwnerKind, ManagedWorktreeRecord } from "./types.js";
 
-type WorktreesTable = OpenClawStateKyselyDatabase["worktrees"];
+type WorktreesTable = OperatorStateKyselyDatabase["worktrees"];
 type WorktreeRow = Selectable<WorktreesTable>;
-type WorktreeRegistryDatabase = Pick<OpenClawStateKyselyDatabase, "worktrees">;
-type WorktreeLeaseDatabase = Pick<OpenClawStateKyselyDatabase, "worktrees" | "state_leases">;
+type WorktreeRegistryDatabase = Pick<OperatorStateKyselyDatabase, "worktrees">;
+type WorktreeLeaseDatabase = Pick<OperatorStateKyselyDatabase, "worktrees" | "state_leases">;
 
 function dbFor(env: NodeJS.ProcessEnv): DatabaseSync {
-  return openOpenClawStateDatabase({ env }).db;
+  return openOperatorStateDatabase({ env }).db;
 }
 
 function kyselyFor(db: DatabaseSync) {
@@ -135,7 +135,7 @@ export function insertRegistryWorktree(
   record: ManagedWorktreeRecord,
 ): void {
   const db = dbFor(env);
-  runOpenClawStateWriteTransaction(() => {
+  runOperatorStateWriteTransaction(() => {
     executeSqliteQuerySync(db, kyselyFor(db).insertInto("worktrees").values(recordToRow(record)));
   });
 }
@@ -156,7 +156,7 @@ export function updateRegistryWorktree(
   if ("snapshotRef" in patch) {
     values.snapshot_ref = patch.snapshotRef ?? null;
   }
-  runOpenClawStateWriteTransaction(() => {
+  runOperatorStateWriteTransaction(() => {
     executeSqliteQuerySync(
       db,
       kyselyFor(db).updateTable("worktrees").set(values).where("id", "=", id),
@@ -166,7 +166,7 @@ export function updateRegistryWorktree(
 
 export function deleteRegistryWorktree(env: NodeJS.ProcessEnv, id: string): void {
   const db = dbFor(env);
-  runOpenClawStateWriteTransaction(() => {
+  runOperatorStateWriteTransaction(() => {
     executeSqliteQuerySync(db, kyselyFor(db).deleteFrom("worktrees").where("id", "=", id));
   });
 }
@@ -262,7 +262,7 @@ export function admitWorktreeRunLeaseRow(
     checks?: RunLeaseOwnerChecks;
   },
 ): void {
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     (database) => {
       const db = database.db;
       const k = kyselyLeaseFor(db);
@@ -315,7 +315,7 @@ export function claimWorktreeRemovalRow(
     checks?: RunLeaseOwnerChecks;
   },
 ): void {
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     (database) => {
       const db = database.db;
       const k = kyselyLeaseFor(db);
@@ -366,7 +366,7 @@ export function releaseWorktreeRunLeaseRow(
   token: string,
 ): void {
   const db = dbFor(env);
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     () => {
       executeSqliteQuerySync(
         db,
@@ -382,7 +382,7 @@ export function releaseWorktreeRunLeaseRow(
 
 export function finalizeWorktreeRemovalRows(env: NodeJS.ProcessEnv, worktreeId: string): void {
   const db = dbFor(env);
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     () => {
       executeSqliteQuerySync(
         db,
@@ -401,7 +401,7 @@ export function abortWorktreeRemovalRow(
   token: string,
 ): void {
   const db = dbFor(env);
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     () => {
       // Owner-scoped: only the claim that still owns the marker may clear it, so a slow
       // remover cannot delete a marker a newer remover established after replacing it.
@@ -423,7 +423,7 @@ export function hasLiveWorktreeRunLeaseRow(
   worktreeId: string,
   checks?: RunLeaseOwnerChecks,
 ): boolean {
-  return runOpenClawStateWriteTransaction(
+  return runOperatorStateWriteTransaction(
     (database) => {
       const db = database.db;
       const k = kyselyLeaseFor(db);

@@ -2,17 +2,17 @@
 import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
 import { getLoadedChannelPlugin } from "../channels/plugins/index.js";
 import { resolveReadOnlyChannelCommandDefaults } from "../channels/plugins/read-only-command-defaults.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { pluginCommandSupportsChannel } from "./command-registration.js";
 import { pluginCommands } from "./command-registry-state.js";
 import type { PluginCommandRegistration } from "./registry-types.js";
-import type { OpenClawPluginCommandDefinition } from "./types.js";
+import type { OperatorPluginCommandDefinition } from "./types.js";
 
 type PluginCommandSpecOptions = {
   env?: NodeJS.ProcessEnv;
   stateDir?: string;
   workspaceDir?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 };
 
 type PluginCommandEntrySpec = {
@@ -23,7 +23,7 @@ type PluginCommandEntrySpec = {
 };
 
 function resolvePluginNativeName(
-  command: OpenClawPluginCommandDefinition,
+  command: OperatorPluginCommandDefinition,
   provider?: string,
 ): string {
   const providerName = normalizeOptionalLowercaseString(provider);
@@ -39,7 +39,7 @@ function resolvePluginNativeName(
   return fallbackName || command.name;
 }
 
-function resolvePluginTextName(command: OpenClawPluginCommandDefinition): string {
+function resolvePluginTextName(command: OperatorPluginCommandDefinition): string {
   const name = command.name.trim();
   return name || command.name;
 }
@@ -117,7 +117,7 @@ export function listProviderPluginCommandSpecs(provider?: string): Array<{
 }
 
 function serializePluginCommandSpec(
-  cmd: OpenClawPluginCommandDefinition,
+  cmd: OperatorPluginCommandDefinition,
   provider?: string,
 ): {
   name: string;
@@ -142,7 +142,7 @@ function serializePluginCommandSpec(
 }
 
 function serializePluginCommandEntrySpec(
-  cmd: OpenClawPluginCommandDefinition,
+  cmd: OperatorPluginCommandDefinition,
   provider: string | undefined,
   nativeCommandsEnabled: boolean,
 ): PluginCommandEntrySpec | null {

@@ -5,7 +5,7 @@ import {
   expectDirectorySurface,
 } from "openclaw/plugin-sdk/channel-test-helpers";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../runtime-api.js";
+import type { OperatorConfig } from "../runtime-api.js";
 import {
   googlechatDirectoryAdapter,
   googlechatMessageAdapter,
@@ -45,7 +45,7 @@ function normalizeGoogleChatTarget(raw?: string | null): string | undefined {
   return normalized;
 }
 
-function resolveGoogleChatAccountImpl(params: { cfg: OpenClawConfig; accountId?: string | null }) {
+function resolveGoogleChatAccountImpl(params: { cfg: OperatorConfig; accountId?: string | null }) {
   const accountId = params.accountId?.trim() || DEFAULT_ACCOUNT_ID;
   const channelConfig = (params.cfg.channels?.googlechat ?? {}) as Record<string, unknown>;
   const accounts =
@@ -114,7 +114,7 @@ vi.mock("./channel.deps.runtime.js", () => {
     getChatChannelMeta: (id: string) => ({ id, name: id }),
     isGoogleChatSpaceTarget: (value: string) => value.toLowerCase().startsWith("spaces/"),
     isGoogleChatUserTarget: (value: string) => value.toLowerCase().startsWith("users/"),
-    listGoogleChatAccountIds: (cfg: OpenClawConfig) => {
+    listGoogleChatAccountIds: (cfg: OperatorConfig) => {
       const ids = Object.keys(cfg.channels?.googlechat?.accounts ?? {});
       return ids.length > 0 ? ids : ["default"];
     },
@@ -147,7 +147,7 @@ afterAll(() => {
   vi.resetModules();
 });
 
-function createGoogleChatCfg(): OpenClawConfig {
+function createGoogleChatCfg(): OperatorConfig {
   return {
     channels: {
       googlechat: {
@@ -249,7 +249,7 @@ describe("googlechatPlugin threading", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const workAccount = googlechatThreadingAdapter.scopedAccountReplyToMode.resolveAccount(
       cfg,
@@ -275,7 +275,7 @@ describe("googlechatPlugin threading", () => {
           replyToMode: "all",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const hasRepliedRef = { value: false };
 
     const context = googlechatThreadingAdapter.buildToolContext({
@@ -305,7 +305,7 @@ describe("googlechatPlugin threading", () => {
           replyToMode: "all",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const context = googlechatThreadingAdapter.buildToolContext({
       cfg,
@@ -487,7 +487,7 @@ describe("googlechat directory", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     const directory = expectDirectorySurface(googlechatDirectoryAdapter);
 
@@ -524,7 +524,7 @@ describe("googlechat directory", () => {
           dm: { allowFrom: [" users/alice ", " googlechat:user:Bob@Example.com "] },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     const directory = expectDirectorySurface(googlechatDirectoryAdapter);
 
@@ -554,7 +554,7 @@ describe("googlechatPlugin security", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const account = resolveGoogleChatAccountImpl({ cfg, accountId: "default" });
 

@@ -8,9 +8,9 @@ import { resolveStateDir } from "../config/paths.js";
 import { withFileLock } from "../infra/file-lock.js";
 import { readJsonFile } from "../infra/json-files.js";
 import {
-  openOpenClawStateDatabase,
-  type OpenClawStateDatabaseOptions,
-  runOpenClawStateWriteTransaction,
+  openOperatorStateDatabase,
+  type OperatorStateDatabaseOptions,
+  runOperatorStateWriteTransaction,
 } from "../state/operator-state-db.js";
 import { isRecord } from "../utils.js";
 
@@ -441,7 +441,7 @@ export function createInMemoryAcpEventLedger(options: LedgerOptions = {}): AcpEv
   });
 }
 
-/** Resolves the legacy file-backed ACP ledger path under the OpenClaw state directory. */
+/** Resolves the legacy file-backed ACP ledger path under the Operator state directory. */
 export function resolveDefaultAcpEventLedgerPath(env: NodeJS.ProcessEnv = process.env): string {
   return path.join(resolveStateDir(env), "acp", "event-ledger.json");
 }
@@ -457,7 +457,7 @@ async function fileExists(filePath: string): Promise<boolean> {
 
 /** Migrates a legacy file ledger into the SQLite state database, preserving replay order. */
 export async function migrateFileAcpEventLedgerToSqlite(
-  params: { filePath: string; archiveSource?: boolean } & OpenClawStateDatabaseOptions,
+  params: { filePath: string; archiveSource?: boolean } & OperatorStateDatabaseOptions,
 ): Promise<{ importedSessions: number; importedEvents: number; archived?: boolean }> {
   if (!(await fileExists(params.filePath))) {
     return { importedSessions: 0, importedEvents: 0 };
@@ -473,7 +473,7 @@ export async function migrateFileAcpEventLedgerToSqlite(
 
   let importedSessions = 0;
   let importedEvents = 0;
-  runOpenClawStateWriteTransaction((database) => {
+  runOperatorStateWriteTransaction((database) => {
     const sessionExists = database.db.prepare(
       "SELECT 1 FROM acp_replay_sessions WHERE session_id = ?",
     );
@@ -905,7 +905,7 @@ function buildSqliteReplay(session: LedgerSession | undefined): AcpEventLedgerRe
 
 /** Creates the SQLite-backed ACP event ledger used by the state database. */
 export function createSqliteAcpEventLedger(
-  params: OpenClawStateDatabaseOptions & LedgerOptions = {},
+  params: OperatorStateDatabaseOptions & LedgerOptions = {},
 ): AcpEventLedger {
   const normalized = normalizeLedgerOptions(params);
   const dbOptions = { env: params.env, path: params.path };
@@ -913,8 +913,8 @@ export function createSqliteAcpEventLedger(
     ...normalized,
   };
   const mutate = (fn: (db: DatabaseSync) => void) =>
-    runOpenClawStateWriteTransaction((database) => fn(database.db), dbOptions);
-  const read = <T>(fn: (db: DatabaseSync) => T): T => fn(openOpenClawStateDatabase(dbOptions).db);
+    runOperatorStateWriteTransaction((database) => fn(database.db), dbOptions);
+  const read = <T>(fn: (db: DatabaseSync) => T): T => fn(openOperatorStateDatabase(dbOptions).db);
 
   return {
     async startSession(sessionParams) {

@@ -1,18 +1,18 @@
 // Verifies cloud-worker provider profile config parsing.
 import { describe, expect, it } from "vitest";
-import { OpenClawSchema } from "./zod-schema.js";
+import { OperatorSchema } from "./zod-schema.js";
 
 function parseCloudWorkers(value: unknown) {
-  const result = OpenClawSchema.safeParse({ cloudWorkers: value });
+  const result = OperatorSchema.safeParse({ cloudWorkers: value });
   if (!result.success) {
     throw new Error(JSON.stringify(result.error.issues, null, 2));
   }
   return result.data.cloudWorkers;
 }
 
-describe("OpenClawSchema cloudWorkers config", () => {
+describe("OperatorSchema cloudWorkers config", () => {
   it("is absent by default and accepts an empty opt-in block", () => {
-    expect(OpenClawSchema.parse({}).cloudWorkers).toBeUndefined();
+    expect(OperatorSchema.parse({}).cloudWorkers).toBeUndefined();
     expect(parseCloudWorkers({})).toStrictEqual({});
   });
 
@@ -107,6 +107,6 @@ describe("OpenClawSchema cloudWorkers config", () => {
     },
     { profiles: { development: { provider: "qa-lab", unsupported: true } } },
   ])("rejects invalid core profile fields %#", (cloudWorkers) => {
-    expect(OpenClawSchema.safeParse({ cloudWorkers }).success).toBe(false);
+    expect(OperatorSchema.safeParse({ cloudWorkers }).success).toBe(false);
   });
 });

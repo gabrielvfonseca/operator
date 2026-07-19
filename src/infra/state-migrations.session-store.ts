@@ -15,7 +15,7 @@ import {
   resolveSessionStoreTargets,
 } from "../config/sessions/targets.js";
 import type { SessionScope } from "../config/sessions/types.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   collectRelevantDoctorPluginIds,
   listPluginDoctorSessionStoreAgentIds,
@@ -723,7 +723,7 @@ export function removeDirIfEmpty(dir: string) {
 }
 
 export async function migrateOrphanedSessionKeys(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   env?: NodeJS.ProcessEnv;
   additionalAgentIds?: readonly string[];
 }): Promise<{ changes: string[]; warnings: string[] }> {
@@ -918,7 +918,7 @@ export async function migrateOrphanedSessionKeys(params: {
 }
 
 export async function migrateLegacyAcpSessionMetadata(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   env?: NodeJS.ProcessEnv;
   now?: () => number;
   pluginSessionStoreAgentIds?: readonly string[];
@@ -966,7 +966,7 @@ export async function migrateLegacyAcpSessionMetadata(params: {
               .map((id) => ({ id })),
           ],
         },
-      } as OpenClawConfig)
+      } as OperatorConfig)
     : params.cfg;
   // Reuse the validated resolver for every declared owner. Owner multiplicity
   // is restored below as metadata without re-adding rejected raw paths.
@@ -1121,7 +1121,7 @@ export async function migrateLegacyAcpSessionMetadata(params: {
 // Doctor migration must read legacy session stores even before a per-agent
 // SQLite DB exists; active runtime discovery remains SQLite-validated.
 function resolveLegacyAcpMetadataSessionStoreTargets(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   env: NodeJS.ProcessEnv,
 ): Array<{ agentId: string; storePath: string }> {
   const stateDir = resolveStateDir(env);
@@ -1346,7 +1346,7 @@ export type SessionStoreOwnership = {
 };
 
 export function resolveSessionStoreOwnership(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   env: NodeJS.ProcessEnv;
   stateDir: string;
   targetAgentId: string;

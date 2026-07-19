@@ -6,10 +6,10 @@ import path from "node:path";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-sync.js";
 import { DEFAULT_ACCOUNT_ID } from "../routing/session-key.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
 } from "../state/openclaw-state-db.js";
 
 const pairingMocks = vi.hoisted(() => ({
@@ -37,7 +37,7 @@ import {
 } from "./pairing-store.js";
 
 type PairingTestDatabase = Pick<
-  OpenClawStateKyselyDatabase,
+  OperatorStateKyselyDatabase,
   "channel_pairing_allow_entries" | "channel_pairing_requests"
 >;
 
@@ -50,7 +50,7 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorStateDatabaseForTest();
   fs.rmSync(fixtureRoot, { recursive: true, force: true });
 });
 
@@ -63,13 +63,13 @@ beforeEach(() => {
 afterEach(() => {
   vi.useRealTimers();
   vi.restoreAllMocks();
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorStateDatabaseForTest();
 });
 
 function createTestEnv(): { stateDir: string; env: NodeJS.ProcessEnv } {
   const stateDir = path.join(fixtureRoot, `case-${caseId++}`);
   fs.mkdirSync(stateDir, { recursive: true });
-  return { stateDir, env: { ...process.env, OPENCLAW_STATE_DIR: stateDir } };
+  return { stateDir, env: { ...process.env, OPERATOR_STATE_DIR: stateDir } };
 }
 
 function requireFirstPairingRequest(
@@ -155,7 +155,7 @@ describe("pairing store", () => {
 
   it("skips malformed persisted requests while approving valid codes", async () => {
     const { env } = createTestEnv();
-    const database = openOpenClawStateDatabase({ env });
+    const database = openOperatorStateDatabase({ env });
     const db = getNodeSqliteKysely<PairingTestDatabase>(database.db);
     executeSqliteQuerySync(
       database.db,

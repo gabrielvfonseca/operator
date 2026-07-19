@@ -54,7 +54,7 @@ export function createCodexAttemptServerRequestController(
     turnIdRef,
     userInputBridgeRef,
     openClawDynamicToolExecutions,
-    pendingOpenClawDynamicToolCompletionIds,
+    pendingOperatorDynamicToolCompletionIds,
     postToolRawAssistantCompletionIdleTimeoutMs,
     turnWatches,
   } = turnRuntime;
@@ -145,7 +145,7 @@ export function createCodexAttemptServerRequestController(
       armCompletionWatchOnResponse = true;
       markCurrentTurnRequestProgress();
       state.turnCrossedToolHandoff = true;
-      pendingOpenClawDynamicToolCompletionIds.add(call.callId);
+      pendingOperatorDynamicToolCompletionIds.add(call.callId);
       trajectoryRecorder?.recordEvent("tool.call", {
         threadId: call.threadId,
         turnId: call.turnId,
@@ -288,7 +288,7 @@ export function createCodexAttemptServerRequestController(
             durationMs: toolDurationMs,
           });
         }
-        pendingOpenClawDynamicToolCompletionIds.delete(call.callId);
+        pendingOperatorDynamicToolCompletionIds.delete(call.callId);
         if (response.terminate === true) {
           scheduleTurnReleaseAfterTerminalDynamicTool({
             call,
@@ -303,7 +303,7 @@ export function createCodexAttemptServerRequestController(
         }
         return protocolResponse as JsonValue;
       } catch (error) {
-        pendingOpenClawDynamicToolCompletionIds.delete(call.callId);
+        pendingOperatorDynamicToolCompletionIds.delete(call.callId);
         if (
           !terminalDiagnosticObserved &&
           !hasPendingDynamicToolTerminalDiagnostic({

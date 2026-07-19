@@ -8,7 +8,7 @@ import {
   getCachedPluginModuleLoader,
   type PluginModuleLoaderCache,
 } from "./plugin-module-loader-cache.js";
-import { installOpenClawPluginSdkNativeResolver } from "./plugin-sdk-native-resolver.js";
+import { installOperatorPluginSdkNativeResolver } from "./plugin-sdk-native-resolver.js";
 import type { CreatePluginRuntimeOptions, PluginRuntime } from "./runtime/types.js";
 import {
   buildPluginLoaderAliasMap,
@@ -16,7 +16,7 @@ import {
   type PluginSdkResolutionPreference,
   resolvePluginRuntimeModulePathWithDiagnostics,
 } from "./sdk-alias.js";
-import type { OpenClawPluginApi, OpenClawPluginDefinition } from "./types.js";
+import type { OperatorPluginApi, OperatorPluginDefinition } from "./types.js";
 
 const LAZY_RUNTIME_REFLECTION_KEYS = [
   "version",
@@ -48,8 +48,8 @@ function isPromiseLike(value: unknown): value is PromiseLike<unknown> {
   );
 }
 
-function createGuardedPluginRegistrationApi(api: OpenClawPluginApi): {
-  api: OpenClawPluginApi;
+function createGuardedPluginRegistrationApi(api: OperatorPluginApi): {
+  api: OperatorPluginApi;
   close: () => void;
 } {
   let closed = false;
@@ -81,8 +81,8 @@ function createGuardedPluginRegistrationApi(api: OpenClawPluginApi): {
 }
 
 export function runPluginRegisterSync(
-  register: NonNullable<OpenClawPluginDefinition["register"]>,
-  api: Parameters<NonNullable<OpenClawPluginDefinition["register"]>>[0],
+  register: NonNullable<OperatorPluginDefinition["register"]>,
+  api: Parameters<NonNullable<OperatorPluginDefinition["register"]>>[0],
 ): void {
   const guarded = createGuardedPluginRegistrationApi(api);
   try {
@@ -102,7 +102,7 @@ export function createPluginModuleLoader(options: {
 }) {
   const moduleLoaders: PluginModuleLoaderCache = createPluginModuleLoaderCache();
   const createLoaderForModule = (modulePath: string) => {
-    installOpenClawPluginSdkNativeResolver({
+    installOperatorPluginSdkNativeResolver({
       argv1: process.argv[1],
       moduleUrl: import.meta.url,
       pluginModulePath: modulePath,
@@ -240,8 +240,8 @@ export function createLazyPluginRuntime(params: {
 }
 
 export function resolvePluginModuleExport(moduleExport: unknown): {
-  definition?: OpenClawPluginDefinition;
-  register?: OpenClawPluginDefinition["register"];
+  definition?: OperatorPluginDefinition;
+  register?: OperatorPluginDefinition["register"];
 } {
   const seen = new Set<unknown>();
   const candidates: unknown[] = [unwrapDefaultModuleExport(moduleExport), moduleExport];
@@ -252,10 +252,10 @@ export function resolvePluginModuleExport(moduleExport: unknown): {
     }
     seen.add(resolved);
     if (typeof resolved === "function") {
-      return { register: resolved as OpenClawPluginDefinition["register"] };
+      return { register: resolved as OperatorPluginDefinition["register"] };
     }
     if (resolved && typeof resolved === "object") {
-      const definition = resolved as OpenClawPluginDefinition;
+      const definition = resolved as OperatorPluginDefinition;
       const register = definition.register ?? definition.activate;
       if (typeof register === "function") {
         return { definition, register };
@@ -269,10 +269,10 @@ export function resolvePluginModuleExport(moduleExport: unknown): {
   }
   const resolved = candidates[0];
   if (typeof resolved === "function") {
-    return { register: resolved as OpenClawPluginDefinition["register"] };
+    return { register: resolved as OperatorPluginDefinition["register"] };
   }
   if (resolved && typeof resolved === "object") {
-    const definition = resolved as OpenClawPluginDefinition;
+    const definition = resolved as OperatorPluginDefinition;
     return { definition, register: definition.register ?? definition.activate };
   }
   return {};

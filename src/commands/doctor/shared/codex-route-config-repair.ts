@@ -1,6 +1,6 @@
 import { AGENT_MODEL_CONFIG_KEYS } from "@operator/model-catalog-core/configured-model-refs";
 import { asOptionalRecord as asMutableRecord } from "@operator/normalization-core/record-coerce";
-import type { OpenClawConfig } from "../../../config/types.operator.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import {
   maybeMigrateLegacyLosslessCompactionConfig,
   rewriteAgentCompactionRefs,
@@ -33,8 +33,8 @@ import type {
 const AGENT_MEDIA_MODEL_CONFIG_KEYS = ["imageGenerationModel", "videoGenerationModel"] as const;
 
 function rewriteAgentModelRefs(params: {
-  cfg: OpenClawConfig;
-  preRepairCfg: OpenClawConfig;
+  cfg: OperatorConfig;
+  preRepairCfg: OperatorConfig;
   hits: CodexRouteHit[];
   agent: MutableRecord | undefined;
   path: string;
@@ -157,7 +157,7 @@ function rewriteAgentModelRefs(params: {
 }
 
 function rewriteConfigModelRefsWithCompactionPolicy(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   preserveSharedDefaultCompactionOverrides: SharedDefaultCompactionOverrideConsumers;
   ignoreLegacyAgentRuntimePins?: boolean;
   blockedModelIdentities?: ReadonlySet<LegacyCodexModelIdentity>;
@@ -270,7 +270,7 @@ function rewriteConfigModelRefsWithCompactionPolicy(params: {
 }
 
 function rewriteNonAgentModelRefs(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   hits: CodexRouteHit[];
   blockedModelIdentities?: ReadonlySet<LegacyCodexModelIdentity>;
   env?: NodeJS.ProcessEnv;
@@ -334,7 +334,7 @@ function rewriteNonAgentModelRefs(params: {
 }
 
 export function configRepairWouldClearLegacyRuntimePins(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   blockedModelIdentities?: ReadonlySet<LegacyCodexModelIdentity>;
   env?: NodeJS.ProcessEnv;
 }): boolean {
@@ -349,7 +349,7 @@ export function configRepairWouldClearLegacyRuntimePins(params: {
 }
 
 export function rewriteConfigModelRefs(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   env?: NodeJS.ProcessEnv;
   blockedModelIdentities?: ReadonlySet<LegacyCodexModelIdentity>;
 }): ConfigRouteRepairResult {

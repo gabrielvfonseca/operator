@@ -15,7 +15,7 @@ import type { WizardPrompter } from "openclaw/plugin-sdk/plugin-test-runtime";
 import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/setup";
 import type { ChannelAccountSnapshot } from "openclaw/plugin-sdk/status-helpers";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../runtime-api.js";
+import type { OperatorConfig } from "../runtime-api.js";
 import {
   listGoogleChatAccountIds,
   resolveGoogleChatAccount,
@@ -181,7 +181,7 @@ describe("googlechat setup", () => {
 
     const result = await runSetupWizardConfigure({
       configure: googlechatConfigure,
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       prompter,
       options: {},
     });
@@ -214,7 +214,7 @@ describe("googlechat setup", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         "alerts",
       ),
     ).toBe("allowlist");
@@ -233,7 +233,7 @@ describe("googlechat setup", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       accountOverrides: {
         googlechat: "alerts",
       },
@@ -257,7 +257,7 @@ describe("googlechat setup", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       accountOverrides: {},
       options: {},
     });
@@ -290,7 +290,7 @@ describe("googlechat setup", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(googlechatSetupWizard.dmPolicy?.getCurrent(cfg)).toBe("allowlist");
     expect(googlechatSetupWizard.dmPolicy?.resolveConfigKeys?.(cfg)).toEqual({
@@ -327,7 +327,7 @@ describe("googlechat setup", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       prompter,
     });
 
@@ -352,7 +352,7 @@ describe("googlechat setup", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       "open",
       "alerts",
     );
@@ -431,7 +431,7 @@ describe("resolveGoogleChatAccount", () => {
   });
 
   it("inherits shared defaults from accounts.default for named accounts", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       channels: {
         googlechat: {
           accounts: {
@@ -456,7 +456,7 @@ describe("resolveGoogleChatAccount", () => {
   });
 
   it("prefers top-level and account overrides over accounts.default", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       channels: {
         googlechat: {
           audienceType: "project-number",
@@ -482,7 +482,7 @@ describe("resolveGoogleChatAccount", () => {
   });
 
   it("merges account bot loop protection over top-level defaults field-by-field", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       channels: {
         googlechat: {
           botLoopProtection: {
@@ -511,7 +511,7 @@ describe("resolveGoogleChatAccount", () => {
   });
 
   it("merges account bot loop protection over accounts.default field-by-field", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       channels: {
         googlechat: {
           accounts: {
@@ -542,7 +542,7 @@ describe("resolveGoogleChatAccount", () => {
   });
 
   it("does not inherit disabled state from accounts.default for named accounts", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       channels: {
         googlechat: {
           accounts: {
@@ -566,7 +566,7 @@ describe("resolveGoogleChatAccount", () => {
   });
 
   it("does not inherit default-account credentials into named accounts", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       channels: {
         googlechat: {
           accounts: {
@@ -594,7 +594,7 @@ describe("resolveGoogleChatAccount", () => {
   });
 
   it("does not inherit dangerous name matching from accounts.default", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       channels: {
         googlechat: {
           accounts: {
@@ -617,7 +617,7 @@ describe("resolveGoogleChatAccount", () => {
   });
 
   it("uses configured defaultAccount when accountId is omitted", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       channels: {
         googlechat: {
           defaultAccount: "alerts",

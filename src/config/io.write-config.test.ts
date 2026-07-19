@@ -7,10 +7,10 @@ import { executeSqliteQueryTakeFirstSync, getNodeSqliteKysely } from "../infra/k
 import { readPersistedInstalledPluginIndex } from "../plugins/installed-plugin-index-store.js";
 import type { PluginManifestRegistry } from "../plugins/manifest-registry.js";
 import { clearLoadPluginMetadataSnapshotMemo } from "../plugins/plugin-metadata-snapshot.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
 } from "../state/openclaw-state-db.js";
 import { createSuiteTempRootTracker } from "../test-helpers/temp-dir.js";
 import { withEnvAsync } from "../test-utils/env.js";
@@ -28,10 +28,10 @@ import {
   writeConfigFile,
 } from "./io.js";
 import { ConfigMutationConflictError } from "./mutation-conflict.js";
-import type { ConfigFileSnapshot, OpenClawConfig } from "./types.openclaw.js";
+import type { ConfigFileSnapshot, OperatorConfig } from "./types.openclaw.js";
 
 const CONFIG_CLOBBER_SNAPSHOT_LIMIT = 32;
-type ConfigHealthDatabase = Pick<OpenClawStateKyselyDatabase, "config_health_entries">;
+type ConfigHealthDatabase = Pick<OperatorStateKyselyDatabase, "config_health_entries">;
 
 // Mock the plugin manifest registry so we can register a fake channel whose
 // AJV JSON Schema carries a `default` value.  This lets the #56772 regression
@@ -95,9 +95,9 @@ describe("config io write", () => {
     const home = await suiteRootTracker.make("case");
     return withEnvAsync(
       {
-        OPENCLAW_DEFER_SHELL_ENV_FALLBACK: undefined,
-        OPENCLAW_LOAD_SHELL_ENV: undefined,
-        OPENCLAW_SHELL_ENV_TIMEOUT_MS: undefined,
+        OPERATOR_DEFER_SHELL_ENV_FALLBACK: undefined,
+        OPERATOR_LOAD_SHELL_ENV: undefined,
+        OPERATOR_SHELL_ENV_TIMEOUT_MS: undefined,
       },
       () => fn(home),
     );
@@ -115,7 +115,7 @@ describe("config io write", () => {
   });
 
   afterEach(() => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     resetConfigRuntimeState();
     clearLoadPluginMetadataSnapshotMemo();
     mockMaintainConfigBackups.mockReset();
@@ -123,13 +123,13 @@ describe("config io write", () => {
   });
 
   afterAll(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     resetConfigRuntimeState();
     await suiteRootTracker.cleanup();
   });
 
   function readConfigHealthRow(home: string, configPath: string) {
-    const { db } = openOpenClawStateDatabase({ env: { HOME: home } as NodeJS.ProcessEnv });
+    const { db } = openOperatorStateDatabase({ env: { HOME: home } as NodeJS.ProcessEnv });
     const healthDb = getNodeSqliteKysely<ConfigHealthDatabase>(db);
     return executeSqliteQueryTakeFirstSync(
       db,
@@ -200,7 +200,7 @@ describe("config io write", () => {
 
   const createFastConfigIO = (home: string) =>
     createConfigIO({
-      env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+      env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
       homedir: () => home,
       logger: silentLogger,
     });
@@ -218,7 +218,7 @@ describe("config io write", () => {
       const warn = vi.fn();
       const io = createConfigIO({
         configPath,
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: { warn, error: vi.fn() },
         observe: true,
@@ -247,8 +247,8 @@ describe("config io write", () => {
       const io = createConfigIO({
         configPath,
         env: {
-          OPENCLAW_NIX_MODE: "1",
-          OPENCLAW_TEST_FAST: "1",
+          OPERATOR_NIX_MODE: "1",
+          OPERATOR_TEST_FAST: "1",
         } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
@@ -565,7 +565,7 @@ describe("config io write", () => {
       await fs.writeFile(configPath, `${JSON.stringify(original, null, 2)}\n`, "utf-8");
       const warn = vi.fn();
       const io = createConfigIO({
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: { warn, error: vi.fn() },
       });
@@ -598,7 +598,7 @@ describe("config io write", () => {
     await withSuiteHome(async (home) => {
       const warn = vi.fn();
       const io = createConfigIO({
-        env: { HOME: home, OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { HOME: home, OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: { warn, error: vi.fn() },
       });
@@ -711,7 +711,7 @@ describe("config io write", () => {
     },
   );
 
-  it("keeps writes inside an OPENCLAW_STATE_DIR override even when the real home config exists", async () => {
+  it("keeps writes inside an OPERATOR_STATE_DIR override even when the real home config exists", async () => {
     await withSuiteHome(async (home) => {
       const liveConfigPath = path.join(home, ".openclaw", "openclaw.json");
       await fs.mkdir(path.dirname(liveConfigPath), { recursive: true });
@@ -722,7 +722,7 @@ describe("config io write", () => {
       );
 
       const overrideDir = path.join(home, "isolated-state");
-      const env = { OPENCLAW_STATE_DIR: overrideDir } as NodeJS.ProcessEnv;
+      const env = { OPERATOR_STATE_DIR: overrideDir } as NodeJS.ProcessEnv;
       const io = createConfigIO({
         env,
         homedir: () => home,
@@ -795,7 +795,7 @@ describe("config io write", () => {
 
       const io = createConfigIO({
         configPath,
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
       });
@@ -805,7 +805,7 @@ describe("config io write", () => {
         { gateway: { mode: "local", port: 19001 } },
       );
 
-      await io.writeConfigFile(nextConfig as OpenClawConfig);
+      await io.writeConfigFile(nextConfig as OperatorConfig);
 
       const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as Record<
         string,
@@ -911,7 +911,7 @@ describe("config io write", () => {
       const warn = vi.fn();
       const io = createConfigIO({
         env: {
-          OPENCLAW_CONFIG_WRITE_ANOMALY_LOG: "1",
+          OPERATOR_CONFIG_WRITE_ANOMALY_LOG: "1",
         } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: {
@@ -944,7 +944,7 @@ describe("config io write", () => {
       const io = createConfigIO({
         env: {
           VITEST: "true",
-          OPENCLAW_TEST_CONFIG_OVERWRITE_LOG: "1",
+          OPERATOR_TEST_CONFIG_OVERWRITE_LOG: "1",
         } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: {
@@ -1460,7 +1460,7 @@ describe("config io write", () => {
         { baseSnapshot },
       );
 
-      const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as OpenClawConfig;
+      const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as OperatorConfig;
       expect(persisted.agents?.defaults?.params).toEqual({
         transport: "sse",
         openaiWsWarmup: false,
@@ -1506,7 +1506,7 @@ describe("config io write", () => {
           {
             gateway: {
               mode: "local",
-              auth: { mode: "token", token: "${OPENCLAW_GATEWAY_TOKEN}" },
+              auth: { mode: "token", token: "${OPERATOR_GATEWAY_TOKEN}" },
             },
             channels: { "test-plugin-channel": { enabled: true } },
           },
@@ -1517,8 +1517,8 @@ describe("config io write", () => {
       );
       const io = createConfigIO({
         env: {
-          OPENCLAW_GATEWAY_TOKEN: "gateway-token-at-read",
-          OPENCLAW_TEST_FAST: "1",
+          OPERATOR_GATEWAY_TOKEN: "gateway-token-at-read",
+          OPERATOR_TEST_FAST: "1",
         } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
@@ -1527,7 +1527,7 @@ describe("config io write", () => {
       const result = await io.readConfigFileSnapshotForWrite();
 
       expect(result.snapshot.valid).toBe(false);
-      expect(result.writeOptions.envSnapshotForRestore?.OPENCLAW_GATEWAY_TOKEN).toBe(
+      expect(result.writeOptions.envSnapshotForRestore?.OPERATOR_GATEWAY_TOKEN).toBe(
         "gateway-token-at-read",
       );
     });
@@ -1543,7 +1543,7 @@ describe("config io write", () => {
           {
             gateway: {
               mode: "local",
-              auth: { mode: "token", token: "${OPENCLAW_GATEWAY_TOKEN}" },
+              auth: { mode: "token", token: "${OPERATOR_GATEWAY_TOKEN}" },
             },
             channels: { "test-plugin-channel": { enabled: true } },
           },
@@ -1557,8 +1557,8 @@ describe("config io write", () => {
       });
       const io = createConfigIO({
         env: {
-          OPENCLAW_GATEWAY_TOKEN: "gateway-token-at-read",
-          OPENCLAW_TEST_FAST: "1",
+          OPERATOR_GATEWAY_TOKEN: "gateway-token-at-read",
+          OPERATOR_TEST_FAST: "1",
         } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
@@ -1567,7 +1567,7 @@ describe("config io write", () => {
       const result = await io.readConfigFileSnapshotForWrite();
 
       expect(result.snapshot.valid).toBe(false);
-      expect(result.writeOptions.envSnapshotForRestore?.OPENCLAW_GATEWAY_TOKEN).toBe(
+      expect(result.writeOptions.envSnapshotForRestore?.OPERATOR_GATEWAY_TOKEN).toBe(
         "gateway-token-at-read",
       );
     });
@@ -1586,7 +1586,7 @@ describe("config io write", () => {
       );
       await fs.writeFile(includePath, malformedRaw, "utf-8");
       const io = createConfigIO({
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
       });
@@ -1612,13 +1612,13 @@ describe("config io write", () => {
       await fs.writeFile(firstConfigPath, "{}", "utf-8");
       await fs.writeFile(secondConfigPath, "{}", "utf-8");
       const env = {
-        OPENCLAW_CONFIG_PATH: firstConfigPath,
-        OPENCLAW_TEST_FAST: "1",
+        OPERATOR_CONFIG_PATH: firstConfigPath,
+        OPERATOR_TEST_FAST: "1",
       } as NodeJS.ProcessEnv;
       const io = createConfigIO({ env, homedir: () => home, logger: silentLogger });
 
       const result = await io.readConfigFileSnapshotForWrite();
-      env.OPENCLAW_CONFIG_PATH = secondConfigPath;
+      env.OPERATOR_CONFIG_PATH = secondConfigPath;
 
       expect(() => result.writeOptions.assertConfigPathForWrite?.()).toThrow(
         "config path changed since last load",
@@ -1634,11 +1634,11 @@ describe("config io write", () => {
       await fs.writeFile(firstConfigPath, "{}", "utf-8");
       await fs.writeFile(secondConfigPath, "{}", "utf-8");
       const env = {
-        OPENCLAW_CONFIG_PATH: firstConfigPath,
-        OPENCLAW_TEST_FAST: "1",
+        OPERATOR_CONFIG_PATH: firstConfigPath,
+        OPERATOR_TEST_FAST: "1",
       } as NodeJS.ProcessEnv;
       const io = createConfigIO({ env, homedir: () => home, logger: silentLogger });
-      env.OPENCLAW_CONFIG_PATH = secondConfigPath;
+      env.OPERATOR_CONFIG_PATH = secondConfigPath;
 
       await expect(io.readConfigFileSnapshotForWrite()).rejects.toThrow(
         "config path changed since last load",
@@ -1651,9 +1651,9 @@ describe("config io write", () => {
       const configPath = path.join(home, ".openclaw", "openclaw.json");
       const configuredNextPath = path.join(home, ".openclaw", "next.json");
       const sourceConfig = {
-        env: { OPENCLAW_CONFIG_PATH: configuredNextPath },
+        env: { OPERATOR_CONFIG_PATH: configuredNextPath },
         gateway: { mode: "local" },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(configPath, `${JSON.stringify(sourceConfig, null, 2)}\n`, "utf-8");
       const io = createFastConfigIO(home);
@@ -1669,9 +1669,9 @@ describe("config io write", () => {
       const configPath = path.join(home, ".openclaw", "openclaw.json");
       const configuredNextPath = path.join(home, ".openclaw", "next.json");
       const sourceConfig = {
-        env: { OPENCLAW_CONFIG_PATH: configuredNextPath },
+        env: { OPERATOR_CONFIG_PATH: configuredNextPath },
         gateway: { mode: "local" },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(configPath, `${JSON.stringify(sourceConfig, null, 2)}\n`, "utf-8");
       await fs.writeFile(
@@ -1682,10 +1682,10 @@ describe("config io write", () => {
 
       await withEnvAsync(
         {
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_HOME: home,
-          OPENCLAW_STATE_DIR: undefined,
-          OPENCLAW_TEST_FAST: "1",
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_HOME: home,
+          OPERATOR_STATE_DIR: undefined,
+          OPERATOR_TEST_FAST: "1",
         },
         async () => {
           const prepared = await readConfigFileSnapshotForWrite();
@@ -1705,10 +1705,10 @@ describe("config io write", () => {
         },
       );
 
-      const initialConfig = JSON.parse(await fs.readFile(configPath, "utf-8")) as OpenClawConfig;
+      const initialConfig = JSON.parse(await fs.readFile(configPath, "utf-8")) as OperatorConfig;
       const persisted = JSON.parse(
         await fs.readFile(configuredNextPath, "utf-8"),
-      ) as OpenClawConfig;
+      ) as OperatorConfig;
       expect(initialConfig.gateway?.mode).toBe("local");
       expect(persisted.gateway?.mode).toBe("remote");
     });
@@ -1728,8 +1728,8 @@ describe("config io write", () => {
 
       await withEnvAsync(
         {
-          OPENCLAW_CONFIG_PATH: activeConfigPath,
-          OPENCLAW_TEST_FAST: "1",
+          OPERATOR_CONFIG_PATH: activeConfigPath,
+          OPERATOR_TEST_FAST: "1",
         },
         async () => {
           await writeConfigFile(
@@ -1743,10 +1743,10 @@ describe("config io write", () => {
 
       const expectedConfig = JSON.parse(
         await fs.readFile(expectedConfigPath, "utf-8"),
-      ) as OpenClawConfig;
+      ) as OperatorConfig;
       const activeConfig = JSON.parse(
         await fs.readFile(activeConfigPath, "utf-8"),
-      ) as OpenClawConfig;
+      ) as OperatorConfig;
       expect(expectedConfig.gateway?.mode).toBe("local");
       expect(activeConfig.gateway?.mode).toBe("remote");
     });
@@ -1763,7 +1763,7 @@ describe("config io write", () => {
         "utf-8",
       );
       const io = createConfigIO({
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
       });
@@ -1814,7 +1814,7 @@ describe("config io write", () => {
         "utf-8",
       );
       const io = createConfigIO({
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
       });
@@ -1848,13 +1848,13 @@ describe("config io write", () => {
       await fs.writeFile(secondConfigPath, originalRaw, "utf-8");
       const firstIo = createConfigIO({
         configPath: firstConfigPath,
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
       });
       const secondIo = createConfigIO({
         configPath: secondConfigPath,
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
       });
@@ -1884,7 +1884,7 @@ describe("config io write", () => {
       await fs.writeFile(configPath, originalRaw, "utf-8");
       const io = createConfigIO({
         configPath,
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
       });
@@ -1923,7 +1923,7 @@ describe("config io write", () => {
         "utf-8",
       );
       const io = createConfigIO({
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
       });
@@ -1961,7 +1961,7 @@ describe("config io write", () => {
         "utf-8",
       );
       const io = createConfigIO({
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
       });
@@ -1988,7 +1988,7 @@ describe("config io write", () => {
       const configPath = path.join(home, ".openclaw", "openclaw.json");
       const io = createConfigIO({
         configPath,
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
       });
@@ -2016,7 +2016,7 @@ describe("config io write", () => {
       const configPath = path.join(home, ".openclaw", "openclaw.json");
       const io = createConfigIO({
         configPath,
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
       });
@@ -2038,7 +2038,7 @@ describe("config io write", () => {
       await fs.writeFile(configPath, "", "utf-8");
       const io = createConfigIO({
         configPath,
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
       });
@@ -2071,7 +2071,7 @@ describe("config io write", () => {
         `${JSON.stringify(
           {
             mode: "local",
-            auth: { mode: "token", token: "${OPENCLAW_GATEWAY_TOKEN}" },
+            auth: { mode: "token", token: "${OPERATOR_GATEWAY_TOKEN}" },
             invalid: true,
           },
           null,
@@ -2087,8 +2087,8 @@ describe("config io write", () => {
       const originalRootRaw = await fs.readFile(configPath, "utf-8");
       const io = createConfigIO({
         env: {
-          OPENCLAW_GATEWAY_TOKEN: "gateway-token-runtime",
-          OPENCLAW_TEST_FAST: "1",
+          OPERATOR_GATEWAY_TOKEN: "gateway-token-runtime",
+          OPERATOR_TEST_FAST: "1",
         } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
@@ -2107,7 +2107,7 @@ describe("config io write", () => {
 
       await expect(fs.readFile(configPath, "utf-8")).resolves.toBe(originalRootRaw);
       await expect(fs.readFile(includePath, "utf-8")).resolves.toContain(
-        '"token": "${OPENCLAW_GATEWAY_TOKEN}"',
+        '"token": "${OPERATOR_GATEWAY_TOKEN}"',
       );
     });
   });
@@ -2137,7 +2137,7 @@ describe("config io write", () => {
       );
       const originalIncludeRaw = await fs.readFile(includePath, "utf-8");
       const io = createConfigIO({
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
       });
@@ -2172,7 +2172,7 @@ describe("config io write", () => {
       const originalRootRaw = await fs.readFile(configPath, "utf-8");
       const originalPluginsRaw = await fs.readFile(pluginsPath, "utf-8");
       const io = createConfigIO({
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
       });
@@ -2198,7 +2198,7 @@ describe("config io write", () => {
         "utf-8",
       );
       const io = createConfigIO({
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
       });
@@ -2271,7 +2271,7 @@ describe("config io write", () => {
       );
       const io = createConfigIO({
         env: {
-          OPENCLAW_TEST_FAST: "1",
+          OPERATOR_TEST_FAST: "1",
           ROOT_LITERAL_TOKEN: "secret",
         } as NodeJS.ProcessEnv,
         homedir: () => home,
@@ -2298,7 +2298,7 @@ describe("config io write", () => {
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(
         includePath,
-        `${JSON.stringify({ id: "main", workspace: "${OPENCLAW_AGENT_WORKSPACE}" }, null, 2)}\n`,
+        `${JSON.stringify({ id: "main", workspace: "${OPERATOR_AGENT_WORKSPACE}" }, null, 2)}\n`,
         "utf-8",
       );
       await fs.writeFile(
@@ -2319,8 +2319,8 @@ describe("config io write", () => {
       const originalRootRaw = await fs.readFile(configPath, "utf-8");
       const io = createConfigIO({
         env: {
-          OPENCLAW_AGENT_WORKSPACE: "/resolved/agent-workspace",
-          OPENCLAW_TEST_FAST: "1",
+          OPERATOR_AGENT_WORKSPACE: "/resolved/agent-workspace",
+          OPERATOR_TEST_FAST: "1",
         } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
@@ -2339,7 +2339,7 @@ describe("config io write", () => {
       expect(persistedRoot.agents?.defaults).toBeUndefined();
       expect(persistedRoot.agents?.list).toEqual([{ $include: "./main-agent.json5" }]);
       await expect(fs.readFile(includePath, "utf-8")).resolves.toContain(
-        '"workspace": "${OPENCLAW_AGENT_WORKSPACE}"',
+        '"workspace": "${OPERATOR_AGENT_WORKSPACE}"',
       );
     });
   });
@@ -2423,7 +2423,7 @@ describe("config io write", () => {
         "utf-8",
       );
 
-      await withEnvAsync({ OPENCLAW_CONFIG_PATH: configPath }, async () => {
+      await withEnvAsync({ OPERATOR_CONFIG_PATH: configPath }, async () => {
         setRuntimeConfigSnapshot(
           {
             gateway: { mode: "local" },
@@ -2499,7 +2499,7 @@ describe("config io write", () => {
           {
             gateway: {
               mode: "local",
-              auth: { mode: "token", token: "${OPENCLAW_GATEWAY_TOKEN}" },
+              auth: { mode: "token", token: "${OPERATOR_GATEWAY_TOKEN}" },
             },
             agents: { defaults: { model: { primary: "openai/gpt-5.4" } } },
           },
@@ -2516,8 +2516,8 @@ describe("config io write", () => {
       try {
         await withEnvAsync(
           {
-            OPENCLAW_CONFIG_PATH: configPath,
-            OPENCLAW_GATEWAY_TOKEN: "gateway-token-runtime",
+            OPERATOR_CONFIG_PATH: configPath,
+            OPERATOR_GATEWAY_TOKEN: "gateway-token-runtime",
           },
           async () => {
             setRuntimeConfigSnapshot(
@@ -2550,7 +2550,7 @@ describe("config io write", () => {
             const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as {
               gateway?: { auth?: { token?: string } };
             };
-            expect(persisted.gateway?.auth?.token).toBe("${OPENCLAW_GATEWAY_TOKEN}");
+            expect(persisted.gateway?.auth?.token).toBe("${OPERATOR_GATEWAY_TOKEN}");
             expect(observedSources).toHaveLength(1);
             const observedSource = requireRecord(observedSources[0], "observed source config");
             expect(observedSource.gateway).toEqual({
@@ -2577,11 +2577,11 @@ describe("config io write", () => {
       const initialConfig = {
         gateway: { mode: "local" as const },
         logging: { level: "info" as const },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       await fs.writeFile(configPath, `${JSON.stringify(initialConfig, null, 2)}\n`, "utf-8");
       const preflight = vi.fn(
         async (
-          sourceConfig: OpenClawConfig,
+          sourceConfig: OperatorConfig,
           refreshOptions?: { includeAuthStoreRefs?: boolean },
         ) => ({
           runtimeConfig: sourceConfig,
@@ -2599,7 +2599,7 @@ describe("config io write", () => {
       );
 
       try {
-        await withEnvAsync({ OPENCLAW_CONFIG_PATH: configPath }, async () => {
+        await withEnvAsync({ OPERATOR_CONFIG_PATH: configPath }, async () => {
           setRuntimeConfigSnapshot(initialConfig, initialConfig);
           await writeConfigFile(
             { ...initialConfig, logging: { level: "debug" } },
@@ -2620,21 +2620,21 @@ describe("config io write", () => {
   it("stages managed root-write config env until the owner accepts it", async () => {
     await withSuiteHome(async (home) => {
       const configPath = path.join(home, ".openclaw", "openclaw.json");
-      const envKey = "OPENCLAW_TEST_MANAGED_ROOT_ENV";
+      const envKey = "OPERATOR_TEST_MANAGED_ROOT_ENV";
       const initialAuthoredConfig = {
         gateway: {
           mode: "local" as const,
-          auth: { mode: "token" as const, token: "${OPENCLAW_TEST_MANAGED_ROOT_ENV}" },
+          auth: { mode: "token" as const, token: "${OPERATOR_TEST_MANAGED_ROOT_ENV}" },
         },
         env: { vars: { [envKey]: "old" } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       const initialConfig = {
         ...initialAuthoredConfig,
         gateway: {
           ...initialAuthoredConfig.gateway,
           auth: { mode: "token" as const, token: "old" },
         },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(
         configPath,
@@ -2642,7 +2642,7 @@ describe("config io write", () => {
         "utf-8",
       );
       let preparedEnv: NodeJS.ProcessEnv | undefined;
-      let notifiedSource: OpenClawConfig | undefined;
+      let notifiedSource: OperatorConfig | undefined;
       const unsubscribe = registerConfigWriteListener(
         (event) => {
           notifiedSource = event.sourceConfig;
@@ -2661,7 +2661,7 @@ describe("config io write", () => {
       );
 
       try {
-        await withEnvAsync({ OPENCLAW_CONFIG_PATH: configPath, [envKey]: "old" }, async () => {
+        await withEnvAsync({ OPERATOR_CONFIG_PATH: configPath, [envKey]: "old" }, async () => {
           setRuntimeConfigSnapshot(initialConfig, initialConfig);
           initializePublishedConfigRuntimeEnv(initialConfig, {
             ownedEnv: { [envKey]: "old" },
@@ -2684,19 +2684,19 @@ describe("config io write", () => {
   it("resolves watcher candidates after removing the accepted config env layer", async () => {
     await withSuiteHome(async (home) => {
       const configPath = path.join(home, ".openclaw", "openclaw.json");
-      const envKey = "OPENCLAW_TEST_WATCHER_ENV";
+      const envKey = "OPERATOR_TEST_WATCHER_ENV";
       const activeConfig = {
         env: { vars: { [envKey]: "old" } },
         gateway: { auth: { mode: "token" as const, token: "old" } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       const candidate = {
         env: { vars: { [envKey]: "new" } },
-        gateway: { auth: { mode: "token" as const, token: "${OPENCLAW_TEST_WATCHER_ENV}" } },
-      } satisfies OpenClawConfig;
+        gateway: { auth: { mode: "token" as const, token: "${OPERATOR_TEST_WATCHER_ENV}" } },
+      } satisfies OperatorConfig;
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(configPath, `${JSON.stringify(candidate, null, 2)}\n`, "utf-8");
 
-      await withEnvAsync({ OPENCLAW_CONFIG_PATH: configPath, [envKey]: "old" }, async () => {
+      await withEnvAsync({ OPERATOR_CONFIG_PATH: configPath, [envKey]: "old" }, async () => {
         initializePublishedConfigRuntimeEnv(activeConfig, {
           ownedEnv: { [envKey]: "old" },
         });
@@ -2711,8 +2711,8 @@ describe("config io write", () => {
   it("rereads a managed write against an env transaction accepted during preflight", async () => {
     await withSuiteHome(async (home) => {
       const configPath = path.join(home, ".openclaw", "openclaw.json");
-      const envKey = "OPENCLAW_TEST_INTERLEAVED_WRITE_ENV";
-      const makeConfig = (value: string, token: string): OpenClawConfig => ({
+      const envKey = "OPERATOR_TEST_INTERLEAVED_WRITE_ENV";
+      const makeConfig = (value: string, token: string): OperatorConfig => ({
         env: { vars: { [envKey]: value } },
         gateway: { mode: "local", auth: { mode: "token", token } },
       });
@@ -2722,7 +2722,7 @@ describe("config io write", () => {
       const configC = makeConfig("c", "c");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(configPath, `${JSON.stringify(authoredA, null, 2)}\n`, "utf-8");
-      let notifiedSource: OpenClawConfig | undefined;
+      let notifiedSource: OperatorConfig | undefined;
       const unsubscribe = registerConfigWriteListener(
         (event) => {
           notifiedSource = event.sourceConfig;
@@ -2749,7 +2749,7 @@ describe("config io write", () => {
       );
 
       try {
-        await withEnvAsync({ OPENCLAW_CONFIG_PATH: configPath, [envKey]: "a" }, async () => {
+        await withEnvAsync({ OPERATOR_CONFIG_PATH: configPath, [envKey]: "a" }, async () => {
           setRuntimeConfigSnapshot(configA, configA);
           initializePublishedConfigRuntimeEnv(configA, {
             ownedEnv: { [envKey]: "a" },
@@ -2777,7 +2777,7 @@ describe("config io write", () => {
       await fs.writeFile(configPath, originalRaw, "utf-8");
       const io = createConfigIO({
         env: {
-          OPENCLAW_TEST_FAST: "1",
+          OPERATOR_TEST_FAST: "1",
           PLUGIN_A: "same-plugin",
           PLUGIN_B: "same-plugin",
         } as NodeJS.ProcessEnv,
@@ -2803,7 +2803,7 @@ describe("config io write", () => {
         "utf-8",
       );
       const io = createConfigIO({
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: silentLogger,
       });
@@ -2866,7 +2866,7 @@ describe("config io write", () => {
       });
 
       try {
-        await withEnvAsync({ OPENCLAW_CONFIG_PATH: configPath }, async () => {
+        await withEnvAsync({ OPERATOR_CONFIG_PATH: configPath }, async () => {
           setRuntimeConfigSnapshot(runtimeConfig, sourceConfig);
 
           await writeConfigFile({
@@ -2879,7 +2879,7 @@ describe("config io write", () => {
           });
 
           const postWriteSnapshot = await createConfigIO({
-            env: { OPENCLAW_CONFIG_PATH: configPath, VITEST: "true" } as NodeJS.ProcessEnv,
+            env: { OPERATOR_CONFIG_PATH: configPath, VITEST: "true" } as NodeJS.ProcessEnv,
             homedir: () => home,
             logger: silentLogger,
           }).readConfigFileSnapshot();
@@ -2909,7 +2909,7 @@ describe("config io write", () => {
       const initialConfig = {
         gateway: { mode: "local", port: 18789 },
         plugins: { entries: { "google-antigravity-auth": { enabled: false } } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       const initialRaw = `${JSON.stringify(initialConfig, null, 2)}\n`;
       await fs.writeFile(configPath, initialRaw, "utf-8");
       const warn = vi.fn();
@@ -2923,7 +2923,7 @@ describe("config io write", () => {
       expect(warn).toHaveBeenCalledTimes(1);
 
       try {
-        await withEnvAsync({ OPENCLAW_CONFIG_PATH: configPath }, async () => {
+        await withEnvAsync({ OPERATOR_CONFIG_PATH: configPath }, async () => {
           setRuntimeConfigSnapshotRefreshHandler({
             refresh: () => {
               throw new Error("synthetic refresh failure");
@@ -2951,7 +2951,7 @@ describe("config io write", () => {
     await withSuiteHome(async (home) => {
       const configPath = path.join(home, ".openclaw", "openclaw.json");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
-      const initialConfig = { gateway: { mode: "local", port: 18789 } } satisfies OpenClawConfig;
+      const initialConfig = { gateway: { mode: "local", port: 18789 } } satisfies OperatorConfig;
       await fs.writeFile(configPath, `${JSON.stringify(initialConfig, null, 2)}\n`, "utf-8");
       const baseSnapshot = {
         path: configPath,
@@ -2969,7 +2969,7 @@ describe("config io write", () => {
       } satisfies ConfigFileSnapshot;
 
       try {
-        await withEnvAsync({ OPENCLAW_CONFIG_PATH: configPath }, async () => {
+        await withEnvAsync({ OPERATOR_CONFIG_PATH: configPath }, async () => {
           setRuntimeConfigSnapshotRefreshHandler({
             refresh: () => {
               throw new Error("synthetic refresh failure");
@@ -2985,7 +2985,7 @@ describe("config io write", () => {
             ),
           ).rejects.toThrow(/runtime snapshot refresh failed: synthetic refresh failure/);
 
-          const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as OpenClawConfig;
+          const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as OperatorConfig;
           expect(persisted.gateway).toEqual({ mode: "local", port: 19001 });
         });
       } finally {
@@ -3010,7 +3010,7 @@ describe("config io write", () => {
       )}\n`;
 
       try {
-        await withEnvAsync({ OPENCLAW_CONFIG_PATH: configPath }, async () => {
+        await withEnvAsync({ OPERATOR_CONFIG_PATH: configPath }, async () => {
           setRuntimeConfigSnapshotRefreshHandler({
             refresh: async () => {
               await fs.writeFile(configPath, concurrentRaw, "utf-8");
@@ -3047,15 +3047,15 @@ describe("config io write", () => {
             },
           },
         },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       const initialRaw = `${JSON.stringify(initialConfig, null, 2)}\n`;
       await fs.writeFile(configPath, initialRaw, "utf-8");
 
       try {
         await withEnvAsync(
           {
-            OPENCLAW_CONFIG_PATH: configPath,
-            OPENCLAW_STATE_DIR: stateDir,
+            OPERATOR_CONFIG_PATH: configPath,
+            OPERATOR_STATE_DIR: stateDir,
           },
           async () => {
             setRuntimeConfigSnapshotRefreshHandler({
@@ -3087,13 +3087,13 @@ describe("config io write", () => {
     await withSuiteHome(async (home) => {
       const configPath = path.join(home, ".openclaw", "openclaw.json");
       const initialRaw = `${JSON.stringify({ gateway: { mode: "local" } }, null, 2)}\n`;
-      let observedSource: OpenClawConfig | undefined;
+      let observedSource: OperatorConfig | undefined;
 
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(configPath, initialRaw, "utf-8");
 
       try {
-        await withEnvAsync({ OPENCLAW_CONFIG_PATH: configPath }, async () => {
+        await withEnvAsync({ OPERATOR_CONFIG_PATH: configPath }, async () => {
           setRuntimeConfigSnapshotRefreshHandler({
             preflight: async ({ sourceConfig }) => {
               observedSource = sourceConfig;
@@ -3128,7 +3128,7 @@ describe("config io write", () => {
       await fs.writeFile(configPath, initialRaw, "utf-8");
 
       try {
-        await withEnvAsync({ OPENCLAW_CONFIG_PATH: configPath }, async () => {
+        await withEnvAsync({ OPERATOR_CONFIG_PATH: configPath }, async () => {
           setRuntimeConfigSnapshotRefreshHandler({
             preflight: () => {
               events.push("runtime");
@@ -3164,9 +3164,9 @@ describe("config io write", () => {
       const initialRaw = `${JSON.stringify({ gateway: { mode: "local" } }, null, 2)}\n`;
       const env = {
         ...process.env,
-        OPENCLAW_CONFIG_PATH: configPath,
+        OPERATOR_CONFIG_PATH: configPath,
       } as NodeJS.ProcessEnv;
-      let observedSource: OpenClawConfig | undefined;
+      let observedSource: OperatorConfig | undefined;
 
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(configPath, initialRaw, "utf-8");
@@ -3197,8 +3197,8 @@ describe("config io write", () => {
   it("restores config env vars when post-write runtime refresh rollback succeeds", async () => {
     await withSuiteHome(async (home) => {
       const configPath = path.join(home, ".openclaw", "openclaw.json");
-      const envKey = "OPENCLAW_TEST_RUNTIME_ROLLBACK_ENV";
-      const initialConfig = { gateway: { mode: "local", port: 18789 } } satisfies OpenClawConfig;
+      const envKey = "OPERATOR_TEST_RUNTIME_ROLLBACK_ENV";
+      const initialConfig = { gateway: { mode: "local", port: 18789 } } satisfies OperatorConfig;
       const initialRaw = `${JSON.stringify(initialConfig, null, 2)}\n`;
 
       await fs.mkdir(path.dirname(configPath), { recursive: true });
@@ -3207,7 +3207,7 @@ describe("config io write", () => {
       try {
         await withEnvAsync(
           {
-            OPENCLAW_CONFIG_PATH: configPath,
+            OPERATOR_CONFIG_PATH: configPath,
             [envKey]: undefined,
           },
           async () => {
@@ -3238,7 +3238,7 @@ describe("config io write", () => {
   it("rolls back a managed root write when canonical rereads exhaust env generations", async () => {
     await withSuiteHome(async (home) => {
       const configPath = path.join(home, ".openclaw", "openclaw.json");
-      const initialConfig = { gateway: { mode: "local", port: 18789 } } satisfies OpenClawConfig;
+      const initialConfig = { gateway: { mode: "local", port: 18789 } } satisfies OperatorConfig;
       const initialRaw = `${JSON.stringify(initialConfig, null, 2)}\n`;
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(configPath, initialRaw, "utf-8");
@@ -3262,7 +3262,7 @@ describe("config io write", () => {
       });
 
       try {
-        await withEnvAsync({ OPENCLAW_CONFIG_PATH: configPath }, async () => {
+        await withEnvAsync({ OPERATOR_CONFIG_PATH: configPath }, async () => {
           setRuntimeConfigSnapshot(initialConfig, initialConfig);
           initializePublishedConfigRuntimeEnv(initialConfig);
 
@@ -3284,17 +3284,17 @@ describe("config io write", () => {
     await withSuiteHome(async (home) => {
       const configPath = path.join(home, ".openclaw", "openclaw.json");
       const nextConfigPath = path.join(home, ".openclaw", "next.json");
-      const initialConfig = { gateway: { mode: "local", port: 18789 } } satisfies OpenClawConfig;
+      const initialConfig = { gateway: { mode: "local", port: 18789 } } satisfies OperatorConfig;
       const initialRaw = `${JSON.stringify(initialConfig, null, 2)}\n`;
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(configPath, initialRaw, "utf-8");
 
       await withEnvAsync(
         {
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_HOME: home,
-          OPENCLAW_STATE_DIR: undefined,
-          OPENCLAW_TEST_FAST: "1",
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_HOME: home,
+          OPERATOR_STATE_DIR: undefined,
+          OPERATOR_TEST_FAST: "1",
         },
         async () => {
           const prepared = await readConfigFileSnapshotForWrite();
@@ -3303,7 +3303,7 @@ describe("config io write", () => {
             writeConfigFile(
               {
                 gateway: { mode: "local", port: 19001 },
-                env: { OPENCLAW_CONFIG_PATH: nextConfigPath },
+                env: { OPERATOR_CONFIG_PATH: nextConfigPath },
               },
               {
                 baseSnapshot: prepared.snapshot,
@@ -3313,7 +3313,7 @@ describe("config io write", () => {
           ).rejects.toThrow("config path changed since last load");
 
           await expect(fs.readFile(configPath, "utf-8")).resolves.toBe(initialRaw);
-          expect(process.env.OPENCLAW_CONFIG_PATH).toBeUndefined();
+          expect(process.env.OPERATOR_CONFIG_PATH).toBeUndefined();
           await expect(fs.stat(nextConfigPath)).rejects.toMatchObject({ code: "ENOENT" });
         },
       );
@@ -3324,13 +3324,13 @@ describe("config io write", () => {
     await withSuiteHome(async (home) => {
       const configPath = path.join(home, ".openclaw", "openclaw.json");
       const otherConfigPath = path.join(home, ".openclaw", "other.json");
-      const initialConfig = { gateway: { mode: "local", port: 18789 } } satisfies OpenClawConfig;
+      const initialConfig = { gateway: { mode: "local", port: 18789 } } satisfies OperatorConfig;
       const initialRaw = `${JSON.stringify(initialConfig, null, 2)}\n`;
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(configPath, initialRaw, "utf-8");
       const env = {
-        OPENCLAW_CONFIG_PATH: configPath,
-        OPENCLAW_TEST_FAST: "1",
+        OPERATOR_CONFIG_PATH: configPath,
+        OPERATOR_TEST_FAST: "1",
       } as NodeJS.ProcessEnv;
       const readFile = fsNode.promises.readFile.bind(fsNode.promises);
       const rename = fsNode.promises.rename.bind(fsNode.promises);
@@ -3350,7 +3350,7 @@ describe("config io write", () => {
             await rename(from, to);
             if (!committed && to === configPath) {
               committed = true;
-              env.OPENCLAW_CONFIG_PATH = otherConfigPath;
+              env.OPERATOR_CONFIG_PATH = otherConfigPath;
             }
           },
         },
@@ -3417,14 +3417,14 @@ describe("config io write", () => {
       } satisfies ConfigFileSnapshot["config"];
 
       try {
-        await withEnvAsync({ OPENCLAW_CONFIG_PATH: configPath }, async () => {
+        await withEnvAsync({ OPERATOR_CONFIG_PATH: configPath }, async () => {
           setRuntimeConfigSnapshot(runtimeConfig, sourceConfig);
 
           await writeConfigFile(runtimeConfig, {
             explicitSetPaths: [["plugins", "entries", "demo", "config"]],
           });
 
-          const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as OpenClawConfig;
+          const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as OperatorConfig;
           expect(persisted.plugins?.entries?.demo?.config).toStrictEqual({ mode: "auto" });
         });
       } finally {
@@ -3467,12 +3467,12 @@ describe("config io write", () => {
 
       try {
         // Plugin is enabled but missing required "token" — validation fails without skip.
-        const cfg: OpenClawConfig = {
+        const cfg: OperatorConfig = {
           agents: { list: [{ id: "main", default: true }] },
           plugins: { entries: { "strict-plugin": { enabled: true } } },
         };
 
-        await withEnvAsync({ OPENCLAW_CONFIG_PATH: configPath }, async () => {
+        await withEnvAsync({ OPERATOR_CONFIG_PATH: configPath }, async () => {
           await writeConfigFile(cfg, { skipPluginValidation: true });
           await expect(fs.readFile(configPath, "utf-8")).resolves.toContain('"strict-plugin"');
 
@@ -3480,7 +3480,7 @@ describe("config io write", () => {
             /Config validation failed/,
           );
           await expect(
-            writeConfigFile({ agents: { list: "not-array" } } as unknown as OpenClawConfig, {
+            writeConfigFile({ agents: { list: "not-array" } } as unknown as OperatorConfig, {
               skipPluginValidation: true,
             }),
           ).rejects.toThrow(/Config validation failed/);
@@ -3522,7 +3522,7 @@ describe("config io write", () => {
         { baseSnapshot: snapshot },
       );
 
-      const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as OpenClawConfig;
+      const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as OperatorConfig;
       expect(persisted.logging?.file).toBe("~/openclaw-upgrade-survivor/gateway.jsonl");
       expect(persisted.logging?.level).toBe("debug");
     });
@@ -3547,7 +3547,7 @@ describe("config io write", () => {
         commentWarnings.push(message);
       });
       const io = createConfigIO({
-        env: { OPENCLAW_TEST_FAST: "1" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_TEST_FAST: "1" } as NodeJS.ProcessEnv,
         homedir: () => home,
         logger: { warn, error: vi.fn() },
       });

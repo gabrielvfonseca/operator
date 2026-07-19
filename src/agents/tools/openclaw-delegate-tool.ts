@@ -1,16 +1,16 @@
-/** Thin regular-agent client for the OpenClaw system agent. */
+/** Thin regular-agent client for the Operator system agent. */
 import { createHash, randomUUID } from "node:crypto";
 import { Type } from "typebox";
 import { SYSTEM_AGENT_ID } from "../../system-agent/agent-id.js";
 import { jsonResult, readStringParam, type AnyAgentTool } from "./common.js";
 import { callInProcessGatewayTool, type InProcessGatewayCaller } from "./in-process-gateway.js";
 
-const OpenClawDelegateSchema = Type.Object({
+const OperatorDelegateSchema = Type.Object({
   message: Type.String({ description: "What system must do." }),
-  sessionId: Type.Optional(Type.String({ description: "Continue prior OpenClaw talk." })),
+  sessionId: Type.Optional(Type.String({ description: "Continue prior Operator talk." })),
 });
 
-type OpenClawDelegateResult = {
+type OperatorDelegateResult = {
   sessionId: string;
   reply: string;
   action?: string;
@@ -24,7 +24,7 @@ function stableDelegationSessionId(sessionKey: string | undefined): string {
     : `delegate-${randomUUID()}`;
 }
 
-function createOpenClawDelegateTool(options?: {
+function createOperatorDelegateTool(options?: {
   requesterAgentId?: string;
   agentSessionKey?: string;
   turnSourceChannel?: string;
@@ -36,16 +36,16 @@ function createOpenClawDelegateTool(options?: {
   const defaultSessionId = stableDelegationSessionId(options?.agentSessionKey);
   return {
     name: "operator",
-    label: "OpenClaw",
+    label: "Operator",
     description:
       "Ask system expert. Config, channels, plugins, agents, models/providers, updates. Writes need human approval.",
-    parameters: OpenClawDelegateSchema,
+    parameters: OperatorDelegateSchema,
     execute: async (_toolCallId, args) => {
       const params = (args ?? {}) as Record<string, unknown>;
       const message = readStringParam(params, "message", { required: true });
       const sessionId = readStringParam(params, "sessionId") ?? defaultSessionId;
       const callGateway = options?.callGateway ?? callInProcessGatewayTool;
-      const result = await callGateway<OpenClawDelegateResult>("operator.chat", {
+      const result = await callGateway<OperatorDelegateResult>("operator.chat", {
         sessionId,
         message,
         delegation: {
@@ -71,7 +71,7 @@ function createOpenClawDelegateTool(options?: {
   };
 }
 
-export function createOpenClawDelegateToolsForRun(options: {
+export function createOperatorDelegateToolsForRun(options: {
   sessionAgentId: string;
   sandboxed?: boolean;
   runSessionKey?: string;
@@ -88,7 +88,7 @@ export function createOpenClawDelegateToolsForRun(options: {
     return [];
   }
   return [
-    createOpenClawDelegateTool({
+    createOperatorDelegateTool({
       requesterAgentId: options.sessionAgentId,
       agentSessionKey: options.runSessionKey ?? options.agentSessionKey,
       turnSourceChannel: options.agentChannel,

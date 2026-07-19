@@ -8,7 +8,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { sanitizeForLog } from "../../packages/terminal-core/src/ansi.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { openRootFile } from "../infra/boundary-file-read.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
@@ -75,7 +75,7 @@ function resetLoadedInternalHooks(): void {
  * 1. Directory-based discovery (bundled, managed, workspace)
  * 2. Legacy config handlers (backwards compatibility)
  *
- * @param cfg - OpenClaw configuration
+ * @param cfg - Operator configuration
  * @param workspaceDir - Workspace directory for hook discovery
  * @returns Number of handlers successfully loaded
  *
@@ -88,7 +88,7 @@ function resetLoadedInternalHooks(): void {
  * ```
  */
 export async function loadInternalHooks(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   workspaceDir: string,
   opts?: {
     managedHooksDir?: string;
@@ -177,7 +177,7 @@ export async function loadInternalHooks(
         if (unknownEvents.length > 0) {
           log.warn(
             `Hook '${safeLogValue(entry.hook.name)}' subscribes to event${unknownEvents.length === 1 ? "" : "s"} ` +
-              `${unknownEvents.map((event) => safeLogValue(event)).join(", ")} not emitted by OpenClaw core — ` +
+              `${unknownEvents.map((event) => safeLogValue(event)).join(", ")} not emitted by Operator core — ` +
               `likely a typo; unless a plugin emits it, the hook never fires. ` +
               `Known events: https://docs.operator.ai/automation/hooks`,
           );
@@ -278,7 +278,7 @@ export async function loadInternalHooks(
       if (!isKnownInternalHookEventKey(handlerConfig.event)) {
         log.warn(
           `Legacy hook handler ${safeLogValue(rawModule)} subscribes to event ` +
-            `${safeLogValue(handlerConfig.event)} not emitted by OpenClaw core — ` +
+            `${safeLogValue(handlerConfig.event)} not emitted by Operator core — ` +
             `likely a typo; unless a plugin emits it, the hook never fires. ` +
             `Known events: https://docs.operator.ai/automation/hooks`,
         );

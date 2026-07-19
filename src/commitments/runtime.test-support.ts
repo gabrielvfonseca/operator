@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import "./runtime.js";
 import type { CommitmentExtractionBatchResult, CommitmentExtractionItem } from "./types.js";
 
@@ -6,10 +6,10 @@ type TimerHandle = ReturnType<typeof setTimeout>;
 
 type CommitmentExtractionRuntime = {
   extractBatch?: (params: {
-    cfg?: OpenClawConfig;
+    cfg?: OperatorConfig;
     items: CommitmentExtractionItem[];
   }) => Promise<CommitmentExtractionBatchResult>;
-  resolveDefaultModel?: (params: { cfg: OpenClawConfig; agentId?: string }) => {
+  resolveDefaultModel?: (params: { cfg: OperatorConfig; agentId?: string }) => {
     provider: string;
     model: string;
   };

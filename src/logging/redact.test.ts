@@ -357,13 +357,13 @@ describe("redactSensitiveText", () => {
     const pomeriumJwt = "eyJheaderabcd.eyJpayloadabcd.signatureabcd123456";
     const apiKey = "shortsecret";
     const input = [
-      `X-OpenClaw-Token: ${openClawToken}`,
+      `X-Operator-Token: ${openClawToken}`,
       `x-pomerium-jwt-assertion: ${pomeriumJwt}`,
       `X-Api-Key=${apiKey}`,
     ].join("\n");
     const output = redactSensitiveText(input, { mode: "tools" });
 
-    expect(output).toContain("X-OpenClaw-Token: supers…7890");
+    expect(output).toContain("X-Operator-Token: supers…7890");
     expect(output).toContain("x-pomerium-jwt-assertion: eyJhea…3456");
     expect(output).toContain("X-Api-Key=***");
     expect(output).not.toContain(openClawToken);
@@ -1124,7 +1124,7 @@ describe("redactSensitiveText", () => {
       },
     }`);
 
-    withEnv({ OPENCLAW_CONFIG_PATH: configPath }, () =>
+    withEnv({ OPERATOR_CONFIG_PATH: configPath }, () =>
       expect(redactSensitiveText("OPENAI_API_KEY=sk-1234567890abcdef")).toBe(
         "OPENAI_API_KEY=sk-1234567890abcdef",
       ),
@@ -1188,7 +1188,7 @@ describe("redactSensitiveText", () => {
       },
     }`);
 
-    withEnv({ OPENCLAW_CONFIG_PATH: configPath }, () =>
+    withEnv({ OPERATOR_CONFIG_PATH: configPath }, () =>
       expect(redactSensitiveText("ticket internal-12345 should hide")).toBe(
         "ticket *** should hide",
       ),

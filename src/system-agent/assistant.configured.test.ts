@@ -1,8 +1,8 @@
-// Configured OpenClaw assistant tests cover route-owned, tool-free planning.
+// Configured Operator assistant tests cover route-owned, tool-free planning.
 import { describe, expect, it, vi } from "vitest";
 import type { RunCliAgentParams } from "../agents/cli-runner/types.js";
 import { fingerprintResolvedProviderAuth } from "../agents/execution-auth-binding.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { planSystemAgentCommandWithConfiguredModel } from "./assistant.js";
 import { SystemAgentInferenceUnavailableError } from "./inference-error.js";
 import { resolveSystemAgentConfiguredRouteFromConfig } from "./inference-route.js";
@@ -49,7 +49,7 @@ function overview(defaultModel?: string): SystemAgentOverview {
   };
 }
 
-function snapshot(config: OpenClawConfig) {
+function snapshot(config: OperatorConfig) {
   return {
     path: "/tmp/openclaw.json",
     exists: true,
@@ -62,7 +62,7 @@ function snapshot(config: OpenClawConfig) {
   };
 }
 
-describe("OpenClaw configured-model planner", () => {
+describe("Operator configured-model planner", () => {
   it("rejects a low-level missing binding before config lookup or model execution", async () => {
     const readConfigFileSnapshot = vi.fn();
     const runCliAgent = vi.fn();
@@ -93,7 +93,7 @@ describe("OpenClaw configured-model planner", () => {
       auth: {
         profiles: { "openai:p2": { provider: "openai", mode: "api_key" } },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const configuredRoute = await resolveSystemAgentConfiguredRouteFromConfig(config);
     if (!configuredRoute) {
       throw new Error("missing test route");
@@ -157,7 +157,7 @@ describe("OpenClaw configured-model planner", () => {
   it("fails closed before planning when the verified route loses its config", async () => {
     const config = {
       agents: { defaults: { model: "openai/gpt-5.5" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const { binding, deps } = await createSystemAgentVerifiedInferenceTestFixture(config);
     const runCliAgent = vi.fn();
     const runEmbeddedAgent = vi.fn();
@@ -188,12 +188,12 @@ describe("OpenClaw configured-model planner", () => {
   it("rejects a model result when its owner changes during planner cleanup", async () => {
     const config = {
       agents: { defaults: { model: "openai/gpt-5.5" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const changedConfig = {
       agents: { defaults: { model: "anthropic/claude-opus-4-8" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const { binding, deps } = await createSystemAgentVerifiedInferenceTestFixture(config);
-    let currentConfig: OpenClawConfig = config;
+    let currentConfig: OperatorConfig = config;
     const runEmbeddedAgent = vi.fn(async () => ({
       payloads: [{ text: '{"reply":"Ready."}' }],
     }));
@@ -218,7 +218,7 @@ describe("OpenClaw configured-model planner", () => {
   });
 
   it("plans through the configured default agent CLI route with native tools disabled", async () => {
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       agents: {
         defaults: { cliBackends: { "claude-cli": { command: "claude" } } },
         list: [
@@ -277,7 +277,7 @@ describe("OpenClaw configured-model planner", () => {
   });
 
   it("plans through the configured default agent embedded runtime without tools", async () => {
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       agents: {
         list: [
           {
@@ -345,7 +345,7 @@ describe("OpenClaw configured-model planner", () => {
           },
         ],
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const { binding, deps } = await createSystemAgentVerifiedInferenceTestFixture(config);
     const runEmbeddedAgent = vi.fn(async () => ({
       payloads: [{ text: '{"reply":"Ready.","command":"gateway status"}' }],

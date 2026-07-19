@@ -11,7 +11,7 @@ import {
   normalizeOptionalString,
 } from "@operator/normalization-core/string-coerce";
 import { normalizeTrimmedStringList } from "@operator/normalization-core/string-normalization";
-import { listOpenClawPluginManifestMetadata } from "../plugins/manifest-metadata-scan.js";
+import { listOperatorPluginManifestMetadata } from "../plugins/manifest-metadata-scan.js";
 import { listOfficialExternalProviderEndpointManifests } from "../plugins/official-external-provider-endpoints.js";
 import { asBoolean } from "../utils/boolean.js";
 import type { RuntimeVersionEnv } from "../version.js";
@@ -142,7 +142,7 @@ function readCompatBoolean(
   return asBoolean((compat as Record<string, unknown>)[key]);
 }
 
-const OPERATOR_ATTRIBUTION_PRODUCT = "OpenClaw";
+const OPERATOR_ATTRIBUTION_PRODUCT = "Operator";
 const OPERATOR_ATTRIBUTION_ORIGINATOR = "operator";
 const OPENROUTER_ATTRIBUTION_CATEGORIES =
   "cli-agent,cloud-agent,programming-app,creative-writing,writing-assistant,general-chat,personal-agent";
@@ -193,7 +193,7 @@ type ManifestProviderRequestCacheEntry = {
 let manifestProviderEndpointCache: ManifestProviderEndpointCacheEntry[] | null = null;
 let manifestProviderRequestCache: Map<string, ManifestProviderRequestCacheEntry> | null = null;
 
-function formatOpenClawUserAgent(version: string): string {
+function formatOperatorUserAgent(version: string): string {
   return `${OPERATOR_ATTRIBUTION_ORIGINATOR}/${version}`;
 }
 
@@ -331,7 +331,7 @@ function readManifestProviderRequests(
 
 function collectManifestProviderEndpoints(): ManifestProviderEndpointCacheEntry[] {
   const entries: ManifestProviderEndpointCacheEntry[] = [];
-  for (const { manifest } of listOpenClawPluginManifestMetadata()) {
+  for (const { manifest } of listOperatorPluginManifestMetadata()) {
     entries.push(...readManifestProviderEndpoints(manifest));
   }
   // Externalized official provider plugins are excluded from dist builds, so
@@ -347,7 +347,7 @@ function collectManifestProviderEndpoints(): ManifestProviderEndpointCacheEntry[
 
 function collectManifestProviderRequests(): Map<string, ManifestProviderRequestCacheEntry> {
   const entries = new Map<string, ManifestProviderRequestCacheEntry>();
-  for (const { manifest } of listOpenClawPluginManifestMetadata()) {
+  for (const { manifest } of listOperatorPluginManifestMetadata()) {
     for (const [provider, request] of readManifestProviderRequests(manifest)) {
       entries.set(provider, request);
     }
@@ -494,7 +494,7 @@ function buildOpenRouterAttributionPolicy(
     verification: "vendor-documented",
     hook: "request-headers",
     docsUrl: "https://openrouter.ai/docs/app-attribution",
-    reviewNote: "Documented app attribution headers. Verified in OpenClaw runtime wrapper.",
+    reviewNote: "Documented app attribution headers. Verified in Operator runtime wrapper.",
     ...identity,
     headers: {
       "HTTP-Referer": "https://operator.ai",
@@ -555,7 +555,7 @@ function buildOpenAIAttributionPolicy(
     headers: {
       originator: OPERATOR_ATTRIBUTION_ORIGINATOR,
       version: identity.version,
-      "User-Agent": formatOpenClawUserAgent(identity.version),
+      "User-Agent": formatOperatorUserAgent(identity.version),
     },
   };
 }
@@ -575,7 +575,7 @@ function buildXaiAttributionPolicy(
     headers: {
       originator: OPERATOR_ATTRIBUTION_ORIGINATOR,
       version: identity.version,
-      "User-Agent": formatOpenClawUserAgent(identity.version),
+      "User-Agent": formatOperatorUserAgent(identity.version),
     },
   };
 }

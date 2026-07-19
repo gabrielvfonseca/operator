@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   resolveEffectiveToolPolicy,
   resolveGroupToolPolicy,
@@ -15,7 +15,7 @@ import { isToolAllowedByPolicies } from "./tool-policy-match.js";
 import { mergeAlsoAllowPolicy, resolveToolProfilePolicy } from "./tool-policy.js";
 
 export type WebSearchToolPolicyParams = {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   modelProvider?: string;
   modelId?: string;
   agentId?: string;

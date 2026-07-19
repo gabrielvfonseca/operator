@@ -2,7 +2,7 @@
 import { redactSensitiveUrlLikeString } from "@operator/net-policy/redact-sensitive-url";
 import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import { resolveConfigPath, resolveGatewayPort } from "../config/paths.js";
-import type { OpenClawConfig } from "../config/types.js";
+import type { OperatorConfig } from "../config/types.js";
 import { isSecureWebSocketUrl } from "./net.js";
 
 /** Resolved gateway target plus redacted display text for diagnostics. */
@@ -15,15 +15,15 @@ export type GatewayConnectionDetails = {
 };
 
 type GatewayConnectionDetailResolvers = {
-  getRuntimeConfig?: () => OpenClawConfig;
+  getRuntimeConfig?: () => OperatorConfig;
   resolveConfigPath?: (env: NodeJS.ProcessEnv) => string;
-  resolveGatewayPort?: (cfg?: OpenClawConfig, env?: NodeJS.ProcessEnv) => number;
+  resolveGatewayPort?: (cfg?: OperatorConfig, env?: NodeJS.ProcessEnv) => number;
 };
 
 /** Build gateway target details and reject unsafe remote plaintext websocket URLs. */
 export function buildGatewayConnectionDetailsWithResolvers(
   options: {
-    config?: OpenClawConfig;
+    config?: OperatorConfig;
     url?: string;
     configPath?: string;
     urlSource?: "cli" | "env";

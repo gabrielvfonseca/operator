@@ -1,11 +1,11 @@
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { AuthProfileStore } from "../auth-profiles/types.js";
 import type { ToolModelConfig } from "./model-config.helpers.js";
 import "./video-generate-tool.js";
 
 type VideoGenerateToolTestApi = {
   resolveVideoGenerationModelConfigForTool(params: {
-    cfg?: OpenClawConfig;
+    cfg?: OperatorConfig;
     workspaceDir?: string;
     agentDir?: string;
     authStore?: AuthProfileStore;

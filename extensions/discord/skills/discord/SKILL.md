@@ -130,7 +130,7 @@ Presence, often gated:
   "action": "set-presence",
   "channel": "discord",
   "activityType": "playing",
-  "activityName": "OpenClaw",
+  "activityName": "Operator",
   "status": "online"
 }
 ```

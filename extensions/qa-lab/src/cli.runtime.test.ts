@@ -371,11 +371,11 @@ describe("qa cli runtime", () => {
   });
 
   it("dispatches a taxonomy-backed profile category through the suite runner", async () => {
-    const previousProfile = process.env.OPENCLAW_QA_PROFILE;
-    process.env.OPENCLAW_QA_PROFILE = "release";
+    const previousProfile = process.env.OPERATOR_QA_PROFILE;
+    process.env.OPERATOR_QA_PROFILE = "release";
     try {
       runQaSuite.mockImplementationOnce(async () => {
-        expect(process.env.OPENCLAW_QA_PROFILE).toBe("smoke-ci");
+        expect(process.env.OPERATOR_QA_PROFILE).toBe("smoke-ci");
         await fs.writeFile(
           suiteEvidencePath,
           JSON.stringify(
@@ -462,7 +462,7 @@ describe("qa cli runtime", () => {
         channelDriver: "crabline",
       });
       expect(suiteArgs.scenarioIds).toEqual(["dm-chat-baseline"]);
-      expect(process.env.OPENCLAW_QA_PROFILE).toBe("release");
+      expect(process.env.OPERATOR_QA_PROFILE).toBe("release");
       const evidence = JSON.parse(await fs.readFile(suiteEvidencePath, "utf8")) as {
         evidenceMode?: unknown;
         entries?: unknown[];
@@ -500,9 +500,9 @@ describe("qa cli runtime", () => {
       expectWriteContains(stdoutWrite, `QA profile scorecard: ${suiteEvidencePath}`);
     } finally {
       if (previousProfile === undefined) {
-        delete process.env.OPENCLAW_QA_PROFILE;
+        delete process.env.OPERATOR_QA_PROFILE;
       } else {
-        process.env.OPENCLAW_QA_PROFILE = previousProfile;
+        process.env.OPERATOR_QA_PROFILE = previousProfile;
       }
     }
   });
@@ -1081,20 +1081,20 @@ describe("qa cli runtime", () => {
     await fs.writeFile(launcherPath, "#!/bin/sh\nexit 0\n", { mode: 0o700 });
     await fs.writeFile(preloadPath, "export {};\n", { mode: 0o600 });
     await fs.writeFile(runtimeEntryPath, "export {};\n", { mode: 0o600 });
-    vi.stubEnv("OPENCLAW_QA_TELEGRAM_SUT_FORWARDED_ENV_KEYS", "HOME,PATH");
-    vi.stubEnv("OPENCLAW_QA_TELEGRAM_SUT_CLEANUP_TIMEOUT_MS", "60000");
-    vi.stubEnv("OPENCLAW_QA_TELEGRAM_SUT_GID", "1002");
-    vi.stubEnv("OPENCLAW_QA_TELEGRAM_SUT_OPENCLAW_COMMAND", launcherPath);
-    vi.stubEnv("OPENCLAW_QA_TELEGRAM_SUT_PRELOAD_PATH", preloadPath);
-    vi.stubEnv("OPENCLAW_QA_TELEGRAM_SUT_PROCESS_BOUNDARY_DIR", boundaryDir);
-    vi.stubEnv("OPENCLAW_QA_TELEGRAM_SUT_RUNTIME_EXECUTABLE", process.execPath);
-    vi.stubEnv("OPENCLAW_QA_TELEGRAM_SUT_UID", "1001");
+    vi.stubEnv("OPERATOR_QA_TELEGRAM_SUT_FORWARDED_ENV_KEYS", "HOME,PATH");
+    vi.stubEnv("OPERATOR_QA_TELEGRAM_SUT_CLEANUP_TIMEOUT_MS", "60000");
+    vi.stubEnv("OPERATOR_QA_TELEGRAM_SUT_GID", "1002");
+    vi.stubEnv("OPERATOR_QA_TELEGRAM_SUT_OPERATOR_COMMAND", launcherPath);
+    vi.stubEnv("OPERATOR_QA_TELEGRAM_SUT_PRELOAD_PATH", preloadPath);
+    vi.stubEnv("OPERATOR_QA_TELEGRAM_SUT_PROCESS_BOUNDARY_DIR", boundaryDir);
+    vi.stubEnv("OPERATOR_QA_TELEGRAM_SUT_RUNTIME_EXECUTABLE", process.execPath);
+    vi.stubEnv("OPERATOR_QA_TELEGRAM_SUT_UID", "1001");
     await runQaTelegramCommand({
       repoRoot: candidateRoot,
       scenarioIds: ["telegram-help-command", "telegram-stream-final-single-message"],
     });
 
-    const sutOpenClawCommand = {
+    const sutOperatorCommand = {
       executablePath: launcherPath,
       tempParentDir: runtimeTempParent,
       usePackagedPlugins: true,
@@ -1110,18 +1110,18 @@ describe("qa cli runtime", () => {
       },
     };
     expect(runQaFlowSuiteFromRuntime).toHaveBeenCalledWith(
-      expect.objectContaining({ sutOpenClawCommand }),
+      expect.objectContaining({ sutOperatorCommand }),
     );
   });
 
   it("rejects relative Telegram launcher paths before starting a gateway", async () => {
-    vi.stubEnv("OPENCLAW_QA_TELEGRAM_SUT_OPENCLAW_COMMAND", "relative-launcher");
+    vi.stubEnv("OPERATOR_QA_TELEGRAM_SUT_OPERATOR_COMMAND", "relative-launcher");
     await expect(
       runQaTelegramCommand({
         repoRoot: "/tmp/openclaw-repo",
         scenarioIds: ["telegram-help-command"],
       }),
-    ).rejects.toThrow("OPENCLAW_QA_TELEGRAM_SUT_OPENCLAW_COMMAND must be an absolute file path.");
+    ).rejects.toThrow("OPERATOR_QA_TELEGRAM_SUT_OPERATOR_COMMAND must be an absolute file path.");
 
     expect(runQaFlowSuiteFromRuntime).not.toHaveBeenCalled();
   });
@@ -1129,21 +1129,21 @@ describe("qa cli runtime", () => {
   it("rejects non-executable Telegram launcher files before starting a gateway", async () => {
     const launcherPath = path.join(telegramArtifactsDir, "non-executable-launcher");
     await fs.writeFile(launcherPath, "#!/bin/sh\nexit 0\n", { mode: 0o600 });
-    vi.stubEnv("OPENCLAW_QA_TELEGRAM_SUT_OPENCLAW_COMMAND", launcherPath);
+    vi.stubEnv("OPERATOR_QA_TELEGRAM_SUT_OPERATOR_COMMAND", launcherPath);
     await expect(
       runQaTelegramCommand({
         repoRoot: "/tmp/openclaw-repo",
         scenarioIds: ["telegram-help-command"],
       }),
     ).rejects.toThrow(
-      `OPENCLAW_QA_TELEGRAM_SUT_OPENCLAW_COMMAND must point to an executable regular file: ${launcherPath}`,
+      `OPERATOR_QA_TELEGRAM_SUT_OPERATOR_COMMAND must point to an executable regular file: ${launcherPath}`,
     );
 
     expect(runQaFlowSuiteFromRuntime).not.toHaveBeenCalled();
   });
 
   it("rejects unknown mixed Telegram selections before resolving the SUT launcher", async () => {
-    vi.stubEnv("OPENCLAW_QA_TELEGRAM_SUT_OPENCLAW_COMMAND", "relative-launcher");
+    vi.stubEnv("OPERATOR_QA_TELEGRAM_SUT_OPERATOR_COMMAND", "relative-launcher");
     await expect(
       runQaTelegramCommand({
         repoRoot: "/tmp/openclaw-repo",
@@ -1155,7 +1155,7 @@ describe("qa cli runtime", () => {
   });
 
   it("prints telegram scenario catalog without resolving the SUT launcher", async () => {
-    vi.stubEnv("OPENCLAW_QA_TELEGRAM_SUT_OPENCLAW_COMMAND", "relative-launcher");
+    vi.stubEnv("OPERATOR_QA_TELEGRAM_SUT_OPERATOR_COMMAND", "relative-launcher");
     await runQaTelegramCommand({
       repoRoot: "/tmp/openclaw-repo",
       providerMode: "mock-openai",
@@ -2034,7 +2034,7 @@ describe("qa cli runtime", () => {
   it("prints a markdown tool coverage report from runtime tool fixtures", async () => {
     await runQaCoverageReportCommand({ repoRoot: process.cwd(), tools: true });
 
-    expectWriteContains(stdoutWrite, "# OpenClaw Runtime Tool Coverage");
+    expectWriteContains(stdoutWrite, "# Operator Runtime Tool Coverage");
     expectWriteContains(stdoutWrite, "codex-native-workspace");
   });
 
@@ -2059,7 +2059,7 @@ describe("qa cli runtime", () => {
         ),
       ) as { transcripts?: Array<{ userTurnCount?: number }> };
 
-      expect(report).toContain("# OpenClaw JSONL Replay Report - openclaw vs codex");
+      expect(report).toContain("# Operator JSONL Replay Report - openclaw vs codex");
       expect(report).toContain("| plan-mode-boundaries.jsonl | 3 |  | none, none, none |");
       expect(summary.transcripts).toHaveLength(7);
     } finally {
@@ -2740,10 +2740,10 @@ describe("qa cli runtime", () => {
   });
 
   it("rejects oversized credential payload files before broker setup", async () => {
-    const previousMaxBytes = process.env.OPENCLAW_QA_CREDENTIAL_PAYLOAD_MAX_BYTES;
+    const previousMaxBytes = process.env.OPERATOR_QA_CREDENTIAL_PAYLOAD_MAX_BYTES;
     const payloadPath = path.join(suiteArtifactsDir, "oversized-credential.json");
     await fs.writeFile(payloadPath, JSON.stringify({ blob: "x".repeat(64) }), "utf8");
-    process.env.OPENCLAW_QA_CREDENTIAL_PAYLOAD_MAX_BYTES = "32";
+    process.env.OPERATOR_QA_CREDENTIAL_PAYLOAD_MAX_BYTES = "32";
 
     try {
       await expect(
@@ -2752,13 +2752,13 @@ describe("qa cli runtime", () => {
           payloadFile: payloadPath,
         }),
       ).rejects.toThrow(
-        "Payload file exceeds OPENCLAW_QA_CREDENTIAL_PAYLOAD_MAX_BYTES (32 bytes).",
+        "Payload file exceeds OPERATOR_QA_CREDENTIAL_PAYLOAD_MAX_BYTES (32 bytes).",
       );
     } finally {
       if (previousMaxBytes === undefined) {
-        delete process.env.OPENCLAW_QA_CREDENTIAL_PAYLOAD_MAX_BYTES;
+        delete process.env.OPERATOR_QA_CREDENTIAL_PAYLOAD_MAX_BYTES;
       } else {
-        process.env.OPENCLAW_QA_CREDENTIAL_PAYLOAD_MAX_BYTES = previousMaxBytes;
+        process.env.OPERATOR_QA_CREDENTIAL_PAYLOAD_MAX_BYTES = previousMaxBytes;
       }
     }
   });

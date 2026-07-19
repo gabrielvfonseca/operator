@@ -7,7 +7,7 @@ import path from "node:path";
 import { uniqueStrings } from "@operator/normalization-core/string-normalization";
 import { Type } from "typebox";
 import { resolveStateDir } from "../../config/paths.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   type ResolvedTranscriptsAutoStartConfig,
   resolveTranscriptsConfig,
@@ -296,7 +296,7 @@ async function statusTranscripts(ctx: TranscriptsRuntimeContext) {
 
 /** Create the agent-facing transcripts tool. */
 export function createTranscriptsTool(options?: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   stateDir?: string;
   logger?: TranscriptsLogger;
 }): AnyAgentTool {

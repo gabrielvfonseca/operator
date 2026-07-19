@@ -492,7 +492,7 @@ export function createCommandHandlers(context: CommandHandlerContext) {
         break;
       case "operator":
         chatLog.addSystem(
-          args ? `returning to OpenClaw with request: ${args}` : "returning to OpenClaw",
+          args ? `returning to Operator with request: ${args}` : "returning to Operator",
         );
         requestExit({
           exitReason: "return-to-system-agent",

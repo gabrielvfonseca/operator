@@ -31,7 +31,7 @@ const buildGatewayInstallPlanMock = vi.hoisted(() =>
 const resolveGatewayInstallTokenMock = vi.hoisted(() => vi.fn());
 const readConfigFileSnapshotForWriteMock = vi.hoisted(() => vi.fn());
 const resolveGatewayPortMock = vi.hoisted(() => vi.fn(() => 18789));
-const resolveOpenClawWrapperPathMock = vi.hoisted(() => vi.fn());
+const resolveOperatorWrapperPathMock = vi.hoisted(() => vi.fn());
 const formatGatewayServiceStartRepairIssuesMock = vi.hoisted(() => vi.fn());
 const defaultRuntimeLogMock = vi.hoisted(() => vi.fn());
 
@@ -56,8 +56,8 @@ vi.mock("../../config/paths.js", () => ({
 }));
 
 vi.mock("../../daemon/program-args.js", () => ({
-  OPENCLAW_WRAPPER_ENV_KEY: "OPENCLAW_WRAPPER",
-  resolveOpenClawWrapperPath: resolveOpenClawWrapperPathMock,
+  OPERATOR_WRAPPER_ENV_KEY: "OPERATOR_WRAPPER",
+  resolveOperatorWrapperPath: resolveOperatorWrapperPathMock,
 }));
 
 vi.mock("../../daemon/service.js", () => ({
@@ -84,7 +84,7 @@ describe("repairLoadedGatewayServiceForStart", () => {
     resolveGatewayInstallTokenMock.mockReset();
     readConfigFileSnapshotForWriteMock.mockReset();
     resolveGatewayPortMock.mockClear();
-    resolveOpenClawWrapperPathMock.mockReset();
+    resolveOperatorWrapperPathMock.mockReset();
     formatGatewayServiceStartRepairIssuesMock.mockReset();
     defaultRuntimeLogMock.mockClear();
 
@@ -96,7 +96,7 @@ describe("repairLoadedGatewayServiceForStart", () => {
       snapshot: { exists: true, valid: true, sourceConfig: {}, config: {} },
       writeOptions: { expectedConfigPath: "/tmp/openclaw.json" },
     });
-    resolveOpenClawWrapperPathMock.mockResolvedValue("/usr/bin/openclaw");
+    resolveOperatorWrapperPathMock.mockResolvedValue("/usr/bin/openclaw");
     formatGatewayServiceStartRepairIssuesMock.mockReturnValue(
       "service was installed by an older version",
     );
@@ -110,11 +110,11 @@ describe("repairLoadedGatewayServiceForStart", () => {
       isLoaded: isLoadedMock,
     } as unknown as GatewayService;
     const existingEnvironment = {
-      OPENCLAW_SERVICE_VERSION: "2026.4.24",
+      OPERATOR_SERVICE_VERSION: "2026.4.24",
       TELEGRAM_DEFAULT_BOTTOKEN: "existing-env-file-token",
     };
     const existingEnvironmentValueSources = {
-      OPENCLAW_SERVICE_VERSION: "inline" as const,
+      OPERATOR_SERVICE_VERSION: "inline" as const,
       TELEGRAM_DEFAULT_BOTTOKEN: "file" as const,
     };
     const state: GatewayServiceState = {

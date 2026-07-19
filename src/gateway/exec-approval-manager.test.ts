@@ -9,8 +9,8 @@ import type { ExecApprovalDecision, ExecApprovalRequestPayload } from "../infra/
 import type { PluginApprovalRequestPayload } from "../infra/plugin-approvals.js";
 import { MAX_TIMER_TIMEOUT_MS } from "../shared/number-coercion.js";
 import {
-  closeOpenClawStateDatabase,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabase,
+  openOperatorStateDatabase,
 } from "../state/openclaw-state-db.js";
 import {
   ExecApprovalManager,
@@ -39,7 +39,7 @@ describe("ExecApprovalManager", () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
-    closeOpenClawStateDatabase();
+    closeOperatorStateDatabase();
     for (const dir of tempDirs.splice(0)) {
       fs.rmSync(dir, { recursive: true, force: true });
     }
@@ -571,7 +571,7 @@ describe("ExecApprovalManager", () => {
     expect(durableJson).not.toContain("/hidden/cwd/value");
     expect(durableJson).not.toContain("hidden-env-hash");
 
-    const database = openOpenClawStateDatabase(databaseOptions);
+    const database = openOperatorStateDatabase(databaseOptions);
     const row = database.db
       .prepare("SELECT presentation_json FROM operator_approvals WHERE approval_id = ?")
       .get(record.id) as { presentation_json?: unknown } | undefined;

@@ -21,11 +21,11 @@ import {
   setRuntimeConfigSnapshot,
   setRuntimeConfigSnapshotRefreshHandler,
 } from "./runtime-snapshot.js";
-import type { ConfigFileSnapshot, OpenClawConfig } from "./types.js";
+import type { ConfigFileSnapshot, OperatorConfig } from "./types.js";
 
 type MockValidationIssue = { path: string; message: string };
 type MockValidationResult =
-  | { ok: true; config: OpenClawConfig; warnings: MockValidationIssue[] }
+  | { ok: true; config: OperatorConfig; warnings: MockValidationIssue[] }
   | { ok: false; issues: MockValidationIssue[]; warnings: MockValidationIssue[] };
 type ConfigIOReadForWrite = ReturnType<
   typeof import("./io.js").createConfigIO
@@ -48,7 +48,7 @@ const ioMocks = vi.hoisted(() => {
 });
 const validationMocks = vi.hoisted(() => ({
   validateConfigObjectWithPlugins: vi.fn(
-    (config: OpenClawConfig): MockValidationResult => ({
+    (config: OperatorConfig): MockValidationResult => ({
       ok: true,
       config,
       warnings: [],
@@ -77,8 +77,8 @@ function createSnapshot(params: {
   hash: string;
   path?: string;
   parsed?: unknown;
-  sourceConfig: OpenClawConfig;
-  runtimeConfig?: OpenClawConfig;
+  sourceConfig: OperatorConfig;
+  runtimeConfig?: OperatorConfig;
 }): ConfigFileSnapshot {
   const runtimeConfig = (params.runtimeConfig ??
     params.sourceConfig) as ConfigFileSnapshot["config"];
@@ -109,7 +109,7 @@ const allowConfigPathWrite = () => {};
 
 describe("config mutate helpers", () => {
   const suiteRootTracker = createSuiteTempRootTracker({ prefix: "openclaw-config-mutate-" });
-  const originalNixMode = process.env.OPENCLAW_NIX_MODE;
+  const originalNixMode = process.env.OPERATOR_NIX_MODE;
 
   beforeAll(async () => {
     await suiteRootTracker.setup();
@@ -117,9 +117,9 @@ describe("config mutate helpers", () => {
 
   afterAll(async () => {
     if (originalNixMode === undefined) {
-      delete process.env.OPENCLAW_NIX_MODE;
+      delete process.env.OPERATOR_NIX_MODE;
     } else {
-      process.env.OPENCLAW_NIX_MODE = originalNixMode;
+      process.env.OPERATOR_NIX_MODE = originalNixMode;
     }
     await suiteRootTracker.cleanup();
   });
@@ -128,7 +128,7 @@ describe("config mutate helpers", () => {
     vi.clearAllMocks();
     resetConfigRuntimeState();
     validationMocks.validateConfigObjectWithPlugins.mockImplementation(
-      (config: OpenClawConfig) => ({
+      (config: OperatorConfig) => ({
         ok: true,
         config,
         warnings: [],
@@ -137,7 +137,7 @@ describe("config mutate helpers", () => {
     ioMocks.resolveConfigSnapshotHash.mockImplementation(
       (snapshot: { hash?: string }) => snapshot.hash ?? null,
     );
-    delete process.env.OPENCLAW_NIX_MODE;
+    delete process.env.OPERATOR_NIX_MODE;
   });
 
   it("mutates source config with optimistic hash protection", async () => {
@@ -267,7 +267,7 @@ describe("config mutate helpers", () => {
       new ConfigMutationConflictError("stale", { currentHash: fresh.hash ?? null }),
     );
 
-    const transform = vi.fn((config: OpenClawConfig) => ({ nextConfig: config }));
+    const transform = vi.fn((config: OperatorConfig) => ({ nextConfig: config }));
 
     await expect(
       transformConfigFileWithRetry({
@@ -307,7 +307,7 @@ describe("config mutate helpers", () => {
           ownedConfigPathForWrite: fresh.path,
         },
       });
-    const transform = vi.fn((config: OpenClawConfig) => ({ nextConfig: config }));
+    const transform = vi.fn((config: OperatorConfig) => ({ nextConfig: config }));
 
     await expect(
       transformConfigFileWithRetry({
@@ -468,7 +468,7 @@ describe("config mutate helpers", () => {
   });
 
   it("refuses replace writes in Nix mode before touching disk", async () => {
-    process.env.OPENCLAW_NIX_MODE = "1";
+    process.env.OPERATOR_NIX_MODE = "1";
     const snapshot = createSnapshot({
       hash: "hash-1",
       sourceConfig: { gateway: { port: 18789 } },
@@ -490,7 +490,7 @@ describe("config mutate helpers", () => {
   });
 
   it("refuses mutate writes in Nix mode before touching disk", async () => {
-    process.env.OPENCLAW_NIX_MODE = "1";
+    process.env.OPERATOR_NIX_MODE = "1";
     const snapshot = createSnapshot({
       hash: "hash-1",
       sourceConfig: { gateway: { port: 18789 } },
@@ -506,7 +506,7 @@ describe("config mutate helpers", () => {
           draft.gateway = { ...draft.gateway, port: 19001 };
         },
       }),
-    ).rejects.toThrow("OpenClaw Nix overview: https://docs.openclaw.ai/install/nix");
+    ).rejects.toThrow("Operator Nix overview: https://docs.openclaw.ai/install/nix");
 
     expect(ioMocks.writeConfigFile).not.toHaveBeenCalled();
   });
@@ -638,7 +638,7 @@ describe("config mutate helpers", () => {
           entries: {
             old: {
               enabled: true,
-              config: { token: "${OPENCLAW_TEST_PLUGIN_TOKEN}" },
+              config: { token: "${OPERATOR_TEST_PLUGIN_TOKEN}" },
             },
           },
         },
@@ -685,7 +685,7 @@ describe("config mutate helpers", () => {
         snapshot,
         writeOptions: {
           expectedConfigPath: configPath,
-          envSnapshotForRestore: { OPENCLAW_TEST_PLUGIN_TOKEN: "plugin-token-runtime" },
+          envSnapshotForRestore: { OPERATOR_TEST_PLUGIN_TOKEN: "plugin-token-runtime" },
           assertConfigPathForWrite: allowConfigPathWrite,
           includeFileTargetsForWrite: { [pluginsPath]: await resolveIncludeTarget(pluginsPath) },
         },
@@ -723,7 +723,7 @@ describe("config mutate helpers", () => {
           },
         },
         io: {
-          env: { OPENCLAW_TEST_PLUGIN_TOKEN: "plugin-token-after-read" },
+          env: { OPERATOR_TEST_PLUGIN_TOKEN: "plugin-token-after-read" },
           readConfigFileSnapshotForWrite: ioMocks.readConfigFileSnapshotForWrite,
           writeConfigFile: ioMocks.writeConfigFile,
         },
@@ -773,7 +773,7 @@ describe("config mutate helpers", () => {
       entries?: Record<string, { config?: { token?: string } }>;
       installs?: Record<string, unknown>;
     };
-    expect(persistedPlugins.entries?.old?.config?.token).toBe("${OPENCLAW_TEST_PLUGIN_TOKEN}");
+    expect(persistedPlugins.entries?.old?.config?.token).toBe("${OPERATOR_TEST_PLUGIN_TOKEN}");
     expect(persistedPlugins.entries?.demo).toEqual({ enabled: true });
     expect(persistedPlugins.installs).toBeUndefined();
   });
@@ -807,7 +807,7 @@ describe("config mutate helpers", () => {
     };
     const nextConfig = {
       plugins: { entries: { demo: { enabled: true } } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     ioMocks.readConfigFileSnapshotForWrite
       .mockResolvedValueOnce({
         snapshot,
@@ -872,7 +872,7 @@ describe("config mutate helpers", () => {
     };
     const nextConfig = {
       plugins: { entries: { demo: { enabled: true } } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     ioMocks.readConfigFileSnapshotForWrite
       .mockResolvedValueOnce({
         snapshot,
@@ -1149,7 +1149,7 @@ describe("config mutate helpers", () => {
       snapshot: refreshedSnapshot,
       writeOptions: { expectedConfigPath: configPath },
     });
-    const nextConfig: OpenClawConfig = {
+    const nextConfig: OperatorConfig = {
       plugins: {
         entries: {
           "strict-plugin": { enabled: true },
@@ -1224,7 +1224,7 @@ describe("config mutate helpers", () => {
     });
     const nextConfig = {
       plugins: { entries: { demo: { enabled: true } } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     ioMocks.readConfigFileSnapshotForWrite.mockResolvedValue({
       snapshot: createSnapshot({
         hash: "hash-include-allowed-root-refreshed",
@@ -1246,7 +1246,7 @@ describe("config mutate helpers", () => {
         },
         nextConfig,
         io: {
-          env: { OPENCLAW_INCLUDE_ROOTS: "~/shared" },
+          env: { OPERATOR_INCLUDE_ROOTS: "~/shared" },
           readConfigFileSnapshotForWrite: ioMocks.readConfigFileSnapshotForWrite,
           writeConfigFile: ioMocks.writeConfigFile,
         },
@@ -1394,7 +1394,7 @@ describe("config mutate helpers", () => {
     });
     const nextConfig = {
       plugins: { entries: { demo: { enabled: true } } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     ioMocks.readConfigFileSnapshotForWrite.mockResolvedValue({
       snapshot: createSnapshot({
         hash: "hash-include-managed-refresh-scope-written",
@@ -1405,7 +1405,7 @@ describe("config mutate helpers", () => {
       writeOptions: { expectedConfigPath: configPath },
     });
     const preflight = vi.fn(
-      async (sourceConfig: OpenClawConfig, refreshOptions?: { includeAuthStoreRefs?: boolean }) => {
+      async (sourceConfig: OperatorConfig, refreshOptions?: { includeAuthStoreRefs?: boolean }) => {
         if (refreshOptions?.includeAuthStoreRefs !== false) {
           throw new Error("unavailable auth-profile SecretRef");
         }
@@ -1445,7 +1445,7 @@ describe("config mutate helpers", () => {
     expect(notifications).toEqual([{ includeAuthStoreRefs: false }]);
     const persisted = JSON.parse(
       await fs.readFile(pluginsPath, "utf-8"),
-    ) as OpenClawConfig["plugins"];
+    ) as OperatorConfig["plugins"];
     expect(persisted?.entries?.demo?.enabled).toBe(true);
   });
 
@@ -1475,15 +1475,15 @@ describe("config mutate helpers", () => {
     const initialConfig = {
       env: { vars: { [envKey]: "old" } },
       gateway: { auth: { mode: "token" as const, token: "old" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const acceptedRestartConfig = {
       env: { vars: { [envKey]: "live" } },
       gateway: { auth: { mode: "token" as const, token: "live" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const nextConfig = {
       env: { vars: { [envKey]: "next" } },
       gateway: { auth: { mode: "token" as const, token: "live" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const snapshot = createSnapshot({
       hash: "hash-include-managed-deferred-restart-env",
       path: configPath,
@@ -1503,7 +1503,7 @@ describe("config mutate helpers", () => {
         gateway: { auth: { mode: "token", token: "next" } },
       },
     });
-    let preflightSource: OpenClawConfig | undefined;
+    let preflightSource: OperatorConfig | undefined;
     const releaseOwner = registerManagedRuntimeConfigWriteOwner(
       configPath,
       async (sourceConfig) => {
@@ -2087,7 +2087,7 @@ describe("config mutate helpers", () => {
     const initialPluginsRaw = `${JSON.stringify(
       {
         entries: {
-          old: { enabled: true, config: { token: "${OPENCLAW_TEST_INCLUDE_TOKEN}" } },
+          old: { enabled: true, config: { token: "${OPERATOR_TEST_INCLUDE_TOKEN}" } },
         },
       },
       null,
@@ -2101,7 +2101,7 @@ describe("config mutate helpers", () => {
       parsed: { plugins: { $include: "./config/plugins.json5" } },
       sourceConfig: { plugins: { entries: { old: oldEntry } } },
     });
-    const observedSources: OpenClawConfig[] = [];
+    const observedSources: OperatorConfig[] = [];
 
     try {
       setRuntimeConfigSnapshotRefreshHandler({
@@ -2118,7 +2118,7 @@ describe("config mutate helpers", () => {
           snapshot,
           writeOptions: {
             expectedConfigPath: snapshot.path,
-            envSnapshotForRestore: { OPENCLAW_TEST_INCLUDE_TOKEN: "old-token" },
+            envSnapshotForRestore: { OPERATOR_TEST_INCLUDE_TOKEN: "old-token" },
             assertConfigPathForWrite: allowConfigPathWrite,
             includeFileTargetsForWrite: { [pluginsPath]: await resolveIncludeTarget(pluginsPath) },
           },
@@ -2131,7 +2131,7 @@ describe("config mutate helpers", () => {
             },
           },
           io: {
-            env: { OPENCLAW_TEST_INCLUDE_TOKEN: "new-token" },
+            env: { OPERATOR_TEST_INCLUDE_TOKEN: "new-token" },
             readConfigFileSnapshotForWrite: ioMocks.readConfigFileSnapshotForWrite,
             writeConfigFile: ioMocks.writeConfigFile,
           },
@@ -2175,7 +2175,7 @@ describe("config mutate helpers", () => {
         plugins: { entries: {} },
       },
     });
-    const observedSources: OpenClawConfig[] = [];
+    const observedSources: OperatorConfig[] = [];
 
     try {
       setRuntimeConfigSnapshotRefreshHandler({
@@ -2281,7 +2281,7 @@ describe("config mutate helpers", () => {
     const configPath = path.join(home, ".openclaw", "openclaw.json");
     const pluginsPath = path.join(home, ".openclaw", "config", "plugins.json5");
     const env = {} as NodeJS.ProcessEnv;
-    const envKey = "OPENCLAW_TEST_INCLUDE_ROLLBACK_ENV";
+    const envKey = "OPERATOR_TEST_INCLUDE_ROLLBACK_ENV";
     await fs.mkdir(path.dirname(pluginsPath), { recursive: true });
     await fs.writeFile(
       configPath,
@@ -2441,7 +2441,7 @@ describe("config mutate helpers", () => {
           "strict-plugin": { enabled: "yes" },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     validationMocks.validateConfigObjectWithPlugins.mockReturnValue({
       ok: false,
       issues: [
@@ -2516,7 +2516,7 @@ describe("config mutate helpers", () => {
     const home = await suiteRootTracker.make("injected-root-runtime-preflight");
     const configPath = path.join(home, ".openclaw", "openclaw.json");
     await fs.mkdir(path.dirname(configPath), { recursive: true });
-    const initialConfig = { gateway: { mode: "local" } } satisfies OpenClawConfig;
+    const initialConfig = { gateway: { mode: "local" } } satisfies OperatorConfig;
     const initialRaw = `${JSON.stringify(initialConfig, null, 2)}\n`;
     await fs.writeFile(configPath, initialRaw, "utf-8");
     const snapshot = createSnapshot({
@@ -2532,8 +2532,8 @@ describe("config mutate helpers", () => {
           token: { source: "exec", provider: "execmain", id: "gateway/token" },
         },
       },
-    } as OpenClawConfig;
-    const injectedWrite = vi.fn(async (config: OpenClawConfig, options?: ConfigWriteOptions) => {
+    } as OperatorConfig;
+    const injectedWrite = vi.fn(async (config: OperatorConfig, options?: ConfigWriteOptions) => {
       await options?.preCommitRuntimePreflight?.(config);
       await fs.writeFile(configPath, `${JSON.stringify(config, null, 2)}\n`, "utf-8");
       return { persistedHash: "hash-written", persistedConfig: config };

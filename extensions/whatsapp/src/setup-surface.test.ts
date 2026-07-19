@@ -5,7 +5,7 @@ import {
   runSetupWizardFinalize,
 } from "openclaw/plugin-sdk/plugin-test-runtime";
 import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { DEFAULT_ACCOUNT_ID, type OpenClawConfig } from "openclaw/plugin-sdk/setup";
+import { DEFAULT_ACCOUNT_ID, type OperatorConfig } from "openclaw/plugin-sdk/setup";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { whatsappSetupWizard } from "./setup-surface.js";
 import {
@@ -27,7 +27,7 @@ import {
 } from "./setup-test-helpers.js";
 
 const hoisted = vi.hoisted(() => ({
-  detectWhatsAppLinked: vi.fn<(cfg: OpenClawConfig, accountId: string) => Promise<boolean>>(
+  detectWhatsAppLinked: vi.fn<(cfg: OperatorConfig, accountId: string) => Promise<boolean>>(
     async () => false,
   ),
   hasWebCredsSync: vi.fn(() => false),
@@ -38,7 +38,7 @@ const hoisted = vi.hoisted(() => ({
     async () => "not-linked",
   ),
   resolveWhatsAppAuthDir: vi.fn<
-    (params: { cfg: OpenClawConfig; accountId: string }) => { authDir: string }
+    (params: { cfg: OperatorConfig; accountId: string }) => { authDir: string }
   >(() => ({
     authDir: "/tmp/openclaw-whatsapp-test",
   })),
@@ -130,12 +130,12 @@ function createSeparatePhoneHarness(params: { selectValues: string[]; textValues
 }
 
 function expectFinalizeResult(result: Awaited<ReturnType<typeof runFinalizeWithHarness>>): {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
 } {
   if (!result || typeof result !== "object" || !("cfg" in result) || !result.cfg) {
     throw new Error("Expected WhatsApp finalize result with cfg");
   }
-  return result as { cfg: OpenClawConfig };
+  return result as { cfg: OperatorConfig };
 }
 
 async function runSeparatePhoneFlow(params: { selectValues: string[]; textValues?: string[] }) {
@@ -204,7 +204,7 @@ describe("whatsapp setup wizard", () => {
       await runFinalizeWithHarness({
         harness,
         accountId: "work",
-        cfg: createWhatsAppWorkAccountConfig() as OpenClawConfig,
+        cfg: createWhatsAppWorkAccountConfig() as OperatorConfig,
       }),
     );
 
@@ -224,7 +224,7 @@ describe("whatsapp setup wizard", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       accountOverrides: {
         whatsapp: "work",
       },
@@ -257,7 +257,7 @@ describe("whatsapp setup wizard", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       accountOverrides: {},
     });
 
@@ -282,7 +282,7 @@ describe("whatsapp setup wizard", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       accountOverrides: {
         whatsapp: "work",
       },
@@ -302,7 +302,7 @@ describe("whatsapp setup wizard", () => {
       await runFinalizeWithHarness({
         harness,
         accountId: "",
-        cfg: createWhatsAppWorkAccountConfig({ defaultAccount: "work" }) as OpenClawConfig,
+        cfg: createWhatsAppWorkAccountConfig({ defaultAccount: "work" }) as OperatorConfig,
       }),
     );
 
@@ -338,7 +338,7 @@ describe("whatsapp setup wizard", () => {
     const result = expectFinalizeResult(
       await runFinalizeWithHarness({
         harness,
-        cfg: createWhatsAppRootAllowFromConfig() as OpenClawConfig,
+        cfg: createWhatsAppRootAllowFromConfig() as OperatorConfig,
       }),
     );
 

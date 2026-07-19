@@ -1,4 +1,4 @@
-// Covers the hosted OpenClaw marketplace feed entries command.
+// Covers the hosted Operator marketplace feed entries command.
 import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -276,8 +276,8 @@ describe("plugins marketplace entries", () => {
 
   it("emits bounded diagnostics for feed entry listing", async () => {
     const timelinePath = await createTimelinePath();
-    vi.stubEnv("OPENCLAW_DIAGNOSTICS", "1");
-    vi.stubEnv("OPENCLAW_DIAGNOSTICS_TIMELINE_PATH", timelinePath);
+    vi.stubEnv("OPERATOR_DIAGNOSTICS", "1");
+    vi.stubEnv("OPERATOR_DIAGNOSTICS_TIMELINE_PATH", timelinePath);
     mocks.getRuntimeConfig.mockReturnValue({});
     mocks.loadConfiguredHostedOfficialExternalPluginCatalogEntries.mockResolvedValue({
       source: "hosted-snapshot",

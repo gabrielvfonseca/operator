@@ -1,4 +1,4 @@
-import { runOpenClawStateWriteTransaction } from "../state/operator-state-db.js";
+import { runOperatorStateWriteTransaction } from "../state/operator-state-db.js";
 import {
   readChannelPairingState,
   sqliteOptionsForEnv,
@@ -20,7 +20,7 @@ export function writeChannelPairingStateSnapshot(
   state: ChannelPairingState,
   env: NodeJS.ProcessEnv = process.env,
 ): void {
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     (database) => writeChannelPairingStateToDatabase(database, channel, state),
     sqliteOptionsForEnv(env),
   );

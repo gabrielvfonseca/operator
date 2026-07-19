@@ -1,7 +1,7 @@
 // Discord tests cover security audit plugin behavior.
 import { describe, expect, it, vi } from "vitest";
 import type { ResolvedDiscordAccount } from "./accounts.js";
-import type { OpenClawConfig } from "./runtime-api.js";
+import type { OperatorConfig } from "./runtime-api.js";
 import { collectDiscordSecurityAuditFindings } from "./security-audit.js";
 
 type DiscordAccountConfig = ResolvedDiscordAccount["config"];
@@ -29,7 +29,7 @@ function createAccount(
 }
 
 async function collectFindings(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   config: DiscordAccountConfig;
   accountId?: string;
   orderedAccountIds?: string[];
@@ -48,7 +48,7 @@ async function collectFindings(params: {
 
 describe("Discord security audit findings", () => {
   it("flags slash commands when access-group enforcement is disabled and no users allowlist exists", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       commands: { native: true, useAccessGroups: false },
       channels: {
         discord: {
@@ -100,7 +100,7 @@ describe("Discord security audit findings", () => {
             },
           },
         },
-      } satisfies OpenClawConfig,
+      } satisfies OperatorConfig,
       expectFinding: true,
     },
     {
@@ -122,7 +122,7 @@ describe("Discord security audit findings", () => {
             },
           },
         },
-      } satisfies OpenClawConfig,
+      } satisfies OperatorConfig,
       expectFinding: false,
     },
   ])("$name", async (testCase) => {

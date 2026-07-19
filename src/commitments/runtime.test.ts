@@ -3,8 +3,8 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import type { OperatorConfig } from "../config/config.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import { captureEnv, setTestEnvValue } from "../test-utils/env.js";
 import { enqueueCommitmentExtraction } from "./runtime.js";
 import {
@@ -36,11 +36,11 @@ function requireFirstEmbeddedAgentRequest(): {
 } {
   const [call] = runEmbeddedAgentMock.mock.calls;
   if (!call) {
-    throw new Error("expected embedded OpenClaw agent extraction request");
+    throw new Error("expected embedded Operator agent extraction request");
   }
   const [request] = call;
   if (!request || typeof request !== "object" || Array.isArray(request)) {
-    throw new Error("expected embedded OpenClaw agent extraction request");
+    throw new Error("expected embedded Operator agent extraction request");
   }
   return request as {
     provider?: string;
@@ -56,7 +56,7 @@ describe("commitment extraction runtime", () => {
   const nowMs = Date.parse("2026-04-29T16:00:00.000Z");
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     resetCommitmentExtractionRuntimeForTests();
     runEmbeddedAgentMock.mockReset();
     resolveDefaultModelMock.mockReset();
@@ -68,11 +68,11 @@ describe("commitment extraction runtime", () => {
     tmpDirs.length = 0;
   });
 
-  async function createConfig(): Promise<OpenClawConfig> {
+  async function createConfig(): Promise<OperatorConfig> {
     const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-commitment-runtime-"));
     tmpDirs.push(tmpDir);
-    stateDirEnvSnapshot ??= captureEnv(["OPENCLAW_STATE_DIR"]);
-    setTestEnvValue("OPENCLAW_STATE_DIR", tmpDir);
+    stateDirEnvSnapshot ??= captureEnv(["OPERATOR_STATE_DIR"]);
+    setTestEnvValue("OPERATOR_STATE_DIR", tmpDir);
     return {
       commitments: {
         enabled: true,
@@ -97,7 +97,7 @@ describe("commitment extraction runtime", () => {
   });
 
   it("keeps hidden extraction opt-in by default", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       commitments: {},
     };
     configureCommitmentExtractionRuntime({

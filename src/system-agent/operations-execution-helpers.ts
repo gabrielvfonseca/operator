@@ -267,7 +267,7 @@ export async function applyPersistentOperation(params: {
     // The mutation already committed. Keep success truthful while making the
     // missing audit record visible to every CLI/chat capture surface.
     runtime.error(
-      `${outcome.summary}, but OpenClaw could not record its audit entry: ${formatErrorMessage(error)}`,
+      `${outcome.summary}, but Operator could not record its audit entry: ${formatErrorMessage(error)}`,
     );
   }
   runtime.log(`[operator] done: ${auditOperation}`);
@@ -351,7 +351,7 @@ export async function assertConfigWriteDoesNotBypassInferenceVerification(
     return;
   }
   throw new Error(
-    "Direct config writes cannot change inference routing or include alternate config. Use `set default model <provider/model>` for an already configured route, or exit OpenClaw and run `operator onboard` to change provider/auth access.",
+    "Direct config writes cannot change inference routing or include alternate config. Use `set default model <provider/model>` for an already configured route, or exit Operator and run `operator onboard` to change provider/auth access.",
   );
 }
 
@@ -367,14 +367,14 @@ async function verifyCurrentSetupInference(
   const before = await readConfigFileSnapshot();
   if (!before.exists || !before.valid) {
     throw new Error(
-      "OpenClaw setup requires a valid configured inference route. Exit OpenClaw and run `operator onboard`, then retry.",
+      "Operator setup requires a valid configured inference route. Exit Operator and run `operator onboard`, then retry.",
     );
   }
   const beforeConfig = before.runtimeConfig ?? before.config;
   const beforeRoute = await projectDefaultInferenceRoute(beforeConfig);
   if (!beforeRoute.route) {
     throw new Error(
-      "OpenClaw setup requires working inference first. Exit OpenClaw and run `operator onboard`, then retry.",
+      "Operator setup requires working inference first. Exit Operator and run `operator onboard`, then retry.",
     );
   }
   const verifyInferenceConfig =
@@ -383,7 +383,7 @@ async function verifyCurrentSetupInference(
   const verification = await verifyInferenceConfig({ config: beforeConfig, runtime });
   if (!verification.ok) {
     throw new Error(
-      `OpenClaw setup requires working inference first. The configured route failed a live check: ${verification.error} Exit OpenClaw and run \`operator onboard\`, then retry.`,
+      `Operator setup requires working inference first. The configured route failed a live check: ${verification.error} Exit Operator and run \`operator onboard\`, then retry.`,
     );
   }
 
@@ -419,13 +419,13 @@ export async function executeSetup(
   const defaultModel = overview.defaultModel?.trim();
   if (!defaultModel) {
     throw new Error(
-      "OpenClaw setup requires working inference first. Run `operator onboard` to configure and verify a default model, then start OpenClaw again.",
+      "Operator setup requires working inference first. Run `operator onboard` to configure and verify a default model, then start Operator again.",
     );
   }
   const requestedModel = operation.model?.trim();
   if (requestedModel && requestedModel !== defaultModel) {
     throw new Error(
-      `OpenClaw setup will preserve the verified default model ${defaultModel}. Exit OpenClaw and run \`operator onboard\` to stage, live-test, and save a different inference route.`,
+      `Operator setup will preserve the verified default model ${defaultModel}. Exit Operator and run \`operator onboard\` to stage, live-test, and save a different inference route.`,
     );
   }
   if (!opts.approved) {
@@ -439,7 +439,7 @@ export async function executeSetup(
   const verified = await verifyCurrentSetupInference(runtime, opts.deps);
   if (requestedModel && requestedModel !== verified.modelRef) {
     throw new Error(
-      `The verified default model is now ${verified.modelRef}, not ${requestedModel}. Review the current route or exit OpenClaw and run \`operator onboard\` before retrying setup.`,
+      `The verified default model is now ${verified.modelRef}, not ${requestedModel}. Review the current route or exit Operator and run \`operator onboard\` before retrying setup.`,
     );
   }
   const workspace = resolveUserPath(operation.workspace ?? process.cwd());
@@ -557,7 +557,7 @@ export async function executeSetDefaultModel(
                 "The final live inference test did not verify the exact model route at the config commit boundary, so the requested model was not saved. Review model aliases and runtime routing, then retry.",
               );
             }
-            // The live probe can outlive the original OpenClaw authority.
+            // The live probe can outlive the original Operator authority.
             // Re-check it last, immediately before the writer crosses to disk.
             await opts.beforePersistentApply?.();
             persistedVerification = latestVerification;

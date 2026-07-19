@@ -4,8 +4,8 @@ import os from "node:os";
 import path from "node:path";
 import type {
   AnyAgentTool,
-  OpenClawPluginApi,
-  OpenClawPluginToolContext,
+  OperatorPluginApi,
+  OperatorPluginToolContext,
 } from "openclaw/plugin-sdk/core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { registerWhatsAppCallTool } from "./agent-tools-call.js";
@@ -33,10 +33,10 @@ vi.mock("./connection-controller-runtime-context.js", () => ({
 
 function createApi(params?: {
   speech?: Partial<
-    Awaited<ReturnType<OpenClawPluginApi["runtime"]["tts"]["textToSpeechTelephony"]>>
+    Awaited<ReturnType<OperatorPluginApi["runtime"]["tts"]["textToSpeechTelephony"]>>
   >;
-  runCommand?: OpenClawPluginApi["runtime"]["system"]["runCommandWithTimeout"];
-}): OpenClawPluginApi {
+  runCommand?: OperatorPluginApi["runtime"]["system"]["runCommandWithTimeout"];
+}): OperatorPluginApi {
   return {
     config: {},
     registerTool: vi.fn(),
@@ -64,12 +64,12 @@ function createApi(params?: {
           })),
       },
     },
-  } as unknown as OpenClawPluginApi;
+  } as unknown as OperatorPluginApi;
 }
 
 function createContext(
-  overrides: Partial<OpenClawPluginToolContext> = {},
-): OpenClawPluginToolContext {
+  overrides: Partial<OperatorPluginToolContext> = {},
+): OperatorPluginToolContext {
   return {
     config: { channels: { whatsapp: { actions: { calls: true } } } },
     messageChannel: "whatsapp",
@@ -80,8 +80,8 @@ function createContext(
 }
 
 function resolveRegisteredCallTool(
-  api: OpenClawPluginApi,
-  context: OpenClawPluginToolContext,
+  api: OperatorPluginApi,
+  context: OperatorPluginToolContext,
 ): AnyAgentTool | null {
   registerWhatsAppCallTool(api);
   const factory = vi.mocked(api.registerTool).mock.calls.at(-1)?.[0];
@@ -171,7 +171,7 @@ describe("WhatsApp call tool", () => {
         killed: false,
         termination: "exit" as const,
       };
-    }) as OpenClawPluginApi["runtime"]["system"]["runCommandWithTimeout"];
+    }) as OperatorPluginApi["runtime"]["system"]["runCommandWithTimeout"];
     const tool = resolveRegisteredCallTool(createApi({ runCommand }), createContext());
 
     const result = await tool?.execute("call-2", {
@@ -211,7 +211,7 @@ describe("WhatsApp call tool", () => {
       signal: null,
       killed: false,
       termination: "exit" as const,
-    })) as OpenClawPluginApi["runtime"]["system"]["runCommandWithTimeout"];
+    })) as OperatorPluginApi["runtime"]["system"]["runCommandWithTimeout"];
     runtimeContextMocks.controllers.set("default", {
       getActiveListener: () => null,
       getCurrentSock: () => ({
@@ -261,7 +261,7 @@ describe("WhatsApp call tool", () => {
         killed: false,
         termination: "exit" as const,
       };
-    }) as OpenClawPluginApi["runtime"]["system"]["runCommandWithTimeout"];
+    }) as OperatorPluginApi["runtime"]["system"]["runCommandWithTimeout"];
     const tool = resolveRegisteredCallTool(createApi({ runCommand }), createContext());
 
     await expect(tool?.execute("call-3", { action: "call", message: "Hello" })).rejects.toThrow(
@@ -280,7 +280,7 @@ describe("WhatsApp call tool", () => {
       signal: "SIGTERM" as const,
       killed: true,
       termination: "timeout" as const,
-    })) as OpenClawPluginApi["runtime"]["system"]["runCommandWithTimeout"];
+    })) as OperatorPluginApi["runtime"]["system"]["runCommandWithTimeout"];
     const tool = resolveRegisteredCallTool(createApi({ runCommand }), createContext());
 
     await expect(
@@ -304,7 +304,7 @@ describe("WhatsApp call tool", () => {
           killed: false,
           termination: "exit" as const,
         };
-      }) as OpenClawPluginApi["runtime"]["system"]["runCommandWithTimeout"];
+      }) as OperatorPluginApi["runtime"]["system"]["runCommandWithTimeout"];
       const tool = resolveRegisteredCallTool(
         createApi({
           runCommand,

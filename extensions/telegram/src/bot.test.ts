@@ -1,5 +1,5 @@
 import { rm } from "node:fs/promises";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   clearPluginInteractiveHandlers,
   registerPluginInteractiveHandler,
@@ -202,7 +202,7 @@ function readOnlySessionEntry(storePath: string) {
 }
 
 async function writeDirectTelegramTranscriptMessages(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   storePath: string;
   chatId: number;
   senderId: number;
@@ -250,7 +250,7 @@ async function writeDirectTelegramTranscriptMessages(params: {
 }
 
 async function writeDirectTelegramTranscriptContext(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   storePath: string;
   chatId: number;
   role?: "assistant" | "user";
@@ -319,7 +319,7 @@ async function seedTelegramPromptContextMessages(params: {
       sourceMessage: {
         chat: { id: params.chatId, type: "private" },
         date: message.date,
-        from: { id: message.unversioned ? 0 : 999, is_bot: true, first_name: "OpenClaw" },
+        from: { id: message.unversioned ? 0 : 999, is_bot: true, first_name: "Operator" },
         message_id: message.messageId,
         text: message.text,
         ...(message.legacyPromptContextTimestampMs !== undefined
@@ -424,14 +424,14 @@ describe("createTelegramBot", () => {
           groups: { "*": { requireMention: false } },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     loadConfig.mockReturnValue(cfg);
     createTelegramBot({
       token: "tok",
       botInfo: {
         id: 999,
         is_bot: true,
-        first_name: "OpenClaw",
+        first_name: "Operator",
         username: "openclaw_bot",
         can_join_groups: true,
         can_read_all_group_messages: false,
@@ -446,7 +446,7 @@ describe("createTelegramBot", () => {
     });
     await recordOutboundMessageForPromptContext({
       cfg,
-      account: { accountId: "default", name: "OpenClaw" },
+      account: { accountId: "default", name: "Operator" },
       chatId: -42,
       message: {
         chat: { id: -42, type: "group", title: "Ops" },
@@ -476,7 +476,7 @@ describe("createTelegramBot", () => {
     expect(payload.InboundEventKind).toBe("room_event");
     expect(payload.InboundHistory).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ body: "Bot just replied", sender: "OpenClaw (you)" }),
+        expect.objectContaining({ body: "Bot just replied", sender: "Operator (you)" }),
       ]),
     );
     const [conversationContext] = requireArray(
@@ -493,7 +493,7 @@ describe("createTelegramBot", () => {
     expect(messages.filter((message) => message.message_id === "700")).toEqual([
       expect.objectContaining({
         body: "Bot just replied",
-        sender: "OpenClaw (you)",
+        sender: "Operator (you)",
       }),
     ]);
   });
@@ -577,7 +577,7 @@ describe("createTelegramBot", () => {
           },
         },
         session: { store: storePath },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       loadConfig.mockReturnValue(cfg);
       createTelegramBot({
         token: "tok",
@@ -2218,7 +2218,7 @@ describe("createTelegramBot", () => {
 
     const modelId = "us.anthropic.claude-3-5-sonnet-20240620-v1:0";
     const storePath = `/tmp/openclaw-telegram-model-compact-${process.pid}-${Date.now()}.json`;
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       agents: {
         defaults: {
           model: `amazon-bedrock/${modelId}`,
@@ -2374,7 +2374,7 @@ describe("createTelegramBot", () => {
     editMessageTextSpy.mockClear();
 
     const storePath = `/tmp/openclaw-telegram-model-default-${process.pid}-${Date.now()}.json`;
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       agents: {
         defaults: {
           model: "claude-opus-4-6",
@@ -2684,7 +2684,7 @@ describe("createTelegramBot", () => {
         0,
         0,
         "buffered dispatch",
-      ) as { cfg?: OpenClawConfig };
+      ) as { cfg?: OperatorConfig };
       expect(dispatchParams.cfg).toBe(freshConfig);
 
       const afterTurn = readOnlySessionEntry(storePath);
@@ -3507,7 +3507,7 @@ describe("createTelegramBot", () => {
       createTelegramBot({ token: "tok", config });
       const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
       const baseCtx = {
-        me: { id: 999, is_bot: true, first_name: "OpenClaw", username: "openclaw_bot" },
+        me: { id: 999, is_bot: true, first_name: "Operator", username: "openclaw_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       };
       await handler({
@@ -3521,7 +3521,7 @@ describe("createTelegramBot", () => {
           reply_to_message: {
             chat: { id: chatId, type: "private" },
             date: telegramReplyDate,
-            from: { id: 999, is_bot: true, first_name: "OpenClaw" },
+            from: { id: 999, is_bot: true, first_name: "Operator" },
             message_id: 736,
             text: visibleReply,
           },
@@ -3550,7 +3550,7 @@ describe("createTelegramBot", () => {
           body: visibleReply,
           is_reply_target: true,
           message_id: "736",
-          sender: "OpenClaw (you)",
+          sender: "Operator (you)",
         }),
       ]);
       expect(messages.filter((message) => message.body === visibleReply)).toHaveLength(1);
@@ -3699,7 +3699,7 @@ describe("createTelegramBot", () => {
       ]) {
         await recordOutboundMessageForPromptContext({
           cfg: config,
-          account: { accountId: "default", name: "OpenClaw" },
+          account: { accountId: "default", name: "Operator" },
           chatId,
           message: {
             message_id: part.messageId,
@@ -3730,7 +3730,7 @@ describe("createTelegramBot", () => {
           reply_to_message: {
             chat: { id: chatId, type: "private" },
             date: transcriptTimestampMs / 1000 + 1,
-            from: { id: 999, is_bot: true, first_name: "OpenClaw" },
+            from: { id: 999, is_bot: true, first_name: "Operator" },
             message_id: 781,
             text: "Alpha",
           },
@@ -4526,7 +4526,7 @@ describe("createTelegramBot", () => {
       });
       const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
       const baseCtx = {
-        me: { id: 999, is_bot: true, first_name: "OpenClaw", username: "openclaw_bot" },
+        me: { id: 999, is_bot: true, first_name: "Operator", username: "openclaw_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       };
       const chat = { id: chatId, type: "group", title: "Ops" };
@@ -4544,7 +4544,7 @@ describe("createTelegramBot", () => {
             message_id: 101,
             text: "Done, here is the image",
             date: 1736380700,
-            from: { id: 999, is_bot: true, first_name: "OpenClaw" },
+            from: { id: 999, is_bot: true, first_name: "Operator" },
             photo: [{ file_id: "generated-photo-1" }],
           },
         },
@@ -4593,7 +4593,7 @@ describe("createTelegramBot", () => {
     };
     expect(payload.ReplyChain?.map((entry) => entry.messageId)).toEqual(["102", "101"]);
     expect(payload.ReplyChain?.[1]).toMatchObject({
-      sender: "OpenClaw (you)",
+      sender: "Operator (you)",
       body: "Done, here is the image",
     });
     if (expectHydrated) {
@@ -4615,7 +4615,7 @@ describe("createTelegramBot", () => {
     );
     const messagesById = new Map(messages.map((message) => [message.message_id, message]));
     expect(messagesById.get("101")).toMatchObject({
-      sender: "OpenClaw (you)",
+      sender: "Operator (you)",
       body: "Done, here is the image",
       is_reply_target: true,
     });
@@ -5290,7 +5290,7 @@ describe("createTelegramBot", () => {
         reply_to_message: {
           message_id: 42,
           text: "original reply",
-          from: { id: 999, first_name: "OpenClaw" },
+          from: { id: 999, first_name: "Operator" },
         },
       },
       me: { id: 999, username: "openclaw_bot" },

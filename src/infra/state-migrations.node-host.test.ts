@@ -5,10 +5,10 @@ import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { useAutoCleanupTempDirTracker } from "../../test/helpers/temp-dir.js";
 import { loadNodeHostConfig } from "../node-host/config.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
 } from "../state/openclaw-state-db.js";
 import { acquireGatewayLock } from "./gateway-lock.js";
 import {
@@ -21,20 +21,20 @@ import {
   migrateLegacyNodeHostConfig,
 } from "./state-migrations.node-host.js";
 
-type NodeHostConfigDatabase = Pick<OpenClawStateKyselyDatabase, "node_host_config">;
+type NodeHostConfigDatabase = Pick<OperatorStateKyselyDatabase, "node_host_config">;
 const fixtureDigest = ["fixture", "digest"].join("-");
 
 describe("legacy node-host Doctor migration", () => {
   const tempDirs = useAutoCleanupTempDirTracker((cleanup) => {
     afterEach(() => {
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorStateDatabaseForTest();
       cleanup();
     });
   });
 
   function useStateDir(): { env: NodeJS.ProcessEnv; stateDir: string } {
     const stateDir = tempDirs.make("openclaw-node-host-migration-");
-    return { env: { ...process.env, OPENCLAW_STATE_DIR: stateDir }, stateDir };
+    return { env: { ...process.env, OPERATOR_STATE_DIR: stateDir }, stateDir };
   }
 
   function legacyConfig(overrides: Record<string, unknown> = {}): Record<string, unknown> {
@@ -71,7 +71,7 @@ describe("legacy node-host Doctor migration", () => {
     updatedAtMs: number;
     token?: string | null;
   }): void {
-    const database = openOpenClawStateDatabase({ env: params.env });
+    const database = openOperatorStateDatabase({ env: params.env });
     executeSqliteQuerySync(
       database.db,
       getNodeSqliteKysely<NodeHostConfigDatabase>(database.db)
@@ -93,7 +93,7 @@ describe("legacy node-host Doctor migration", () => {
   }
 
   function readCanonicalRow(env: NodeJS.ProcessEnv) {
-    const database = openOpenClawStateDatabase({ env });
+    const database = openOperatorStateDatabase({ env });
     return executeSqliteQueryTakeFirstSync(
       database.db,
       getNodeSqliteKysely<NodeHostConfigDatabase>(database.db)

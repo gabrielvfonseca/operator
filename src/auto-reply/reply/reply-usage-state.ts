@@ -1,6 +1,6 @@
 import { resolveAgentIdentity } from "../../agents/identity.js";
 import { deriveContextPromptTokens, type NormalizedUsage } from "../../agents/usage.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import type { PluginHookReplyUsageState } from "../../plugins/hook-types.js";
 import { estimateUsageCost, resolveModelCostConfig } from "../../utils/usage-format.js";
 
@@ -9,7 +9,7 @@ const TTL_MS = 5 * 60_000;
 const store = new Map<string, { snapshot: PluginHookReplyUsageState; expiresAt: number }>();
 
 export function buildReplyUsageState(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   provider?: string;
   model?: string;
   fallbackExhausted?: boolean;

@@ -68,7 +68,7 @@ export function createNextcloudTalkReplayGuard(
             options.stateMaxEntries ?? options.fileMaxEntries ?? DEFAULT_STATE_MAX_ENTRIES,
           env: {
             ...process.env,
-            OPENCLAW_STATE_DIR: stateDir,
+            OPERATOR_STATE_DIR: stateDir,
           },
           onDiskError: options.onDiskError,
         }

@@ -9,7 +9,7 @@ describe("formatCliParseErrorOutput", () => {
     });
 
     expect(output).toBe(
-      'OpenClaw does not know the command "wat".\nTry: openclaw --help\nPlugin command? openclaw plugins list\nDocs: https://docs.openclaw.ai/cli\n',
+      'Operator does not know the command "wat".\nTry: openclaw --help\nPlugin command? openclaw plugins list\nDocs: https://docs.openclaw.ai/cli\n',
     );
   });
 
@@ -19,7 +19,7 @@ describe("formatCliParseErrorOutput", () => {
     });
 
     expect(output).toBe(
-      'OpenClaw does not know the command "upate".\nDid you mean this?\n  openclaw update\nTry: openclaw --help\nPlugin command? openclaw plugins list\nDocs: https://docs.openclaw.ai/cli\n',
+      'Operator does not know the command "upate".\nDid you mean this?\n  openclaw update\nTry: openclaw --help\nPlugin command? openclaw plugins list\nDocs: https://docs.openclaw.ai/cli\n',
     );
   });
 
@@ -32,8 +32,8 @@ describe("formatCliParseErrorOutput", () => {
   });
 
   it("preserves active profile context in command suggestions", () => {
-    const originalProfile = process.env.OPENCLAW_PROFILE;
-    process.env.OPENCLAW_PROFILE = "work";
+    const originalProfile = process.env.OPERATOR_PROFILE;
+    process.env.OPERATOR_PROFILE = "work";
     try {
       const output = formatCliParseErrorOutput("error: unknown command 'doctr'\n", {
         argv: ["node", "openclaw", "doctr"],
@@ -42,9 +42,9 @@ describe("formatCliParseErrorOutput", () => {
       expect(output).toContain("Did you mean this?\n  openclaw --profile work doctor\n");
     } finally {
       if (originalProfile === undefined) {
-        delete process.env.OPENCLAW_PROFILE;
+        delete process.env.OPERATOR_PROFILE;
       } else {
-        process.env.OPENCLAW_PROFILE = originalProfile;
+        process.env.OPERATOR_PROFILE = originalProfile;
       }
     }
   });
@@ -55,7 +55,7 @@ describe("formatCliParseErrorOutput", () => {
     });
 
     expect(output).toBe(
-      'OpenClaw does not recognize option "--wat".\nTry: openclaw channels status --help\n',
+      'Operator does not recognize option "--wat".\nTry: openclaw channels status --help\n',
     );
   });
 

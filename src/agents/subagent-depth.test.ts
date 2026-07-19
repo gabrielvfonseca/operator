@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { MAX_TIMER_TIMEOUT_MS } from "@operator/normalization-core/number-coercion";
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { replaceSessionEntry } from "../config/sessions/session-accessor.js";
 import { getSubagentDepthFromSessionStore } from "./subagent-depth.js";
 import { resolveAgentTimeoutMs } from "./timeout.js";
@@ -171,7 +171,7 @@ describe("resolveAgentTimeoutMs", () => {
     ["negative", -1, 1_000],
     ["NaN", Number.NaN, 48 * 60 * 60 * 1000],
   ])("resolves config timeoutSeconds %s", (_label, timeoutSeconds, expected) => {
-    const cfg = { agents: { defaults: { timeoutSeconds } } } as OpenClawConfig;
+    const cfg = { agents: { defaults: { timeoutSeconds } } } as OperatorConfig;
     expect(resolveAgentTimeoutMs({ cfg })).toBe(expected);
   });
 

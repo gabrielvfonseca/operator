@@ -1,6 +1,6 @@
 // Telegram group policy checks shared by message-like and callback events.
 import type {
-  OpenClawConfig,
+  OperatorConfig,
   TelegramAccountConfig,
   TelegramGroupConfig,
   TelegramTopicConfig,
@@ -25,7 +25,7 @@ export function shouldSkipTelegramGroupMessage(
     hasGroupAllowOverride: boolean;
     groupConfig?: TelegramGroupConfig;
     topicConfig?: TelegramTopicConfig;
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     telegramCfg: TelegramAccountConfig;
   },
   runtime: Pick<RegisterTelegramHandlerParams, "logger" | "resolveGroupPolicy">,

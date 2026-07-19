@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import { resolveExpiresAtMsFromDurationMs } from "@operator/normalization-core/number-coercion";
 import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import { resolveAgentWorkspaceDir } from "../agents/agent-scope.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { resolveCommitmentTimezone, resolveCommitmentsConfig } from "./config.js";
 import {
@@ -25,7 +25,7 @@ type ModelRef = { provider: string; model: string };
 type EmbeddedAgentPayloadResult = { payloads?: Array<{ text?: string }> };
 
 type CommitmentExtractionEnqueueInput = CommitmentScope & {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   nowMs?: number;
   userText: string;
   assistantText?: string;
@@ -35,10 +35,10 @@ type CommitmentExtractionEnqueueInput = CommitmentScope & {
 
 type CommitmentExtractionRuntime = {
   extractBatch?: (params: {
-    cfg?: OpenClawConfig;
+    cfg?: OperatorConfig;
     items: CommitmentExtractionItem[];
   }) => Promise<CommitmentExtractionBatchResult>;
-  resolveDefaultModel?: (params: { cfg: OpenClawConfig; agentId?: string }) => ModelRef;
+  resolveDefaultModel?: (params: { cfg: OperatorConfig; agentId?: string }) => ModelRef;
   setTimer?: (callback: () => void, delayMs: number) => TimerHandle;
   clearTimer?: (timer: TimerHandle) => void;
   forceInTests?: boolean;
@@ -48,7 +48,7 @@ const log = createSubsystemLogger("commitments");
 const TERMINAL_EXTRACTION_FAILURE_COOLDOWN_MS = 15 * 60_000;
 
 let runtime: CommitmentExtractionRuntime = {};
-let queue: Array<Omit<CommitmentExtractionItem, "existingPending"> & { cfg?: OpenClawConfig }> = [];
+let queue: Array<Omit<CommitmentExtractionItem, "existingPending"> & { cfg?: OperatorConfig }> = [];
 let timer: TimerHandle | null = null;
 let draining = false;
 let queueOverflowWarned = false;
@@ -220,7 +220,7 @@ function joinPayloadText(result: EmbeddedAgentPayloadResult): string {
 }
 
 async function resolveDefaultModel(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId?: string;
 }): Promise<ModelRef> {
   if (runtime.resolveDefaultModel) {
@@ -231,7 +231,7 @@ async function resolveDefaultModel(params: {
 }
 
 async function defaultExtractBatch(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   items: CommitmentExtractionItem[];
 }): Promise<CommitmentExtractionBatchResult> {
   const cfg = params.cfg ?? {};
@@ -268,7 +268,7 @@ async function defaultExtractBatch(params: {
 }
 
 async function hydrateBatch(
-  batch: Array<Omit<CommitmentExtractionItem, "existingPending"> & { cfg?: OpenClawConfig }>,
+  batch: Array<Omit<CommitmentExtractionItem, "existingPending"> & { cfg?: OperatorConfig }>,
 ): Promise<CommitmentExtractionItem[]> {
   return Promise.all(
     batch.map(async (item) =>
@@ -283,7 +283,7 @@ async function hydrateBatch(
 function takeAgentBatch(
   agentId: string,
   maxItems: number,
-): Array<Omit<CommitmentExtractionItem, "existingPending"> & { cfg?: OpenClawConfig }> {
+): Array<Omit<CommitmentExtractionItem, "existingPending"> & { cfg?: OperatorConfig }> {
   const batch = [];
   for (let index = 0; index < queue.length && batch.length < maxItems;) {
     if (queue[index]?.agentId !== agentId) {

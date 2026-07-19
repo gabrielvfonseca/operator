@@ -6,13 +6,13 @@ import {
   listMissingRequiredPlatformPackages,
   readManagedNpmRootInstalledDependency,
   readManagedNpmRootPeerDependencySnapshot,
-  readOpenClawManagedNpmRootOverrides,
-  repairManagedNpmRootOpenClawPeer,
+  readOperatorManagedNpmRootOverrides,
+  repairManagedNpmRootOperatorPeer,
   syncManagedNpmRootPeerDependencies,
   upsertManagedNpmRootDependency,
   type ManagedNpmRootInstalledDependency,
 } from "../infra/npm-managed-root.js";
-import { installedPackageNeedsOpenClawPeerLinkRepair } from "../infra/package-update-utils.js";
+import { installedPackageNeedsOperatorPeerLinkRepair } from "../infra/package-update-utils.js";
 import {
   createSafeNpmInstallArgs,
   createSafeNpmInstallEnv,
@@ -52,7 +52,7 @@ import {
 import {
   defaultLogger,
   ensureInstallTargetAvailableForMode,
-  formatUnresolvedOpenClawPeerLinkError,
+  formatUnresolvedOperatorPeerLinkError,
   loadPluginInstallRuntime,
   readOptionalPackageManifest,
   resolveEffectiveInstallMode,
@@ -65,7 +65,7 @@ import type {
   PluginInstallPolicyRequest,
 } from "./install-types.js";
 import { hasRetainedManagedNpmInstallMarker } from "./managed-npm-retention.js";
-import { relinkOpenClawPeerDependenciesInManagedNpmRoot } from "./plugin-peer-link.js";
+import { relinkOperatorPeerDependenciesInManagedNpmRoot } from "./plugin-peer-link.js";
 
 export async function installPluginFromManagedNpmRoot(
   params: InstallSafetyOverrides & {
@@ -192,16 +192,16 @@ export async function installPluginFromManagedNpmRoot(
   ): Promise<InstallPluginResult> => {
     logger.info?.(`Installing ${params.displaySpec} into ${npmRoot}…`);
     if (params.packageName !== "operator") {
-      const repairedOpenClawPeer = await repairManagedNpmRootOpenClawPeer({
+      const repairedOperatorPeer = await repairManagedNpmRootOperatorPeer({
         npmRoot,
         timeoutMs,
         logger,
       });
-      if (repairedOpenClawPeer) {
+      if (repairedOperatorPeer) {
         logger.info?.(`Repaired stale operator peer dependency in ${npmRoot}`);
       }
     }
-    const managedOverrides = await readOpenClawManagedNpmRootOverrides();
+    const managedOverrides = await readOperatorManagedNpmRootOverrides();
     rollbackPeerDependencySnapshot ??= await readManagedNpmRootPeerDependencySnapshot({ npmRoot });
     const rollbackFailedManagedNpmInstall = async (
       failure: Extract<InstallPluginResult, { ok: false }>,
@@ -233,7 +233,7 @@ export async function installPluginFromManagedNpmRoot(
       } catch (error) {
         return await rollbackFailedManagedNpmInstall({
           ok: false,
-          error: `${cause.error}, but OpenClaw could not quarantine ${npmRoot} for rebuild: ${String(error)}`,
+          error: `${cause.error}, but Operator could not quarantine ${npmRoot} for rebuild: ${String(error)}`,
         });
       }
       logger.warn?.(
@@ -466,17 +466,17 @@ export async function installPluginFromManagedNpmRoot(
       }
     }
     if (params.packageName !== "operator") {
-      const repairedOpenClawPeer = await repairManagedNpmRootOpenClawPeer({
+      const repairedOperatorPeer = await repairManagedNpmRootOperatorPeer({
         npmRoot,
         timeoutMs,
         logger,
       });
-      if (repairedOpenClawPeer) {
+      if (repairedOperatorPeer) {
         logger.info?.(`Repaired stale operator peer dependency in ${npmRoot} after npm install`);
       }
     }
     try {
-      await relinkOpenClawPeerDependenciesInManagedNpmRoot({
+      await relinkOperatorPeerDependenciesInManagedNpmRoot({
         npmRoot,
         logger,
       });
@@ -486,10 +486,10 @@ export async function installPluginFromManagedNpmRoot(
         error: `Failed to repair operator peer links after npm install: ${String(error)}`,
       });
     }
-    if (installedPackageNeedsOpenClawPeerLinkRepair(installRoot)) {
+    if (installedPackageNeedsOperatorPeerLinkRepair(installRoot)) {
       return await rollbackFailedManagedNpmInstall({
         ok: false,
-        error: formatUnresolvedOpenClawPeerLinkError(params.packageName),
+        error: formatUnresolvedOperatorPeerLinkError(params.packageName),
       });
     }
 

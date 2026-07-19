@@ -176,7 +176,7 @@ describe("irc monitor reconnect", () => {
           tls: false,
           nick: "bot",
           username: "bot",
-          realname: "OpenClaw",
+          realname: "Operator",
           channels: ["#openclaw"],
         },
       },
@@ -188,7 +188,7 @@ describe("irc monitor reconnect", () => {
       await waitForIrcCondition(
         () =>
           server.connectionCount >= 2 &&
-          server.lines.filter((line) => line === "USER bot 0 * :OpenClaw").length >= 2,
+          server.lines.filter((line) => line === "USER bot 0 * :Operator").length >= 2,
         "expected IRC monitor to reconnect after the first socket closed",
       );
 
@@ -227,7 +227,7 @@ describe("irc monitor inbound target", () => {
               tls: false,
               nick: "bot",
               username: "bot",
-              realname: "OpenClaw",
+              realname: "Operator",
             },
           },
         } as CoreConfig,

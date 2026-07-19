@@ -3,8 +3,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  createOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  type OperatorTestState,
 } from "../test-utils/operator-test-state.js";
 
 const note = vi.hoisted(() => vi.fn());
@@ -38,11 +38,11 @@ function firstNoteCall(): [string, string] {
 }
 
 describe("noteSessionLockHealth", () => {
-  let state: OpenClawTestState;
+  let state: OperatorTestState;
 
   beforeEach(async () => {
     note.mockClear();
-    state = await createOpenClawTestState({
+    state = await createOperatorTestState({
       layout: "state-only",
       prefix: "openclaw-doctor-locks-",
     });
@@ -200,7 +200,7 @@ describe("noteSessionLockHealth", () => {
   });
 
   it("uses the supplied env to choose the structured lint state dir", async () => {
-    const other = await createOpenClawTestState({
+    const other = await createOperatorTestState({
       layout: "state-only",
       prefix: "openclaw-doctor-locks-other-",
       applyEnv: false,
@@ -226,7 +226,7 @@ describe("noteSessionLockHealth", () => {
     }
   });
 
-  it("preserves report-only live OpenClaw locks in dry-run repair effects", async () => {
+  it("preserves report-only live Operator locks in dry-run repair effects", async () => {
     const sessionsDir = state.sessionsDir();
     await fs.mkdir(sessionsDir, { recursive: true });
 
@@ -247,7 +247,7 @@ describe("noteSessionLockHealth", () => {
 
     expect(lock.staleReasons).toEqual(["too-old"]);
     expect(sessionLockToHealthFinding(lock).fixHint).toBe(
-      "OpenClaw is preserving this live owned lock; inspect the owning process if it appears stuck.",
+      "Operator is preserving this live owned lock; inspect the owning process if it appears stuck.",
     );
     expect(sessionLockToRepairEffect(lock)).toEqual({
       kind: "state",
@@ -258,7 +258,7 @@ describe("noteSessionLockHealth", () => {
     await expect(fs.access(reportOnlyLock)).resolves.toBeUndefined();
   });
 
-  it("uses configured stale threshold without removing live OpenClaw lock files", async () => {
+  it("uses configured stale threshold without removing live Operator lock files", async () => {
     const sessionsDir = state.sessionsDir();
     await fs.mkdir(sessionsDir, { recursive: true });
 
@@ -282,7 +282,7 @@ describe("noteSessionLockHealth", () => {
     await expect(fs.access(configuredStaleLock)).resolves.toBeUndefined();
   });
 
-  it("removes fresh live locks when the owner is not an OpenClaw process", async () => {
+  it("removes fresh live locks when the owner is not an Operator process", async () => {
     const sessionsDir = state.sessionsDir();
     await fs.mkdir(sessionsDir, { recursive: true });
 

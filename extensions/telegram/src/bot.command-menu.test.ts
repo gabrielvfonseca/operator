@@ -4,7 +4,7 @@ import {
   listNativeCommandSpecsForConfig,
 } from "openclaw/plugin-sdk/native-command-registry";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../runtime-api.js";
+import type { OperatorConfig } from "../runtime-api.js";
 
 const { getLoadConfigMock, listSkillCommandsForAgents, setMyCommandsSpy, telegramBotDepsForTest } =
   await import("./bot.create-telegram-bot.test-harness.js");
@@ -112,7 +112,7 @@ describe("createTelegramBot command menu", () => {
           ],
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     loadConfig.mockReturnValue(config);
     const commandsSynced = waitForNextSetMyCommands();
 
@@ -157,7 +157,7 @@ describe("createTelegramBot command menu", () => {
           ],
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     loadConfig.mockReturnValue(config);
     const commandsSynced = waitForNextSetMyCommands();
 
@@ -214,7 +214,7 @@ describe("createTelegramBot command menu", () => {
           ],
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     loadConfig.mockReturnValue(config);
     const commandsSynced = waitForNextSetMyCommands();
 

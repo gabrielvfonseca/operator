@@ -1,7 +1,7 @@
 {
   "name": "@operator/deepseek-provider",
   "version": "2026.7.2",
-  "description": "OpenClaw DeepSeek provider plugin.",
+  "description": "Operator DeepSeek provider plugin.",
   "repository": {
     "type": "git",
     "url": "https://github.com/openclaw/openclaw"

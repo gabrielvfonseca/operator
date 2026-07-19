@@ -12,7 +12,7 @@ import {
 } from "../../internal-runtime-context.js";
 import type { CurrentInboundPromptContext } from "./params.js";
 
-const OPERATOR_RUNTIME_EVENT_USER_PROMPT = "Continue the OpenClaw runtime event.";
+const OPERATOR_RUNTIME_EVENT_USER_PROMPT = "Continue the Operator runtime event.";
 
 type RuntimeContextPromptParts = {
   prompt: string;

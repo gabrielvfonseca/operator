@@ -1,14 +1,14 @@
 /**
- * Locates local OpenClaw docs/source roots for references shown to agents.
+ * Locates local Operator docs/source roots for references shown to agents.
  */
 import fs from "node:fs";
 import path from "node:path";
-import { resolveOpenClawPackageRoot } from "../infra/operator-root.js";
+import { resolveOperatorPackageRoot } from "../infra/operator-root.js";
 
 export const OPERATOR_DOCS_URL = "https://docs.operator.ai";
 export const OPERATOR_SOURCE_URL = "https://github.com/operator/operator";
 
-type ResolveOpenClawReferencePathParams = {
+type ResolveOperatorReferencePathParams = {
   workspaceDir?: string;
   argv1?: string;
   cwd?: string;
@@ -24,7 +24,7 @@ function isGitCheckout(rootDir: string): boolean {
 }
 
 /** Resolve a usable local docs directory, preferring the active workspace. */
-async function resolveOpenClawDocsPath(params: {
+async function resolveOperatorDocsPath(params: {
   workspaceDir?: string;
   argv1?: string;
   cwd?: string;
@@ -38,7 +38,7 @@ async function resolveOpenClawDocsPath(params: {
     }
   }
 
-  const packageRoot = await resolveOpenClawPackageRoot({
+  const packageRoot = await resolveOperatorPackageRoot({
     cwd: params.cwd,
     argv1: params.argv1,
     moduleUrl: params.moduleUrl,
@@ -52,10 +52,10 @@ async function resolveOpenClawDocsPath(params: {
 }
 
 /** Resolve the package root only when it is a Git checkout. */
-async function resolveOpenClawSourcePath(
-  params: ResolveOpenClawReferencePathParams,
+async function resolveOperatorSourcePath(
+  params: ResolveOperatorReferencePathParams,
 ): Promise<string | null> {
-  const packageRoot = await resolveOpenClawPackageRoot({
+  const packageRoot = await resolveOperatorPackageRoot({
     cwd: params.cwd,
     argv1: params.argv1,
     moduleUrl: params.moduleUrl,
@@ -67,15 +67,15 @@ async function resolveOpenClawSourcePath(
 }
 
 /** Resolve docs and source roots concurrently for prompt/reference injection. */
-export async function resolveOpenClawReferencePaths(
-  params: ResolveOpenClawReferencePathParams,
+export async function resolveOperatorReferencePaths(
+  params: ResolveOperatorReferencePathParams,
 ): Promise<{
   docsPath: string | null;
   sourcePath: string | null;
 }> {
   const [docsPath, sourcePath] = await Promise.all([
-    resolveOpenClawDocsPath(params),
-    resolveOpenClawSourcePath(params),
+    resolveOperatorDocsPath(params),
+    resolveOperatorSourcePath(params),
   ]);
   return { docsPath, sourcePath };
 }

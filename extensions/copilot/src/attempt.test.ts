@@ -871,7 +871,7 @@ describe("runCopilotAttempt", () => {
     const mediaId = "telegram-photo.png";
     await fsp.mkdir(inboundDir, { recursive: true });
     await fsp.writeFile(path.join(inboundDir, mediaId), Buffer.from(TINY_PNG_BASE64, "base64"));
-    vi.stubEnv("OPENCLAW_STATE_DIR", stateDir);
+    vi.stubEnv("OPERATOR_STATE_DIR", stateDir);
     const sdk = makeFakeSdk();
     const pool = makeFakePool(sdk);
 
@@ -1615,7 +1615,7 @@ describe("runCopilotAttempt", () => {
     expect(result.feedback).toContain("no permission policy installed");
   });
 
-  it("registers ask_user and resolves it from the active OpenClaw queue", async () => {
+  it("registers ask_user and resolves it from the active Operator queue", async () => {
     const onBlockReply = vi.fn();
     const sdk = makeFakeSdk({
       onCreateSession: (session, cfg) => {
@@ -1750,7 +1750,7 @@ describe("runCopilotAttempt", () => {
       // receives it as system context without having to read the file
       // via its read tool. The SDK's `append` mode keeps the SDK
       // foundation (identity/safety/tool-instruction sections) intact
-      // while layering OpenClaw context after it. See
+      // while layering Operator context after it. See
       // workspace-bootstrap.ts and @github/copilot-sdk types.d.ts
       // L1052 (SystemMessageConfig).
       const cfg = (sdk.createSession.mock.calls[0] as unknown[] | undefined)?.[0] as {
@@ -1906,7 +1906,7 @@ describe("runCopilotAttempt", () => {
 
       // SystemMessage is in ResumeSessionConfig's Pick set (per SDK
       // types.d.ts:1198), so it must be propagated on resume too,
-      // otherwise resumed sessions would silently lose OpenClaw
+      // otherwise resumed sessions would silently lose Operator
       // persona/identity context after every reconnect.
       const cfg = sdk.resumeSession.mock.calls[0]?.[1] as {
         systemMessage?: { mode?: string; content?: string };
@@ -2735,9 +2735,9 @@ describe("runCopilotAttempt", () => {
 
       // No env tokens, no contract token, no explicit token: falls
       // through to default useLoggedInUser mode.
-      const prevOpenclaw = process.env.OPENCLAW_GITHUB_TOKEN;
+      const prevOpenclaw = process.env.OPERATOR_GITHUB_TOKEN;
       const prevGithub = process.env.GITHUB_TOKEN;
-      delete process.env.OPENCLAW_GITHUB_TOKEN;
+      delete process.env.OPERATOR_GITHUB_TOKEN;
       delete process.env.GITHUB_TOKEN;
       try {
         await runCopilotAttempt(makeParams({ auth: {} as never }), { pool });
@@ -2745,7 +2745,7 @@ describe("runCopilotAttempt", () => {
         expect("gitHubToken" in cfg).toBe(false);
       } finally {
         if (prevOpenclaw !== undefined) {
-          process.env.OPENCLAW_GITHUB_TOKEN = prevOpenclaw;
+          process.env.OPERATOR_GITHUB_TOKEN = prevOpenclaw;
         }
         if (prevGithub !== undefined) {
           process.env.GITHUB_TOKEN = prevGithub;
@@ -2874,11 +2874,11 @@ describe("runCopilotAttempt", () => {
 
     // ---------------------------------------------------------------
     // Dogfood finding #3: synthetic current-turn user message in the
-    // OpenClaw audit transcript (mirrors codex event-projector pattern).
+    // Operator audit transcript (mirrors codex event-projector pattern).
     //
     // Without this synthesis the dashboard / CLI history shows only
     // assistant bubbles — the user's typed turn is lost — because the
-    // OpenClaw shell's `persistTextTurnTranscript` skips its own user
+    // Operator shell's `persistTextTurnTranscript` skips its own user
     // write when `embeddedAssistantGapFill` is true, trusting the
     // harness to mirror the user turn.
     // ---------------------------------------------------------------
@@ -3463,7 +3463,7 @@ describe("runCopilotAttempt", () => {
   // (`@github/copilot-sdk/dist/types.d.ts:1059-1066`). Without it, the
   // CLI keeps its native read/write/shell/url/mcp/memory/hook tools
   // visible to the model alongside our bridged overrides, which would
-  // bypass OpenClaw's wrapped-tool enforcement under any permissive
+  // bypass Operator's wrapped-tool enforcement under any permissive
   // permission policy and pollute the catalog under the default reject
   // policy. `createSessionConfig` derives `availableTools` from the
   // post-filter `sdkTools` so create- and resume-session always carry
@@ -3499,7 +3499,7 @@ describe("runCopilotAttempt", () => {
       ]);
     });
 
-    it("keeps a host-scoped OpenClaw create-session surface ring-zero", async () => {
+    it("keeps a host-scoped Operator create-session surface ring-zero", async () => {
       const sdk = makeFakeSdk();
       const pool = makeFakePool(sdk);
       const sdkTools = [makeFakeSdkTool("openclaw")];
@@ -3582,7 +3582,7 @@ describe("runCopilotAttempt", () => {
       expect(resumeCfg?.availableTools).toEqual(["read", "builtin:ask_user"]);
     });
 
-    it("keeps a host-scoped OpenClaw resume-session surface ring-zero", async () => {
+    it("keeps a host-scoped Operator resume-session surface ring-zero", async () => {
       const sdk = makeFakeSdk({
         onResumeSession: (session) => {
           session.sendAndWait.mockResolvedValueOnce(makeAssistantMessageEvent("resumed"));

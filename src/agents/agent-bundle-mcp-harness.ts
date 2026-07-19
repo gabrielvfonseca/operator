@@ -2,7 +2,7 @@
  * Harness-facing materialization of requester-scoped MCP tools.
  * Static MCP stays harness-native; this path never opens static transports.
  */
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginManifestRegistry } from "../plugins/manifest-registry.js";
 import { getPluginToolMeta } from "../plugins/tools.js";
 import {
@@ -39,7 +39,7 @@ type MaterializeRequesterScopedMcpToolsForHarnessRunParams = {
   sessionKey?: string;
   workspaceDir: string;
   agentDir?: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   manifestRegistry?: Pick<PluginManifestRegistry, "plugins">;
   requesterSenderId?: string | null;
   agentAccountId?: string | null;

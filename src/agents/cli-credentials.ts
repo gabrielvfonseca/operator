@@ -155,7 +155,7 @@ function parseClaudeCliOauthCredential(claudeOauth: unknown): ClaudeCliCredentia
 
 function resolveCodexHomePath(codexHome?: string) {
   const configured = codexHome ?? process.env.CODEX_HOME;
-  // External CLI state belongs to the OS user, not OpenClaw's relocatable
+  // External CLI state belongs to the OS user, not Operator's relocatable
   // home. Otherwise an isolated OPERATOR_HOME hides an already logged-in CLI.
   const home = resolveOsHomeRelativePath(configured || "~/.codex");
   try {

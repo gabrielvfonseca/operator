@@ -1,7 +1,7 @@
 // Model list probe tests cover runtime probing while listing configured models.
 import { importFreshModule } from "openclaw/plugin-sdk/test-fixtures";
 import { beforeAll, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 
 let probeModule: typeof import("./list.probe.js");
 
@@ -42,13 +42,13 @@ describe("mapFailoverReasonToProbeStatus", () => {
 });
 
 describe("runAuthProbes", () => {
-  it("runs Codex auth probes through raw OpenClaw model-run mode", async () => {
+  it("runs Codex auth probes through raw Operator model-run mode", async () => {
     const runEmbeddedAgent = vi.fn(
       async (_params: {
         agentDir?: string;
         authProfileId?: string;
         authProfileIdSource?: string;
-        config?: OpenClawConfig;
+        config?: OperatorConfig;
       }) => ({ text: "OK" }),
     );
     vi.doMock("../../agents/embedded-agent.js", () => ({ runEmbeddedAgent }));
@@ -127,7 +127,7 @@ describe("runAuthProbes", () => {
         agentDir?: string;
         authProfileId?: string;
         authProfileIdSource?: string;
-        config?: OpenClawConfig;
+        config?: OperatorConfig;
       }) => ({ text: "OK" }),
     );
     vi.doMock("../../agents/embedded-agent.js", () => ({ runEmbeddedAgent }));
@@ -241,7 +241,7 @@ describe("runAuthProbes", () => {
 
   it("isolates marker credentials from stored profiles without pinning a synthetic one", async () => {
     const runEmbeddedAgent = vi.fn(
-      async (_params: { agentDir?: string; authProfileId?: string; config?: OpenClawConfig }) => ({
+      async (_params: { agentDir?: string; authProfileId?: string; config?: OperatorConfig }) => ({
         text: "OK",
       }),
     );

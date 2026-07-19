@@ -97,7 +97,7 @@ export function createCodexAttemptTurnState(resources: CodexAttemptResources) {
     params.runTimeoutOverrideMs,
   );
   const turnAttemptIdleTimeoutMs = Math.max(100, Math.floor(params.timeoutMs));
-  const pendingOpenClawDynamicToolCompletionIds = new Set<string>();
+  const pendingOperatorDynamicToolCompletionIds = new Set<string>();
   // One execution promise per call id prevents duplicate delivery from
   // repeating non-idempotent computer input while the attempt remains active.
   const openClawDynamicToolExecutions = createCodexDynamicToolExecutionRegistry();
@@ -193,7 +193,7 @@ export function createCodexAttemptTurnState(resources: CodexAttemptResources) {
     postToolRawAssistantCompletionIdleTimeoutMs,
     turnTerminalIdleTimeoutMs,
     turnAttemptIdleTimeoutMs,
-    pendingOpenClawDynamicToolCompletionIds,
+    pendingOperatorDynamicToolCompletionIds,
     openClawDynamicToolExecutions,
     activeTurnItemIds,
     activeCompletionBlockerItemIds,

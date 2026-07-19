@@ -9,7 +9,7 @@ import {
 import { createMockPluginRegistry } from "../../plugins/hooks.test-fixtures.js";
 import { captureEnv } from "../../test-utils/env.js";
 import { createFixtureSuite } from "../../test-utils/fixture-suite.js";
-import { resolveOpenClawMetadata, resolveSkillInvocationPolicy } from "../loading/frontmatter.js";
+import { resolveOperatorMetadata, resolveSkillInvocationPolicy } from "../loading/frontmatter.js";
 import { loadSkillsFromDirSafe, readSkillFrontmatterSafe } from "../loading/local-loader.js";
 import { runCommandWithTimeoutMock } from "../test-support/install-test-mocks.js";
 import type { SkillEntry } from "../types.js";
@@ -68,7 +68,7 @@ function loadTestWorkspaceSkillEntries(workspaceDir: string): SkillEntry[] {
     return {
       skill,
       frontmatter,
-      metadata: resolveOpenClawMetadata(frontmatter),
+      metadata: resolveOperatorMetadata(frontmatter),
       invocation,
       exposure: {
         includeInRuntimeRegistry: true,
@@ -101,9 +101,9 @@ async function withWorkspaceCase(
 ): Promise<void> {
   const workspaceDir = await workspaceSuite.createCaseDir("case");
   const stateDir = path.join(workspaceDir, "state");
-  const envSnapshot = captureEnv(["OPENCLAW_STATE_DIR"]);
+  const envSnapshot = captureEnv(["OPERATOR_STATE_DIR"]);
   try {
-    process.env.OPENCLAW_STATE_DIR = stateDir;
+    process.env.OPERATOR_STATE_DIR = stateDir;
     await run({ workspaceDir, stateDir });
   } finally {
     envSnapshot.restore();
@@ -117,9 +117,9 @@ describe("installSkill before_install hooks", () => {
     skillsInstallTesting.setDepsForTest({
       loadWorkspaceSkillEntries: loadTestWorkspaceSkillEntries,
       resolveNodeInstallStateDir: () => {
-        const stateDir = process.env.OPENCLAW_STATE_DIR;
+        const stateDir = process.env.OPERATOR_STATE_DIR;
         if (!stateDir) {
-          throw new Error("OPENCLAW_STATE_DIR missing in skills install test");
+          throw new Error("OPERATOR_STATE_DIR missing in skills install test");
         }
         return stateDir;
       },
@@ -133,7 +133,7 @@ describe("installSkill before_install hooks", () => {
     });
   });
 
-  it("runs npm node installs with an OpenClaw-managed user prefix", async () => {
+  it("runs npm node installs with an Operator-managed user prefix", async () => {
     await withWorkspaceCase(async ({ workspaceDir, stateDir }) => {
       await writeInstallableSkill(workspaceDir, "node-prefix-skill");
 
@@ -157,10 +157,10 @@ describe("installSkill before_install hooks", () => {
   });
 
   it("keeps the default npm prefix out of env-overridden state paths", () => {
-    const envSnapshot = captureEnv(["OPENCLAW_STATE_DIR", "OPENCLAW_CONFIG_PATH"]);
+    const envSnapshot = captureEnv(["OPERATOR_STATE_DIR", "OPERATOR_CONFIG_PATH"]);
     try {
-      process.env.OPENCLAW_STATE_DIR = "/tmp/untrusted-state";
-      process.env.OPENCLAW_CONFIG_PATH = "/tmp/untrusted-config/openclaw.json";
+      process.env.OPERATOR_STATE_DIR = "/tmp/untrusted-state";
+      process.env.OPERATOR_CONFIG_PATH = "/tmp/untrusted-config/openclaw.json";
 
       expect(
         skillsInstallTesting.resolveDefaultNodeInstallStateDir({

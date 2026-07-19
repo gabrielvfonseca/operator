@@ -1,14 +1,14 @@
-import type { OpenClawPluginApi } from "./plugin-api.types.js";
-import type { OpenClawPluginConfigSchema } from "./plugin-config-schema.types.js";
+import type { OperatorPluginApi } from "./plugin-api.types.js";
+import type { OperatorPluginConfigSchema } from "./plugin-config-schema.types.js";
 import type { PluginKind } from "./plugin-kind.types.js";
 import type {
-  OpenClawPluginReloadRegistration,
-  OpenClawPluginSecurityAuditCollector,
+  OperatorPluginReloadRegistration,
+  OperatorPluginSecurityAuditCollector,
 } from "./plugin-registration.types.js";
-import type { OpenClawPluginNodeHostCommand } from "./types.node-host.js";
+import type { OperatorPluginNodeHostCommand } from "./types.node-host.js";
 
 /** Module-level plugin definition loaded from a native plugin entry file. */
-export type OpenClawPluginDefinition = {
+export type OperatorPluginDefinition = {
   id?: string;
   name?: string;
   description?: string;
@@ -20,12 +20,12 @@ export type OpenClawPluginDefinition = {
    * metadata-only command paths.
    */
   kind?: PluginKind | PluginKind[];
-  configSchema?: OpenClawPluginConfigSchema;
-  reload?: OpenClawPluginReloadRegistration;
-  nodeHostCommands?: OpenClawPluginNodeHostCommand[];
-  securityAuditCollectors?: OpenClawPluginSecurityAuditCollector[];
-  register?: (api: OpenClawPluginApi) => void;
-  activate?: (api: OpenClawPluginApi) => void;
+  configSchema?: OperatorPluginConfigSchema;
+  reload?: OperatorPluginReloadRegistration;
+  nodeHostCommands?: OperatorPluginNodeHostCommand[];
+  securityAuditCollectors?: OperatorPluginSecurityAuditCollector[];
+  register?: (api: OperatorPluginApi) => void;
+  activate?: (api: OperatorPluginApi) => void;
 };
 
-export type OpenClawPluginModule = OpenClawPluginDefinition | ((api: OpenClawPluginApi) => void);
+export type OperatorPluginModule = OperatorPluginDefinition | ((api: OperatorPluginApi) => void);

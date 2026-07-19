@@ -206,7 +206,7 @@ export function loadOrCreateDeviceIdentity(
             trailingNewline: true,
           });
         } catch {
-          // Keep using recognized OpenClaw key material even if best-effort normalization fails.
+          // Keep using recognized Operator key material even if best-effort normalization fails.
         }
       }
       return normalized.identity;

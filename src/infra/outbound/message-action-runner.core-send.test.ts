@@ -1,7 +1,7 @@
 // Covers core message-action send fallback, TTS application, and durable send
 // policy after plugin preparation is absent.
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import { setActivePluginRegistry } from "../../plugins/runtime.js";
 import { createOutboundTestPlugin, createTestRegistry } from "../../test-utils/channel-plugins.js";
 import { runMessageAction } from "./message-action-runner.js";
@@ -35,7 +35,7 @@ const slackConfig = {
       enabled: true,
     },
   },
-} as OpenClawConfig;
+} as OperatorConfig;
 
 function registerSlackTextPlugin() {
   const sendText = vi.fn().mockResolvedValue({
@@ -108,7 +108,7 @@ describe("runMessageAction core send routing", () => {
           enabled: true,
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await runMessageAction({
       cfg,
@@ -161,7 +161,7 @@ describe("runMessageAction core send routing", () => {
           enabled: true,
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await runMessageAction({
       cfg,
@@ -221,7 +221,7 @@ describe("runMessageAction core send routing", () => {
             botToken: "123:test",
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       action: "send",
       params: {
         channel: "telegram",
@@ -296,7 +296,7 @@ describe("runMessageAction core send routing", () => {
             enabled: true,
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       action: "send",
       params: {
         channel: "testchat",
@@ -350,7 +350,7 @@ describe("runMessageAction core send routing", () => {
       cfg: {
         channels: { slack: { enabled: true } },
         messages: { responsePrefix: "[Nexus]" },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       action: "send",
       params: {
         channel: "slack",
@@ -371,7 +371,7 @@ describe("runMessageAction core send routing", () => {
       cfg: {
         channels: { slack: { enabled: true } },
         messages: { responsePrefix: "[Nexus]" },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       action: "send",
       params: {
         channel: "slack",
@@ -423,7 +423,7 @@ describe("runMessageAction core send routing", () => {
       cfg: {
         channels: { slack: { enabled: true } },
         messages: { responsePrefix: "[Nexus]" },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       action: "send",
       params: {
         channel: "slack",
@@ -445,7 +445,7 @@ describe("runMessageAction core send routing", () => {
         channels: { slack: { enabled: true } },
         messages: { responsePrefix: "[{identity.name}]" },
         agents: { list: [{ id: "main", identity: { name: "Nexus" } }] },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       action: "send",
       params: {
         channel: "slack",
@@ -467,7 +467,7 @@ describe("runMessageAction core send routing", () => {
       cfg: {
         channels: { slack: { enabled: true } },
         messages: { responsePrefix: "[{provider}/{model}]" },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       action: "send",
       params: {
         channel: "slack",
@@ -571,7 +571,7 @@ describe("runMessageAction core send routing", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "send",
         params: {
           channel: "telegram",
@@ -630,7 +630,7 @@ describe("runMessageAction core send routing", () => {
             auto: "tagged",
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       action: "send",
       params: {
         channel: "testchat",
@@ -690,7 +690,7 @@ describe("runMessageAction core send routing", () => {
             auto: "inbound",
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       action: "send",
       params: {
         channel: "testchat",

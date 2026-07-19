@@ -1,5 +1,5 @@
 // Core doctor compatibility migration pipeline for current config objects.
-import type { OpenClawConfig } from "../../../config/types.operator.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import { runPluginSetupConfigMigrations } from "../../../plugins/setup-registry.js";
 import { migrateLegacySecretRefEnvMarkers } from "../../../secrets/legacy-secretref-env-marker.js";
 import { applyChannelDoctorCompatibilityMigrations } from "./channel-legacy-config-migrate.js";
@@ -11,7 +11,7 @@ import {
   normalizeLegacyOpenAICodexModelsAddMetadata,
 } from "./legacy-config-core-normalizers.js";
 
-function repairNullAgentWorkspaces(cfg: OpenClawConfig, changes: string[]): OpenClawConfig {
+function repairNullAgentWorkspaces(cfg: OperatorConfig, changes: string[]): OperatorConfig {
   const agents = cfg.agents?.list;
   if (!Array.isArray(agents)) {
     return cfg;
@@ -51,12 +51,12 @@ function repairNullAgentWorkspaces(cfg: OpenClawConfig, changes: string[]): Open
 
 /** Normalize current config through core, plugin setup, channel, and secret-ref migrations. */
 export function normalizeCompatibilityConfigValues(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   options: {
     blockedModelIdentities?: ReadonlySet<LegacyCodexModelIdentity>;
   } = {},
 ): {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   changes: string[];
 } {
   const changes: string[] = [];

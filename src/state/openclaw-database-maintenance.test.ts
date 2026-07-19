@@ -2,28 +2,28 @@ import { DatabaseSync } from "node:sqlite";
 import { describe, expect, it } from "vitest";
 import { ensureMemoryIndexSchema } from "../../packages/memory-host-sdk/src/host/memory-schema.js";
 import {
-  assertOpenClawAgentDatabaseForMaintenance,
-  OPENCLAW_AGENT_SCHEMA_VERSION,
+  assertOperatorAgentDatabaseForMaintenance,
+  OPERATOR_AGENT_SCHEMA_VERSION,
 } from "./openclaw-agent-db.js";
-import { OPENCLAW_AGENT_SCHEMA_SQL } from "./openclaw-agent-schema.generated.js";
+import { OPERATOR_AGENT_SCHEMA_SQL } from "./openclaw-agent-schema.generated.js";
 import {
-  assertOpenClawStateDatabaseForMaintenance,
-  OPENCLAW_STATE_SCHEMA_VERSION,
+  assertOperatorStateDatabaseForMaintenance,
+  OPERATOR_STATE_SCHEMA_VERSION,
 } from "./openclaw-state-db.js";
-import { OPENCLAW_STATE_SCHEMA_SQL } from "./openclaw-state-schema.generated.js";
+import { OPERATOR_STATE_SCHEMA_SQL } from "./openclaw-state-schema.generated.js";
 
-describe("OpenClaw database maintenance schema validation", () => {
+describe("Operator database maintenance schema validation", () => {
   it("accepts the current global and agent schemas", () => {
     const globalDatabase = createGlobalDatabase();
     const agentDatabase = createAgentDatabase();
     try {
       expect(() =>
-        assertOpenClawStateDatabaseForMaintenance(globalDatabase, {
+        assertOperatorStateDatabaseForMaintenance(globalDatabase, {
           pathname: "global.sqlite",
         }),
       ).not.toThrow();
       expect(() =>
-        assertOpenClawAgentDatabaseForMaintenance(agentDatabase, {
+        assertOperatorAgentDatabaseForMaintenance(agentDatabase, {
           agentId: "worker-1",
           pathname: "agent.sqlite",
         }),
@@ -35,7 +35,7 @@ describe("OpenClaw database maintenance schema validation", () => {
   });
 
   it("accepts a global schema produced by an additive column migration", () => {
-    const schemaWithoutMigratedColumn = OPENCLAW_STATE_SCHEMA_SQL.replace(
+    const schemaWithoutMigratedColumn = OPERATOR_STATE_SCHEMA_SQL.replace(
       "  delivery_thread_id_type TEXT,\n",
       "",
     );
@@ -44,7 +44,7 @@ describe("OpenClaw database maintenance schema validation", () => {
       database.exec("ALTER TABLE cron_jobs ADD COLUMN delivery_thread_id_type TEXT;");
 
       expect(() =>
-        assertOpenClawStateDatabaseForMaintenance(database, {
+        assertOperatorStateDatabaseForMaintenance(database, {
           pathname: "global.sqlite",
         }),
       ).not.toThrow();
@@ -54,7 +54,7 @@ describe("OpenClaw database maintenance schema validation", () => {
   });
 
   it("accepts a migrated required column with its temporary default", () => {
-    const schemaWithoutMigratedColumn = OPENCLAW_STATE_SCHEMA_SQL.replace(
+    const schemaWithoutMigratedColumn = OPERATOR_STATE_SCHEMA_SQL.replace(
       "  owner_session_key TEXT,\n  name TEXT NOT NULL,\n  description TEXT,\n",
       "  owner_session_key TEXT,\n  description TEXT,\n",
     );
@@ -63,7 +63,7 @@ describe("OpenClaw database maintenance schema validation", () => {
       database.exec("ALTER TABLE cron_jobs ADD COLUMN name TEXT NOT NULL DEFAULT '';");
 
       expect(() =>
-        assertOpenClawStateDatabaseForMaintenance(database, {
+        assertOperatorStateDatabaseForMaintenance(database, {
           pathname: "global.sqlite",
         }),
       ).not.toThrow();
@@ -73,7 +73,7 @@ describe("OpenClaw database maintenance schema validation", () => {
   });
 
   it("accepts the migrated conversation kind with its temporary default", () => {
-    const schemaWithoutMigratedColumn = OPENCLAW_STATE_SCHEMA_SQL.replace(
+    const schemaWithoutMigratedColumn = OPERATOR_STATE_SCHEMA_SQL.replace(
       "  conversation_kind TEXT NOT NULL,\n",
       "",
     ).replace(
@@ -92,7 +92,7 @@ describe("OpenClaw database maintenance schema validation", () => {
       `);
 
       expect(() =>
-        assertOpenClawStateDatabaseForMaintenance(database, {
+        assertOperatorStateDatabaseForMaintenance(database, {
           pathname: "global.sqlite",
         }),
       ).not.toThrow();
@@ -107,7 +107,7 @@ describe("OpenClaw database maintenance schema validation", () => {
       database.exec("DROP TABLE delivery_queue_entries;");
 
       expect(() =>
-        assertOpenClawStateDatabaseForMaintenance(database, {
+        assertOperatorStateDatabaseForMaintenance(database, {
           pathname: "global.sqlite",
         }),
       ).toThrow("missing table delivery_queue_entries");
@@ -125,7 +125,7 @@ describe("OpenClaw database maintenance schema validation", () => {
       `);
 
       expect(() =>
-        assertOpenClawStateDatabaseForMaintenance(database, {
+        assertOperatorStateDatabaseForMaintenance(database, {
           pathname: "global.sqlite",
         }),
       ).toThrow("missing or drifted index idx_task_runs_status");
@@ -140,7 +140,7 @@ describe("OpenClaw database maintenance schema validation", () => {
       database.exec("CREATE UNIQUE INDEX idx_task_runs_unexpected_owner ON task_runs(owner_key);");
 
       expect(() =>
-        assertOpenClawStateDatabaseForMaintenance(database, {
+        assertOperatorStateDatabaseForMaintenance(database, {
           pathname: "global.sqlite",
         }),
       ).toThrow("unexpected unique index idx_task_runs_unexpected_owner");
@@ -155,7 +155,7 @@ describe("OpenClaw database maintenance schema validation", () => {
       database.exec("DROP TABLE auth_profile_store;");
 
       expect(() =>
-        assertOpenClawAgentDatabaseForMaintenance(database, {
+        assertOperatorAgentDatabaseForMaintenance(database, {
           agentId: "worker-1",
           pathname: "agent.sqlite",
         }),
@@ -175,7 +175,7 @@ describe("OpenClaw database maintenance schema validation", () => {
       });
 
       expect(() =>
-        assertOpenClawAgentDatabaseForMaintenance(database, {
+        assertOperatorAgentDatabaseForMaintenance(database, {
           agentId: "worker-1",
           pathname: "agent.sqlite",
         }),
@@ -183,7 +183,7 @@ describe("OpenClaw database maintenance schema validation", () => {
 
       database.exec("DROP TRIGGER memory_index_paths_fts_after_delete;");
       expect(() =>
-        assertOpenClawAgentDatabaseForMaintenance(database, {
+        assertOperatorAgentDatabaseForMaintenance(database, {
           agentId: "worker-1",
           pathname: "agent.sqlite",
         }),
@@ -203,7 +203,7 @@ describe("OpenClaw database maintenance schema validation", () => {
       `);
 
       expect(() =>
-        assertOpenClawAgentDatabaseForMaintenance(database, {
+        assertOperatorAgentDatabaseForMaintenance(database, {
           agentId: "worker-1",
           pathname: "agent.sqlite",
         }),
@@ -232,7 +232,7 @@ describe("OpenClaw database maintenance schema validation", () => {
       `);
 
       expect(() =>
-        assertOpenClawAgentDatabaseForMaintenance(database, {
+        assertOperatorAgentDatabaseForMaintenance(database, {
           agentId: "worker-1",
           pathname: "agent.sqlite",
         }),
@@ -255,7 +255,7 @@ describe("OpenClaw database maintenance schema validation", () => {
       `);
 
       expect(() =>
-        assertOpenClawAgentDatabaseForMaintenance(database, {
+        assertOperatorAgentDatabaseForMaintenance(database, {
           agentId: "worker-1",
           pathname: "agent.sqlite",
         }),
@@ -278,7 +278,7 @@ describe("OpenClaw database maintenance schema validation", () => {
       `);
 
       expect(() =>
-        assertOpenClawAgentDatabaseForMaintenance(database, {
+        assertOperatorAgentDatabaseForMaintenance(database, {
           agentId: "worker-1",
           pathname: "agent.sqlite",
         }),
@@ -289,10 +289,10 @@ describe("OpenClaw database maintenance schema validation", () => {
   });
 });
 
-function createGlobalDatabase(schemaSql = OPENCLAW_STATE_SCHEMA_SQL): DatabaseSync {
+function createGlobalDatabase(schemaSql = OPERATOR_STATE_SCHEMA_SQL): DatabaseSync {
   const database = new DatabaseSync(":memory:");
   database.exec(schemaSql);
-  database.exec(`PRAGMA user_version = ${OPENCLAW_STATE_SCHEMA_VERSION};`);
+  database.exec(`PRAGMA user_version = ${OPERATOR_STATE_SCHEMA_VERSION};`);
   database
     .prepare(
       `
@@ -307,14 +307,14 @@ function createGlobalDatabase(schemaSql = OPENCLAW_STATE_SCHEMA_SQL): DatabaseSy
         ) VALUES ('primary', 'global', ?, NULL, NULL, 1, 1)
       `,
     )
-    .run(OPENCLAW_STATE_SCHEMA_VERSION);
+    .run(OPERATOR_STATE_SCHEMA_VERSION);
   return database;
 }
 
 function createAgentDatabase(): DatabaseSync {
   const database = new DatabaseSync(":memory:");
-  database.exec(OPENCLAW_AGENT_SCHEMA_SQL);
-  database.exec(`PRAGMA user_version = ${OPENCLAW_AGENT_SCHEMA_VERSION};`);
+  database.exec(OPERATOR_AGENT_SCHEMA_SQL);
+  database.exec(`PRAGMA user_version = ${OPERATOR_AGENT_SCHEMA_VERSION};`);
   database
     .prepare(
       `
@@ -329,6 +329,6 @@ function createAgentDatabase(): DatabaseSync {
         ) VALUES ('primary', 'agent', ?, 'worker-1', NULL, 1, 1)
       `,
     )
-    .run(OPENCLAW_AGENT_SCHEMA_VERSION);
+    .run(OPERATOR_AGENT_SCHEMA_VERSION);
   return database;
 }

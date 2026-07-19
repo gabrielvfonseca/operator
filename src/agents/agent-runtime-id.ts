@@ -1,5 +1,5 @@
 /** Agent runtime id normalization and retired runtime-selection compatibility helpers. */
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 
 export type EmbeddedAgentRuntime = "operator" | "auto" | (string & {});
@@ -36,7 +36,7 @@ export function normalizeOptionalAgentRuntimeId(raw: unknown): EmbeddedAgentRunt
 
 /** Resolves the deprecated explicit whole-agent runtime override, when present. */
 export function resolveAgentScopedRuntimeOverride(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
 }): EmbeddedAgentRuntime | undefined {
   const agentId = params.agentId ? normalizeAgentId(params.agentId) : undefined;

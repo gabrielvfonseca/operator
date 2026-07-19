@@ -1,11 +1,11 @@
 import { expectDefined } from "@operator/normalization-core";
-/** Config mutation helpers used by chat commands that edit OpenClaw config. */
+/** Config mutation helpers used by chat commands that edit Operator config. */
 import { setConfigValueAtPath, unsetConfigValueAtPath } from "../../config/config-paths.js";
 import {
   transformConfigFileWithRetry,
   validateConfigObjectWithPlugins,
 } from "../../config/config.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { setPluginEnabledInConfig } from "../../plugins/toggle-config.js";
 
 export class AutoReplyConfigMutationError extends Error {}
@@ -20,7 +20,7 @@ export function formatAutoReplyConfigMutationError(error: unknown): string | nul
 function assertValidConfig(
   next: Record<string, unknown>,
   action: string,
-): { config: OpenClawConfig } {
+): { config: OperatorConfig } {
   const validated = validateConfigObjectWithPlugins(next);
   if (!validated.ok) {
     const issue = expectDefined(validated.issues[0], "issues entry at 0");
@@ -75,7 +75,7 @@ export async function setPluginEnabledFromCommand(params: {
   pluginId: string;
   enabled: boolean;
   action: "enable" | "disable";
-}): Promise<OpenClawConfig> {
+}): Promise<OperatorConfig> {
   const committed = await transformConfigFileWithRetry({
     afterWrite: { mode: "auto" },
     transform: (currentConfig) => {
@@ -101,7 +101,7 @@ type AllowlistConfigEditResult =
 type MaybePromise<T> = T | Promise<T>;
 
 type ApplyAllowlistConfigEdit = (params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   parsedConfig: Record<string, unknown>;
   accountId?: string | null;
   scope: "dm" | "group";
@@ -111,7 +111,7 @@ type ApplyAllowlistConfigEdit = (params: {
 
 /** Applies a channel allowlist edit through a plugin-provided config mutation hook. */
 export async function applyAllowlistConfigMutation(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
   scope: "dm" | "group";
   action: "add" | "remove";

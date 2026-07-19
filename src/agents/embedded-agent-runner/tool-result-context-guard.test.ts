@@ -147,7 +147,7 @@ async function applyMidTurnPrecheckGuardToContext(
   return await agent.transformContext?.(contextForNextCall, new AbortController().signal);
 }
 
-function expectOpenClawTruncation(text: string): void {
+function expectOperatorTruncation(text: string): void {
   expect(text).toContain(CONTEXT_LIMIT_TRUNCATION_NOTICE);
   expect(text).toMatch(
     /\[\.\.\. \d+ more characters truncated; rerun with narrower args if needed\]$/,
@@ -221,7 +221,7 @@ describe("installToolResultContextGuard", () => {
       expectDefined(transformed[0], "transformed[0] test invariant"),
     );
     expect(newResultText.length).toBeLessThan(5_000);
-    expectOpenClawTruncation(newResultText);
+    expectOperatorTruncation(newResultText);
     expect(
       getToolResultText(
         expectDefined(contextForNextCall[0], "contextForNextCall[0] test invariant"),
@@ -242,7 +242,7 @@ describe("installToolResultContextGuard", () => {
     const transformed = (await applyGuardToContext(agent, contextForNextCall)) as AgentMessage[];
 
     expect(transformed).not.toBe(contextForNextCall);
-    expectOpenClawTruncation(
+    expectOperatorTruncation(
       getToolResultText(expectDefined(transformed[0], "transformed[0] test invariant")),
     );
   });
@@ -257,7 +257,7 @@ describe("installToolResultContextGuard", () => {
     );
 
     expect(typeof (transformed[0] as { content?: unknown }).content).toBe("string");
-    expectOpenClawTruncation(newResultText);
+    expectOperatorTruncation(newResultText);
   });
 
   it("drops oversized tool-result details when truncating once", async () => {
@@ -272,7 +272,7 @@ describe("installToolResultContextGuard", () => {
       expectDefined(transformed[0], "transformed[0] test invariant"),
     );
 
-    expectOpenClawTruncation(newResultText);
+    expectOperatorTruncation(newResultText);
     expect(result.details).toBeUndefined();
     const originalDetails = (contextForNextCall[0] as { details?: { truncation?: unknown } })
       .details;
@@ -362,7 +362,7 @@ describe("installToolResultContextGuard", () => {
       100_000,
     )) as AgentMessage[];
 
-    expectOpenClawTruncation(
+    expectOperatorTruncation(
       getToolResultText(expectDefined(transformed[0], "transformed[0] test invariant")),
     );
   });

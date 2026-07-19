@@ -5,7 +5,7 @@
  */
 import { Type, type TSchema } from "typebox";
 import { getRuntimeConfig } from "../../config/config.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { SsrFPolicy } from "../../infra/net/ssrf.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
 import { resolveGeneratedMediaMaxBytes } from "../../media/configured-max-bytes.js";
@@ -228,7 +228,7 @@ function createVideoGenerateToolSchema(params: { includeAudioReferences: boolean
 }
 
 function resolveVideoGenerationModelConfigForTool(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   workspaceDir?: string;
   agentDir?: string;
   authStore?: AuthProfileStore;
@@ -249,12 +249,12 @@ if (process.env.VITEST || process.env.NODE_ENV === "test") {
   };
 }
 
-function hasExplicitVideoGenerationModelConfig(cfg?: OpenClawConfig): boolean {
+function hasExplicitVideoGenerationModelConfig(cfg?: OperatorConfig): boolean {
   return hasToolModelConfig(coerceToolModelConfig(cfg?.agents?.defaults?.videoGenerationModel));
 }
 
 function collectVideoGenerationModelProviderIds(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   modelConfig: ToolModelConfig;
   workspaceDir?: string;
 }): Set<string> {
@@ -275,7 +275,7 @@ function collectVideoGenerationModelProviderIds(params: {
 
 function isVideoGenerationProviderConfigured(params: {
   snapshot: Pick<PluginMetadataSnapshot, "index" | "plugins">;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   workspaceDir?: string;
   agentDir?: string;
   authStore?: AuthProfileStore;
@@ -301,7 +301,7 @@ function isVideoGenerationProviderConfigured(params: {
 }
 
 function shouldExposeVideoReferenceAudioParams(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentDir?: string;
   authStore?: AuthProfileStore;
   workspaceDir?: string;
@@ -442,7 +442,7 @@ function normalizeReferenceInputs(params: {
 }
 
 function resolveSelectedVideoGenerationProvider(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   videoGenerationModelConfig: ToolModelConfig;
   modelOverride?: string;
 }): VideoGenerationProvider | undefined {
@@ -688,7 +688,7 @@ function isGeneratedMediaSizeLimitError(error: unknown): boolean {
 }
 
 async function executeVideoGenerationJob(params: {
-  effectiveCfg: OpenClawConfig;
+  effectiveCfg: OperatorConfig;
   prompt: string;
   agentDir?: string;
   model?: string;
@@ -934,7 +934,7 @@ async function executeVideoGenerationJob(params: {
 }
 
 export function createVideoGenerateTool(options?: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentDir?: string;
   authProfileStore?: AuthProfileStore;
   agentSessionKey?: string;
@@ -945,7 +945,7 @@ export function createVideoGenerateTool(options?: {
   scheduleBackgroundWork?: MediaGenerateBackgroundScheduler;
   onAsyncTaskStarted?: MediaGenerateAsyncStartCallback;
 }): AnyAgentTool | null {
-  const cfg: OpenClawConfig = options?.config ?? getRuntimeConfig();
+  const cfg: OperatorConfig = options?.config ?? getRuntimeConfig();
   if (
     !hasGenerationToolAvailability({
       cfg,

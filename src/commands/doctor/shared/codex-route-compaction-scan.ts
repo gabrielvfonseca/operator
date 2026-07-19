@@ -1,6 +1,6 @@
 import { asOptionalRecord as asMutableRecord } from "@operator/normalization-core/record-coerce";
 import { normalizeOptionalLowercaseString as normalizeString } from "@operator/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../../../config/types.operator.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import {
   agentUsesCodexRuntimeForCompaction,
   asAgentRuntimePolicyConfig,
@@ -22,7 +22,7 @@ export const COMPACTION_OVERRIDE_KEYS: readonly CompactionOverrideKey[] = ["mode
 export const LOSSLESS_CONTEXT_ENGINE_ID = "lossless-claw";
 
 function collectUnsupportedCodexCompactionOverridesForAgent(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agent: unknown;
   path: string;
   agentId?: string;
@@ -70,7 +70,7 @@ function collectUnsupportedCodexCompactionOverridesForAgent(params: {
 }
 
 function collectLegacyLosslessCompactionForAgent(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agent: unknown;
   path: string;
   agentId?: string;
@@ -128,7 +128,7 @@ function collectLegacyLosslessCompactionForAgent(params: {
 }
 
 export function collectLegacyLosslessCompactionConfigs(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   ignoreLegacyAgentRuntimePins?: boolean;
   env?: NodeJS.ProcessEnv;
 }): LegacyLosslessCompactionConfig[] {
@@ -175,7 +175,7 @@ export function collectLegacyLosslessCompactionConfigs(params: {
 }
 
 export function collectUnsupportedCodexCompactionOverrides(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   ignoreLegacyAgentRuntimePins?: boolean;
   env?: NodeJS.ProcessEnv;
 }): UnsupportedCodexCompactionOverride[] {
@@ -222,7 +222,7 @@ export function collectUnsupportedCodexCompactionOverrides(params: {
 }
 
 export function getSharedDefaultCompactionOverrideConsumers(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   ignoreLegacyAgentRuntimePins?: boolean;
   env?: NodeJS.ProcessEnv;
 }): SharedDefaultCompactionOverrideConsumers {
@@ -298,7 +298,7 @@ export function getSharedDefaultCompactionOverrideConsumers(params: {
 }
 
 export function sharedDefaultLosslessCompactionHasNonCodexConsumer(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   ignoreLegacyAgentRuntimePins?: boolean;
   env?: NodeJS.ProcessEnv;
 }): boolean {

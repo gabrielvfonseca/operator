@@ -146,7 +146,7 @@ class NodeConnectionNotificationRouter {
         command: "system.notify",
         params: {
           title: "Node connected",
-          body: `${connectionLabel(source)} connected to OpenClaw.`,
+          body: `${connectionLabel(source)} connected to Operator.`,
           priority: "active",
           delivery: "auto",
         },

@@ -9,7 +9,7 @@ import {
   resolvePersistCandidateForWrite,
   resolveWriteEnvSnapshotForPath,
 } from "./io.write-prepare.js";
-import type { OpenClawConfig } from "./types.js";
+import type { OperatorConfig } from "./types.js";
 
 describe("config io write prepare", () => {
   it("ignores prototype-chain keys when building merge patches", () => {
@@ -95,7 +95,7 @@ describe("config io write prepare", () => {
             },
           },
         },
-      }) as OpenClawConfig,
+      }) as OperatorConfig,
       [["plugins", "installs"]],
     ) as {
       plugins?: {
@@ -138,7 +138,7 @@ describe("config io write prepare", () => {
         agents: { list: [{ id: "main" }, { id: "ops" }] },
         gateway: { mode: "local" },
       },
-    }) as OpenClawConfig;
+    }) as OperatorConfig;
 
     expect(persisted.agents?.defaults?.params).toEqual({
       transport: "sse",
@@ -152,7 +152,7 @@ describe("config io write prepare", () => {
   });
 
   it("preserves authored Google model params under normalized config keys", () => {
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: OperatorConfig = {
       agents: {
         defaults: {
           model: { primary: "google/gemini-3-pro-preview" },
@@ -178,7 +178,7 @@ describe("config io write prepare", () => {
           },
         },
       },
-    }) as OpenClawConfig;
+    }) as OperatorConfig;
 
     expect(persisted.agents?.defaults?.model).toEqual({
       primary: "google/gemini-3.1-pro-preview",
@@ -190,7 +190,7 @@ describe("config io write prepare", () => {
   });
 
   it("does not reintroduce legacy openai-codex model params after doctor route repair", () => {
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: OperatorConfig = {
       agents: {
         defaults: {
           model: "openai-codex/gpt-5.5",
@@ -218,7 +218,7 @@ describe("config io write prepare", () => {
           },
         },
       },
-    }) as OpenClawConfig;
+    }) as OperatorConfig;
 
     expect(persisted.agents?.defaults?.model).toBe("openai/gpt-5.5");
     expect(persisted.agents?.defaults?.models).not.toHaveProperty("openai-codex/gpt-5.5");
@@ -229,7 +229,7 @@ describe("config io write prepare", () => {
   });
 
   it("normalizes retired Google model refs during unrelated config writes", () => {
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: OperatorConfig = {
       agents: {
         defaults: {
           model: {
@@ -274,7 +274,7 @@ describe("config io write prepare", () => {
       },
       gateway: { port: 18789 },
     };
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: {
           model: {
@@ -326,7 +326,7 @@ describe("config io write prepare", () => {
         ...runtimeConfig,
         gateway: { port: 18888 },
       },
-    }) as OpenClawConfig;
+    }) as OperatorConfig;
 
     expect(persisted.agents?.defaults?.model).toEqual({
       primary: "google/gemini-3.1-pro-preview",
@@ -372,7 +372,7 @@ describe("config io write prepare", () => {
       contextWindow: 1_048_576,
       maxTokens: 65_536,
     });
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: OperatorConfig = {
       models: {
         providers: {
           google: {
@@ -387,7 +387,7 @@ describe("config io write prepare", () => {
       },
       gateway: { port: 18789 },
     };
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       models: {
         providers: {
           google: {
@@ -409,7 +409,7 @@ describe("config io write prepare", () => {
         ...runtimeConfig,
         gateway: { port: 18888 },
       },
-    }) as OpenClawConfig;
+    }) as OperatorConfig;
 
     expect(persisted.models?.providers?.google?.models).toEqual([
       makeModel("google/gemini-3.1-pro-preview", "Gemini 3 Pro"),
@@ -430,7 +430,7 @@ describe("config io write prepare", () => {
       contextWindow: 200_000,
       maxTokens: 8192,
     });
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: OperatorConfig = {
       models: {
         providers: {
           myproxy: {
@@ -441,7 +441,7 @@ describe("config io write prepare", () => {
       },
       gateway: { port: 18789 },
     };
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       models: {
         providers: {
           myproxy: {
@@ -468,7 +468,7 @@ describe("config io write prepare", () => {
           },
         ],
       ]),
-    }) as OpenClawConfig;
+    }) as OperatorConfig;
 
     expect(persisted.models?.providers?.myproxy?.models).toEqual([
       makeModel("vendor/modern-model"),
@@ -477,7 +477,7 @@ describe("config io write prepare", () => {
   });
 
   it("allows explicit unsets to remove authored agent provider params", () => {
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: OperatorConfig = {
       agents: {
         defaults: {
           params: { transport: "sse", openaiWsWarmup: false },
@@ -497,14 +497,14 @@ describe("config io write prepare", () => {
         ["agents", "defaults", "params"],
         ["agents", "defaults", "models", "openai/gpt-5.4", "params"],
       ],
-    }) as OpenClawConfig;
+    }) as OperatorConfig;
 
     expect(persisted.agents?.defaults).not.toHaveProperty("params");
     expect(persisted.agents?.defaults?.models?.["openai/gpt-5.4"]).not.toHaveProperty("params");
   });
 
   it("applies explicit unsets without mutating caller config", () => {
-    const input: OpenClawConfig = {
+    const input: OperatorConfig = {
       gateway: { mode: "local" },
       commands: { ownerDisplay: "hash" },
       tools: { alsoAllow: ["exec", "fetch", "read"] },
@@ -534,7 +534,7 @@ describe("config io write prepare", () => {
     ["constructor key", ["commands", "constructor"]],
     ["prototype constructor property", ["commands", "prototype"]],
   ] as const)("treats %s unset paths as immutable no-ops", (_name, unsetPath) => {
-    const input: OpenClawConfig = {
+    const input: OperatorConfig = {
       gateway: { mode: "local" },
       commands: { ownerDisplay: "hash" },
       tools: { alsoAllow: ["exec", "fetch"] },
@@ -1108,19 +1108,19 @@ describe("config io write prepare", () => {
           cliPath: "/usr/local/bin/imsg",
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       gateway: { port: 18789 },
       channels: {
         imessage: {
           cliPath: "/usr/local/bin/imsg",
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     (runtimeConfig.channels!.imessage as Record<string, unknown>).runtimeOnlyDefault = true;
 
-    const nextConfig: OpenClawConfig = structuredClone(runtimeConfig);
+    const nextConfig: OperatorConfig = structuredClone(runtimeConfig);
     nextConfig.gateway = {
       ...nextConfig.gateway,
       auth: { mode: "token" },
@@ -1142,7 +1142,7 @@ describe("config io write prepare", () => {
   });
 
   it("does not reintroduce legacy nested dm.policy defaults in the persisted candidate", () => {
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: OperatorConfig = {
       channels: {
         discord: {
           dmPolicy: "pairing",
@@ -1154,7 +1154,7 @@ describe("config io write prepare", () => {
         },
       },
       gateway: { port: 18789 },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const nextConfig = structuredClone(sourceConfig);
     delete (nextConfig.channels?.discord?.dm as { enabled?: boolean; policy?: string } | undefined)
@@ -1208,9 +1208,9 @@ describe("config io write prepare", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
-    const nextConfig: OpenClawConfig = {
+    const nextConfig: OperatorConfig = {
       ...structuredClone(sourceConfig),
       gateway: {
         auth: { mode: "token" },
@@ -1243,18 +1243,18 @@ describe("config io write prepare", () => {
   });
 
   it("preserves root $schema during unrelated partial writes", () => {
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: OperatorConfig = {
       $schema: "https://openclaw.ai/config.json",
       gateway: { mode: "local" },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const persisted = resolvePersistCandidateForWrite({
       runtimeConfig: sourceConfig,
       sourceConfig,
       nextConfig: {
         gateway: { mode: "local", port: 18789 },
-      } satisfies OpenClawConfig,
-    }) as OpenClawConfig;
+      } satisfies OperatorConfig,
+    }) as OperatorConfig;
 
     expect(persisted.$schema).toBe("https://openclaw.ai/config.json");
     expect(persisted.gateway).toEqual({ mode: "local", port: 18789 });

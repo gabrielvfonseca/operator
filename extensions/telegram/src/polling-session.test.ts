@@ -6,12 +6,12 @@ import { expectDefined } from "@operator/normalization-core";
 import type { ChannelAccountSnapshot } from "openclaw/plugin-sdk/channel-contract";
 import { MAX_TIMER_TIMEOUT_MS } from "openclaw/plugin-sdk/number-runtime";
 import {
-  closeOpenClawStateDatabaseForTest,
+  closeOperatorStateDatabaseForTest,
   createChannelIngressQueueForTests as createChannelIngressQueue,
   executeSqliteQuerySync,
   getNodeSqliteKysely,
-  openOpenClawStateDatabase,
-  type OpenClawStateKyselyDatabaseForTests,
+  openOperatorStateDatabase,
+  type OperatorStateKyselyDatabaseForTests,
 } from "openclaw/plugin-sdk/plugin-state-test-runtime";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { commitTelegramMessageDispatchReplay } from "./message-dispatch-dedupe.js";
@@ -186,7 +186,7 @@ type WorkerMessageListener = (message: TelegramIngressWorkerMessage) => void;
 type AsyncVoidFn = () => Promise<void>;
 type MockCallSource = { mock: { calls: Array<Array<unknown>> } };
 type TelegramPollingTestDatabase = Pick<
-  OpenClawStateKyselyDatabaseForTests,
+  OperatorStateKyselyDatabaseForTests,
   "channel_ingress_events"
 >;
 
@@ -611,8 +611,8 @@ function telegramTestQueueName(spoolDir: string): string {
 }
 
 function openTelegramSpoolTestKysely(spoolDir: string) {
-  const database = openOpenClawStateDatabase({
-    env: { ...process.env, OPENCLAW_STATE_DIR: spoolDir },
+  const database = openOperatorStateDatabase({
+    env: { ...process.env, OPERATOR_STATE_DIR: spoolDir },
   });
   return {
     database,
@@ -677,7 +677,7 @@ async function withTempSpool<T>(fn: (spoolDir: string) => Promise<T>): Promise<T
   try {
     return await fn(spoolDir);
   } finally {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await fs.rm(spoolDir, { recursive: true, force: true });
   }
 }
@@ -781,7 +781,7 @@ describe("TelegramPollingSession", () => {
   afterEach(() => {
     pollingSessionTesting.resetActiveSpooledUpdateHandlersForTests();
     clearTelegramRuntime();
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
   });
 
   it("uses backoff helpers for recoverable polling retries", async () => {
@@ -966,7 +966,7 @@ describe("TelegramPollingSession", () => {
     await session.runUntilAbort();
 
     // Offset confirmation was removed because it could self-conflict with the runner.
-    // OpenClaw middleware still skips duplicates using the persisted update offset.
+    // Operator middleware still skips duplicates using the persisted update offset.
     expect(bot.api.getUpdates).not.toHaveBeenCalled();
   });
 
@@ -4352,12 +4352,12 @@ describe("TelegramPollingSession", () => {
       expect(deleteWebhook).toHaveBeenCalledTimes(2);
       // The conflict marks the transport dirty so the next cycle gets a fresh socket.
       expect(createTelegramTransport).toHaveBeenCalledTimes(1);
-      expectLogIncludes(log, "Another OpenClaw gateway, script, or Telegram poller");
+      expectLogIncludes(log, "Another Operator gateway, script, or Telegram poller");
       expect(
         statusPatches(setStatus).some(
           (patch) =>
             patch.connected === false &&
-            String(patch.lastError).includes("Another OpenClaw gateway"),
+            String(patch.lastError).includes("Another Operator gateway"),
         ),
       ).toBe(true);
     } finally {
@@ -5776,12 +5776,12 @@ describe("TelegramPollingSession", () => {
 
     await session.runUntilAbort();
 
-    expectLogIncludes(log, "Another OpenClaw gateway, script, or Telegram poller");
+    expectLogIncludes(log, "Another Operator gateway, script, or Telegram poller");
     // The hint must reach channel status, not just the gateway log.
     expect(
       statusPatches(setStatus).some(
         (patch) =>
-          patch.connected === false && String(patch.lastError).includes("Another OpenClaw gateway"),
+          patch.connected === false && String(patch.lastError).includes("Another Operator gateway"),
       ),
     ).toBe(true);
   });

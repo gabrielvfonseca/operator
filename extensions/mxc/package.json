@@ -1,7 +1,7 @@
 {
   "name": "@operator/mxc-sandbox",
   "version": "2026.6.11",
-  "description": "OpenClaw MXC sandbox execution plugin for MXC-capable hosts",
+  "description": "Operator MXC sandbox execution plugin for MXC-capable hosts",
   "repository": {
     "type": "git",
     "url": "https://github.com/openclaw/openclaw"

@@ -319,8 +319,8 @@ function expectedDiagnosticsTargetBlock(params: {
   return [
     `Session ${params.index ?? 1}`,
     ...(params.channel ? [`Channel: ${params.channel}`] : []),
-    ...(params.sessionKey ? [`OpenClaw session key: \`${params.sessionKey}\``] : []),
-    ...(params.sessionId ? [`OpenClaw session id: \`${params.sessionId}\``] : []),
+    ...(params.sessionKey ? [`Operator session key: \`${params.sessionKey}\``] : []),
+    ...(params.sessionId ? [`Operator session id: \`${params.sessionId}\``] : []),
     `Codex thread id: \`${params.threadId}\``,
     `Inspect locally: \`codex resume ${params.threadId}\``,
   ];
@@ -330,7 +330,7 @@ describe("codex command", () => {
   beforeEach(async () => {
     resetCodexTestBindingStore();
     tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-codex-command-"));
-    vi.stubEnv("OPENCLAW_STATE_DIR", tempDir);
+    vi.stubEnv("OPERATOR_STATE_DIR", tempDir);
   });
 
   afterEach(async () => {
@@ -471,7 +471,7 @@ describe("codex command", () => {
     await expect(
       handleCodexCommand(createContext("resume thread-123", sessionFile), { deps }),
     ).resolves.toEqual({
-      text: "Attached this OpenClaw session to Codex thread thread-123.",
+      text: "Attached this Operator session to Codex thread thread-123.",
     });
 
     expect(requests).toEqual([
@@ -529,7 +529,7 @@ describe("codex command", () => {
 
     resolveResume(createThreadResumeResponse({ threadId: "thread-123" }));
     await expect(command).resolves.toEqual({
-      text: "Attached this OpenClaw session to Codex thread thread-123.",
+      text: "Attached this Operator session to Codex thread thread-123.",
     });
     await competingOwner;
     expect(order).toEqual(["resume-start", "resume-done", "competing-owner"]);
@@ -565,7 +565,7 @@ describe("codex command", () => {
       { deps: createDeps({ codexControlRequest }) },
     );
 
-    expect(result.text).toBe("Attached this OpenClaw session to Codex thread thread-new.");
+    expect(result.text).toBe("Attached this Operator session to Codex thread thread-new.");
     expect(codexControlRequest).toHaveBeenCalledTimes(1);
     await expect(
       testCodexAppServerBindingStore.read({
@@ -593,7 +593,7 @@ describe("codex command", () => {
     expect(result.text).toContain(
       "Codex thread binding changed while attaching the resumed thread",
     );
-    expect(result.text).not.toContain("Attached this OpenClaw session");
+    expect(result.text).not.toContain("Attached this Operator session");
   });
 
   it("normalizes resumed bindings against the requesting agent auth store", async () => {
@@ -745,7 +745,7 @@ describe("codex command", () => {
     expect(result.text).toContain(
       "Codex-native /codex " +
         args.split(/\s+/u)[0] +
-        " is unavailable because OpenClaw sandboxing is active for this session.",
+        " is unavailable because Operator sandboxing is active for this session.",
     );
     expect(codexControlRequest).not.toHaveBeenCalled();
     expect(steerCodexConversationTurn).not.toHaveBeenCalled();
@@ -787,7 +787,7 @@ describe("codex command", () => {
     expect(result.text).toContain(
       "Codex-native /codex " +
         args.split(/\s+/u)[0] +
-        " is unavailable because OpenClaw exec host=node is active for this session.",
+        " is unavailable because Operator exec host=node is active for this session.",
     );
     expect(codexControlRequest).not.toHaveBeenCalled();
     expect(steerCodexConversationTurn).not.toHaveBeenCalled();
@@ -806,7 +806,7 @@ describe("codex command", () => {
     );
 
     expect(result.text).toContain(
-      "Codex-native /codex bind is unavailable because OpenClaw exec host=node is active for this session.",
+      "Codex-native /codex bind is unavailable because Operator exec host=node is active for this session.",
     );
   });
 
@@ -2581,7 +2581,7 @@ describe("codex command", () => {
     await expect(
       handleCodexCommand(createContext("compact", sessionFile), { deps: createDeps() }),
     ).resolves.toEqual({
-      text: "No Codex thread is attached to this OpenClaw session yet.",
+      text: "No Codex thread is attached to this Operator session yet.",
     });
   });
 
@@ -2884,7 +2884,7 @@ describe("codex command", () => {
       [
         "Codex runtime thread detected.",
         "Approving diagnostics will also send this thread's feedback bundle to OpenAI servers.",
-        "The completed diagnostics reply will list the OpenClaw session ids and Codex thread ids that were sent.",
+        "The completed diagnostics reply will list the Operator session ids and Codex thread ids that were sent.",
         "Note: flaky tool call",
         "Included: Codex logs and spawned Codex subthreads when available.",
       ].join("\n"),
@@ -3016,11 +3016,11 @@ describe("codex command", () => {
     );
     const token = readDiagnosticsConfirmationToken(request);
     expect(request.text).toContain("Codex runtime threads detected.");
-    expect(request.text).toContain("OpenClaw session key: `agent:first:whatsapp:one`");
-    expect(request.text).toContain("OpenClaw session id: `session-one`");
+    expect(request.text).toContain("Operator session key: `agent:first:whatsapp:one`");
+    expect(request.text).toContain("Operator session id: `session-one`");
     expect(request.text).toContain("Codex thread id: `thread-111`");
-    expect(request.text).toContain("OpenClaw session key: `agent:second:discord:two`");
-    expect(request.text).toContain("OpenClaw session id: `session-two`");
+    expect(request.text).toContain("Operator session key: `agent:second:discord:two`");
+    expect(request.text).toContain("Operator session id: `session-two`");
     expect(request.text).toContain("Codex thread id: `thread-222`");
     expect(safeCodexControlRequest).not.toHaveBeenCalled();
 
@@ -3111,7 +3111,7 @@ describe("codex command", () => {
     );
 
     expect(request.text).toContain("Codex runtime thread detected.");
-    expect(request.text).toContain("OpenClaw session key: `global`");
+    expect(request.text).toContain("Operator session key: `global`");
     expect(request.text).toContain("Codex thread id: `thread-global`");
   });
 
@@ -3724,7 +3724,7 @@ describe("codex command", () => {
     ).resolves.toEqual({
       text: [
         "Could not send Codex diagnostics:",
-        "- channel test, OpenClaw session session-1, Codex thread &lt;\uff20U123&gt;: bad??? &lt;\uff20U123&gt; \uff3btrusted\uff3d\uff08https://evil\uff09 \uff20here",
+        "- channel test, Operator session session-1, Codex thread &lt;\uff20U123&gt;: bad??? &lt;\uff20U123&gt; \uff3btrusted\uff3d\uff08https://evil\uff09 \uff20here",
         "Inspect locally:",
         "- run codex resume and paste the thread id shown above",
       ].join("\n"),
@@ -3753,7 +3753,7 @@ describe("codex command", () => {
     ).resolves.toEqual({
       text: [
         "Could not send Codex diagnostics:",
-        `- channel test, OpenClaw session session-1, Codex thread thread-error-boundary: ${expectedError}`,
+        `- channel test, Operator session session-1, Codex thread thread-error-boundary: ${expectedError}`,
         "Inspect locally:",
         "- `codex resume thread-error-boundary`",
       ].join("\n"),
@@ -3783,7 +3783,7 @@ describe("codex command", () => {
     ).resolves.toEqual({
       text: [
         "Could not send Codex diagnostics:",
-        "- channel test, OpenClaw session session-1, Codex thread thread-retry: temporary outage",
+        "- channel test, Operator session session-1, Codex thread thread-retry: temporary outage",
         "Inspect locally:",
         "- `codex resume thread-retry`",
       ].join("\n"),
@@ -3835,7 +3835,7 @@ describe("codex command", () => {
         "Codex diagnostics sent to OpenAI servers:",
         "Session 1",
         "Channel: test",
-        "OpenClaw session id: `session-1`",
+        "Operator session id: `session-1`",
         "Codex thread id: thread-123'\uff40???; echo bad",
         "Inspect locally: run codex resume and paste the thread id shown above",
         "Included Codex logs and spawned Codex subthreads when available.",
@@ -3850,7 +3850,7 @@ describe("codex command", () => {
       handleCodexCommand(createContext("diagnostics", sessionFile), { deps: createDeps() }),
     ).resolves.toEqual({
       text: [
-        "No Codex thread is attached to this OpenClaw session yet.",
+        "No Codex thread is attached to this Operator session yet.",
         "Use /codex threads to find a thread, then /codex resume <thread-id> before sending diagnostics.",
       ].join("\n"),
     });

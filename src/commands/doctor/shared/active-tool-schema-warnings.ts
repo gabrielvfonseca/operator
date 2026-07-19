@@ -5,7 +5,7 @@ import {
   resolveAgentDir,
   resolveAgentWorkspaceDir,
 } from "../../../agents/agent-scope.js";
-import { createOpenClawCodingTools } from "../../../agents/agent-tools.js";
+import { createOperatorCodingTools } from "../../../agents/agent-tools.js";
 import { resolveModel } from "../../../agents/embedded-agent-runner/model.js";
 import { normalizeAgentRuntimeTools } from "../../../agents/runtime-plan/tools.js";
 import {
@@ -15,7 +15,7 @@ import {
 // Doctor warnings for active tools whose schemas cannot be projected to the selected runtime.
 import { buildReadableToolsByName } from "../../../agents/tools-effective-inventory-build.js";
 import type { AnyAgentTool } from "../../../agents/tools/common.js";
-import type { OpenClawConfig } from "../../../config/types.operator.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import { formatErrorMessage } from "../../../infra/errors.js";
 import { extractModelCompat } from "../../../plugins/provider-model-compat.js";
 import type { ProviderRuntimeModel } from "../../../plugins/provider-runtime-model.types.js";
@@ -23,7 +23,7 @@ import { getPluginToolMeta } from "../../../plugins/tools.js";
 import { resolveDoctorPrimaryModelRef } from "./primary-model-ref.js";
 
 function resolveRuntimeModelContext(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentDir: string;
   workspaceDir: string;
   provider: string;
@@ -57,7 +57,7 @@ function formatDiagnostic(params: {
 }): string {
   const plugin = params.pluginId ? ` from plugin "${params.pluginId}"` : "";
   return sanitizeForLog(
-    `- agents.${params.agentId}: active tool "${params.diagnostic.toolName}"${plugin} has unsupported runtime input schema (${params.diagnostic.violations.join(", ")}). OpenClaw will quarantine this tool at runtime; fix or disable the plugin, or remove the tool from active allowlists.`,
+    `- agents.${params.agentId}: active tool "${params.diagnostic.toolName}"${plugin} has unsupported runtime input schema (${params.diagnostic.violations.join(", ")}). Operator will quarantine this tool at runtime; fix or disable the plugin, or remove the tool from active allowlists.`,
   );
 }
 
@@ -79,7 +79,7 @@ function readPluginId(tool: AnyAgentTool | undefined): string | undefined {
 
 /** Collect per-agent warnings for active plugin tools rejected by runtime schema projection. */
 export function collectActiveToolSchemaProjectionWarnings(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   env?: NodeJS.ProcessEnv;
 }): string[] {
   if (params.cfg.plugins?.enabled === false) {
@@ -109,9 +109,9 @@ export function collectActiveToolSchemaProjectionWarnings(params: {
         ),
       );
     }
-    let tools: ReturnType<typeof createOpenClawCodingTools>;
+    let tools: ReturnType<typeof createOperatorCodingTools>;
     try {
-      tools = createOpenClawCodingTools({
+      tools = createOperatorCodingTools({
         agentId,
         agentDir,
         workspaceDir,

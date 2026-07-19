@@ -1,14 +1,14 @@
 import type { AuthProfileStore } from "../../../agents/auth-profiles/types.js";
-import type { OpenClawConfig } from "../../../config/types.operator.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import "./stale-auth-order.js";
 
 type TestApi = {
   repairStaleConfiguredAuthOrders(params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     stores: readonly AuthProfileStore[];
     activeStores?: readonly AuthProfileStore[];
     runtimeProfileIds?: ReadonlySet<string>;
-  }): { config: OpenClawConfig; changes: string[] };
+  }): { config: OperatorConfig; changes: string[] };
 };
 
 function getTestApi(): TestApi {

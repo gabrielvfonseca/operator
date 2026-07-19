@@ -6,8 +6,8 @@ import { expectDefined } from "@operator/normalization-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  runOpenClawStateWriteTransaction,
+  closeOperatorStateDatabaseForTest,
+  runOperatorStateWriteTransaction,
 } from "../state/openclaw-state-db.js";
 import { withMockedWindowsPlatform } from "../test-utils/vitest-spies.js";
 import type { PluginCandidate } from "./discovery.js";
@@ -74,7 +74,7 @@ function updatePersistedInstallRecordsWithoutClearingCache(
   stateDir: string,
   records: Record<string, PluginInstallRecord>,
 ) {
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     ({ db }) => {
       db.prepare(
         `
@@ -85,12 +85,12 @@ function updatePersistedInstallRecordsWithoutClearingCache(
         `,
       ).run(JSON.stringify(records), Date.now());
     },
-    { env: { ...process.env, OPENCLAW_STATE_DIR: stateDir } },
+    { env: { ...process.env, OPERATOR_STATE_DIR: stateDir } },
   );
 }
 
 afterEach(() => {
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorStateDatabaseForTest();
   vi.doUnmock("./installed-plugin-index-store.js");
   clearLoadInstalledPluginIndexInstallRecordsCache();
   for (const dir of tempDirs.splice(0)) {

@@ -8,7 +8,7 @@ import {
 import { resolveSlackAccount, resolveSlackOperationToken } from "./accounts.js";
 import { createSlackWebClient } from "./client.js";
 import { normalizeAllowListLower } from "./monitor/allow-list.js";
-import type { OpenClawConfig } from "./runtime-api.js";
+import type { OperatorConfig } from "./runtime-api.js";
 
 export type SlackConversationInfo = {
   type: "channel" | "group" | "dm" | "unknown";
@@ -71,7 +71,7 @@ function resolveConfiguredSlackConversationInfo(params: {
 }
 
 export async function resolveSlackConversationInfo(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
   channelId: string;
   operation?: "read" | "write";
@@ -147,7 +147,7 @@ export async function resolveSlackConversationInfo(params: {
 }
 
 export async function resolveSlackChannelType(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
   channelId: string;
 }): Promise<"channel" | "group" | "dm" | "unknown"> {

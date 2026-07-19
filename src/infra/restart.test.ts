@@ -31,12 +31,12 @@ vi.mock("./ports-lsof.js", () => ({
 vi.mock("../config/paths.js", () => ({
   resolveGatewayPort: (...args: unknown[]) => resolveGatewayPortMock(...args),
   resolveStateDir: (env: NodeJS.ProcessEnv = process.env) =>
-    env.OPENCLAW_STATE_DIR ?? "/tmp/openclaw-state",
+    env.OPERATOR_STATE_DIR ?? "/tmp/openclaw-state",
 }));
 
 const { cleanStaleGatewayProcessesSync, findGatewayPidsOnPortSync } =
   await import("./restart-stale-pids.js");
-const { triggerOpenClawRestart } = await import("./restart.js");
+const { triggerOperatorRestart } = await import("./restart.js");
 
 const envSnapshot = captureFullEnv();
 
@@ -83,7 +83,7 @@ describe.runIf(process.platform !== "win32")("findGatewayPidsOnPortSync", () => 
         `p${foreignPid}`,
         "cnode",
         `p${gatewayPidB}`,
-        "cOpenClaw",
+        "cOperator",
       ].join("\n"),
     });
 
@@ -191,11 +191,11 @@ describe.runIf(process.platform !== "win32")("cleanStaleGatewayProcessesSync", (
   });
 });
 
-describe("triggerOpenClawRestart", () => {
+describe("triggerOperatorRestart", () => {
   it("does not kickstart after bootstrap registers an unloaded LaunchAgent", () => {
     setPlatform("darwin");
     withEnv(
-      { VITEST: undefined, NODE_ENV: undefined, HOME: "/Users/test", OPENCLAW_PROFILE: "default" },
+      { VITEST: undefined, NODE_ENV: undefined, HOME: "/Users/test", OPERATOR_PROFILE: "default" },
       () => {
         const uid = typeof process.getuid === "function" ? process.getuid() : 501;
         spawnSyncMock.mockImplementation((command: string, args: string[]) => {
@@ -211,7 +211,7 @@ describe("triggerOpenClawRestart", () => {
           return { error: undefined, status: 1, stdout: "" };
         });
 
-        const result = triggerOpenClawRestart();
+        const result = triggerOperatorRestart();
 
         expect(result).toEqual({
           ok: true,
@@ -228,7 +228,7 @@ describe("triggerOpenClawRestart", () => {
   it("continues when launchctl bootstrap reports the service is already loaded", () => {
     setPlatform("darwin");
     withEnv(
-      { VITEST: undefined, NODE_ENV: undefined, HOME: "/Users/test", OPENCLAW_PROFILE: "default" },
+      { VITEST: undefined, NODE_ENV: undefined, HOME: "/Users/test", OPERATOR_PROFILE: "default" },
       () => {
         const uid = typeof process.getuid === "function" ? process.getuid() : 501;
         spawnSyncMock.mockImplementation((command: string, args: string[]) => {
@@ -247,7 +247,7 @@ describe("triggerOpenClawRestart", () => {
           return { error: undefined, status: 1, stdout: "" };
         });
 
-        const result = triggerOpenClawRestart();
+        const result = triggerOperatorRestart();
 
         expect(result).toEqual({
           ok: true,

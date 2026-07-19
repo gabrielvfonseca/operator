@@ -7,8 +7,8 @@ import {
 } from "../../sessions/agent-harness-session-key.js";
 import { emitSessionIdentityMutation } from "../../sessions/session-lifecycle-events.js";
 import {
-  openOpenClawAgentDatabase,
-  runOpenClawAgentWriteTransaction,
+  openOperatorAgentDatabase,
+  runOperatorAgentWriteTransaction,
 } from "../../state/operator-agent-db.js";
 import { materializeSqliteSessionStateDeletePlans } from "./session-accessor.sqlite-archive.js";
 import type {
@@ -64,7 +64,7 @@ export async function cleanupSqliteSessionLifecycleArtifacts(
     storePath: params.storePath,
   });
   return await runExclusiveSqliteSessionWrite(resolved, async () => {
-    const database = openOpenClawAgentDatabase(toDatabaseOptions(resolved));
+    const database = openOperatorAgentDatabase(toDatabaseOptions(resolved));
     const cleanupPlan = planSqliteSessionLifecycleArtifactCleanup(database, {
       archiveRemovedEntryTranscripts: params.archiveRemovedEntryTranscripts !== false,
       archiveDirectory: resolveSqliteTranscriptArchiveDirectory(resolved),
@@ -76,7 +76,7 @@ export async function cleanupSqliteSessionLifecycleArtifacts(
     const materializedPlans = materializeSqliteSessionStateDeletePlans(cleanupPlan.deletePlans);
     let removedEntries = 0;
     let archivedTranscripts: SessionLifecycleArchivedTranscript[] = [];
-    runOpenClawAgentWriteTransaction((transactionDb) => {
+    runOperatorAgentWriteTransaction((transactionDb) => {
       removedEntries = deletePlannedSqliteLifecycleArtifactEntries(
         transactionDb,
         cleanupPlan.entries,
@@ -100,7 +100,7 @@ export async function resetSqliteSessionEntryLifecycle(
 ): Promise<ResetSessionEntryLifecycleResult> {
   const resolved = resolveSqliteStoreScope(params.storePath, { agentId: params.agentId });
   return await runExclusiveSqliteSessionWrite(resolved, async () => {
-    const database = openOpenClawAgentDatabase(toDatabaseOptions(resolved));
+    const database = openOperatorAgentDatabase(toDatabaseOptions(resolved));
     const targetSnapshot = readSqliteLifecycleTargetSnapshot(database, params.target);
     const current = targetSnapshot.primary;
     const nextEntry = await params.buildNextEntry({
@@ -127,7 +127,7 @@ export async function resetSqliteSessionEntryLifecycle(
         })
       : [];
     const materializedPlans = materializeSqliteSessionStateDeletePlans(deletePlans);
-    runOpenClawAgentWriteTransaction((transactionDb) => {
+    runOperatorAgentWriteTransaction((transactionDb) => {
       assertSqliteLifecycleTargetUnchanged(transactionDb, params.target, current?.entry, "reset");
       deleteSqliteLifecycleTargetRows(transactionDb, params.target);
       writeSessionEntry(transactionDb, params.target.canonicalKey, nextEntry);
@@ -178,7 +178,7 @@ async function deleteSqliteSessionEntryLifecycleInternal(
       archivedTranscripts: [],
       deleted: false,
     };
-    const database = openOpenClawAgentDatabase(toDatabaseOptions(resolved));
+    const database = openOperatorAgentDatabase(toDatabaseOptions(resolved));
     const targetSnapshot = readSqliteLifecycleTargetSnapshot(database, params.target);
     const current = targetSnapshot.primary;
     if (!current) {
@@ -218,7 +218,7 @@ async function deleteSqliteSessionEntryLifecycleInternal(
         )
       : [];
     const materializedPlans = materializeSqliteSessionStateDeletePlans(deletePlans);
-    runOpenClawAgentWriteTransaction((transactionDb) => {
+    runOperatorAgentWriteTransaction((transactionDb) => {
       const transactionSnapshot = readSqliteLifecycleTargetSnapshot(transactionDb, params.target);
       assertSqliteLifecycleTargetSnapshotUnchanged(
         targetSnapshot,

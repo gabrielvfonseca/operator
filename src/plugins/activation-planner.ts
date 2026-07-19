@@ -2,7 +2,7 @@
 import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
 import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
 import { uniqueStrings } from "@operator/normalization-core/string-normalization";
-import type { OpenClawConfig } from "../config/types.js";
+import type { OperatorConfig } from "../config/types.js";
 import { normalizePluginsConfig } from "./config-state.js";
 import {
   hasExplicitManifestOwnerTrust,
@@ -60,7 +60,7 @@ type PluginActivationPlan = {
 
 type ResolveManifestActivationPlanParams = {
   trigger: PluginActivationPlannerTrigger;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   origin?: PluginOrigin;

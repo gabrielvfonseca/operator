@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import "./local.js";
 
 type GatewayHealthProbeAuth = {
@@ -8,7 +8,7 @@ type GatewayHealthProbeAuth = {
 };
 
 type TestApi = {
-  resolveGatewayHealthProbeToken(nextConfig: OpenClawConfig): Promise<GatewayHealthProbeAuth>;
+  resolveGatewayHealthProbeToken(nextConfig: OperatorConfig): Promise<GatewayHealthProbeAuth>;
   resolveInstallDaemonGatewayHealthTiming(platform?: NodeJS.Platform): {
     deadlineMs: number;
     probeTimeoutMs: number;

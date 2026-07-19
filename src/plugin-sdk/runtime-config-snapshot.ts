@@ -12,4 +12,4 @@ export {
   getRuntimeConfig,
   getRuntimeConfigSourceSnapshot,
 } from "../config/io.js";
-export type { OpenClawConfig } from "../config/types.js";
+export type { OperatorConfig } from "../config/types.js";

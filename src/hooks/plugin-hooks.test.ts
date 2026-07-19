@@ -4,7 +4,7 @@ import fsp from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import {
   clearInternalHooks,
   createInternalHookEvent,
@@ -29,17 +29,17 @@ describe("bundle plugin hooks", () => {
     setInternalHooksEnabled(true);
     workspaceDir = path.join(fixtureRoot, `case-${caseId++}`);
     await fsp.mkdir(workspaceDir, { recursive: true });
-    previousBundledHooksDir = process.env.OPENCLAW_BUNDLED_HOOKS_DIR;
-    process.env.OPENCLAW_BUNDLED_HOOKS_DIR = "/nonexistent/bundled/hooks";
+    previousBundledHooksDir = process.env.OPERATOR_BUNDLED_HOOKS_DIR;
+    process.env.OPERATOR_BUNDLED_HOOKS_DIR = "/nonexistent/bundled/hooks";
   });
 
   afterEach(() => {
     clearInternalHooks();
     setInternalHooksEnabled(true);
     if (previousBundledHooksDir === undefined) {
-      delete process.env.OPENCLAW_BUNDLED_HOOKS_DIR;
+      delete process.env.OPERATOR_BUNDLED_HOOKS_DIR;
     } else {
-      process.env.OPENCLAW_BUNDLED_HOOKS_DIR = previousBundledHooksDir;
+      process.env.OPERATOR_BUNDLED_HOOKS_DIR = previousBundledHooksDir;
     }
   });
 
@@ -82,7 +82,7 @@ describe("bundle plugin hooks", () => {
     return bundleRoot;
   }
 
-  function createConfig(enabled: boolean): OpenClawConfig {
+  function createConfig(enabled: boolean): OperatorConfig {
     return {
       hooks: {
         internal: {
@@ -145,7 +145,7 @@ describe("bundle plugin hooks", () => {
     expect(entries).toHaveLength(0);
   });
 
-  it("does not treat Claude hooks.json bundles as OpenClaw hook packs", async () => {
+  it("does not treat Claude hooks.json bundles as Operator hook packs", async () => {
     const bundleRoot = path.join(workspaceDir, ".openclaw", "extensions", "claude-bundle");
     await fsp.mkdir(path.join(bundleRoot, ".claude-plugin"), { recursive: true });
     await fsp.mkdir(path.join(bundleRoot, "hooks"), { recursive: true });

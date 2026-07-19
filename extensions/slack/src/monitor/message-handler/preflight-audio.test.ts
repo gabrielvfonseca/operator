@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { SlackMessageEvent } from "../../types.js";
 import type { SlackMediaResult } from "../media-types.js";
@@ -35,7 +35,7 @@ function createSlackMessage(overrides: Partial<SlackMessageEvent>): SlackMessage
   } as SlackMessageEvent;
 }
 
-function createAudioConfig(overrides: Record<string, unknown> = {}): OpenClawConfig {
+function createAudioConfig(overrides: Record<string, unknown> = {}): OperatorConfig {
   return {
     tools: {
       media: {
@@ -46,7 +46,7 @@ function createAudioConfig(overrides: Record<string, unknown> = {}): OpenClawCon
         },
       },
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 describe("Slack captionless audio preflight", () => {

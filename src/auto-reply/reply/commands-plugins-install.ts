@@ -7,7 +7,7 @@ import {
   parseNpmPackPrefixPath,
   resolveFileNpmSpecToLocalPath,
 } from "../../cli/plugins-command-helpers.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { PluginInstallRecord } from "../../config/types.plugins.js";
 import { resolveArchiveKind } from "../../infra/archive.js";
 import { parseClawHubPluginSpec } from "../../infra/clawhub.js";
@@ -23,7 +23,7 @@ import {
 import {
   formatNonClawHubInstallWarning,
   NON_CLAWHUB_INSTALL_FORCE_FLAG,
-  resolveOpenClawTrustedNpmPackageInstall,
+  resolveOperatorTrustedNpmPackageInstall,
   type NonClawHubInstallSourceClass,
 } from "../../plugins/install-provenance.js";
 import {
@@ -68,7 +68,7 @@ function resolveNonClawHubChatInstallAcknowledgement(params: {
 export async function installPluginFromPluginsCommand(params: {
   raw: string;
   force: boolean;
-  config: OpenClawConfig;
+  config: OperatorConfig;
   snapshot: ConfigSnapshotForInstallPersist;
 }): Promise<
   { ok: true; pluginId: string; warnings?: readonly string[] } | { ok: false; error: string }
@@ -275,7 +275,7 @@ export async function installPluginFromPluginsCommand(params: {
       warnings: bundledInstall.warnings,
     };
   }
-  const trustedNpmInstall = resolveOpenClawTrustedNpmPackageInstall(npmSpec);
+  const trustedNpmInstall = resolveOperatorTrustedNpmPackageInstall(npmSpec);
   const officialIdPlan = resolveCatalogOfficialExternalInstallPlan(params.raw);
   const arbitraryNpmAcknowledgement =
     !trustedNpmInstall && !officialIdPlan

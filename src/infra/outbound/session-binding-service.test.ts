@@ -7,7 +7,7 @@ import {
   releasePinnedPluginChannelRegistry,
   setActivePluginRegistry,
 } from "../../plugins/runtime.js";
-import { closeOpenClawStateDatabaseForTest } from "../../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../state/openclaw-state-db.js";
 import { createTestRegistry } from "../../test-utils/channel-plugins.js";
 import { createTrackedTempDirs } from "../../test-utils/tracked-temp-dirs.js";
 import {
@@ -128,20 +128,20 @@ describe("session binding service", () => {
   let testStateDir = "";
 
   beforeEach(async () => {
-    previousStateDir = process.env.OPENCLAW_STATE_DIR;
+    previousStateDir = process.env.OPERATOR_STATE_DIR;
     testStateDir = await tempDirs.make("openclaw-session-binding-");
-    process.env.OPENCLAW_STATE_DIR = testStateDir;
+    process.env.OPERATOR_STATE_DIR = testStateDir;
     testing.resetSessionBindingAdaptersForTests();
     setMinimalCurrentConversationRegistry();
   });
 
   afterEach(async () => {
     testing.resetSessionBindingAdaptersForTests();
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     if (previousStateDir == null) {
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.OPERATOR_STATE_DIR;
     } else {
-      process.env.OPENCLAW_STATE_DIR = previousStateDir;
+      process.env.OPERATOR_STATE_DIR = previousStateDir;
     }
     await tempDirs.cleanup();
   });

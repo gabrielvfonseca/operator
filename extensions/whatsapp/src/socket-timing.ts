@@ -5,7 +5,7 @@ import type {
   WAMessage,
   WAPresence,
 } from "baileys";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   parseStrictPositiveInteger,
   resolveTimerTimeoutMs,
@@ -51,7 +51,7 @@ class WhatsAppSocketOperationTimeoutError extends Error {
 }
 
 export function resolveWhatsAppSocketTiming(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   overrides?: WhatsAppSocketTimingOptions,
 ): Required<WhatsAppSocketTimingOptions> {
   const configured = cfg.web?.whatsapp;

@@ -4,7 +4,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import type { NodeRegistry } from "../../gateway/node-registry.js";
 import { getSkillsSnapshotVersion } from "./refresh-state.js";
 import { resetSkillsRefreshForTest } from "./refresh.test-support.js";
@@ -18,7 +18,7 @@ import {
   setSkillsRemoteRegistry,
 } from "./remote.js";
 
-function createRemoteSkillWorkspace(bin: string): { cfg: OpenClawConfig; workspaceDir: string } {
+function createRemoteSkillWorkspace(bin: string): { cfg: OperatorConfig; workspaceDir: string } {
   const workspaceDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-remote-skills-"));
   const skillDir = path.join(workspaceDir, "skills", "remote-skill");
   fs.mkdirSync(skillDir, { recursive: true });
@@ -42,7 +42,7 @@ function createRemoteSkillWorkspace(bin: string): { cfg: OpenClawConfig; workspa
           workspace: workspaceDir,
         },
       },
-    } satisfies OpenClawConfig,
+    } satisfies OperatorConfig,
   };
 }
 
@@ -262,7 +262,7 @@ describe("skills-remote", () => {
             workspace: workspaceDir,
           },
         },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       const invokeCalls: string[] = [];
       setSkillsRemoteRegistry({
         listConnected: () => [],
@@ -330,7 +330,7 @@ describe("skills-remote", () => {
             workspace: workspaceDir,
           },
         },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       let connId = "conn-old";
       const connectivityCalls: string[] = [];
       const invokeCalls: string[] = [];
@@ -429,7 +429,7 @@ describe("skills-remote", () => {
             workspace: workspaceDir,
           },
         },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       recordRemoteNodeInfo({
         nodeId,
         displayName: "Remote Mac",

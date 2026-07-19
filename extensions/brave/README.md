@@ -1,6 +1,6 @@
 # @operator/brave-plugin
 
-Official Brave Search provider plugin for OpenClaw.
+Official Brave Search provider plugin for Operator.
 
 This plugin registers Brave as a `web_search` provider. It supports normal Brave web search and Brave LLM Context API mode.
 
@@ -33,4 +33,4 @@ Full setup, config examples, search modes, and tool parameters:
 
 - Plugin id: `brave`
 - Package: `@operator/brave-plugin`
-- Minimum OpenClaw host: `2026.4.10`
+- Minimum Operator host: `2026.4.10`

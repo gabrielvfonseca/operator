@@ -7,7 +7,7 @@
 import type { ExecAutoReviewHost } from "../infra/exec-auto-review.js";
 
 export async function reviewExecRequestWithConfiguredModel(params: {
-  cfg?: import("../config/types.operator.js").OpenClawConfig;
+  cfg?: import("../config/types.operator.js").OperatorConfig;
   agentId?: string;
   reviewer?: unknown;
   input: import("../infra/exec-auto-review.js").ExecAutoReviewInput;

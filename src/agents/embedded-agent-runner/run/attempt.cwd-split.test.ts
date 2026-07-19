@@ -52,7 +52,7 @@ describe("runEmbeddedAttempt cwd/workspace split", () => {
     expect(bootstrapCall?.workspaceDir).not.toBe("/tmp/task-repo");
     expect(bootstrapCall?.agentId).toBe("main");
 
-    const toolsCall = hoisted.createOpenClawCodingToolsMock.mock.calls[0]?.[0] as
+    const toolsCall = hoisted.createOperatorCodingToolsMock.mock.calls[0]?.[0] as
       | { cwd?: string; workspaceDir?: string; spawnWorkspaceDir?: string }
       | undefined;
     expect(toolsCall?.cwd).toBe(taskRepo);
@@ -78,7 +78,7 @@ describe("runEmbeddedAttempt cwd/workspace split", () => {
       },
     });
 
-    const toolsCall = hoisted.createOpenClawCodingToolsMock.mock.calls[0]?.[0] as
+    const toolsCall = hoisted.createOperatorCodingToolsMock.mock.calls[0]?.[0] as
       | {
           currentChannelId?: string;
           currentMessagingTarget?: string;
@@ -104,7 +104,7 @@ describe("runEmbeddedAttempt cwd/workspace split", () => {
       },
     });
 
-    expect(hoisted.createOpenClawCodingToolsMock).not.toHaveBeenCalled();
+    expect(hoisted.createOperatorCodingToolsMock).not.toHaveBeenCalled();
   });
 
   it("rejects cwd overrides for sandboxed runs instead of silently ignoring them", async () => {
@@ -126,7 +126,7 @@ describe("runEmbeddedAttempt cwd/workspace split", () => {
         },
       }),
     ).rejects.toThrow("cwd override is not supported");
-    expect(hoisted.createOpenClawCodingToolsMock).not.toHaveBeenCalled();
+    expect(hoisted.createOperatorCodingToolsMock).not.toHaveBeenCalled();
   });
 
   it("runs a managed worktree when sandbox workspace and cwd match", async () => {
@@ -149,7 +149,7 @@ describe("runEmbeddedAttempt cwd/workspace split", () => {
       },
     });
 
-    expect(hoisted.createOpenClawCodingToolsMock).toHaveBeenCalledWith(
+    expect(hoisted.createOperatorCodingToolsMock).toHaveBeenCalledWith(
       expect.objectContaining({ cwd: worktree, workspaceDir: worktree }),
     );
   });

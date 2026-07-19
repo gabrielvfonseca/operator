@@ -1,6 +1,6 @@
 // Active session shutdown tracker.
 // Remembers sessions needing `session_end` hooks during gateway shutdown/restart.
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 
 // Module-level tracker of sessions that have received `session_start` but not
 // yet a paired `session_end`. The close handler drains this set on gateway
@@ -16,7 +16,7 @@ import type { OpenClawConfig } from "../config/types.operator.js";
 // runs. That is what keeps the shutdown finalizer from double-firing.
 
 type ActiveSessionForShutdown = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   sessionKey: string;
   sessionId: string;
   storePath: string;

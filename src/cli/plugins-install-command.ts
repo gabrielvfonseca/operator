@@ -6,7 +6,7 @@ import {
   assertConfigWriteAllowedInCurrentMode,
   readConfigFileSnapshotForWrite,
 } from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   installHooksFromNpmSpec,
   installHooksFromPath,
@@ -29,7 +29,7 @@ import {
   type ConfigMutationPreflight,
   type ConfigSnapshotForInstallPersist,
 } from "../plugins/install-persistence.js";
-import { resolveOpenClawTrustedNpmPackageInstall } from "../plugins/install-provenance.js";
+import { resolveOperatorTrustedNpmPackageInstall } from "../plugins/install-provenance.js";
 import type { InstallSafetyOverrides } from "../plugins/install-security-scan.js";
 import {
   PLUGIN_INSTALL_ERROR_CODE,
@@ -550,7 +550,7 @@ function extractMissingPluginLoadPath(issue: { path?: string; message?: string }
 }
 
 function collectRequestedPluginInstallPaths(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   installRecords: Awaited<ReturnType<typeof loadInstalledPluginIndexInstallRecords>>,
   request: PluginInstallRequestContext,
   env: NodeJS.ProcessEnv = process.env,
@@ -595,11 +595,11 @@ async function collectRequestedPluginLocationBridgePaths(
 }
 
 function removeOwnedMissingPluginLoadPaths(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   issues: readonly { path?: string; message?: string }[],
   ownedLoadPaths: ReadonlySet<string>,
   env: NodeJS.ProcessEnv = process.env,
-): OpenClawConfig {
+): OperatorConfig {
   const missingPaths = new Set<string>();
   for (const issue of issues) {
     const missingPath = extractMissingPluginLoadPath(issue);
@@ -634,7 +634,7 @@ function removeOwnedMissingPluginLoadPaths(
 }
 
 async function resolveRequestedPluginInstallPaths(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   issues: readonly { path?: string; message?: string }[],
   request: PluginInstallRequestContext,
   env: NodeJS.ProcessEnv = process.env,
@@ -1080,7 +1080,7 @@ export async function runPluginInstallCommand(params: {
       );
       return runtime.exit(1);
     }
-    const trustedNpmInstall = resolveOpenClawTrustedNpmPackageInstall(npmPrefixSpec);
+    const trustedNpmInstall = resolveOperatorTrustedNpmPackageInstall(npmPrefixSpec);
     if (!trustedNpmInstall && !(await acknowledgeNonClawHubSource("npm", npmPrefixSpec))) {
       return runtime.exit(1);
     }
@@ -1247,7 +1247,7 @@ export async function runPluginInstallCommand(params: {
     return;
   }
 
-  const trustedNpmInstall = resolveOpenClawTrustedNpmPackageInstall(raw);
+  const trustedNpmInstall = resolveOperatorTrustedNpmPackageInstall(raw);
   if (!trustedNpmInstall && !(await acknowledgeNonClawHubSource("npm", raw))) {
     return runtime.exit(1);
   }

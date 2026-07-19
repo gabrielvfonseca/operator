@@ -4,7 +4,7 @@ import {
   DEFAULT_SUBAGENT_MAX_SPAWN_DEPTH,
 } from "../../config/agent-limits.js";
 import { getRuntimeConfig } from "../../config/config.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { callGateway } from "../../gateway/call.js";
 import {
   isValidAgentId,
@@ -53,7 +53,7 @@ type VisibleSessionsSpawnOptions = VisibleSessionsSpawnDeps & {
   currentChannelId?: string;
   currentThreadTs?: string;
   sandboxed?: boolean;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   requesterAgentIdOverride?: string;
   inheritedToolAllowlist?: string[];
   inheritedToolDenylist?: string[];

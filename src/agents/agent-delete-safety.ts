@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { lowercasePreservingWhitespace } from "@operator/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { isPathInside } from "../infra/path-guards.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 import { listAgentEntries, resolveAgentWorkspaceDir } from "./agent-scope.js";
@@ -31,7 +31,7 @@ function workspacePathsOverlap(left: string, right: string): boolean {
 
 /** Lists other agents whose workspaces overlap a candidate delete target. */
 export function findOverlappingWorkspaceAgentIds(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   agentId: string,
   workspaceDir: string,
 ): string[] {

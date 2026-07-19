@@ -9,7 +9,7 @@ import {
   withAcpManagerTaskStateDir,
 } from "../../../test/helpers/acp-manager-task-state.js";
 import { listSessionStateEventsSince } from "../../sessions/session-state-events.js";
-import { closeOpenClawStateDatabaseForTest } from "../../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../state/openclaw-state-db.js";
 import { isAcpTurnActive } from "./active-turns.js";
 import {
   AcpRuntimeError,
@@ -27,7 +27,7 @@ import {
   mockCallArg,
   mockParentedAcpSessionEntries,
   readySessionMeta,
-  type OpenClawConfig,
+  type OperatorConfig,
   resetAcpSessionManagerForTests,
   type SessionAcpMeta,
 } from "./manager.test-helpers.js";
@@ -83,7 +83,7 @@ describe("AcpSessionManager", () => {
       ...baseCfg,
       session: { mainKey: "main" },
       agents: { list: [{ id: "main", default: true }] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     await manager.runTurn({
       provenance: "system",
@@ -161,7 +161,7 @@ describe("AcpSessionManager", () => {
           payload: { outcome: "cancelled" },
         },
       ]);
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorStateDatabaseForTest();
     });
   });
 
@@ -727,7 +727,7 @@ describe("AcpSessionManager", () => {
             timeoutSeconds: 1,
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const first = manager.runTurn({
         provenance: "system",
@@ -860,7 +860,7 @@ describe("AcpSessionManager", () => {
             timeoutSeconds: 1,
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const first = manager.runTurn({
         provenance: "system",
@@ -991,7 +991,7 @@ describe("AcpSessionManager", () => {
         ...baseCfg.acp,
         maxConcurrentSessions: 1,
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const manager = new AcpSessionManager();
     await manager.runTurn({
@@ -1050,7 +1050,7 @@ describe("AcpSessionManager", () => {
         enabled: true,
         dispatch: { enabled: true },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const manager = new AcpSessionManager();
     await expect(
@@ -1106,7 +1106,7 @@ describe("AcpSessionManager", () => {
           ...baseCfg.acp,
           maxConcurrentSessions: 1,
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const manager = new AcpSessionManager();
       await manager.runTurn({
@@ -1445,7 +1445,7 @@ describe("AcpSessionManager", () => {
             ttlMinutes: 0.01,
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const manager = new AcpSessionManager();
       await manager.runTurn({

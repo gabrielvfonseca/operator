@@ -11,7 +11,7 @@ import { getRuntimeConfig, getRuntimeConfigSourceSnapshot } from "../config/conf
 import { formatErrorMessage } from "../infra/errors.js";
 import { resolveUserPath } from "../utils.js";
 import { assertCdpEndpointAllowed, redactCdpUrl } from "./cdp.helpers.js";
-import { resolveOpenClawUserDataDir } from "./chrome.js";
+import { resolveOperatorUserDataDir } from "./chrome.js";
 import {
   createBrowserProfileConfig,
   deleteBrowserProfileConfig,
@@ -259,7 +259,7 @@ export function createBrowserProfilesService(ctx: BrowserRouteContext) {
       delete state.resolved.profiles[name];
       try {
         if (resolved?.cdpIsLoopback && resolved.driver === "openclaw" && !resolved.attachOnly) {
-          const userDataDir = resolveOpenClawUserDataDir(name);
+          const userDataDir = resolveOperatorUserDataDir(name);
           const profileDir = path.dirname(userDataDir);
           if (fs.existsSync(profileDir)) {
             try {

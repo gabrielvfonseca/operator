@@ -392,11 +392,11 @@ export async function createQaBundledPluginsDir(params: {
     repoRoot: params.repoRoot,
     stagedRoot,
   });
-  const stagedOpenClawPackageDir = path.join(stagedRoot, "node_modules", "openclaw");
-  await fs.mkdir(stagedOpenClawPackageDir, { recursive: true });
+  const stagedOperatorPackageDir = path.join(stagedRoot, "node_modules", "openclaw");
+  await fs.mkdir(stagedOperatorPackageDir, { recursive: true });
   await fs.copyFile(
     path.join(params.repoRoot, "package.json"),
-    path.join(stagedOpenClawPackageDir, "package.json"),
+    path.join(stagedOperatorPackageDir, "package.json"),
   );
   const stagedTreeName = resolveQaStagedBundledTreeName(params.repoRoot);
   const stagedTreeRoot = path.join(stagedRoot, stagedTreeName);
@@ -442,7 +442,7 @@ export async function createQaBundledPluginsDir(params: {
   }
   await symlinkQaStagedDirEntry({
     sourcePath: path.join(stagedRoot, "dist"),
-    targetPath: path.join(stagedOpenClawPackageDir, "dist"),
+    targetPath: path.join(stagedOperatorPackageDir, "dist"),
     directory: true,
   });
   return {

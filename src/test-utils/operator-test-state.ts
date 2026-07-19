@@ -1,4 +1,4 @@
-// Creates isolated OpenClaw state directories for integration-style tests.
+// Creates isolated Operator state directories for integration-style tests.
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -14,9 +14,9 @@ type ConfigRuntimeResettable = typeof configRuntime & {
   resetConfigRuntimeState?: () => void;
 };
 
-type OpenClawTestStateLayout = "home" | "state-only" | "split";
+type OperatorTestStateLayout = "home" | "state-only" | "split";
 
-type OpenClawTestStateScenario =
+type OperatorTestStateScenario =
   | "empty"
   | "minimal"
   | "update-stable"
@@ -24,11 +24,11 @@ type OpenClawTestStateScenario =
   | "gateway-loopback"
   | "external-service";
 
-type OpenClawTestStateOptions = {
+type OperatorTestStateOptions = {
   prefix?: string;
   label?: string;
-  layout?: OpenClawTestStateLayout;
-  scenario?: OpenClawTestStateScenario;
+  layout?: OperatorTestStateLayout;
+  scenario?: OperatorTestStateScenario;
   agentEnv?: "clear" | "main";
   applyEnv?: boolean;
   env?: Record<string, string | undefined>;
@@ -38,7 +38,7 @@ type OpenClawTestStateOptions = {
   };
 };
 
-export type OpenClawTestState = {
+export type OperatorTestState = {
   root: string;
   home: string;
   stateDir: string;
@@ -108,7 +108,7 @@ function resolveWindowsHomeEnv(
 
 function resolveLayout(
   root: string,
-  layout: OpenClawTestStateLayout,
+  layout: OperatorTestStateLayout,
 ): {
   home: string;
   stateDir: string;
@@ -144,7 +144,7 @@ function resolveLayout(
   };
 }
 
-function scenarioConfig(options: OpenClawTestStateOptions): Record<string, unknown> | undefined {
+function scenarioConfig(options: OperatorTestStateOptions): Record<string, unknown> | undefined {
   const scenario = options.scenario ?? "empty";
   if (scenario === "minimal" || scenario === "external-service") {
     return {};
@@ -201,7 +201,7 @@ function scenarioConfig(options: OpenClawTestStateOptions): Record<string, unkno
   return undefined;
 }
 
-function scenarioEnv(options: OpenClawTestStateOptions): Record<string, string | undefined> {
+function scenarioEnv(options: OperatorTestStateOptions): Record<string, string | undefined> {
   if ((options.scenario ?? "empty") === "external-service") {
     return {
       OPERATOR_SERVICE_REPAIR_POLICY: "external",
@@ -211,7 +211,7 @@ function scenarioEnv(options: OpenClawTestStateOptions): Record<string, string |
 }
 
 function buildEnvVars(params: {
-  layout: OpenClawTestStateLayout;
+  layout: OperatorTestStateLayout;
   home: string;
   stateDir: string;
   configPath: string;
@@ -264,9 +264,9 @@ async function writeJsonFile(filePath: string, value: unknown): Promise<string> 
   return filePath;
 }
 
-export async function createOpenClawTestState(
-  options: OpenClawTestStateOptions = {},
-): Promise<OpenClawTestState> {
+export async function createOperatorTestState(
+  options: OperatorTestStateOptions = {},
+): Promise<OperatorTestState> {
   const label = normalizeLabel(options.label ?? options.scenario);
   const prefix = options.prefix ?? `${DEFAULT_PREFIX}${label}-`;
   // Canonicalize: macOS tmpdir sits behind a symlink (/var -> /private/var) and
@@ -306,7 +306,7 @@ export async function createOpenClawTestState(
   const sessionsDir = (agentId = "main") =>
     path.join(paths.stateDir, "agents", agentId, "sessions");
 
-  const state: OpenClawTestState = {
+  const state: OperatorTestState = {
     root,
     ...paths,
     env,
@@ -335,7 +335,7 @@ export async function createOpenClawTestState(
     applyEnv: () => {
       resetConfigRuntimeStateForTest();
       for (const [key, value] of Object.entries(envVars)) {
-        // Test fixtures apply a fixed OpenClaw env set, not plugin-provided host env.
+        // Test fixtures apply a fixed Operator env set, not plugin-provided host env.
         if (value === undefined) {
           Reflect.deleteProperty(process.env, key);
         } else {
@@ -369,11 +369,11 @@ export async function createOpenClawTestState(
   return state;
 }
 
-export async function withOpenClawTestState<T>(
-  options: OpenClawTestStateOptions,
-  fn: (state: OpenClawTestState) => Promise<T>,
+export async function withOperatorTestState<T>(
+  options: OperatorTestStateOptions,
+  fn: (state: OperatorTestState) => Promise<T>,
 ): Promise<T> {
-  const state = await createOpenClawTestState(options);
+  const state = await createOperatorTestState(options);
   try {
     return await fn(state);
   } finally {

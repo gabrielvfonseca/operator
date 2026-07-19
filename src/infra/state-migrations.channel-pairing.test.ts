@@ -6,7 +6,7 @@ import {
   readChannelPairingStateSnapshot,
   writeChannelPairingStateSnapshot,
 } from "../pairing/pairing-store-sqlite.test-helpers.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import { createTrackedTempDirs } from "../test-utils/tracked-temp-dirs.js";
 import {
   detectLegacyChannelPairingState,
@@ -16,13 +16,13 @@ import {
 const tempDirs = createTrackedTempDirs();
 
 afterEach(async () => {
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorStateDatabaseForTest();
   await tempDirs.cleanup();
 });
 
 async function createFixture() {
   const stateDir = await tempDirs.make("openclaw-pairing-migration-");
-  const env = { ...process.env, OPENCLAW_STATE_DIR: stateDir };
+  const env = { ...process.env, OPERATOR_STATE_DIR: stateDir };
   const sourceDir = resolveOAuthDir(env, stateDir);
   fs.mkdirSync(sourceDir, { recursive: true });
   return { env, sourceDir };

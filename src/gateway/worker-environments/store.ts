@@ -20,9 +20,9 @@ import type {
   WorkerEnvironments,
 } from "../../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
-  type OpenClawStateDatabase,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
+  type OperatorStateDatabase,
 } from "../../state/operator-state-db.js";
 import type { WorkerCredentialRecord } from "./credential.js";
 import {
@@ -163,7 +163,7 @@ function normalizeBootstrapReceipt(value: {
   }
   return {
     bundleHash,
-    operatorVersion: required(value.operatorVersion, "bootstrap OpenClaw version"),
+    operatorVersion: required(value.operatorVersion, "bootstrap Operator version"),
     protocolFeatures: normalizeSortedUniqueTrimmedStringList(value.protocolFeatures),
   };
 }
@@ -526,13 +526,13 @@ function reconcileAttachedSessionOwners(db: DatabaseSync, nowMs: number): void {
 }
 
 export function createWorkerEnvironmentStore(
-  options: { database?: OpenClawStateDatabase; now?: () => number } = {},
+  options: { database?: OperatorStateDatabase; now?: () => number } = {},
 ) {
-  const path = (options.database ?? openOpenClawStateDatabase()).path;
+  const path = (options.database ?? openOperatorStateDatabase()).path;
   const now = options.now ?? Date.now;
-  const read = () => openOpenClawStateDatabase({ path }).db;
+  const read = () => openOperatorStateDatabase({ path }).db;
   const write = <T>(operation: (db: DatabaseSync) => T): T =>
-    runOpenClawStateWriteTransaction(({ db }) => operation(db), { path });
+    runOperatorStateWriteTransaction(({ db }) => operation(db), { path });
   write((db) => reconcileAttachedSessionOwners(db, now()));
   const writeCredential = (
     input: CredentialInput & {

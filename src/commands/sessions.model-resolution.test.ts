@@ -5,8 +5,8 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { replaceSessionEntry } from "../config/sessions/session-accessor.js";
 import type { SessionEntry } from "../config/sessions/types.js";
-import { closeOpenClawAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import {
   mockSessionsConfig,
   resetMockSessionsConfig,
@@ -64,8 +64,8 @@ async function withSqliteStore<T>(
     );
     return await run(storePath);
   } finally {
-    closeOpenClawAgentDatabasesForTest();
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorAgentDatabasesForTest();
+    closeOperatorStateDatabaseForTest();
     fs.rmSync(dir, { force: true, recursive: true });
   }
 }
@@ -166,7 +166,7 @@ describe("sessionsCommand model resolution", () => {
     );
   });
 
-  it("reports the owning Codex harness for locked sessions despite a stale OpenClaw override", async () => {
+  it("reports the owning Codex harness for locked sessions despite a stale Operator override", async () => {
     setMockSessionsConfig(() => ({
       agents: {
         defaults: {

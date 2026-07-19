@@ -1,6 +1,6 @@
-# Tencent Cloud OpenClaw provider
+# Tencent Cloud Operator provider
 
-Official OpenClaw provider plugin for Tencent Cloud.
+Official Operator provider plugin for Tencent Cloud.
 
 ## Install
 
@@ -10,4 +10,4 @@ openclaw plugins install @operator/tencent-provider
 
 ## Docs
 
-See `docs/providers/tencent.md` in the OpenClaw repository, or the published docs at `https://docs.openclaw.ai/providers/tencent`.
+See `docs/providers/tencent.md` in the Operator repository, or the published docs at `https://docs.openclaw.ai/providers/tencent`.

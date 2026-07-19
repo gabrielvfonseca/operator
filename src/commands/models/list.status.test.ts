@@ -669,10 +669,10 @@ describe("modelsStatusCommand auth overview", () => {
     }
   });
 
-  it("honors OPENCLAW_AGENT_DIR when no --agent override is provided", async () => {
+  it("honors OPERATOR_AGENT_DIR when no --agent override is provided", async () => {
     const localRuntime = createRuntime();
     mocks.resolveAgentDir.mockClear();
-    await withEnvAsync({ OPENCLAW_AGENT_DIR: "/tmp/openclaw-isolated-agent" }, async () => {
+    await withEnvAsync({ OPERATOR_AGENT_DIR: "/tmp/openclaw-isolated-agent" }, async () => {
       await modelsStatusCommand({ json: true }, localRuntime as never);
     });
 
@@ -683,12 +683,12 @@ describe("modelsStatusCommand auth overview", () => {
     expect(payload.auth.storePath).toBe("/tmp/openclaw-isolated-agent/auth-profiles.json");
   });
 
-  it("honors deprecated PI_CODING_AGENT_DIR when OPENCLAW_AGENT_DIR is unset", async () => {
+  it("honors deprecated PI_CODING_AGENT_DIR when OPERATOR_AGENT_DIR is unset", async () => {
     const localRuntime = createRuntime();
     mocks.resolveAgentDir.mockClear();
     await withEnvAsync(
       {
-        OPENCLAW_AGENT_DIR: undefined,
+        OPERATOR_AGENT_DIR: undefined,
         PI_CODING_AGENT_DIR: "/tmp/openclaw-legacy-agent",
       },
       async () => {

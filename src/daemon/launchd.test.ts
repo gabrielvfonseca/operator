@@ -9,11 +9,11 @@ import {
 } from "./launchd-plist.js";
 import {
   installLaunchAgent,
-  disableCurrentOpenClawUpdateLaunchdJob,
-  disableOpenClawUpdateLaunchdJob,
-  findStaleOpenClawUpdateLaunchdJobs,
+  disableCurrentOperatorUpdateLaunchdJob,
+  disableOperatorUpdateLaunchdJob,
+  findStaleOperatorUpdateLaunchdJobs,
   parseLaunchctlPrint,
-  parseLaunchctlListOpenClawUpdateJobs,
+  parseLaunchctlListOperatorUpdateJobs,
   readLaunchAgentProgramArguments,
   readLaunchAgentRuntime,
   repairLaunchAgentBootstrap,
@@ -88,7 +88,7 @@ function readPlistProgramArgumentStrings(plist: string): string[] {
 function createDefaultLaunchdEnv(): Record<string, string | undefined> {
   return {
     HOME: "/Users/test",
-    OPENCLAW_PROFILE: "default",
+    OPERATOR_PROFILE: "default",
   };
 }
 
@@ -513,8 +513,8 @@ describe("launchd runtime state", () => {
 });
 
 describe("launchctl list detection", () => {
-  it("parses stale OpenClaw updater jobs from launchctl list", () => {
-    const jobs = parseLaunchctlListOpenClawUpdateJobs(
+  it("parses stale Operator updater jobs from launchctl list", () => {
+    const jobs = parseLaunchctlListOperatorUpdateJobs(
       [
         "123 0 ai.openclaw.gateway",
         "- 127 ai.openclaw.update.2026.5.12",
@@ -544,11 +544,11 @@ describe("launchctl list detection", () => {
   });
 
   it.runIf(process.platform === "darwin")(
-    "finds stale OpenClaw updater jobs via launchctl list",
+    "finds stale Operator updater jobs via launchctl list",
     async () => {
       state.listOutput = "- 127 ai.openclaw.update.2026.5.12\n";
 
-      const jobs = await findStaleOpenClawUpdateLaunchdJobs();
+      const jobs = await findStaleOperatorUpdateLaunchdJobs();
 
       expect(jobs).toEqual([
         {
@@ -565,12 +565,12 @@ describe("launchctl list detection", () => {
       const env = createDefaultLaunchdEnv();
       const updaterLabel = "ai.openclaw.tayoun.update.20260625T201026-0400";
       const gatewayLikeLabel = "ai.openclaw.dev.team.update.20260625T201026-0400";
-      const nonOpenClawLabel = "ai.openclaw.fake.update.20260625T201026-0400";
+      const nonOperatorLabel = "ai.openclaw.fake.update.20260625T201026-0400";
       const prefixedCliLabel = "ai.openclaw.helper.update.20260625T201026-0400";
       state.listOutput = [
         `4321 0 ${updaterLabel}`,
         `9876 0 ${gatewayLikeLabel}`,
-        `2468 0 ${nonOpenClawLabel}`,
+        `2468 0 ${nonOperatorLabel}`,
         `1357 0 ${prefixedCliLabel}`,
       ].join("\n");
       setLaunchAgentPlist({
@@ -585,7 +585,7 @@ describe("launchctl list detection", () => {
       });
       setLaunchAgentPlist({
         env,
-        label: nonOpenClawLabel,
+        label: nonOperatorLabel,
         programArguments: ["/bin/echo", "update", "--yes"],
       });
       setLaunchAgentPlist({
@@ -594,7 +594,7 @@ describe("launchctl list detection", () => {
         programArguments: ["/usr/local/bin/openclaw-helper", "update", "--yes"],
       });
 
-      const jobs = await findStaleOpenClawUpdateLaunchdJobs(env as NodeJS.ProcessEnv);
+      const jobs = await findStaleOperatorUpdateLaunchdJobs(env as NodeJS.ProcessEnv);
 
       expect(jobs).toEqual([
         {
@@ -616,10 +616,10 @@ describe("launchctl list detection", () => {
         env,
         label: updaterLabel,
         programArguments: ["/opt/homebrew/bin/openclaw", "gateway", "run"],
-        environment: { OPENCLAW_UPDATE_RUN_HANDOFF: "1" },
+        environment: { OPERATOR_UPDATE_RUN_HANDOFF: "1" },
       });
 
-      const jobs = await findStaleOpenClawUpdateLaunchdJobs(env as NodeJS.ProcessEnv);
+      const jobs = await findStaleOperatorUpdateLaunchdJobs(env as NodeJS.ProcessEnv);
 
       expect(jobs).toEqual([
         {
@@ -654,7 +654,7 @@ describe("launchctl list detection", () => {
         ],
       });
 
-      const jobs = await findStaleOpenClawUpdateLaunchdJobs(env as NodeJS.ProcessEnv);
+      const jobs = await findStaleOperatorUpdateLaunchdJobs(env as NodeJS.ProcessEnv);
 
       expect(jobs).toEqual([
         {
@@ -675,7 +675,7 @@ describe("launchctl list detection", () => {
       const wrapperPath = `${envDir}/${label}-env-wrapper.sh`;
       const envFilePath = `${envDir}/${label}.env`;
       state.listOutput = `4321 0 ${label}`;
-      state.files.set(envFilePath, "export OPENCLAW_UPDATE_RUN_HANDOFF='1'\n");
+      state.files.set(envFilePath, "export OPERATOR_UPDATE_RUN_HANDOFF='1'\n");
       setLaunchAgentPlist({
         env,
         label,
@@ -689,7 +689,7 @@ describe("launchctl list detection", () => {
         ],
       });
 
-      const jobs = await findStaleOpenClawUpdateLaunchdJobs(env as NodeJS.ProcessEnv);
+      const jobs = await findStaleOperatorUpdateLaunchdJobs(env as NodeJS.ProcessEnv);
 
       expect(jobs).toEqual([
         {
@@ -706,7 +706,7 @@ describe("launchctl list detection", () => {
     async () => {
       const env = {
         ...createDefaultLaunchdEnv(),
-        OPENCLAW_UPDATE_RUN_HANDOFF: "1",
+        OPERATOR_UPDATE_RUN_HANDOFF: "1",
       };
       const gatewayLikeLabel = "ai.openclaw.dev.team.update.20260625T201026-0400";
       state.listOutput = `9876 0 ${gatewayLikeLabel}`;
@@ -716,7 +716,7 @@ describe("launchctl list detection", () => {
         programArguments: ["/opt/homebrew/bin/openclaw", "gateway", "run"],
       });
 
-      const jobs = await findStaleOpenClawUpdateLaunchdJobs(env as NodeJS.ProcessEnv);
+      const jobs = await findStaleOperatorUpdateLaunchdJobs(env as NodeJS.ProcessEnv);
 
       expect(jobs).toEqual([]);
     },
@@ -731,11 +731,11 @@ describe("launchctl list detection", () => {
         "913 0 ai.openclaw.manual-update.custom-label",
       ].join("\n");
 
-      const jobs = await findStaleOpenClawUpdateLaunchdJobs({
-        OPENCLAW_PROFILE: "manual-update.profile",
-        OPENCLAW_LAUNCHD_LABEL: "ai.openclaw.manual-update.custom-label",
-        OPENCLAW_SERVICE_MARKER: GATEWAY_SERVICE_MARKER,
-        OPENCLAW_SERVICE_KIND: GATEWAY_SERVICE_KIND,
+      const jobs = await findStaleOperatorUpdateLaunchdJobs({
+        OPERATOR_PROFILE: "manual-update.profile",
+        OPERATOR_LAUNCHD_LABEL: "ai.openclaw.manual-update.custom-label",
+        OPERATOR_SERVICE_MARKER: GATEWAY_SERVICE_MARKER,
+        OPERATOR_SERVICE_KIND: GATEWAY_SERVICE_KIND,
       } as NodeJS.ProcessEnv);
 
       expect(jobs).toEqual([
@@ -751,7 +751,7 @@ describe("launchctl list detection", () => {
     "disables the current legacy updater launchd job",
     async () => {
       await expect(
-        disableCurrentOpenClawUpdateLaunchdJob({
+        disableCurrentOperatorUpdateLaunchdJob({
           LAUNCH_JOB_LABEL: "ai.openclaw.update.2026.5.12",
         }),
       ).resolves.toBe(true);
@@ -769,7 +769,7 @@ describe("launchctl list detection", () => {
     "disables the current manual updater launchd job",
     async () => {
       await expect(
-        disableCurrentOpenClawUpdateLaunchdJob({
+        disableCurrentOperatorUpdateLaunchdJob({
           LAUNCH_JOB_LABEL: "ai.openclaw.manual-update.1717168800",
         }),
       ).resolves.toBe(true);
@@ -784,11 +784,11 @@ describe("launchctl list detection", () => {
   );
 
   it.runIf(process.platform === "darwin")(
-    "disables the current legacy updater launchd job from OpenClaw label env",
+    "disables the current legacy updater launchd job from Operator label env",
     async () => {
       await expect(
-        disableCurrentOpenClawUpdateLaunchdJob({
-          OPENCLAW_LAUNCHD_LABEL: "ai.openclaw.update.2026.5.12",
+        disableCurrentOperatorUpdateLaunchdJob({
+          OPERATOR_LAUNCHD_LABEL: "ai.openclaw.update.2026.5.12",
         }),
       ).resolves.toBe(true);
 
@@ -801,12 +801,12 @@ describe("launchctl list detection", () => {
   );
 
   it.runIf(process.platform === "darwin")(
-    "does not let non-update launchd markers mask the OpenClaw update label",
+    "does not let non-update launchd markers mask the Operator update label",
     async () => {
       await expect(
-        disableCurrentOpenClawUpdateLaunchdJob({
+        disableCurrentOperatorUpdateLaunchdJob({
           XPC_SERVICE_NAME: "0",
-          OPENCLAW_LAUNCHD_LABEL: "ai.openclaw.update.2026.5.12",
+          OPERATOR_LAUNCHD_LABEL: "ai.openclaw.update.2026.5.12",
         }),
       ).resolves.toBe(true);
 
@@ -822,7 +822,7 @@ describe("launchctl list detection", () => {
     "does not disable the current gateway launchd job",
     async () => {
       await expect(
-        disableCurrentOpenClawUpdateLaunchdJob({
+        disableCurrentOperatorUpdateLaunchdJob({
           LAUNCH_JOB_LABEL: "ai.openclaw.gateway",
         }),
       ).resolves.toBe(false);
@@ -835,9 +835,9 @@ describe("launchctl list detection", () => {
     "does not disable profile-specific gateway launchd jobs that look like updater labels",
     async () => {
       await expect(
-        disableCurrentOpenClawUpdateLaunchdJob({
+        disableCurrentOperatorUpdateLaunchdJob({
           LAUNCH_JOB_LABEL: "ai.openclaw.update.2026.5.12",
-          OPENCLAW_PROFILE: "update.2026.5.12",
+          OPERATOR_PROFILE: "update.2026.5.12",
         }),
       ).resolves.toBe(false);
 
@@ -849,9 +849,9 @@ describe("launchctl list detection", () => {
     "does not disable profile-specific gateway launchd jobs that look like manual updater labels",
     async () => {
       await expect(
-        disableCurrentOpenClawUpdateLaunchdJob({
+        disableCurrentOperatorUpdateLaunchdJob({
           LAUNCH_JOB_LABEL: "ai.openclaw.manual-update.1717168800",
-          OPENCLAW_PROFILE: "manual-update.1717168800",
+          OPERATOR_PROFILE: "manual-update.1717168800",
         }),
       ).resolves.toBe(false);
 
@@ -871,7 +871,7 @@ describe("launchctl list detection", () => {
       });
 
       await expect(
-        disableCurrentOpenClawUpdateLaunchdJob({
+        disableCurrentOperatorUpdateLaunchdJob({
           ...env,
           LAUNCH_JOB_LABEL: label,
         }),
@@ -889,10 +889,10 @@ describe("launchctl list detection", () => {
       const label = "ai.openclaw.tayoun.update.20260625T201026-0400";
 
       await expect(
-        disableCurrentOpenClawUpdateLaunchdJob({
+        disableCurrentOperatorUpdateLaunchdJob({
           ...env,
           LAUNCH_JOB_LABEL: label,
-          OPENCLAW_UPDATE_RUN_HANDOFF: "1",
+          OPERATOR_UPDATE_RUN_HANDOFF: "1",
         }),
       ).resolves.toBe(true);
 
@@ -913,10 +913,10 @@ describe("launchctl list detection", () => {
       });
 
       await expect(
-        disableCurrentOpenClawUpdateLaunchdJob({
+        disableCurrentOperatorUpdateLaunchdJob({
           ...env,
-          OPENCLAW_LAUNCHD_LABEL: label,
-          OPENCLAW_UPDATE_RUN_HANDOFF: "1",
+          OPERATOR_LAUNCHD_LABEL: label,
+          OPERATOR_UPDATE_RUN_HANDOFF: "1",
         }),
       ).resolves.toBe(false);
 
@@ -936,10 +936,10 @@ describe("launchctl list detection", () => {
       });
 
       await expect(
-        disableCurrentOpenClawUpdateLaunchdJob({
+        disableCurrentOperatorUpdateLaunchdJob({
           ...env,
-          OPENCLAW_LAUNCHD_LABEL: label,
-          OPENCLAW_UPDATE_RUN_HANDOFF: "1",
+          OPERATOR_LAUNCHD_LABEL: label,
+          OPERATOR_UPDATE_RUN_HANDOFF: "1",
         }),
       ).resolves.toBe(true);
 
@@ -960,7 +960,7 @@ describe("launchctl list detection", () => {
       });
 
       await expect(
-        disableCurrentOpenClawUpdateLaunchdJob({
+        disableCurrentOperatorUpdateLaunchdJob({
           ...env,
           LAUNCH_JOB_LABEL: label,
         }),
@@ -974,7 +974,7 @@ describe("launchctl list detection", () => {
     "does not disable custom gateway launchd labels under the manual-update prefix",
     async () => {
       await expect(
-        disableCurrentOpenClawUpdateLaunchdJob({
+        disableCurrentOperatorUpdateLaunchdJob({
           LAUNCH_JOB_LABEL: "ai.openclaw.manual-update.gateway",
         }),
       ).resolves.toBe(false);
@@ -987,11 +987,11 @@ describe("launchctl list detection", () => {
     "does not disable custom gateway launchd labels that look like updater labels",
     async () => {
       await expect(
-        disableCurrentOpenClawUpdateLaunchdJob({
+        disableCurrentOperatorUpdateLaunchdJob({
           LAUNCH_JOB_LABEL: "ai.openclaw.update.2026.5.12",
-          OPENCLAW_LAUNCHD_LABEL: "ai.openclaw.update.2026.5.12",
-          OPENCLAW_SERVICE_MARKER: "openclaw",
-          OPENCLAW_SERVICE_KIND: "gateway",
+          OPERATOR_LAUNCHD_LABEL: "ai.openclaw.update.2026.5.12",
+          OPERATOR_SERVICE_MARKER: "openclaw",
+          OPERATOR_SERVICE_KIND: "gateway",
         }),
       ).resolves.toBe(false);
 
@@ -1000,7 +1000,7 @@ describe("launchctl list detection", () => {
   );
 
   it.runIf(process.platform === "darwin")("disables explicit legacy updater jobs", async () => {
-    await expect(disableOpenClawUpdateLaunchdJob("ai.openclaw.update.2026.5.12")).resolves.toBe(
+    await expect(disableOperatorUpdateLaunchdJob("ai.openclaw.update.2026.5.12")).resolves.toBe(
       true,
     );
 
@@ -1013,7 +1013,7 @@ describe("launchctl list detection", () => {
 
   it.runIf(process.platform === "darwin")("disables explicit manual updater jobs", async () => {
     await expect(
-      disableOpenClawUpdateLaunchdJob("ai.openclaw.manual-update.1717168800"),
+      disableOperatorUpdateLaunchdJob("ai.openclaw.manual-update.1717168800"),
     ).resolves.toBe(true);
 
     const domain = typeof process.getuid === "function" ? `gui/${process.getuid()}` : "gui/501";
@@ -1030,9 +1030,9 @@ describe("launchctl list detection", () => {
       const label = "ai.openclaw.tayoun.update.20260625T201026-0400";
 
       await expect(
-        disableOpenClawUpdateLaunchdJob(label, {
+        disableOperatorUpdateLaunchdJob(label, {
           ...env,
-          OPENCLAW_UPDATE_RUN_HANDOFF: "1",
+          OPERATOR_UPDATE_RUN_HANDOFF: "1",
         }),
       ).resolves.toBe(false);
 
@@ -1235,7 +1235,7 @@ describe("launchd install", () => {
       env,
       stdout: new PassThrough(),
       programArguments: defaultProgramArguments,
-      environment: { OPENCLAW_GATEWAY_PORT: "18789" },
+      environment: { OPERATOR_GATEWAY_PORT: "18789" },
     });
     const generatedWrapper = state.files.get(wrapperPath);
     if (!generatedWrapper) {
@@ -1256,13 +1256,13 @@ describe("launchd install", () => {
       env,
       stdout,
       programArguments: defaultProgramArguments,
-      environment: { OPENCLAW_GATEWAY_PORT: "18789" },
+      environment: { OPERATOR_GATEWAY_PORT: "18789" },
     });
 
     expect(output).toContain("Warning:");
     expect(output).toContain("contains custom behavior and will be overwritten");
     expect(output).toContain("openclaw gateway install --wrapper <path>");
-    expect(output).toContain("OPENCLAW_WRAPPER");
+    expect(output).toContain("OPERATOR_WRAPPER");
     expect(state.files.get(wrapperPath)).toBe(generatedWrapper);
   });
 
@@ -1273,7 +1273,7 @@ describe("launchd install", () => {
       env,
       stdout: new PassThrough(),
       programArguments: defaultProgramArguments,
-      environment: { OPENCLAW_GATEWAY_PORT: "18789" },
+      environment: { OPERATOR_GATEWAY_PORT: "18789" },
     });
     const generatedWrapper = state.files.get(wrapperPath);
     if (!generatedWrapper) {
@@ -1299,7 +1299,7 @@ describe("launchd install", () => {
     expect(output).toContain("Warning:");
     expect(output).toContain("contains custom behavior and will be overwritten");
     expect(output).toContain("openclaw gateway install --wrapper <path>");
-    expect(output).toContain("OPENCLAW_WRAPPER");
+    expect(output).toContain("OPERATOR_WRAPPER");
     expect(state.files.get(wrapperPath)).toBe(generatedWrapper);
   });
 
@@ -1311,7 +1311,7 @@ describe("launchd install", () => {
       env,
       stdout: new PassThrough(),
       programArguments: defaultProgramArguments,
-      environment: { OPENCLAW_GATEWAY_PORT: "19007" },
+      environment: { OPERATOR_GATEWAY_PORT: "19007" },
     });
 
     const plistPath = resolveLaunchAgentPlistPath(env);
@@ -1350,15 +1350,15 @@ describe("launchd install", () => {
     const callerEnv = createDefaultLaunchdEnv();
     const serviceEnv = {
       ...callerEnv,
-      OPENCLAW_STATE_DIR: "/Users/test/service-env/custom-state",
+      OPERATOR_STATE_DIR: "/Users/test/service-env/custom-state",
     };
     await installLaunchAgent({
       env: serviceEnv,
       stdout: new PassThrough(),
       programArguments: defaultProgramArguments,
       environment: {
-        OPENCLAW_GATEWAY_PORT: "18789",
-        OPENCLAW_STATE_DIR: serviceEnv.OPENCLAW_STATE_DIR,
+        OPERATOR_GATEWAY_PORT: "18789",
+        OPERATOR_STATE_DIR: serviceEnv.OPERATOR_STATE_DIR,
       },
     });
 
@@ -1382,9 +1382,9 @@ describe("launchd install", () => {
 
     const command = await readLaunchAgentProgramArguments(callerEnv);
     expect(command?.programArguments).toEqual(defaultProgramArguments);
-    expect(command?.environment?.OPENCLAW_GATEWAY_PORT).toBe("18789");
-    expect(command?.environment?.OPENCLAW_STATE_DIR).toBe(serviceEnv.OPENCLAW_STATE_DIR);
-    expect(command?.environmentValueSources?.OPENCLAW_GATEWAY_PORT).toBe("file");
+    expect(command?.environment?.OPERATOR_GATEWAY_PORT).toBe("18789");
+    expect(command?.environment?.OPERATOR_STATE_DIR).toBe(serviceEnv.OPERATOR_STATE_DIR);
+    expect(command?.environmentValueSources?.OPERATOR_GATEWAY_PORT).toBe("file");
 
     await restartLaunchAgent({
       env: callerEnv,
@@ -1401,9 +1401,9 @@ describe("launchd install", () => {
     expect(rewritten).not.toContain(mangledEnvFilePath);
     expect(rewritten).not.toContain(mangledWrapperPath);
     const rewrittenEnv = state.files.get(callerEnvFilePath) ?? "";
-    expect(rewrittenEnv).toContain("export OPENCLAW_GATEWAY_PORT='18789'");
+    expect(rewrittenEnv).toContain("export OPERATOR_GATEWAY_PORT='18789'");
     expect(rewrittenEnv).toContain(
-      "export OPENCLAW_STATE_DIR='/Users/test/service-env/custom-state'",
+      "export OPERATOR_STATE_DIR='/Users/test/service-env/custom-state'",
     );
   });
 
@@ -1553,9 +1553,9 @@ describe("launchd install", () => {
         LAUNCH_JOB_LABEL: undefined,
         LAUNCH_JOB_NAME: undefined,
         XPC_SERVICE_NAME: "0",
-        OPENCLAW_SERVICE_MARKER: "openclaw",
-        OPENCLAW_SERVICE_KIND: "gateway",
-        OPENCLAW_LAUNCHD_LABEL: "ai.openclaw.gateway",
+        OPERATOR_SERVICE_MARKER: "openclaw",
+        OPERATOR_SERVICE_KIND: "gateway",
+        OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway",
       },
       async () => {
         await expect(stopLaunchAgent({ env, stdout: new PassThrough() })).rejects.toThrow(
@@ -1570,7 +1570,7 @@ describe("launchd install", () => {
   it("allows external LaunchAgent label overrides to stop the selected target", async () => {
     const env = {
       ...createDefaultLaunchdEnv(),
-      OPENCLAW_LAUNCHD_LABEL: "com.example.openclaw.gateway",
+      OPERATOR_LAUNCHD_LABEL: "com.example.openclaw.gateway",
     };
     const stdout = new PassThrough();
     let output = "";
@@ -1583,9 +1583,9 @@ describe("launchd install", () => {
         LAUNCH_JOB_LABEL: undefined,
         LAUNCH_JOB_NAME: undefined,
         XPC_SERVICE_NAME: undefined,
-        OPENCLAW_LAUNCHD_LABEL: undefined,
-        OPENCLAW_SERVICE_MARKER: undefined,
-        OPENCLAW_SERVICE_KIND: undefined,
+        OPERATOR_LAUNCHD_LABEL: undefined,
+        OPERATOR_SERVICE_MARKER: undefined,
+        OPERATOR_SERVICE_KIND: undefined,
       },
       async () => {
         await stopLaunchAgent({ env, stdout });
@@ -1601,7 +1601,7 @@ describe("launchd install", () => {
   it("verifies the configured gateway port is released before reporting stop success", async () => {
     const env = {
       ...createDefaultLaunchdEnv(),
-      OPENCLAW_GATEWAY_PORT: "19003",
+      OPERATOR_GATEWAY_PORT: "19003",
     };
     const stdout = new PassThrough();
     let output = "";
@@ -1619,7 +1619,7 @@ describe("launchd install", () => {
   it("waits for the configured gateway port to finish releasing after bootout", async () => {
     const env = {
       ...createDefaultLaunchdEnv(),
-      OPENCLAW_GATEWAY_PORT: "19009",
+      OPERATOR_GATEWAY_PORT: "19009",
     };
     inspectPortUsage.mockResolvedValueOnce({
       port: 19009,
@@ -1637,7 +1637,7 @@ describe("launchd install", () => {
   it("keeps waiting until a bind probe explicitly confirms port release", async () => {
     const env = {
       ...createDefaultLaunchdEnv(),
-      OPENCLAW_GATEWAY_PORT: "19010",
+      OPERATOR_GATEWAY_PORT: "19010",
     };
     inspectPortUsage.mockResolvedValueOnce({
       port: 19010,
@@ -1658,7 +1658,7 @@ describe("launchd install", () => {
       env,
       stdout: new PassThrough(),
       programArguments: defaultProgramArguments,
-      environment: { OPENCLAW_GATEWAY_PORT: "19006" },
+      environment: { OPERATOR_GATEWAY_PORT: "19006" },
     });
     state.launchctlCalls.length = 0;
 
@@ -1671,7 +1671,7 @@ describe("launchd install", () => {
   it("fails stop when the verified gateway port remains busy after cleanup", async () => {
     const env = {
       ...createDefaultLaunchdEnv(),
-      OPENCLAW_GATEWAY_PORT: "19004",
+      OPERATOR_GATEWAY_PORT: "19004",
     };
     const stdout = new PassThrough();
     let output = "";
@@ -1719,7 +1719,7 @@ describe("launchd install", () => {
   it("verifies the configured gateway port is released before reporting disable stop success", async () => {
     const env = {
       ...createDefaultLaunchdEnv(),
-      OPENCLAW_GATEWAY_PORT: "19005",
+      OPERATOR_GATEWAY_PORT: "19005",
     };
     const stdout = new PassThrough();
     let output = "";
@@ -1816,7 +1816,7 @@ describe("launchd install", () => {
   it("does not report degraded stop success when fallback cleanup leaves the port busy", async () => {
     const env = {
       ...createDefaultLaunchdEnv(),
-      OPENCLAW_GATEWAY_PORT: "19008",
+      OPERATOR_GATEWAY_PORT: "19008",
     };
     const stdout = new PassThrough();
     let output = "";
@@ -1953,7 +1953,7 @@ describe("launchd install", () => {
   it("restarts LaunchAgent with kickstart and no bootout", async () => {
     const env = {
       ...createDefaultLaunchdEnv(),
-      OPENCLAW_GATEWAY_PORT: "18789",
+      OPERATOR_GATEWAY_PORT: "18789",
     };
     const result = await restartLaunchAgent({
       env,
@@ -1976,7 +1976,7 @@ describe("launchd install", () => {
   it("reloads launchd after rewriting an existing plist", async () => {
     const env = {
       ...createDefaultLaunchdEnv(),
-      OPENCLAW_GATEWAY_PORT: "18789",
+      OPERATOR_GATEWAY_PORT: "18789",
     };
     const plistPath = resolveLaunchAgentPlistPath(env);
     state.files.set(
@@ -2015,7 +2015,7 @@ describe("launchd install", () => {
   it("treats a concurrent launchd bootstrap as success when the service is loaded", async () => {
     const env = {
       ...createDefaultLaunchdEnv(),
-      OPENCLAW_GATEWAY_PORT: "18789",
+      OPERATOR_GATEWAY_PORT: "18789",
     };
     const plistPath = resolveLaunchAgentPlistPath(env);
     state.files.set(
@@ -2053,7 +2053,7 @@ describe("launchd install", () => {
   it("uses the configured gateway port for stale cleanup", async () => {
     const env = {
       ...createDefaultLaunchdEnv(),
-      OPENCLAW_GATEWAY_PORT: "19001",
+      OPERATOR_GATEWAY_PORT: "19001",
     };
 
     await restartLaunchAgent({
@@ -2067,7 +2067,7 @@ describe("launchd install", () => {
   it("ignores invalid configured gateway ports for stale cleanup", async () => {
     const env = {
       ...createDefaultLaunchdEnv(),
-      OPENCLAW_GATEWAY_PORT: "65536",
+      OPERATOR_GATEWAY_PORT: "65536",
     };
     state.files.clear();
 
@@ -2086,7 +2086,7 @@ describe("launchd install", () => {
       env,
       stdout: new PassThrough(),
       programArguments: defaultProgramArguments,
-      environment: { OPENCLAW_GATEWAY_PORT: "19007" },
+      environment: { OPERATOR_GATEWAY_PORT: "19007" },
     });
     state.launchctlCalls.length = 0;
 
@@ -2105,7 +2105,7 @@ describe("launchd install", () => {
       env,
       stdout: new PassThrough(),
       programArguments: defaultProgramArguments,
-      environment: { OPENCLAW_GATEWAY_PORT: "65536" },
+      environment: { OPERATOR_GATEWAY_PORT: "65536" },
     });
     state.launchctlCalls.length = 0;
 
@@ -2121,7 +2121,7 @@ describe("launchd install", () => {
   it("fails restart before kickstart when the configured gateway port remains busy", async () => {
     const env = {
       ...createDefaultLaunchdEnv(),
-      OPENCLAW_GATEWAY_PORT: "19002",
+      OPERATOR_GATEWAY_PORT: "19002",
     };
     const plistPath = resolveLaunchAgentPlistPath(env);
     const originalPlist = [
@@ -2318,9 +2318,9 @@ describe("launchd install", () => {
         LAUNCH_JOB_LABEL: undefined,
         LAUNCH_JOB_NAME: undefined,
         XPC_SERVICE_NAME: "0",
-        OPENCLAW_SERVICE_MARKER: "openclaw",
-        OPENCLAW_SERVICE_KIND: "gateway",
-        OPENCLAW_LAUNCHD_LABEL: "ai.openclaw.gateway",
+        OPERATOR_SERVICE_MARKER: "openclaw",
+        OPERATOR_SERVICE_KIND: "gateway",
+        OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway",
       },
       async () =>
         restartLaunchAgent({
@@ -2346,9 +2346,9 @@ describe("launchd install", () => {
         LAUNCH_JOB_LABEL: undefined,
         LAUNCH_JOB_NAME: undefined,
         XPC_SERVICE_NAME: "0",
-        OPENCLAW_SERVICE_MARKER: undefined,
-        OPENCLAW_SERVICE_KIND: undefined,
-        OPENCLAW_LAUNCHD_LABEL: undefined,
+        OPERATOR_SERVICE_MARKER: undefined,
+        OPERATOR_SERVICE_KIND: undefined,
+        OPERATOR_LAUNCHD_LABEL: undefined,
       },
       async () =>
         restartLaunchAgent({
@@ -2396,38 +2396,38 @@ describe("launchd install", () => {
 describe("resolveLaunchAgentPlistPath", () => {
   it.each([
     {
-      name: "uses default label when OPENCLAW_PROFILE is unset",
+      name: "uses default label when OPERATOR_PROFILE is unset",
       env: { HOME: "/Users/test" },
       expected: "/Users/test/Library/LaunchAgents/ai.openclaw.gateway.plist",
     },
     {
-      name: "uses profile-specific label when OPENCLAW_PROFILE is set to a custom value",
-      env: { HOME: "/Users/test", OPENCLAW_PROFILE: "jbphoenix" },
+      name: "uses profile-specific label when OPERATOR_PROFILE is set to a custom value",
+      env: { HOME: "/Users/test", OPERATOR_PROFILE: "jbphoenix" },
       expected: "/Users/test/Library/LaunchAgents/ai.openclaw.jbphoenix.plist",
     },
     {
-      name: "prefers OPENCLAW_LAUNCHD_LABEL over OPENCLAW_PROFILE",
+      name: "prefers OPERATOR_LAUNCHD_LABEL over OPERATOR_PROFILE",
       env: {
         HOME: "/Users/test",
-        OPENCLAW_PROFILE: "jbphoenix",
-        OPENCLAW_LAUNCHD_LABEL: "com.custom.label",
+        OPERATOR_PROFILE: "jbphoenix",
+        OPERATOR_LAUNCHD_LABEL: "com.custom.label",
       },
       expected: "/Users/test/Library/LaunchAgents/com.custom.label.plist",
     },
     {
-      name: "trims whitespace from OPENCLAW_LAUNCHD_LABEL",
+      name: "trims whitespace from OPERATOR_LAUNCHD_LABEL",
       env: {
         HOME: "/Users/test",
-        OPENCLAW_LAUNCHD_LABEL: "  com.custom.label  ",
+        OPERATOR_LAUNCHD_LABEL: "  com.custom.label  ",
       },
       expected: "/Users/test/Library/LaunchAgents/com.custom.label.plist",
     },
     {
-      name: "ignores empty OPENCLAW_LAUNCHD_LABEL and falls back to profile",
+      name: "ignores empty OPERATOR_LAUNCHD_LABEL and falls back to profile",
       env: {
         HOME: "/Users/test",
-        OPENCLAW_PROFILE: "myprofile",
-        OPENCLAW_LAUNCHD_LABEL: "   ",
+        OPERATOR_PROFILE: "myprofile",
+        OPERATOR_LAUNCHD_LABEL: "   ",
       },
       expected: "/Users/test/Library/LaunchAgents/ai.openclaw.myprofile.plist",
     },
@@ -2439,7 +2439,7 @@ describe("resolveLaunchAgentPlistPath", () => {
     expect(() =>
       resolveLaunchAgentPlistPath({
         HOME: "/Users/test",
-        OPENCLAW_LAUNCHD_LABEL: "../evil/label",
+        OPERATOR_LAUNCHD_LABEL: "../evil/label",
       }),
     ).toThrow("Invalid launchd label");
   });

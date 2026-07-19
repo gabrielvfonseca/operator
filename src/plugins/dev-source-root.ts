@@ -4,7 +4,7 @@ import path from "node:path";
 import { resolveUserPath } from "../utils.js";
 import { isPathInside, safeRealpathSync } from "./path-safety.js";
 
-/** Env var that points bundled-plugin lookup at an OpenClaw source checkout. */
+/** Env var that points bundled-plugin lookup at an Operator source checkout. */
 const OPERATOR_DEV_SOURCE_ROOT_ENV = "OPERATOR_DEV_SOURCE_ROOT";
 
 function readPackageName(packageJsonPath: string): string | null {
@@ -16,8 +16,8 @@ function readPackageName(packageJsonPath: string): string | null {
   }
 }
 
-/** Resolves and validates the configured OpenClaw development source root. */
-export function resolveOpenClawDevSourceRoot(env: NodeJS.ProcessEnv = process.env): string | null {
+/** Resolves and validates the configured Operator development source root. */
+export function resolveOperatorDevSourceRoot(env: NodeJS.ProcessEnv = process.env): string | null {
   const rawRoot = env[OPERATOR_DEV_SOURCE_ROOT_ENV]?.trim();
   if (!rawRoot) {
     return null;
@@ -44,7 +44,7 @@ export function isBundledPluginInsideDevSourceRoot(params: {
   rootDir: string;
   env: NodeJS.ProcessEnv;
 }): boolean {
-  const devSourceRoot = resolveOpenClawDevSourceRoot(params.env);
+  const devSourceRoot = resolveOperatorDevSourceRoot(params.env);
   if (!devSourceRoot) {
     return false;
   }

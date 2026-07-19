@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import "./subagent-registry.mocks.shared.js";
-import { closeOpenClawStateDatabaseForTest as closeSeedStateDatabase } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest as closeSeedStateDatabase } from "../state/openclaw-state-db.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import { cleanupSessionStateForTest } from "../test-utils/session-state-cleanup.js";
 import {
@@ -61,7 +61,7 @@ describe("subagent registry persistence resume", () => {
 
   afterEach(async () => {
     closeSeedStateDatabase();
-    registryStateDbModule.closeOpenClawStateDatabaseForTest();
+    registryStateDbModule.closeOperatorStateDatabaseForTest();
     mod.testing.setDepsForTest();
     mod.resetSubagentRegistryForTests({ persist: false });
     await cleanupSessionStateForTest();
@@ -74,7 +74,7 @@ describe("subagent registry persistence resume", () => {
   it("resumes a persisted run from canonical SQLite state", async () => {
     tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-subagent-"));
     const stateDir = tempStateDir;
-    await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, async () => {
+    await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
       const run: SubagentRunRecord = {
         runId: "run-1",
         childSessionKey: "agent:main:subagent:test",

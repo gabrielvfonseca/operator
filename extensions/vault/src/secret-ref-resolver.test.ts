@@ -25,12 +25,12 @@ function runResolver(params: {
         VAULT_TOKEN: "",
         VAULT_TOKEN_FILE: "",
         VAULT_NAMESPACE: "",
-        OPENCLAW_VAULT_AUTH_METHOD: "",
-        OPENCLAW_VAULT_AUTH_MOUNT: "",
-        OPENCLAW_VAULT_AUTH_ROLE: "",
-        OPENCLAW_VAULT_JWT_FILE: "",
-        OPENCLAW_VAULT_KV_MOUNT: "",
-        OPENCLAW_VAULT_KV_VERSION: "",
+        OPERATOR_VAULT_AUTH_METHOD: "",
+        OPERATOR_VAULT_AUTH_MOUNT: "",
+        OPERATOR_VAULT_AUTH_ROLE: "",
+        OPERATOR_VAULT_JWT_FILE: "",
+        OPERATOR_VAULT_KV_MOUNT: "",
+        OPERATOR_VAULT_KV_VERSION: "",
         ...params.env,
       },
     });
@@ -263,10 +263,10 @@ describe("plugin manifest", () => {
         "VAULT_ADDR",
         "VAULT_TOKEN",
         "VAULT_TOKEN_FILE",
-        "OPENCLAW_VAULT_AUTH_METHOD",
-        "OPENCLAW_VAULT_AUTH_MOUNT",
-        "OPENCLAW_VAULT_AUTH_ROLE",
-        "OPENCLAW_VAULT_JWT_FILE",
+        "OPERATOR_VAULT_AUTH_METHOD",
+        "OPERATOR_VAULT_AUTH_MOUNT",
+        "OPERATOR_VAULT_AUTH_ROLE",
+        "OPERATOR_VAULT_JWT_FILE",
         "NODE_EXTRA_CA_CERTS",
         "NODE_USE_SYSTEM_CA",
       ]),
@@ -279,7 +279,7 @@ describe("plugin manifest", () => {
       childTimeoutMs * 2,
     );
     expect(manifest.secretProviderIntegrations?.vault?.passEnv).not.toContain(
-      "OPENCLAW_VAULT_VALUES_JSON",
+      "OPERATOR_VAULT_VALUES_JSON",
     );
     expect(manifest.secretProviderIntegrations?.vault?.allowInsecurePath).toBeUndefined();
     expect(resolverSource).toContain("#!/usr/bin/env node");
@@ -307,7 +307,7 @@ describe("vault SecretRef resolver", () => {
       },
       env: {
         VAULT_ADDR: "https://vault.example.test",
-        OPENCLAW_VAULT_VALUES_JSON: JSON.stringify({
+        OPERATOR_VAULT_VALUES_JSON: JSON.stringify({
           "providers/openai/apiKey": "not-a-real-value",
         }),
       },
@@ -427,7 +427,7 @@ describe("vault SecretRef resolver", () => {
       env: {
         VAULT_ADDR: fixture.vaultAddr,
         VAULT_TOKEN_FILE: tokenFile,
-        OPENCLAW_VAULT_AUTH_METHOD: "token_file",
+        OPERATOR_VAULT_AUTH_METHOD: "token_file",
       },
     });
 
@@ -460,10 +460,10 @@ describe("vault SecretRef resolver", () => {
       env: {
         VAULT_ADDR: fixture.vaultAddr,
         VAULT_NAMESPACE: "team-a",
-        OPENCLAW_VAULT_AUTH_METHOD: "jwt",
-        OPENCLAW_VAULT_AUTH_MOUNT: "keycloak",
-        OPENCLAW_VAULT_AUTH_ROLE: "openclaw",
-        OPENCLAW_VAULT_JWT_FILE: jwtFile,
+        OPERATOR_VAULT_AUTH_METHOD: "jwt",
+        OPERATOR_VAULT_AUTH_MOUNT: "keycloak",
+        OPERATOR_VAULT_AUTH_ROLE: "openclaw",
+        OPERATOR_VAULT_JWT_FILE: jwtFile,
       },
     });
 
@@ -507,9 +507,9 @@ describe("vault SecretRef resolver", () => {
       },
       env: {
         VAULT_ADDR: fixture.vaultAddr,
-        OPENCLAW_VAULT_AUTH_METHOD: "kubernetes",
-        OPENCLAW_VAULT_AUTH_ROLE: "openclaw",
-        OPENCLAW_VAULT_JWT_FILE: jwtFile,
+        OPERATOR_VAULT_AUTH_METHOD: "kubernetes",
+        OPERATOR_VAULT_AUTH_ROLE: "openclaw",
+        OPERATOR_VAULT_JWT_FILE: jwtFile,
       },
     });
 
@@ -604,9 +604,9 @@ describe("vault SecretRef resolver", () => {
       },
       env: {
         VAULT_ADDR: fixture.vaultAddr,
-        OPENCLAW_VAULT_AUTH_METHOD: "jwt",
-        OPENCLAW_VAULT_AUTH_ROLE: "openclaw",
-        OPENCLAW_VAULT_JWT_FILE: jwtFile,
+        OPERATOR_VAULT_AUTH_METHOD: "jwt",
+        OPERATOR_VAULT_AUTH_ROLE: "openclaw",
+        OPERATOR_VAULT_JWT_FILE: jwtFile,
       },
     });
 

@@ -1,7 +1,7 @@
 // Model/auth provider selection step shared by the classic wizard and bootstrap onboarding.
 import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
 import type { AuthChoice, OnboardOptions } from "../commands/onboard-types.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { createLazyRuntimeModule } from "../shared/lazy-runtime.js";
@@ -24,12 +24,12 @@ function isAuthChoiceSelected(
 
 async function resolveAuthChoiceModelSelectionPolicy(params: {
   authChoice: string;
-  config: OpenClawConfig;
+  config: OperatorConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   resolvePreferredProviderForAuthChoice: (params: {
     choice: string;
-    config?: OpenClawConfig;
+    config?: OperatorConfig;
     workspaceDir?: string;
     env?: NodeJS.ProcessEnv;
   }) => Promise<string | undefined>;
@@ -113,12 +113,12 @@ async function resolveAuthChoiceModelSelectionPolicy(params: {
  * (public onboarding automation contract).
  */
 export async function runSetupModelAuthStep(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   opts: OnboardOptions;
   prompter: WizardPrompter;
   runtime: RuntimeEnv;
   workspaceDir: string;
-}): Promise<OpenClawConfig> {
+}): Promise<OperatorConfig> {
   const { opts, prompter, runtime, workspaceDir } = params;
   let nextConfig = params.config;
   const authChoiceFromPrompt = opts.authChoice === undefined;

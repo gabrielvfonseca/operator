@@ -6,7 +6,7 @@ import { MAX_DATE_TIMESTAMP_MS } from "@operator/normalization-core/number-coerc
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { TrustedMessageAuditEvent } from "../../audit/message-audit-events.js";
 import { onTrustedMessageAuditEventForTest as onTrustedMessageAuditEvent } from "../../audit/message-audit-events.test-support.js";
-import { openOpenClawStateDatabase } from "../../state/openclaw-state-db.js";
+import { openOperatorStateDatabase } from "../../state/openclaw-state-db.js";
 import {
   OutboundDeliveryError,
   PlatformMessageNotDispatchedError,
@@ -53,8 +53,8 @@ function expectMockMessageContaining(mock: { mock: { calls: unknown[][] } }, exp
 }
 
 function readOutboundQueueStatus(tmpDir: string, id: string): string | undefined {
-  const { db } = openOpenClawStateDatabase({
-    env: { ...process.env, OPENCLAW_STATE_DIR: tmpDir },
+  const { db } = openOperatorStateDatabase({
+    env: { ...process.env, OPERATOR_STATE_DIR: tmpDir },
   });
   const row = db
     .prepare("SELECT status FROM delivery_queue_entries WHERE queue_name = 'outbound' AND id = ?")

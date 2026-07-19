@@ -3,7 +3,7 @@
  */
 import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
 import { sanitizeForLog } from "../../packages/terminal-core/src/ansi.js";
-import { resolveOpenClawMcpTransportAlias } from "../config/mcp-config-normalize.js";
+import { resolveOperatorMcpTransportAlias } from "../config/mcp-config-normalize.js";
 import { logWarn } from "../logger.js";
 import { readTrimmedStringAlias } from "../utils/string-readers.js";
 import {
@@ -130,7 +130,7 @@ function getRequestedTransportAlias(rawServer: unknown): HttpMcpTransportType | 
   ) {
     return "";
   }
-  return resolveOpenClawMcpTransportAlias((rawServer as { type?: string }).type) ?? "";
+  return resolveOperatorMcpTransportAlias((rawServer as { type?: string }).type) ?? "";
 }
 
 function resolveHttpTransportConfig(

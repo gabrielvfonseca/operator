@@ -5,8 +5,8 @@ import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { useAutoCleanupTempDirTracker } from "../../test/helpers/temp-dir.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
 } from "../state/openclaw-state-db.js";
 import { captureEnv, setTestEnvValue } from "../test-utils/env.js";
 import { acquireGatewayLock } from "./gateway-lock.js";
@@ -29,7 +29,7 @@ describe("legacy Web Push Doctor migration", () => {
   let envSnapshot: ReturnType<typeof captureEnv> | undefined;
   const tempDirs = useAutoCleanupTempDirTracker((cleanup) => {
     afterEach(() => {
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorStateDatabaseForTest();
       envSnapshot?.restore();
       envSnapshot = undefined;
       cleanup();
@@ -38,8 +38,8 @@ describe("legacy Web Push Doctor migration", () => {
 
   function useStateDir(): string {
     const stateDir = tempDirs.make("openclaw-web-push-migration-");
-    envSnapshot ??= captureEnv(["OPENCLAW_STATE_DIR"]);
-    setTestEnvValue("OPENCLAW_STATE_DIR", stateDir);
+    envSnapshot ??= captureEnv(["OPERATOR_STATE_DIR"]);
+    setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
     return stateDir;
   }
 
@@ -97,7 +97,7 @@ describe("legacy Web Push Doctor migration", () => {
   }
 
   function seedSubscription(endpointHash: string, value: WebPushSubscription): void {
-    const database = openOpenClawStateDatabase();
+    const database = openOperatorStateDatabase();
     executeSqliteQuerySync(
       database.db,
       getNodeSqliteKysely<WebPushDatabase>(database.db)
@@ -107,7 +107,7 @@ describe("legacy Web Push Doctor migration", () => {
   }
 
   function seedVapid(value: VapidKeyPair): void {
-    const database = openOpenClawStateDatabase();
+    const database = openOperatorStateDatabase();
     executeSqliteQuerySync(
       database.db,
       getNodeSqliteKysely<WebPushDatabase>(database.db)
@@ -135,7 +135,7 @@ describe("legacy Web Push Doctor migration", () => {
       stateDir,
       subscriptions: [subscription()],
     });
-    const env = { ...process.env, OPENCLAW_STATE_DIR: stateDir };
+    const env = { ...process.env, OPERATOR_STATE_DIR: stateDir };
     const gatewayLock = await acquireGatewayLock({
       allowInTests: true,
       env,

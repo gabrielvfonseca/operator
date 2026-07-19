@@ -3,10 +3,10 @@ import type {
   ChannelDoctorConfigMutation,
   ChannelDoctorLegacyConfigRule,
 } from "openclaw/plugin-sdk/channel-contract";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { asObjectRecord, defineChannelAliasMigration } from "openclaw/plugin-sdk/runtime-doctor";
 
-type GoogleChatChannelsConfig = NonNullable<OpenClawConfig["channels"]>;
+type GoogleChatChannelsConfig = NonNullable<OperatorConfig["channels"]>;
 
 // Google Chat's nested streaming schema is delivery-only ({chunkMode, block});
 // it has no preview mode (legacy streamMode is removed outright above), so
@@ -128,7 +128,7 @@ export const legacyConfigRules: ChannelDoctorLegacyConfigRule[] = [
   ...streamingAliasMigration.legacyConfigRules,
 ];
 
-function normalizeRetiredGoogleChatKeys(cfg: OpenClawConfig): ChannelDoctorConfigMutation {
+function normalizeRetiredGoogleChatKeys(cfg: OperatorConfig): ChannelDoctorConfigMutation {
   const rawEntry = asObjectRecord(
     (cfg.channels as Record<string, unknown> | undefined)?.googlechat,
   );
@@ -192,7 +192,7 @@ function normalizeRetiredGoogleChatKeys(cfg: OpenClawConfig): ChannelDoctorConfi
 export function normalizeCompatibilityConfig({
   cfg,
 }: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
 }): ChannelDoctorConfigMutation {
   const retired = normalizeRetiredGoogleChatKeys(cfg);
   return streamingAliasMigration.normalizeChannelConfig({

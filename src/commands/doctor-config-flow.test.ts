@@ -5,7 +5,7 @@ import { expectDefined } from "@operator/normalization-core";
 import { withTempHome } from "openclaw/plugin-sdk/test-env";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { writeChannelPairingStateSnapshot } from "../pairing/pairing-store-sqlite.test-helpers.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import { loadAndMaybeMigrateDoctorConfig } from "./doctor-config-flow.js";
 import {
   getDoctorConfigInputForTest,
@@ -672,7 +672,7 @@ vi.mock("./doctor/shared/plugin-tool-allowlist-warnings.js", () => ({
 }));
 
 vi.mock("../doctor-plugin-registry.js", () => ({
-  maybeRepairManagedNpmOpenClawPeerLinks: vi.fn(async () => undefined),
+  maybeRepairManagedNpmOperatorPeerLinks: vi.fn(async () => undefined),
   maybeRepairStaleManagedNpmBundledPlugins: vi.fn(() => undefined),
 }));
 
@@ -1262,9 +1262,9 @@ vi.mock("./doctor-config-preflight.js", async () => {
 
   function resolveConfigPath() {
     const stateDir =
-      process.env.OPENCLAW_STATE_DIR ||
+      process.env.OPERATOR_STATE_DIR ||
       (process.env.HOME ? pathLocal.join(process.env.HOME, ".openclaw") : "");
-    return process.env.OPENCLAW_CONFIG_PATH || pathLocal.join(stateDir, "openclaw.json");
+    return process.env.OPERATOR_CONFIG_PATH || pathLocal.join(stateDir, "openclaw.json");
   }
 
   function normalizeDiscordStreamingCompat(cfg: Record<string, unknown>): Record<string, unknown> {
@@ -1825,7 +1825,7 @@ describe("doctor config flow", () => {
               enabled: true,
               handler: "./hooks/custom.ts",
               extraDirs: ["./hooks"],
-              env: { OPENCLAW_CUSTOM_HOOK: "1" },
+              env: { OPERATOR_CUSTOM_HOOK: "1" },
             },
             "valid-hook": {
               enabled: true,
@@ -2740,7 +2740,7 @@ describe("doctor config flow", () => {
       },
       { skipSessionCleanup: true },
     );
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
 
     const cfg = result.cfg as {
       channels: {

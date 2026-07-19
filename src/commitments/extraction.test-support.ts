@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import "./extraction.js";
 import type {
   CommitmentCandidate,
@@ -16,7 +16,7 @@ type ValidatedCommitmentCandidate = {
 
 type CommitmentExtractionTestApi = {
   validateCommitmentCandidates(params: {
-    cfg?: OpenClawConfig;
+    cfg?: OperatorConfig;
     items: CommitmentExtractionItem[];
     result: CommitmentExtractionBatchResult;
     nowMs?: number;

@@ -4,7 +4,7 @@ import path from "node:path";
 import { isRecord } from "@operator/normalization-core/record-coerce";
 import { note } from "../../packages/terminal-core/src/note.js";
 import { formatCliCommand } from "../cli/command-format.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { HealthFinding, HealthRepairEffect } from "../flows/health-checks.js";
 import { saveJsonFile } from "../infra/json-file.js";
 import { tryReadJsonSync } from "../infra/json-files.js";
@@ -18,9 +18,9 @@ import { loadInstalledPluginIndex } from "../plugins/installed-plugin-index.js";
 import { hasRetainedManagedNpmInstallMarker } from "../plugins/managed-npm-retention.js";
 import { listManagedPluginNpmRootsSync } from "../plugins/npm-project-roots.js";
 import {
-  auditOpenClawPeerDependenciesInManagedNpmRoot,
-  type OpenClawPeerLinkAuditIssue,
-  relinkOpenClawPeerDependenciesInManagedNpmRoot,
+  auditOperatorPeerDependenciesInManagedNpmRoot,
+  type OperatorPeerLinkAuditIssue,
+  relinkOperatorPeerDependenciesInManagedNpmRoot,
 } from "../plugins/plugin-peer-link.js";
 import { refreshPluginRegistry } from "../plugins/plugin-registry.js";
 import {
@@ -40,7 +40,7 @@ const PLUGIN_REGISTRY_CHECK_ID = "core/doctor/plugin-registry";
 
 type PluginRegistryDoctorRepairParams = Omit<PluginRegistryInstallMigrationParams, "config"> &
   InstalledPluginIndexRecordStoreOptions & {
-    config: OpenClawConfig;
+    config: OperatorConfig;
     prompter: Pick<DoctorPrompter, "shouldRepair">;
   };
 
@@ -351,20 +351,20 @@ async function maybeRepairStaleLocalBundledPluginInstallRecords(
   return stale.map((record) => record.pluginId);
 }
 
-/** Relinks managed npm plugin packages to the current OpenClaw host packages. */
-export async function maybeRepairManagedNpmOpenClawPeerLinks(
+/** Relinks managed npm plugin packages to the current Operator host packages. */
+export async function maybeRepairManagedNpmOperatorPeerLinks(
   params: PluginRegistryDoctorRepairParams,
 ): Promise<boolean> {
   const npmRoots = listManagedPluginNpmRoots(params);
   if (!params.prompter.shouldRepair) {
     const audits = await Promise.all(
-      npmRoots.map((npmRoot) => auditOpenClawPeerDependenciesInManagedNpmRoot({ npmRoot })),
+      npmRoots.map((npmRoot) => auditOperatorPeerDependenciesInManagedNpmRoot({ npmRoot })),
     );
     const issues = audits.flatMap((audit) => audit.issues);
     if (issues.length > 0) {
       note(
         [
-          "Managed npm OpenClaw host peer links need repair:",
+          "Managed npm Operator host peer links need repair:",
           ...issues.map((issue) => `- ${issue.packageName}: ${issue.reason}`),
           `Repair with ${formatCliCommand("operator doctor --fix")} to relink managed npm plugin packages.`,
         ].join("\n"),
@@ -381,7 +381,7 @@ export async function maybeRepairManagedNpmOpenClawPeerLinks(
   };
   const results = await Promise.all(
     npmRoots.map((npmRoot) =>
-      relinkOpenClawPeerDependenciesInManagedNpmRoot({
+      relinkOperatorPeerDependenciesInManagedNpmRoot({
         npmRoot,
         logger,
       }),
@@ -391,7 +391,7 @@ export async function maybeRepairManagedNpmOpenClawPeerLinks(
 
   if (repaired > 0) {
     note(
-      `Repaired OpenClaw host peer link(s) for ${repaired} managed npm plugin package(s).`,
+      `Repaired Operator host peer link(s) for ${repaired} managed npm plugin package(s).`,
       "Plugin registry",
     );
   }
@@ -400,7 +400,7 @@ export async function maybeRepairManagedNpmOpenClawPeerLinks(
     .map((message) => `- ${message.message}`);
   if (warnings.length > 0) {
     note(
-      ["Could not repair all managed npm OpenClaw host peer links:", ...warnings].join("\n"),
+      ["Could not repair all managed npm Operator host peer links:", ...warnings].join("\n"),
       "Plugin registry",
     );
   }
@@ -419,12 +419,12 @@ async function loadInstallRecordsWithoutPluginIds(
   return records;
 }
 
-async function listManagedNpmOpenClawPeerLinkIssues(
+async function listManagedNpmOperatorPeerLinkIssues(
   params: PluginRegistryDoctorRepairParams,
-): Promise<OpenClawPeerLinkAuditIssue[]> {
+): Promise<OperatorPeerLinkAuditIssue[]> {
   const audits = await Promise.all(
     listManagedPluginNpmRoots(params).map((npmRoot) =>
-      auditOpenClawPeerDependenciesInManagedNpmRoot({ npmRoot }),
+      auditOperatorPeerDependenciesInManagedNpmRoot({ npmRoot }),
     ),
   );
   return audits.flatMap((audit) => audit.issues);
@@ -458,7 +458,7 @@ export async function detectPluginRegistryHealthIssues(
       stalePath: record.stalePath,
     });
   }
-  for (const issue of await listManagedNpmOpenClawPeerLinkIssues(params)) {
+  for (const issue of await listManagedNpmOperatorPeerLinkIssues(params)) {
     issues.push({
       kind: "managed-npm-operator-peer-link",
       packageName: issue.packageName,
@@ -507,7 +507,7 @@ export function pluginRegistryIssueToHealthFinding(
       return {
         checkId: PLUGIN_REGISTRY_CHECK_ID,
         severity: "warning",
-        message: `Managed npm package ${issue.packageName} has a broken OpenClaw peer link: ${issue.reason}.`,
+        message: `Managed npm package ${issue.packageName} has a broken Operator peer link: ${issue.reason}.`,
         path: issue.packageDir,
         target: issue.packageName,
         fixHint: "Run `operator doctor --fix` to relink managed npm plugin packages.",
@@ -566,7 +566,7 @@ function assertNeverPluginRegistryIssue(issue: never): never {
  */
 export async function maybeRepairPluginRegistryState(
   params: PluginRegistryDoctorRepairParams,
-): Promise<OpenClawConfig> {
+): Promise<OperatorConfig> {
   const preflight = preflightPluginRegistryInstallMigration(params);
   for (const warning of preflight.deprecationWarnings) {
     note(warning, "Plugin registry");
@@ -589,7 +589,7 @@ export async function maybeRepairPluginRegistryState(
   const removedStaleManagedNpmBundledPlugins = maybeRepairStaleManagedNpmBundledPlugins(params);
   const removedStaleLocalBundledPluginIds =
     await maybeRepairStaleLocalBundledPluginInstallRecords(params);
-  const repairedManagedNpmOpenClawPeerLinks = await maybeRepairManagedNpmOpenClawPeerLinks(params);
+  const repairedManagedNpmOperatorPeerLinks = await maybeRepairManagedNpmOperatorPeerLinks(params);
   const stalePluginIdsToRemove = [
     ...new Set([
       ...(removedStaleManagedNpmBundledPlugins ? staleManagedNpmBundledPluginIds : []),
@@ -636,7 +636,7 @@ export async function maybeRepairPluginRegistryState(
     preflight.action === "skip-existing" ||
     removedStaleManagedNpmBundledPlugins ||
     removedStaleLocalBundledPluginIds.length > 0 ||
-    repairedManagedNpmOpenClawPeerLinks
+    repairedManagedNpmOperatorPeerLinks
   ) {
     const index = await refreshPluginRegistry({
       ...migrationParams,

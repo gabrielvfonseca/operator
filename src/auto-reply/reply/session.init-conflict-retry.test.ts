@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import {
   ReplySessionInitConflictError,
   runWithSessionInitConflictRetry,
@@ -178,7 +178,7 @@ describe("initSessionState conflict retry wiring", () => {
 
     try {
       const initializing = initSessionState({
-        cfg: { session: { store: path.join(root, "sessions.json") } } as OpenClawConfig,
+        cfg: { session: { store: path.join(root, "sessions.json") } } as OperatorConfig,
         commandAuthorized: true,
         ctx: {
           Body: "hello",

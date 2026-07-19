@@ -30,7 +30,7 @@ import type { SystemAgentOperation, SystemAgentOperationResult } from "./operati
 
 const loadOverviewModule = async () => await import("./overview.js");
 
-/** Execute a parsed OpenClaw operation after applying approval gates and audit logging. */
+/** Execute a parsed Operator operation after applying approval gates and audit logging. */
 export async function executeSystemAgentOperation(
   operation: SystemAgentOperation,
   runtime: RuntimeEnv,
@@ -236,7 +236,7 @@ export async function executeSystemAgentOperation(
       return { applied: false };
     }
     case "channel-setup":
-      // Channel setup is a multi-step wizard; only interactive OpenClaw (TUI
+      // Channel setup is a multi-step wizard; only interactive Operator (TUI
       // chat bridge or the gateway chat) can host it. One-shot mode points at
       // the guided paths.
       runtime.log(
@@ -250,8 +250,8 @@ export async function executeSystemAgentOperation(
     case "model-setup":
       runtime.log(
         [
-          "Changing model providers must happen outside the inference session that powers OpenClaw.",
-          "Exit OpenClaw and run `operator onboard`; it stages credentials, live-tests the candidate route, and saves only a passing setup.",
+          "Changing model providers must happen outside the inference session that powers Operator.",
+          "Exit Operator and run `operator onboard`; it stages credentials, live-tests the candidate route, and saves only a passing setup.",
         ].join("\n"),
       );
       return { applied: false };
@@ -304,8 +304,8 @@ export async function executeSystemAgentOperation(
       return await executePluginInstall(operation, runtime, opts);
     case "plugin-uninstall": {
       const message = [
-        "OpenClaw cannot prove that uninstalling a plugin will preserve its own active inference route.",
-        `Exit OpenClaw and run \`operator plugins uninstall ${operation.pluginId}\` from a terminal.`,
+        "Operator cannot prove that uninstalling a plugin will preserve its own active inference route.",
+        `Exit Operator and run \`operator plugins uninstall ${operation.pluginId}\` from a terminal.`,
       ].join("\n");
       runtime.log(message);
       return { applied: false, message };
@@ -318,7 +318,7 @@ export async function executeSystemAgentOperation(
       }
       if (operation.model?.trim()) {
         throw new Error(
-          "OpenClaw cannot save an explicit per-agent model until that new route can be live-tested. Retry without `model`; the new agent will inherit the already verified default model.",
+          "Operator cannot save an explicit per-agent model until that new route can be live-tested. Retry without `model`; the new agent will inherit the already verified default model.",
         );
       }
       const workspace = resolveUserPath(operation.workspace ?? process.cwd());
@@ -360,7 +360,7 @@ export async function executeSystemAgentOperation(
     }
     case "doctor-fix":
       runtime.log(
-        "Doctor repairs can change the inference route that powers this session. Exit OpenClaw and run `operator doctor --fix` in a terminal.",
+        "Doctor repairs can change the inference route that powers this session. Exit Operator and run `operator doctor --fix` in a terminal.",
       );
       return { applied: false };
     case "status": {

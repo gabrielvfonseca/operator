@@ -2,7 +2,7 @@
   "name": "@operator/volcengine-provider",
   "version": "2026.7.2",
   "private": true,
-  "description": "OpenClaw Volcengine provider plugin",
+  "description": "Operator Volcengine provider plugin",
   "type": "module",
   "devDependencies": {
     "@operator/plugin-sdk": "workspace:*"

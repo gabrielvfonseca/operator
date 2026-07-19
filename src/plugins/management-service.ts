@@ -10,7 +10,7 @@ import {
 import { collectChangedPaths } from "../config/io.write-prepare.js";
 import { resolveIsNixMode } from "../config/paths.js";
 import { ensurePluginAllowlisted } from "../config/plugins-allowlist.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
 import { parseClawHubPluginSpec } from "../infra/clawhub-spec.js";
 import { formatErrorMessage } from "../infra/errors.js";
@@ -126,7 +126,7 @@ let officialCatalogCache:
   | { key: string; result: Promise<HostedOfficialExternalPluginCatalogLoadResult> }
   | undefined;
 
-function officialCatalogCacheKey(config: OpenClawConfig): string {
+function officialCatalogCacheKey(config: OperatorConfig): string {
   return JSON.stringify(config.marketplaces ?? null);
 }
 
@@ -203,7 +203,7 @@ function overlayBundledOfficialPluginCatalogMetadata(
   });
 }
 
-async function loadOfficialCatalog(config: OpenClawConfig): Promise<OfficialCatalogResult> {
+async function loadOfficialCatalog(config: OperatorConfig): Promise<OfficialCatalogResult> {
   const key = officialCatalogCacheKey(config);
   if (officialCatalogCache?.key !== key) {
     officialCatalogCache = {
@@ -244,7 +244,7 @@ function normalizeCatalogMetadata(
 }
 
 function resolveCatalogInstallAction(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   entry: OfficialExternalPluginCatalogEntry;
   pluginId: string;
 }): ManagedPluginCatalogEntry["install"] {
@@ -319,7 +319,7 @@ function compareCatalogEntries(
 
 /** Build cold installed state merged with the hosted official catalog and bundled curation. */
 export async function listManagedPlugins(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   env?: NodeJS.ProcessEnv;
   officialCatalog?: OfficialCatalogResult;
 }): Promise<ManagedPluginCatalog> {
@@ -489,7 +489,7 @@ function resolveDeclaredOfficialPluginId(
 
 function resolveOfficialEntryByClawHubPackage(
   entries: readonly OfficialExternalPluginCatalogEntry[],
-  config: OpenClawConfig,
+  config: OperatorConfig,
   packageName: string,
 ): OfficialExternalPluginCatalogEntry | undefined {
   // Bundled identities remain the local trust anchor when a hosted feed omits
@@ -504,7 +504,7 @@ function resolveOfficialEntryByClawHubPackage(
 
 function resolveHostedOfficialEntryByClawHubPackage(
   entries: readonly OfficialExternalPluginCatalogEntry[],
-  config: OpenClawConfig,
+  config: OperatorConfig,
   packageName: string,
 ): OfficialExternalPluginCatalogEntry | undefined {
   return entries.find((entry) => {
@@ -630,7 +630,7 @@ async function persistManagedPluginInstall(params: {
   install: PluginInstallRecord;
   targetDir: string;
   extensionsDir: string;
-}): Promise<OpenClawConfig> {
+}): Promise<OperatorConfig> {
   try {
     return await persistPluginInstall({
       snapshot: params.snapshot,
@@ -657,7 +657,7 @@ async function installFromClawHub(params: {
   env: NodeJS.ProcessEnv;
   warnings: string[];
   expectedIntegrity?: string;
-}): Promise<{ pluginId: string; config: OpenClawConfig }> {
+}): Promise<{ pluginId: string; config: OperatorConfig }> {
   const packageName = params.request.packageName.trim();
   const official = resolveOfficialEntryByClawHubPackage(
     params.officialEntries,
@@ -726,7 +726,7 @@ async function installFromOfficialCatalog(params: {
   officialEntries: readonly OfficialExternalPluginCatalogEntry[];
   env: NodeJS.ProcessEnv;
   warnings: string[];
-}): Promise<{ pluginId: string; config: OpenClawConfig }> {
+}): Promise<{ pluginId: string; config: OperatorConfig }> {
   const entry = resolveOfficialEntryById(params.officialEntries, params.request.pluginId);
   if (!entry) {
     throw new ManagedPluginLifecycleError(

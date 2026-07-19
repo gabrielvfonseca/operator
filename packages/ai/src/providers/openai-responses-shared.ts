@@ -773,7 +773,7 @@ export async function processResponsesStream<TApi extends Api>(
     stage: "responses",
     abort: options?.abortFirstEventStream,
     onTimeout: options?.onFirstEventTimeout,
-    hint: "The provider may be stalled while parsing the tool payload; retry with a smaller tool surface or enable OPENCLAW_DEBUG_MODEL_PAYLOAD=tools to inspect exposed tools.",
+    hint: "The provider may be stalled while parsing the tool payload; retry with a smaller tool surface or enable OPERATOR_DEBUG_MODEL_PAYLOAD=tools to inspect exposed tools.",
   });
   for await (const event of guardedStream) {
     if (event.type === "response.created") {

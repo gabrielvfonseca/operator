@@ -24,7 +24,7 @@ import type {
   SessionTranscriptDeliveryMirror,
   SessionTranscriptUpdateMode,
 } from "../config/sessions/transcript.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 import { extractAssistantVisibleText } from "../shared/chat-message-content.js";
 import type { AgentMessage } from "./agent-core.js";
@@ -83,7 +83,7 @@ export type SessionTranscriptAppendMessageParams<TMessage> = SessionTranscriptTa
   TranscriptMessageAppendOptions<TMessage>;
 
 export type SessionTranscriptAssistantMirrorAppendParams = SessionTranscriptReadParams & {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   deliveryMirror?: SessionTranscriptDeliveryMirror;
   idempotencyKey?: string;
   mediaUrls?: string[];
@@ -351,7 +351,7 @@ function createAssistantMirrorMessage(params: {
 function findLatestEquivalentAssistantMessageId(
   events: readonly SessionTranscriptEvent[],
   message: SessionTranscriptAssistantMessage,
-  config: OpenClawConfig | undefined,
+  config: OperatorConfig | undefined,
 ): string | undefined {
   const expectedText = extractAssistantMirrorComparableText(message, config);
   if (!expectedText) {
@@ -381,7 +381,7 @@ function findLatestEquivalentAssistantMessageId(
 
 function extractAssistantMirrorComparableText(
   message: SessionTranscriptAssistantMessage,
-  config: OpenClawConfig | undefined,
+  config: OperatorConfig | undefined,
 ): string | undefined {
   const redacted = redactTranscriptMessage(
     message as Parameters<typeof redactTranscriptMessage>[0],

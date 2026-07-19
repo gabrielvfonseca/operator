@@ -4,7 +4,7 @@ import { getLoadedChannelPlugin, normalizeChannelId } from "../channels/plugins/
 import { resolveReadOnlyChannelCommandDefaults } from "../channels/plugins/read-only-command-defaults.js";
 import type { ChannelId } from "../channels/plugins/types.public.js";
 import type { NativeCommandsSetting } from "./types.js";
-import type { OpenClawConfig } from "./types.operator.js";
+import type { OperatorConfig } from "./types.operator.js";
 
 function resolveAutoDefault(
   providerId: ChannelId | undefined,
@@ -13,7 +13,7 @@ function resolveAutoDefault(
     env?: NodeJS.ProcessEnv;
     stateDir?: string;
     workspaceDir?: string;
-    config?: OpenClawConfig;
+    config?: OperatorConfig;
     autoDefault?: boolean;
   },
 ): boolean {
@@ -47,7 +47,7 @@ export function resolveNativeSkillsEnabled(params: {
   env?: NodeJS.ProcessEnv;
   stateDir?: string;
   workspaceDir?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   autoDefault?: boolean;
 }): boolean {
   return resolveNativeCommandSetting({ ...params, kind: "nativeSkills" });
@@ -61,7 +61,7 @@ export function resolveNativeCommandsEnabled(params: {
   env?: NodeJS.ProcessEnv;
   stateDir?: string;
   workspaceDir?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   autoDefault?: boolean;
 }): boolean {
   return resolveNativeCommandSetting({ ...params, kind: "native" });
@@ -75,7 +75,7 @@ function resolveNativeCommandSetting(params: {
   env?: NodeJS.ProcessEnv;
   stateDir?: string;
   workspaceDir?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   autoDefault?: boolean;
 }): boolean {
   const { providerId, providerSetting, globalSetting, kind = "native", ...options } = params;

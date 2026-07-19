@@ -18,7 +18,7 @@ import {
   resolveSessionTranscriptRuntimeTarget,
   upsertSessionEntry,
 } from "../config/sessions/session-accessor.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import {
   attachWorkerWsMessageHandler,
   type WorkerConnectionService,
@@ -51,9 +51,9 @@ import {
 import { rawDataToString } from "../infra/ws.js";
 import type { WorkerProvider, WorkerSshEndpoint } from "../plugins/types.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
-  type OpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
+  type OperatorStateDatabase,
 } from "../state/openclaw-state-db.js";
 import { buildWorkerConnectParams, type WorkerLaunchDescriptor } from "./launch-descriptor.js";
 import {
@@ -205,8 +205,8 @@ class ComposedGatewayHarness {
   readonly storePath: string;
   readonly sessionFile: string;
   readonly socketPath: string;
-  readonly cfg: OpenClawConfig;
-  readonly database: OpenClawStateDatabase;
+  readonly cfg: OperatorConfig;
+  readonly database: OperatorStateDatabase;
   readonly store: WorkerEnvironmentStore;
   readonly requests: Array<{ method: string; params: unknown }> = [];
   readonly admissions: WorkerConnectionIdentity[] = [];
@@ -272,7 +272,7 @@ class ComposedGatewayHarness {
         profiles: { development: { provider: "fake", settings: { region: "test" } } },
       },
     };
-    this.database = openOpenClawStateDatabase({ env: { OPENCLAW_STATE_DIR: this.stateDir } });
+    this.database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: this.stateDir } });
     this.store = createWorkerEnvironmentStore({ database: this.database });
     this.seedAttachedEnvironment();
     this.liveEventsValue = this.createLiveEvents(true);
@@ -470,7 +470,7 @@ class ComposedGatewayHarness {
     await new Promise<void>((resolve) => {
       this.httpServer.close(() => resolve());
     });
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await fs.rm(this.root, { recursive: true, force: true });
   }
 

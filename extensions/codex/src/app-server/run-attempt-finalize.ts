@@ -85,7 +85,7 @@ export async function finalizeCodexAttempt(
   const {
     state,
     completion,
-    pendingOpenClawDynamicToolCompletionIds,
+    pendingOperatorDynamicToolCompletionIds,
     activeTurnItemIds,
     activeCompletionBlockerItemIds,
     activeFinalizationHookRunIds,
@@ -109,7 +109,7 @@ export async function finalizeCodexAttempt(
     state.activeAppServerTurnRequests === 0 &&
     activeTurnItemIds.size === 0 &&
     activeCompletionBlockerItemIds.size === 0 &&
-    pendingOpenClawDynamicToolCompletionIds.size === 0 &&
+    pendingOperatorDynamicToolCompletionIds.size === 0 &&
     activeFinalizationHookRunIds.size === 0 &&
     state.unsettledFinalizationHookCount === 0 &&
     state.rejectedFinalizationHookAssistant === undefined;

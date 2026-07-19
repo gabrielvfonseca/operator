@@ -1,7 +1,7 @@
 // ClickClack plugin module implements non-interactive setup behavior.
 import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "openclaw/plugin-sdk/account-id";
 import type { ChannelSetupAdapter } from "openclaw/plugin-sdk/channel-setup";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   applyAccountNameToChannelSection,
   applySetupAccountConfigPatch,
@@ -34,11 +34,11 @@ export function normalizeClickClackBaseUrl(value: string | undefined): string | 
 }
 
 export function applyClickClackSetupConfigPatch(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId: string;
   name?: string;
   patch: Record<string, unknown>;
-}): OpenClawConfig {
+}): OperatorConfig {
   const accountId = normalizeAccountId(params.accountId);
   const scopedConfig =
     accountId === DEFAULT_ACCOUNT_ID
@@ -69,10 +69,10 @@ export function applyClickClackSetupConfigPatch(params: {
 }
 
 function clearClickClackSetupConfigFields(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId: string;
   fields: string[];
-}): OpenClawConfig {
+}): OperatorConfig {
   const clickclack = (params.cfg.channels as Record<string, unknown> | undefined)?.clickclack as
     | (Record<string, unknown> & { accounts?: Record<string, Record<string, unknown>> })
     | undefined;
@@ -91,7 +91,7 @@ function clearClickClackSetupConfigFields(params: {
         ...params.cfg.channels,
         clickclack: nextClickClack,
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
   }
   const currentAccount = clickclack.accounts?.[accountId];
   if (!currentAccount) {
@@ -113,16 +113,16 @@ function clearClickClackSetupConfigFields(params: {
         },
       },
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 export function applyClickClackCredentialConfig(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId: string;
   token?: unknown;
   tokenFile?: string;
   useEnv?: boolean;
-}): OpenClawConfig {
+}): OperatorConfig {
   const fieldsToClear = params.useEnv
     ? ["token", "tokenFile"]
     : params.tokenFile

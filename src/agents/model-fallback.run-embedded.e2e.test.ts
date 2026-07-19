@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import type { AuthProfileFailureReason } from "./auth-profiles.js";
 import { ensureAuthProfileStore, saveAuthProfileStore } from "./auth-profiles/store.js";
 import { classifyEmbeddedAgentRunResultForModelFallback } from "./embedded-agent-runner/result-fallback-classifier.js";
@@ -36,7 +36,7 @@ vi.mock("./models-config.js", async () => {
   const mod = await vi.importActual<typeof import("./models-config.js")>("./models-config.js");
   return {
     ...mod,
-    ensureOpenClawModelsJson: vi.fn(async () => ({ wrote: false })),
+    ensureOperatorModelsJson: vi.fn(async () => ({ wrote: false })),
   };
 });
 
@@ -91,7 +91,7 @@ type EmbeddedAttemptParams = {
   authProfileId?: string;
 };
 
-function makeConfig(primaryProvider = "openai"): OpenClawConfig {
+function makeConfig(primaryProvider = "openai"): OperatorConfig {
   const apiKeyField = ["api", "Key"].join("");
   return {
     agents: {
@@ -138,7 +138,7 @@ function makeConfig(primaryProvider = "openai"): OpenClawConfig {
         },
       },
     },
-  } satisfies OpenClawConfig;
+  } satisfies OperatorConfig;
 }
 
 async function withAgentWorkspace<T>(
@@ -246,7 +246,7 @@ async function runEmbeddedFallback(params: {
   sessionId?: string;
   lane?: string;
   abortSignal?: AbortSignal;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }) {
   // Runs the same embedded-agent entrypoint that production fallback uses while
   // keeping provider/model attempts deterministic through mocks.

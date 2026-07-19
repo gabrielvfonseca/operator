@@ -1,14 +1,14 @@
 // Webhooks tests cover index plugin behavior.
 import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawPluginApi } from "./api.js";
+import type { OperatorPluginApi } from "./api.js";
 import plugin from "./index.js";
 
 function createApi(params?: {
-  pluginConfig?: OpenClawPluginApi["pluginConfig"];
-  registerHttpRoute?: OpenClawPluginApi["registerHttpRoute"];
-  logger?: OpenClawPluginApi["logger"];
-}): OpenClawPluginApi {
+  pluginConfig?: OperatorPluginApi["pluginConfig"];
+  registerHttpRoute?: OperatorPluginApi["registerHttpRoute"];
+  logger?: OperatorPluginApi["logger"];
+}): OperatorPluginApi {
   return createTestPluginApi({
     id: "webhooks",
     name: "Webhooks",
@@ -20,7 +20,7 @@ function createApi(params?: {
           bindSession: vi.fn(({ sessionKey }: { sessionKey: string }) => ({ sessionKey })),
         },
       },
-    } as unknown as OpenClawPluginApi["runtime"],
+    } as unknown as OperatorPluginApi["runtime"],
     registerHttpRoute: params?.registerHttpRoute ?? vi.fn(),
     logger:
       params?.logger ??
@@ -29,7 +29,7 @@ function createApi(params?: {
         warn: vi.fn(),
         error: vi.fn(),
         debug: vi.fn(),
-      } as OpenClawPluginApi["logger"]),
+      } as OperatorPluginApi["logger"]),
   });
 }
 
@@ -38,7 +38,7 @@ function requireFirstRouteRegistration(mock: ReturnType<typeof vi.fn>) {
   if (!call) {
     throw new Error("expected webhook route registration");
   }
-  return call[0] as Parameters<OpenClawPluginApi["registerHttpRoute"]>[0];
+  return call[0] as Parameters<OperatorPluginApi["registerHttpRoute"]>[0];
 }
 
 describe("webhooks plugin registration", () => {
@@ -54,7 +54,7 @@ describe("webhooks plugin registration", () => {
               secret: {
                 source: "env",
                 provider: "default",
-                id: "OPENCLAW_WEBHOOK_SECRET",
+                id: "OPERATOR_WEBHOOK_SECRET",
               },
             },
           },

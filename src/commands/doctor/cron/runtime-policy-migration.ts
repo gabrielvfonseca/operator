@@ -1,7 +1,7 @@
 // Doctor-only runtime policy repair for migrated cron Codex model refs.
 import { asOptionalRecord } from "@operator/normalization-core/record-coerce";
 import { resolveDefaultAgentId } from "../../../agents/agent-scope-config.js";
-import type { OpenClawConfig } from "../../../config/types.operator.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import { normalizeAgentId } from "../../../routing/session-key.js";
 import {
   isBlockedLegacyCodexModelRef,
@@ -23,7 +23,7 @@ function ensureRecord(container: MutableRecord, key: string): MutableRecord {
 }
 
 function resolvePolicyOwner(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   target: CronCodexRuntimePolicyTarget;
 }): { owner: MutableRecord; path: string } | undefined {
   const root = params.cfg as unknown as MutableRecord;
@@ -49,11 +49,11 @@ function resolvePolicyOwner(params: {
 
 /** Install model-scoped Codex runtime intent for canonical refs migrated out of cron payloads. */
 export function repairCronCodexRuntimePolicies(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   targets: ReadonlyArray<CronCodexRuntimePolicyTarget>;
   blockedModelIdentities?: ReadonlySet<LegacyCodexModelIdentity>;
 }): {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   changes: string[];
   warnings: string[];
   blockedTargets: CronCodexRuntimePolicyTarget[];
@@ -144,7 +144,7 @@ export function repairCronCodexRuntimePolicies(params: {
 
 /** Restrict a post-config-write cron rewrite to runtime policies already on disk. */
 export function planCronCodexRefRewriteAgainstPersistedConfig(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   targets: ReadonlyArray<CronCodexRuntimePolicyTarget>;
   blockedModelIdentities?: ReadonlySet<LegacyCodexModelIdentity>;
 }): { warnings: string[]; blockedTargets: CronCodexRuntimePolicyTarget[] } {

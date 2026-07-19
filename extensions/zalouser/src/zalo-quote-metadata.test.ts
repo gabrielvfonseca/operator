@@ -62,7 +62,7 @@ async function withStoredSession<T>(params: {
   );
   createZaloMock.mockResolvedValueOnce({ login: vi.fn(async () => params.api) });
   try {
-    return await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, params.run);
+    return await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, params.run);
   } finally {
     await rm(stateDir, { recursive: true, force: true });
   }

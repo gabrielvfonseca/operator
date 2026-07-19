@@ -8,7 +8,7 @@ import {
 } from "../agents/agent-scope.js";
 import type { HookContext } from "../agents/agent-tools.before-tool-call.js";
 import {
-  createOpenClawCodingTools,
+  createOperatorCodingTools,
   resolveToolLoopDetectionConfig,
 } from "../agents/agent-tools.js";
 import type { CodeModeNamespaceDescriptor } from "../agents/code-mode-namespaces.js";
@@ -32,7 +32,7 @@ import {
 } from "../agents/tool-search.js";
 import type { AnyAgentTool } from "../agents/tools/common.js";
 import { ensureAgentWorkspace } from "../agents/workspace.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { getPluginToolMeta } from "../plugins/tools.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 import {
@@ -67,7 +67,7 @@ type PreparedTriggerRuntime = {
 };
 
 type PrepareTriggerRuntime = (params: {
-  runtimeConfig: OpenClawConfig;
+  runtimeConfig: OperatorConfig;
   jobId: string;
   agentId?: string;
   toolsAllow?: string[];
@@ -75,24 +75,24 @@ type PrepareTriggerRuntime = (params: {
 }) => Promise<PreparedTriggerRuntime>;
 
 type CronTriggerEvaluatorDeps = {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   runHeadless?: typeof runCodeModeScriptHeadless;
   prepareRuntime?: PrepareTriggerRuntime;
 };
 
 type TriggerRuntimeCacheEntry = {
   promise: Promise<PreparedTriggerRuntime>;
-  configEpoch: OpenClawConfig;
+  configEpoch: OperatorConfig;
   agentId: string;
   toolsAllowKey: string;
 };
 
-function resolveTriggerAgentId(config: OpenClawConfig, agentId?: string): string {
+function resolveTriggerAgentId(config: OperatorConfig, agentId?: string): string {
   return agentId?.trim() ? normalizeAgentId(agentId) : resolveDefaultAgentId(config);
 }
 
 async function prepareTriggerRuntime(params: {
-  runtimeConfig: OpenClawConfig;
+  runtimeConfig: OperatorConfig;
   jobId: string;
   agentId?: string;
   toolsAllow?: string[];
@@ -106,7 +106,7 @@ async function prepareTriggerRuntime(params: {
     defaults: params.runtimeConfig.agents?.defaults,
     agentConfigOverride,
   });
-  const config: OpenClawConfig = {
+  const config: OperatorConfig = {
     ...params.runtimeConfig,
     agents: Object.assign({}, params.runtimeConfig.agents, { defaults: agentDefaults }),
   };
@@ -147,7 +147,7 @@ async function prepareTriggerRuntime(params: {
   // Bundle MCP tools are source:"mcp", which the headless bridge excludes.
   // LSP runtimes are session-scoped and intentionally outside trigger v1.
   const allTools = toolPlan.constructTools
-    ? createOpenClawCodingTools({
+    ? createOperatorCodingTools({
         agentId,
         exec: { config },
         sandbox,
@@ -323,7 +323,7 @@ export function createCronTriggerEvaluator(deps: CronTriggerEvaluatorDeps) {
     }
   };
   const resolveCachedRuntime = async (request: {
-    runtimeConfig: OpenClawConfig;
+    runtimeConfig: OperatorConfig;
     jobId: string;
     requestedAgentId?: string;
     agentId: string;

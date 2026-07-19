@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import { createSuiteTempRootTracker } from "../test-helpers/temp-dir.js";
 import { cellAuthSecretDir, cellOwnerId } from "./cell-profile.js";
 import type { FleetContainerInspectResult, FleetContainerRuntime } from "./containers.runtime.js";
@@ -38,7 +38,7 @@ function runningInspection(
     labels: fleetLabels(),
     environment: {
       HOME: "/home/node",
-      OPENCLAW_GATEWAY_TOKEN: "old-token",
+      OPERATOR_GATEWAY_TOKEN: "old-token",
       FEATURE: "enabled",
       NODE_VERSION: "old-image-default",
     },
@@ -163,7 +163,7 @@ describe("fleet service", () => {
 
   beforeEach(async () => {
     root = await tempRoot.setup();
-    env = { ...process.env, OPENCLAW_STATE_DIR: root };
+    env = { ...process.env, OPERATOR_STATE_DIR: root };
     vi.stubGlobal(
       "fetch",
       vi.fn<typeof fetch>(async () => new Response(null, { status: 200 })),
@@ -171,7 +171,7 @@ describe("fleet service", () => {
   });
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     vi.unstubAllGlobals();
     await tempRoot.cleanup();
   });
@@ -225,7 +225,7 @@ describe("fleet service", () => {
       containers.start.mock.invocationCallOrder[0] ?? Number.POSITIVE_INFINITY,
     );
     expect(profile?.environment).toMatchObject({
-      OPENCLAW_GATEWAY_TOKEN: "gw-token",
+      OPERATOR_GATEWAY_TOKEN: "gw-token",
       FEATURE: "a=b",
     });
 
@@ -638,7 +638,7 @@ describe("fleet service", () => {
       networkName: "openclaw-cell-acme-net",
       environment: {
         HOME: "/home/node",
-        OPENCLAW_GATEWAY_TOKEN: "old-token",
+        OPERATOR_GATEWAY_TOKEN: "old-token",
         FEATURE: "enabled",
       },
     });

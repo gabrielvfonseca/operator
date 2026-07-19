@@ -10,7 +10,7 @@ import { Type } from "typebox";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { buildGroupChatContext, buildGroupIntro } from "../../auto-reply/reply/groups.js";
 import type { ChannelPlugin } from "../../channels/plugins/types.plugin.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import { registerLegacyContextEngine } from "../../context-engine/legacy.registration.js";
 import {
   registerContextEngine,
@@ -115,7 +115,7 @@ const mockBuildActiveMusicGenerationTaskPromptContextForSession = vi.mocked(
 );
 
 function wrappedPluginSystemContext(text: string): string {
-  return `---\n\nOpenClaw plugin-injected system context. This block is not workspace file content.\n\n${text}\n\n---`;
+  return `---\n\nOperator plugin-injected system context. This block is not workspace file content.\n\n${text}\n\n---`;
 }
 
 function createTestMcpLoopbackServerConfig(port: number) {
@@ -128,8 +128,8 @@ function createTestMcpLoopbackServerConfig(port: number) {
         url: `http://127.0.0.1:${port}/mcp`,
         alwaysLoad: true,
         headers: {
-          Authorization: "Bearer ${OPENCLAW_MCP_TOKEN}",
-          "x-openclaw-cli-capture-key": "${OPENCLAW_MCP_CLI_CAPTURE_KEY}",
+          Authorization: "Bearer ${OPERATOR_MCP_TOKEN}",
+          "x-openclaw-cli-capture-key": "${OPERATOR_MCP_CLI_CAPTURE_KEY}",
         },
       },
     },
@@ -158,7 +158,7 @@ function createCliBackendConfig(
     reseedFromRawTranscriptWhenUncompacted?: boolean;
     systemPromptWhen?: "first" | "always" | "never";
   } = {},
-): OpenClawConfig {
+): OperatorConfig {
   return {
     agents: {
       defaults: {
@@ -181,7 +181,7 @@ function createCliBackendConfig(
         },
       },
     },
-  } satisfies OpenClawConfig;
+  } satisfies OperatorConfig;
 }
 
 function setCliBackendForPrepareTest(
@@ -234,11 +234,11 @@ function setCliBackendForPrepareTest(
 }
 
 function createSessionFile() {
-  // Prepare tests use canonical OpenClaw session paths because several cases
+  // Prepare tests use canonical Operator session paths because several cases
   // assert that external or stale transcript paths are ignored.
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-cli-prepare-"));
-  sessionFileEnvSnapshot ??= captureEnv(["OPENCLAW_STATE_DIR"]);
-  setTestEnvValue("OPENCLAW_STATE_DIR", dir);
+  sessionFileEnvSnapshot ??= captureEnv(["OPERATOR_STATE_DIR"]);
+  setTestEnvValue("OPERATOR_STATE_DIR", dir);
   const sessionFile = path.join(dir, "agents", "main", "sessions", "session-test.jsonl");
   fs.mkdirSync(path.dirname(sessionFile), { recursive: true });
   fs.writeFileSync(
@@ -398,7 +398,7 @@ describe("prepareCliRunContext", () => {
               },
             },
           },
-        } satisfies OpenClawConfig,
+        } satisfies OperatorConfig,
       });
 
       expect(context.backendResolved.modelProvider).toBe("fixture-anthropic");
@@ -431,7 +431,7 @@ describe("prepareCliRunContext", () => {
       mintMcpLoopbackClientGrant: vi.fn(createTestMcpLoopbackClientGrant),
       revokeMcpLoopbackClientGrant: vi.fn(() => true),
       resolveMcpLoopbackScopedTools: vi.fn(() => ({ agentId: "main", tools: [] })),
-      resolveOpenClawReferencePaths: vi.fn(async () => ({ docsPath: null, sourcePath: null })),
+      resolveOperatorReferencePaths: vi.fn(async () => ({ docsPath: null, sourcePath: null })),
       prepareClaudeCliSkillsPlugin: vi.fn(async () => ({
         args: [],
         cleanup: vi.fn(async () => undefined),
@@ -790,7 +790,7 @@ describe("prepareCliRunContext", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
       });
 
       expect(resolveApiKeyForProfile).toHaveBeenCalledWith(
@@ -1315,7 +1315,7 @@ describe("prepareCliRunContext", () => {
         args: ["--plugin-dir", skillsPluginDir],
         cleanup: skillsCleanup,
       })),
-      resolveOpenClawReferencePaths: vi.fn(async () => {
+      resolveOperatorReferencePaths: vi.fn(async () => {
         throw new Error("reference path lookup failed");
       }),
     });
@@ -1409,7 +1409,7 @@ describe("prepareCliRunContext", () => {
           },
         ],
       })),
-      resolveOpenClawReferencePaths: vi.fn(async () => ({ docsPath: "docs", sourcePath: "src" })),
+      resolveOperatorReferencePaths: vi.fn(async () => ({ docsPath: "docs", sourcePath: "src" })),
     });
 
     const context = await prepareCliRunContext({
@@ -1474,7 +1474,7 @@ describe("prepareCliRunContext", () => {
     const bootstrapPath = path.join(dir, "BOOTSTRAP.md");
     const config = {
       agents: { defaults: { workspace: dir } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     cliBackendsTesting.setDepsForTest({
       resolvePluginSetupCliBackend: () => undefined,
       resolveRuntimeCliBackends: () => [
@@ -1761,7 +1761,7 @@ describe("prepareCliRunContext", () => {
     });
     try {
       // Room resumes carry compact event text into the CLI prompt but keep the
-      // richer room context in OpenClaw history for reseed and audits.
+      // richer room context in Operator history for reseed and audits.
       const context = await prepareCliRunContext({
         sessionId: "session-test",
         sessionKey: "agent:main:test",
@@ -1769,7 +1769,7 @@ describe("prepareCliRunContext", () => {
         trigger: "user",
         sessionFile,
         workspaceDir: dir,
-        prompt: "[OpenClaw room event]",
+        prompt: "[Operator room event]",
         currentInboundEventKind: "room_event",
         currentInboundContext: {
           text: "Room context:\nAlice: lunch?\n\nCurrent event:\nBob: yes",
@@ -1788,7 +1788,7 @@ describe("prepareCliRunContext", () => {
       });
 
       expect(context.reusableCliSession).toEqual({ mode: "reuse", sessionId: "cli-session" });
-      expect(context.params.prompt).toBe("Current event:\nBob: yes\n\n[OpenClaw room event]");
+      expect(context.params.prompt).toBe("Current event:\nBob: yes\n\n[Operator room event]");
       expect(context.openClawHistoryPrompt).toContain("Room context:\nAlice: lunch?");
       expect(context.openClawHistoryPrompt).toContain("Current event:\nBob: yes");
     } finally {
@@ -1992,7 +1992,7 @@ describe("prepareCliRunContext", () => {
 
       expect(context.params.prompt).toBe("latest ask");
       expect(context.systemPrompt).toContain(
-        "You are a personal assistant running inside OpenClaw.",
+        "You are a personal assistant running inside Operator.",
       );
       expect(context.systemPrompt).toContain("Current model identity: test-cli/test-model.");
       expect(context.systemPrompt).not.toContain("hook exploded");
@@ -2017,7 +2017,7 @@ describe("prepareCliRunContext", () => {
     });
     registerContextEngine(engineId, factory);
     setCliRunnerPrepareTestDeps({
-      resolveOpenClawReferencePaths: vi.fn(async () => {
+      resolveOperatorReferencePaths: vi.fn(async () => {
         throw new Error("reference path lookup failed");
       }),
     });
@@ -2114,7 +2114,7 @@ describe("prepareCliRunContext", () => {
           hostRequirements: {
             "agent-run": {
               requiredCapabilities: ["assemble-before-prompt"],
-              unsupportedMessage: "Use the native Codex or OpenClaw embedded runtime.",
+              unsupportedMessage: "Use the native Codex or Operator embedded runtime.",
             },
           },
         },
@@ -2157,7 +2157,7 @@ describe("prepareCliRunContext", () => {
         list: [{ id: "main", default: true, agentDir: runtimeAgentDir }],
       },
       plugins: { slots: { contextEngine: engineId } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const factory = vi.fn((_ctx: unknown): ContextEngine => {
       return {
         info: { id: engineId, name: "CLI runtime config engine" },
@@ -2439,7 +2439,7 @@ describe("prepareCliRunContext", () => {
       });
       expect(context.openClawHistoryPrompt).toBeUndefined();
       expect(context.params.prompt).toContain(
-        "OpenClaw resumed this CLI session after prompt content changed.",
+        "Operator resumed this CLI session after prompt content changed.",
       );
       expect(context.params.prompt).toContain("changed=system-prompt");
       expect(context.params.prompt).toContain("latest ask");
@@ -2475,7 +2475,7 @@ describe("prepareCliRunContext", () => {
         invalidatedReason: "system-prompt",
       });
       expect(context.params.prompt).not.toContain(
-        "OpenClaw resumed this CLI session after prompt content changed.",
+        "Operator resumed this CLI session after prompt content changed.",
       );
     } finally {
       fs.rmSync(dir, { recursive: true, force: true });
@@ -3321,8 +3321,8 @@ describe("prepareCliRunContext", () => {
       });
 
       expect(context.preparedBackend.env).toMatchObject({
-        OPENCLAW_MCP_TOKEN: "loopback-token",
-        OPENCLAW_MCP_CLI_CAPTURE_KEY: "",
+        OPERATOR_MCP_TOKEN: "loopback-token",
+        OPERATOR_MCP_CLI_CAPTURE_KEY: "",
       });
       expect(mintMcpLoopbackClientGrant).toHaveBeenCalledWith({
         context: {
@@ -3487,7 +3487,7 @@ describe("prepareCliRunContext", () => {
 
       expect(context.mcpDeliveryCapture).toBe(true);
       expect(context.preparedBackend.env).toMatchObject({
-        OPENCLAW_MCP_CLI_CAPTURE_KEY: "",
+        OPERATOR_MCP_CLI_CAPTURE_KEY: "",
       });
     } finally {
       fs.rmSync(dir, { recursive: true, force: true });
@@ -3611,8 +3611,8 @@ describe("prepareCliRunContext", () => {
       };
       expect(Object.keys(raw.mcpServers ?? {})).toEqual(["openclaw"]);
       expect(raw.mcpServers?.openclaw?.env).toMatchObject({
-        OPENCLAW_TOOLS_MCP_TOOLS: "openclaw",
-        OPENCLAW_TOOLS_MCP_SYSTEM_AGENT_SURFACE: "cli",
+        OPERATOR_TOOLS_MCP_TOOLS: "openclaw",
+        OPERATOR_TOOLS_MCP_SYSTEM_AGENT_SURFACE: "cli",
       });
 
       await context.preparedBackend.cleanup?.();
@@ -3755,7 +3755,7 @@ describe("prepareCliRunContext", () => {
       });
 
       // Candidate is invalidated (no native --resume) yet reseed still fires:
-      // prepare hands the prior OpenClaw conversation forward as history.
+      // prepare hands the prior Operator conversation forward as history.
       expect(context.reusableCliSession).toEqual({
         mode: "invalidate",
         invalidatedReason: "missing-transcript",
@@ -4614,7 +4614,7 @@ describe("prepareCliRunContext", () => {
 
       expect(context.openClawHistoryPrompt).toBeDefined();
       expect(context.openClawHistoryPrompt).toContain(summaryMarker);
-      expect(context.openClawHistoryPrompt).not.toContain("OpenClaw reseed history truncated");
+      expect(context.openClawHistoryPrompt).not.toContain("Operator reseed history truncated");
     } finally {
       fs.rmSync(dir, { recursive: true, force: true });
     }
@@ -4669,7 +4669,7 @@ describe("prepareCliRunContext", () => {
 
       expect(context.openClawHistoryPrompt).toBeDefined();
       expect(context.openClawHistoryPrompt).toContain(summaryMarker);
-      expect(context.openClawHistoryPrompt).not.toContain("OpenClaw reseed history truncated");
+      expect(context.openClawHistoryPrompt).not.toContain("Operator reseed history truncated");
     } finally {
       fs.rmSync(dir, { recursive: true, force: true });
     }
@@ -4702,7 +4702,7 @@ describe("prepareCliRunContext", () => {
       });
 
       expect(context.openClawHistoryPrompt).toBeDefined();
-      expect(context.openClawHistoryPrompt).toContain("OpenClaw reseed history truncated");
+      expect(context.openClawHistoryPrompt).toContain("Operator reseed history truncated");
     } finally {
       fs.rmSync(dir, { recursive: true, force: true });
     }
@@ -4780,7 +4780,7 @@ describe("prepareCliRunContext", () => {
       expect(context.openClawHistoryPrompt).toBeDefined();
       expect(context.openClawHistoryPrompt).toContain(recentMarker);
       expect(context.openClawHistoryPrompt).toContain("EARLIEST_USER");
-      expect(context.openClawHistoryPrompt).not.toContain("OpenClaw reseed history truncated");
+      expect(context.openClawHistoryPrompt).not.toContain("Operator reseed history truncated");
     } finally {
       fs.rmSync(dir, { recursive: true, force: true });
     }

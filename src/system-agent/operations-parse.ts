@@ -1,4 +1,4 @@
-// OpenClaw operation grammar, approval descriptions, and public types.
+// Operator operation grammar, approval descriptions, and public types.
 import type { ConfigSetOptions } from "../cli/config-set-input.js";
 import type { DoctorOptions } from "../commands/doctor.types.js";
 import { isSensitiveConfigPath } from "../config/sensitive-paths.js";
@@ -135,7 +135,7 @@ const OPEN_CHANNEL_SETUP_RE = /^open\s+channel\s+wizard(?:\s+for\s+(?<channel>[a
 const NO_MATCH_MESSAGE =
   "I can run doctor/status/health, check or restart Gateway, list agents/models, configure a model provider, set default model, connect channels (`connect telegram`), show `channel info <channel>`, open the setup wizard, show audit, or switch to your agent TUI.";
 /**
- * Parse one user command into OpenClaw's closed operation union. Anything
+ * Parse one user command into Operator's closed operation union. Anything
  * that does not match the anchored grammar exactly returns kind "none" so the
  * caller can route it to the system agent (or show guidance).
  */
@@ -180,7 +180,7 @@ export function parseSystemAgentOperation(input: string): SystemAgentOperation {
       return { kind: "open-tui" };
     case "quit":
     case "exit":
-      return { kind: "none", message: "OpenClaw retracts into shell. Bye." };
+      return { kind: "none", message: "Operator retracts into shell. Bye." };
     default:
       break;
   }
@@ -383,7 +383,7 @@ export function describeSystemAgentPersistentOperation(operation: SystemAgentOpe
     case "model-setup":
       return "configure a model provider and default model";
     case "doctor-fix":
-      return "exit OpenClaw and run operator doctor --fix";
+      return "exit Operator and run operator doctor --fix";
     case "plugin-install":
       return `install plugin ${operation.spec}`;
     case "plugin-uninstall":
@@ -421,5 +421,5 @@ function formatSetupPlanDescription(
   operation: Extract<SystemAgentOperation, { kind: "setup" }>,
 ): string {
   const workspace = shortenHomePath(resolveUserPath(operation.workspace ?? process.cwd()));
-  return `bootstrap OpenClaw setup for workspace ${workspace}`;
+  return `bootstrap Operator setup for workspace ${workspace}`;
 }

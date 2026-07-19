@@ -5,7 +5,7 @@ import {
 } from "@operator/normalization-core/string-coerce";
 import { normalizeChatType } from "../channels/chat-type.js";
 import type { SessionChatType, SessionEntry } from "../config/sessions.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   hasAmbiguousCanonicalSessionPeerShape,
   parseCanonicalSessionPeerShape,
@@ -74,7 +74,7 @@ function hasAmbiguousPeerShape(key?: string): boolean {
 
 /** Resolves whether a session send is allowed by entry override and config rules. */
 export function resolveSendPolicy(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   entry?: SessionEntry;
   sessionKey?: string;
   channel?: string;

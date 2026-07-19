@@ -195,16 +195,16 @@ export function readNotificationItemId(notification: CodexServerNotification): s
   );
 }
 
-/** Detects completion for an OpenClaw dynamic tool result still awaited by Codex. */
-export function isPendingOpenClawDynamicToolCompletionNotification(
+/** Detects completion for an Operator dynamic tool result still awaited by Codex. */
+export function isPendingOperatorDynamicToolCompletionNotification(
   notification: CodexServerNotification,
-  pendingOpenClawDynamicToolCompletionIds: ReadonlySet<string>,
+  pendingOperatorDynamicToolCompletionIds: ReadonlySet<string>,
 ): boolean {
   if (notification.method !== "item/completed" || !isJsonObject(notification.params)) {
     return false;
   }
   const itemId = readNotificationItemId(notification);
-  if (!itemId || !pendingOpenClawDynamicToolCompletionIds.has(itemId)) {
+  if (!itemId || !pendingOperatorDynamicToolCompletionIds.has(itemId)) {
     return false;
   }
   const item = isJsonObject(notification.params.item) ? notification.params.item : undefined;

@@ -2,7 +2,7 @@
 import { randomUUID } from "node:crypto";
 import http from "node:http";
 import type { Duplex } from "node:stream";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import {
   isFutureDateTimestampMs,
@@ -227,7 +227,7 @@ function buildForcedConsultSpeechPrompt(result: string): string {
       ? trimmed
       : `${truncateUtf16Safe(trimmed, FORCED_CONSULT_RESULT_MAX_CHARS - 16).trimEnd()} [truncated]`;
   return [
-    "Internal OpenClaw consult result is ready.",
+    "Internal Operator consult result is ready.",
     "Do not call tools for this internal result.",
     "Speak the following answer to the caller now, briefly and naturally:",
     bounded,
@@ -345,7 +345,7 @@ export class RealtimeCallHandler {
     private readonly realtimeProvider: RealtimeVoiceProviderPlugin,
     private readonly providerConfig: RealtimeVoiceProviderConfig,
     private readonly servePath: string,
-    private readonly coreConfig?: OpenClawConfig,
+    private readonly coreConfig?: OperatorConfig,
     private readonly resolveInstructions?: (call: CallRecord) => string,
   ) {}
 
@@ -1387,7 +1387,7 @@ export class RealtimeCallHandler {
         }
         await submitFinalToolResult({
           status: "cancelled",
-          message: "OpenClaw cancelled this consult before completion. Do not restart it.",
+          message: "Operator cancelled this consult before completion. Do not restart it.",
         });
         return;
       }
@@ -1395,7 +1395,7 @@ export class RealtimeCallHandler {
         if (forcedConsult.completedAt || forcedMatch.kind === "already_delivered") {
           await submitFinalToolResult({
             status: "already_delivered",
-            message: "OpenClaw already delivered this consult result internally. Do not repeat it.",
+            message: "Operator already delivered this consult result internally. Do not repeat it.",
           });
           return;
         }

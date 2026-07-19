@@ -1,14 +1,14 @@
-// Bridges ACP transcript events into persisted OpenClaw session transcripts.
+// Bridges ACP transcript events into persisted Operator session transcripts.
 import { resolveAcpSessionCwd } from "@operator/acp-core/runtime/session-identifiers";
 import { resolveSessionAgentId } from "../../agents/agent-scope.js";
 import { persistAcpTurnTranscript } from "../../agents/command/attempt-execution.js";
 import { resolveStorePath } from "../../config/sessions.js";
 import { loadSessionEntry } from "../../config/sessions/session-accessor.js";
 import type { SessionAcpMeta } from "../../config/sessions/types.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 
 export async function persistAcpDispatchTranscript(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   sessionKey: string;
   promptText: string;
   finalText: string;

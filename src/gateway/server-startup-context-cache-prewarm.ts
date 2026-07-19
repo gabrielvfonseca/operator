@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { runWithGatewayIndependentRootWorkAdmission } from "../process/gateway-work-admission.js";
 
 const CONTEXT_CACHE_PREWARM_START_DELAY_MS = 5_000;
@@ -12,7 +12,7 @@ type ContextCachePrewarmHandle = {
 };
 
 export function scheduleContextCachePrewarm(params: {
-  cfgAtStart: OpenClawConfig;
+  cfgAtStart: OperatorConfig;
   startupTrace?: StartupTrace;
   log: { warn: (msg: string) => void };
 }): ContextCachePrewarmHandle {

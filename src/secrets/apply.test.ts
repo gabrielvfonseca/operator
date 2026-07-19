@@ -21,8 +21,8 @@ import {
 import { testing as storeTesting } from "../agents/auth-profiles/store.test-support.js";
 import type { AuthProfileStore } from "../agents/auth-profiles/types.js";
 import {
-  closeOpenClawAgentDatabasesForTest,
-  openOpenClawAgentDatabase,
+  closeOperatorAgentDatabasesForTest,
+  openOperatorAgentDatabase,
 } from "../state/openclaw-agent-db.js";
 import {
   buildTalkTestProviderConfig,
@@ -126,8 +126,8 @@ async function createApplyFixture(): Promise<ApplyFixture> {
   return {
     ...paths,
     env: {
-      OPENCLAW_STATE_DIR: paths.stateDir,
-      OPENCLAW_CONFIG_PATH: paths.configPath,
+      OPERATOR_STATE_DIR: paths.stateDir,
+      OPERATOR_CONFIG_PATH: paths.configPath,
       OPENAI_API_KEY: "sk-live-env", // pragma: allowlist secret
     },
   };
@@ -301,7 +301,7 @@ describe("secrets apply", () => {
     clearSecretsRuntimeSnapshot();
     storeTesting.resetRuntimeSnapshotPublisherForTest();
     clearRuntimeAuthProfileStoreSnapshots();
-    closeOpenClawAgentDatabasesForTest();
+    closeOperatorAgentDatabasesForTest();
     await fs.rm(fixture.rootDir, { recursive: true, force: true });
   });
 
@@ -665,7 +665,7 @@ describe("secrets apply", () => {
     const result = await runSecretsApply({ plan, env: fixture.env, write: true });
 
     expect(result.changedFiles).toContain(coderStorePath);
-    const database = openOpenClawAgentDatabase({
+    const database = openOperatorAgentDatabase({
       agentId: "coder",
       path: coderStorePath,
     });
@@ -689,7 +689,7 @@ describe("secrets apply", () => {
       version: 1 as const,
       order: { openai: ["openai:preexisting"] },
     };
-    const firstDatabase = openOpenClawAgentDatabase({
+    const firstDatabase = openOperatorAgentDatabase({
       agentId: "first",
       path: firstStorePath,
     });
@@ -699,7 +699,7 @@ describe("secrets apply", () => {
     ]);
     const firstMutationRevision =
       getRuntimeAuthProfileStoreCredentialMutationToken(firstAgentDir).revision;
-    const secondDatabase = openOpenClawAgentDatabase({
+    const secondDatabase = openOperatorAgentDatabase({
       agentId: "second",
       path: secondStorePath,
     });
@@ -779,7 +779,7 @@ describe("secrets apply", () => {
       };
       saveAuthProfileStore(initialStore, firstAgentDir, { syncExternalCli: false });
       replaceRuntimeAuthProfileStoreSnapshots([{ agentDir: firstAgentDir, store: initialStore }]);
-      const secondDatabase = openOpenClawAgentDatabase({
+      const secondDatabase = openOperatorAgentDatabase({
         agentId: "second",
         path: secondStorePath,
       });

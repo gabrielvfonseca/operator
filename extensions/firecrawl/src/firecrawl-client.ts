@@ -1,5 +1,5 @@
 // Firecrawl plugin module implements firecrawl client behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { readProviderJsonResponse } from "openclaw/plugin-sdk/provider-http";
 import {
   DEFAULT_CACHE_TTL_MINUTES,
@@ -75,7 +75,7 @@ async function readFirecrawlJsonResponse(
 }
 
 type FirecrawlSearchParams = {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   query: string;
   count?: number;
   timeoutSeconds?: number;
@@ -91,7 +91,7 @@ type FirecrawlSearchParams = {
 };
 
 type FirecrawlScrapeParams = {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   url: string;
   extractMode: "markdown" | "text";
   access?: "credential" | "keyless";

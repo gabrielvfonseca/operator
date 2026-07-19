@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { resolvePreferredOpenClawTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const runExecMock = vi.hoisted(() => vi.fn());
@@ -195,8 +195,8 @@ describe("qa multipass runtime", () => {
   });
 
   it("forwards supported live credential shapes only in redacted form", async () => {
-    vi.stubEnv("OPENCLAW_LIVE_ANTHROPIC_KEYS", TEST_ENV_VALUE);
-    vi.stubEnv("OPENCLAW_LIVE_CODEX_API_KEY", TEST_ENV_VALUE);
+    vi.stubEnv("OPERATOR_LIVE_ANTHROPIC_KEYS", TEST_ENV_VALUE);
+    vi.stubEnv("OPERATOR_LIVE_CODEX_API_KEY", TEST_ENV_VALUE);
     vi.stubEnv("CODEX_API_KEY", TEST_ENV_VALUE);
     vi.stubEnv("OPENAI_API_KEY_1", TEST_ENV_VALUE);
     vi.stubEnv("GEMINI_API_KEY_2", TEST_ENV_VALUE);
@@ -206,8 +206,8 @@ describe("qa multipass runtime", () => {
     });
 
     for (const key of [
-      "OPENCLAW_LIVE_ANTHROPIC_KEYS",
-      "OPENCLAW_LIVE_CODEX_API_KEY",
+      "OPERATOR_LIVE_ANTHROPIC_KEYS",
+      "OPERATOR_LIVE_CODEX_API_KEY",
       "CODEX_API_KEY",
       "OPENAI_API_KEY_1",
       "GEMINI_API_KEY_2",
@@ -248,7 +248,7 @@ describe("qa multipass runtime", () => {
   });
 
   it("does not leave a temp guest transfer script behind when multipass is missing", async () => {
-    const tempRoot = resolvePreferredOpenClawTmpDir();
+    const tempRoot = resolvePreferredOperatorTmpDir();
     const before = new Set(fs.readdirSync(tempRoot));
     await renderPersistedGuestScript({
       outputDirName: "multipass-missing-test",

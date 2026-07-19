@@ -2,7 +2,7 @@
 import { asNullableRecord } from "@operator/normalization-core/record-coerce";
 import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
 import { getRuntimeConfig } from "../../config/config.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { PLUGIN_APPROVAL_DESCRIPTION_MAX_LENGTH } from "../../infra/plugin-approvals.js";
 import type { PluginHookBeforeToolCallResult } from "../../plugins/hook-before-tool-call-result.js";
 import { resolveSkillWorkshopConfig } from "./config.js";
@@ -142,7 +142,7 @@ function lifecycleApprovalTimeoutReason(proposalId?: string): string {
   ].join(" ");
 }
 
-function resolveApprovalConfig(config?: OpenClawConfig): OpenClawConfig | undefined {
+function resolveApprovalConfig(config?: OperatorConfig): OperatorConfig | undefined {
   if (config) {
     return config;
   }
@@ -159,7 +159,7 @@ function resolveApprovalConfig(config?: OpenClawConfig): OpenClawConfig | undefi
 export async function resolveSkillWorkshopToolApproval(params: {
   toolName: string;
   toolParams: unknown;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   workspaceDir?: string;
 }): Promise<PluginHookBeforeToolCallResult | undefined> {
   if (params.toolName !== "skill_workshop") {

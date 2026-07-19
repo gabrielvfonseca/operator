@@ -101,8 +101,8 @@ describe("loadEnabledClaudeBundleCommands", () => {
       {
         HOME: homeDir,
         USERPROFILE: homeDir,
-        OPENCLAW_HOME: undefined,
-        OPENCLAW_STATE_DIR: undefined,
+        OPERATOR_HOME: undefined,
+        OPERATOR_STATE_DIR: undefined,
       },
       async () => {
         await writeClaudeBundleCommandFixture({

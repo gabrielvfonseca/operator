@@ -1,5 +1,5 @@
 // Voice Call plugin module implements realtime fast context behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   resolveRealtimeVoiceFastContextConsult,
   type RealtimeVoiceFastContextConsultResult,
@@ -14,7 +14,7 @@ type Logger = {
 
 /** Resolve fast-context consult data using caller-oriented labels. */
 export async function resolveRealtimeFastContextConsult(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
   sessionKey: string;
   config: RealtimeVoiceFastContextConfig;
@@ -25,7 +25,7 @@ export async function resolveRealtimeFastContextConsult(params: {
     ...params,
     labels: {
       audienceLabel: "caller",
-      contextName: "OpenClaw memory or session context",
+      contextName: "Operator memory or session context",
     },
   });
 }

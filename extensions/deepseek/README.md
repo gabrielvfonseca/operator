@@ -1,8 +1,8 @@
-# OpenClaw DeepSeek Provider
+# Operator DeepSeek Provider
 
-Official OpenClaw provider plugin for DeepSeek.
+Official Operator provider plugin for DeepSeek.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/deepseek-provider

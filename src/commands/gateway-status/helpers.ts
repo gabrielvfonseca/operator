@@ -3,7 +3,7 @@ import { normalizeOptionalString } from "@operator/normalization-core/string-coe
 import { colorize, theme } from "../../../packages/terminal-core/src/theme.js";
 import { parseTimeoutMsWithFallback } from "../../cli/parse-timeout.js";
 import { resolveGatewayPort } from "../../config/config.js";
-import type { OpenClawConfig, ConfigFileSnapshot } from "../../config/types.js";
+import type { OperatorConfig, ConfigFileSnapshot } from "../../config/types.js";
 import { hasConfiguredSecretInput } from "../../config/types.secrets.js";
 import { resolveGatewayProbeSurfaceAuth } from "../../gateway/auth-surface-resolution.js";
 import { isLoopbackHost } from "../../gateway/net.js";
@@ -87,7 +87,7 @@ function normalizeWsUrl(value: string): string | null {
 
 /** Builds the deduplicated ordered gateway probe targets from CLI input and config. */
 export function resolveTargets(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   explicitUrl?: string,
   localPortOverride?: number,
 ): GatewayStatusTarget[] {
@@ -176,7 +176,7 @@ export function sanitizeSshTarget(value: unknown): string | null {
 
 /** Resolves auth for the probe surface represented by the selected status target. */
 export async function resolveAuthForTarget(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   target: GatewayStatusTarget,
   overrides: { token?: string; password?: string },
 ): Promise<{ token?: string; password?: string; diagnostics?: string[] }> {
@@ -265,7 +265,7 @@ export function extractConfigSummary(snapshotUnknown: unknown): GatewayConfigSum
 }
 
 /** Builds local and tailnet gateway URL hints for the selected gateway port. */
-export function buildNetworkHints(cfg: OpenClawConfig, localPortOverride?: number) {
+export function buildNetworkHints(cfg: OperatorConfig, localPortOverride?: number) {
   const { tailnetIPv4 } = inspectBestEffortPrimaryTailnetIPv4();
   const port = localPortOverride ?? resolveGatewayPort(cfg);
   const localScheme = cfg.gateway?.tls?.enabled === true ? "wss" : "ws";

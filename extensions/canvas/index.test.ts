@@ -1,8 +1,8 @@
 // Canvas tests cover index plugin behavior.
 import type {
   AnyAgentTool,
-  OpenClawPluginApi,
-  OpenClawPluginNodeInvokePolicyContext,
+  OperatorPluginApi,
+  OperatorPluginNodeInvokePolicyContext,
 } from "openclaw/plugin-sdk/plugin-entry";
 import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -79,18 +79,18 @@ vi.mock("./src/widget-tool.js", () => ({
 }));
 
 function registerCanvas() {
-  const routes: Array<Parameters<OpenClawPluginApi["registerHttpRoute"]>[0]> = [];
-  const services: Array<Parameters<OpenClawPluginApi["registerService"]>[0]> = [];
-  const resolvers: Array<Parameters<OpenClawPluginApi["registerHostedMediaResolver"]>[0]> = [];
+  const routes: Array<Parameters<OperatorPluginApi["registerHttpRoute"]>[0]> = [];
+  const services: Array<Parameters<OperatorPluginApi["registerService"]>[0]> = [];
+  const resolvers: Array<Parameters<OperatorPluginApi["registerHostedMediaResolver"]>[0]> = [];
   const tools: Array<{
-    tool: Parameters<OpenClawPluginApi["registerTool"]>[0];
-    opts: Parameters<OpenClawPluginApi["registerTool"]>[1];
+    tool: Parameters<OperatorPluginApi["registerTool"]>[0];
+    opts: Parameters<OperatorPluginApi["registerTool"]>[1];
   }> = [];
   const cliFeatures: Array<{
-    registrar: Parameters<OpenClawPluginApi["registerNodeCliFeature"]>[0];
-    opts: Parameters<OpenClawPluginApi["registerNodeCliFeature"]>[1];
+    registrar: Parameters<OperatorPluginApi["registerNodeCliFeature"]>[0];
+    opts: Parameters<OperatorPluginApi["registerNodeCliFeature"]>[1];
   }> = [];
-  const nodeInvokePolicies: Array<Parameters<OpenClawPluginApi["registerNodeInvokePolicy"]>[0]> =
+  const nodeInvokePolicies: Array<Parameters<OperatorPluginApi["registerNodeInvokePolicy"]>[0]> =
     [];
   canvasPlugin.register?.(
     createTestPluginApi({
@@ -109,8 +109,8 @@ function registerCanvas() {
 }
 
 function createNodeInvokeContext(
-  params: Partial<OpenClawPluginNodeInvokePolicyContext>,
-): OpenClawPluginNodeInvokePolicyContext {
+  params: Partial<OperatorPluginNodeInvokePolicyContext>,
+): OperatorPluginNodeInvokePolicyContext {
   return {
     nodeId: "node-1",
     command: "canvas.a2ui.pushJSONL",

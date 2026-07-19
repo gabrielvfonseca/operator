@@ -1,5 +1,5 @@
 // Google Meet plugin module implements agent consult behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import type { PluginRuntime, RuntimeLogger } from "openclaw/plugin-sdk/plugin-runtime";
 import {
@@ -45,9 +45,9 @@ async function submitGoogleMeetConsultWorkingResponse(
   );
 }
 
-export async function consultOpenClawAgentForGoogleMeet(params: {
+export async function consultOperatorAgentForGoogleMeet(params: {
   config: GoogleMeetConfig;
-  fullConfig: OpenClawConfig;
+  fullConfig: OperatorConfig;
   runtime: PluginRuntime;
   logger: RuntimeLogger;
   meetingSessionId: string;
@@ -86,7 +86,7 @@ export async function handleGoogleMeetRealtimeConsultToolCall(params: {
   session: RealtimeVoiceBridgeSession;
   event: RealtimeVoiceToolCallEvent;
   config: GoogleMeetConfig;
-  fullConfig: OpenClawConfig;
+  fullConfig: OperatorConfig;
   runtime: PluginRuntime;
   logger: RuntimeLogger;
   meetingSessionId: string;
@@ -128,7 +128,7 @@ export async function handleGoogleMeetRealtimeConsultToolCall(params: {
   });
   let result: { text: string };
   try {
-    result = await consultOpenClawAgentForGoogleMeet({
+    result = await consultOperatorAgentForGoogleMeet({
       config: params.config,
       fullConfig: params.fullConfig,
       runtime: params.runtime,

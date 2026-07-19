@@ -1,6 +1,6 @@
 // Discord tests cover channel actions.contract plugin behavior.
 import { installChannelActionsContractSuite } from "openclaw/plugin-sdk/channel-test-helpers";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { describe } from "vitest";
 import { discordPlugin } from "../api.js";
 
@@ -37,7 +37,7 @@ describe("discord actions contract", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         expectedActions: ["send", "poll", "react", "reactions", "emoji-list"],
         expectedCapabilities: ["presentation"],
       },

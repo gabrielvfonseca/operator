@@ -2,19 +2,19 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import { withTempDir } from "../../test-helpers/temp-dir.js";
 import { deleteTestEnvValue, setTestEnvValue } from "../../test-utils/env.js";
 import type { MsgContext } from "../templating.js";
 import { resolveCurrentTurnImages } from "./current-turn-images.js";
 
-const originalStateDirEnv = process.env.OPENCLAW_STATE_DIR;
+const originalStateDirEnv = process.env.OPERATOR_STATE_DIR;
 
 function restoreProcessState() {
   if (originalStateDirEnv === undefined) {
-    deleteTestEnvValue("OPENCLAW_STATE_DIR");
+    deleteTestEnvValue("OPERATOR_STATE_DIR");
   } else {
-    setTestEnvValue("OPENCLAW_STATE_DIR", originalStateDirEnv);
+    setTestEnvValue("OPERATOR_STATE_DIR", originalStateDirEnv);
   }
 }
 
@@ -34,7 +34,7 @@ describe("resolveCurrentTurnImages", () => {
       await fs.mkdir(path.dirname(attachmentPath), { recursive: true });
       await fs.mkdir(cwd, { recursive: true });
       await fs.writeFile(attachmentPath, imageBytes);
-      setTestEnvValue("OPENCLAW_STATE_DIR", stateDir);
+      setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
       vi.spyOn(process, "cwd").mockReturnValue(cwd);
 
       const result = await resolveCurrentTurnImages({
@@ -45,7 +45,7 @@ describe("resolveCurrentTurnImages", () => {
           MediaType: "image/jpeg",
           MediaTypes: ["image/jpeg"],
         } satisfies MsgContext,
-        cfg: {} as OpenClawConfig,
+        cfg: {} as OperatorConfig,
       });
 
       expect(result).toStrictEqual({
@@ -78,11 +78,11 @@ describe("resolveCurrentTurnImages", () => {
 
       const prepared = await resolveCurrentTurnImages({
         ctx: { ...sharedContext, MediaWorkspaceDir: stagingRoot },
-        cfg: {} as OpenClawConfig,
+        cfg: {} as OperatorConfig,
       });
       const runner = await resolveCurrentTurnImages({
         ctx: sharedContext,
-        cfg: {} as OpenClawConfig,
+        cfg: {} as OperatorConfig,
         images: prepared.images,
         imageOrder: prepared.imageOrder,
       });
@@ -109,7 +109,7 @@ describe("resolveCurrentTurnImages", () => {
           MediaTypes: ["image/png"],
           MediaWorkspaceDir: stagingRoot,
         } satisfies MsgContext,
-        cfg: {} as OpenClawConfig,
+        cfg: {} as OperatorConfig,
       });
 
       expect(result.images).toBeUndefined();
@@ -125,7 +125,7 @@ describe("resolveCurrentTurnImages", () => {
 
     const result = await resolveCurrentTurnImages({
       ctx: { Body: "compare these" } satisfies MsgContext,
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       images: [inlineImage],
       imageOrder: ["offloaded", "inline", "offloaded"],
     });
@@ -139,7 +139,7 @@ describe("resolveCurrentTurnImages", () => {
   it("preserves all-offloaded image order without inline payloads", async () => {
     const result = await resolveCurrentTurnImages({
       ctx: { Body: "compare these" } satisfies MsgContext,
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       images: [],
       imageOrder: ["offloaded", "offloaded"],
     });
@@ -158,7 +158,7 @@ describe("resolveCurrentTurnImages", () => {
 
     const result = await resolveCurrentTurnImages({
       ctx: { Body: "compare these" } satisfies MsgContext,
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       images: inlineImages,
       imageOrder: ["inline", "offloaded", "inline"],
     });
@@ -189,7 +189,7 @@ describe("resolveCurrentTurnImages", () => {
           MediaTypes: ["image/png", "application/pdf"],
           MediaWorkspaceDir: base,
         } satisfies MsgContext,
-        cfg: {} as OpenClawConfig,
+        cfg: {} as OperatorConfig,
         extractedFileImages: [pdfPage],
       });
 
@@ -227,7 +227,7 @@ describe("resolveCurrentTurnImages", () => {
           MediaTypes: ["application/pdf", "image/png"],
           MediaWorkspaceDir: base,
         } satisfies MsgContext,
-        cfg: {} as OpenClawConfig,
+        cfg: {} as OperatorConfig,
         extractedFileImages: [pdfPage],
       });
 

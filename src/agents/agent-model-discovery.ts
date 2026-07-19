@@ -1,7 +1,7 @@
 /** Discovers agent models and auth storage with provider/plugin normalization hooks. */
 import path from "node:path";
 import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { Model } from "../llm/types.js";
 import { normalizeModelCompat } from "../plugins/provider-model-compat.js";
 import {
@@ -31,7 +31,7 @@ type DiscoveredProviderRuntimeModelLike = Omit<ProviderRuntimeModelLike, "api"> 
 };
 
 type DiscoverModelsOptions = {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   providerFilter?: string;
   pluginMetadataSnapshot?: PluginModelCatalogMetadataSnapshot;
   workspaceDir?: string;
@@ -95,7 +95,7 @@ export function normalizeDiscoveredAgentModel<T>(
   return normalizeModelCompat(transportNormalized as Model) as T;
 }
 
-function createOpenClawModelRegistry(
+function createOperatorModelRegistry(
   authStorage: AgentAuthStorage,
   modelsJsonPath: string,
   agentDir: string,
@@ -169,7 +169,7 @@ export function discoverModels(
   agentDir: string,
   options?: DiscoverModelsOptions,
 ): AgentModelRegistry {
-  return createOpenClawModelRegistry(
+  return createOperatorModelRegistry(
     authStorage,
     path.join(agentDir, "models.json"),
     agentDir,

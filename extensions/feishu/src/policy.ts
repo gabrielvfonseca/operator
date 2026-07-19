@@ -14,7 +14,7 @@ import {
   resolveScopeToolsPolicy,
   type ScopeTree,
 } from "openclaw/plugin-sdk/channel-policy";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/core";
+import type { OperatorConfig } from "openclaw/plugin-sdk/core";
 import { normalizeOptionalLowercaseString } from "openclaw/plugin-sdk/string-coerce-runtime";
 import type { ChannelGroupContext } from "../runtime-api.js";
 import { detectIdType } from "./targets.js";
@@ -112,7 +112,7 @@ function createFeishuIngressSubject(params: {
 }
 
 function createFeishuIngressResolver(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   accountId?: string | null;
   readAllowFromStore?: ResolveChannelMessageIngressParams["readStoreAllowFrom"];
 }) {
@@ -126,7 +126,7 @@ function createFeishuIngressResolver(params: {
 }
 
 export async function resolveFeishuDmIngressAccess(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
   dmPolicy?: string | null;
   allowFrom?: Array<string | number> | null;
@@ -161,7 +161,7 @@ export async function resolveFeishuDmIngressAccess(params: {
 }
 
 export async function resolveFeishuGroupConversationIngressAccess(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
   chatId: string;
   groupPolicy: FeishuGroupPolicy;
@@ -191,7 +191,7 @@ export async function resolveFeishuGroupConversationIngressAccess(params: {
 }
 
 export async function resolveFeishuGroupSenderActivationIngressAccess(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
   chatId: string;
   allowFrom?: Array<string | number> | null;
@@ -295,7 +295,7 @@ export function resolveFeishuGroupToolPolicy(params: ChannelGroupContext) {
 
 export function resolveFeishuReplyPolicy(params: {
   isDirectMessage: boolean;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
   groupId?: string | null;
   /**

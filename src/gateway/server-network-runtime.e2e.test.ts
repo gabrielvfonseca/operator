@@ -15,17 +15,17 @@ import { getFreeGatewayPort } from "./test-helpers.e2e.js";
 
 const NETWORK_GATEWAY_ENV_KEYS = [
   "HOME",
-  "OPENCLAW_STATE_DIR",
-  "OPENCLAW_CONFIG_PATH",
-  "OPENCLAW_GATEWAY_TOKEN",
-  "OPENCLAW_SKIP_CHANNELS",
-  "OPENCLAW_SKIP_GMAIL_WATCHER",
-  "OPENCLAW_SKIP_CRON",
-  "OPENCLAW_SKIP_CANVAS_HOST",
-  "OPENCLAW_SKIP_BROWSER_CONTROL_SERVER",
-  "OPENCLAW_SKIP_PROVIDERS",
-  "OPENCLAW_BUNDLED_PLUGINS_DIR",
-  "OPENCLAW_TEST_MINIMAL_GATEWAY",
+  "OPERATOR_STATE_DIR",
+  "OPERATOR_CONFIG_PATH",
+  "OPERATOR_GATEWAY_TOKEN",
+  "OPERATOR_SKIP_CHANNELS",
+  "OPERATOR_SKIP_GMAIL_WATCHER",
+  "OPERATOR_SKIP_CRON",
+  "OPERATOR_SKIP_CANVAS_HOST",
+  "OPERATOR_SKIP_BROWSER_CONTROL_SERVER",
+  "OPERATOR_SKIP_PROVIDERS",
+  "OPERATOR_BUNDLED_PLUGINS_DIR",
+  "OPERATOR_TEST_MINIMAL_GATEWAY",
   ...PROXY_ENV_KEYS,
   "NO_PROXY",
   "no_proxy",
@@ -78,26 +78,26 @@ describe("gateway network runtime", () => {
       process.env.HTTPS_PROXY = "http://127.0.0.1:9";
 
       setTestEnvValue("HOME", tempHome);
-      setTestEnvValue("OPENCLAW_STATE_DIR", path.join(tempHome, ".openclaw"));
-      process.env.OPENCLAW_SKIP_CHANNELS = "1";
-      process.env.OPENCLAW_SKIP_GMAIL_WATCHER = "1";
-      process.env.OPENCLAW_SKIP_CRON = "1";
-      process.env.OPENCLAW_SKIP_CANVAS_HOST = "1";
-      process.env.OPENCLAW_SKIP_BROWSER_CONTROL_SERVER = "1";
-      process.env.OPENCLAW_SKIP_PROVIDERS = "1";
-      process.env.OPENCLAW_TEST_MINIMAL_GATEWAY = "1";
-      process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = path.join(tempHome, "empty-bundled-plugins");
-      await fs.mkdir(process.env.OPENCLAW_BUNDLED_PLUGINS_DIR, { recursive: true });
+      setTestEnvValue("OPERATOR_STATE_DIR", path.join(tempHome, ".openclaw"));
+      process.env.OPERATOR_SKIP_CHANNELS = "1";
+      process.env.OPERATOR_SKIP_GMAIL_WATCHER = "1";
+      process.env.OPERATOR_SKIP_CRON = "1";
+      process.env.OPERATOR_SKIP_CANVAS_HOST = "1";
+      process.env.OPERATOR_SKIP_BROWSER_CONTROL_SERVER = "1";
+      process.env.OPERATOR_SKIP_PROVIDERS = "1";
+      process.env.OPERATOR_TEST_MINIMAL_GATEWAY = "1";
+      process.env.OPERATOR_BUNDLED_PLUGINS_DIR = path.join(tempHome, "empty-bundled-plugins");
+      await fs.mkdir(process.env.OPERATOR_BUNDLED_PLUGINS_DIR, { recursive: true });
 
       const token = `proxy-token-${process.pid}-${process.env.VITEST_POOL_ID ?? "0"}`;
-      process.env.OPENCLAW_GATEWAY_TOKEN = token;
+      process.env.OPERATOR_GATEWAY_TOKEN = token;
       const configPath = path.join(tempHome, ".openclaw", "openclaw.json");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(
         configPath,
         `${JSON.stringify({ gateway: { auth: { mode: "token", token } } }, null, 2)}\n`,
       );
-      setTestEnvValue("OPENCLAW_CONFIG_PATH", configPath);
+      setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
 
       server = await startGatewayServer(await getFreeGatewayPort(), {
         bind: "loopback",

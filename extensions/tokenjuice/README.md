@@ -1,6 +1,6 @@
 # @operator/tokenjuice
 
-Official Tokenjuice output compaction plugin for OpenClaw.
+Official Tokenjuice output compaction plugin for Operator.
 
 Tokenjuice compacts noisy `exec` and `bash` tool results after commands run, before the result is fed back into the active agent session. It does not rewrite commands, rerun commands, or change exit codes.
 
@@ -32,4 +32,4 @@ openclaw plugins enable tokenjuice
 
 - Plugin id: `tokenjuice`
 - Package: `@operator/tokenjuice`
-- Minimum OpenClaw host: `2026.5.28`
+- Minimum Operator host: `2026.5.28`

@@ -19,11 +19,11 @@ import type { SourceReplyDeliveryMode } from "../../auto-reply/get-reply-options
 import type { ThinkLevel } from "../../auto-reply/thinking.js";
 import type { ChatType } from "../../channels/chat-type.js";
 import type { CliBackendConfig } from "../../config/types.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { resolveRuntimeOsLabel } from "../../infra/os-summary.js";
 import { privateFileStore } from "../../infra/private-file-store.js";
 import { tempWorkspace } from "../../infra/private-temp-workspace.js";
-import { resolvePreferredOpenClawTmpDir } from "../../infra/tmp-operator-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../../infra/tmp-operator-dir.js";
 import type { ImageContent } from "../../llm/types.js";
 import type { PromptImageOrderEntry } from "../../media/prompt-image-order.js";
 import { listRegisteredPluginAgentPromptGuidance } from "../../plugins/command-registry-state.js";
@@ -131,7 +131,7 @@ export function resolveCliRunQueueKey(params: {
 export function buildCliAgentSystemPrompt(params: {
   workspaceDir: string;
   cwd?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   defaultThinkLevel?: ThinkLevel;
   extraSystemPrompt?: string;
   sourceReplyDeliveryMode?: SourceReplyDeliveryMode;
@@ -296,14 +296,14 @@ function resolveCliImagePath(image: ImageContent): string {
     .update("\0")
     .update(image.data)
     .digest("hex");
-  return path.join(resolvePreferredOpenClawTmpDir(), "operator-cli-images", `${digest}${ext}`);
+  return path.join(resolvePreferredOperatorTmpDir(), "operator-cli-images", `${digest}${ext}`);
 }
 
 function resolveCliImageRoot(params: { backend: CliBackendConfig; workspaceDir: string }): string {
   if (params.backend.imagePathScope === "workspace") {
     return path.join(params.workspaceDir, ".operator-cli-images");
   }
-  return path.join(resolvePreferredOpenClawTmpDir(), "operator-cli-images");
+  return path.join(resolvePreferredOperatorTmpDir(), "operator-cli-images");
 }
 
 function isFileNotFoundError(error: unknown): boolean {
@@ -438,7 +438,7 @@ export async function writeCliSystemPromptFile(params: {
     return { cleanup: async () => {} };
   }
   const workspace = await tempWorkspace({
-    rootDir: resolvePreferredOpenClawTmpDir(),
+    rootDir: resolvePreferredOperatorTmpDir(),
     prefix: "operator-cli-system-prompt-",
   });
   const filePath = await workspace.write(

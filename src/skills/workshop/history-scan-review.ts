@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { resolveDefaultModelForAgent } from "../../agents/model-selection-config.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { CommandLane } from "../../process/lanes.js";
 import {
   buildSkillHistoryScanPrompt,
@@ -21,7 +21,7 @@ const HISTORY_SCAN_TIMEOUT_MS = 10 * 60_000;
 
 export async function runSkillHistoryScanReview(params: {
   agentId: string;
-  config: OpenClawConfig;
+  config: OperatorConfig;
   env?: NodeJS.ProcessEnv;
   modelRef?: { model: string; provider: string };
   onComplete?: (ideasFound: number) => Promise<void>;

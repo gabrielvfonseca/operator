@@ -1,5 +1,5 @@
 // Resolves official external provider plugins implied by config and environment state.
-import type { OpenClawConfig } from "../../../config/types.operator.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import {
   resolveOfficialExternalProviderContractPluginIds,
   resolveOfficialExternalProviderPluginIds,
@@ -12,7 +12,7 @@ import {
 
 /** Lists official external provider plugins without loading installed plugin registries. */
 export function collectConfiguredOfficialProviderPluginIds(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   env?: NodeJS.ProcessEnv;
 }): string[] {
   const configuredProviderIds = collectConfiguredModelProviderSelectionIds(params.cfg);

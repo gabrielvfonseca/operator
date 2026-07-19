@@ -24,7 +24,7 @@ function expectFirstBlockReplyText(params: EmbeddedRunAttemptParams): string {
 }
 
 describe("Copilot user input bridge", () => {
-  it("prompts through OpenClaw and resolves the SDK request from the next queued message", async () => {
+  it("prompts through Operator and resolves the SDK request from the next queued message", async () => {
     const params = createParams();
     const bridge = createCopilotUserInputBridge({ paramsForRun: params });
 

@@ -79,7 +79,7 @@ describe("channel registry helpers", () => {
 
     expect(listRegisteredChannelPluginIds()).toEqual(["openclaw-weixin"]);
     expect(normalizeAnyChannelId("weixin")).toBe("openclaw-weixin");
-    expect(getRegisteredChannelPluginMeta("OPENCLAW-WEIXIN")?.aliases).toEqual(["weixin"]);
+    expect(getRegisteredChannelPluginMeta("OPERATOR-WEIXIN")?.aliases).toEqual(["weixin"]);
   });
 
   it("falls back to the active registry when the pinned channel registry has no channels", () => {

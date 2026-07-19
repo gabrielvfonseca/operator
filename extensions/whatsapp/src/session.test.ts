@@ -26,7 +26,7 @@ const { envHttpProxyAgentCtor, proxyAgentCtor } = vi.hoisted(() => ({
   }),
 }));
 
-const TEST_UNDICI_RUNTIME_DEPS_KEY = "__OPENCLAW_TEST_UNDICI_RUNTIME_DEPS__";
+const TEST_UNDICI_RUNTIME_DEPS_KEY = "__OPERATOR_TEST_UNDICI_RUNTIME_DEPS__";
 
 vi.mock("undici", async () => {
   const actual = await vi.importActual<typeof import("undici")>("undici");
@@ -41,7 +41,7 @@ const useMultiFileAuthStateMock = vi.mocked(baileys.useMultiFileAuthState);
 
 let createWaSocket: typeof import("./session.js").createWaSocket;
 let formatError: typeof import("./session.js").formatError;
-const OPENCLAW_WHATSAPP_WEB_SOCKET_URL_ENV = "OPENCLAW_WHATSAPP_WEB_SOCKET_URL";
+const OPERATOR_WHATSAPP_WEB_SOCKET_URL_ENV = "OPERATOR_WHATSAPP_WEB_SOCKET_URL";
 let renderQrTerminalMock: ReturnType<typeof vi.fn>;
 let waitForWaConnection: typeof import("./session.js").waitForWaConnection;
 let waitForCredsSaveQueue: typeof import("./session.js").waitForCredsSaveQueue;
@@ -421,8 +421,8 @@ describe("web session", () => {
     expect(readLastSocketOptions().waWebSocketUrl).toBe("ws://127.0.0.1:49152/ws/chat");
   });
 
-  it("uses OPENCLAW_WHATSAPP_WEB_SOCKET_URL as the default Baileys WebSocket URL", async () => {
-    vi.stubEnv(OPENCLAW_WHATSAPP_WEB_SOCKET_URL_ENV, " ws://127.0.0.1:49153/ws/chat ");
+  it("uses OPERATOR_WHATSAPP_WEB_SOCKET_URL as the default Baileys WebSocket URL", async () => {
+    vi.stubEnv(OPERATOR_WHATSAPP_WEB_SOCKET_URL_ENV, " ws://127.0.0.1:49153/ws/chat ");
 
     await createWaSocket(false, false);
 
@@ -430,7 +430,7 @@ describe("web session", () => {
   });
 
   it("preserves explicit Baileys WebSocket URL options over environment", async () => {
-    vi.stubEnv(OPENCLAW_WHATSAPP_WEB_SOCKET_URL_ENV, "ws://127.0.0.1:49153/ws/chat");
+    vi.stubEnv(OPERATOR_WHATSAPP_WEB_SOCKET_URL_ENV, "ws://127.0.0.1:49153/ws/chat");
 
     await createWaSocket(false, false, {
       waWebSocketUrl: "ws://127.0.0.1:49154/ws/chat",
@@ -440,24 +440,24 @@ describe("web session", () => {
   });
 
   it("ignores blank Baileys WebSocket URL environment overrides", async () => {
-    vi.stubEnv(OPENCLAW_WHATSAPP_WEB_SOCKET_URL_ENV, " ");
+    vi.stubEnv(OPERATOR_WHATSAPP_WEB_SOCKET_URL_ENV, " ");
 
     await createWaSocket(false, false);
 
     expect(readLastSocketOptions().waWebSocketUrl).toBeUndefined();
   });
 
-  it("rejects invalid OPENCLAW_WHATSAPP_WEB_SOCKET_URL values", async () => {
-    vi.stubEnv(OPENCLAW_WHATSAPP_WEB_SOCKET_URL_ENV, "http://127.0.0.1:14567/ws");
+  it("rejects invalid OPERATOR_WHATSAPP_WEB_SOCKET_URL values", async () => {
+    vi.stubEnv(OPERATOR_WHATSAPP_WEB_SOCKET_URL_ENV, "http://127.0.0.1:14567/ws");
 
     await expect(createWaSocket(false, false)).rejects.toThrow(
-      "OPENCLAW_WHATSAPP_WEB_SOCKET_URL must use ws:// or wss://.",
+      "OPERATOR_WHATSAPP_WEB_SOCKET_URL must use ws:// or wss://.",
     );
     expect(baileys.makeWASocket).not.toHaveBeenCalled();
   });
 
   it("preserves explicit Baileys WebSocket URL options over invalid environment", async () => {
-    vi.stubEnv(OPENCLAW_WHATSAPP_WEB_SOCKET_URL_ENV, "http://127.0.0.1:49153/ws/chat");
+    vi.stubEnv(OPERATOR_WHATSAPP_WEB_SOCKET_URL_ENV, "http://127.0.0.1:49153/ws/chat");
 
     await createWaSocket(false, false, {
       waWebSocketUrl: "ws://127.0.0.1:49154/ws/chat",
@@ -484,8 +484,8 @@ describe("web session", () => {
   it("adds managed proxy CA trust to WhatsApp env proxy agents", async () => {
     const caFile = createTempCaFile("whatsapp-managed-proxy-ca");
     vi.stubEnv("HTTPS_PROXY", "https://proxy.test:8443");
-    vi.stubEnv("OPENCLAW_PROXY_ACTIVE", "1");
-    vi.stubEnv("OPENCLAW_PROXY_CA_FILE", caFile);
+    vi.stubEnv("OPERATOR_PROXY_ACTIVE", "1");
+    vi.stubEnv("OPERATOR_PROXY_CA_FILE", caFile);
 
     await createWaSocket(false, false);
 
@@ -506,8 +506,8 @@ describe("web session", () => {
     const caFile = createTempCaFile("whatsapp-managed-env-proxy-ca");
     vi.stubEnv("HTTPS_PROXY", "https://proxy.test:8443");
     vi.stubEnv("NO_PROXY", "mmg.whatsapp.net");
-    vi.stubEnv("OPENCLAW_PROXY_ACTIVE", "1");
-    vi.stubEnv("OPENCLAW_PROXY_CA_FILE", caFile);
+    vi.stubEnv("OPERATOR_PROXY_ACTIVE", "1");
+    vi.stubEnv("OPERATOR_PROXY_CA_FILE", caFile);
 
     await createWaSocket(false, false);
 

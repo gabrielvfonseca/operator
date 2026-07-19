@@ -1,6 +1,6 @@
 // Embedding abstraction for semantic memory. Delegates to the configured
 // provider adapter so semantic storage/search use real vectors.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
 import type { MemoryTieredPluginConfig } from "./config.js";
 
@@ -17,7 +17,7 @@ export class ProviderEmbedder implements Embedder {
 
   constructor(
     private readonly pluginConfig: MemoryTieredPluginConfig,
-    private readonly getConfig: () => OpenClawConfig | undefined,
+    private readonly getConfig: () => OperatorConfig | undefined,
   ) {}
 
   private resolve(): Promise<Embedder> {
@@ -33,7 +33,7 @@ export class ProviderEmbedder implements Embedder {
       }
       const agentDir = "";
       const result = await adapter.create({
-        config: cfg as OpenClawConfig,
+        config: cfg as OperatorConfig,
         agentDir,
         provider,
         fallback: "none",
@@ -75,7 +75,7 @@ export class ProviderEmbedder implements Embedder {
 
 export function createEmbedder(
   pluginConfig: MemoryTieredPluginConfig,
-  getConfig: () => OpenClawConfig | undefined,
+  getConfig: () => OperatorConfig | undefined,
 ): Embedder {
   return new ProviderEmbedder(pluginConfig, getConfig);
 }

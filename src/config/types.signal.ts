@@ -38,7 +38,7 @@ export type SignalAccountConfig = CommonChannelMessagingConfig & {
   ignoreAttachments?: boolean;
   ignoreStories?: boolean;
   sendReadReceipts?: boolean;
-  /** OpenClaw-side target aliases keyed by friendly name. */
+  /** Operator-side target aliases keyed by friendly name. */
   aliases?: Record<string, string>;
   /** Per-group overrides keyed by Signal group id (or "*"). */
   groups?: Record<string, SignalGroupConfig>;

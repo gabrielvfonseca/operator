@@ -1,6 +1,6 @@
 import type { WorkboardCard } from "@operator/workboard-contract";
 // Workboard plugin module implements gateway behavior.
-import type { OpenClawPluginApi } from "../api.js";
+import type { OperatorPluginApi } from "../api.js";
 import {
   assertNoCursorAdvance,
   createWorkboardDispatchHandler,
@@ -44,7 +44,7 @@ function redactDiagnosticsRows(result: Awaited<ReturnType<WorkboardStore["diagno
 }
 
 export function registerWorkboardGatewayMethods(params: {
-  api: OpenClawPluginApi;
+  api: OperatorPluginApi;
   store?: WorkboardStore;
 }) {
   const { api } = params;

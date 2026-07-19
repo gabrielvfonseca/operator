@@ -1,4 +1,4 @@
-# Copilot Proxy (OpenClaw plugin)
+# Copilot Proxy (Operator plugin)
 
 Provider plugin for the **Copilot Proxy** VS Code extension.
 

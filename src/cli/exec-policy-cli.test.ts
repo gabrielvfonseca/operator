@@ -2,7 +2,7 @@
 import { Command } from "commander";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { stripAnsi } from "../../packages/terminal-core/src/ansi.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { SESSION_EXEC_OVERRIDES_NOTE } from "../infra/exec-approvals-effective.js";
 import type { ExecApprovalsFile, ExecApprovalsSnapshot } from "../infra/exec-approvals.js";
 import { registerExecPolicyCli } from "./exec-policy-cli.js";
@@ -57,7 +57,7 @@ function readFirstReplaceConfigArg(): Record<string, unknown> {
 const mocks = vi.hoisted(() => {
   const runtimeErrors: string[] = [];
   const stringifyArgs = (args: unknown[]) => args.map((value) => String(value)).join(" ");
-  let configState: OpenClawConfig = {
+  let configState: OperatorConfig = {
     tools: {
       exec: {
         host: "auto",
@@ -90,7 +90,7 @@ const mocks = vi.hoisted(() => {
   };
   return {
     getConfig: () => configState,
-    setConfig: (next: OpenClawConfig) => {
+    setConfig: (next: OperatorConfig) => {
       configState = next;
     },
     getApprovals: () => approvalsState,
@@ -102,7 +102,7 @@ const mocks = vi.hoisted(() => {
     },
     defaultRuntime,
     runtimeErrors,
-    mutateConfigFile: vi.fn(async ({ mutate }: { mutate: (draft: OpenClawConfig) => void }) => {
+    mutateConfigFile: vi.fn(async ({ mutate }: { mutate: (draft: OperatorConfig) => void }) => {
       const draft = structuredClone(configState);
       mutate(draft);
       configState = draft;
@@ -116,7 +116,7 @@ const mocks = vi.hoisted(() => {
       };
     }),
     replaceConfigFile: vi.fn(
-      async ({ nextConfig }: { nextConfig: OpenClawConfig; baseHash?: string }) => {
+      async ({ nextConfig }: { nextConfig: OperatorConfig; baseHash?: string }) => {
         configState = structuredClone(nextConfig);
         return {
           path: "/tmp/openclaw.json",
@@ -128,7 +128,7 @@ const mocks = vi.hoisted(() => {
       },
     ),
     readConfigFileSnapshot: vi.fn<
-      () => Promise<{ path: string; hash: string; config: OpenClawConfig }>
+      () => Promise<{ path: string; hash: string; config: OperatorConfig }>
     >(async () => ({
       path: "/tmp/openclaw.json",
       hash: "config-hash-1",
@@ -248,7 +248,7 @@ describe("exec-policy CLI", () => {
     mocks.defaultRuntime.exit.mockClear();
     mocks.mutateConfigFile.mockReset();
     mocks.mutateConfigFile.mockImplementation(
-      async ({ mutate }: { mutate: (draft: OpenClawConfig) => void }) => {
+      async ({ mutate }: { mutate: (draft: OperatorConfig) => void }) => {
         const draft = structuredClone(mocks.getConfig());
         mutate(draft);
         mocks.setConfig(draft);
@@ -264,7 +264,7 @@ describe("exec-policy CLI", () => {
     );
     mocks.replaceConfigFile.mockReset();
     mocks.replaceConfigFile.mockImplementation(
-      async ({ nextConfig }: { nextConfig: OpenClawConfig; baseHash?: string }) => {
+      async ({ nextConfig }: { nextConfig: OperatorConfig; baseHash?: string }) => {
         mocks.setConfig(structuredClone(nextConfig));
         return {
           path: "/tmp/openclaw.json",

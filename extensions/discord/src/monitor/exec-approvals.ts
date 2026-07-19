@@ -8,7 +8,7 @@ import type { PendingApprovalView } from "openclaw/plugin-sdk/approval-handler-r
 import type { ExecApprovalDecision } from "openclaw/plugin-sdk/approval-runtime";
 import type {
   DiscordExecApprovalConfig,
-  OpenClawConfig,
+  OperatorConfig,
 } from "openclaw/plugin-sdk/config-contracts";
 import { parseExecApprovalData } from "../approval-custom-id.js";
 import {
@@ -185,7 +185,7 @@ export function createExecApprovalButton(ctx: ExecApprovalButtonContext): Button
 }
 
 export function createDiscordExecApprovalButtonContext(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId: string;
   config: DiscordExecApprovalConfig;
   gatewayUrl?: string;

@@ -5,19 +5,19 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { replaceSessionEntry } from "../config/sessions/session-accessor.js";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-sync.js";
-import type { DB as OpenClawAgentKyselyDatabase } from "../state/openclaw-agent-db.generated.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../state/openclaw-agent-db.generated.js";
 import {
-  closeOpenClawAgentDatabasesForTest,
-  openOpenClawAgentDatabase,
+  closeOperatorAgentDatabasesForTest,
+  openOperatorAgentDatabase,
 } from "../state/openclaw-agent-db.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import {
   appendSqliteTrajectoryRuntimeEvents,
   loadSqliteTrajectoryRuntimeEvents,
 } from "./runtime-store.sqlite.js";
 import type { TrajectoryEvent } from "./types.js";
 
-type TrajectoryRuntimeTestDatabase = Pick<OpenClawAgentKyselyDatabase, "trajectory_runtime_events">;
+type TrajectoryRuntimeTestDatabase = Pick<OperatorAgentKyselyDatabase, "trajectory_runtime_events">;
 
 describe("SQLite trajectory runtime store", () => {
   let tempDir: string;
@@ -33,8 +33,8 @@ describe("SQLite trajectory runtime store", () => {
   });
 
   afterEach(() => {
-    closeOpenClawAgentDatabasesForTest();
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorAgentDatabasesForTest();
+    closeOperatorStateDatabaseForTest();
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
 
@@ -51,7 +51,7 @@ describe("SQLite trajectory runtime store", () => {
       expect.objectContaining({ seq: 1, type: "model.completed" }),
     ]);
 
-    const database = openOpenClawAgentDatabase({ agentId: "main", path: sqlitePath() });
+    const database = openOperatorAgentDatabase({ agentId: "main", path: sqlitePath() });
     const db = getNodeSqliteKysely<TrajectoryRuntimeTestDatabase>(database.db);
     const rows = executeSqliteQuerySync(
       database.db,
@@ -91,7 +91,7 @@ describe("SQLite trajectory runtime store", () => {
       createTrajectoryEvent({ type: "model.started" }),
     ]);
 
-    const database = openOpenClawAgentDatabase({ agentId: "main", path: sqlitePath() });
+    const database = openOperatorAgentDatabase({ agentId: "main", path: sqlitePath() });
     database.db.prepare("DELETE FROM sessions WHERE session_id = ?").run("session-1");
 
     await expect(

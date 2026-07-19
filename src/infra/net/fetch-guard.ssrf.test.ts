@@ -12,7 +12,7 @@ import {
   resetGlobalUndiciStreamTimeoutsForTests,
 } from "./undici-global-dispatcher.js";
 
-const TEST_UNDICI_RUNTIME_DEPS_KEY = "__OPENCLAW_TEST_UNDICI_RUNTIME_DEPS__";
+const TEST_UNDICI_RUNTIME_DEPS_KEY = "__OPERATOR_TEST_UNDICI_RUNTIME_DEPS__";
 
 const { agentCtor, envHttpProxyAgentCtor, proxyAgentCtor } = vi.hoisted(() => ({
   agentCtor: vi.fn(function MockAgent(this: { options: unknown }, options: unknown) {
@@ -204,7 +204,7 @@ describe("fetchWithSsrFGuard hardening", () => {
   const CROSS_ORIGIN_REDIRECT_PRESERVED_HEADERS = [
     ["accept", "application/json"],
     ["content-type", "application/json"],
-    ["user-agent", "OpenClaw-Test/1.0"],
+    ["user-agent", "Operator-Test/1.0"],
   ] as const;
 
   const createPublicLookup = (): LookupFn =>
@@ -295,9 +295,9 @@ describe("fetchWithSsrFGuard hardening", () => {
 
   function installManagedProxyRuntime(loopbackMode?: ManagedProxyLoopbackMode): void {
     clearProxyEnv();
-    vi.stubEnv("OPENCLAW_PROXY_ACTIVE", "1");
+    vi.stubEnv("OPERATOR_PROXY_ACTIVE", "1");
     if (loopbackMode) {
-      vi.stubEnv("OPENCLAW_PROXY_LOOPBACK_MODE", loopbackMode);
+      vi.stubEnv("OPERATOR_PROXY_LOOPBACK_MODE", loopbackMode);
     }
     vi.stubEnv("http_proxy", "http://127.0.0.1:7890");
     (globalThis as Record<string, unknown>)[TEST_UNDICI_RUNTIME_DEPS_KEY] = {
@@ -969,7 +969,7 @@ describe("fetchWithSsrFGuard hardening", () => {
           "X-Trace": "1",
           Accept: "application/json",
           "Content-Type": "application/json",
-          "User-Agent": "OpenClaw-Test/1.0",
+          "User-Agent": "Operator-Test/1.0",
         },
       },
     });
@@ -1322,12 +1322,12 @@ describe("fetchWithSsrFGuard hardening", () => {
       Authorization: "Bearer secret",
       Cookie: "session=abc",
       Accept: "application/json",
-      "User-Agent": "OpenClaw-Test/1.0",
+      "User-Agent": "Operator-Test/1.0",
     });
 
     expect(headers).toEqual({
       accept: "application/json",
-      "user-agent": "OpenClaw-Test/1.0",
+      "user-agent": "Operator-Test/1.0",
     });
   });
 
@@ -1443,7 +1443,7 @@ describe("fetchWithSsrFGuard hardening", () => {
   });
 
   it("uses the env proxy in strict mode when the SSRF proxy lifecycle is active", async () => {
-    vi.stubEnv("OPENCLAW_PROXY_ACTIVE", "1");
+    vi.stubEnv("OPERATOR_PROXY_ACTIVE", "1");
 
     await runProxyModeDispatcherExpectation({
       mode: GUARDED_FETCH_MODE.STRICT,

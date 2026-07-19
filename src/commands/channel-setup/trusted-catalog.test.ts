@@ -611,22 +611,22 @@ describe("trusted-catalog load-path discovery", () => {
       cfg: {
         plugins: {
           load: {
-            paths: ["$OPENCLAW_HOME/custom-plugin"],
+            paths: ["$OPERATOR_HOME/custom-plugin"],
           },
         },
       },
       env: {
         ...process.env,
-        OPENCLAW_HOME: "/tmp/custom-home",
+        OPERATOR_HOME: "/tmp/custom-home",
       },
       workspaceDir: "/tmp/workspace",
     });
 
     expect(getChannelPluginCatalogEntry).toHaveBeenCalledWith("e2e-load-paths", {
       env: expect.objectContaining({
-        OPENCLAW_HOME: "/tmp/custom-home",
+        OPERATOR_HOME: "/tmp/custom-home",
       }),
-      extraPaths: ["$OPENCLAW_HOME/custom-plugin"],
+      extraPaths: ["$OPERATOR_HOME/custom-plugin"],
       workspaceDir: "/tmp/workspace",
     });
   });

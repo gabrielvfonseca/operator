@@ -1,14 +1,14 @@
 // Qa Lab tests cover Crabline local-provider transport integration behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { OpenClawCrablineChannelDriverSelection } from "@operator/crabline";
+import type { OperatorCrablineChannelDriverSelection } from "@operator/crabline";
 import { fetchWithSsrFGuard } from "openclaw/plugin-sdk/ssrf-runtime";
 import { withTempDir } from "openclaw/plugin-sdk/test-env";
 import { describe, expect, it } from "vitest";
 import { createQaBusState } from "./bus-state.js";
 import { createQaCrablineTransportAdapter } from "./crabline-transport.js";
 
-function createSelection(channel: OpenClawCrablineChannelDriverSelection["channel"] = "telegram") {
+function createSelection(channel: OperatorCrablineChannelDriverSelection["channel"] = "telegram") {
   return {
     capabilityMatrixPath: "crabline-fake-provider-capabilities.json",
     channel,
@@ -25,7 +25,7 @@ function requireString(value: unknown, label: string): string {
 }
 
 describe("crabline transport", () => {
-  it("configures OpenClaw's Telegram plugin against a Crabline local provider server", async () => {
+  it("configures Operator's Telegram plugin against a Crabline local provider server", async () => {
     await withTempDir("qa-crabline-transport-", async (outputDir) => {
       const transport = await createQaCrablineTransportAdapter({
         outputDir,
@@ -237,7 +237,7 @@ describe("crabline transport", () => {
     });
   });
 
-  it("configures OpenClaw's Slack plugin against a Crabline local provider server", async () => {
+  it("configures Operator's Slack plugin against a Crabline local provider server", async () => {
     await withTempDir("qa-crabline-transport-", async (outputDir) => {
       const transport = await createQaCrablineTransportAdapter({
         outputDir,
@@ -345,7 +345,7 @@ describe("crabline transport", () => {
     });
   });
 
-  it("configures OpenClaw's WhatsApp plugin against a Crabline Baileys WebSocket server", async () => {
+  it("configures Operator's WhatsApp plugin against a Crabline Baileys WebSocket server", async () => {
     await withTempDir("qa-crabline-transport-", async (outputDir) => {
       const transport = await createQaCrablineTransportAdapter({
         outputDir,
@@ -378,7 +378,7 @@ describe("crabline transport", () => {
           CRABLINE_WHATSAPP_ADMIN_TOKEN: expect.any(String),
           CRABLINE_WHATSAPP_RECORDER_PATH: expect.stringMatching(/whatsapp-fake-provider\.jsonl$/u),
           CRABLINE_WHATSAPP_SELF_JID: "15550000000@s.whatsapp.net",
-          OPENCLAW_WHATSAPP_WEB_SOCKET_URL: expect.stringMatching(
+          OPERATOR_WHATSAPP_WEB_SOCKET_URL: expect.stringMatching(
             /^ws:\/\/127\.0\.0\.1:\d+\/ws\/chat\?access_token=/u,
           ),
         });
@@ -695,7 +695,7 @@ describe("crabline transport", () => {
           "Matrix QA conversation id must be non-empty",
         );
         expect(() => transport.buildAgentDelivery({ target: "thread:/v1/main/%24event" })).toThrow(
-          "Matrix thread targets require OpenClaw QA thread forwarding",
+          "Matrix thread targets require Operator QA thread forwarding",
         );
         await expect(
           transport.state.addInboundMessage({

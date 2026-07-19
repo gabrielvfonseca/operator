@@ -21,7 +21,7 @@ const GENERIC_CLI_CONTEXT_ENGINE_HOST_CAPABILITIES = [
 
 export const OPERATOR_EMBEDDED_CONTEXT_ENGINE_HOST = {
   id: "operator-embedded",
-  label: "OpenClaw embedded runner",
+  label: "Operator embedded runner",
   capabilities: [
     "bootstrap",
     "assemble-before-prompt",

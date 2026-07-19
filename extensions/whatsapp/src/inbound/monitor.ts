@@ -32,7 +32,7 @@ import { getPrimaryIdentityId, identitiesOverlap, resolveComparableIdentity } fr
 import { addWhatsAppImagePreviewFields } from "../image-preview.js";
 import { cacheInboundMessageMeta } from "../quoted-message.js";
 import { DEFAULT_RECONNECT_POLICY, computeBackoff, sleepWithAbort } from "../reconnect.js";
-import type { OpenClawConfig } from "../runtime-api.js";
+import type { OperatorConfig } from "../runtime-api.js";
 import { createWaSocket, formatError, getStatusCode, waitForWaConnection } from "../session.js";
 import {
   createWhatsAppSocketOperationTimeoutAdapter,
@@ -321,8 +321,8 @@ type AppendReplyWindow = {
 };
 
 type MonitorWebInboxOptions = {
-  cfg: OpenClawConfig;
-  loadConfig?: () => OpenClawConfig;
+  cfg: OperatorConfig;
+  loadConfig?: () => OperatorConfig;
   socketTiming?: Required<WhatsAppSocketTimingOptions>;
   verbose: boolean;
   accountId: string;

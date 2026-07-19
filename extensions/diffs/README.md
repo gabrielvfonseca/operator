@@ -1,6 +1,6 @@
 # @operator/diffs
 
-Read-only diff viewer plugin for **OpenClaw** agents.
+Read-only diff viewer plugin for **Operator** agents.
 
 ## Install
 
@@ -127,7 +127,7 @@ Explicit tool parameters still win over these defaults.
 
 - Plugin id: `diffs`
 - Package: `@operator/diffs`
-- Minimum OpenClaw host: `2026.4.30`
+- Minimum Operator host: `2026.4.30`
 
 Security options:
 
@@ -180,10 +180,10 @@ Use the `diffs` tool in `file` mode for this before and after input. After it re
 Path: README.md
 
 Before:
-OpenClaw supports plugins.
+Operator supports plugins.
 
 After:
-OpenClaw supports plugins and hosted diff views.
+Operator supports plugins and hosted diff views.
 ```
 
 Do both:

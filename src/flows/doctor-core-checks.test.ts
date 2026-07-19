@@ -3,7 +3,7 @@ import { promises as fs } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import type { SkillStatusEntry } from "../skills/discovery/status.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import {
@@ -127,7 +127,7 @@ describe("CORE_HEALTH_CHECKS", () => {
     resetCoreHealthChecksForTest();
     mocks.loadModelCatalog.mockClear();
     mocks.loadModelCatalog.mockResolvedValue([]);
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       hooks: {
         gmail: {
           model: "openai/gpt-5.5",
@@ -362,7 +362,7 @@ describe("CORE_HEALTH_CHECKS", () => {
 
   it("converts unavailable skills into repair-capable health findings", async () => {
     const unavailableSkill = createSkill();
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       agents: {
         defaults: {
           workspace: "/tmp/openclaw-test-workspace",
@@ -510,7 +510,7 @@ describe("CORE_HEALTH_CHECKS", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
     });
 
     expect(findings).toStrictEqual([
@@ -521,14 +521,14 @@ describe("CORE_HEALTH_CHECKS", () => {
         target: "openai/gpt-5.5",
         requirement: "Codex plugin enabled for routes that use the Codex runtime.",
         fixHint:
-          "Run `openclaw doctor --fix`: it enables plugins.entries.codex, or set the affected OpenAI models to an OpenClaw runtime policy.",
+          "Run `openclaw doctor --fix`: it enables plugins.entries.codex, or set the affected OpenAI models to an Operator runtime policy.",
       }),
     ]);
     expect(findings[0]?.message).toContain("Codex plugin is disabled by config");
   });
 
   it("uses the read-only model catalog for hooks.gmail.model checks", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       hooks: {
         gmail: {
           model: "openai/gpt-5.5",
@@ -540,7 +540,7 @@ describe("CORE_HEALTH_CHECKS", () => {
 
   it("skips gateway auth warning when SecretRef-managed token resolves in lint checks", async () => {
     const check = CORE_HEALTH_CHECKS.find((entry) => entry.id === "core/doctor/gateway-auth");
-    await withEnvAsync({ OPENCLAW_TEST_GATEWAY_TOKEN: "resolved-test-token" }, async () => {
+    await withEnvAsync({ OPERATOR_TEST_GATEWAY_TOKEN: "resolved-test-token" }, async () => {
       const findings = await check?.detect({
         mode: "lint",
         runtime: { log() {}, error() {}, exit() {} },
@@ -552,7 +552,7 @@ describe("CORE_HEALTH_CHECKS", () => {
               token: {
                 source: "env",
                 provider: "default",
-                id: "OPENCLAW_TEST_GATEWAY_TOKEN",
+                id: "OPERATOR_TEST_GATEWAY_TOKEN",
               },
             },
           },
@@ -569,12 +569,12 @@ describe("CORE_HEALTH_CHECKS", () => {
     });
   });
 
-  it("reports unresolved SecretRefs even when OPENCLAW_GATEWAY_TOKEN is set", async () => {
+  it("reports unresolved SecretRefs even when OPERATOR_GATEWAY_TOKEN is set", async () => {
     const check = CORE_HEALTH_CHECKS.find((entry) => entry.id === "core/doctor/gateway-auth");
     await withEnvAsync(
       {
-        OPENCLAW_GATEWAY_TOKEN: "fallback-token",
-        OPENCLAW_MISSING_GATEWAY_REF_TOKEN: undefined,
+        OPERATOR_GATEWAY_TOKEN: "fallback-token",
+        OPERATOR_MISSING_GATEWAY_REF_TOKEN: undefined,
       },
       async () => {
         const findings = await check?.detect({
@@ -588,7 +588,7 @@ describe("CORE_HEALTH_CHECKS", () => {
                 token: {
                   source: "env",
                   provider: "default",
-                  id: "OPENCLAW_MISSING_GATEWAY_REF_TOKEN",
+                  id: "OPERATOR_MISSING_GATEWAY_REF_TOKEN",
                 },
               },
             },
@@ -714,7 +714,7 @@ describe("CORE_HEALTH_CHECKS", () => {
     );
     const check = CORE_HEALTH_CHECKS.find((entry) => entry.id === "core/doctor/gateway-auth");
 
-    const findings = await withEnvAsync({ OPENCLAW_GATEWAY_TOKEN: "fallback-token" }, async () => {
+    const findings = await withEnvAsync({ OPERATOR_GATEWAY_TOKEN: "fallback-token" }, async () => {
       return await check?.detect({
         mode: "lint",
         runtime: { log() {}, error() {}, exit() {} },

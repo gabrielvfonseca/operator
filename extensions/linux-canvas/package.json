@@ -1,7 +1,7 @@
 {
   "name": "@operator/linux-canvas",
   "version": "2026.7.2",
-  "description": "OpenClaw Linux desktop canvas bridge",
+  "description": "Operator Linux desktop canvas bridge",
   "type": "module",
   "dependencies": {
     "zod": "4.4.3"

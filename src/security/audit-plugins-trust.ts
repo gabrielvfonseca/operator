@@ -5,7 +5,7 @@ import { listReadOnlyChannelPluginsForConfig } from "../channels/plugins/read-on
 import type { ChannelPlugin } from "../channels/plugins/types.plugin.js";
 import { inspectReadOnlyChannelAccount } from "../channels/read-only-account-inspect.js";
 import { resolveNativeSkillsEnabled } from "../config/commands.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import type { AgentToolsConfig } from "../config/types.tools.js";
 import { readInstalledPackageVersion } from "../infra/package-update-utils.js";
 import { normalizePluginsConfig } from "../plugins/config-state.js";
@@ -48,11 +48,11 @@ const loadPluginTrustPolicyDeps = createLazyPromise(
 );
 
 function readChannelCommandSetting(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   channelId: string,
   key: "native" | "nativeSkills",
 ): unknown {
-  const channelCfg = cfg.channels?.[channelId as keyof NonNullable<OpenClawConfig["channels"]>];
+  const channelCfg = cfg.channels?.[channelId as keyof NonNullable<OperatorConfig["channels"]>];
   if (!channelCfg || typeof channelCfg !== "object" || Array.isArray(channelCfg)) {
     return undefined;
   }
@@ -64,7 +64,7 @@ function readChannelCommandSetting(
 }
 
 async function isChannelPluginConfigured(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   plugin: ChannelPlugin,
 ): Promise<boolean> {
   const accountIds = plugin.config.listAccountIds(cfg);
@@ -127,7 +127,7 @@ async function isChannelPluginConfigured(
 }
 
 function resolveToolPolicies(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   deps: PluginTrustPolicyDeps;
   agentTools?: AgentToolsConfig;
   sandboxMode?: "off" | "non-main" | "all";
@@ -157,7 +157,7 @@ function normalizePluginIdSet(entries: string[]): Set<string> {
 }
 
 function resolveEnabledExtensionPluginIds(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   pluginDirs: string[];
 }): string[] {
   const normalized = normalizePluginsConfig(params.cfg.plugins);
@@ -253,7 +253,7 @@ function isPinnedRegistrySpec(spec: string): boolean {
 
 /** Collect supply-chain and reachable-tool findings for installed plugins and hook packs. */
 export async function collectPluginsTrustFindings(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   stateDir: string;
 }): Promise<SecurityAuditFinding[]> {
   const findings: SecurityAuditFinding[] = [];

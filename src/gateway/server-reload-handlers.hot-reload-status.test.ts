@@ -7,7 +7,7 @@
  */
 import { describe, expect, it, vi } from "vitest";
 import { getRuntimeAuthProfileStoreCredentialsRevision } from "../agents/auth-profiles/runtime-snapshots.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import type { GatewayPluginReloadResult } from "./server-reload-handlers.js";
 import { startManagedGatewayConfigReloader } from "./server-reload-handlers.js";
 
@@ -29,7 +29,7 @@ vi.mock("./config-reload.js", async () => {
 
 describe("startManagedGatewayConfigReloader hotReloadStatus plumbing", () => {
   it("forwards the live watcher accessor instead of dropping it", async () => {
-    const initialConfig = { session: { store: "/tmp/sessions.json" } } as OpenClawConfig;
+    const initialConfig = { session: { store: "/tmp/sessions.json" } } as OperatorConfig;
     const reloader = startManagedGatewayConfigReloader({
       minimalTestGateway: false,
       initialConfig,
@@ -70,7 +70,7 @@ describe("startManagedGatewayConfigReloader hotReloadStatus plumbing", () => {
         invalidate: vi.fn(),
       },
       channelManager: {} as never,
-      activateRuntimeSecrets: vi.fn(async (config: OpenClawConfig) => ({
+      activateRuntimeSecrets: vi.fn(async (config: OperatorConfig) => ({
         sourceConfig: config,
         config,
         authStores: [],

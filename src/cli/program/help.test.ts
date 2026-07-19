@@ -62,18 +62,18 @@ describe("configureProgramHelp", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     originalArgv = [...process.argv];
-    originalSuppressHelpBanner = process.env.OPENCLAW_SUPPRESS_HELP_BANNER;
+    originalSuppressHelpBanner = process.env.OPERATOR_SUPPRESS_HELP_BANNER;
     hasEmittedCliBannerMock.mockReturnValue(false);
     resolveCommitHashMock.mockReturnValue("abc1234");
-    delete process.env.OPENCLAW_SUPPRESS_HELP_BANNER;
+    delete process.env.OPERATOR_SUPPRESS_HELP_BANNER;
   });
 
   afterEach(() => {
     process.argv = originalArgv;
     if (originalSuppressHelpBanner === undefined) {
-      delete process.env.OPENCLAW_SUPPRESS_HELP_BANNER;
+      delete process.env.OPERATOR_SUPPRESS_HELP_BANNER;
     } else {
-      process.env.OPENCLAW_SUPPRESS_HELP_BANNER = originalSuppressHelpBanner;
+      process.env.OPERATOR_SUPPRESS_HELP_BANNER = originalSuppressHelpBanner;
     }
   });
 
@@ -147,7 +147,7 @@ describe("configureProgramHelp", () => {
 
   it("suppresses banner formatting when parent default help requests it", () => {
     process.argv = ["node", "openclaw", "channels"];
-    process.env.OPENCLAW_SUPPRESS_HELP_BANNER = "1";
+    process.env.OPERATOR_SUPPRESS_HELP_BANNER = "1";
     const program = makeProgramWithCommands();
     configureProgramHelp(program, testProgramContext);
 
@@ -158,13 +158,13 @@ describe("configureProgramHelp", () => {
 
   it("prints version and exits immediately when version flags are present", () => {
     process.argv = ["node", "openclaw", "--version"];
-    expectVersionExit({ expectedVersion: "OpenClaw 9.9.9-test (abc1234)" });
+    expectVersionExit({ expectedVersion: "Operator 9.9.9-test (abc1234)" });
   });
 
   it("prints version and exits immediately without commit metadata", () => {
     process.argv = ["node", "openclaw", "--version"];
     resolveCommitHashMock.mockReturnValue(null);
-    expectVersionExit({ expectedVersion: "OpenClaw 9.9.9-test" });
+    expectVersionExit({ expectedVersion: "Operator 9.9.9-test" });
   });
 
   it("does not treat subcommand --version options as root version requests", () => {

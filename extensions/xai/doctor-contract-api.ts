@@ -1,5 +1,5 @@
 // Xai doctor contract repairs plugin-owned model configuration.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { isLegacyXaiBuiltinModel } from "./model-definitions.js";
 
 type LegacyConfigRule = {
@@ -121,8 +121,8 @@ export const legacyConfigRules: LegacyConfigRule[] = [
   },
 ];
 
-export function normalizeCompatibilityConfig({ cfg }: { cfg: OpenClawConfig }): {
-  config: OpenClawConfig;
+export function normalizeCompatibilityConfig({ cfg }: { cfg: OperatorConfig }): {
+  config: OperatorConfig;
   changes: string[];
 } {
   let next = cfg;

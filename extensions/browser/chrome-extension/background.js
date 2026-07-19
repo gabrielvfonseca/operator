@@ -1,12 +1,12 @@
-// OpenClaw extension service worker.
+// Operator extension service worker.
 //
-// Thin transport between the OpenClaw extension relay (loopback WebSocket) and
+// Thin transport between the Operator extension relay (loopback WebSocket) and
 // chrome.debugger. All CDP target synthesis lives server-side in the relay
 // bridge; this worker only attaches tabs, forwards frames, and keeps the
-// OpenClaw tab group in sync. Membership in that group is the user-visible
-// consent boundary: only grouped tabs are reported to (and driven by) OpenClaw.
+// Operator tab group in sync. Membership in that group is the user-visible
+// consent boundary: only grouped tabs are reported to (and driven by) Operator.
 import {
-  OPENCLAW_TAB_GROUP_TITLE,
+  OPERATOR_TAB_GROUP_TITLE,
   buildRelayWsProtocols,
   nearestGroupColor,
   parsePairingString,
@@ -53,16 +53,16 @@ async function getConfig() {
 // Tab group management (the consent boundary)
 // ---------------------------------------------------------------------------
 
-async function findOpenClawGroups() {
+async function findOperatorGroups() {
   try {
-    return await chrome.tabGroups.query({ title: OPENCLAW_TAB_GROUP_TITLE });
+    return await chrome.tabGroups.query({ title: OPERATOR_TAB_GROUP_TITLE });
   } catch {
     return [];
   }
 }
 
 async function listSharedTabs() {
-  const groups = await findOpenClawGroups();
+  const groups = await findOperatorGroups();
   const tabs = [];
   for (const group of groups) {
     const groupTabs = await chrome.tabs.query({ groupId: group.id });
@@ -71,9 +71,9 @@ async function listSharedTabs() {
   return tabs.filter((tab) => typeof tab.id === "number");
 }
 
-async function addTabToOpenClawGroup(tabId) {
+async function addTabToOperatorGroup(tabId) {
   const tab = await chrome.tabs.get(tabId);
-  const groups = await findOpenClawGroups();
+  const groups = await findOperatorGroups();
   const sameWindowGroup = groups.find((group) => group.windowId === tab.windowId);
   if (sameWindowGroup) {
     await chrome.tabs.group({ tabIds: [tabId], groupId: sameWindowGroup.id });
@@ -82,12 +82,12 @@ async function addTabToOpenClawGroup(tabId) {
   const { groupColor } = await getConfig();
   const groupId = await chrome.tabs.group({ tabIds: [tabId] });
   await chrome.tabGroups.update(groupId, {
-    title: OPENCLAW_TAB_GROUP_TITLE,
+    title: OPERATOR_TAB_GROUP_TITLE,
     color: groupColor,
   });
 }
 
-async function removeTabFromOpenClawGroup(tabId) {
+async function removeTabFromOperatorGroup(tabId) {
   try {
     await chrome.tabs.ungroup([tabId]);
   } catch {
@@ -132,7 +132,7 @@ async function syncTabsToRelay() {
 
 async function attachDebugger(tabId) {
   if (!(await isTabShared(tabId))) {
-    throw new Error(`tab ${tabId} is not in the ${OPENCLAW_TAB_GROUP_TITLE} tab group`);
+    throw new Error(`tab ${tabId} is not in the ${OPERATOR_TAB_GROUP_TITLE} tab group`);
   }
   // Coalesce concurrent attaches for one tab. Two relay attach commands (or an
   // auto-attach racing an explicit share) would otherwise both call
@@ -198,7 +198,7 @@ chrome.debugger.onDetach.addListener((source, reason) => {
     // The user hit "Cancel" on Chrome's debugging infobar: treat it as a
     // revocation and pull the tab out of the shared group so the agent does
     // not immediately re-attach.
-    void removeTabFromOpenClawGroup(source.tabId).then(scheduleTabsSync);
+    void removeTabFromOperatorGroup(source.tabId).then(scheduleTabsSync);
   }
 });
 
@@ -239,7 +239,7 @@ async function handleRelayCommand(msg) {
       }
       case "createTab": {
         const tab = await chrome.tabs.create({ url: msg.url, active: msg.background !== true });
-        await addTabToOpenClawGroup(tab.id);
+        await addTabToOperatorGroup(tab.id);
         scheduleTabsSync();
         send({ type: "result", seq, result: { tabId: tab.id } });
         return;
@@ -392,11 +392,11 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
         }
         if (await isTabShared(tabId)) {
           await detachDebugger(tabId);
-          await removeTabFromOpenClawGroup(tabId);
+          await removeTabFromOperatorGroup(tabId);
           scheduleTabsSync();
           sendResponse({ ok: true, shared: false });
         } else {
-          await addTabToOpenClawGroup(tabId);
+          await addTabToOperatorGroup(tabId);
           scheduleTabsSync();
           sendResponse({ ok: true, shared: true });
         }

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Boots the OpenClaw CLI entry point under Node.
-// CLI process entrypoint for OpenClaw command execution.
+// Boots the Operator CLI entry point under Node.
+// CLI process entrypoint for Operator command execution.
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 import { isRootHelpInvocation } from "./cli/argv.js";
@@ -14,15 +14,15 @@ import type { RootHelpRenderOptions } from "./cli/program/root-help.js";
 import { createGatewayStartupTrace } from "./cli/startup-trace.js";
 import { normalizeWindowsArgv } from "./cli/windows-argv.js";
 import {
-  enableOpenClawCompileCache,
+  enableOperatorCompileCache,
   resolveEntryInstallRoot,
-  respawnWithoutOpenClawCompileCacheIfNeeded,
+  respawnWithoutOperatorCompileCacheIfNeeded,
 } from "./entry.compile-cache.js";
 import { buildCliRespawnPlan, runCliRespawnPlan } from "./entry.respawn.js";
 import { tryHandleRootVersionFastPath } from "./entry.version-fast-path.js";
 import { normalizeEnv } from "./infra/env.js";
 import { isMainModule } from "./infra/is-main.js";
-import { ensureOpenClawExecMarkerOnProcess } from "./infra/operator-exec-env.js";
+import { ensureOperatorExecMarkerOnProcess } from "./infra/operator-exec-env.js";
 import { installProcessWarningFilter } from "./infra/warning-filter.js";
 
 const ENTRY_WRAPPER_PAIRS = [
@@ -60,19 +60,19 @@ if (
 } else {
   const entryFile = fileURLToPath(import.meta.url);
   const installRoot = resolveEntryInstallRoot(entryFile);
-  const waitingForCompileCacheRespawn = respawnWithoutOpenClawCompileCacheIfNeeded({
+  const waitingForCompileCacheRespawn = respawnWithoutOperatorCompileCacheIfNeeded({
     currentFile: entryFile,
     installRoot,
   });
   if (!waitingForCompileCacheRespawn) {
     process.title = "operator";
-    ensureOpenClawExecMarkerOnProcess();
+    ensureOperatorExecMarkerOnProcess();
     installProcessWarningFilter();
     normalizeEnv();
     const { assertSupportedRuntime } = await import("./infra/runtime-guard.js");
     assertSupportedRuntime();
 
-    enableOpenClawCompileCache({
+    enableOperatorCompileCache({
       installRoot,
     });
     gatewayEntryStartupTrace.mark("bootstrap");

@@ -73,8 +73,8 @@ async function uploadToSharePoint(params: {
 }): Promise<DriveUploadResult> {
   const fetchFn = params.fetchFn ?? fetch;
 
-  // Use "OpenClawShared" folder to organize bot-uploaded files
-  const uploadPath = `/OpenClawShared/${encodeURIComponent(params.filename)}`;
+  // Use "OperatorShared" folder to organize bot-uploaded files
+  const uploadPath = `/OperatorShared/${encodeURIComponent(params.filename)}`;
 
   const data = await withMSTeamsAbortableRequestTimeout({
     label: SHAREPOINT_UPLOAD_TIMEOUT_LABEL,

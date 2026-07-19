@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import * as pdfExtractModule from "../../media/pdf-extract.js";
 import * as webMedia from "../../media/web-media.js";
 import { withEnvAsync } from "../../test-utils/env.js";
@@ -75,16 +75,16 @@ async function withConfiguredPdfTool(
   });
 }
 
-function withPdfModel(primary: string): OpenClawConfig {
+function withPdfModel(primary: string): OperatorConfig {
   return {
     agents: { defaults: { pdfModel: { primary } } },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
-function withDefaultModel(primary: string): OpenClawConfig {
+function withDefaultModel(primary: string): OperatorConfig {
   return {
     agents: { defaults: { model: { primary } } },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 function expectFields(value: unknown, expected: Record<string, unknown>): void {
@@ -150,7 +150,7 @@ async function stubPdfToolInfra(
           }) as never;
   vi.spyOn(modelDiscovery, "discoverModels").mockReturnValue({ find } as never);
 
-  vi.spyOn(modelsConfig, "ensureOpenClawModelsJson").mockResolvedValue({
+  vi.spyOn(modelsConfig, "ensureOperatorModelsJson").mockResolvedValue({
     agentDir,
     wrote: false,
   });
@@ -173,7 +173,7 @@ async function withManagedInboundPdf(
   await fs.mkdir(inboundDir, { recursive: true });
   await fs.writeFile(mediaPath, FAKE_PDF_MEDIA.buffer);
   try {
-    await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, async () => {
+    await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
       await run({ stateDir, mediaId, mediaPath });
     });
   } finally {
@@ -219,7 +219,7 @@ describe("createPdfTool", () => {
       vi.stubEnv("AWS_ACCESS_KEY_ID", "");
       vi.stubEnv("AWS_SECRET_ACCESS_KEY", "");
       vi.stubEnv("AWS_BEARER_TOKEN_BEDROCK", "");
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: { defaults: { model: { primary: "amazon-bedrock/text-1" } } },
         models: {
           mode: "replace",
@@ -462,7 +462,7 @@ describe("createPdfTool", () => {
         input: ["text", "document"],
       });
       vi.spyOn(pdfNativeProviders, "anthropicAnalyzePdf").mockResolvedValue("native summary");
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         ...withPdfModel(ANTHROPIC_PDF_MODEL),
         tools: {
           web: {
@@ -559,10 +559,10 @@ describe("createPdfTool", () => {
         pdf: "/tmp/doc.pdf",
       });
 
-      const ensureModelsJsonMock = vi.mocked(modelsConfig.ensureOpenClawModelsJson);
+      const ensureModelsJsonMock = vi.mocked(modelsConfig.ensureOperatorModelsJson);
       const [modelsConfigArg, modelsAgentDir, modelsOptions] = firstMockCall(
         ensureModelsJsonMock,
-        "ensureOpenClawModelsJson",
+        "ensureOperatorModelsJson",
       );
       expectFields(
         (modelsConfigArg as { agents?: { defaults?: unknown } } | undefined)?.agents?.defaults,

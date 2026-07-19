@@ -17,7 +17,7 @@ import {
 } from "./installed-plugin-index.js";
 import { recordPluginInstall } from "./installs.js";
 import type { PluginManifestRecord } from "./manifest-registry.js";
-import type { OpenClawPackageManifest } from "./manifest.js";
+import type { OperatorPackageManifest } from "./manifest.js";
 import { cleanupTrackedTempDirs, makeTrackedTempDir } from "./test-helpers/fs-fixtures.js";
 
 vi.unmock("../version.js");
@@ -87,8 +87,8 @@ function writeManifestlessClaudeBundle(rootDir: string, entries: readonly string
 
 function hermeticEnv(overrides: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
   return {
-    OPENCLAW_BUNDLED_PLUGINS_DIR: undefined,
-    OPENCLAW_VERSION: "2026.4.25",
+    OPERATOR_BUNDLED_PLUGINS_DIR: undefined,
+    OPERATOR_VERSION: "2026.4.25",
     VITEST: "true",
     ...overrides,
   };
@@ -101,7 +101,7 @@ function createPluginCandidate(params: {
   packageName?: string;
   packageVersion?: string;
   packageDir?: string;
-  packageManifest?: OpenClawPackageManifest;
+  packageManifest?: OperatorPackageManifest;
   format?: PluginCandidate["format"];
   bundleFormat?: PluginCandidate["bundleFormat"];
 }): PluginCandidate {
@@ -825,8 +825,8 @@ describe("installed plugin index", () => {
 
     const index = loadInstalledPluginIndex({
       env: hermeticEnv({
-        OPENCLAW_DISABLE_BUNDLED_PLUGINS: "1",
-        OPENCLAW_STATE_DIR: stateDir,
+        OPERATOR_DISABLE_BUNDLED_PLUGINS: "1",
+        OPERATOR_STATE_DIR: stateDir,
       }),
     });
 
@@ -1109,7 +1109,7 @@ describe("installed plugin index", () => {
           },
         },
       },
-      env: hermeticEnv({ OPENCLAW_VERSION: "2026.4.25" }),
+      env: hermeticEnv({ OPERATOR_VERSION: "2026.4.25" }),
     });
 
     writePackageJson(fixture.rootDir, {
@@ -1135,7 +1135,7 @@ describe("installed plugin index", () => {
             resolvedVersion: "1.2.4",
           },
         },
-        env: hermeticEnv({ OPENCLAW_VERSION: "2026.4.26" }),
+        env: hermeticEnv({ OPERATOR_VERSION: "2026.4.26" }),
       }),
       compatRegistryVersion: "different-compat-registry",
     };

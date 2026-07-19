@@ -3,12 +3,12 @@ import { rmSync, statSync } from "node:fs";
 import path from "node:path";
 import { MAX_DATE_TIMESTAMP_MS } from "@operator/normalization-core/number-coercion";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import { openOpenClawStateDatabase } from "../state/openclaw-state-db.js";
-import { resolveOpenClawStateSqlitePath } from "../state/openclaw-state-db.paths.js";
+import { openOperatorStateDatabase } from "../state/openclaw-state-db.js";
+import { resolveOperatorStateSqlitePath } from "../state/openclaw-state-db.paths.js";
 import {
-  createOpenClawTestState,
-  withOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  withOperatorTestState,
+  type OperatorTestState,
 } from "../test-utils/operator-test-state.js";
 import {
   closePluginStateDatabase,
@@ -26,11 +26,11 @@ import {
 } from "./plugin-state-store.test-helpers.js";
 import { PluginStateStoreError } from "./plugin-state-store.types.js";
 
-let testState: OpenClawTestState | undefined;
+let testState: OperatorTestState | undefined;
 
 beforeAll(async () => {
-  testState = await createOpenClawTestState({ label: "plugin-state-store" });
-  rmSync(path.dirname(resolveOpenClawStateSqlitePath()), { recursive: true, force: true });
+  testState = await createOperatorTestState({ label: "plugin-state-store" });
+  rmSync(path.dirname(resolveOperatorStateSqlitePath()), { recursive: true, force: true });
 });
 
 beforeEach(() => {
@@ -122,10 +122,10 @@ describe("plugin state keyed store", () => {
   });
 
   it("honors explicit store env without mutating process state", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       { label: "plugin-state-explicit-env-a", applyEnv: false },
       async (stateA) => {
-        await withOpenClawTestState(
+        await withOperatorTestState(
           { label: "plugin-state-explicit-env-b", applyEnv: false },
           async (stateB) => {
             const storeA = createPluginStateKeyedStore<{ owner: string }>("discord", {
@@ -144,8 +144,8 @@ describe("plugin state keyed store", () => {
 
             await expect(storeA.lookup("shared")).resolves.toEqual({ owner: "a" });
             await expect(storeB.lookup("shared")).resolves.toEqual({ owner: "b" });
-            expect(resolveOpenClawStateSqlitePath(stateA.env)).not.toBe(
-              resolveOpenClawStateSqlitePath(stateB.env),
+            expect(resolveOperatorStateSqlitePath(stateA.env)).not.toBe(
+              resolveOperatorStateSqlitePath(stateB.env),
             );
           },
         );
@@ -726,7 +726,7 @@ describe("plugin state keyed store", () => {
     await withPluginStateTestState(async () => {
       const store = createPluginStateKeyedStore("discord", { namespace: "close", maxEntries: 10 });
       await store.register("k", { ok: true });
-      const database = openOpenClawStateDatabase();
+      const database = openOperatorStateDatabase();
       closePluginStateDatabase();
       expect(() => database.db.exec("SELECT 1")).toThrow();
       await expect(store.lookup("k")).resolves.toEqual({ ok: true });
@@ -735,7 +735,7 @@ describe("plugin state keyed store", () => {
 
   it("does not close a shared state database opened before the plugin-state probe", async () => {
     await withPluginStateTestState(async () => {
-      const database = openOpenClawStateDatabase();
+      const database = openOperatorStateDatabase();
       const result = probePluginStateStore();
 
       expect(result.ok).toBe(true);
@@ -751,12 +751,12 @@ describe("plugin state keyed store", () => {
       });
       await store.register("k", { ok: true });
 
-      const secondary = await createOpenClawTestState({
+      const secondary = await createOperatorTestState({
         label: "plugin-state-cache-secondary",
         applyEnv: false,
       });
       try {
-        openOpenClawStateDatabase({ env: secondary.env });
+        openOperatorStateDatabase({ env: secondary.env });
         testState?.applyEnv();
         await expect(store.lookup("k")).resolves.toEqual({ ok: true });
       } finally {
@@ -770,7 +770,7 @@ describe("plugin state keyed store", () => {
       const store = createPluginStateKeyedStore("discord", { namespace: "perms", maxEntries: 10 });
       await store.register("k", { ok: true });
 
-      const databasePath = resolveOpenClawStateSqlitePath();
+      const databasePath = resolveOperatorStateSqlitePath();
       expect(statSync(path.dirname(databasePath)).mode & 0o777).toBe(0o700);
       expect(statSync(databasePath).mode & 0o777).toBe(0o600);
     });

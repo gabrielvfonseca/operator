@@ -1,6 +1,6 @@
 // Stores durable delivery queue entries in SQLite.
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
-import { openOpenClawStateDatabase } from "../state/operator-state-db.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import { openOperatorStateDatabase } from "../state/operator-state-db.js";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
@@ -11,7 +11,7 @@ import { runSqliteImmediateTransactionSync } from "./sqlite-transaction.js";
 // Generic durable delivery queue storage shared by session and outbound queues.
 // Queue-specific wrappers own payload shape; this layer owns SQLite state.
 type QueueStatus = "pending" | "failed" | "completed";
-type DeliveryQueueDatabase = Pick<OpenClawStateKyselyDatabase, "delivery_queue_entries">;
+type DeliveryQueueDatabase = Pick<OperatorStateKyselyDatabase, "delivery_queue_entries">;
 const COMPLETED_TOMBSTONE_RETENTION_MS = 30 * 24 * 60 * 60_000;
 
 /** Indexed metadata extracted from queue payloads for diagnostics and recovery. */
@@ -61,7 +61,7 @@ type QueueRow = {
 };
 
 function openStateDatabase(stateDir?: string) {
-  return openOpenClawStateDatabase({
+  return openOperatorStateDatabase({
     env: stateDir ? { ...process.env, OPERATOR_STATE_DIR: stateDir } : process.env,
   });
 }

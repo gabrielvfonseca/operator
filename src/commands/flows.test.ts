@@ -11,7 +11,7 @@ import {
   resetTaskRegistryForTests,
 } from "../tasks/task-runtime.test-helpers.js";
 import { captureEnv } from "../test-utils/env.js";
-import { withOpenClawTestState } from "../test-utils/operator-test-state.js";
+import { withOperatorTestState } from "../test-utils/operator-test-state.js";
 import { flowsCancelCommand, flowsListCommand, flowsShowCommand } from "./flows.js";
 
 vi.mock("../config/config.js", () => ({
@@ -61,7 +61,7 @@ function createRuntime(): TestRuntime {
 }
 
 async function withTaskFlowCommandStateDir(run: (root: string) => Promise<void>): Promise<void> {
-  await withOpenClawTestState(
+  await withOperatorTestState(
     {
       layout: "state-only",
       prefix: "openclaw-flows-command-",
@@ -85,7 +85,7 @@ describe("flows commands", () => {
   let envSnapshot: ReturnType<typeof captureEnv>;
 
   beforeEach(() => {
-    envSnapshot = captureEnv(["OPENCLAW_STATE_DIR"]);
+    envSnapshot = captureEnv(["OPERATOR_STATE_DIR"]);
   });
 
   afterEach(() => {

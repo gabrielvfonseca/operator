@@ -1,6 +1,6 @@
 import { expectDefined } from "@operator/normalization-core";
 import type {
-  OpenClawPluginCommandDefinition,
+  OperatorPluginCommandDefinition,
   PluginCommandContext,
 } from "openclaw/plugin-sdk/plugin-entry";
 import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
@@ -17,8 +17,8 @@ const { registerTelegramMiniAppCommand } = await import("./command.js");
 
 function registerDashboardCommand(
   api: Parameters<typeof registerTelegramMiniAppCommand>[0],
-): OpenClawPluginCommandDefinition {
-  const commands: OpenClawPluginCommandDefinition[] = [];
+): OperatorPluginCommandDefinition {
+  const commands: OperatorPluginCommandDefinition[] = [];
   registerTelegramMiniAppCommand({
     ...api,
     registerCommand: (command) => commands.push(command),
@@ -96,7 +96,7 @@ describe("registerTelegramMiniAppCommand", () => {
       }),
     );
 
-    expect(result.text).toBe("Open OpenClaw dashboard.");
+    expect(result.text).toBe("Open Operator dashboard.");
     expect(result.presentation?.blocks).toEqual([
       {
         type: "buttons",

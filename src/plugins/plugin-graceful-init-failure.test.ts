@@ -7,7 +7,7 @@ import { cleanupTrackedTempDirs, makeTrackedTempDir } from "./test-helpers/fs-fi
 const fixtureTempDirs: string[] = [];
 const fixtureRoot = makeTrackedTempDir("openclaw-plugin-graceful", fixtureTempDirs);
 let tempDirIndex = 0;
-const { loadOpenClawPlugins, clearPluginLoaderCache } = await import("./loader.test-fixtures.js");
+const { loadOperatorPlugins, clearPluginLoaderCache } = await import("./loader.test-fixtures.js");
 
 afterAll(() => {
   cleanupTrackedTempDirs(fixtureTempDirs);
@@ -52,7 +52,7 @@ function readPluginId(pluginPath: string): string {
 async function loadPlugins(pluginPaths: string[], warnings?: string[]) {
   clearPluginLoaderCache();
   const allow = pluginPaths.map((pluginPath) => readPluginId(pluginPath));
-  return loadOpenClawPlugins({
+  return loadOperatorPlugins({
     cache: false,
     config: {
       plugins: {

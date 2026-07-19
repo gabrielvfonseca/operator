@@ -55,7 +55,7 @@ describe("resolveStorePath", () => {
     const stateDir = path.join(path.parse(process.cwd()).root, "operator-test-state");
     const env = {
       ...process.env,
-      OPENCLAW_STATE_DIR: stateDir,
+      OPERATOR_STATE_DIR: stateDir,
     };
     const expected = path.join(stateDir, "agents", "work", "sessions", "sessions.json");
 

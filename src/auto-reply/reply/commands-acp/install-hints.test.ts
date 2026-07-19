@@ -1,11 +1,11 @@
 // Tests ACP install hint detection and command guidance.
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../../config/config.js";
+import type { OperatorConfig } from "../../../config/config.js";
 import { resolveAcpInstallCommandHint } from "./install-hints.js";
 
-function withAcpConfig(acp: OpenClawConfig["acp"]): OpenClawConfig {
-  return { acp } as OpenClawConfig;
+function withAcpConfig(acp: OperatorConfig["acp"]): OperatorConfig {
+  return { acp } as OperatorConfig;
 }
 
 afterEach(() => {

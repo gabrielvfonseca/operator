@@ -2,7 +2,7 @@
 import { note } from "../../packages/terminal-core/src/note.js";
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../agents/agent-scope.js";
 import { formatCliCommand } from "../cli/command-format.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { HealthFinding } from "../flows/health-checks.js";
 import {
   resolvePluginVersionDriftUpdateCommand,
@@ -135,7 +135,7 @@ function taskFlowRecoveryToHealthFinding(finding: TaskFlowRecoveryFinding): Heal
 }
 
 export function collectWorkspaceStatusHealthFindings(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   options: NoteWorkspaceStatusOptions = {},
 ): HealthFinding[] {
   const workspaceDir = resolveAgentWorkspaceDir(cfg, resolveDefaultAgentId(cfg));
@@ -168,7 +168,7 @@ function notePluginVersionDrift(drift: PluginVersionDriftReport | undefined) {
   const lines = [
     `${drift.drifts.length} active official plugin${
       drift.drifts.length === 1 ? "" : "s"
-    } not on OpenClaw ${drift.gatewayVersion}`,
+    } not on Operator ${drift.gatewayVersion}`,
     ...drift.drifts.map((entry) => {
       const sourceLabel = entry.source === "clawhub" ? "clawhub" : "npm";
       return `- ${entry.pluginId}: ${entry.installedVersion} (${sourceLabel}) -> expected ${drift.gatewayVersion}`;
@@ -185,7 +185,7 @@ function notePluginVersionDrift(drift: PluginVersionDriftReport | undefined) {
 }
 
 /** Emits plugin and TaskFlow recovery problem notes for doctor. */
-export function noteWorkspaceStatus(cfg: OpenClawConfig, options: NoteWorkspaceStatusOptions = {}) {
+export function noteWorkspaceStatus(cfg: OperatorConfig, options: NoteWorkspaceStatusOptions = {}) {
   const workspaceDir = resolveAgentWorkspaceDir(cfg, resolveDefaultAgentId(cfg));
   const pluginRegistry = buildPluginRegistrySnapshotReport({
     config: cfg,

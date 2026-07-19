@@ -4,7 +4,7 @@ import { DEFAULT_GATEWAY_DAEMON_RUNTIME } from "../../commands/daemon-runtime.js
 import { resolveGatewayInstallToken } from "../../commands/gateway-install-token.js";
 import { readConfigFileSnapshotForWrite } from "../../config/io.js";
 import { resolveGatewayPort } from "../../config/paths.js";
-import { OPERATOR_WRAPPER_ENV_KEY, resolveOpenClawWrapperPath } from "../../daemon/program-args.js";
+import { OPERATOR_WRAPPER_ENV_KEY, resolveOperatorWrapperPath } from "../../daemon/program-args.js";
 import type { GatewayServiceEnv } from "../../daemon/service-types.js";
 import type {
   GatewayService,
@@ -41,7 +41,7 @@ export async function repairLoadedGatewayServiceForStart(params: {
     env: process.env,
     existingServiceEnv: existingEnvironment,
   });
-  const wrapperPath = await resolveOpenClawWrapperPath(installEnv[OPERATOR_WRAPPER_ENV_KEY]);
+  const wrapperPath = await resolveOperatorWrapperPath(installEnv[OPERATOR_WRAPPER_ENV_KEY]);
   const installedPort =
     parseTcpPortFromArgs(params.state.command?.programArguments) ??
     parseTcpPort(params.state.command?.environment?.OPERATOR_GATEWAY_PORT);

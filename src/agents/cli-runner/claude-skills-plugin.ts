@@ -1,11 +1,11 @@
 /**
- * Materializes selected OpenClaw skills as a temporary Claude CLI plugin.
+ * Materializes selected Operator skills as a temporary Claude CLI plugin.
  */
 import { accessSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { resolvePreferredOpenClawTmpDir } from "../../infra/tmp-operator-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../../infra/tmp-operator-dir.js";
 import type { SkillSnapshot } from "../../skills/types.js";
 import { cliBackendLog } from "./log.js";
 
@@ -104,7 +104,7 @@ export async function prepareClaudeCliSkillsPlugin(params: {
   }
 
   const tempDir = await fs.mkdtemp(
-    path.join(resolvePreferredOpenClawTmpDir(), "operator-claude-skills-"),
+    path.join(resolvePreferredOperatorTmpDir(), "operator-claude-skills-"),
   );
   const pluginDir = path.join(tempDir, OPERATOR_CLAUDE_PLUGIN_NAME);
   const manifestDir = path.join(pluginDir, ".claude-plugin");
@@ -115,7 +115,7 @@ export async function prepareClaudeCliSkillsPlugin(params: {
   const manifest = {
     name: OPERATOR_CLAUDE_PLUGIN_NAME,
     version: "0.0.0",
-    description: "Session-scoped OpenClaw skills selected for this agent run.",
+    description: "Session-scoped Operator skills selected for this agent run.",
     skills: "./skills",
   };
   await fs.writeFile(

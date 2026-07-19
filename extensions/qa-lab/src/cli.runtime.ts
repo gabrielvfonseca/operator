@@ -2,8 +2,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import {
-  OPENCLAW_CRABLINE_DEFAULT_CHANNEL,
-  resolveOpenClawCrablineChannelDriverSelection,
+  OPERATOR_CRABLINE_DEFAULT_CHANNEL,
+  resolveOperatorCrablineChannelDriverSelection,
 } from "@operator/crabline";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import { parseStrictPositiveInteger } from "openclaw/plugin-sdk/number-runtime";
@@ -100,7 +100,7 @@ import {
 } from "./tool-coverage-report.js";
 
 const QA_SUITE_INFRA_RETRY_LIMIT = 1;
-const QA_CREDENTIAL_PAYLOAD_MAX_BYTES_ENV = "OPENCLAW_QA_CREDENTIAL_PAYLOAD_MAX_BYTES";
+const QA_CREDENTIAL_PAYLOAD_MAX_BYTES_ENV = "OPERATOR_QA_CREDENTIAL_PAYLOAD_MAX_BYTES";
 const DEFAULT_QA_CREDENTIAL_PAYLOAD_MAX_BYTES = 64 * 1024 * 1024;
 const QA_SUITE_INFRA_RETRY_NETWORK_ERROR_CODES = new Set([
   "ECONNRESET",
@@ -800,7 +800,7 @@ export async function runQaProfileCommand(opts: QaProfileCommandOptions) {
         ? "qa-channel"
         : (scenario.execution.channel ??
           (profileReport.channelDriver === "crabline"
-            ? OPENCLAW_CRABLINE_DEFAULT_CHANNEL
+            ? OPERATOR_CRABLINE_DEFAULT_CHANNEL
             : undefined));
     return scenarioMatchesQaProviderLane({
       scenario,
@@ -935,15 +935,15 @@ function formatQaRunProfileFilterList(
 }
 
 async function withTemporaryQaProfileEnv<T>(profile: string, run: () => Promise<T>): Promise<T> {
-  const previousProfile = process.env.OPENCLAW_QA_PROFILE;
-  process.env.OPENCLAW_QA_PROFILE = profile;
+  const previousProfile = process.env.OPERATOR_QA_PROFILE;
+  process.env.OPERATOR_QA_PROFILE = profile;
   try {
     return await run();
   } finally {
     if (previousProfile === undefined) {
-      delete process.env.OPENCLAW_QA_PROFILE;
+      delete process.env.OPERATOR_QA_PROFILE;
     } else {
-      process.env.OPENCLAW_QA_PROFILE = previousProfile;
+      process.env.OPERATOR_QA_PROFILE = previousProfile;
     }
   }
 }
@@ -1023,14 +1023,14 @@ export async function runQaSuiteCommand(opts: QaSuiteCommandOptions) {
   const channelDriverChannels =
     channelDriver === "crabline"
       ? resolveQaSuiteScenarioChannels({
-          defaultChannel: OPENCLAW_CRABLINE_DEFAULT_CHANNEL,
+          defaultChannel: OPERATOR_CRABLINE_DEFAULT_CHANNEL,
           explicitChannel: opts.channel,
           scenarios: channelDriverScenarios,
         })
       : [];
   if (runner === "multipass" && channelDriverChannels.length > 1) {
     resolveQaSuiteScenarioChannel({
-      defaultChannel: OPENCLAW_CRABLINE_DEFAULT_CHANNEL,
+      defaultChannel: OPERATOR_CRABLINE_DEFAULT_CHANNEL,
       explicitChannel: opts.channel,
       scenarios: channelDriverScenarios,
     });
@@ -1038,7 +1038,7 @@ export async function runQaSuiteCommand(opts: QaSuiteCommandOptions) {
   const [singleChannelDriverChannel] = channelDriverChannels;
   const channelDriverSelection =
     channelDriver === "crabline" && channelDriverChannels.length === 1 && singleChannelDriverChannel
-      ? resolveOpenClawCrablineChannelDriverSelection({
+      ? resolveOperatorCrablineChannelDriverSelection({
           channel: singleChannelDriverChannel,
         })
       : undefined;
@@ -1697,7 +1697,7 @@ export async function runQaLabUiCommand(opts: {
     advertiseHost: opts.advertiseHost,
     advertisePort: Number.isFinite(opts.advertisePort) ? opts.advertisePort : undefined,
     controlUiUrl: opts.controlUiUrl,
-    controlUiProxyToken: process.env.OPENCLAW_QA_CONTROL_UI_PROXY_TOKEN,
+    controlUiProxyToken: process.env.OPERATOR_QA_CONTROL_UI_PROXY_TOKEN,
     controlUiProxyTarget: opts.controlUiProxyTarget,
     uiDistDir: opts.uiDistDir,
     autoKickoffTarget: opts.autoKickoffTarget,

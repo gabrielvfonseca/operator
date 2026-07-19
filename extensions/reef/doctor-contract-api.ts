@@ -1,5 +1,5 @@
 import type { ChannelDoctorLegacyConfigRule } from "openclaw/plugin-sdk/channel-contract";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type { PluginDoctorStateMigration } from "openclaw/plugin-sdk/runtime-doctor";
 import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
 import { z } from "zod";
@@ -29,7 +29,7 @@ function hasRetiredReefPolicyConfig(value: unknown): boolean {
   return isRecord(value) && ["dmPolicy", "allowFrom"].some((key) => Object.hasOwn(value, key));
 }
 
-function inspectLegacyReefFriends(cfg: OpenClawConfig) {
+function inspectLegacyReefFriends(cfg: OperatorConfig) {
   const reef = cfg.channels?.reef;
   if (!isRecord(reef) || !Object.hasOwn(reef, "friends")) {
     return null;
@@ -63,8 +63,8 @@ export const legacyConfigRules: ChannelDoctorLegacyConfigRule[] = [
   },
 ];
 
-export function normalizeCompatibilityConfig({ cfg }: { cfg: OpenClawConfig }): {
-  config: OpenClawConfig;
+export function normalizeCompatibilityConfig({ cfg }: { cfg: OperatorConfig }): {
+  config: OperatorConfig;
   changes: string[];
 } {
   const reef = cfg.channels?.reef;

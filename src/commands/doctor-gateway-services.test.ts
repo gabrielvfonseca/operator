@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import { createDoctorPrompter } from "./doctor-prompter.js";
 import {
@@ -134,15 +134,15 @@ import { EXTERNAL_SERVICE_REPAIR_NOTE } from "./doctor-service-repair-policy.js"
 
 const originalStdinIsTTY = process.stdin.isTTY;
 const originalPlatform = process.platform;
-const originalUpdateInProgress = process.env.OPENCLAW_UPDATE_IN_PROGRESS;
+const originalUpdateInProgress = process.env.OPERATOR_UPDATE_IN_PROGRESS;
 const originalParentSupportsConfigWrite =
-  process.env.OPENCLAW_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE;
+  process.env.OPERATOR_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE;
 const originalParentSupportsGatewayRestart =
-  process.env.OPENCLAW_UPDATE_PARENT_SUPPORTS_GATEWAY_RESTART;
+  process.env.OPERATOR_UPDATE_PARENT_SUPPORTS_GATEWAY_RESTART;
 const originalParentAllowsGatewayServiceRepair =
-  process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR;
+  process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR;
 const originalParentAllowsGatewayActivation =
-  process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_ACTIVATION;
+  process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_ACTIVATION;
 
 function makeDoctorIo() {
   return { log: vi.fn(), error: vi.fn(), exit: vi.fn() };
@@ -174,12 +174,12 @@ function mockProcessPlatform(platform: NodeJS.Platform) {
   });
 }
 
-async function runRepair(cfg: OpenClawConfig, options: { allowExecSecretRefs?: boolean } = {}) {
+async function runRepair(cfg: OperatorConfig, options: { allowExecSecretRefs?: boolean } = {}) {
   await maybeRepairGatewayServiceConfig(cfg, "local", makeDoctorIo(), makeDoctorPrompts(), options);
 }
 
 async function runNonInteractiveRepair(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   updateInProgress?: boolean;
   lastTouchedVersionOverride?: string;
 }) {
@@ -188,9 +188,9 @@ async function runNonInteractiveRepair(params: {
     configurable: true,
   });
   if (params.updateInProgress) {
-    process.env.OPENCLAW_UPDATE_IN_PROGRESS = "1";
+    process.env.OPERATOR_UPDATE_IN_PROGRESS = "1";
   } else {
-    delete process.env.OPENCLAW_UPDATE_IN_PROGRESS;
+    delete process.env.OPERATOR_UPDATE_IN_PROGRESS;
   }
   await maybeRepairGatewayServiceConfig(
     params.cfg ?? { gateway: {} },
@@ -326,7 +326,7 @@ function setupGatewayTokenRepairScenario() {
   mocks.readCommand.mockResolvedValue({
     programArguments: gatewayProgramArguments,
     environment: {
-      OPENCLAW_GATEWAY_TOKEN: "stale-token",
+      OPERATOR_GATEWAY_TOKEN: "stale-token",
     },
   });
   mocks.auditGatewayServiceConfig.mockResolvedValue({
@@ -334,7 +334,7 @@ function setupGatewayTokenRepairScenario() {
     issues: [
       {
         code: "gateway-token-mismatch",
-        message: "Gateway service OPENCLAW_GATEWAY_TOKEN does not match gateway.auth.token",
+        message: "Gateway service OPERATOR_GATEWAY_TOKEN does not match gateway.auth.token",
         level: "recommended",
       },
     ],
@@ -359,10 +359,10 @@ describe("maybeRepairGatewayServiceConfig", () => {
     mocks.resolveSystemNodeInfo.mockResolvedValue(null);
     mocks.isSystemdUnitActive.mockResolvedValue(false);
     mocks.readWindowsProcessArgsSync.mockReturnValue(["node", "openclaw.mjs", "update"]);
-    mocks.resolveGatewayAuthTokenForService.mockImplementation(async (cfg: OpenClawConfig, env) => {
+    mocks.resolveGatewayAuthTokenForService.mockImplementation(async (cfg: OperatorConfig, env) => {
       const configToken =
         typeof cfg.gateway?.auth?.token === "string" ? cfg.gateway.auth.token.trim() : undefined;
-      const envToken = env.OPENCLAW_GATEWAY_TOKEN?.trim() || undefined;
+      const envToken = env.OPERATOR_GATEWAY_TOKEN?.trim() || undefined;
       return { token: configToken || envToken };
     });
   });
@@ -374,32 +374,32 @@ describe("maybeRepairGatewayServiceConfig", () => {
     });
     mockProcessPlatform(originalPlatform);
     if (originalUpdateInProgress === undefined) {
-      delete process.env.OPENCLAW_UPDATE_IN_PROGRESS;
+      delete process.env.OPERATOR_UPDATE_IN_PROGRESS;
     } else {
-      process.env.OPENCLAW_UPDATE_IN_PROGRESS = originalUpdateInProgress;
+      process.env.OPERATOR_UPDATE_IN_PROGRESS = originalUpdateInProgress;
     }
     if (originalParentSupportsConfigWrite === undefined) {
-      delete process.env.OPENCLAW_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE;
+      delete process.env.OPERATOR_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE;
     } else {
-      process.env.OPENCLAW_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE =
+      process.env.OPERATOR_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE =
         originalParentSupportsConfigWrite;
     }
     if (originalParentSupportsGatewayRestart === undefined) {
-      delete process.env.OPENCLAW_UPDATE_PARENT_SUPPORTS_GATEWAY_RESTART;
+      delete process.env.OPERATOR_UPDATE_PARENT_SUPPORTS_GATEWAY_RESTART;
     } else {
-      process.env.OPENCLAW_UPDATE_PARENT_SUPPORTS_GATEWAY_RESTART =
+      process.env.OPERATOR_UPDATE_PARENT_SUPPORTS_GATEWAY_RESTART =
         originalParentSupportsGatewayRestart;
     }
     if (originalParentAllowsGatewayServiceRepair === undefined) {
-      delete process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR;
+      delete process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR;
     } else {
-      process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR =
+      process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR =
         originalParentAllowsGatewayServiceRepair;
     }
     if (originalParentAllowsGatewayActivation === undefined) {
-      delete process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_ACTIVATION;
+      delete process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_ACTIVATION;
     } else {
-      process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_ACTIVATION =
+      process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_ACTIVATION =
         originalParentAllowsGatewayActivation;
     }
   });
@@ -407,7 +407,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("treats gateway.auth.token as source of truth for service token repairs", async () => {
     setupGatewayTokenRepairScenario();
 
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       gateway: {
         auth: {
           mode: "token",
@@ -428,7 +428,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("passes exec SecretRef policy into service token resolution", async () => {
     setupGatewayTokenRepairScenario();
 
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       gateway: {
         auth: {
           mode: "token",
@@ -507,7 +507,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       programArguments: gatewayProgramArguments,
       workingDirectory: "/tmp",
       environment: {
-        OPENCLAW_SERVICE_MANAGED_ENV_KEYS: "TAVILY_API_KEY",
+        OPERATOR_SERVICE_MANAGED_ENV_KEYS: "TAVILY_API_KEY",
       },
     });
     mocks.auditGatewayServiceConfig.mockResolvedValue({
@@ -603,11 +603,11 @@ describe("maybeRepairGatewayServiceConfig", () => {
     expect(Object.hasOwn(environment, "HTTPS_PROXY")).toBe(false);
   });
 
-  it("uses OPENCLAW_GATEWAY_TOKEN when config token is missing", async () => {
-    await withEnvAsync({ OPENCLAW_GATEWAY_TOKEN: "env-token" }, async () => {
+  it("uses OPERATOR_GATEWAY_TOKEN when config token is missing", async () => {
+    await withEnvAsync({ OPERATOR_GATEWAY_TOKEN: "env-token" }, async () => {
       setupGatewayTokenRepairScenario();
 
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         gateway: {},
       };
 
@@ -675,7 +675,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
     mocks.readCommand.mockResolvedValue({
       programArguments: [wrapperPath, "gateway", "--port", "18789"],
       environment: {
-        OPENCLAW_WRAPPER: wrapperPath,
+        OPERATOR_WRAPPER: wrapperPath,
       },
     });
     mocks.auditGatewayServiceConfig.mockResolvedValue({
@@ -683,9 +683,9 @@ describe("maybeRepairGatewayServiceConfig", () => {
       issues: [],
     });
     mocks.buildGatewayInstallPlan.mockImplementation(async ({ env }) => ({
-      programArguments: [env.OPENCLAW_WRAPPER, "gateway", "--port", "18789"],
+      programArguments: [env.OPERATOR_WRAPPER, "gateway", "--port", "18789"],
       environment: {
-        OPENCLAW_WRAPPER: env.OPENCLAW_WRAPPER,
+        OPERATOR_WRAPPER: env.OPERATOR_WRAPPER,
       },
     }));
 
@@ -695,17 +695,17 @@ describe("maybeRepairGatewayServiceConfig", () => {
       callArg(mocks.buildGatewayInstallPlan, 0, "buildGatewayInstallPlan call"),
       "buildGatewayInstallPlan options",
     );
-    expect(requireRecord(installPlanOptions.env, "install env").OPENCLAW_WRAPPER).toBe(wrapperPath);
+    expect(requireRecord(installPlanOptions.env, "install env").OPERATOR_WRAPPER).toBe(wrapperPath);
     expect(
       requireRecord(installPlanOptions.existingEnvironment, "install existing environment")
-        .OPENCLAW_WRAPPER,
+        .OPERATOR_WRAPPER,
     ).toBe(wrapperPath);
     expectNoNoteContaining(
       "Gateway service entrypoint does not match the current install.",
       "Gateway service config",
     );
     expect(mocks.note).toHaveBeenCalledWith(
-      "Gateway service invokes OPENCLAW_WRAPPER: /usr/local/bin/openclaw-doppler",
+      "Gateway service invokes OPERATOR_WRAPPER: /usr/local/bin/openclaw-doppler",
       "Gateway",
     );
     expect(mocks.stage).not.toHaveBeenCalled();
@@ -848,7 +848,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
 
   it("defers systemd service config rewrites during non-interactive update repairs", async () => {
     mockProcessPlatform("linux");
-    process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
+    process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
     setupGatewayEntrypointRepairScenario({
       currentEntrypoint: "/Users/test/Library/npm/node_modules/openclaw/dist/entry.js",
       installEntrypoint: "/Users/test/Library/npm/node_modules/openclaw/dist/index.js",
@@ -871,7 +871,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
 
   it("keeps staging non-systemd service config repairs during non-interactive update repairs", async () => {
     mockProcessPlatform("darwin");
-    process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
+    process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
     setupGatewayEntrypointRepairScenario({
       currentEntrypoint: "/Users/test/Library/npm/node_modules/openclaw/dist/entry.js",
       installEntrypoint: "/Users/test/Library/npm/node_modules/openclaw/dist/index.js",
@@ -896,7 +896,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
     mocks.readCommand.mockResolvedValue({
       programArguments: gatewayProgramArguments,
       environment: {
-        OPENCLAW_GATEWAY_TOKEN: "stale-token",
+        OPERATOR_GATEWAY_TOKEN: "stale-token",
       },
     });
     mocks.auditGatewayServiceConfig.mockResolvedValue({
@@ -910,14 +910,14 @@ describe("maybeRepairGatewayServiceConfig", () => {
     });
     mocks.install.mockResolvedValue(undefined);
 
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       gateway: {
         auth: {
           mode: "token",
           token: {
             source: "env",
             provider: "default",
-            id: "OPENCLAW_GATEWAY_TOKEN",
+            id: "OPERATOR_GATEWAY_TOKEN",
           },
         },
       },
@@ -934,12 +934,12 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("falls back to embedded service token when config and env tokens are missing", async () => {
     await withEnvAsync(
       {
-        OPENCLAW_GATEWAY_TOKEN: undefined,
+        OPERATOR_GATEWAY_TOKEN: undefined,
       },
       async () => {
         setupGatewayTokenRepairScenario();
 
-        const cfg: OpenClawConfig = {
+        const cfg: OperatorConfig = {
           gateway: {},
         };
 
@@ -965,18 +965,18 @@ describe("maybeRepairGatewayServiceConfig", () => {
       value: false,
       configurable: true,
     });
-    process.env.OPENCLAW_UPDATE_IN_PROGRESS = "1";
-    process.env.OPENCLAW_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE = "1";
-    process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
+    process.env.OPERATOR_UPDATE_IN_PROGRESS = "1";
+    process.env.OPERATOR_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE = "1";
+    process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
 
     await withEnvAsync(
       {
-        OPENCLAW_GATEWAY_TOKEN: undefined,
+        OPERATOR_GATEWAY_TOKEN: undefined,
       },
       async () => {
         setupGatewayTokenRepairScenario();
 
-        const cfg: OpenClawConfig = {
+        const cfg: OperatorConfig = {
           gateway: {},
         };
 
@@ -1011,13 +1011,13 @@ describe("maybeRepairGatewayServiceConfig", () => {
       value: false,
       configurable: true,
     });
-    process.env.OPENCLAW_UPDATE_IN_PROGRESS = "1";
+    process.env.OPERATOR_UPDATE_IN_PROGRESS = "1";
     mocks.readWindowsProcessArgsSync.mockReturnValue(args);
     mocks.readCommand.mockResolvedValue({
       programArguments: gatewayProgramArguments,
       environment: {
-        OPENCLAW_SERVICE_VERSION: "2026.5.25",
-        OPENCLAW_WINDOWS_TASK_NAME: "OpenClaw Gateway Work",
+        OPERATOR_SERVICE_VERSION: "2026.5.25",
+        OPERATOR_WINDOWS_TASK_NAME: "Operator Gateway Work",
       },
     });
     mocks.auditGatewayServiceConfig.mockResolvedValue({
@@ -1025,7 +1025,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       issues: [
         {
           code: "gateway-service-version-mismatch",
-          message: "Gateway service was installed by an older OpenClaw version.",
+          message: "Gateway service was installed by an older Operator version.",
           level: "recommended",
         },
       ],
@@ -1034,7 +1034,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       programArguments: gatewayProgramArguments,
       workingDirectory: "/tmp",
       environment: {
-        OPENCLAW_SERVICE_VERSION: "2026.5.26",
+        OPERATOR_SERVICE_VERSION: "2026.5.26",
       },
     });
     mocks.readRuntime.mockResolvedValue({ status: "running" });
@@ -1042,7 +1042,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
     await runNonInteractiveRepair({ updateInProgress: true });
 
     expectNoteContaining(
-      "Gateway service was installed by an older OpenClaw version.",
+      "Gateway service was installed by an older Operator version.",
       "Gateway service config",
     );
     expect(mocks.stage).not.toHaveBeenCalled();
@@ -1057,14 +1057,14 @@ describe("maybeRepairGatewayServiceConfig", () => {
       value: false,
       configurable: true,
     });
-    process.env.OPENCLAW_UPDATE_IN_PROGRESS = "1";
-    process.env.OPENCLAW_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE = "1";
-    process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
-    process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_ACTIVATION = "0";
+    process.env.OPERATOR_UPDATE_IN_PROGRESS = "1";
+    process.env.OPERATOR_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE = "1";
+    process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
+    process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_ACTIVATION = "0";
     mocks.readCommand.mockResolvedValue({
       programArguments: gatewayProgramArguments,
       environment: {
-        OPENCLAW_SERVICE_VERSION: "2026.5.25",
+        OPERATOR_SERVICE_VERSION: "2026.5.25",
       },
     });
     mocks.auditGatewayServiceConfig.mockResolvedValue({
@@ -1072,7 +1072,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       issues: [
         {
           code: "gateway-service-version-mismatch",
-          message: "Gateway service was installed by an older OpenClaw version.",
+          message: "Gateway service was installed by an older Operator version.",
           level: "recommended",
         },
       ],
@@ -1081,7 +1081,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       programArguments: gatewayProgramArguments,
       workingDirectory: "/tmp",
       environment: {
-        OPENCLAW_SERVICE_VERSION: "2026.5.26",
+        OPERATOR_SERVICE_VERSION: "2026.5.26",
       },
     });
     mocks.readRuntime.mockResolvedValue({ status: "running" });
@@ -1096,13 +1096,13 @@ describe("maybeRepairGatewayServiceConfig", () => {
 
   it("does not rewrite a service when the update parent rejects ownership", async () => {
     mockProcessPlatform("win32");
-    process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "0";
-    process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_ACTIVATION = "0";
+    process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "0";
+    process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_ACTIVATION = "0";
     mocks.readCommand.mockResolvedValue({
       programArguments: gatewayProgramArguments,
       environment: {
-        OPENCLAW_GATEWAY_TOKEN: "stale-token",
-        OPENCLAW_SERVICE_VERSION: "2026.5.25",
+        OPERATOR_GATEWAY_TOKEN: "stale-token",
+        OPERATOR_SERVICE_VERSION: "2026.5.25",
       },
     });
     mocks.auditGatewayServiceConfig.mockResolvedValue({
@@ -1110,7 +1110,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       issues: [
         {
           code: "gateway-service-version-mismatch",
-          message: "Gateway service was installed by an older OpenClaw version.",
+          message: "Gateway service was installed by an older Operator version.",
           level: "recommended",
         },
       ],
@@ -1155,19 +1155,19 @@ describe("maybeRepairGatewayServiceConfig", () => {
       value: false,
       configurable: true,
     });
-    process.env.OPENCLAW_UPDATE_IN_PROGRESS = "1";
-    process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
+    process.env.OPERATOR_UPDATE_IN_PROGRESS = "1";
+    process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
     mocks.readWindowsProcessArgsSync.mockReturnValue(args);
     mocks.readCommand.mockResolvedValue({
       programArguments: gatewayProgramArguments,
-      environment: { OPENCLAW_SERVICE_VERSION: "2026.5.25" },
+      environment: { OPERATOR_SERVICE_VERSION: "2026.5.25" },
     });
     mocks.auditGatewayServiceConfig.mockResolvedValue({
       ok: false,
       issues: [
         {
           code: "gateway-service-version-mismatch",
-          message: "Gateway service was installed by an older OpenClaw version.",
+          message: "Gateway service was installed by an older Operator version.",
           level: "recommended",
         },
       ],
@@ -1175,7 +1175,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
     mocks.buildGatewayInstallPlan.mockResolvedValue({
       programArguments: gatewayProgramArguments,
       workingDirectory: "/tmp",
-      environment: { OPENCLAW_SERVICE_VERSION: "2026.5.26" },
+      environment: { OPERATOR_SERVICE_VERSION: "2026.5.26" },
     });
     mocks.readRuntime.mockResolvedValue({ status: "running" });
 
@@ -1194,22 +1194,22 @@ describe("maybeRepairGatewayServiceConfig", () => {
       value: false,
       configurable: true,
     });
-    process.env.OPENCLAW_UPDATE_IN_PROGRESS = "1";
-    process.env.OPENCLAW_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE = "1";
-    process.env.OPENCLAW_UPDATE_PARENT_SUPPORTS_GATEWAY_RESTART = "1";
-    process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
-    process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_ACTIVATION = "1";
+    process.env.OPERATOR_UPDATE_IN_PROGRESS = "1";
+    process.env.OPERATOR_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE = "1";
+    process.env.OPERATOR_UPDATE_PARENT_SUPPORTS_GATEWAY_RESTART = "1";
+    process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
+    process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_ACTIVATION = "1";
 
     await withEnvAsync(
       {
-        OPENCLAW_GATEWAY_TOKEN: undefined,
+        OPERATOR_GATEWAY_TOKEN: undefined,
       },
       async () => {
         mocks.readCommand.mockResolvedValue({
           programArguments: gatewayProgramArguments,
           environment: {
-            OPENCLAW_GATEWAY_TOKEN: "stale-token",
-            OPENCLAW_SERVICE_VERSION: "2026.5.25",
+            OPERATOR_GATEWAY_TOKEN: "stale-token",
+            OPERATOR_SERVICE_VERSION: "2026.5.25",
           },
         });
         mocks.auditGatewayServiceConfig.mockResolvedValue({
@@ -1226,7 +1226,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
           programArguments: gatewayProgramArguments,
           workingDirectory: "/tmp",
           environment: {
-            OPENCLAW_SERVICE_VERSION: "2026.5.26",
+            OPERATOR_SERVICE_VERSION: "2026.5.26",
           },
         });
         mocks.readRuntime.mockResolvedValue({ status: "running" });
@@ -1275,10 +1275,10 @@ describe("maybeRepairGatewayServiceConfig", () => {
       value: false,
       configurable: true,
     });
-    process.env.OPENCLAW_UPDATE_IN_PROGRESS = "1";
-    process.env.OPENCLAW_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE = "1";
-    process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
-    process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_ACTIVATION = "1";
+    process.env.OPERATOR_UPDATE_IN_PROGRESS = "1";
+    process.env.OPERATOR_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE = "1";
+    process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
+    process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_ACTIVATION = "1";
     setupGatewayTokenRepairScenario();
     mocks.readRuntime.mockResolvedValue({ status: "running" });
     mocks.readWindowsStartupFallbackRuntimeForUpdate.mockResolvedValue(null);
@@ -1296,19 +1296,19 @@ describe("maybeRepairGatewayServiceConfig", () => {
       value: false,
       configurable: true,
     });
-    process.env.OPENCLAW_UPDATE_IN_PROGRESS = "1";
-    delete process.env.OPENCLAW_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE;
+    process.env.OPERATOR_UPDATE_IN_PROGRESS = "1";
+    delete process.env.OPERATOR_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE;
 
     await withEnvAsync(
       {
-        OPENCLAW_GATEWAY_TOKEN: undefined,
+        OPERATOR_GATEWAY_TOKEN: undefined,
       },
       async () => {
         mocks.readCommand.mockResolvedValue({
           programArguments: gatewayProgramArguments,
           environment: {
-            OPENCLAW_GATEWAY_TOKEN: "stale-token",
-            OPENCLAW_SERVICE_VERSION: "2026.5.25",
+            OPERATOR_GATEWAY_TOKEN: "stale-token",
+            OPERATOR_SERVICE_VERSION: "2026.5.25",
           },
         });
         mocks.auditGatewayServiceConfig.mockResolvedValue({
@@ -1325,7 +1325,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
           programArguments: gatewayProgramArguments,
           workingDirectory: "/tmp",
           environment: {
-            OPENCLAW_SERVICE_VERSION: "2026.5.26",
+            OPERATOR_SERVICE_VERSION: "2026.5.26",
           },
         });
         mocks.readRuntime.mockResolvedValue({ status: "running" });
@@ -1349,13 +1349,13 @@ describe("maybeRepairGatewayServiceConfig", () => {
       value: false,
       configurable: true,
     });
-    process.env.OPENCLAW_UPDATE_IN_PROGRESS = "1";
-    process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
-    process.env.OPENCLAW_UPDATE_PARENT_ALLOWS_GATEWAY_ACTIVATION = "1";
+    process.env.OPERATOR_UPDATE_IN_PROGRESS = "1";
+    process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
+    process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_ACTIVATION = "1";
     mocks.readCommand.mockResolvedValue({
       programArguments: gatewayProgramArguments,
       environment: {
-        OPENCLAW_SERVICE_VERSION: "2026.5.25",
+        OPERATOR_SERVICE_VERSION: "2026.5.25",
       },
     });
     mocks.auditGatewayServiceConfig.mockResolvedValue({
@@ -1363,7 +1363,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       issues: [
         {
           code: "gateway-service-version-mismatch",
-          message: "Gateway service was installed by an older OpenClaw version.",
+          message: "Gateway service was installed by an older Operator version.",
           level: "recommended",
         },
       ],
@@ -1372,7 +1372,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       programArguments: gatewayProgramArguments,
       workingDirectory: "/tmp",
       environment: {
-        OPENCLAW_SERVICE_VERSION: "2026.5.26",
+        OPERATOR_SERVICE_VERSION: "2026.5.26",
       },
     });
     mocks.readRuntime.mockResolvedValue({ status: "stopped" });
@@ -1386,16 +1386,16 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("does not persist EnvironmentFile-backed service tokens into config", async () => {
     await withEnvAsync(
       {
-        OPENCLAW_GATEWAY_TOKEN: undefined,
+        OPERATOR_GATEWAY_TOKEN: undefined,
       },
       async () => {
         mocks.readCommand.mockResolvedValue({
           programArguments: gatewayProgramArguments,
           environment: {
-            OPENCLAW_GATEWAY_TOKEN: "env-file-token",
+            OPERATOR_GATEWAY_TOKEN: "env-file-token",
           },
           environmentValueSources: {
-            OPENCLAW_GATEWAY_TOKEN: "file",
+            OPERATOR_GATEWAY_TOKEN: "file",
           },
         });
         mocks.auditGatewayServiceConfig.mockResolvedValue({
@@ -1409,7 +1409,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
         });
         mocks.install.mockResolvedValue(undefined);
 
-        const cfg: OpenClawConfig = {
+        const cfg: OperatorConfig = {
           gateway: {},
         };
 
@@ -1423,7 +1423,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
   });
 
   it("reports service config drift but skips service rewrite when service repair policy is external", async () => {
-    await withEnvAsync({ OPENCLAW_SERVICE_REPAIR_POLICY: "external" }, async () => {
+    await withEnvAsync({ OPERATOR_SERVICE_REPAIR_POLICY: "external" }, async () => {
       setupGatewayEntrypointRepairScenario({
         currentEntrypoint: "/Users/test/Library/npm/node_modules/openclaw/dist/entry.js",
         installEntrypoint: "/Users/test/Library/npm/node_modules/openclaw/dist/index.js",
@@ -1756,12 +1756,12 @@ describe("maybeScanExtraGatewayServices", () => {
     });
     expectNoteContaining("clawdbot-gateway.service", "Legacy gateway removed");
     expect(runtime.log).toHaveBeenCalledWith(
-      "Legacy gateway services removed. Installing OpenClaw gateway next.",
+      "Legacy gateway services removed. Installing Operator gateway next.",
     );
   });
 
   it("reports legacy services but skips cleanup when service repair policy is external", async () => {
-    await withEnvAsync({ OPENCLAW_SERVICE_REPAIR_POLICY: "external" }, async () => {
+    await withEnvAsync({ OPERATOR_SERVICE_REPAIR_POLICY: "external" }, async () => {
       mocks.findExtraGatewayServices.mockResolvedValue([
         {
           platform: "linux",
@@ -1782,7 +1782,7 @@ describe("maybeScanExtraGatewayServices", () => {
       );
       expect(mocks.uninstallLegacySystemdUnits).not.toHaveBeenCalled();
       expect(runtime.log).not.toHaveBeenCalledWith(
-        "Legacy gateway services removed. Installing OpenClaw gateway next.",
+        "Legacy gateway services removed. Installing Operator gateway next.",
       );
     });
   });

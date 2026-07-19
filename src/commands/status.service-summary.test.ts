@@ -27,7 +27,7 @@ function requireMockArg(mock: { mock: { calls: unknown[][] } }, label: string): 
 }
 
 describe("readServiceStatusSummary", () => {
-  it("marks OpenClaw-managed services as installed", async () => {
+  it("marks Operator-managed services as installed", async () => {
     const summary = await readServiceStatusSummary(
       createService({
         isLoaded: vi.fn(async () => true),
@@ -38,7 +38,7 @@ describe("readServiceStatusSummary", () => {
     );
 
     expect(summary.installed).toBe(true);
-    expect(summary.managedByOpenClaw).toBe(true);
+    expect(summary.managedByOperator).toBe(true);
     expect(summary.externallyManaged).toBe(false);
     expect(summary.loadedText).toBe("enabled");
   });
@@ -52,7 +52,7 @@ describe("readServiceStatusSummary", () => {
     );
 
     expect(summary.installed).toBe(true);
-    expect(summary.managedByOpenClaw).toBe(false);
+    expect(summary.managedByOperator).toBe(false);
     expect(summary.externallyManaged).toBe(true);
     expect(summary.loadedText).toBe("running (externally managed)");
   });
@@ -61,7 +61,7 @@ describe("readServiceStatusSummary", () => {
     const summary = await readServiceStatusSummary(createService({}), "Daemon");
 
     expect(summary.installed).toBe(false);
-    expect(summary.managedByOpenClaw).toBe(false);
+    expect(summary.managedByOperator).toBe(false);
     expect(summary.externallyManaged).toBe(false);
     expect(summary.loadedText).toBe("disabled");
   });
@@ -73,7 +73,7 @@ describe("readServiceStatusSummary", () => {
       expect(summary.label).toBe("Gateway service");
       expect(summary.installed).toBe(false);
       expect(summary.loaded).toBe(false);
-      expect(summary.managedByOpenClaw).toBe(false);
+      expect(summary.managedByOperator).toBe(false);
       expect(summary.externallyManaged).toBe(false);
       expect(summary.loadedText).toBe("not installed");
       expect(summary.runtime).toEqual({
@@ -85,10 +85,10 @@ describe("readServiceStatusSummary", () => {
 
   it("passes command environment to runtime and loaded checks", async () => {
     const isLoaded = vi.fn(async ({ env }: GatewayServiceEnvArgs) => {
-      return env?.OPENCLAW_GATEWAY_PORT === "18789";
+      return env?.OPERATOR_GATEWAY_PORT === "18789";
     });
     const readRuntime = vi.fn(async (env?: NodeJS.ProcessEnv) => ({
-      status: env?.OPENCLAW_GATEWAY_PORT === "18789" ? ("running" as const) : ("unknown" as const),
+      status: env?.OPERATOR_GATEWAY_PORT === "18789" ? ("running" as const) : ("unknown" as const),
     }));
 
     const summary = await readServiceStatusSummary(
@@ -96,7 +96,7 @@ describe("readServiceStatusSummary", () => {
         isLoaded,
         readCommand: vi.fn(async () => ({
           programArguments: ["openclaw", "gateway", "run", "--port", "18789"],
-          environment: { OPENCLAW_GATEWAY_PORT: "18789" },
+          environment: { OPERATOR_GATEWAY_PORT: "18789" },
         })),
         readRuntime,
       }),
@@ -104,9 +104,9 @@ describe("readServiceStatusSummary", () => {
     );
 
     const loadedArgs = requireMockArg(isLoaded, "isLoaded") as GatewayServiceEnvArgs;
-    expect(loadedArgs?.env?.OPENCLAW_GATEWAY_PORT).toBe("18789");
+    expect(loadedArgs?.env?.OPERATOR_GATEWAY_PORT).toBe("18789");
     const runtimeEnv = requireMockArg(readRuntime, "readRuntime") as NodeJS.ProcessEnv;
-    expect(runtimeEnv?.OPENCLAW_GATEWAY_PORT).toBe("18789");
+    expect(runtimeEnv?.OPERATOR_GATEWAY_PORT).toBe("18789");
     expect(summary.installed).toBe(true);
     expect(summary.loaded).toBe(true);
     expect(summary.runtime?.status).toBe("running");

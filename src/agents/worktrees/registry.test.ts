@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { closeOpenClawStateDatabaseForTest } from "../../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../state/openclaw-state-db.js";
 import {
   deleteRegistryWorktree,
   findRegistryWorktreeByPath,
@@ -21,11 +21,11 @@ describe("managed worktree registry", () => {
   beforeEach(async () => {
     const tempRoot = await fs.realpath(os.tmpdir());
     root = await fs.mkdtemp(path.join(tempRoot, "openclaw-worktree-registry-"));
-    env = { ...process.env, OPENCLAW_STATE_DIR: path.join(root, "state") };
+    env = { ...process.env, OPERATOR_STATE_DIR: path.join(root, "state") };
   });
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await fs.rm(root, { recursive: true, force: true });
   });
 

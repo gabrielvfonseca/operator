@@ -1,6 +1,6 @@
 // Qqbot tests cover channel-api tool behavior.
 
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createStreamingResponse } from "../../../../test-support/streaming-error-response.js";
 
@@ -16,8 +16,8 @@ vi.mock("openclaw/plugin-sdk/ssrf-runtime", async (importOriginal) => {
 
 import { executeChannelApi } from "./channel-api.js";
 
-function qqbotCfg(qqbot: Record<string, unknown>): OpenClawConfig {
-  return { channels: { qqbot } } as OpenClawConfig;
+function qqbotCfg(qqbot: Record<string, unknown>): OperatorConfig {
+  return { channels: { qqbot } } as OperatorConfig;
 }
 
 function cancelTrackedResponse(

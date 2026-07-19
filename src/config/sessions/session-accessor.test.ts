@@ -6,7 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { withTestTimeout } from "../../../test/helpers/promise.js";
 import type { MsgContext } from "../../auto-reply/templating.js";
 import { onSessionTranscriptUpdate } from "../../sessions/transcript-events.js";
-import { openOpenClawAgentDatabase } from "../../state/openclaw-agent-db.js";
+import { openOperatorAgentDatabase } from "../../state/openclaw-agent-db.js";
 import { appendSqliteTrajectoryRuntimeEvents } from "../../trajectory/runtime-store.sqlite.js";
 import type { TrajectoryEvent } from "../../trajectory/types.js";
 import {
@@ -214,7 +214,7 @@ describe("session accessor seam", () => {
       agentId: "main",
     }).path;
     expect(databasePath).toBeDefined();
-    const database = openOpenClawAgentDatabase({
+    const database = openOperatorAgentDatabase({
       agentId: "main",
       path: databasePath,
     });
@@ -291,7 +291,7 @@ describe("session accessor seam", () => {
       agentId: "main",
     }).path;
     expect(databasePath).toBeDefined();
-    const database = openOpenClawAgentDatabase({
+    const database = openOperatorAgentDatabase({
       agentId: "main",
       path: databasePath,
     });
@@ -815,7 +815,7 @@ describe("session accessor seam", () => {
       agentId: "main",
       env: {
         ...process.env,
-        OPENCLAW_STATE_DIR: stateDir,
+        OPERATOR_STATE_DIR: stateDir,
       },
       sessionId: "default-store-turn-session",
       sessionKey: "agent:main:default-store-turn",

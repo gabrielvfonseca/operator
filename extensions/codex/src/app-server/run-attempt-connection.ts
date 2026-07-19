@@ -16,7 +16,7 @@ import {
 import { loadExecApprovals } from "openclaw/plugin-sdk/exec-approvals-runtime";
 import {
   resolveCodexAppServerForModelProvider,
-  resolveCodexAppServerForOpenClawToolPolicy,
+  resolveCodexAppServerForOperatorToolPolicy,
 } from "./app-server-policy.js";
 import {
   resolveCodexAppServerAuthProfileId,
@@ -29,7 +29,7 @@ import {
   readCodexPluginConfig,
   resolveCodexComputerUseConfig,
   resolveCodexModelBackedReviewerPolicyContext,
-  resolveOpenClawExecPolicyForCodexAppServer,
+  resolveOperatorExecPolicyForCodexAppServer,
 } from "./config.js";
 import { createCodexDynamicToolBuildStageTracker } from "./dynamic-tool-build.js";
 import { resolveCodexNativeHookRelayEvents } from "./native-hook-relay.js";
@@ -91,7 +91,7 @@ export async function prepareCodexAttemptConnection({ params, options }: CodexRu
     workspaceDir: resolvedWorkspace,
   });
   preDynamicStartupStages.mark("sandbox");
-  const execPolicy = resolveOpenClawExecPolicyForCodexAppServer({
+  const execPolicy = resolveOperatorExecPolicyForCodexAppServer({
     execOverrides: params.execOverrides,
     approvals: loadExecApprovals(),
     config: params.config,
@@ -226,7 +226,7 @@ export async function prepareCodexAttemptConnection({ params, options }: CodexRu
   await ensureCodexWorkspaceDirOnce(effectiveWorkspace);
   preDynamicStartupStages.mark("effective-workspace");
   const resolvePolicyAppServer = () =>
-    resolveCodexAppServerForOpenClawToolPolicy({
+    resolveCodexAppServerForOperatorToolPolicy({
       appServer: configuredAppServer,
       pluginConfig,
       env: process.env,
@@ -248,7 +248,7 @@ export async function prepareCodexAttemptConnection({ params, options }: CodexRu
     agentDir,
   });
   if (configuredAppServer.approvalPolicy === "never" && appServer.approvalPolicy === "untrusted") {
-    embeddedAgentLog.info("codex app-server approval policy promoted for OpenClaw tool policy", {
+    embeddedAgentLog.info("codex app-server approval policy promoted for Operator tool policy", {
       from: "never",
       to: "untrusted",
       beforeToolCallHook: beforeToolCallPolicy.hasBeforeToolCallHook,

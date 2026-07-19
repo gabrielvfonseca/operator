@@ -4,7 +4,7 @@ import {
   resolveOptionalIntegerOption,
 } from "@operator/normalization-core/number-coercion";
 import type { InboundDebounceByProvider } from "../config/types.messages.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 
 const resolveMs = (value: unknown): number | undefined =>
   resolveOptionalIntegerOption(value, { min: 0 });
@@ -21,7 +21,7 @@ const resolveChannelOverride = (params: {
 
 /** Resolve effective inbound debounce milliseconds from explicit, channel, and global config. */
 export function resolveInboundDebounceMs(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   channel: string;
   overrideMs?: number;
 }): number {

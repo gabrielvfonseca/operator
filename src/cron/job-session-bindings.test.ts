@@ -1,12 +1,12 @@
 import { describe, expect, test, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import {
   disableCronJobsBoundToSession,
   resolveCronJobBoundSessionKeys,
 } from "./job-session-bindings.js";
 import type { CronJob } from "./types.js";
 
-const cfg = {} as OpenClawConfig;
+const cfg = {} as OperatorConfig;
 
 function bindingKeys(
   job: Parameters<typeof resolveCronJobBoundSessionKeys>[0],

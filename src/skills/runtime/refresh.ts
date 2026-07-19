@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import chokidar, { type FSWatcher } from "chokidar";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
 import { CONFIG_DIR, resolveUserPath } from "../../utils.js";
 import { resolvePluginSkillDirs } from "../loading/plugin-skills.js";
@@ -89,7 +89,7 @@ const DEFAULT_SKILLS_WATCH_IGNORED: RegExp[] = [
   /(^|[\\/])\.cache([\\/]|$)/,
 ];
 
-function resolveWatchTargets(workspaceDir: string, config?: OpenClawConfig): WatchTarget[] {
+function resolveWatchTargets(workspaceDir: string, config?: OperatorConfig): WatchTarget[] {
   const baseRoots: Array<{ path: string; source: string }> = [];
   if (workspaceDir.trim()) {
     baseRoots.push({ path: path.join(workspaceDir, "skills"), source: "operator-workspace" });
@@ -467,7 +467,7 @@ async function waitForStableSkillFile(filePath: string, stabilityMs: number): Pr
   }
 }
 
-function resolveWatchDebounceMs(config?: OpenClawConfig): number {
+function resolveWatchDebounceMs(config?: OperatorConfig): number {
   const raw = config?.skills?.load?.watchDebounceMs;
   return typeof raw === "number" && Number.isFinite(raw) ? Math.max(0, raw) : 250;
 }
@@ -659,7 +659,7 @@ function evictIdleWorkspaceWatchStates(now: number): void {
   }
 }
 
-export function ensureSkillsWatcher(params: { workspaceDir: string; config?: OpenClawConfig }) {
+export function ensureSkillsWatcher(params: { workspaceDir: string; config?: OperatorConfig }) {
   const workspaceDir = params.workspaceDir.trim();
   if (!workspaceDir) {
     return;

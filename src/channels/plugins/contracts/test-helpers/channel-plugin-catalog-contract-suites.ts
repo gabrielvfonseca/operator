@@ -6,7 +6,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { resolvePreferredOpenClawTmpDir } from "../../../../infra/tmp-operator-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../../../../infra/tmp-operator-dir.js";
 import { listRawChannelPluginCatalogEntries } from "../../catalog.js";
 
 function createCatalogEntry(params: {
@@ -129,7 +129,7 @@ export function describeChannelPluginCatalogEntriesContract() {
         name: "includes external catalog entries",
         setup: () => {
           const dir = fs.mkdtempSync(
-            path.join(resolvePreferredOpenClawTmpDir(), "operator-catalog-"),
+            path.join(resolvePreferredOperatorTmpDir(), "operator-catalog-"),
           );
           const catalogPath = path.join(dir, "catalog.json");
           writeCatalogFile(
@@ -153,7 +153,7 @@ export function describeChannelPluginCatalogEntriesContract() {
         name: "preserves plugin ids when they differ from channel ids",
         setup: () => {
           const stateDir = fs.mkdtempSync(
-            path.join(resolvePreferredOpenClawTmpDir(), "operator-channel-catalog-state-"),
+            path.join(resolvePreferredOperatorTmpDir(), "operator-channel-catalog-state-"),
           );
           writeDiscoveredChannelPlugin({
             stateDir,
@@ -177,7 +177,7 @@ export function describeChannelPluginCatalogEntriesContract() {
         name: "keeps discovered plugins ahead of external catalog overrides",
         setup: () => {
           const stateDir = fs.mkdtempSync(
-            path.join(resolvePreferredOpenClawTmpDir(), "operator-catalog-state-"),
+            path.join(resolvePreferredOperatorTmpDir(), "operator-catalog-state-"),
           );
           const catalogPath = path.join(stateDir, "catalog.json");
           writeDiscoveredChannelPlugin({
@@ -217,7 +217,7 @@ export function describeChannelPluginCatalogEntriesContract() {
         name: "accepts rich external manifest entries with pinned npm metadata",
         setup: () => {
           const dir = fs.mkdtempSync(
-            path.join(resolvePreferredOpenClawTmpDir(), "operator-catalog-rich-"),
+            path.join(resolvePreferredOperatorTmpDir(), "operator-catalog-rich-"),
           );
           const catalogPath = path.join(dir, "catalog.json");
           fs.writeFileSync(
@@ -226,12 +226,12 @@ export function describeChannelPluginCatalogEntriesContract() {
               $schema: "./manifest.schema.json",
               schemaVersion: 1,
               description:
-                "Extension manifest. Declares plugin packages that OpenClaw can discover during onboarding and install on demand via `operator plugins install`.",
+                "Extension manifest. Declares plugin packages that Operator can discover during onboarding and install on demand via `operator plugins install`.",
               entries: [
                 {
                   name: "@wecom/wecom-operator-plugin",
                   description:
-                    "OpenClaw WeCom (企业微信) channel plugin — community maintained, published on npm.",
+                    "Operator WeCom (企业微信) channel plugin — community maintained, published on npm.",
                   source: "external",
                   kind: "channel",
                   operator: {
@@ -297,7 +297,7 @@ export function describeChannelPluginCatalogEntriesContract() {
         name: "pins bare external prerelease package specs to the entry version",
         setup: () => {
           const dir = fs.mkdtempSync(
-            path.join(resolvePreferredOpenClawTmpDir(), "operator-catalog-prerelease-"),
+            path.join(resolvePreferredOperatorTmpDir(), "operator-catalog-prerelease-"),
           );
           const catalogPath = path.join(dir, "catalog.json");
           writeCatalogFile(catalogPath, {
@@ -331,7 +331,7 @@ export function describeChannelPluginCatalogEntriesContract() {
         name: "accepts external manifest entries with ClawHub-only install metadata",
         setup: () => {
           const dir = fs.mkdtempSync(
-            path.join(resolvePreferredOpenClawTmpDir(), "operator-catalog-clawhub-"),
+            path.join(resolvePreferredOperatorTmpDir(), "operator-catalog-clawhub-"),
           );
           const catalogPath = path.join(dir, "catalog.json");
           fs.writeFileSync(
@@ -340,7 +340,7 @@ export function describeChannelPluginCatalogEntriesContract() {
               $schema: "./manifest.schema.json",
               schemaVersion: 1,
               description:
-                "Extension manifest. Declares plugin packages that OpenClaw can discover during onboarding and install on demand via `operator plugins install`.",
+                "Extension manifest. Declares plugin packages that Operator can discover during onboarding and install on demand via `operator plugins install`.",
               entries: [
                 {
                   source: "external",
@@ -403,7 +403,7 @@ export function describeChannelPluginCatalogEntriesContract() {
         name: "accepts rich external manifest entries for yuanbao with pinned npm metadata",
         setup: () => {
           const dir = fs.mkdtempSync(
-            path.join(resolvePreferredOpenClawTmpDir(), "operator-catalog-yuanbao-"),
+            path.join(resolvePreferredOperatorTmpDir(), "operator-catalog-yuanbao-"),
           );
           const catalogPath = path.join(dir, "catalog.json");
           fs.writeFileSync(
@@ -412,12 +412,12 @@ export function describeChannelPluginCatalogEntriesContract() {
               $schema: "./manifest.schema.json",
               schemaVersion: 1,
               description:
-                "Extension manifest. Declares plugin packages that OpenClaw can discover during onboarding and install on demand via `operator plugins install`.",
+                "Extension manifest. Declares plugin packages that Operator can discover during onboarding and install on demand via `operator plugins install`.",
               entries: [
                 {
                   name: "operator-plugin-yuanbao",
                   description:
-                    "OpenClaw Yuanbao (元宝) channel plugin — community maintained, published on npm.",
+                    "Operator Yuanbao (元宝) channel plugin — community maintained, published on npm.",
                   source: "external",
                   kind: "channel",
                   operator: {
@@ -487,7 +487,7 @@ export function describeChannelPluginCatalogPathResolutionContract() {
         name: "uses the provided env for external catalog path resolution",
         setup: () => {
           const home = fs.mkdtempSync(
-            path.join(resolvePreferredOpenClawTmpDir(), "operator-catalog-home-"),
+            path.join(resolvePreferredOperatorTmpDir(), "operator-catalog-home-"),
           );
           const catalogPath = path.join(home, "catalog.json");
           writeCatalogFile(
@@ -515,7 +515,7 @@ export function describeChannelPluginCatalogPathResolutionContract() {
         name: "uses the provided env for default catalog paths",
         setup: () => {
           const stateDir = fs.mkdtempSync(
-            path.join(resolvePreferredOpenClawTmpDir(), "operator-catalog-state-"),
+            path.join(resolvePreferredOperatorTmpDir(), "operator-catalog-state-"),
           );
           const catalogPath = path.join(stateDir, "plugins", "catalog.json");
           fs.mkdirSync(path.dirname(catalogPath), { recursive: true });

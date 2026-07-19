@@ -1,7 +1,7 @@
 // Telegram plugin module defines message-dispatch contracts.
 import type { Bot } from "grammy";
 import type {
-  OpenClawConfig,
+  OperatorConfig,
   ReplyToMode,
   TelegramAccountConfig,
 } from "openclaw/plugin-sdk/config-contracts";
@@ -16,7 +16,7 @@ import type { TelegramStreamMode } from "./bot/types.js";
 export type DispatchTelegramMessageParams = {
   context: TelegramMessageContext;
   bot: Bot;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   runtime: RuntimeEnv;
   replyToMode: ReplyToMode;
   streamMode: TelegramStreamMode;

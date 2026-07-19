@@ -547,8 +547,8 @@ describe("registerPluginCommand", () => {
     });
     const env = {
       ...process.env,
-      OPENCLAW_BUNDLED_PLUGINS_DIR: path.resolve("extensions"),
-      OPENCLAW_DISABLE_PERSISTED_PLUGIN_REGISTRY: "1",
+      OPERATOR_BUNDLED_PLUGINS_DIR: path.resolve("extensions"),
+      OPERATOR_DISABLE_PERSISTED_PLUGIN_REGISTRY: "1",
     };
 
     expect(getPluginCommandSpecs("discord", { env })).toStrictEqual([]);

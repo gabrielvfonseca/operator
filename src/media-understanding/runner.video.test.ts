@@ -1,7 +1,7 @@
 // Video runner tests cover provider request wiring, auth/config precedence, and
 // provider output handling for video attachments.
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.js";
+import type { OperatorConfig } from "../config/types.js";
 import { withTempDir } from "../test-helpers/temp-dir.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import { runCapability } from "./runner.js";
@@ -63,7 +63,7 @@ describe("runCapability video provider wiring", () => {
               },
             },
           },
-        } as unknown as OpenClawConfig,
+        } as unknown as OperatorConfig,
         ctx,
         attachments: cache,
         media,
@@ -123,7 +123,7 @@ describe("runCapability video provider wiring", () => {
               },
             },
           },
-        } as unknown as OpenClawConfig;
+        } as unknown as OperatorConfig;
 
         const result = await runCapability({
           capability: "video",
@@ -168,7 +168,7 @@ describe("runCapability video provider wiring", () => {
           GEMINI_API_KEY: undefined,
           GOOGLE_API_KEY: undefined,
           MOONSHOT_API_KEY: undefined,
-          OPENCLAW_AGENT_DIR: isolatedAgentDir,
+          OPERATOR_AGENT_DIR: isolatedAgentDir,
         },
         async () => {
           await withVideoFixture("openclaw-video-auto-moonshot", async ({ ctx, media, cache }) => {
@@ -189,7 +189,7 @@ describe("runCapability video provider wiring", () => {
                   },
                 },
               },
-            } as unknown as OpenClawConfig;
+            } as unknown as OperatorConfig;
 
             const result = await runCapability({
               capability: "video",
@@ -251,7 +251,7 @@ describe("runCapability video provider wiring", () => {
               },
             },
           },
-        } as unknown as OpenClawConfig;
+        } as unknown as OperatorConfig;
 
         const result = await runCapability({
           capability: "video",
@@ -310,7 +310,7 @@ describe("runCapability video provider wiring", () => {
                 },
               },
             },
-          } as unknown as OpenClawConfig;
+          } as unknown as OperatorConfig;
 
           const result = await runCapability({
             capability: "video",
@@ -370,7 +370,7 @@ describe("runCapability video provider wiring", () => {
               },
             },
           },
-        } as unknown as OpenClawConfig;
+        } as unknown as OperatorConfig;
 
         const result = await runCapability({
           capability: "video",

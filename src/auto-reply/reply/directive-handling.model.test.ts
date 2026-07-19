@@ -245,7 +245,7 @@ vi.mock("../../agents/harness/selection.js", () => ({
   }: {
     provider?: string;
     modelId?: string;
-    config?: OpenClawConfig;
+    config?: OperatorConfig;
   }) => {
     const modelRuntime =
       provider && modelId
@@ -287,7 +287,7 @@ import {
   replaceRuntimeAuthProfileStoreSnapshots,
 } from "../../agents/auth-profiles.js";
 import type { ModelAliasIndex } from "../../agents/model-selection.js";
-import type { ModelDefinitionConfig, OpenClawConfig } from "../../config/config.js";
+import type { ModelDefinitionConfig, OperatorConfig } from "../../config/config.js";
 import type { SessionEntry } from "../../config/sessions.js";
 import { loadSessionEntry, replaceSessionEntry } from "../../config/sessions/session-accessor.js";
 import {
@@ -383,11 +383,11 @@ function baseAliasIndex(): ModelAliasIndex {
   return { byAlias: new Map(), byKey: new Map() };
 }
 
-function baseConfig(): OpenClawConfig {
+function baseConfig(): OperatorConfig {
   return {
     commands: { text: true },
     agents: { defaults: {} },
-  } as unknown as OpenClawConfig;
+  } as unknown as OperatorConfig;
 }
 
 function modelDefinition(id: string, name: string): ModelDefinitionConfig {
@@ -526,7 +526,7 @@ function resolveModelSelectionForCommand(params: {
 }) {
   return resolveModelSelectionFromDirective({
     directives: parseInlineDirectives(params.command),
-    cfg: { commands: { text: true } } as unknown as OpenClawConfig,
+    cfg: { commands: { text: true } } as unknown as OperatorConfig,
     agentDir: TEST_AGENT_DIR,
     defaultProvider: "anthropic",
     defaultModel: "claude-opus-4-6",
@@ -540,7 +540,7 @@ function resolveModelSelectionForCommand(params: {
 async function persistModelDirectiveForTest(params: {
   command: string;
   profiles?: Record<string, ApiKeyProfile>;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   aliasIndex?: ModelAliasIndex;
   allowedModelKeys: string[];
   allowedModelCatalog?: ModelCatalogEntry[];
@@ -692,8 +692,8 @@ describe("/model chat UX", () => {
     try {
       await withEnvAsync(
         {
-          OPENCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
-          OPENCLAW_STATE_DIR: stateDir,
+          OPERATOR_BUNDLED_PLUGINS_DIR: bundledDir,
+          OPERATOR_STATE_DIR: stateDir,
           WORKSPACE_MODEL_LIST_CREDENTIALS: credentialPath,
         },
         async () => {
@@ -704,7 +704,7 @@ describe("/model chat UX", () => {
             cfg: {
               ...baseConfig(),
               plugins: { allow: ["workspace-model-list"] },
-            } as unknown as OpenClawConfig,
+            } as unknown as OperatorConfig,
           });
 
           expect(reply?.text).toContain("- anthropic");
@@ -755,7 +755,7 @@ describe("/model chat UX", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       allowedModelCatalog: [
         { provider: "anthropic", id: "claude-opus-4-6", name: "Claude Opus 4.5" },
         { provider: "openai", id: "gpt-4.1-mini", name: "GPT-4.1 mini" },
@@ -786,7 +786,7 @@ describe("/model chat UX", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       allowedModelCatalog: [
         { provider: "google", id: "gemini-3-flash-preview", name: "Gemini 3 Flash" },
         {
@@ -824,7 +824,7 @@ describe("/model chat UX", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       allowedModelCatalog: [
         { provider: "google", id: "gemini-3-flash-preview", name: "Gemini 3 Flash" },
         {
@@ -874,7 +874,7 @@ describe("/model chat UX", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       allowedModelCatalog: [{ provider: "openai", id: "gpt-5.5", name: "GPT-5.5" }],
     });
 
@@ -916,7 +916,7 @@ describe("/model chat UX", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       allowedModelCatalog: [{ provider: "openai", id: "gpt-5.5", name: "GPT-5.5" }],
     });
 
@@ -925,7 +925,7 @@ describe("/model chat UX", () => {
     expect(reply?.text).not.toContain("via codex runtime");
   });
 
-  it("does not borrow Codex auth when OpenAI model policy pins OpenClaw runtime", async () => {
+  it("does not borrow Codex auth when OpenAI model policy pins Operator runtime", async () => {
     setAuthProfiles({
       "openai:patrick@example.test": {
         type: "oauth",
@@ -954,7 +954,7 @@ describe("/model chat UX", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       allowedModelCatalog: [{ provider: "openai", id: "gpt-5.5", name: "GPT-5.5" }],
     });
 
@@ -996,7 +996,7 @@ describe("/model chat UX", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       allowedModelCatalog: [{ provider: "openai", id: "gpt-5.5", name: "GPT-5.5" }],
     });
 
@@ -1037,7 +1037,7 @@ describe("/model chat UX", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       allowedModelCatalog: [{ provider: "openai", id: "gpt-5.5", name: "GPT-5.5" }],
     });
 
@@ -1086,8 +1086,8 @@ describe("/model chat UX", () => {
         {
           ANTHROPIC_API_KEY: undefined,
           ANTHROPIC_OAUTH_TOKEN: undefined,
-          OPENCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
-          OPENCLAW_STATE_DIR: stateDir,
+          OPERATOR_BUNDLED_PLUGINS_DIR: bundledDir,
+          OPERATOR_STATE_DIR: stateDir,
           WORKSPACE_MODEL_CREDENTIALS: credentialPath,
         },
         async () => {
@@ -1104,7 +1104,7 @@ describe("/model chat UX", () => {
                   },
                 },
               },
-            } as unknown as OpenClawConfig,
+            } as unknown as OperatorConfig,
             allowedModelCatalog: [
               { provider: "anthropic", id: "claude-opus-4-6", name: "Claude Opus 4.6" },
             ],
@@ -1120,7 +1120,7 @@ describe("/model chat UX", () => {
 
   it("auto-applies closest match for typos", () => {
     const directives = parseInlineDirectives("/model anthropic/claud-opus-4-5");
-    const cfg = { commands: { text: true } } as unknown as OpenClawConfig;
+    const cfg = { commands: { text: true } } as unknown as OperatorConfig;
 
     const resolved = resolveModelSelectionFromDirective({
       directives,
@@ -1253,7 +1253,7 @@ describe("/model chat UX", () => {
 
     const resolved = resolveModelSelectionFromDirective({
       directives: parseInlineDirectives(`/model gpt@${OPENAI_DATE_PROFILE_ID}`),
-      cfg: { commands: { text: true } } as unknown as OpenClawConfig,
+      cfg: { commands: { text: true } } as unknown as OperatorConfig,
       agentDir: TEST_AGENT_DIR,
       defaultProvider: "anthropic",
       defaultModel: "claude-opus-4-6",
@@ -1370,7 +1370,7 @@ describe("/model chat UX", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
     });
 
     expect(persisted.provider).toBe("openai");
@@ -1398,7 +1398,7 @@ describe("/model chat UX", () => {
             contextTokens: 1_000_000,
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     });
 
     expect(persisted.contextTokens).toBe(272_000);

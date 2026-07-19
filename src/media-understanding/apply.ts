@@ -15,7 +15,7 @@ import {
 } from "../../packages/media-understanding-common/src/format.js";
 import { finalizeInboundContext } from "../auto-reply/reply/inbound-context.js";
 import type { MsgContext } from "../auto-reply/templating.js";
-import type { OpenClawConfig } from "../config/types.js";
+import type { OperatorConfig } from "../config/types.js";
 import { logVerbose, shouldLogVerbose } from "../globals.js";
 import { renderFileContextBlock } from "../media/file-context.js";
 import { extractFileContentFromSource, normalizeMimeType } from "../media/input-files.js";
@@ -391,7 +391,7 @@ type ExtractedFileContext = {
 async function extractFileContext(params: {
   attachments: ReturnType<typeof normalizeMediaAttachments>;
   cache: ReturnType<typeof createMediaAttachmentCache>;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   limits: FileExtractionLimits;
   skipAttachmentIndexes?: Set<number>;
 }): Promise<ExtractedFileContext> {
@@ -533,7 +533,7 @@ async function extractFileContext(params: {
 
 export async function applyMediaUnderstanding(params: {
   ctx: MsgContext;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId?: string;
   agentDir?: string;
   workspaceDir?: string;

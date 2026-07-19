@@ -3,7 +3,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { resolveOpenClawPackageRootSync } from "../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
 
 /** Returns an env override that points bundled plugin loading at source extensions. */
 export function resolvePrivateQaBundledPluginsEnv(
@@ -12,7 +12,7 @@ export function resolvePrivateQaBundledPluginsEnv(
   if (env.OPERATOR_ENABLE_PRIVATE_QA_CLI !== "1") {
     return undefined;
   }
-  const packageRoot = resolveOpenClawPackageRootSync({
+  const packageRoot = resolveOperatorPackageRootSync({
     argv1: process.argv[1],
     cwd: process.cwd(),
     moduleUrl: import.meta.url,

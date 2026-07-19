@@ -28,7 +28,7 @@ import { onDiagnosticEvent, type DiagnosticPayloadLargeEvent } from "../infra/di
 import { runExclusiveSessionLifecycleMutation } from "../sessions/session-lifecycle-admission.js";
 import { createDeferred } from "../test-utils/deferred.js";
 import { captureEnv, setTestEnvValue } from "../test-utils/env.js";
-import { withOpenClawTestState } from "../test-utils/operator-test-state.js";
+import { withOperatorTestState } from "../test-utils/operator-test-state.js";
 import { GATEWAY_CLIENT_MODES, GATEWAY_CLIENT_NAMES } from "../utils/message-channel.js";
 import { getMaxChatHistoryMessagesBytes } from "./server-constants.js";
 import type { GatewayRequestContext, RespondFn } from "./server-methods/shared-types.js";
@@ -113,8 +113,8 @@ async function withGatewayChatHarness(
   try {
     await run({ ws, createSessionDir });
   } finally {
-    if (process.env.OPENCLAW_CONFIG_PATH) {
-      await fs.rm(process.env.OPENCLAW_CONFIG_PATH, { force: true });
+    if (process.env.OPERATOR_CONFIG_PATH) {
+      await fs.rm(process.env.OPERATOR_CONFIG_PATH, { force: true });
     }
     clearConfigCache();
     testState.sessionStorePath = undefined;
@@ -146,7 +146,7 @@ function futureFixtureUpdatedAt(): number {
   return Date.now() + 60_000;
 }
 
-function readOpenClawSeq(message: unknown): number | undefined {
+function readOperatorSeq(message: unknown): number | undefined {
   if (!message || typeof message !== "object" || Array.isArray(message)) {
     return undefined;
   }
@@ -159,9 +159,9 @@ function readOpenClawSeq(message: unknown): number | undefined {
 }
 
 async function writeGatewayConfig(config: Record<string, unknown>) {
-  const configPath = process.env.OPENCLAW_CONFIG_PATH;
+  const configPath = process.env.OPERATOR_CONFIG_PATH;
   if (!configPath) {
-    throw new Error("OPENCLAW_CONFIG_PATH missing in gateway test environment");
+    throw new Error("OPERATOR_CONFIG_PATH missing in gateway test environment");
   }
   await fs.mkdir(path.dirname(configPath), { recursive: true });
   await fs.writeFile(configPath, JSON.stringify(config, null, 2), "utf-8");
@@ -758,7 +758,7 @@ describe("gateway server chat", () => {
   });
 
   test("chat.startup projects route thinking metadata per agent and session auth", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-gw-startup-routes-",
@@ -767,8 +767,8 @@ describe("gateway server chat", () => {
           CHATGPT_OAUTH_TOKEN: undefined,
           CODEX_API_KEY: undefined,
           CODEX_HOME: "/__openclaw_gateway_startup_routes__/codex",
-          OPENCLAW_BUNDLED_PLUGINS_DIR: path.resolve("extensions"),
-          OPENCLAW_DISABLE_BUNDLED_PLUGINS: undefined,
+          OPERATOR_BUNDLED_PLUGINS_DIR: path.resolve("extensions"),
+          OPERATOR_DISABLE_BUNDLED_PLUGINS: undefined,
           OPENAI_API_KEY: undefined,
           OPENAI_BASE_URL: undefined,
           OPENAI_OAUTH_TOKEN: undefined,
@@ -4659,7 +4659,7 @@ describe("gateway server chat", () => {
           totalMessages?: number;
         }>(ws, "chat.history", { sessionKey: "main", limit: 2 });
         expect(firstPage.ok).toBe(true);
-        expect(firstPage.payload?.messages?.map(readOpenClawSeq)).toEqual([4, 5]);
+        expect(firstPage.payload?.messages?.map(readOperatorSeq)).toEqual([4, 5]);
         expect(firstPage.payload?.hasMore).toBe(true);
         expect(firstPage.payload?.nextOffset).toBe(2);
         expect(firstPage.payload?.totalMessages).toBe(5);
@@ -4674,7 +4674,7 @@ describe("gateway server chat", () => {
           offset: firstPage.payload?.nextOffset,
         });
         expect(secondPage.ok).toBe(true);
-        expect(secondPage.payload?.messages?.map(readOpenClawSeq)).toEqual([2, 3]);
+        expect(secondPage.payload?.messages?.map(readOperatorSeq)).toEqual([2, 3]);
         expect(secondPage.payload?.hasMore).toBe(true);
         expect(secondPage.payload?.nextOffset).toBe(4);
       } finally {
@@ -5066,10 +5066,10 @@ describe("gateway server chat", () => {
   test("chat.send diagnostics timeline carries run correlation attributes", async () => {
     const timelineDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-chat-timeline-"));
     const timelinePath = path.join(timelineDir, "timeline.jsonl");
-    const previousDiagnostics = process.env.OPENCLAW_DIAGNOSTICS;
-    const previousTimelinePath = process.env.OPENCLAW_DIAGNOSTICS_TIMELINE_PATH;
-    process.env.OPENCLAW_DIAGNOSTICS = "timeline";
-    process.env.OPENCLAW_DIAGNOSTICS_TIMELINE_PATH = timelinePath;
+    const previousDiagnostics = process.env.OPERATOR_DIAGNOSTICS;
+    const previousTimelinePath = process.env.OPERATOR_DIAGNOSTICS_TIMELINE_PATH;
+    process.env.OPERATOR_DIAGNOSTICS = "timeline";
+    process.env.OPERATOR_DIAGNOSTICS_TIMELINE_PATH = timelinePath;
     try {
       await withGatewayChatHarness(
         async ({ ws, createSessionDir }) => {
@@ -5137,14 +5137,14 @@ describe("gateway server chat", () => {
       );
     } finally {
       if (previousDiagnostics === undefined) {
-        delete process.env.OPENCLAW_DIAGNOSTICS;
+        delete process.env.OPERATOR_DIAGNOSTICS;
       } else {
-        process.env.OPENCLAW_DIAGNOSTICS = previousDiagnostics;
+        process.env.OPERATOR_DIAGNOSTICS = previousDiagnostics;
       }
       if (previousTimelinePath === undefined) {
-        delete process.env.OPENCLAW_DIAGNOSTICS_TIMELINE_PATH;
+        delete process.env.OPERATOR_DIAGNOSTICS_TIMELINE_PATH;
       } else {
-        process.env.OPENCLAW_DIAGNOSTICS_TIMELINE_PATH = previousTimelinePath;
+        process.env.OPERATOR_DIAGNOSTICS_TIMELINE_PATH = previousTimelinePath;
       }
       await removeTempDir(timelineDir);
     }
@@ -6098,7 +6098,7 @@ describe("gateway server chat", () => {
         maxChars: 100,
       });
       expect(firstPage.ok).toBe(true);
-      expect(firstPage.payload?.messages?.map(readOpenClawSeq)).toEqual([3, 5]);
+      expect(firstPage.payload?.messages?.map(readOperatorSeq)).toEqual([3, 5]);
       expect(firstPage.payload?.nextOffset).toBe(3);
       expect(firstPage.payload?.hasMore).toBe(true);
       expect(firstPage.payload?.totalMessages).toBe(5);
@@ -6114,7 +6114,7 @@ describe("gateway server chat", () => {
         maxChars: 100,
       });
       expect(secondPage.ok).toBe(true);
-      expect(secondPage.payload?.messages?.map(readOpenClawSeq)).toEqual([1, 2]);
+      expect(secondPage.payload?.messages?.map(readOperatorSeq)).toEqual([1, 2]);
       expect(JSON.stringify(secondPage.payload?.messages)).not.toContain("visible boundary");
       expect(secondPage.payload?.hasMore).toBe(false);
       expect(secondPage.payload?.nextOffset).toBeUndefined();
@@ -6156,7 +6156,7 @@ describe("gateway server chat", () => {
         offset = page.payload?.nextOffset;
       } while (pages.at(-1)?.hasMore);
 
-      expect(pages.map((page) => page.messages?.map(readOpenClawSeq))).toEqual([
+      expect(pages.map((page) => page.messages?.map(readOperatorSeq))).toEqual([
         [6, 7],
         [4, 5],
         [2, 3],
@@ -6168,7 +6168,7 @@ describe("gateway server chat", () => {
       expect(
         pages
           .flatMap((page) => page.messages ?? [])
-          .map(readOpenClawSeq)
+          .map(readOperatorSeq)
           .toSorted((a, b) => (a ?? 0) - (b ?? 0)),
       ).toEqual([1, 2, 3, 4, 5, 6, 7]);
     });
@@ -6219,7 +6219,7 @@ describe("gateway server chat", () => {
       });
 
       expect(history.ok).toBe(true);
-      expect(history.payload?.messages?.map(readOpenClawSeq)).toEqual([4, 5, 6]);
+      expect(history.payload?.messages?.map(readOperatorSeq)).toEqual([4, 5, 6]);
       expect(history.payload?.offset).toBeUndefined();
       expect(history.payload?.nextOffset).toBeUndefined();
       expect(history.payload?.hasMore).toBeUndefined();
@@ -6355,7 +6355,7 @@ describe("gateway server chat", () => {
         maxChars: 100_000,
       });
       expect(firstPage.ok).toBe(true);
-      const sequences = firstPage.payload?.messages?.map(readOpenClawSeq) ?? [];
+      const sequences = firstPage.payload?.messages?.map(readOperatorSeq) ?? [];
       expect(sequences.length).toBeGreaterThan(0);
       expect(sequences.length).toBeLessThan(messageCount);
       const oldestSeq = expectDefined(sequences[0], "oldest returned sequence");
@@ -6421,7 +6421,7 @@ describe("gateway server chat", () => {
           maxChars: 100_000,
         });
         expect(firstPage.ok).toBe(true);
-        const firstPageSequences = firstPage.payload?.messages?.map(readOpenClawSeq) ?? [];
+        const firstPageSequences = firstPage.payload?.messages?.map(readOperatorSeq) ?? [];
         expect(firstPageSequences.length).toBeGreaterThan(0);
         expect(firstPageSequences.every((seq) => seq === 3)).toBe(true);
         expect(firstPage.payload?.hasMore).toBe(true);

@@ -10,8 +10,8 @@ import {
   replaceSessionEntry,
 } from "../../config/sessions/session-accessor.js";
 import { onSessionTranscriptUpdate } from "../../sessions/transcript-events.js";
-import { closeOpenClawAgentDatabasesForTest } from "../../state/openclaw-agent-db.js";
-import { closeOpenClawStateDatabaseForTest } from "../../state/openclaw-state-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../state/openclaw-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../state/openclaw-state-db.js";
 import { appendInjectedAssistantMessageToTranscript } from "./chat-transcript-inject.js";
 
 type SqliteTranscriptFixture = {
@@ -38,8 +38,8 @@ async function createSqliteTranscriptFixture(params: {
 }
 
 async function cleanupFixture(fixture: { dir: string }) {
-  closeOpenClawAgentDatabasesForTest();
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorAgentDatabasesForTest();
+  closeOperatorStateDatabaseForTest();
   fs.rmSync(fixture.dir, { recursive: true, force: true });
 }
 

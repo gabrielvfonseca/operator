@@ -1,6 +1,6 @@
 // Defines and sanitizes runtime diagnostic event payloads.
 import { randomUUID } from "node:crypto";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { TalkBrain, TalkEventType, TalkMode, TalkTransport } from "../talk/talk-events.js";
 import {
   formatDiagnosticTraceparent,
@@ -987,7 +987,7 @@ function getDiagnosticEventsState(): DiagnosticEventsGlobalState {
 }
 
 /** Returns whether diagnostics are enabled for a loaded config; missing config defaults enabled. */
-export function isDiagnosticsEnabled(config?: OpenClawConfig): boolean {
+export function isDiagnosticsEnabled(config?: OperatorConfig): boolean {
   return config?.diagnostics?.enabled !== false;
 }
 
@@ -1308,7 +1308,7 @@ export function emitDiagnosticEvent(event: DiagnosticEventInput) {
   emitDiagnosticEventWithTrust(event, false);
 }
 
-/** Emits an untrusted event whose trace context came from OpenClaw-owned scope. */
+/** Emits an untrusted event whose trace context came from Operator-owned scope. */
 export function emitDiagnosticEventWithTrustedTraceContext(event: DiagnosticEventInput) {
   emitDiagnosticEventWithTrust(event, false, { trustedTraceContext: true });
 }

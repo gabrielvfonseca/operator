@@ -1,6 +1,6 @@
-# SearXNG OpenClaw plugin
+# SearXNG Operator plugin
 
-Official OpenClaw plugin for SearXNG.
+Official Operator plugin for SearXNG.
 
 ## Install
 
@@ -10,4 +10,4 @@ openclaw plugins install @operator/searxng-plugin
 
 ## Docs
 
-See `docs/tools/searxng-search.md` in the OpenClaw repository, or the published docs at `https://docs.openclaw.ai/tools/searxng-search`.
+See `docs/tools/searxng-search.md` in the Operator repository, or the published docs at `https://docs.openclaw.ai/tools/searxng-search`.

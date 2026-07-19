@@ -459,7 +459,7 @@ describe("acquireSessionWriteLock", () => {
     });
   });
 
-  it("reports live OpenClaw-owned stale locks without removing them", async () => {
+  it("reports live Operator-owned stale locks without removing them", async () => {
     await withTempSessionLockFile(async ({ sessionFile, lockPath }) => {
       const owner = spawn(process.execPath, ["-e", "setInterval(() => {}, 1000)", "openclaw"], {
         stdio: "ignore",
@@ -743,9 +743,9 @@ describe("acquireSessionWriteLock", () => {
         },
         {
           env: {
-            OPENCLAW_SESSION_WRITE_LOCK_ACQUIRE_TIMEOUT_MS: "120000",
-            OPENCLAW_SESSION_WRITE_LOCK_STALE_MS: "60000",
-            OPENCLAW_SESSION_WRITE_LOCK_MAX_HOLD_MS: "50000",
+            OPERATOR_SESSION_WRITE_LOCK_ACQUIRE_TIMEOUT_MS: "120000",
+            OPERATOR_SESSION_WRITE_LOCK_STALE_MS: "60000",
+            OPERATOR_SESSION_WRITE_LOCK_MAX_HOLD_MS: "50000",
           },
         },
       ),
@@ -770,9 +770,9 @@ describe("acquireSessionWriteLock", () => {
         },
         {
           env: {
-            OPENCLAW_SESSION_WRITE_LOCK_ACQUIRE_TIMEOUT_MS: "1e3",
-            OPENCLAW_SESSION_WRITE_LOCK_STALE_MS: "0x1000",
-            OPENCLAW_SESSION_WRITE_LOCK_MAX_HOLD_MS: "9007199254740993",
+            OPERATOR_SESSION_WRITE_LOCK_ACQUIRE_TIMEOUT_MS: "1e3",
+            OPERATOR_SESSION_WRITE_LOCK_STALE_MS: "0x1000",
+            OPERATOR_SESSION_WRITE_LOCK_MAX_HOLD_MS: "9007199254740993",
           },
         },
       ),
@@ -787,8 +787,8 @@ describe("acquireSessionWriteLock", () => {
     expect(
       resolveSessionWriteLockOptions(undefined, {
         env: {
-          OPENCLAW_SESSION_WRITE_LOCK_ACQUIRE_TIMEOUT_MS: "Infinity",
-          OPENCLAW_SESSION_WRITE_LOCK_STALE_MS: "Infinity",
+          OPERATOR_SESSION_WRITE_LOCK_ACQUIRE_TIMEOUT_MS: "Infinity",
+          OPERATOR_SESSION_WRITE_LOCK_STALE_MS: "Infinity",
         },
       }),
     ).toMatchObject({
@@ -834,7 +834,7 @@ describe("acquireSessionWriteLock", () => {
       const envOverride = await cleanStaleLockFiles({
         sessionsDir,
         config: { session: { writeLock: { staleMs: 30_000 } } },
-        env: { OPENCLAW_SESSION_WRITE_LOCK_STALE_MS: "60000" },
+        env: { OPERATOR_SESSION_WRITE_LOCK_STALE_MS: "60000" },
         nowMs,
         removeStale: false,
         readOwnerProcessArgs: () => ["node", "/opt/openclaw/openclaw.mjs", "doctor"],
@@ -845,7 +845,7 @@ describe("acquireSessionWriteLock", () => {
     }
   });
 
-  it("does not clean live OpenClaw locks just because holder max hold expired", async () => {
+  it("does not clean live Operator locks just because holder max hold expired", async () => {
     const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-lock-policy-"));
     const sessionsDir = path.join(root, "sessions");
     await fs.mkdir(sessionsDir, { recursive: true });
@@ -976,7 +976,7 @@ describe("acquireSessionWriteLock", () => {
     }
   });
 
-  it("cleans old live .jsonl lock files owned by non-OpenClaw processes", async () => {
+  it("cleans old live .jsonl lock files owned by non-Operator processes", async () => {
     const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-lock-"));
     const sessionsDir = path.join(root, "sessions");
     await fs.mkdir(sessionsDir, { recursive: true });
@@ -1047,7 +1047,7 @@ describe("acquireSessionWriteLock", () => {
     }
   });
 
-  it("cleans fresh live .jsonl lock files owned by a non-OpenClaw process", async () => {
+  it("cleans fresh live .jsonl lock files owned by a non-Operator process", async () => {
     const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-lock-"));
     const sessionsDir = path.join(root, "sessions");
     await fs.mkdir(sessionsDir, { recursive: true });
@@ -1095,7 +1095,7 @@ describe("acquireSessionWriteLock", () => {
     }
   });
 
-  it("cleans fresh live .jsonl lock files owned by generic non-OpenClaw entrypoints", async () => {
+  it("cleans fresh live .jsonl lock files owned by generic non-Operator entrypoints", async () => {
     const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-lock-"));
     const sessionsDir = path.join(root, "sessions");
     await fs.mkdir(sessionsDir, { recursive: true });
@@ -1207,7 +1207,7 @@ describe("acquireSessionWriteLock", () => {
     }
   });
 
-  it("keeps fresh live .jsonl lock files with OpenClaw or unknown owners", async () => {
+  it("keeps fresh live .jsonl lock files with Operator or unknown owners", async () => {
     const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-lock-"));
     const sessionsDir = path.join(root, "sessions");
     await fs.mkdir(sessionsDir, { recursive: true });

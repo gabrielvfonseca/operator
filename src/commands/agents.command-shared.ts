@@ -1,5 +1,5 @@
 // Shared config-loading helpers for agent management commands.
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { RuntimeEnv } from "../runtime.js";
 import {
   requireValidConfigFileSnapshot as requireValidConfigFileSnapshotBase,
@@ -17,6 +17,6 @@ export async function requireValidConfigFileSnapshot(runtime: RuntimeEnv) {
 }
 
 /** Load the current runtime config and return null after reporting validation failures. */
-export async function requireValidConfig(runtime: RuntimeEnv): Promise<OpenClawConfig | null> {
+export async function requireValidConfig(runtime: RuntimeEnv): Promise<OperatorConfig | null> {
   return await requireValidConfigSnapshot(runtime);
 }

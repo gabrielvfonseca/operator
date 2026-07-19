@@ -1,7 +1,7 @@
-// Vllm plugin entrypoint registers its OpenClaw integration.
+// Vllm plugin entrypoint registers its Operator integration.
 import {
   definePluginEntry,
-  type OpenClawPluginApi,
+  type OperatorPluginApi,
   type ProviderAuthMethodNonInteractiveContext,
 } from "openclaw/plugin-sdk/plugin-entry";
 import {
@@ -24,7 +24,7 @@ export default definePluginEntry({
   id: "vllm",
   name: "vLLM Provider",
   description: "Bundled vLLM provider plugin",
-  register(api: OpenClawPluginApi) {
+  register(api: OperatorPluginApi) {
     api.registerProvider({
       id: PROVIDER_ID,
       label: "vLLM",

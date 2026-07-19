@@ -6,7 +6,7 @@ import { CURRENT_SESSION_VERSION } from "openclaw/plugin-sdk/agent-sessions";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { replaceSessionEntry } from "../../config/sessions/session-accessor.js";
 import type { SessionEntry } from "../../config/sessions/types.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import type { ContextEngine } from "../../context-engine/types.js";
 import {
   resetCliCompactionTestDeps,
@@ -44,7 +44,7 @@ function buildContextEngine(params: {
 }
 
 async function writeSessionFile(params: { sessionFile: string; sessionId: string }) {
-  // The lifecycle compacts canonical OpenClaw session JSONL, so tests write the
+  // The lifecycle compacts canonical Operator session JSONL, so tests write the
   // same session/message envelope the real store appends.
   await fs.mkdir(path.dirname(params.sessionFile), { recursive: true });
   await fs.writeFile(
@@ -160,7 +160,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     const updatedEntry = await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -203,7 +203,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     expect(maintenanceCall?.sessionKey).toBe(sessionKey);
     expect(maintenanceCall?.sessionFile).toBe(sessionFile);
     expect(updatedEntry?.compactionCount).toBe(1);
-    // Once OpenClaw rewrites the transcript, external CLI resume ids are stale
+    // Once Operator rewrites the transcript, external CLI resume ids are stale
     // and must be cleared so the next turn starts from the compacted prompt.
     expect(updatedEntry?.cliSessionBindings?.["claude-cli"]).toBeUndefined();
     expect(updatedEntry?.cliSessionIds?.["claude-cli"]).toBeUndefined();
@@ -278,7 +278,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -363,7 +363,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     const updatedEntry = await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -434,7 +434,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     const updatedEntry = await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -516,7 +516,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     const updatedEntry = await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -630,7 +630,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     const updatedEntry = await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -696,7 +696,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -715,7 +715,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     const lockedEntry: SessionEntry = { ...sessionEntry, modelSelectionLocked: true };
     await expect(
       runCliTurnCompactionLifecycle({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as OperatorConfig,
         sessionId,
         sessionKey,
         sessionEntry: lockedEntry,
@@ -783,7 +783,7 @@ describe("runCliTurnCompactionLifecycle", () => {
 
     await expect(
       runCliTurnCompactionLifecycle({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as OperatorConfig,
         sessionId,
         sessionKey,
         sessionEntry,
@@ -863,7 +863,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     const result = await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -894,7 +894,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     const lockedEntry: SessionEntry = { ...sessionEntry, modelSelectionLocked: true };
     sessionStore[sessionKey] = lockedEntry;
     const lockedResult = await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry: lockedEntry,
@@ -968,7 +968,7 @@ describe("runCliTurnCompactionLifecycle", () => {
 
     await expect(
       runCliTurnCompactionLifecycle({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as OperatorConfig,
         sessionId,
         sessionKey,
         sessionEntry,
@@ -1062,7 +1062,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -1143,7 +1143,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     const updatedEntry = await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -1229,7 +1229,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     const updatedEntry = await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -1328,7 +1328,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     const updatedEntry = await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -1406,7 +1406,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     const updatedEntry = await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -1488,7 +1488,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     const updatedEntry = await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -1550,7 +1550,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -1621,7 +1621,7 @@ describe("runCliTurnCompactionLifecycle", () => {
 
     vi.useFakeTimers();
     const pending = runCliTurnCompactionLifecycle({
-      cfg: { agents: { defaults: { compaction: { timeoutSeconds: 1 } } } } as OpenClawConfig,
+      cfg: { agents: { defaults: { compaction: { timeoutSeconds: 1 } } } } as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -1700,7 +1700,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     const updatedEntry = await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -1765,7 +1765,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,
@@ -1841,7 +1841,7 @@ describe("runCliTurnCompactionLifecycle", () => {
     });
 
     await runCliTurnCompactionLifecycle({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionId,
       sessionKey,
       sessionEntry,

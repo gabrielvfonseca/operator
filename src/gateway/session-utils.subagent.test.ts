@@ -12,11 +12,11 @@ import {
   resetSubagentRegistryForTests,
 } from "../agents/subagent-registry.test-helpers.js";
 import type { SubagentRunRecord } from "../agents/subagent-registry.types.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import type { SessionEntry } from "../config/sessions.js";
 import { replaceSessionEntry } from "../config/sessions/session-accessor.js";
 import { registerAgentRunContext, resetAgentEventsForTest } from "../infra/agent-events.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import { withStateDirEnv } from "../test-helpers/state-dir-env.js";
 import { withEnv } from "../test-utils/env.js";
 import {
@@ -36,7 +36,7 @@ async function seedSessionEntry(
 describe("listSessionsFromStore subagent metadata", () => {
   afterEach(() => {
     resetAgentEventsForTest({ preserveListeners: true });
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     resetSubagentRegistryForTests({ persist: false });
   });
   beforeEach(() => {
@@ -47,7 +47,7 @@ describe("listSessionsFromStore subagent metadata", () => {
   const cfg = {
     session: { mainKey: "main" },
     agents: { list: [{ id: "main", default: true }] },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 
   test("searches channel-derived display names before row enrichment", () => {
     const result = listSessionsFromStore({
@@ -759,8 +759,8 @@ describe("listSessionsFromStore subagent metadata", () => {
 
       const row = withEnv(
         {
-          OPENCLAW_STATE_DIR: stateDir,
-          OPENCLAW_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE: "1",
+          OPERATOR_STATE_DIR: stateDir,
+          OPERATOR_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE: "1",
         },
         () => {
           saveSubagentRegistryToSqlite(persistedRuns);
@@ -790,7 +790,7 @@ describe("listSessionsFromStore subagent metadata", () => {
       expect(row?.endedAt).toBe(now - 1_800);
       expect(row?.runtimeMs).toBe(100);
     } finally {
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorStateDatabaseForTest();
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
   });
@@ -850,8 +850,8 @@ describe("listSessionsFromStore subagent metadata", () => {
     try {
       const result = withEnv(
         {
-          OPENCLAW_STATE_DIR: stateDir,
-          OPENCLAW_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE: "1",
+          OPERATOR_STATE_DIR: stateDir,
+          OPERATOR_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE: "1",
         },
         () => {
           saveSubagentRegistryToSqlite(persistedRuns);
@@ -871,7 +871,7 @@ describe("listSessionsFromStore subagent metadata", () => {
       expect(registryStatCount).toBe(0);
     } finally {
       statSpy.mockRestore();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorStateDatabaseForTest();
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
   });
@@ -887,8 +887,8 @@ describe("listSessionsFromStore subagent metadata", () => {
     try {
       const result = withEnv(
         {
-          OPENCLAW_STATE_DIR: stateDir,
-          OPENCLAW_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE: "1",
+          OPERATOR_STATE_DIR: stateDir,
+          OPERATOR_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE: "1",
         },
         () =>
           listSessionsFromStore({
@@ -911,7 +911,7 @@ describe("listSessionsFromStore subagent metadata", () => {
       expect(registryStatCount).toBe(0);
     } finally {
       statSpy.mockRestore();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorStateDatabaseForTest();
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
   });
@@ -1270,7 +1270,7 @@ describe("loadCombinedSessionStoreForGateway includes disk-only agents (#32804)"
         agents: {
           list: [{ id: "main", default: true }],
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const { store } = loadCombinedSessionStoreForGateway(cfg);
       expect(store["agent:main:main"]?.sessionId).toBe("s-main");
@@ -1306,7 +1306,7 @@ describe("loadCombinedSessionStoreForGateway includes disk-only agents (#32804)"
         agents: {
           list: [{ id: "main", default: true }],
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const { store, storePath } = loadCombinedSessionStoreForGateway(cfg, { agentId: "codex" });
 

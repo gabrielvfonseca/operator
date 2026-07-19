@@ -1,4 +1,4 @@
-// OpenClaw state database manages shared persisted state and migrations.
+// Operator state database manages shared persisted state and migrations.
 import { existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
@@ -40,21 +40,21 @@ import {
   tableHasColumn,
   tablePrimaryKeyColumns,
 } from "./operator-state-db-schema-helpers.js";
-import type { DB as OpenClawStateKyselyDatabase } from "./operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "./operator-state-db.generated.js";
 import {
-  resolveOpenClawStateSqliteDir,
-  resolveOpenClawStateSqlitePath,
+  resolveOperatorStateSqliteDir,
+  resolveOperatorStateSqlitePath,
 } from "./operator-state-db.paths.js";
 import { OPERATOR_STATE_SCHEMA_SQL } from "./operator-state-schema.generated.js";
 
 /**
- * Shared OpenClaw SQLite state database lifecycle and metadata writers.
+ * Shared Operator SQLite state database lifecycle and metadata writers.
  *
  * This module owns schema creation, additive migrations for released state
  * tables, private file permissions, cached handles, and audit rows for
  * migrations/backups that operate on local state.
  */
-// v3 rebuilds every OpenClaw-owned table with SQLite STRICT type enforcement.
+// v3 rebuilds every Operator-owned table with SQLite STRICT type enforcement.
 export const OPERATOR_STATE_SCHEMA_VERSION = 3;
 /** Maximum time one synchronous SQLite call may wait for a lock. */
 export const OPERATOR_SQLITE_BUSY_TIMEOUT_MS = 5_000;
@@ -102,17 +102,17 @@ const OPERATOR_STATE_MAINTENANCE_SCHEMA_COMPATIBILITY = {
 } satisfies SqliteSchemaCompatibility;
 
 /** Open shared SQLite database handle plus WAL maintenance lifecycle. */
-export type OpenClawStateDatabase = {
+export type OperatorStateDatabase = {
   db: DatabaseSync;
   path: string;
   walMaintenance: SqliteWalMaintenance;
 };
 /** Options for resolving or overriding the shared state database path. */
-export type OpenClawStateDatabaseOptions = {
+export type OperatorStateDatabaseOptions = {
   env?: NodeJS.ProcessEnv;
   path?: string;
 };
-export type OpenClawStateDatabaseSchemaMigration = {
+export type OperatorStateDatabaseSchemaMigration = {
   kind:
     | "agent-databases-composite-primary-key"
     | "audit-events-v2"
@@ -120,13 +120,13 @@ export type OpenClawStateDatabaseSchemaMigration = {
     | "strict-tables-v3";
   path: string;
 };
-const cachedDatabases = new Map<string, OpenClawStateDatabase>();
-type OpenClawStateMetadataDatabase = Pick<OpenClawStateKyselyDatabase, "schema_meta">;
+const cachedDatabases = new Map<string, OperatorStateDatabase>();
+type OperatorStateMetadataDatabase = Pick<OperatorStateKyselyDatabase, "schema_meta">;
 function assertSupportedSchemaVersion(db: DatabaseSync, pathname: string): void {
   const userVersion = readSqliteUserVersion(db);
   if (userVersion > OPERATOR_STATE_SCHEMA_VERSION) {
     throw createNewerSqliteSchemaVersionError(
-      "OpenClaw state database",
+      "Operator state database",
       pathname,
       userVersion,
       OPERATOR_STATE_SCHEMA_VERSION,
@@ -134,14 +134,14 @@ function assertSupportedSchemaVersion(db: DatabaseSync, pathname: string): void 
   }
 }
 /** Require the canonical shared-state owner and schema before offline file maintenance. */
-export function assertOpenClawStateDatabaseForMaintenance(
+export function assertOperatorStateDatabaseForMaintenance(
   database: DatabaseSync,
   options: { pathname: string },
 ): void {
   const userVersion = readSqliteUserVersion(database);
   if (userVersion > OPERATOR_STATE_SCHEMA_VERSION) {
     throw createNewerSqliteSchemaVersionError(
-      "OpenClaw state database",
+      "Operator state database",
       options.pathname,
       userVersion,
       OPERATOR_STATE_SCHEMA_VERSION,
@@ -149,7 +149,7 @@ export function assertOpenClawStateDatabaseForMaintenance(
   }
   if (userVersion !== OPERATOR_STATE_SCHEMA_VERSION) {
     throw new Error(
-      `OpenClaw state database ${options.pathname} uses schema version ${userVersion}; run operator doctor --fix before compacting it.`,
+      `Operator state database ${options.pathname} uses schema version ${userVersion}; run operator doctor --fix before compacting it.`,
     );
   }
 
@@ -159,14 +159,14 @@ export function assertOpenClawStateDatabaseForMaintenance(
   if (metadata?.role !== "global") {
     const role = typeof metadata?.role === "string" ? metadata.role : "missing";
     throw new Error(
-      `OpenClaw state database ${options.pathname} has schema role ${role}; expected global.`,
+      `Operator state database ${options.pathname} has schema role ${role}; expected global.`,
     );
   }
   if (metadata.schema_version !== OPERATOR_STATE_SCHEMA_VERSION) {
     const schemaVersion =
       typeof metadata.schema_version === "number" ? metadata.schema_version : "invalid";
     throw new Error(
-      `OpenClaw state database ${options.pathname} metadata schema version ${schemaVersion} does not match ${OPERATOR_STATE_SCHEMA_VERSION}; run operator doctor --fix before compacting it.`,
+      `Operator state database ${options.pathname} metadata schema version ${schemaVersion} does not match ${OPERATOR_STATE_SCHEMA_VERSION}; run operator doctor --fix before compacting it.`,
     );
   }
   assertSqliteSchemaContains(
@@ -195,13 +195,13 @@ function bestEffortChmodSync(target: string, mode: number): void {
   stateDbLog.warn(`skipped permission hardening for ${target}: ${String(result.error)}`);
 }
 
-export function ensureOpenClawStatePermissions(pathname: string, env: NodeJS.ProcessEnv): void {
+export function ensureOperatorStatePermissions(pathname: string, env: NodeJS.ProcessEnv): void {
   const dir = path.dirname(pathname);
-  const defaultDir = resolveOpenClawStateSqliteDir(env);
+  const defaultDir = resolveOperatorStateSqliteDir(env);
   const isDefaultStateDatabase =
-    path.resolve(pathname) === path.resolve(resolveOpenClawStateSqlitePath(env));
+    path.resolve(pathname) === path.resolve(resolveOperatorStateSqlitePath(env));
   if (isDefaultStateDatabase && dir !== defaultDir) {
-    throw new Error(`OpenClaw state database path resolved outside its state dir: ${pathname}`);
+    throw new Error(`Operator state database path resolved outside its state dir: ${pathname}`);
   }
   const dirExisted = existsSync(dir);
   mkdirSync(dir, { recursive: true, mode: OPERATOR_STATE_DIR_MODE });
@@ -743,23 +743,23 @@ function assertCanonicalStateSchemaShape(db: DatabaseSync, pathname: string): vo
   operatorApprovalMigration.assertCanonicalOperatorApprovalKinds(db, pathname);
   if (!hasCanonicalAgentDatabasesPrimaryKey(db)) {
     throw new Error(
-      `OpenClaw state database ${pathname} has a legacy agent database registry schema; run operator doctor --fix to migrate it.`,
+      `Operator state database ${pathname} has a legacy agent database registry schema; run operator doctor --fix to migrate it.`,
     );
   }
   if (!hasCanonicalAuditEventsSchema(db)) {
     if (canRepairLegacyAuditEventsSchema(db)) {
       throw new Error(
-        `OpenClaw state database ${pathname} has a legacy audit event schema; run operator doctor --fix to migrate it.`,
+        `Operator state database ${pathname} has a legacy audit event schema; run operator doctor --fix to migrate it.`,
       );
     }
     throw new Error(
-      `OpenClaw state database ${pathname} has a noncanonical audit event schema that cannot be repaired automatically; restore the canonical audit_events shape before retrying.`,
+      `Operator state database ${pathname} has a noncanonical audit event schema that cannot be repaired automatically; restore the canonical audit_events shape before retrying.`,
     );
   }
 }
-export function detectOpenClawStateDatabaseSchemaMigrations(
-  options: OpenClawStateDatabaseOptions = {},
-): OpenClawStateDatabaseSchemaMigration[] {
+export function detectOperatorStateDatabaseSchemaMigrations(
+  options: OperatorStateDatabaseOptions = {},
+): OperatorStateDatabaseSchemaMigration[] {
   const pathname = resolveDatabasePath(options);
   if (!existsSync(pathname)) {
     return [];
@@ -767,7 +767,7 @@ export function detectOpenClawStateDatabaseSchemaMigrations(
   const sqlite = requireNodeSqlite();
   const db = new sqlite.DatabaseSync(pathname, { readOnly: true });
   try {
-    const migrations: OpenClawStateDatabaseSchemaMigration[] = [];
+    const migrations: OperatorStateDatabaseSchemaMigration[] = [];
     if (!hasCanonicalAgentDatabasesPrimaryKey(db)) {
       migrations.push({ kind: "agent-databases-composite-primary-key", path: pathname });
     }
@@ -789,7 +789,7 @@ export function detectOpenClawStateDatabaseSchemaMigrations(
   }
 }
 
-export function repairOpenClawStateDatabaseSchema(options: OpenClawStateDatabaseOptions = {}): {
+export function repairOperatorStateDatabaseSchema(options: OperatorStateDatabaseOptions = {}): {
   changes: string[];
   warnings: string[];
 } {
@@ -798,7 +798,7 @@ export function repairOpenClawStateDatabaseSchema(options: OpenClawStateDatabase
   if (!existsSync(pathname)) {
     return { changes: [], warnings: [] };
   }
-  ensureOpenClawStatePermissions(pathname, env);
+  ensureOperatorStatePermissions(pathname, env);
   const sqlite = requireNodeSqlite();
   const db = new sqlite.DatabaseSync(pathname);
   try {
@@ -853,7 +853,7 @@ export function repairOpenClawStateDatabaseSchema(options: OpenClawStateDatabase
       db.exec("PRAGMA foreign_keys = ON;");
     }
     db.close();
-    ensureOpenClawStatePermissions(pathname, env);
+    ensureOperatorStatePermissions(pathname, env);
   }
 }
 
@@ -899,13 +899,13 @@ function ensureStartupMigrationCheckpointSchema(db: DatabaseSync, pathname: stri
   );
 }
 
-export function withOpenClawStateStartupMigrationCheckpointDatabase<T>(
+export function withOperatorStateStartupMigrationCheckpointDatabase<T>(
   callback: (db: DatabaseSync) => T,
-  options: OpenClawStateDatabaseOptions = {},
+  options: OperatorStateDatabaseOptions = {},
 ): T {
   const env = options.env ?? process.env;
   const pathname = resolveDatabasePath(options);
-  ensureOpenClawStatePermissions(pathname, env);
+  ensureOperatorStatePermissions(pathname, env);
   const sqlite = requireNodeSqlite();
   const db = new sqlite.DatabaseSync(pathname);
   try {
@@ -914,7 +914,7 @@ export function withOpenClawStateStartupMigrationCheckpointDatabase<T>(
     return callback(db);
   } finally {
     db.close();
-    ensureOpenClawStatePermissions(pathname, env);
+    ensureOperatorStatePermissions(pathname, env);
   }
 }
 
@@ -1557,7 +1557,7 @@ function ensureAdditiveStateColumns(db: DatabaseSync): void {
 
 function ensureSchema(db: DatabaseSync, pathname: string): void {
   const now = Date.now();
-  const kysely = getNodeSqliteKysely<OpenClawStateMetadataDatabase>(db);
+  const kysely = getNodeSqliteKysely<OperatorStateMetadataDatabase>(db);
   // Rebuilding referenced tables requires disabling FK enforcement before BEGIN.
   db.exec("PRAGMA foreign_keys = OFF;");
   try {
@@ -1618,8 +1618,8 @@ function ensureSchema(db: DatabaseSync, pathname: string): void {
   }
 }
 
-function resolveDatabasePath(options: OpenClawStateDatabaseOptions = {}): string {
-  return path.resolve(options.path ?? resolveOpenClawStateSqlitePath(options.env ?? process.env));
+function resolveDatabasePath(options: OperatorStateDatabaseOptions = {}): string {
+  return path.resolve(options.path ?? resolveOperatorStateSqlitePath(options.env ?? process.env));
 }
 
 function assertStateDatabaseIntegrityBeforeMutation(
@@ -1628,15 +1628,15 @@ function assertStateDatabaseIntegrityBeforeMutation(
 ): void {
   database.exec(`PRAGMA busy_timeout = ${OPERATOR_SQLITE_BUSY_TIMEOUT_MS};`);
   // A writable handle lets SQLite recover a hot journal or WAL after an
-  // interrupted writer. OpenClaw mutations start only after recovery and a
+  // interrupted writer. Operator mutations start only after recovery and a
   // full table/index consistency check both succeed.
   assertSqliteIntegrity(database, pathname);
 }
 
 /** Open or return a cached shared state database after schema and migration checks. */
-export function openOpenClawStateDatabase(
-  options: OpenClawStateDatabaseOptions = {},
-): OpenClawStateDatabase {
+export function openOperatorStateDatabase(
+  options: OperatorStateDatabaseOptions = {},
+): OperatorStateDatabase {
   const env = options.env ?? process.env;
   const pathname = resolveDatabasePath(options);
   const cached = cachedDatabases.get(pathname);
@@ -1650,7 +1650,7 @@ export function openOpenClawStateDatabase(
     cachedDatabases.delete(pathname);
   }
 
-  ensureOpenClawStatePermissions(pathname, env);
+  ensureOperatorStatePermissions(pathname, env);
   const sqlite = requireNodeSqlite();
   const db = new sqlite.DatabaseSync(pathname);
   const walMaintenance = (() => {
@@ -1675,25 +1675,25 @@ export function openOpenClawStateDatabase(
       throw err;
     }
   })();
-  ensureOpenClawStatePermissions(pathname, env);
+  ensureOperatorStatePermissions(pathname, env);
   const database = { db, path: pathname, walMaintenance };
   cachedDatabases.set(pathname, database);
   return database;
 }
 
 /** Run a synchronous immediate transaction against the shared state database. */
-export function runOpenClawStateWriteTransaction<T>(
-  operation: (database: OpenClawStateDatabase) => T,
-  options: OpenClawStateDatabaseOptions = {},
+export function runOperatorStateWriteTransaction<T>(
+  operation: (database: OperatorStateDatabase) => T,
+  options: OperatorStateDatabaseOptions = {},
 ): T {
-  const database = openOpenClawStateDatabase(options);
+  const database = openOperatorStateDatabase(options);
   const result = runSqliteImmediateTransactionSync(database.db, () => operation(database), {
     busyTimeoutMs: OPERATOR_SQLITE_BUSY_TIMEOUT_MS,
     databaseLabel: database.path,
     operationLabel: "state.write",
   });
   try {
-    ensureOpenClawStatePermissions(database.path, options.env ?? process.env);
+    ensureOperatorStatePermissions(database.path, options.env ?? process.env);
   } catch {
     // The write already committed; permission hardening is best-effort here so
     // callers never retry an operation that is durable in SQLite.
@@ -1702,7 +1702,7 @@ export function runOpenClawStateWriteTransaction<T>(
 }
 
 /** Close all cached shared state database handles. */
-export function closeOpenClawStateDatabase(): void {
+export function closeOperatorStateDatabase(): void {
   for (const database of cachedDatabases.values()) {
     database.walMaintenance.close();
     clearNodeSqliteKyselyCacheForDatabase(database.db);
@@ -1714,10 +1714,10 @@ export function closeOpenClawStateDatabase(): void {
 }
 
 /** Test whether any cached shared state database handle is still open. */
-export function isOpenClawStateDatabaseOpen(): boolean {
+export function isOperatorStateDatabaseOpen(): boolean {
   return Array.from(cachedDatabases.values()).some((database) => database.db.isOpen);
 }
 
 /** Test alias for closing shared state handles from teardown code. */
-export const closeOpenClawStateDatabaseForTest = closeOpenClawStateDatabase;
+export const closeOperatorStateDatabaseForTest = closeOperatorStateDatabase;
 /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

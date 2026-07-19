@@ -1,7 +1,7 @@
-// Bundled OpenClaw provider index advertises pre-install provider metadata for model picker discovery.
-import type { OpenClawProviderIndex } from "./types.js";
+// Bundled Operator provider index advertises pre-install provider metadata for model picker discovery.
+import type { OperatorProviderIndex } from "./types.js";
 
-// OpenClaw-owned preview metadata for providers whose plugins may not be
+// Operator-owned preview metadata for providers whose plugins may not be
 // installed yet. Installed plugin manifests remain authoritative; this index is
 // a fallback for installable-provider and pre-install model picker surfaces.
 // Preview catalogs use the shared model catalog type, but intentionally keep to
@@ -80,4 +80,4 @@ export const OPERATOR_PROVIDER_INDEX = {
       },
     },
   },
-} satisfies OpenClawProviderIndex;
+} satisfies OperatorProviderIndex;

@@ -4,7 +4,7 @@ import {
   shouldAckReactionForWhatsApp,
   type StatusReactionController,
 } from "openclaw/plugin-sdk/channel-feedback";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
 import { getSenderIdentity } from "../../identity.js";
 import { requireWhatsAppInboundAdmission } from "../../inbound/admission.js";
@@ -17,7 +17,7 @@ import { resolveGroupActivationFor } from "./group-activation.js";
 export type { StatusReactionController };
 
 type WhatsAppStatusReactionParams = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   msg: AdmittedWebInboundMessage;
   agentId: string;
   sessionKey: string;

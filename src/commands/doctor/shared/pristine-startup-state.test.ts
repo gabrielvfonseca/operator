@@ -22,9 +22,9 @@ function createFixture(config: Record<string, unknown>, stateEntries: string[] =
   }
   return {
     HOME: root,
-    OPENCLAW_CONFIG: configPath,
-    OPENCLAW_CONFIG_PATH: configPath,
-    OPENCLAW_STATE_DIR: stateDir,
+    OPERATOR_CONFIG: configPath,
+    OPERATOR_CONFIG_PATH: configPath,
+    OPERATOR_STATE_DIR: stateDir,
   };
 }
 
@@ -46,8 +46,8 @@ function addBundledPlugin(
   return {
     ...env,
     VITEST: "true",
-    OPENCLAW_BUNDLED_PLUGINS_DIR: bundledPluginsDir,
-    OPENCLAW_TEST_TRUST_BUNDLED_PLUGINS_DIR: "1",
+    OPERATOR_BUNDLED_PLUGINS_DIR: bundledPluginsDir,
+    OPERATOR_TEST_TRUST_BUNDLED_PLUGINS_DIR: "1",
   };
 }
 

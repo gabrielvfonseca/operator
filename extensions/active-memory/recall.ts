@@ -1,5 +1,5 @@
 import { resolveAgentConfig } from "openclaw/plugin-sdk/agent-runtime";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import { normalizeActiveMemoryFastMode } from "./config.js";
 import { getModelRef } from "./query.js";
 import { runRecallSubagent } from "./recall-run.js";
@@ -47,7 +47,7 @@ function formatActiveMemoryFastMode(fastMode: ActiveMemoryFastMode | undefined):
 }
 
 function prepareRecallRunContext(params: {
-  api: OpenClawPluginApi;
+  api: OperatorPluginApi;
   config: ResolvedActiveRecallPluginConfig;
   agentId: string;
   sessionKey?: string;
@@ -88,7 +88,7 @@ function prepareRecallRunContext(params: {
 }
 
 async function maybeResolveActiveRecall(params: {
-  api: OpenClawPluginApi;
+  api: OperatorPluginApi;
   config: ResolvedActiveRecallPluginConfig;
   agentId: string;
   sessionKey?: string;

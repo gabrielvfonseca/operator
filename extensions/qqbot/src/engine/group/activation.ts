@@ -65,7 +65,7 @@ function resolveSessionStorePath(
   }
 
   const stateDir =
-    process.env.OPENCLAW_STATE_DIR?.trim() ||
+    process.env.OPERATOR_STATE_DIR?.trim() ||
     process.env.CLAWDBOT_STATE_DIR?.trim() ||
     path.join(process.env.HOME || process.env.USERPROFILE || "", ".openclaw");
   return path.join(stateDir, "agents", resolvedAgentId, "sessions", "sessions.json");

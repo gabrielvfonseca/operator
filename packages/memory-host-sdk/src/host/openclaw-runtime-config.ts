@@ -18,7 +18,7 @@ export type {
   MemoryQmdMcporterConfig,
   MemoryQmdSearchMode,
   MemorySearchConfig,
-  OpenClawConfig,
+  OperatorConfig,
   SecretInput,
   SessionSendPolicyConfig,
 } from "./openclaw-runtime.js";

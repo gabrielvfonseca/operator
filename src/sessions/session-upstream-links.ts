@@ -5,18 +5,18 @@ import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-syn
 import { normalizeSqliteNumber } from "../infra/sqlite-number.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import type { SessionUpstreamJsonValue, SessionUpstreamKind } from "../plugins/session-catalog.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
-  type OpenClawStateDatabaseOptions,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
+  type OperatorStateDatabaseOptions,
 } from "../state/operator-state-db.js";
 
 type SessionUpstreamDatabase = Pick<
-  OpenClawStateKyselyDatabase,
+  OperatorStateKyselyDatabase,
   "session_upstream_links" | "session_watch_cursors"
 >;
-type SessionUpstreamLinkRow = Selectable<OpenClawStateKyselyDatabase["session_upstream_links"]>;
+type SessionUpstreamLinkRow = Selectable<OperatorStateKyselyDatabase["session_upstream_links"]>;
 
 type SessionUpstreamLink = {
   sessionKey: string;
@@ -78,11 +78,11 @@ export function upsertSessionUpstreamLink(
     upstreamRef: SessionUpstreamJsonValue;
     marker: SessionUpstreamJsonValue;
   },
-  options: OpenClawStateDatabaseOptions & { now?: number } = {},
+  options: OperatorStateDatabaseOptions & { now?: number } = {},
 ): void {
   const now = options.now ?? Date.now();
   try {
-    runOpenClawStateWriteTransaction(({ db }) => {
+    runOperatorStateWriteTransaction(({ db }) => {
       executeSqliteQuerySync(
         db,
         getSessionUpstreamKysely(db)
@@ -149,10 +149,10 @@ export function upsertSessionUpstreamLink(
 export function readSessionUpstreamLink(
   sessionKey: string,
   agentId: string,
-  options: OpenClawStateDatabaseOptions = {},
+  options: OperatorStateDatabaseOptions = {},
 ): SessionUpstreamLink | undefined {
   try {
-    const { db } = openOpenClawStateDatabase(options);
+    const { db } = openOperatorStateDatabase(options);
     const row = executeSqliteQuerySync(
       db,
       getSessionUpstreamKysely(db)
@@ -172,12 +172,12 @@ export function updateSessionUpstreamLinkMarker(
   sessionKey: string,
   agentId: string,
   marker: SessionUpstreamJsonValue,
-  options: OpenClawStateDatabaseOptions & { now?: number; expectedUpdatedAt?: number } = {},
+  options: OperatorStateDatabaseOptions & { now?: number; expectedUpdatedAt?: number } = {},
 ): boolean {
   const now = options.now ?? Date.now();
   try {
     let updated = false;
-    runOpenClawStateWriteTransaction(({ db }) => {
+    runOperatorStateWriteTransaction(({ db }) => {
       let query = getSessionUpstreamKysely(db)
         .updateTable("session_upstream_links")
         .set({
@@ -204,10 +204,10 @@ export function updateSessionUpstreamLinkMarker(
 export function deleteSessionUpstreamLink(
   sessionKey: string,
   agentId: string,
-  options: OpenClawStateDatabaseOptions = {},
+  options: OperatorStateDatabaseOptions = {},
 ): void {
   try {
-    runOpenClawStateWriteTransaction(({ db }) => {
+    runOperatorStateWriteTransaction(({ db }) => {
       executeSqliteQuerySync(
         db,
         getSessionUpstreamKysely(db)
@@ -222,11 +222,11 @@ export function deleteSessionUpstreamLink(
 }
 
 export function listWatchedSessionUpstreamLinks(
-  options: OpenClawStateDatabaseOptions = {},
+  options: OperatorStateDatabaseOptions = {},
 ): Map<string, SessionUpstreamLink[]> {
   const grouped = new Map<string, SessionUpstreamLink[]>();
   try {
-    const { db } = openOpenClawStateDatabase(options);
+    const { db } = openOperatorStateDatabase(options);
     // Watch cursors own demand. Unwatched adopted sessions stay out of the polling hot path.
     // The join matches on session_key only, which is unambiguous because adoption creates
     // links under the single resolved store agent (one row per session_key). The seen-key

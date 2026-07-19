@@ -3,7 +3,7 @@
  */
 import {
   createModelCatalogPresetAppliers,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "openclaw/plugin-sdk/provider-onboard";
 import { buildMetaModelDefinition, META_BASE_URL, META_MODEL_CATALOG } from "./models.js";
 
@@ -12,7 +12,7 @@ export const META_DEFAULT_MODEL_REF = "meta/muse-spark-1.1";
 
 const metaPresetAppliers = createModelCatalogPresetAppliers({
   primaryModelRef: META_DEFAULT_MODEL_REF,
-  resolveParams: (_cfg: OpenClawConfig) => ({
+  resolveParams: (_cfg: OperatorConfig) => ({
     providerId: "meta",
     api: "openai-responses",
     baseUrl: META_BASE_URL,
@@ -22,6 +22,6 @@ const metaPresetAppliers = createModelCatalogPresetAppliers({
 });
 
 /** Applies Meta provider/catalog config and default model aliases. */
-export function applyMetaConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyMetaConfig(cfg: OperatorConfig): OperatorConfig {
   return metaPresetAppliers.applyConfig(cfg);
 }

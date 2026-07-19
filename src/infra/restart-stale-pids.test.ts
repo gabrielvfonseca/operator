@@ -133,7 +133,7 @@ function createLsofResult(overrides: Partial<MockLsofResult> = {}): MockLsofResu
   };
 }
 
-function createOpenClawBusyResult(pid: number, overrides: Partial<MockLsofResult> = {}) {
+function createOperatorBusyResult(pid: number, overrides: Partial<MockLsofResult> = {}) {
   return createLsofResult({
     stdout: lsofOutput([{ pid, cmd: "openclaw-gateway" }]),
     ...overrides,
@@ -157,7 +157,7 @@ function installInitialBusyPoll(
     }
     call += 1;
     if (call === 1) {
-      return createOpenClawBusyResult(stalePid);
+      return createOperatorBusyResult(stalePid);
     }
     return resolvePoll(call);
   });
@@ -740,7 +740,7 @@ describe.skipIf(isWindows)("restart-stale-pids", () => {
       const getCallCount = installInitialBusyPoll(stalePid, (call) => {
         if (call === 2) {
           // First waitForPortFreeSync poll — status 0, port busy (should parse inline, not spawn again)
-          return createOpenClawBusyResult(stalePid);
+          return createOperatorBusyResult(stalePid);
         }
         // Port free on third call
         return createLsofResult({ status: 1 });
@@ -763,7 +763,7 @@ describe.skipIf(isWindows)("restart-stale-pids", () => {
       const getCallCount = installInitialBusyPoll(stalePid, (call) => {
         if (call === 2) {
           // status 1 + openclaw pid in stdout — container-restricted lsof reports partial results
-          return createOpenClawBusyResult(stalePid, {
+          return createOperatorBusyResult(stalePid, {
             status: 1,
             stderr: "lsof: WARNING: can't stat() fuse",
           });
@@ -985,7 +985,7 @@ describe.skipIf(isWindows)("restart-stale-pids", () => {
       installInitialBusyPoll(stalePid, () => {
         // Advance clock by PORT_FREE_TIMEOUT_MS + 1ms on first poll to trip the deadline.
         fakeNow += 2001;
-        return createOpenClawBusyResult(stalePid);
+        return createOperatorBusyResult(stalePid);
       });
 
       vi.spyOn(process, "kill").mockReturnValue(true);
@@ -1364,7 +1364,7 @@ describe.skipIf(isWindows)("restart-stale-pids", () => {
           if (command === "lsof") {
             lsofCall += 1;
             if (lsofCall === 1) {
-              return createOpenClawBusyResult(stalePid);
+              return createOperatorBusyResult(stalePid);
             }
             return lsofCall === 2
               ? createLsofResult({

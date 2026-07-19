@@ -1,8 +1,8 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { isLiveTestEnabled } from "../../agents/live-test-helpers.js";
 import {
-  createOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  type OperatorTestState,
 } from "../../test-utils/operator-test-state.js";
 import { createTrackedTempDirs } from "../../test-utils/tracked-temp-dirs.js";
 import { formatSkillExperienceReviewTranscript } from "./experience-review-prompt.js";
@@ -10,15 +10,15 @@ import { runSkillExperienceReview, type ExperienceReviewCandidate } from "./expe
 import { listSkillProposals } from "./service.js";
 
 const LIVE =
-  isLiveTestEnabled(["OPENCLAW_LIVE_SKILL_EXPERIENCE_REVIEW"]) &&
+  isLiveTestEnabled(["OPERATOR_LIVE_SKILL_EXPERIENCE_REVIEW"]) &&
   Boolean(process.env.OPENAI_API_KEY?.trim());
 const describeLive = LIVE ? describe : describe.skip;
 const tempDirs = createTrackedTempDirs();
-let testState: OpenClawTestState;
+let testState: OperatorTestState;
 let workspaceDir = "";
 
 function candidate(runId: string, messages: unknown[]): ExperienceReviewCandidate {
-  const modelId = process.env.OPENCLAW_LIVE_SKILL_EXPERIENCE_MODEL ?? "gpt-5.6-luna";
+  const modelId = process.env.OPERATOR_LIVE_SKILL_EXPERIENCE_MODEL ?? "gpt-5.6-luna";
   return {
     ctx: {
       agentId: "main",
@@ -73,7 +73,7 @@ function candidate(runId: string, messages: unknown[]): ExperienceReviewCandidat
 
 describeLive("skill experience review live OpenAI eval", () => {
   beforeAll(async () => {
-    testState = await createOpenClawTestState({
+    testState = await createOperatorTestState({
       layout: "state-only",
       prefix: "openclaw-live-skill-review-state-",
     });

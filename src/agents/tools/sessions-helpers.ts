@@ -22,7 +22,7 @@ export {
 } from "./sessions-resolution.js";
 import { normalizeOptionalString, type FastMode } from "@operator/normalization-core/string-coerce";
 import { getRuntimeConfig } from "../../config/config.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { parseRawSessionConversationRef } from "../../sessions/session-key-utils.js";
 import type { FastModeSource } from "../../shared/fast-mode.js";
 
@@ -97,7 +97,7 @@ export type SessionListRow = {
 export function resolveSessionToolContext(opts?: {
   agentSessionKey?: string;
   sandboxed?: boolean;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }) {
   const cfg = opts?.config ?? getRuntimeConfig();
   return {

@@ -1,7 +1,7 @@
 // Telegram API module exposes the plugin public contract.
-import type { OpenClawConfig } from "./runtime-api.js";
+import type { OperatorConfig } from "./runtime-api.js";
 import { inspectTelegramAccount } from "./src/account-inspect.js";
 
-export function inspectTelegramReadOnlyAccount(cfg: OpenClawConfig, accountId?: string | null) {
+export function inspectTelegramReadOnlyAccount(cfg: OperatorConfig, accountId?: string | null) {
   return inspectTelegramAccount({ cfg, accountId });
 }

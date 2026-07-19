@@ -173,7 +173,7 @@ function getQmdUpdateQueueState(): QmdUpdateQueueState {
 
 function normalizeHanBm25Query(query: string): string {
   const trimmed = query.trim();
-  // Keep Han/CJK BM25 queries intact so OpenClaw search semantics match direct qmd search.
+  // Keep Han/CJK BM25 queries intact so Operator search semantics match direct qmd search.
   return trimmed;
 }
 
@@ -1238,7 +1238,7 @@ export class QmdMemoryManager implements MemorySearchManager {
       this.watchPressureWarning,
       count,
       "paths",
-      "Large QMD collections can make OpenClaw run out of file watchers or open files.",
+      "Large QMD collections can make Operator run out of file watchers or open files.",
       "Remove large collections, or set memorySearch.sync.watch to false and refresh memory manually or with sync.intervalMinutes.",
       (message) => log.warn(message),
     );

@@ -339,9 +339,9 @@ async function snapshotWorktree(record: ManagedWorktreeRecord, reason: string): 
   const snapshotRef = `${SNAPSHOT_REF_PREFIX}/${record.id}`;
   const env: NodeJS.ProcessEnv = {
     GIT_INDEX_FILE: indexPath,
-    GIT_AUTHOR_NAME: "OpenClaw",
+    GIT_AUTHOR_NAME: "Operator",
     GIT_AUTHOR_EMAIL: "operator@localhost",
-    GIT_COMMITTER_NAME: "OpenClaw",
+    GIT_COMMITTER_NAME: "Operator",
     GIT_COMMITTER_EMAIL: "operator@localhost",
   };
   try {
@@ -357,7 +357,7 @@ async function snapshotWorktree(record: ManagedWorktreeRecord, reason: string): 
     const parent = await requireGit(record.path, ["rev-parse", "HEAD"]);
     const commit = await requireGit(
       record.path,
-      ["commit-tree", tree, "-p", parent, "-m", `OpenClaw worktree snapshot: ${reason}`],
+      ["commit-tree", tree, "-p", parent, "-m", `Operator worktree snapshot: ${reason}`],
       { env },
     );
     await requireGit(record.repoRoot, ["update-ref", snapshotRef, commit]);
@@ -629,7 +629,7 @@ export class ManagedWorktreeService {
       if ((state.kind === "live" || state.kind === "foreign") && !force) {
         throw new Error(
           state.kind === "live"
-            ? `worktree is locked by live OpenClaw pid ${state.pid}`
+            ? `worktree is locked by live Operator pid ${state.pid}`
             : `worktree has a foreign lock${state.reason ? `: ${state.reason}` : ""}`,
         );
       }

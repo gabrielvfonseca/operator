@@ -1,11 +1,11 @@
 /** Explicit doctor maintenance for the canonical shared state SQLite database. */
 import fs from "node:fs";
 import {
-  assertOpenClawStateDatabaseForMaintenance,
-  ensureOpenClawStatePermissions,
-  isOpenClawStateDatabaseOpen,
+  assertOperatorStateDatabaseForMaintenance,
+  ensureOperatorStatePermissions,
+  isOperatorStateDatabaseOpen,
 } from "../state/operator-state-db.js";
-import { resolveOpenClawStateSqlitePath } from "../state/operator-state-db.paths.js";
+import { resolveOperatorStateSqlitePath } from "../state/operator-state-db.paths.js";
 import {
   compactDoctorSqliteFile,
   type DoctorSqliteCompactSnapshot,
@@ -45,7 +45,7 @@ export async function runDoctorStateSqliteCompact(
   deps: DoctorStateSqliteCompactDeps = {},
 ): Promise<DoctorStateSqliteCompactReport> {
   const env = options.env ?? process.env;
-  const sqlitePath = resolveOpenClawStateSqlitePath(env);
+  const sqlitePath = resolveOperatorStateSqlitePath(env);
   const stat = readCanonicalStateDatabaseStat(sqlitePath);
   if (!stat) {
     return {
@@ -56,25 +56,25 @@ export async function runDoctorStateSqliteCompact(
     };
   }
   if (!stat.isFile()) {
-    throw new Error(`Canonical OpenClaw state database is not a regular file: ${sqlitePath}`);
+    throw new Error(`Canonical Operator state database is not a regular file: ${sqlitePath}`);
   }
   const withMaintenanceLock = deps.withMaintenanceLock ?? withDoctorSqliteMaintenanceLock;
   return await withMaintenanceLock({
     env,
     operation: "state SQLite compaction",
     run: () => {
-      if (isOpenClawStateDatabaseOpen()) {
+      if (isOperatorStateDatabaseOpen()) {
         throw new Error(
-          "The shared OpenClaw state database is already open in this process. Stop OpenClaw and retry.",
+          "The shared Operator state database is already open in this process. Stop Operator and retry.",
         );
       }
 
       const compact = compactDoctorSqliteFile({
-        afterMutation: () => ensureOpenClawStatePermissions(sqlitePath, env),
+        afterMutation: () => ensureOperatorStatePermissions(sqlitePath, env),
         ...(deps.busyTimeoutMs !== undefined ? { busyTimeoutMs: deps.busyTimeoutMs } : {}),
         sqlitePath,
         validateBeforeMutation: (database) =>
-          assertOpenClawStateDatabaseForMaintenance(database, { pathname: sqlitePath }),
+          assertOperatorStateDatabaseForMaintenance(database, { pathname: sqlitePath }),
       });
       return {
         ...compact,

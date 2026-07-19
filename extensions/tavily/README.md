@@ -1,6 +1,6 @@
-# Tavily OpenClaw plugin
+# Tavily Operator plugin
 
-Official OpenClaw plugin for Tavily.
+Official Operator plugin for Tavily.
 
 ## Install
 
@@ -10,4 +10,4 @@ openclaw plugins install @operator/tavily-plugin
 
 ## Docs
 
-See `docs/tools/tavily.md` in the OpenClaw repository, or the published docs at `https://docs.openclaw.ai/tools/tavily`.
+See `docs/tools/tavily.md` in the Operator repository, or the published docs at `https://docs.openclaw.ai/tools/tavily`.

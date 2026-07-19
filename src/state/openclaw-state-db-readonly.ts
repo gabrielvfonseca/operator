@@ -9,11 +9,11 @@ import {
 import {
   OPERATOR_SQLITE_BUSY_TIMEOUT_MS,
   OPERATOR_STATE_SCHEMA_VERSION,
-  type OpenClawStateDatabaseOptions,
+  type OperatorStateDatabaseOptions,
 } from "./operator-state-db.js";
-import { resolveOpenClawStateSqlitePath } from "./operator-state-db.paths.js";
+import { resolveOperatorStateSqlitePath } from "./operator-state-db.paths.js";
 
-type OpenClawStateReadOnlyDatabase = {
+type OperatorStateReadOnlyDatabase = {
   db: DatabaseSync;
   path: string;
 };
@@ -22,7 +22,7 @@ function assertSupportedSchemaVersion(db: DatabaseSync, pathname: string): void 
   const userVersion = readSqliteUserVersion(db);
   if (userVersion > OPERATOR_STATE_SCHEMA_VERSION) {
     throw createNewerSqliteSchemaVersionError(
-      "OpenClaw state database",
+      "Operator state database",
       pathname,
       userVersion,
       OPERATOR_STATE_SCHEMA_VERSION,
@@ -36,12 +36,12 @@ function assertSupportedSchemaVersion(db: DatabaseSync, pathname: string): void 
  * CLI metadata reads can overlap a live Gateway. Keep them off schema repair,
  * journal-mode setup, checkpoints, and permission mutation owned by writers.
  */
-export function withOpenClawStateDatabaseReadOnly<T>(
-  operation: (database: OpenClawStateReadOnlyDatabase) => T,
-  options: OpenClawStateDatabaseOptions = {},
+export function withOperatorStateDatabaseReadOnly<T>(
+  operation: (database: OperatorStateReadOnlyDatabase) => T,
+  options: OperatorStateDatabaseOptions = {},
 ): T {
   const pathname = path.resolve(
-    options.path ?? resolveOpenClawStateSqlitePath(options.env ?? process.env),
+    options.path ?? resolveOperatorStateSqlitePath(options.env ?? process.env),
   );
   const sqlite = requireNodeSqlite();
   const db = new sqlite.DatabaseSync(pathname, { readOnly: true });

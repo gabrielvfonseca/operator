@@ -2,7 +2,7 @@
   "name": "@operator/memory-tiered",
   "version": "2026.7.2",
   "private": true,
-  "description": "OpenClaw tiered memory plugin: working, semantic, and procedural stores.",
+  "description": "Operator tiered memory plugin: working, semantic, and procedural stores.",
   "type": "module",
   "dependencies": {
     "@temporalio/client": "*",

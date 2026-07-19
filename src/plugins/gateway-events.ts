@@ -1,11 +1,11 @@
 import type { PluginJsonValue } from "./host-hook-json.js";
 
-export type OpenClawPluginGatewayEventScope = "operator.read" | "operator.write" | "operator.admin";
+export type OperatorPluginGatewayEventScope = "operator.read" | "operator.write" | "operator.admin";
 
-export type OpenClawPluginGatewayEvents = {
+export type OperatorPluginGatewayEvents = {
   emit: (
     event: string,
     payload: PluginJsonValue,
-    opts: { scope: OpenClawPluginGatewayEventScope },
+    opts: { scope: OperatorPluginGatewayEventScope },
   ) => void;
 };

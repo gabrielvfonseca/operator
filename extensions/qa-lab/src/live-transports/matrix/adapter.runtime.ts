@@ -1,7 +1,7 @@
 // Qa Lab plugin module implements Matrix live transport adapter behavior.
 import { randomUUID } from "node:crypto";
 import path from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { buildQaTarget } from "openclaw/plugin-sdk/qa-channel";
 import type { QaRunnerCliRegistration } from "openclaw/plugin-sdk/qa-runner-runtime";
 import { readQaScenarioExecutionConfig } from "../../scenario-catalog.js";
@@ -29,7 +29,7 @@ const MATRIX_SHARED_FLOW_TOPOLOGY = {
       key: "main",
       kind: "group",
       members: ["driver", "observer", "sut"],
-      name: "OpenClaw Matrix QA",
+      name: "Operator Matrix QA",
       requireMention: true,
     },
     {
@@ -153,7 +153,7 @@ export async function createMatrixQaTransportAdapter(
       driverLocalpart: `qa-driver-${suffix}`,
       observerLocalpart: `qa-observer-${suffix}`,
       registrationToken: harness.registrationToken,
-      roomName: `OpenClaw Matrix QA ${suffix}`,
+      roomName: `Operator Matrix QA ${suffix}`,
       sutLocalpart: `qa-sut-${suffix}`,
       topology: resolveMatrixQaAdapterTopology(options.scenarioIds),
     });
@@ -346,7 +346,7 @@ export async function createMatrixQaTransportAdapter(
       busMessageIds.clear();
     },
     createGatewayConfig: () =>
-      buildMatrixQaConfig({} as OpenClawConfig, {
+      buildMatrixQaConfig({} as OperatorConfig, {
         driverAccessToken: provisioning.driver.accessToken,
         driverUserId: provisioning.driver.userId,
         homeserver: harness.baseUrl,
@@ -359,13 +359,13 @@ export async function createMatrixQaTransportAdapter(
         topology: provisioning.topology,
       }),
     createRuntimeEnvPatch: () => ({
-      OPENCLAW_QA_MATRIX_DRIVER_USER_ID: provisioning.driver.userId,
-      OPENCLAW_QA_MATRIX_OBSERVER_USER_ID: provisioning.observer.userId,
-      OPENCLAW_QA_MATRIX_SUT_ACCOUNT_ID: accountId,
-      OPENCLAW_QA_MATRIX_MAIN_ROOM_ID:
+      OPERATOR_QA_MATRIX_DRIVER_USER_ID: provisioning.driver.userId,
+      OPERATOR_QA_MATRIX_OBSERVER_USER_ID: provisioning.observer.userId,
+      OPERATOR_QA_MATRIX_SUT_ACCOUNT_ID: accountId,
+      OPERATOR_QA_MATRIX_MAIN_ROOM_ID:
         provisioning.topology.rooms.find((room) => room.key === "main")?.roomId ??
         provisioning.roomId,
-      OPENCLAW_QA_MATRIX_SECONDARY_ROOM_ID:
+      OPERATOR_QA_MATRIX_SECONDARY_ROOM_ID:
         provisioning.topology.rooms.find((room) => room.key === "secondary")?.roomId ?? "",
     }),
     prepareFlow: scenarioEnvironment.prepareFlow,

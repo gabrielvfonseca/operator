@@ -1,4 +1,4 @@
-// Verifies state-dir migrations preserve existing OpenClaw runtime data.
+// Verifies state-dir migrations preserve existing Operator runtime data.
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
@@ -51,13 +51,13 @@ describe("legacy state dir auto-migration", () => {
     });
   });
 
-  it("skips state-dir migration when OPENCLAW_STATE_DIR is explicitly set", async () => {
+  it("skips state-dir migration when OPERATOR_STATE_DIR is explicitly set", async () => {
     await withStateDirFixture(async (root) => {
       const legacyDir = path.join(root, ".clawdbot");
       fs.mkdirSync(legacyDir, { recursive: true });
 
       const result = await autoMigrateLegacyStateDir({
-        env: { OPENCLAW_STATE_DIR: path.join(root, "custom-state") } as NodeJS.ProcessEnv,
+        env: { OPERATOR_STATE_DIR: path.join(root, "custom-state") } as NodeJS.ProcessEnv,
         homedir: () => root,
       });
 
@@ -92,7 +92,7 @@ describe("legacy state dir auto-migration", () => {
       );
 
       const result = await autoMigrateLegacyStateDir({
-        env: { OPENCLAW_STATE_DIR: stateDir } as NodeJS.ProcessEnv,
+        env: { OPERATOR_STATE_DIR: stateDir } as NodeJS.ProcessEnv,
         homedir: () => root,
       });
 
@@ -162,7 +162,7 @@ describe("legacy state dir auto-migration", () => {
       );
 
       const result = await autoMigrateLegacyStateDir({
-        env: { OPENCLAW_STATE_DIR: stateDir } as NodeJS.ProcessEnv,
+        env: { OPERATOR_STATE_DIR: stateDir } as NodeJS.ProcessEnv,
         homedir: () => root,
       });
 
@@ -194,7 +194,7 @@ describe("legacy state dir auto-migration", () => {
       fs.writeFileSync(archivePath, legacyJson, "utf8");
 
       const first = await autoMigrateLegacyStateDir({
-        env: { OPENCLAW_STATE_DIR: stateDir } as NodeJS.ProcessEnv,
+        env: { OPERATOR_STATE_DIR: stateDir } as NodeJS.ProcessEnv,
         homedir: () => root,
       });
 
@@ -210,7 +210,7 @@ describe("legacy state dir auto-migration", () => {
 
       resetAutoMigrateLegacyStateDirForTest();
       const second = await autoMigrateLegacyStateDir({
-        env: { OPENCLAW_STATE_DIR: stateDir } as NodeJS.ProcessEnv,
+        env: { OPERATOR_STATE_DIR: stateDir } as NodeJS.ProcessEnv,
         homedir: () => root,
       });
       expect(second.changes).toStrictEqual([]);
@@ -237,7 +237,7 @@ describe("legacy state dir auto-migration", () => {
       fs.writeFileSync(archivePath, "older archive", "utf8");
 
       const first = await autoMigrateLegacyStateDir({
-        env: { OPENCLAW_STATE_DIR: stateDir } as NodeJS.ProcessEnv,
+        env: { OPERATOR_STATE_DIR: stateDir } as NodeJS.ProcessEnv,
         homedir: () => root,
       });
 
@@ -254,7 +254,7 @@ describe("legacy state dir auto-migration", () => {
 
       resetAutoMigrateLegacyStateDirForTest();
       const second = await autoMigrateLegacyStateDir({
-        env: { OPENCLAW_STATE_DIR: stateDir } as NodeJS.ProcessEnv,
+        env: { OPERATOR_STATE_DIR: stateDir } as NodeJS.ProcessEnv,
         homedir: () => root,
       });
       expect(second.changes).toStrictEqual([]);

@@ -1,11 +1,11 @@
-/** Process env key that marks child commands as launched by the OpenClaw CLI. */
+/** Process env key that marks child commands as launched by the Operator CLI. */
 export const OPERATOR_CLI_ENV_VAR = "OPERATOR_CLI";
 
-/** Stable marker value used for OpenClaw-launched subprocess detection. */
+/** Stable marker value used for Operator-launched subprocess detection. */
 const OPERATOR_CLI_ENV_VALUE = "1";
 
-/** Returns a cloned env object with the OpenClaw CLI marker set. */
-export function markOpenClawExecEnv<T extends Record<string, string | undefined>>(
+/** Returns a cloned env object with the Operator CLI marker set. */
+export function markOperatorExecEnv<T extends Record<string, string | undefined>>(
   /** Source environment to clone before adding the subprocess marker. */
   env: T,
 ): T {
@@ -16,7 +16,7 @@ export function markOpenClawExecEnv<T extends Record<string, string | undefined>
 }
 
 /** Mutates an existing process env object so current-process children inherit the marker. */
-export function ensureOpenClawExecMarkerOnProcess(
+export function ensureOperatorExecMarkerOnProcess(
   /** Process env object to mutate; defaults to the current process environment. */
   env: NodeJS.ProcessEnv = process.env,
 ): NodeJS.ProcessEnv {

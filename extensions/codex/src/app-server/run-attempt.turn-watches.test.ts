@@ -345,7 +345,7 @@ describe("runCodexAppServerAttempt turn watches", () => {
     expect(toolResult.success).toBe(false);
     expect(toolResult.contentItems?.[0]?.type).toBe("inputText");
     expect(toolResult.contentItems?.[0]?.text).toMatch(
-      /^(Unknown OpenClaw tool: message|Action send requires a target\.)$/u,
+      /^(Unknown Operator tool: message|Action send requires a target\.)$/u,
     );
 
     const result = await run;
@@ -456,7 +456,7 @@ describe("runCodexAppServerAttempt turn watches", () => {
       path.join(tempDir, "workspace"),
     );
     params.timeoutMs = 200;
-    vi.stubEnv("OPENCLAW_STATE_DIR", path.join(tempDir, "state"));
+    vi.stubEnv("OPERATOR_STATE_DIR", path.join(tempDir, "state"));
 
     const run = runCodexAppServerAttempt(params, {
       pluginConfig: { appServer: { turnCompletionIdleTimeoutMs: 5 } },
@@ -1810,7 +1810,7 @@ describe("runCodexAppServerAttempt turn watches", () => {
     expect(request.mock.calls.some(([method]) => method === "turn/interrupt")).toBe(false);
   });
 
-  it("keeps waiting after an OpenClaw dynamic tool response before final synthesis", async () => {
+  it("keeps waiting after an Operator dynamic tool response before final synthesis", async () => {
     let notify: (notification: CodexServerNotification) => Promise<void> = async () => undefined;
     let handleRequest:
       | ((request: { id: string; method: string; params?: unknown }) => Promise<unknown>)
@@ -3251,7 +3251,7 @@ describe("runCodexAppServerAttempt turn watches", () => {
     // The timed-out thread's binding is gone, so it cannot be resumed.
     expect(await readCodexAppServerBinding(sessionFile)).toBeUndefined();
 
-    // Turn 2: with no binding, OpenClaw starts a brand-new thread instead of
+    // Turn 2: with no binding, Operator starts a brand-new thread instead of
     // resuming the timed-out one, so Codex's interrupt marker never replays.
     const secondHarness = createStartedThreadHarness();
     const secondRun = runCodexAppServerAttempt(createParams(sessionFile, workspaceDir));

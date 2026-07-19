@@ -1,19 +1,19 @@
 import type { ConfigFileSnapshot } from "../../../config/types.js";
-import type { OpenClawConfig } from "../../../config/types.operator.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import { migrateLegacyConfig } from "./legacy-config-migrate.js";
 
 type StateMigrationConfigInput = {
-  cfg?: OpenClawConfig;
-  pluginDoctorConfig?: OpenClawConfig;
+  cfg?: OperatorConfig;
+  pluginDoctorConfig?: OperatorConfig;
 };
 
 export function resolveStateMigrationConfigInput(params: {
   snapshot: ConfigFileSnapshot;
-  baseConfig: OpenClawConfig;
+  baseConfig: OperatorConfig;
 }): StateMigrationConfigInput | null {
   const pluginDoctorConfig = (params.snapshot.sourceConfig ??
     params.snapshot.config ??
-    params.snapshot.parsed) as OpenClawConfig | undefined;
+    params.snapshot.parsed) as OperatorConfig | undefined;
   if (params.snapshot.valid) {
     return params.snapshot.legacyIssues.length > 0 && pluginDoctorConfig !== undefined
       ? { cfg: params.baseConfig, pluginDoctorConfig }
@@ -29,7 +29,7 @@ export function resolveStateMigrationConfigInput(params: {
   }
   if (migrated.partiallyValid) {
     return {
-      pluginDoctorConfig: (pluginDoctorConfig ?? migrationSource) as OpenClawConfig,
+      pluginDoctorConfig: (pluginDoctorConfig ?? migrationSource) as OperatorConfig,
     };
   }
   return {

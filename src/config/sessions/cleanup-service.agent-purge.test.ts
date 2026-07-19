@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../types.openclaw.js";
+import type { OperatorConfig } from "../types.openclaw.js";
 import { purgeAgentSessionStoreEntries } from "./cleanup-service.js";
 
 const sessionAccessorMocks = vi.hoisted(() => ({
@@ -37,7 +37,7 @@ describe("purgeAgentSessionStoreEntries", () => {
           { id: "ops", workspace: "/workspace/ops" },
         ],
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     await purgeAgentSessionStoreEntries(cfg, "ops");
 

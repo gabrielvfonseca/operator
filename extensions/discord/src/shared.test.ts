@@ -1,5 +1,5 @@
 // Discord tests cover shared plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createDiscordPluginBase, discordConfigAdapter } from "./shared.js";
 
@@ -72,7 +72,7 @@ describe("createDiscordPluginBase", () => {
           token: { source: "env", provider: "default", id: "DISCORD_BOT_TOKEN" },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     const account = plugin.config.resolveAccount(cfg, "default");
     const described = plugin.config.describeAccount?.(account, cfg);
@@ -99,7 +99,7 @@ describe("discordConfigAdapter", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(discordConfigAdapter.resolveAllowFrom?.({ cfg, accountId: "default" })).toEqual(["123"]);
   });
@@ -115,7 +115,7 @@ describe("discordConfigAdapter", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(discordConfigAdapter.resolveAllowFrom?.({ cfg, accountId: "default" })).toEqual(["456"]);
   });
@@ -132,7 +132,7 @@ describe("discordConfigAdapter", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(discordConfigAdapter.resolveAllowFrom?.({ cfg, accountId: "work" })).toEqual([
       "account-legacy",
@@ -150,7 +150,7 @@ describe("discordConfigAdapter", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     expect(discordConfigAdapter.resolveAllowFrom?.({ cfg, accountId: "default" })).toEqual([
       "123456789",
@@ -175,7 +175,7 @@ describe("discordConfigAdapter", () => {
           defaultTo: "1498959610751750304",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(discordConfigAdapter.resolveAllowFrom?.({ cfg, accountId: "default" })).toEqual([
       "1128540374256849009",

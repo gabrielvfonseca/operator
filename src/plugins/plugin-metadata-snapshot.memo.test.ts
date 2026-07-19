@@ -3,7 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { runOpenClawStateWriteTransaction } from "../state/openclaw-state-db.js";
+import { runOperatorStateWriteTransaction } from "../state/openclaw-state-db.js";
 import {
   clearCurrentPluginMetadataSnapshot,
   setCurrentPluginMetadataSnapshot,
@@ -52,7 +52,7 @@ function tempStateDir(): string {
 }
 
 function touchPersistedIndex(stateDir: string, value = 1): void {
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     ({ db }) => {
       db.prepare(
         `
@@ -71,7 +71,7 @@ function touchPersistedIndex(stateDir: string, value = 1): void {
         generated_at_ms: value,
       });
     },
-    { env: { ...process.env, OPENCLAW_STATE_DIR: stateDir } },
+    { env: { ...process.env, OPERATOR_STATE_DIR: stateDir } },
   );
 }
 
@@ -278,8 +278,8 @@ describe("loadPluginMetadataSnapshot process memo", () => {
     const stateDir = tempStateDir();
     const timelinePath = path.join(stateDir, "timeline", "metadata.jsonl");
     const env = {
-      OPENCLAW_DIAGNOSTICS: "timeline",
-      OPENCLAW_DIAGNOSTICS_TIMELINE_PATH: timelinePath,
+      OPERATOR_DIAGNOSTICS: "timeline",
+      OPERATOR_DIAGNOSTICS_TIMELINE_PATH: timelinePath,
     };
     touchPersistedIndex(stateDir);
     loadPluginRegistrySnapshotWithMetadata.mockReturnValue({

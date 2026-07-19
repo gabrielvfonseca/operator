@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type { QaRunnerCliRegistration } from "openclaw/plugin-sdk/qa-runner-runtime";
 import {
   acquireQaCredentialLease,
@@ -133,7 +133,7 @@ export async function createDiscordQaTransportAdapter(
     },
     resetTransport: () => undefined,
     createGatewayConfig: () =>
-      discordQaScenarioSupport.testing.buildDiscordQaConfig({} as OpenClawConfig, {
+      discordQaScenarioSupport.testing.buildDiscordQaConfig({} as OperatorConfig, {
         guildId: runtimeEnv.guildId,
         channelId: runtimeEnv.channelId,
         driverBotId: driverIdentity.id,

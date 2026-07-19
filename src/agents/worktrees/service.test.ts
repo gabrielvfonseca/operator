@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import { closeOpenClawStateDatabaseForTest } from "../../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../state/openclaw-state-db.js";
 import { getRegistryWorktree } from "./registry.js";
 import {
   IDLE_GC_MS,
@@ -44,7 +44,7 @@ async function initializeRepository(
   const repo = path.join(root, name);
   await fs.mkdir(repo, { recursive: true });
   await git(repo, "init", "-b", "main", `--template=${gitTemplate}`);
-  await git(repo, "config", "user.name", "OpenClaw Test");
+  await git(repo, "config", "user.name", "Operator Test");
   await git(repo, "config", "user.email", "openclaw-test@example.invalid");
   await fs.writeFile(path.join(repo, "README.md"), "base\n");
   await git(repo, "add", "README.md");
@@ -94,13 +94,13 @@ describe("ManagedWorktreeService", () => {
       recursive: true,
     });
     repo = await fs.realpath(repo);
-    env = { ...process.env, OPENCLAW_STATE_DIR: path.join(root, "openclaw-state") };
+    env = { ...process.env, OPERATOR_STATE_DIR: path.join(root, "openclaw-state") };
     now = 1_700_000_000_000;
     service = new ManagedWorktreeService({ env, now: () => now });
   });
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await fs.rm(root, { recursive: true, force: true });
   });
 
@@ -297,7 +297,7 @@ describe("ManagedWorktreeService", () => {
       expect(await git(repo, "worktree", "list", "--porcelain")).toBe(before);
       expect(await git(repo, "branch", "--list", `openclaw/${name}`)).toBe("");
       expect(await service.list()).toEqual([]);
-      await expect(fs.stat(path.join(env.OPENCLAW_STATE_DIR!, "worktrees"))).rejects.toMatchObject({
+      await expect(fs.stat(path.join(env.OPERATOR_STATE_DIR!, "worktrees"))).rejects.toMatchObject({
         code: "ENOENT",
       });
     },
@@ -457,7 +457,7 @@ describe("ManagedWorktreeService", () => {
     const script = path.join(repo, ".openclaw", "worktree-setup.sh");
     await fs.writeFile(
       script,
-      '#!/bin/sh\nprintf "%s\\n%s\\n" "$OPENCLAW_SOURCE_TREE_PATH" "$OPENCLAW_WORKTREE_PATH" > setup-paths.txt\n',
+      '#!/bin/sh\nprintf "%s\\n%s\\n" "$OPERATOR_SOURCE_TREE_PATH" "$OPERATOR_WORKTREE_PATH" > setup-paths.txt\n',
       { mode: 0o755 },
     );
     const created = await service.create({ repoRoot: repo, name: "setup" });
@@ -526,7 +526,7 @@ describe("ManagedWorktreeService", () => {
     expect(await git(restored.path, "branch", "--show-current")).toBe(created.branch);
     expect(await git(restored.path, "rev-parse", "HEAD")).toBe(originalHead);
     expect(await git(restored.path, "log", "--format=%s", created.branch)).not.toContain(
-      "OpenClaw worktree snapshot",
+      "Operator worktree snapshot",
     );
     expect(await fs.readFile(path.join(restored.path, "README.md"), "utf8")).toBe("changed\n");
     expect(await fs.readFile(path.join(restored.path, "untracked.txt"), "utf8")).toBe(
@@ -721,10 +721,10 @@ describe("ManagedWorktreeService", () => {
   });
 
   it("deletes unregistered orphan debris but preserves git-listed worktrees", async () => {
-    const debris = path.join(env.OPENCLAW_STATE_DIR!, "worktrees", "orphan-fingerprint", "debris");
+    const debris = path.join(env.OPERATOR_STATE_DIR!, "worktrees", "orphan-fingerprint", "debris");
     await fs.mkdir(debris, { recursive: true });
     await fs.writeFile(path.join(debris, "file"), "debris");
-    const foreign = path.join(env.OPENCLAW_STATE_DIR!, "worktrees", "foreign-fingerprint", "live");
+    const foreign = path.join(env.OPERATOR_STATE_DIR!, "worktrees", "foreign-fingerprint", "live");
     await fs.mkdir(path.dirname(foreign), { recursive: true });
     await git(repo, "worktree", "add", "--detach", foreign, "HEAD");
 

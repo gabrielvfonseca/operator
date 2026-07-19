@@ -24,7 +24,7 @@ import type {
 import { shouldCreateBundleMcpRuntimeForAttempt } from "./embedded-agent-runner/run/attempt-tool-construction-plan.js";
 import { partitionMcpServersByConnectionScope } from "./mcp-connection-resolver.js";
 
-function isOpenClawLoopbackMcpServer(name: string, server: BundleMcpServerConfig): boolean {
+function isOperatorLoopbackMcpServer(name: string, server: BundleMcpServerConfig): boolean {
   return (
     name === "operator" &&
     typeof server.url === "string" &&
@@ -117,8 +117,8 @@ export function normalizeCodexMcpServerConfig(
   const defaultToolsApprovalMode = resolveCodexDefaultToolsApprovalMode(server);
   if (defaultToolsApprovalMode) {
     next.default_tools_approval_mode = defaultToolsApprovalMode;
-  } else if (isOpenClawLoopbackMcpServer(name, server)) {
-    // OpenClaw's loopback MCP exposes local tools; Codex should ask for approval
+  } else if (isOperatorLoopbackMcpServer(name, server)) {
+    // Operator's loopback MCP exposes local tools; Codex should ask for approval
     // unless plugin metadata explicitly selected another approval mode.
     next.default_tools_approval_mode = "approve";
   }

@@ -2,7 +2,7 @@
  * Gateway startup memory-service tests.
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import type { MemoryQmdUpdateConfig } from "../config/types.memory.js";
 
 const { getMemorySearchManagerMock } = vi.hoisted(() => ({
@@ -16,14 +16,14 @@ vi.mock("../plugins/memory-runtime.js", () => ({
 // This suite owns startup orchestration; agent and memory config resolution have
 // separate tests. Keep those graphs out of this non-isolated Gateway shard.
 vi.mock("../agents/agent-scope.js", () => ({
-  listAgentEntries: (cfg: OpenClawConfig) => cfg.agents?.list ?? [],
-  listAgentIds: (cfg: OpenClawConfig) => cfg.agents?.list?.map((entry) => entry.id) ?? ["main"],
-  resolveDefaultAgentId: (cfg: OpenClawConfig) =>
+  listAgentEntries: (cfg: OperatorConfig) => cfg.agents?.list ?? [],
+  listAgentIds: (cfg: OperatorConfig) => cfg.agents?.list?.map((entry) => entry.id) ?? ["main"],
+  resolveDefaultAgentId: (cfg: OperatorConfig) =>
     cfg.agents?.list?.find((entry) => entry.default)?.id ?? "main",
 }));
 
 vi.mock("../agents/memory-search.js", () => ({
-  resolveMemorySearchConfig: (cfg: OpenClawConfig, agentId: string) => {
+  resolveMemorySearchConfig: (cfg: OperatorConfig, agentId: string) => {
     const agent = cfg.agents?.list?.find((entry) => entry.id === agentId);
     const enabled =
       agent?.memorySearch?.enabled ?? cfg.agents?.defaults?.memorySearch?.enabled ?? true;
@@ -34,13 +34,13 @@ vi.mock("../agents/memory-search.js", () => ({
 import { startGatewayMemoryBackend } from "./server-startup-memory.js";
 
 function createQmdConfig(
-  agents: OpenClawConfig["agents"],
+  agents: OperatorConfig["agents"],
   update: MemoryQmdUpdateConfig = { startup: "immediate" },
-): OpenClawConfig {
+): OperatorConfig {
   return {
     agents,
     memory: { backend: "qmd", qmd: { update } },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 function createGatewayLogMock() {
@@ -55,13 +55,13 @@ function createQmdManagerMock() {
   };
 }
 
-async function startMemoryBackendForTest(cfg: OpenClawConfig) {
+async function startMemoryBackendForTest(cfg: OperatorConfig) {
   const log = createGatewayLogMock();
   await startGatewayMemoryBackend({ cfg, log });
   return log;
 }
 
-async function startQmdBackendWithManager(cfg: OpenClawConfig) {
+async function startQmdBackendWithManager(cfg: OperatorConfig) {
   getMemorySearchManagerMock.mockResolvedValue({ manager: createQmdManagerMock() });
   return await startMemoryBackendForTest(cfg);
 }
@@ -72,12 +72,12 @@ function expectNoMemoryBackendStartup(log: ReturnType<typeof createGatewayLogMoc
   expect(log.warn).not.toHaveBeenCalled();
 }
 
-function expectQmdManagerRequests(cfg: OpenClawConfig, agentIds: string[]) {
+function expectQmdManagerRequests(cfg: OperatorConfig, agentIds: string[]) {
   expectQmdManagerRequestsWithPurpose(cfg, agentIds, "cli");
 }
 
 function expectQmdManagerRequestsWithPurpose(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   agentIds: string[],
   purpose: "cli" | "default",
 ) {
@@ -111,7 +111,7 @@ describe("startGatewayMemoryBackend", () => {
     const cfg = {
       agents: { list: [{ id: "main", default: true }] },
       memory: { backend: "builtin" },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const log = await startMemoryBackendForTest(cfg);
 
@@ -122,7 +122,7 @@ describe("startGatewayMemoryBackend", () => {
     const cfg = {
       agents: { list: [{ id: "main", default: true }] },
       memory: { backend: "qmd", qmd: {} },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const log = await startMemoryBackendForTest(cfg);
 
@@ -220,7 +220,7 @@ describe("startGatewayMemoryBackend", () => {
           update: { startup: "immediate", onBoot: false, interval: "0s", embedInterval: "0s" },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const log = await startMemoryBackendForTest(cfg);
 

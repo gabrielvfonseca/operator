@@ -1,6 +1,6 @@
 // Load context tests cover agent and workspace context resolution for plugin runtimes.
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 
 const loadConfigMock = vi.fn<typeof import("../../config/config.js").loadConfig>();
 const applyPluginAutoEnableMock =
@@ -212,9 +212,9 @@ describe("resolvePluginRuntimeLoadContext", () => {
   });
 
   it("invalidates auto-enable results when config or process env mutates in place", () => {
-    const rawConfig: OpenClawConfig = { plugins: {} };
+    const rawConfig: OperatorConfig = { plugins: {} };
     const env = process.env;
-    const envKey = "OPENCLAW_TEST_PLUGIN_AUTO_ENABLE_FINGERPRINT";
+    const envKey = "OPERATOR_TEST_PLUGIN_AUTO_ENABLE_FINGERPRINT";
     const previousEnvValue = env[envKey];
     delete env[envKey];
 

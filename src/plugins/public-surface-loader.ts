@@ -175,7 +175,7 @@ export function loadBundledPluginPublicArtifactModuleSync<T extends object>(para
     modulePath: location.modulePath,
     boundaryRoot: location.boundaryRoot,
     boundaryLabel:
-      location.boundaryRoot === OPERATOR_PACKAGE_ROOT ? "OpenClaw package root" : "plugin root",
+      location.boundaryRoot === OPERATOR_PACKAGE_ROOT ? "Operator package root" : "plugin root",
     surfaceLabel: `bundled plugin public surface ${params.dirName}/${params.artifactBasename}`,
   }) as T;
 }

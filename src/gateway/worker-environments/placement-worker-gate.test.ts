@@ -3,9 +3,9 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
-  type OpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
+  type OperatorStateDatabase,
 } from "../../state/openclaw-state-db.js";
 import type { WorkerSessionPlacementIdentity } from "./placement-record.js";
 import {
@@ -24,17 +24,17 @@ const OWNER_EPOCH = 7;
 
 describe("worker session placement gate", () => {
   let root: string;
-  let database: OpenClawStateDatabase;
+  let database: OperatorStateDatabase;
   let store: WorkerSessionPlacementStore;
 
   beforeEach(async () => {
     root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "openclaw-worker-gate-"));
-    database = openOpenClawStateDatabase({ env: { OPENCLAW_STATE_DIR: root } });
+    database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: root } });
     store = createWorkerSessionPlacementStore({ database });
   });
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await fs.rm(root, { recursive: true, force: true });
   });
 

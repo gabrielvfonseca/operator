@@ -121,7 +121,7 @@ describe("gateway control-plane write rate limit", () => {
     expect(logWarn).toHaveBeenCalledTimes(1);
   });
 
-  it("allows the OpenClaw inference ladder to probe more than 3 candidates", async () => {
+  it("allows the Operator inference ladder to probe more than 3 candidates", async () => {
     const handlerCalls = vi.fn();
     const handler: GatewayRequestHandler = (opts) => {
       handlerCalls(opts);

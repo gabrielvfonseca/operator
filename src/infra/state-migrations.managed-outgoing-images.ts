@@ -13,8 +13,8 @@ import {
 } from "../gateway/managed-image-record-store.js";
 import { getMediaDir } from "../media/store.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
 } from "../state/operator-state-db.js";
 import {
   executeSqliteQuerySync,
@@ -363,7 +363,7 @@ function rollbackImportedRecords(params: {
   stateDir: string;
 }): string | null {
   try {
-    runOpenClawStateWriteTransaction(
+    runOperatorStateWriteTransaction(
       ({ db }) => {
         const stateDb = getNodeSqliteKysely<ManagedImageRecordDatabase>(db);
         for (const parsed of params.records) {
@@ -448,7 +448,7 @@ export function migrateLegacyManagedOutgoingImages(params: {
   }
 
   try {
-    runOpenClawStateWriteTransaction(
+    runOperatorStateWriteTransaction(
       ({ db }) => {
         const stateDb = getNodeSqliteKysely<ManagedImageRecordDatabase>(db);
         for (const parsed of parsedRecords) {
@@ -491,7 +491,7 @@ export function migrateLegacyManagedOutgoingImages(params: {
 
   try {
     params.beforeVerify?.();
-    const database = openOpenClawStateDatabase({
+    const database = openOperatorStateDatabase({
       env: { ...process.env, OPERATOR_STATE_DIR: params.stateDir },
     });
     const stateDb = getNodeSqliteKysely<ManagedImageRecordDatabase>(database.db);

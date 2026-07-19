@@ -3,7 +3,7 @@
  */
 import {
   createModelCatalogPresetAppliers,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "openclaw/plugin-sdk/provider-onboard";
 import {
   buildCerebrasModelDefinition,
@@ -16,7 +16,7 @@ export const CEREBRAS_DEFAULT_MODEL_REF = "cerebras/zai-glm-4.7";
 
 const cerebrasPresetAppliers = createModelCatalogPresetAppliers({
   primaryModelRef: CEREBRAS_DEFAULT_MODEL_REF,
-  resolveParams: (_cfg: OpenClawConfig) => ({
+  resolveParams: (_cfg: OperatorConfig) => ({
     providerId: "cerebras",
     api: "openai-completions",
     baseUrl: CEREBRAS_BASE_URL,
@@ -26,6 +26,6 @@ const cerebrasPresetAppliers = createModelCatalogPresetAppliers({
 });
 
 /** Applies Cerebras provider/catalog config and default model aliases. */
-export function applyCerebrasConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyCerebrasConfig(cfg: OperatorConfig): OperatorConfig {
   return cerebrasPresetAppliers.applyConfig(cfg);
 }

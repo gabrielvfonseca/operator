@@ -1,7 +1,7 @@
 {
   "name": "@operator/tlon",
   "version": "2026.7.2",
-  "description": "OpenClaw Tlon/Urbit channel plugin for chat workflows.",
+  "description": "Operator Tlon/Urbit channel plugin for chat workflows.",
   "repository": {
     "type": "git",
     "url": "https://github.com/openclaw/openclaw"

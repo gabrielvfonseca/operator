@@ -7,7 +7,7 @@
  */
 import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
 import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { getActiveMemorySearchManager } from "../plugins/memory-runtime.js";
 import { withTimeout } from "../utils/with-timeout.js";
@@ -83,7 +83,7 @@ function resolveLabels(
 ): RealtimeVoiceFastContextLabels {
   return {
     audienceLabel: labels?.audienceLabel?.trim() || "person",
-    contextName: labels?.contextName?.trim() || "OpenClaw memory context",
+    contextName: labels?.contextName?.trim() || "Operator memory context",
   };
 }
 
@@ -115,7 +115,7 @@ function buildMissText(query: string, labels: RealtimeVoiceFastContextLabels): s
 }
 
 async function lookupFastContext(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
   sessionKey: string;
   config: RealtimeVoiceFastContextConfig;
@@ -143,7 +143,7 @@ async function lookupFastContext(params: {
 
 /** Try to answer a realtime consult from fast memory/session context. */
 export async function resolveRealtimeVoiceFastContextConsult(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
   sessionKey: string;
   config: RealtimeVoiceFastContextConfig;

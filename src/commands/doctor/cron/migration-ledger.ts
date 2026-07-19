@@ -7,15 +7,15 @@ import {
   getNodeSqliteKysely,
 } from "../../../infra/kysely-sync.js";
 import { requireNodeSqlite } from "../../../infra/node-sqlite.js";
-import type { DB as OpenClawStateDatabase } from "../../../state/operator-state-db.generated.js";
+import type { DB as OperatorStateDatabase } from "../../../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
 } from "../../../state/operator-state-db.js";
-import { resolveOpenClawStateSqlitePath } from "../../../state/operator-state-db.paths.js";
+import { resolveOperatorStateSqlitePath } from "../../../state/operator-state-db.paths.js";
 import type { LegacyCronMigrationSource } from "./legacy-store-migration.js";
 
-type CronMigrationDatabase = Pick<OpenClawStateDatabase, "migration_runs" | "migration_sources">;
+type CronMigrationDatabase = Pick<OperatorStateDatabase, "migration_runs" | "migration_sources">;
 
 function migrationRunId(source: LegacyCronMigrationSource): string {
   return `cron-legacy:${source.sourceKey}`;
@@ -36,7 +36,7 @@ function hasLegacyCronMigrationReceiptInDatabase(
 }
 
 export function hasLegacyCronMigrationReceipt(source: LegacyCronMigrationSource): boolean {
-  return hasLegacyCronMigrationReceiptInDatabase(openOpenClawStateDatabase().db, source);
+  return hasLegacyCronMigrationReceiptInDatabase(openOperatorStateDatabase().db, source);
 }
 
 function tableExists(db: DatabaseSync, tableName: string): boolean {
@@ -48,7 +48,7 @@ function tableExists(db: DatabaseSync, tableName: string): boolean {
 }
 
 export function hasLegacyCronMigrationReceiptReadOnly(source: LegacyCronMigrationSource): boolean {
-  const statePath = resolveOpenClawStateSqlitePath(process.env);
+  const statePath = resolveOperatorStateSqlitePath(process.env);
   if (!fs.existsSync(statePath)) {
     return false;
   }
@@ -131,7 +131,7 @@ export function acquireLegacyCronMigrationReceipt(
 }
 
 export function markLegacyCronMigrationSourceRemoved(source: LegacyCronMigrationSource): void {
-  runOpenClawStateWriteTransaction(({ db }) => {
+  runOperatorStateWriteTransaction(({ db }) => {
     executeSqliteQuerySync(
       db,
       getNodeSqliteKysely<CronMigrationDatabase>(db)

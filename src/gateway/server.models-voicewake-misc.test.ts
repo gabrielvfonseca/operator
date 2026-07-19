@@ -218,7 +218,7 @@ describe("gateway server models + voicewake", () => {
   const listModels = async (params?: { view?: "default" | "configured" | "all" }) =>
     withEnvAsync(
       {
-        OPENCLAW_DISABLE_BUNDLED_PLUGINS: "1",
+        OPERATOR_DISABLE_BUNDLED_PLUGINS: "1",
         CODEX_API_KEY: undefined,
         OPENAI_API_KEY: undefined,
         OPENAI_OAUTH_TOKEN: undefined,
@@ -241,9 +241,9 @@ describe("gateway server models + voicewake", () => {
   };
 
   const withModelsConfig = async <T>(config: unknown, run: () => Promise<T>): Promise<T> => {
-    const configPath = process.env.OPENCLAW_CONFIG_PATH;
+    const configPath = process.env.OPERATOR_CONFIG_PATH;
     if (!configPath) {
-      throw new Error("Missing OPENCLAW_CONFIG_PATH");
+      throw new Error("Missing OPERATOR_CONFIG_PATH");
     }
     let previousConfig: string | undefined;
     try {

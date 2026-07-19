@@ -1,4 +1,4 @@
-import type { AnyAgentTool, OpenClawPluginToolContext } from "openclaw/plugin-sdk/plugin-entry";
+import type { AnyAgentTool, OperatorPluginToolContext } from "openclaw/plugin-sdk/plugin-entry";
 import { jsonResult } from "openclaw/plugin-sdk/tool-results";
 import type {
   PluginHookToolResultPersistEvent,
@@ -92,7 +92,7 @@ export function redactPersistedOnePasswordResult(
 
 export function createOnePasswordTool(
   broker: OnePasswordBroker,
-  invocation: OpenClawPluginToolContext,
+  invocation: OperatorPluginToolContext,
 ): AnyAgentTool {
   return {
     name: "onepassword",

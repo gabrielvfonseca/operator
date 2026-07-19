@@ -37,10 +37,10 @@ const makeConfig = (overrides: Record<string, unknown>) =>
     },
     session: { store: sessionStorePath },
     ...overrides,
-  }) as unknown as import("openclaw/plugin-sdk/config-contracts").OpenClawConfig;
+  }) as unknown as import("openclaw/plugin-sdk/config-contracts").OperatorConfig;
 
 async function runGroupGating(params: {
-  cfg: import("openclaw/plugin-sdk/config-contracts").OpenClawConfig;
+  cfg: import("openclaw/plugin-sdk/config-contracts").OperatorConfig;
   msg: AdmittedWebInboundMessage;
   agentId?: string;
   selfChatMode?: boolean;

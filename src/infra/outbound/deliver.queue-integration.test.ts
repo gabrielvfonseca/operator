@@ -3,7 +3,7 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vite
 import type { TrustedMessageAuditEvent } from "../../audit/message-audit-events.js";
 import { onTrustedMessageAuditEventForTest as onTrustedMessageAuditEvent } from "../../audit/message-audit-events.test-support.js";
 import type { ChannelOutboundAdapter } from "../../channels/plugins/types.public.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import { createEmptyPluginRegistry } from "../../plugins/registry.js";
 import {
   releasePinnedPluginChannelRegistry,
@@ -58,7 +58,7 @@ async function drainMatrixReconnect(opts: { deliver: DeliverFn; stateDir: string
   await drainPendingDeliveries({
     drainKey: "matrix:reconnect-test",
     logLabel: "Matrix reconnect drain",
-    cfg: {} as OpenClawConfig,
+    cfg: {} as OperatorConfig,
     log: createRecoveryLog(),
     stateDir: opts.stateDir,
     deliver: opts.deliver,
@@ -74,10 +74,10 @@ function createPartialSendFailure() {
 }
 
 async function deliverPartialMatrixBatch(sendMatrix: ReturnType<typeof vi.fn>, tmpDir: string) {
-  process.env.OPENCLAW_STATE_DIR = tmpDir;
+  process.env.OPERATOR_STATE_DIR = tmpDir;
   await expect(
     deliverOutboundPayloads({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       channel: "matrix",
       to: "!room:example",
       payloads: [{ text: "first" }, { text: "second" }],
@@ -166,12 +166,12 @@ describe("deliverOutboundPayloads queue integration: mid-batch failure with send
   it("does not retain a pre-send suppression across an ambiguous crash boundary", async () => {
     const auditEvents: TrustedMessageAuditEvent[] = [];
     const unsubscribe = onTrustedMessageAuditEvent((event) => auditEvents.push(event));
-    process.env.OPENCLAW_STATE_DIR = tmpDir;
+    process.env.OPERATOR_STATE_DIR = tmpDir;
     const sendMatrix = vi.fn().mockRejectedValueOnce(new Error("ambiguous provider failure"));
 
     await expect(
       deliverOutboundPayloads({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as OperatorConfig,
         channel: "matrix",
         to: "!room:example",
         payloads: [{ text: "NO_REPLY" }, { text: "visible" }],
@@ -194,12 +194,12 @@ describe("deliverOutboundPayloads queue integration: mid-batch failure with send
   });
 
   it("retains retryable send-attempt state when an adapter fails before returning a result", async () => {
-    process.env.OPENCLAW_STATE_DIR = tmpDir;
+    process.env.OPERATOR_STATE_DIR = tmpDir;
     const sendMatrix = vi.fn().mockRejectedValueOnce(new Error("first payload send failed"));
 
     await expect(
       deliverOutboundPayloads({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as OperatorConfig,
         channel: "matrix",
         to: "!room:example",
         payloads: [{ text: "first" }],
@@ -219,7 +219,7 @@ describe("deliverOutboundPayloads queue integration: mid-batch failure with send
   });
 
   it("replays an entry after a proven pre-connect failure clears send evidence", async () => {
-    process.env.OPENCLAW_STATE_DIR = tmpDir;
+    process.env.OPERATOR_STATE_DIR = tmpDir;
     const connectError = Object.assign(new Error("connect ECONNREFUSED"), {
       code: "ECONNREFUSED",
       syscall: "connect",
@@ -228,7 +228,7 @@ describe("deliverOutboundPayloads queue integration: mid-batch failure with send
 
     await expect(
       deliverOutboundPayloads({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as OperatorConfig,
         channel: "matrix",
         to: "!room:example",
         payloads: [{ text: "first" }],
@@ -273,7 +273,7 @@ describe("deliverOutboundPayloads queue integration: mid-batch failure with send
   });
 
   it("replays an entry after the provider proves no platform message was dispatched", async () => {
-    process.env.OPENCLAW_STATE_DIR = tmpDir;
+    process.env.OPERATOR_STATE_DIR = tmpDir;
     const notDispatchedError = new PlatformMessageNotDispatchedError(
       "upload timed out before completion dispatch",
       { cause: new Error("request timed out") },
@@ -282,7 +282,7 @@ describe("deliverOutboundPayloads queue integration: mid-batch failure with send
 
     await expect(
       deliverOutboundPayloads({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as OperatorConfig,
         channel: "matrix",
         to: "!room:example",
         payloads: [{ text: "first" }],

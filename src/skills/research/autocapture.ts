@@ -8,7 +8,7 @@ import {
   recordSessionSkillSuggestion,
   releaseSessionSkillCaptureSignals,
 } from "../../config/sessions/skill-suggestions.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { sha256Hex } from "../../infra/crypto-digest.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
 import { readWorkspaceSkillFile } from "../lifecycle/workspace-skill-write.js";
@@ -213,7 +213,7 @@ function buildProposalOrigin(ctx: SkillResearchAgentContext) {
 export async function runSkillResearchAutoCapture(params: {
   event: SkillResearchAgentEndEvent;
   ctx: SkillResearchAgentContext;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }): Promise<void> {
   const workshopConfig = resolveSkillWorkshopConfig(params.config);
   const workspaceDir = params.ctx.workspaceDir;

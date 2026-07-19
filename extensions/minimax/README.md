@@ -1,4 +1,4 @@
-# MiniMax (OpenClaw plugin)
+# MiniMax (Operator plugin)
 
 Bundled MiniMax plugin for both:
 

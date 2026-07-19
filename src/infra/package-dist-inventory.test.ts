@@ -184,7 +184,7 @@ describe("package dist inventory", () => {
       const omittedRuntimeChunk = path.join(packageRoot, "dist", "qa-runtime-AbC123.js");
       const omittedTopLevelMap = path.join(packageRoot, "dist", "runtime.js.map");
       const omittedMap = path.join(packageRoot, "dist", "plugin-sdk", "runtime.js.map");
-      const omittedAppBundle = path.join(packageRoot, "dist", "OpenClaw.app");
+      const omittedAppBundle = path.join(packageRoot, "dist", "Operator.app");
 
       await fs.mkdir(path.dirname(packagedRuntime), { recursive: true });
       await fs.mkdir(path.dirname(omittedNestedHelper), { recursive: true });
@@ -194,7 +194,7 @@ describe("package dist inventory", () => {
         JSON.stringify({
           files: [
             "dist/",
-            "!dist/OpenClaw.app/**",
+            "!dist/Operator.app/**",
             "!dist/plugin-sdk/plugin-test-runtime.js",
             "!dist/plugin-sdk/plugin-test-runtime.d.ts",
             "!dist/plugin-sdk/src/test-utils/**",
@@ -402,12 +402,12 @@ describe("package dist inventory", () => {
     ).toBe(true);
     expect(
       isLegacyPluginDependencyInstallStagePath(
-        "dist/Extensions/browser/.OPENCLAW-INSTALL-STAGE-AbC123/node_modules/playwright-core/package.json",
+        "dist/Extensions/browser/.OPERATOR-INSTALL-STAGE-AbC123/node_modules/playwright-core/package.json",
       ),
     ).toBe(true);
     expect(
       isLegacyPluginDependencyInstallStagePath(
-        "Dist/Extensions/browser/.OpenClaw-Install-Stage/package.json",
+        "Dist/Extensions/browser/.Operator-Install-Stage/package.json",
       ),
     ).toBe(true);
     expect(
@@ -444,7 +444,7 @@ describe("package dist inventory", () => {
         "Dist",
         "Extensions",
         "browser",
-        ".OPENCLAW-INSTALL-STAGE-AbC123",
+        ".OPERATOR-INSTALL-STAGE-AbC123",
         "package.json",
       );
       await fs.mkdir(path.dirname(stagedFile), { recursive: true });

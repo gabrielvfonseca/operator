@@ -6,10 +6,10 @@ import path from "node:path";
 import JSON5 from "json5";
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { executeSqliteQueryTakeFirstSync, getNodeSqliteKysely } from "../infra/kysely-sync.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
 } from "../state/openclaw-state-db.js";
 import { createConfigIO } from "./io.js";
 import {
@@ -21,7 +21,7 @@ import {
 import type { ConfigFileSnapshot } from "./types.js";
 
 const CONFIG_CLOBBER_SNAPSHOT_LIMIT = 32;
-type ConfigHealthDatabase = Pick<OpenClawStateKyselyDatabase, "config_health_entries">;
+type ConfigHealthDatabase = Pick<OperatorStateKyselyDatabase, "config_health_entries">;
 type ObserveRecoveryDeps = Parameters<typeof maybeRecoverSuspiciousConfigRead>[0]["deps"];
 
 function resolveLastKnownGoodConfigPath(configPath: string): string {
@@ -51,16 +51,16 @@ describe("config observe recovery", () => {
   });
 
   afterAll(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await fsp.rm(fixtureRoot, { recursive: true, force: true });
   });
 
   afterEach(() => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
   });
 
   function readConfigHealthRow(home: string, configPath: string) {
-    const { db } = openOpenClawStateDatabase({ env: { HOME: home } as NodeJS.ProcessEnv });
+    const { db } = openOperatorStateDatabase({ env: { HOME: home } as NodeJS.ProcessEnv });
     const healthDb = getNodeSqliteKysely<ConfigHealthDatabase>(db);
     return executeSqliteQueryTakeFirstSync(
       db,
@@ -515,13 +515,13 @@ describe("config observe recovery", () => {
       await seedConfigBackup(configPath, recoverableTelegramConfig);
       await writeConfigRaw(configPath, {
         meta: { lastTouchedVersion: "2026.5.28" },
-        env: { vars: { OPENCLAW_CLOBBER_ONLY: "bad" } },
+        env: { vars: { OPERATOR_CLOBBER_ONLY: "bad" } },
       });
 
       const config = io.loadConfig();
 
       expect(config.gateway?.mode).toBe("local");
-      expect(env.OPENCLAW_CLOBBER_ONLY).toBeUndefined();
+      expect(env.OPERATOR_CLOBBER_ONLY).toBeUndefined();
     });
   });
 
@@ -532,13 +532,13 @@ describe("config observe recovery", () => {
       await seedConfigBackup(configPath, recoverableTelegramConfig);
       await writeConfigRaw(configPath, {
         meta: { lastTouchedVersion: "2026.5.28" },
-        env: { vars: { OPENCLAW_CLOBBER_ONLY: "bad" } },
+        env: { vars: { OPERATOR_CLOBBER_ONLY: "bad" } },
       });
 
       const snapshot = await io.readConfigFileSnapshot({ recoverSuspicious: true });
 
       expect(snapshot.config.gateway?.mode).toBe("local");
-      expect(env.OPENCLAW_CLOBBER_ONLY).toBeUndefined();
+      expect(env.OPERATOR_CLOBBER_ONLY).toBeUndefined();
     });
   });
 
@@ -701,7 +701,7 @@ describe("config observe recovery", () => {
       const { io, configPath } = createTestConfigIO(home, vi.fn(), { env });
       await seedConfigBackup(configPath, {
         gateway: { mode: "local" },
-        env: { vars: { OPENCLAW_BACKUP_ONLY: "stale" } },
+        env: { vars: { OPERATOR_BACKUP_ONLY: "stale" } },
         agents: { defaults: { model: 123 } },
       });
       await writeConfigRaw(configPath, {
@@ -710,7 +710,7 @@ describe("config observe recovery", () => {
 
       await io.readConfigFileSnapshot({ recoverSuspicious: true });
 
-      expect(env.OPENCLAW_BACKUP_ONLY).toBeUndefined();
+      expect(env.OPERATOR_BACKUP_ONLY).toBeUndefined();
     });
   });
 
@@ -1271,7 +1271,7 @@ describe("config observe recovery", () => {
             {
               path: "plugins.entries.feishu",
               message:
-                "plugin feishu: plugin requires OpenClaw >=2026.4.23, but this host is 2026.4.22; skipping load",
+                "plugin feishu: plugin requires Operator >=2026.4.23, but this host is 2026.4.22; skipping load",
             },
           ],
         },

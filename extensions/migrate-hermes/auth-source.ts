@@ -168,8 +168,8 @@ export async function buildReauthenticationItems(source: HermesSource): Promise<
       createMigrationManualItem({
         id: `manual:auth-reauthenticate:${targetProvider}`,
         source: sourcePath,
-        message: `Hermes ${sourceProvider} credentials cannot be reused safely by OpenClaw.`,
-        recommendation: `Authenticate ${targetProvider} in OpenClaw after migration.`,
+        message: `Hermes ${sourceProvider} credentials cannot be reused safely by Operator.`,
+        recommendation: `Authenticate ${targetProvider} in Operator after migration.`,
       }),
     ];
   });

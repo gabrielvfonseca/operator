@@ -1,6 +1,6 @@
 import { jsonResult, readStringParam } from "openclaw/plugin-sdk/channel-actions";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { AnyAgentTool, OpenClawPluginToolContext } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { AnyAgentTool, OperatorPluginToolContext } from "openclaw/plugin-sdk/plugin-entry";
 import { escapeHtml } from "openclaw/plugin-sdk/text-utility-runtime";
 import { Type } from "typebox";
 import { resolveDiscordAccount } from "../accounts.js";
@@ -34,7 +34,7 @@ class DiscordWidgetLaunchButton extends Button {
   }
 }
 
-function currentConfig(context: OpenClawPluginToolContext, runtime: DiscordActivitiesRuntime) {
+function currentConfig(context: OperatorPluginToolContext, runtime: DiscordActivitiesRuntime) {
   return (
     context.getRuntimeConfig?.() ??
     context.runtimeConfig ??
@@ -43,7 +43,7 @@ function currentConfig(context: OpenClawPluginToolContext, runtime: DiscordActiv
   );
 }
 
-function resolveDiscordChannelId(context: OpenClawPluginToolContext): string | undefined {
+function resolveDiscordChannelId(context: OperatorPluginToolContext): string | undefined {
   const raw = context.nativeChannelId?.trim() || context.deliveryContext?.to?.trim();
   if (!raw) {
     return undefined;
@@ -71,7 +71,7 @@ type DiscordWidgetToolDeps = {
 };
 
 export function createDiscordWidgetTool(
-  context: OpenClawPluginToolContext,
+  context: OperatorPluginToolContext,
   deps: DiscordWidgetToolDeps,
 ): AnyAgentTool | null {
   if (context.messageChannel !== "discord") {
@@ -129,7 +129,7 @@ export function createDiscordWidgetTool(
       let result: Awaited<ReturnType<typeof sendMessageDiscord>>;
       try {
         result = await (deps.sendMessage ?? sendMessageDiscord)(`channel:${channelId}`, title, {
-          cfg: cfg as OpenClawConfig,
+          cfg: cfg as OperatorConfig,
           accountId: account.accountId,
           components: [
             new Row([

@@ -6,7 +6,7 @@ import { detectBundleManifestFormat, loadBundleManifest } from "../../plugins/bu
 import type { PluginBundleFormat } from "../../plugins/manifest-types.js";
 import { resolvePackageExtensionEntries, type PackageManifest } from "../../plugins/manifest.js";
 import { validatePackageExtensionEntriesForInstall } from "../../plugins/package-entry-resolution.js";
-import { auditOpenClawPeerDependencyLink } from "../../plugins/plugin-peer-link.js";
+import { auditOperatorPeerDependencyLink } from "../../plugins/plugin-peer-link.js";
 import { resolveUserPath } from "../../utils.js";
 
 type PluginPayloadSmokeFailureReason =
@@ -179,8 +179,8 @@ async function validatePackagePayload(params: {
 }): Promise<PluginPayloadSmokeFailure[]> {
   const failures: PluginPayloadSmokeFailure[] = [];
 
-  if (manifestDeclaresOpenClawPeer(params.manifest)) {
-    const peerIssue = await auditOpenClawPeerDependencyLink({
+  if (manifestDeclaresOperatorPeer(params.manifest)) {
+    const peerIssue = await auditOperatorPeerDependencyLink({
       packageDir: params.installPath,
       packageName: params.manifest.name ?? params.pluginId,
     });
@@ -304,7 +304,7 @@ export function validateBundleInstallRecordPayload(params: {
   };
 }
 
-function manifestDeclaresOpenClawPeer(manifest: PackageManifest): boolean {
+function manifestDeclaresOperatorPeer(manifest: PackageManifest): boolean {
   const peerDependencies = (manifest as { peerDependencies?: unknown }).peerDependencies;
   return (
     typeof peerDependencies === "object" &&

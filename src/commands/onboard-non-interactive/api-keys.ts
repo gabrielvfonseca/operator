@@ -12,7 +12,7 @@ import {
 import { isMalformedApiKeyInput } from "../../agents/auth-profiles/credential-state.js";
 import { resolveEnvApiKey } from "../../agents/model-auth.js";
 import { formatCliCommand } from "../../cli/command-format.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { RuntimeEnv } from "../../runtime.js";
 import { normalizeOptionalSecretInput } from "../../utils/normalize-secret-input.js";
 import type { SecretInputMode } from "../onboard-types.js";
@@ -30,7 +30,7 @@ function parseEnvVarNameFromSourceLabel(source: string | undefined): string | un
 
 async function resolveApiKeyFromProfiles(params: {
   provider: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentDir?: string;
 }): Promise<string | null> {
   const store = ensureAuthProfileStore(params.agentDir);
@@ -62,7 +62,7 @@ async function resolveApiKeyFromProfiles(params: {
 /** Resolves an API key for non-interactive setup without prompting the user. */
 export async function resolveNonInteractiveApiKey(params: {
   provider: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   flagValue?: string;
   flagName: string;
   envVar: string;
@@ -126,7 +126,7 @@ export async function resolveNonInteractiveApiKey(params: {
 
   if (flagKey) {
     if (isMalformedApiKeyInput(flagKey)) {
-      params.runtime.error("Paste the API key value, not an OpenClaw onboarding command.");
+      params.runtime.error("Paste the API key value, not an Operator onboarding command.");
       params.runtime.exit(1);
       return null;
     }

@@ -14,7 +14,7 @@ import type {
   ChannelMessageSendTextContext,
 } from "../../channels/message/types.js";
 import type { ChannelOutboundAdapter } from "../../channels/plugins/types.public.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import type { SessionTranscriptAppendResult } from "../../config/sessions/transcript.js";
 import * as mediaCapabilityModule from "../../media/read-capability.js";
 import { createHookRunner } from "../../plugins/hooks.js";
@@ -38,7 +38,7 @@ import {
   type DiagnosticEventPayload,
 } from "../diagnostic-events.js";
 import { retryAsync } from "../retry.js";
-import { resolvePreferredOpenClawTmpDir } from "../tmp-openclaw-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../tmp-openclaw-dir.js";
 import { PlatformMessageNotDispatchedError } from "./deliver-types.js";
 
 const mocks = vi.hoisted(() => ({
@@ -137,11 +137,11 @@ let deliverOutboundPayloads: DeliverModule["deliverOutboundPayloads"];
 let deliverOutboundPayloadsInternal: DeliverModule["deliverOutboundPayloadsInternal"];
 let resolveOutboundDurableFinalDeliverySupport: DeliverModule["resolveOutboundDurableFinalDeliverySupport"];
 
-const matrixChunkConfig: OpenClawConfig = {
-  channels: { matrix: { textChunkLimit: 4000 } } as OpenClawConfig["channels"],
+const matrixChunkConfig: OperatorConfig = {
+  channels: { matrix: { textChunkLimit: 4000 } } as OperatorConfig["channels"],
 };
 
-const expectedPreferredTmpRoot = resolvePreferredOpenClawTmpDir();
+const expectedPreferredTmpRoot = resolvePreferredOperatorTmpDir();
 
 type DeliverOutboundArgs = Parameters<DeliverModule["deliverOutboundPayloads"]>[0];
 type DeliverOutboundPayload = DeliverOutboundArgs["payloads"][number];
@@ -234,7 +234,7 @@ const matrixOutboundForTest: ChannelOutboundAdapter = {
 async function deliverMatrixPayload(params: {
   sendMatrix: MatrixSendFn;
   payload: DeliverOutboundPayload;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
 }) {
   return deliverOutboundPayloads({
     cfg: params.cfg ?? matrixChunkConfig,
@@ -252,8 +252,8 @@ async function runChunkedMatrixDelivery(params?: {
     .fn()
     .mockResolvedValueOnce({ messageId: "m1", roomId: "!room:example" })
     .mockResolvedValueOnce({ messageId: "m2", roomId: "!room:example" });
-  const cfg: OpenClawConfig = {
-    channels: { matrix: { textChunkLimit: 2 } } as OpenClawConfig["channels"],
+  const cfg: OperatorConfig = {
+    channels: { matrix: { textChunkLimit: 2 } } as OperatorConfig["channels"],
   };
   const results = await deliverOutboundPayloads({
     cfg,
@@ -290,7 +290,7 @@ async function runBestEffortPartialFailureDelivery(params?: { onError?: boolean 
     .mockRejectedValueOnce(new Error("fail"))
     .mockResolvedValueOnce({ messageId: "m2", roomId: "!room:example" });
   const onError = vi.fn();
-  const cfg: OpenClawConfig = {};
+  const cfg: OperatorConfig = {};
   const results = await deliverOutboundPayloads({
     cfg,
     channel: "matrix",
@@ -2423,7 +2423,7 @@ describe("deliverOutboundPayloads", () => {
               },
             },
           },
-        } as OpenClawConfig["channels"],
+        } as OperatorConfig["channels"],
       },
       channel: "matrix",
       to: "!room:example",
@@ -2632,7 +2632,7 @@ describe("deliverOutboundPayloads", () => {
     );
 
     const results = await deliverOutboundPayloads({
-      cfg: { channels: { matrix: { textChunkLimit: 2 } } } as OpenClawConfig,
+      cfg: { channels: { matrix: { textChunkLimit: 2 } } } as OperatorConfig,
       channel: "matrix",
       to: "!room",
       accountId: "default",
@@ -2678,7 +2678,7 @@ describe("deliverOutboundPayloads", () => {
     );
 
     await deliverOutboundPayloads({
-      cfg: { channels: { matrix: { textChunkLimit: 2 } } } as OpenClawConfig,
+      cfg: { channels: { matrix: { textChunkLimit: 2 } } } as OperatorConfig,
       channel: "matrix",
       to: "!room",
       payloads: [{ text: "abcd" }],
@@ -3005,7 +3005,7 @@ describe("deliverOutboundPayloads", () => {
       messageId: "context",
       roomId: "!room",
     });
-    const cfg = { channels: { matrix: { enabled: true } } } as unknown as OpenClawConfig;
+    const cfg = { channels: { matrix: { enabled: true } } } as unknown as OperatorConfig;
     setActivePluginRegistry(
       createTestRegistry([
         {
@@ -3281,7 +3281,7 @@ describe("deliverOutboundPayloads", () => {
     );
 
     const textResults = await deliverOutboundPayloads({
-      cfg: { channels: { line: {} } } as OpenClawConfig,
+      cfg: { channels: { line: {} } } as OperatorConfig,
       channel: "line",
       to: "U123",
       accountId: "default",
@@ -3301,7 +3301,7 @@ describe("deliverOutboundPayloads", () => {
       "fmt:hello **boss**:2",
     ]);
 
-    const cfg = { channels: { line: {} } } as OpenClawConfig;
+    const cfg = { channels: { line: {} } } as OperatorConfig;
     await deliverOutboundPayloads({
       cfg,
       channel: "line",
@@ -3596,11 +3596,11 @@ describe("deliverOutboundPayloads", () => {
     expect(afterCommit).toHaveBeenCalledTimes(1);
   });
 
-  it("includes OpenClaw tmp root in plugin mediaLocalRoots", async () => {
+  it("includes Operator tmp root in plugin mediaLocalRoots", async () => {
     const sendMatrix = vi.fn().mockResolvedValue({ messageId: "m-media", roomId: "!room" });
 
     await deliverOutboundPayloads({
-      cfg: { channels: { matrix: {} } } as OpenClawConfig,
+      cfg: { channels: { matrix: {} } } as OperatorConfig,
       channel: "matrix",
       to: "!room:example",
       payloads: [{ text: "hi", mediaUrl: "https://example.com/x.png" }],
@@ -3639,7 +3639,7 @@ describe("deliverOutboundPayloads", () => {
           matrix: {
             allowFrom: ["111", "222", "333"],
           },
-        } as OpenClawConfig["channels"],
+        } as OperatorConfig["channels"],
       },
       channel: "matrix",
       to: "!explicit:example",
@@ -3694,7 +3694,7 @@ describe("deliverOutboundPayloads", () => {
     );
 
     await deliverOutboundPayloads({
-      cfg: { channels: { matrix: {} } } as OpenClawConfig,
+      cfg: { channels: { matrix: {} } } as OperatorConfig,
       channel: "matrix",
       to: "room:!room:example",
       payloads: [{ text: "voice caption", mediaUrl: "file:///tmp/clip.mp3", audioAsVoice: true }],
@@ -3739,7 +3739,7 @@ describe("deliverOutboundPayloads", () => {
     );
 
     await deliverOutboundPayloads({
-      cfg: { channels: { matrix: {} } } as OpenClawConfig,
+      cfg: { channels: { matrix: {} } } as OperatorConfig,
       channel: "matrix",
       to: "room:!room:example",
       payloads: [
@@ -3782,10 +3782,10 @@ describe("deliverOutboundPayloads", () => {
 
   it("respects newline chunk mode for plugin text without splitting short messages", async () => {
     const sendMatrix = vi.fn().mockResolvedValue({ messageId: "m1", roomId: "!room:example" });
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       channels: {
         matrix: { textChunkLimit: 4000, chunkMode: "newline" },
-      } as OpenClawConfig["channels"],
+      } as OperatorConfig["channels"],
     };
 
     await deliverOutboundPayloads({
@@ -3808,10 +3808,10 @@ describe("deliverOutboundPayloads", () => {
       .fn()
       .mockResolvedValueOnce({ messageId: "m1", roomId: "!room:example" })
       .mockResolvedValueOnce({ messageId: "m2", roomId: "!room:example" });
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       channels: {
         matrix: { textChunkLimit: 14, chunkMode: "newline" },
-      } as OpenClawConfig["channels"],
+      } as OperatorConfig["channels"],
     };
 
     await deliverOutboundPayloads({
@@ -3864,7 +3864,7 @@ describe("deliverOutboundPayloads", () => {
     );
 
     await deliverOutboundPayloads({
-      cfg: { channels: { matrix: { textChunkLimit: 4000 } } } as OpenClawConfig,
+      cfg: { channels: { matrix: { textChunkLimit: 4000 } } } as OperatorConfig,
       channel: "matrix",
       to: "!room",
       payloads: [{ text: "abcd" }],
@@ -3910,7 +3910,7 @@ describe("deliverOutboundPayloads", () => {
     );
 
     await deliverOutboundPayloadsInternal({
-      cfg: { channels: { matrix: { textChunkLimit: 4000 } } } as OpenClawConfig,
+      cfg: { channels: { matrix: { textChunkLimit: 4000 } } } as OperatorConfig,
       channel: "matrix",
       to: "!room",
       payloads: [{ text: "line one\nline two" }],
@@ -3989,7 +3989,7 @@ describe("deliverOutboundPayloads", () => {
       ]),
     );
 
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       channels: { matrix: { textChunkLimit: 4000, chunkMode: "newline" } },
     };
     const text = "```js\nconst a = 1;\nconst b = 2;\n```\nAfter";
@@ -4056,7 +4056,7 @@ describe("deliverOutboundPayloads", () => {
         },
       ]),
     );
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       agents: { defaults: { mediaMaxMb: 3 } },
     };
 
@@ -4462,19 +4462,19 @@ describe("deliverOutboundPayloads", () => {
         {
           text: [
             "visible",
-            "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
-            "OpenClaw runtime context (internal):",
+            "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
+            "Operator runtime context (internal):",
             "<<<BEGIN_UNTRUSTED_CHILD_RESULT>>>",
             "raw child output",
             "<<<END_UNTRUSTED_CHILD_RESULT>>>",
-            "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+            "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
             "after",
           ].join("\n"),
           channelData: {
             internal: [
-              "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+              "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
               "internal metadata",
-              "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+              "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
             ].join("\n"),
           },
         },
@@ -4545,16 +4545,16 @@ describe("deliverOutboundPayloads", () => {
   it("queues a spool copy while the live send keeps the producer's path", async () => {
     const sendMatrix = vi.fn().mockResolvedValue({ messageId: "m-spool", roomId: "!room:example" });
     // Production shape: no explicit mediaAccess, and the source sits in the
-    // OpenClaw temp root that TTS actually writes to. Staging must resolve the
+    // Operator temp root that TTS actually writes to. Staging must resolve the
     // same capability the live send resolves, so a fabricated localRoots here
     // would hide whether the two gates agree.
     const sourceDir = await fsPromises.realpath(
-      await fsPromises.mkdtemp(path.join(resolvePreferredOpenClawTmpDir(), "deliver-spool-")),
+      await fsPromises.mkdtemp(path.join(resolvePreferredOperatorTmpDir(), "deliver-spool-")),
     );
     const stateDir = await fsPromises.realpath(
       await fsPromises.mkdtemp(path.join(os.tmpdir(), "openclaw-deliver-spool-state-")),
     );
-    const previousStateDir = process.env.OPENCLAW_STATE_DIR;
+    const previousStateDir = process.env.OPERATOR_STATE_DIR;
     // Real MPEG-1 Layer III frames: host-local media sends are buffer-verified,
     // so placeholder text would be rejected before staging is even exercised.
     const source = path.join(sourceDir, "voice.mp3");
@@ -4570,7 +4570,7 @@ describe("deliverOutboundPayloads", () => {
     const payload = { mediaUrl: source, audioAsVoice: true };
 
     try {
-      process.env.OPENCLAW_STATE_DIR = stateDir;
+      process.env.OPERATOR_STATE_DIR = stateDir;
       await deliverOutboundPayloads({
         cfg: matrixChunkConfig,
         channel: "matrix",
@@ -4593,9 +4593,9 @@ describe("deliverOutboundPayloads", () => {
       expect(sendMatrix.mock.calls[0]?.[0]?.mediaUrl ?? source).toBe(source);
     } finally {
       if (previousStateDir === undefined) {
-        delete process.env.OPENCLAW_STATE_DIR;
+        delete process.env.OPERATOR_STATE_DIR;
       } else {
-        process.env.OPENCLAW_STATE_DIR = previousStateDir;
+        process.env.OPERATOR_STATE_DIR = previousStateDir;
       }
       await fsPromises.rm(sourceDir, { recursive: true, force: true });
       await fsPromises.rm(stateDir, { recursive: true, force: true });
@@ -4615,14 +4615,14 @@ describe("deliverOutboundPayloads", () => {
     const workspaceOnlyConfig = {
       ...matrixChunkConfig,
       tools: { fs: { workspaceOnly: true } },
-    } as OpenClawConfig;
-    // Deliberately outside the OpenClaw temp root: that root is itself a default
+    } as OperatorConfig;
+    // Deliberately outside the Operator temp root: that root is itself a default
     // media root, so a state dir inside it would admit the source by containment
     // and hide whether the agent-scoped capability is what grants access.
     const stateDir = await fsPromises.realpath(
       await fsPromises.mkdtemp(path.join(os.tmpdir(), "openclaw-deliver-ws-")),
     );
-    const previousStateDir = process.env.OPENCLAW_STATE_DIR;
+    const previousStateDir = process.env.OPERATOR_STATE_DIR;
     const workspaceDir = path.join(stateDir, "workspace-proofagent");
     // Host-local sends are buffer-verified, so the fixture needs real audio.
     const source = path.join(workspaceDir, "voice.mp3");
@@ -4637,7 +4637,7 @@ describe("deliverOutboundPayloads", () => {
     const payload = { mediaUrl: source, audioAsVoice: true };
 
     try {
-      process.env.OPENCLAW_STATE_DIR = stateDir;
+      process.env.OPERATOR_STATE_DIR = stateDir;
       await fsPromises.mkdir(workspaceDir, { recursive: true });
       await fsPromises.writeFile(source, mp3);
       await deliverOutboundPayloads({
@@ -4665,9 +4665,9 @@ describe("deliverOutboundPayloads", () => {
       expect(sendMatrix).toHaveBeenCalled();
     } finally {
       if (previousStateDir === undefined) {
-        delete process.env.OPENCLAW_STATE_DIR;
+        delete process.env.OPERATOR_STATE_DIR;
       } else {
-        process.env.OPENCLAW_STATE_DIR = previousStateDir;
+        process.env.OPERATOR_STATE_DIR = previousStateDir;
       }
       await fsPromises.rm(stateDir, { recursive: true, force: true });
     }
@@ -4743,7 +4743,7 @@ describe("deliverOutboundPayloads", () => {
 
   it("suppresses direct silent replies from the outbound session", async () => {
     const sendMatrix = vi.fn().mockResolvedValue({ messageId: "m-silent", roomId: "!room" });
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       agents: {
         defaults: {
           silentReply: {
@@ -4815,7 +4815,7 @@ describe("deliverOutboundPayloads", () => {
     const sendMatrix = vi.fn().mockResolvedValue({ messageId: "m1", roomId: "!room:example" });
     const abortController = new AbortController();
     abortController.abort();
-    const cfg: OpenClawConfig = {};
+    const cfg: OperatorConfig = {};
 
     await expect(
       deliverOutboundPayloads({
@@ -4836,7 +4836,7 @@ describe("deliverOutboundPayloads", () => {
   it("passes normalized payload to onError", async () => {
     const sendMatrix = vi.fn().mockRejectedValue(new Error("boom"));
     const onError = vi.fn();
-    const cfg: OpenClawConfig = {};
+    const cfg: OperatorConfig = {};
 
     await deliverOutboundPayloads({
       cfg,
@@ -4876,7 +4876,7 @@ describe("deliverOutboundPayloads", () => {
     );
     mocks.appendAssistantMessageToSessionTranscript.mockClear();
 
-    const cfg = { channels: { line: {} } } as OpenClawConfig;
+    const cfg = { channels: { line: {} } } as OperatorConfig;
     await deliverOutboundPayloads({
       cfg,
       channel: "line",

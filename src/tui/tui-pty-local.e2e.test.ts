@@ -6,11 +6,11 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { afterAll, beforeAll, describe, expect, it, type TestFunction } from "vitest";
 import {
-  createOpenClawTestInstance,
-  type OpenClawTestInstance,
+  createOperatorTestInstance,
+  type OperatorTestInstance,
 } from "../../test/helpers/openclaw-test-instance.js";
 import type { ModelProviderConfig } from "../config/types.models.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { createDeferred } from "../test-utils/deferred.js";
 import { GatewayChatClient } from "./gateway-chat.js";
 import { sleep, startPty, waitFor, type PtyRun } from "./tui-pty-test-support.js";
@@ -509,7 +509,7 @@ function buildLocalModeConfig(params: {
       auth: { mode: "token", token: "tui-pty-local" },
     },
     discovery: { mdns: { mode: "off" } },
-  } satisfies OpenClawConfig;
+  } satisfies OperatorConfig;
 }
 
 async function startLocalModeTui(
@@ -550,14 +550,14 @@ async function startLocalModeTui(
     cwd: process.cwd(),
     env: {
       HOME: homeDir,
-      OPENCLAW_HOME: homeDir,
-      OPENCLAW_CONFIG_PATH: configPath,
-      OPENCLAW_STATE_DIR: stateDir,
+      OPERATOR_HOME: homeDir,
+      OPERATOR_CONFIG_PATH: configPath,
+      OPERATOR_STATE_DIR: stateDir,
       XDG_CONFIG_HOME: xdgConfigHome,
       XDG_DATA_HOME: xdgDataHome,
       XDG_CACHE_HOME: xdgCacheHome,
-      OPENCLAW_THEME: "dark",
-      OPENCLAW_CODEX_DISCOVERY_LIVE: "0",
+      OPERATOR_THEME: "dark",
+      OPERATOR_CODEX_DISCOVERY_LIVE: "0",
       NO_COLOR: undefined,
     },
     exitTimeoutMs: LOCAL_EXIT_TIMEOUT_MS,
@@ -579,7 +579,7 @@ async function startLocalModeTui(
 }
 
 type SharedGatewayFixture = {
-  gateway: OpenClawTestInstance;
+  gateway: OperatorTestInstance;
   controlClient: GatewayChatClient;
   mockModel: MockModelServer;
   cleanup: () => Promise<void>;
@@ -638,13 +638,13 @@ function buildGatewayModeConfig(params: { tempDir: string; providerBaseUrl: stri
         debounceMs: 25,
       },
     },
-  } satisfies OpenClawConfig;
+  } satisfies OperatorConfig;
 }
 
 async function startSharedGatewayFixture(): Promise<SharedGatewayFixture> {
   const tempDir = await mkdtemp(path.join(tmpdir(), "openclaw-tui-pty-gateway-"));
   let mockModel: MockModelServer | undefined;
-  let gateway: OpenClawTestInstance | undefined;
+  let gateway: OperatorTestInstance | undefined;
   let controlClient: GatewayChatClient | undefined;
   try {
     const scenarios: GatewayScenario[] = Object.values(GATEWAY_SCENARIOS);
@@ -664,13 +664,13 @@ async function startSharedGatewayFixture(): Promise<SharedGatewayFixture> {
         ]),
       ),
     );
-    gateway = await createOpenClawTestInstance({
+    gateway = await createOperatorTestInstance({
       name: "tui-pty-shared-gateway",
       gatewayToken: "tui-pty-local",
       config: buildGatewayModeConfig({ tempDir, providerBaseUrl: mockModel.baseUrl }),
       env: {
-        OPENCLAW_CODEX_DISCOVERY_LIVE: "0",
-        OPENCLAW_SKIP_PROVIDERS: undefined,
+        OPERATOR_CODEX_DISCOVERY_LIVE: "0",
+        OPERATOR_SKIP_PROVIDERS: undefined,
       },
     });
     await gateway.startGateway();
@@ -762,7 +762,7 @@ async function startGatewayModeTui(
     cwd: process.cwd(),
     env: {
       ...shared.gateway.env,
-      OPENCLAW_THEME: "dark",
+      OPERATOR_THEME: "dark",
       NO_COLOR: undefined,
     },
     exitTimeoutMs: LOCAL_EXIT_TIMEOUT_MS,

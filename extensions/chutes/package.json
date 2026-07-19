@@ -1,7 +1,7 @@
 {
   "name": "@operator/chutes-provider",
   "version": "2026.7.2",
-  "description": "OpenClaw Chutes.ai provider plugin.",
+  "description": "Operator Chutes.ai provider plugin.",
   "repository": {
     "type": "git",
     "url": "https://github.com/openclaw/openclaw"

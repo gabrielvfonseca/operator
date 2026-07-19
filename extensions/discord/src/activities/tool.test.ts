@@ -1,17 +1,17 @@
-import type { OpenClawPluginToolContext } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginToolContext } from "openclaw/plugin-sdk/plugin-entry";
 import { describe, expect, it, vi } from "vitest";
 import { buildDiscordActivityCustomId } from "../component-custom-id.js";
 import type { sendMessageDiscord } from "../send.js";
 import { createActivityTestRuntime } from "./test-helpers.test-support.js";
 import { createDiscordWidgetTool } from "./tool.js";
 
-function discordContext(overrides: Partial<OpenClawPluginToolContext> = {}) {
+function discordContext(overrides: Partial<OperatorPluginToolContext> = {}) {
   return {
     messageChannel: "discord",
     nativeChannelId: "987654321",
     agentAccountId: "default",
     ...overrides,
-  } satisfies OpenClawPluginToolContext;
+  } satisfies OperatorPluginToolContext;
 }
 
 describe("discord_widget", () => {

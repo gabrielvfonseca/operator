@@ -11,7 +11,7 @@ import {
   persistSessionTranscriptTurn,
 } from "../config/sessions/session-accessor.js";
 import { appendAssistantMessageToSessionTranscript } from "../config/sessions/transcript.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import {
   claimAgentRunContext,
   clearAgentRunContext,
@@ -1232,7 +1232,7 @@ describe("session.message websocket events", () => {
       },
       storePath,
     });
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       agents: { list: [{ id: "main", default: true }] },
       session: { mainKey: "main", store: storePath },
     };

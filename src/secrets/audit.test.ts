@@ -7,7 +7,7 @@ import {
   resolveAuthProfileDatabasePath,
   writePersistedAuthProfileStoreRaw,
 } from "../agents/auth-profiles/sqlite.js";
-import { closeOpenClawAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
 import { runSecretsAudit } from "./audit.js";
 
 type AuditFixture = {
@@ -158,8 +158,8 @@ async function createAuditFixture(): Promise<AuditFixture> {
     modelsPath,
     envPath,
     env: {
-      OPENCLAW_STATE_DIR: stateDir,
-      OPENCLAW_CONFIG_PATH: configPath,
+      OPERATOR_STATE_DIR: stateDir,
+      OPERATOR_CONFIG_PATH: configPath,
       OPENAI_API_KEY: "env-openai-key", // pragma: allowlist secret
       PATH: resolveRuntimePathEnv(),
     },
@@ -218,7 +218,7 @@ describe("secrets audit", () => {
       await writeJsonFile(warmFixture.configPath, {});
       await runSecretsAudit({ env: warmFixture.env });
     } finally {
-      closeOpenClawAgentDatabasesForTest();
+      closeOperatorAgentDatabasesForTest();
       await fs.rm(warmFixture.rootDir, { recursive: true, force: true });
     }
   });
@@ -263,7 +263,7 @@ describe("secrets audit", () => {
   });
 
   afterEach(async () => {
-    closeOpenClawAgentDatabasesForTest();
+    closeOperatorAgentDatabasesForTest();
     await fs.rm(fixture.rootDir, { recursive: true, force: true });
   });
 
@@ -576,7 +576,7 @@ describe("secrets audit", () => {
     const report = await runSecretsAudit({
       env: {
         ...fixture.env,
-        OPENCLAW_AGENT_DIR: externalAgentDir,
+        OPERATOR_AGENT_DIR: externalAgentDir,
       },
     });
     expect(

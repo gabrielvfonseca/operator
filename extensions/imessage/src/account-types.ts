@@ -1,7 +1,7 @@
 // Imessage plugin module implements account types behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 
 export type IMessageAccountConfig = Omit<
-  NonNullable<NonNullable<OpenClawConfig["channels"]>["imessage"]>,
+  NonNullable<NonNullable<OperatorConfig["channels"]>["imessage"]>,
   "accounts" | "defaultAccount"
 >;

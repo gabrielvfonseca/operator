@@ -742,13 +742,13 @@ describe("validateTalkAgentControlParams", () => {
         sessionId: "session-1",
         active: true,
         aborted: true,
-        message: "Cancelled the active OpenClaw run.",
+        message: "Cancelled the active Operator run.",
         speak: true,
         show: true,
         suppress: false,
         providerResult: {
           status: "cancelled",
-          message: "Cancelled the active OpenClaw run.",
+          message: "Cancelled the active Operator run.",
         },
       }),
     ).toBe(true);

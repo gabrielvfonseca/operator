@@ -8,7 +8,7 @@ import fs from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
 import type { SystemAgentToolOptions } from "../agents/tools/system-agent-tool.js";
-import { resolveOpenClawPackageRootSync } from "../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
 import type { BundleMcpConfig } from "../plugins/bundle-mcp.js";
 
 export const OPERATOR_TOOLS_MCP_TOOLS_ENV = "OPERATOR_TOOLS_MCP_TOOLS";
@@ -20,16 +20,16 @@ export const OPERATOR_TOOLS_MCP_SYSTEM_AGENT_PROPOSAL_ENV =
   "OPERATOR_TOOLS_MCP_SYSTEM_AGENT_PROPOSAL";
 
 const OPERATOR_TOOLS_MCP_TOOL_IDS = ["cron", "operator"] as const;
-export type OpenClawToolsMcpToolId = (typeof OPERATOR_TOOLS_MCP_TOOL_IDS)[number];
+export type OperatorToolsMcpToolId = (typeof OPERATOR_TOOLS_MCP_TOOL_IDS)[number];
 
-function isOpenClawToolsMcpToolId(value: string): value is OpenClawToolsMcpToolId {
+function isOperatorToolsMcpToolId(value: string): value is OperatorToolsMcpToolId {
   return (OPERATOR_TOOLS_MCP_TOOL_IDS as readonly string[]).includes(value);
 }
 
 /** Parse the served tool selection; the default stays cron for acpx bridges. */
-export function resolveOpenClawToolsMcpToolSelection(
+export function resolveOperatorToolsMcpToolSelection(
   env: NodeJS.ProcessEnv = process.env,
-): OpenClawToolsMcpToolId[] {
+): OperatorToolsMcpToolId[] {
   const raw = env[OPERATOR_TOOLS_MCP_TOOLS_ENV]?.trim();
   if (!raw) {
     return ["cron"];
@@ -38,7 +38,7 @@ export function resolveOpenClawToolsMcpToolSelection(
     .split(",")
     .map((entry) => entry.trim())
     .filter(Boolean);
-  const selection = entries.filter(isOpenClawToolsMcpToolId);
+  const selection = entries.filter(isOperatorToolsMcpToolId);
   if (selection.length === 0 || selection.length !== entries.length) {
     throw new Error(
       `${OPERATOR_TOOLS_MCP_TOOLS_ENV} must be a comma list of: ${OPERATOR_TOOLS_MCP_TOOL_IDS.join(", ")}`,
@@ -47,8 +47,8 @@ export function resolveOpenClawToolsMcpToolSelection(
   return selection;
 }
 
-/** Parse the OpenClaw surface for served operator tools; defaults to cli. */
-export function resolveOpenClawToolsMcpSystemAgentSurface(
+/** Parse the Operator surface for served operator tools; defaults to cli. */
+export function resolveOperatorToolsMcpSystemAgentSurface(
   env: NodeJS.ProcessEnv = process.env,
 ): SystemAgentToolOptions["surface"] {
   const raw = env[OPERATOR_TOOLS_MCP_SYSTEM_AGENT_SURFACE_ENV]?.trim();
@@ -67,7 +67,7 @@ export function resolveOpenClawToolsMcpSystemAgentSurface(
  * pending proposal hash through env; the host mirrors transitions back from
  * tool events (see mirrorSystemAgentProposalFromToolEvents in agent-turn.ts).
  */
-export function resolveOpenClawToolsMcpSystemAgentApproval(env: NodeJS.ProcessEnv = process.env): {
+export function resolveOperatorToolsMcpSystemAgentApproval(env: NodeJS.ProcessEnv = process.env): {
   approvalArmed: boolean;
   proposalRef: { current?: string };
 } {
@@ -86,14 +86,14 @@ function resolveTsxImportSpecifier(): string {
   }
 }
 
-function resolveOpenClawToolsServeCommand(): { command: string; args: string[] } {
-  const packageRoot = resolveOpenClawPackageRootSync({
+function resolveOperatorToolsServeCommand(): { command: string; args: string[] } {
+  const packageRoot = resolveOperatorPackageRootSync({
     argv1: process.argv[1],
     moduleUrl: import.meta.url,
     cwd: process.cwd(),
   });
   if (!packageRoot) {
-    throw new Error("operator-tools MCP: could not resolve the OpenClaw package root");
+    throw new Error("operator-tools MCP: could not resolve the Operator package root");
   }
   const distEntry = path.join(packageRoot, "dist", "mcp", "operator-tools-serve.js");
   if (fs.existsSync(distEntry)) {
@@ -114,7 +114,7 @@ function resolveOpenClawToolsServeCommand(): { command: string; args: string[] }
 }
 
 /**
- * OpenClaw CLI-harness runs get exactly one MCP server: this stdio entry
+ * Operator CLI-harness runs get exactly one MCP server: this stdio entry
  * serving the ring-zero operator tool. The server keeps the "operator" name
  * so backend tool pre-approvals (e.g. Claude's --allowedTools mcp__operator__*)
  * apply without per-backend argument surgery.
@@ -122,7 +122,7 @@ function resolveOpenClawToolsServeCommand(): { command: string; args: string[] }
 export function buildSystemAgentToolsMcpServerConfig(
   options: SystemAgentToolOptions,
 ): BundleMcpConfig {
-  const entry = resolveOpenClawToolsServeCommand();
+  const entry = resolveOperatorToolsServeCommand();
   const pendingProposal = options.proposalRef?.current;
   return {
     mcpServers: {
@@ -130,7 +130,7 @@ export function buildSystemAgentToolsMcpServerConfig(
         command: entry.command,
         args: entry.args,
         env: {
-          [OPERATOR_TOOLS_MCP_TOOLS_ENV]: "operator" satisfies OpenClawToolsMcpToolId,
+          [OPERATOR_TOOLS_MCP_TOOLS_ENV]: "operator" satisfies OperatorToolsMcpToolId,
           [OPERATOR_TOOLS_MCP_SYSTEM_AGENT_SURFACE_ENV]: options.surface,
           // Per-turn approval state travels with the per-run MCP config; the
           // host mirrors proposal transitions back from tool events.

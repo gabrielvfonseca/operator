@@ -17,7 +17,7 @@ import {
   getRuntimeConfigSourceSnapshot,
   selectApplicableRuntimeConfig,
 } from "../config/runtime-snapshot.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { logVerbose } from "../globals.js";
 import { resolveManifestContractOwnerPluginId } from "../plugins/plugin-registry-contributions.js";
 import type { PluginWebSearchProviderEntry } from "../plugins/types.js";
@@ -36,14 +36,14 @@ import type {
   RuntimeWebSearchConfig as WebSearchConfig,
 } from "./runtime-types.js";
 
-function resolveSearchConfig(cfg?: OpenClawConfig): WebSearchConfig {
+function resolveSearchConfig(cfg?: OperatorConfig): WebSearchConfig {
   return resolveWebProviderConfig(cfg, "search") as NonNullable<WebSearchConfig> | undefined;
 }
 
 function resolveWebSearchRuntimeConfig(params?: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   preferInputConfig?: boolean;
-}): OpenClawConfig | undefined {
+}): OperatorConfig | undefined {
   if (params?.preferInputConfig && params.config) {
     return params.config;
   }
@@ -80,7 +80,7 @@ function hasEntryCredential(
     | "getCredentialValue"
     | "requiresCredential"
   >,
-  config: OpenClawConfig | undefined,
+  config: OperatorConfig | undefined,
   search: WebSearchConfig | undefined,
   agentDir?: string,
 ): boolean {
@@ -115,7 +115,7 @@ function hasImplicitProviderSelectionSignal(
     | "getCredentialValue"
     | "requiresCredential"
   >,
-  config: OpenClawConfig | undefined,
+  config: OperatorConfig | undefined,
   search: WebSearchConfig | undefined,
   agentDir?: string,
 ): boolean {
@@ -138,7 +138,7 @@ export function isWebSearchProviderConfigured(params: {
     | "getCredentialValue"
     | "requiresCredential"
   >;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }): boolean {
   const config = resolveWebSearchRuntimeConfig({ config: params.config });
   return hasEntryCredential(params.provider, config, resolveSearchConfig(config));
@@ -146,7 +146,7 @@ export function isWebSearchProviderConfigured(params: {
 
 /** Lists runtime web_search providers after applying runtime config snapshots. */
 export function listWebSearchProviders(params?: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }): PluginWebSearchProviderEntry[] {
   const config = resolveWebSearchRuntimeConfig({ config: params?.config });
   return resolveRuntimeWebSearchProviders({
@@ -156,7 +156,7 @@ export function listWebSearchProviders(params?: {
 
 /** Lists plugin-configured web_search providers without runtime-only providers. */
 export function listConfiguredWebSearchProviders(params?: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }): PluginWebSearchProviderEntry[] {
   const config = resolveWebSearchRuntimeConfig({ config: params?.config });
   return resolvePluginWebSearchProviders({
@@ -167,7 +167,7 @@ export function listConfiguredWebSearchProviders(params?: {
 /** Resolves configured or auto-detected web_search provider id. */
 export function resolveWebSearchProviderId(params: {
   search?: WebSearchConfig;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentDir?: string;
   providers?: PluginWebSearchProviderEntry[];
 }): string {
@@ -206,7 +206,7 @@ export function resolveWebSearchProviderId(params: {
 }
 
 function resolveRuntimePreferredWebSearchProviderId(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   search?: WebSearchConfig;
   runtimeWebSearch?: RuntimeWebSearchMetadata;
   providers?: PluginWebSearchProviderEntry[];
@@ -267,7 +267,7 @@ function resolveExplicitWebSearchProviderId(params: {
 }
 
 function resolveExplicitWebSearchProviderPluginIds(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   search?: WebSearchConfig;
   runtimeWebSearch?: RuntimeWebSearchMetadata;
   providerId?: string;
@@ -286,7 +286,7 @@ function resolveExplicitWebSearchProviderPluginIds(params: {
 }
 
 function resolveWebSearchProviderLoadScope(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   search?: WebSearchConfig;
   runtimeWebSearch?: RuntimeWebSearchMetadata;
   providerId?: string;
@@ -297,7 +297,7 @@ function resolveWebSearchProviderLoadScope(params: {
 }
 
 type WebSearchRequestContext = {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   search?: WebSearchConfig;
   runtimeWebSearch?: RuntimeWebSearchMetadata;
 };

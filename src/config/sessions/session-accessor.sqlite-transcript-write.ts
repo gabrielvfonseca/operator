@@ -1,9 +1,9 @@
 import { randomUUID } from "node:crypto";
 import { resolveTimestampMsToIsoString } from "@operator/normalization-core/number-coercion";
 import {
-  openOpenClawAgentDatabase,
-  runOpenClawAgentWriteTransaction,
-  type OpenClawAgentDatabase,
+  openOperatorAgentDatabase,
+  runOperatorAgentWriteTransaction,
+  type OperatorAgentDatabase,
 } from "../../state/operator-agent-db.js";
 import type {
   SessionTranscriptAccessScope,
@@ -114,7 +114,7 @@ export async function replaceSqliteTranscriptEvents(
 ): Promise<void> {
   const resolved = resolveSqliteTranscriptScope(scope);
   await runExclusiveSqliteSessionWrite(resolved, async () => {
-    runOpenClawAgentWriteTransaction((database) => {
+    runOperatorAgentWriteTransaction((database) => {
       replaceSqliteTranscriptEventsInTransaction(database, resolved, events);
     }, toDatabaseOptions(resolved));
   });
@@ -127,7 +127,7 @@ export function replaceSqliteTranscriptEventsSync(
 ): boolean {
   const resolved = resolveSqliteTranscriptScope(scope);
   let replaced = false;
-  runOpenClawAgentWriteTransaction((database) => {
+  runOperatorAgentWriteTransaction((database) => {
     const fresh = readSessionEntryRow(database, resolved.sessionKey);
     if (!fresh || fresh.entry.sessionId !== resolved.sessionId) {
       return;
@@ -150,7 +150,7 @@ export async function importSqliteSessionRows(
   });
   return await runExclusiveSqliteSessionWrite(resolved, async () => {
     let transcriptEvents = 0;
-    runOpenClawAgentWriteTransaction((database) => {
+    runOperatorAgentWriteTransaction((database) => {
       const currentEntry = readSessionEntryRow(database, resolved.sessionKey)?.entry;
       const preservedHarnessId =
         params.entry.agentHarnessId === undefined &&
@@ -219,7 +219,7 @@ export async function appendSqliteTranscriptEvent(
   assertNonMessageTranscriptEvent(event);
   const resolved = resolveSqliteTranscriptScope(scope);
   await runExclusiveSqliteSessionWrite(resolved, async () => {
-    runOpenClawAgentWriteTransaction((database) => {
+    runOperatorAgentWriteTransaction((database) => {
       appendTranscriptEventInTransaction(database, resolved, event);
     }, toDatabaseOptions(resolved));
   });
@@ -232,7 +232,7 @@ export function appendSqliteTranscriptEventSync(
 ): void {
   assertNonMessageTranscriptEvent(event);
   const resolved = resolveSqliteTranscriptScope(scope);
-  runOpenClawAgentWriteTransaction((database) => {
+  runOperatorAgentWriteTransaction((database) => {
     const fresh = readSessionEntryRow(database, resolved.sessionKey);
     if (!fresh || fresh.entry.sessionId !== resolved.sessionId) {
       return;
@@ -245,7 +245,7 @@ export function appendSqliteTranscriptEventSync(
 export async function appendSqliteExpectedSessionTranscriptTurn(
   scope: SessionTranscriptWriteScope,
   options: {
-    config?: import("../types.operator.js").OpenClawConfig;
+    config?: import("../types.operator.js").OperatorConfig;
     cwd?: string;
     expectedLifecycleRevision?: string;
     expectedSessionState?: SessionTranscriptTurnExpectedState;
@@ -261,7 +261,7 @@ export async function appendSqliteExpectedSessionTranscriptTurn(
     sessionId: options.expectedSessionId,
   });
   return await runExclusiveSqliteSessionWrite(resolved, async () => {
-    const database = openOpenClawAgentDatabase(toDatabaseOptions(resolved));
+    const database = openOperatorAgentDatabase(toDatabaseOptions(resolved));
     const preparedEntry = readSessionEntryRow(database, resolved.sessionKey);
     if (!sessionMatchesExpectedTranscriptTurn(preparedEntry, options)) {
       return sqliteSessionTranscriptTurnRebound(preparedEntry, options.sessionFile);
@@ -282,7 +282,7 @@ export async function appendSqliteExpectedSessionTranscriptTurn(
     );
     let previousIdentity = new Map<string, SessionEntry>();
     let currentIdentity = new Map<string, SessionEntry>();
-    runOpenClawAgentWriteTransaction((transactionDb) => {
+    runOperatorAgentWriteTransaction((transactionDb) => {
       const fresh = readSessionEntryRow(transactionDb, resolved.sessionKey);
       if (!sessionMatchesExpectedTranscriptTurn(fresh, options)) {
         result = sqliteSessionTranscriptTurnRebound(fresh, options.sessionFile);
@@ -375,7 +375,7 @@ export async function appendSqliteTranscriptMessage<TMessage>(
   const resolved = resolveSqliteTranscriptScope(scope);
   return await runExclusiveSqliteSessionWrite(resolved, async () => {
     let result: TranscriptMessageAppendResult<TMessage> | undefined;
-    runOpenClawAgentWriteTransaction((database) => {
+    runOperatorAgentWriteTransaction((database) => {
       result = appendSqliteTranscriptMessageInTransaction(database, resolved, options);
     }, toDatabaseOptions(resolved));
     return result;
@@ -389,7 +389,7 @@ export function appendSqliteTranscriptMessageSync<TMessage>(
 ): TranscriptMessageAppendResult<TMessage> | undefined {
   const resolved = resolveSqliteTranscriptScope(scope);
   let result: TranscriptMessageAppendResult<TMessage> | undefined;
-  runOpenClawAgentWriteTransaction((database) => {
+  runOperatorAgentWriteTransaction((database) => {
     const fresh = readSessionEntryRow(database, resolved.sessionKey);
     if (!fresh || fresh.entry.sessionId !== resolved.sessionId) {
       return;
@@ -406,7 +406,7 @@ export async function withSqliteTranscriptWriteLock<T>(
 ): Promise<T> {
   const resolved = resolveSqliteTranscriptScope(scope);
   return await runExclusiveSqliteSessionWrite(resolved, async () => {
-    const database = openOpenClawAgentDatabase(toDatabaseOptions(resolved));
+    const database = openOperatorAgentDatabase(toDatabaseOptions(resolved));
     let transcriptSnapshot: SqliteTranscriptSnapshotState | undefined;
     return await run({
       readEvents: async () => {
@@ -419,7 +419,7 @@ export async function withSqliteTranscriptWriteLock<T>(
           throw new SqliteTranscriptMutationConflictError(resolved.sessionId);
         }
         const expectedSnapshot = transcriptSnapshot?.rows;
-        const nextSnapshot = runOpenClawAgentWriteTransaction((writeDatabase) => {
+        const nextSnapshot = runOperatorAgentWriteTransaction((writeDatabase) => {
           if (expectedSnapshot !== undefined) {
             // The writer queue is process-local. Revalidate after BEGIN IMMEDIATE
             // so a committed cross-process append cannot be deleted by the rewrite.
@@ -438,7 +438,7 @@ export async function withSqliteTranscriptWriteLock<T>(
         let result: TranscriptMessageAppendResult<unknown> | undefined;
         const snapshotState = transcriptSnapshot;
         let nextSnapshotState = snapshotState;
-        runOpenClawAgentWriteTransaction((writeDatabase) => {
+        runOperatorAgentWriteTransaction((writeDatabase) => {
           const snapshotStillCurrent =
             snapshotState?.kind === "current"
               ? isSqliteTranscriptSnapshotUnchanged(
@@ -471,7 +471,7 @@ export async function withSqliteTranscriptWriteTransaction<T>(
 ): Promise<T> {
   const resolved = resolveSqliteTranscriptScope(scope);
   return await runExclusiveSqliteSessionWrite(resolved, async () =>
-    runOpenClawAgentWriteTransaction(
+    runOperatorAgentWriteTransaction(
       () => run({ sessionFile: formatSqliteSessionMarkerForScope(resolved) }),
       toDatabaseOptions(resolved),
       { operationLabel: "session.transcript.batch" },
@@ -480,7 +480,7 @@ export async function withSqliteTranscriptWriteTransaction<T>(
 }
 
 function isSqliteTranscriptSnapshotUnchanged(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   sessionId: string,
   expected: readonly SqliteTranscriptSnapshotRow[],
 ): boolean {
@@ -495,7 +495,7 @@ function isSqliteTranscriptSnapshotUnchanged(
 }
 
 function assertSqliteTranscriptSnapshotUnchanged(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   sessionId: string,
   expected: readonly SqliteTranscriptSnapshotRow[],
 ): void {
@@ -505,7 +505,7 @@ function assertSqliteTranscriptSnapshotUnchanged(
 }
 
 function appendSqliteTranscriptMessageInTransaction<TMessage>(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   resolved: ResolvedTranscriptScope,
   options: TranscriptMessageAppendOptions<TMessage>,
 ): TranscriptMessageAppendResult<TMessage> | undefined {

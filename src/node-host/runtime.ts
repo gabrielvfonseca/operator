@@ -1,6 +1,6 @@
 /** Transport-independent CLI node-host runtime shared by Gateway and app workers. */
 import fs from "node:fs";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { getRuntimeConfig } from "../config/config.js";
 import type { SkillBinTrustEntry } from "../infra/exec-approvals.js";
 import { resolveExecutableFromPathEnv } from "../infra/executable-path.js";
@@ -13,11 +13,11 @@ import {
   NODE_SYSTEM_RUN_COMMANDS,
   NODE_TERMINAL_UPLOAD_COMMAND,
 } from "../infra/node-commands.js";
-import { ensureOpenClawCliOnPath } from "../infra/path-env.js";
+import { ensureOperatorCliOnPath } from "../infra/path-env.js";
 import { ensureTerminalUploadCleanup } from "../infra/terminal-file-upload.js";
 import { logDebug } from "../logger.js";
-import type { OpenClawPluginNodeHostCommandIo } from "../plugins/types.js";
-import type { OpenClawPluginNodeHostCommandContext } from "../plugins/types.node-host.js";
+import type { OperatorPluginNodeHostCommandIo } from "../plugins/types.js";
+import type { OperatorPluginNodeHostCommandContext } from "../plugins/types.node-host.js";
 import { BoundedBuffer } from "../shared/bounded-buffer.js";
 import type { NodeHostClient } from "./client.js";
 import { handleInvoke, type NodeInvokeRequestPayload, type SkillBinsProvider } from "./invoke.js";
@@ -186,7 +186,7 @@ class SkillBinsCache implements SkillBinsProvider {
 }
 
 function ensureNodePathEnv(): string {
-  ensureOpenClawCliOnPath({ pathEnv: process.env.PATH ?? "" });
+  ensureOperatorCliOnPath({ pathEnv: process.env.PATH ?? "" });
   const current = process.env.PATH ?? "";
   if (current.trim()) {
     return current;
@@ -226,7 +226,7 @@ function sameManifest(left: NodeHostManifest, right: NodeHostManifest): boolean 
 }
 
 export async function prepareNodeHostRuntime(params?: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   env?: NodeJS.ProcessEnv;
   /** The embedded app worker never advertises native agent runs. */
   enableAgentRuns?: boolean;
@@ -285,7 +285,7 @@ export async function prepareNodeHostRuntime(params?: {
         string,
         NodeInvokeInputTarget & { controller: AbortController }
       >();
-      const pluginCommandContext: OpenClawPluginNodeHostCommandContext = {
+      const pluginCommandContext: OperatorPluginNodeHostCommandContext = {
         sendNodeEvent: async (event, payload) =>
           await client.request("node.event", buildNodeEventParams(event, payload)),
       };
@@ -367,7 +367,7 @@ export async function prepareNodeHostRuntime(params?: {
               })
             : undefined;
           progress?.startHeartbeats();
-          const pluginCommandIo: OpenClawPluginNodeHostCommandIo | undefined =
+          const pluginCommandIo: OperatorPluginNodeHostCommandIo | undefined =
             controller && active && progress
               ? {
                   signal: controller.signal,

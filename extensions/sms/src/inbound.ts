@@ -1,7 +1,7 @@
 // Sms plugin module implements inbound behavior.
 import { resolveStableChannelMessageIngress } from "openclaw/plugin-sdk/channel-ingress-runtime";
 import { createChannelPairingChallengeIssuer } from "openclaw/plugin-sdk/channel-pairing";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
 import { normalizeSmsPhoneNumber } from "./phone.js";
 import { sendSmsTextChunks } from "./send.js";
@@ -20,7 +20,7 @@ export type SmsChannelRuntime = Pick<
 >;
 
 async function authorizeSmsSender(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   account: ResolvedSmsAccount;
   channelRuntime: SmsChannelRuntime;
   from: string;
@@ -85,7 +85,7 @@ async function issueSmsPairingChallenge(params: {
 }
 
 export async function dispatchSmsInboundEvent(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   account: ResolvedSmsAccount;
   msg: SmsInboundMessage;
   channelRuntime: SmsChannelRuntime;

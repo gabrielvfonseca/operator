@@ -5,7 +5,7 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { writeAcpSessionMetaForMigration } from "../acp/runtime/session-meta.js";
 import type { SessionEntry } from "../config/sessions/types.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import {
   mockSessionsConfig,
   resetMockSessionsConfig,
@@ -72,7 +72,7 @@ let tempStateDirs: string[] = [];
 function useTempStateDir(): string {
   const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-acp-sessions-state-"));
   tempStateDirs.push(stateDir);
-  process.env.OPENCLAW_STATE_DIR = stateDir;
+  process.env.OPERATOR_STATE_DIR = stateDir;
   return stateDir;
 }
 
@@ -147,20 +147,20 @@ function buildNonAcpSessionEntry(): SessionEntry {
 
 describe("sessionsCommand model/modelProvider display for ACP sessions (catalog #20)", () => {
   beforeEach(() => {
-    originalStateDir = process.env.OPENCLAW_STATE_DIR;
+    originalStateDir = process.env.OPERATOR_STATE_DIR;
     mockAgentConfigWithCopilotModel();
   });
 
   afterEach(() => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     for (const stateDir of tempStateDirs) {
       fs.rmSync(stateDir, { recursive: true, force: true });
     }
     tempStateDirs = [];
     if (originalStateDir === undefined) {
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.OPERATOR_STATE_DIR;
     } else {
-      process.env.OPENCLAW_STATE_DIR = originalStateDir;
+      process.env.OPERATOR_STATE_DIR = originalStateDir;
     }
     resetMockSessionsConfig();
   });

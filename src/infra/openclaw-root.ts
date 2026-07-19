@@ -1,4 +1,4 @@
-// Resolves the OpenClaw package root from runtime and package metadata.
+// Resolves the Operator package root from runtime and package metadata.
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { openClawRootFs, openClawRootFsSync } from "./operator-root.fs.runtime.js";
@@ -95,7 +95,7 @@ function candidateDirsFromArgv1(argv1: string): string[] {
 
   // Resolve symlinks for version managers (nvm, fnm, n, Homebrew/Linuxbrew)
   // that create symlinks in bin/ pointing to the real package location. Prefer
-  // the target so a launcher nested under another OpenClaw checkout keeps its own package root.
+  // the target so a launcher nested under another Operator checkout keeps its own package root.
   try {
     const resolved = openClawRootFsSync.realpathSync(normalized);
     if (resolved !== normalized) {
@@ -118,7 +118,7 @@ function candidateDirsFromArgv1(argv1: string): string[] {
   return [...deduped];
 }
 
-export async function resolveOpenClawPackageRoot(opts: {
+export async function resolveOperatorPackageRoot(opts: {
   cwd?: string;
   argv1?: string;
   moduleUrl?: string;
@@ -140,12 +140,12 @@ export async function resolveOpenClawPackageRoot(opts: {
   return null;
 }
 
-// Every distinct OpenClaw package root among the runtime hints, in candidate order (symlinked
+// Every distinct Operator package root among the runtime hints, in candidate order (symlinked
 // launcher via realpath first, then cwd). Callers that need a specific file under the root must
 // pick the first root that actually contains it: an installed package root can resolve first but
 // omit files the npm allowlist drops (e.g. scripts/), so stopping at root[0] would skip a valid
 // source-checkout cwd that still has them.
-export function resolveOpenClawPackageRootsSync(opts: {
+export function resolveOperatorPackageRootsSync(opts: {
   cwd?: string;
   argv1?: string;
   moduleUrl?: string;
@@ -169,12 +169,12 @@ export function resolveOpenClawPackageRootsSync(opts: {
   return [...roots];
 }
 
-export function resolveOpenClawPackageRootSync(opts: {
+export function resolveOperatorPackageRootSync(opts: {
   cwd?: string;
   argv1?: string;
   moduleUrl?: string;
 }): string | null {
-  return resolveOpenClawPackageRootsSync(opts)[0] ?? null;
+  return resolveOperatorPackageRootsSync(opts)[0] ?? null;
 }
 
 function buildCandidates(opts: { cwd?: string; argv1?: string; moduleUrl?: string }): string[] {

@@ -1,8 +1,8 @@
-# OpenClaw Gradium Plugin
+# Operator Gradium Plugin
 
-Official OpenClaw plugin for Gradium.
+Official Operator plugin for Gradium.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/gradium-speech

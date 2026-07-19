@@ -12,8 +12,8 @@ import type { SsrFPolicy } from "./ssrf-policy.js";
 export type RemoteEmbeddingProviderId = string;
 
 /** Attribution headers for native OpenAI embedding calls. */
-function resolveOpenClawAttributionHeaders(): Record<string, string> {
-  const version = typeof process !== "undefined" ? process.env.OPENCLAW_VERSION?.trim() : undefined;
+function resolveOperatorAttributionHeaders(): Record<string, string> {
+  const version = typeof process !== "undefined" ? process.env.OPERATOR_VERSION?.trim() : undefined;
   return {
     originator: "openclaw",
     ...(version ? { version } : {}),
@@ -65,7 +65,7 @@ export async function resolveRemoteEmbeddingBearerClient(params: {
     ...headerOverrides,
   };
   if (isNativeOpenAIEmbeddingRoute(params.provider, baseUrl)) {
-    Object.assign(headers, resolveOpenClawAttributionHeaders());
+    Object.assign(headers, resolveOperatorAttributionHeaders());
   }
   return { baseUrl, headers, ssrfPolicy: buildRemoteBaseUrlPolicy(baseUrl) };
 }

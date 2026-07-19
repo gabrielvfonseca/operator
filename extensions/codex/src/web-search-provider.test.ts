@@ -1,5 +1,5 @@
 import path from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { createCodexWebSearchProvider as createContractCodexWebSearchProvider } from "../web-search-contract-api.js";
 import type { CodexAppServerClient } from "./app-server/client.js";
@@ -155,7 +155,7 @@ function createFakeClient(options?: {
   return { client, requests };
 }
 
-function createConfig(): OpenClawConfig {
+function createConfig(): OperatorConfig {
   return {
     tools: {
       web: {
@@ -314,7 +314,7 @@ describe("codex web search provider", () => {
     expect(isolatedStartOptions?.args).toEqual(["app-server", "--listen", "stdio://"]);
     expect(isolatedStartOptions?.clearEnv).toEqual([
       "KEEP_CLEARED",
-      "OPENCLAW_CODEX_APP_SERVER_ARGS",
+      "OPERATOR_CODEX_APP_SERVER_ARGS",
     ]);
     expect(isolatedCodexHome).toEqual(expect.any(String));
     if (!threadStartCwd || !isolatedCodexHome) {

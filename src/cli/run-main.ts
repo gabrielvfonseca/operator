@@ -5,12 +5,12 @@ import process from "node:process";
 import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import type { Command as CommanderCommand, Option as CommanderOption } from "commander";
 import { resolveStateDir } from "../config/paths.js";
-import type { ConfigFileSnapshot, OpenClawConfig } from "../config/types.operator.js";
+import type { ConfigFileSnapshot, OperatorConfig } from "../config/types.operator.js";
 import { isLoopbackAddress, isSecureWebSocketUrl } from "../gateway/net.js";
 import { FLAG_TERMINATOR, isValueToken } from "../infra/cli-root-options.js";
 import { isTruthyEnvValue, normalizeEnv } from "../infra/env.js";
 import type { ProxyHandle } from "../infra/net/proxy/proxy-lifecycle.js";
-import { ensureOpenClawCliOnPath } from "../infra/path-env.js";
+import { ensureOperatorCliOnPath } from "../infra/path-env.js";
 import { assertSupportedRuntime } from "../infra/runtime-guard.js";
 import { tryProcessCwd } from "../infra/safe-cwd.js";
 import type { PluginManifestCommandAliasRegistry } from "../plugins/manifest-command-aliases.js";
@@ -296,7 +296,7 @@ type BareRootLaunchTarget =
   | {
       kind: "remote-gateway-inference";
       target: {
-        config: OpenClawConfig;
+        config: OperatorConfig;
         gatewayUrl: string;
         token?: string;
         password?: string;
@@ -329,7 +329,7 @@ async function resolveBareRootLaunchTarget(argv: string[]): Promise<BareRootLaun
 }
 
 async function resolveConfiguredTuiLaunchTarget(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   options: { hasConfiguredGateway: boolean },
 ): Promise<BareRootLaunchTarget> {
   const gatewayResolution = await resolveReachableGateway(config, options);
@@ -420,7 +420,7 @@ function toReachableGateway(target: GatewayProbeTarget, auth: GatewayProbeAuth):
 }
 
 async function resolveReachableGateway(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   options: { hasConfiguredGateway: boolean },
 ): Promise<GatewayResolution> {
   const targets = await resolveGatewayProbeTargets(config);
@@ -486,7 +486,7 @@ async function resolveReachableGateway(
 }
 
 async function resolveGatewayProbeAuth(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   auth: "local" | "remote",
 ): Promise<GatewayProbeAuth> {
   const { resolveGatewayProbeSurfaceAuth } = await import("../gateway/auth-surface-resolution.js");
@@ -507,7 +507,7 @@ async function resolveGatewayProbeAuth(
   return resolved;
 }
 
-async function resolveGatewayProbeTargets(config: OpenClawConfig): Promise<GatewayProbeTarget[]> {
+async function resolveGatewayProbeTargets(config: OperatorConfig): Promise<GatewayProbeTarget[]> {
   const remoteUrl = normalizeOptionalString(config.gateway?.remote?.url);
   if (normalizeOptionalString(config.gateway?.mode) === "remote" && remoteUrl) {
     const url = await resolveValidatedRemoteGatewayUrl(config);
@@ -571,7 +571,7 @@ function isLoopbackGatewayHost(hostname: string): boolean {
   return isLoopbackAddress(hostForIpCheck);
 }
 
-async function resolveValidatedRemoteGatewayUrl(config: OpenClawConfig): Promise<string | null> {
+async function resolveValidatedRemoteGatewayUrl(config: OperatorConfig): Promise<string | null> {
   try {
     const { buildGatewayConnectionDetailsWithResolvers } =
       await import("../gateway/connection-details.js");
@@ -585,7 +585,7 @@ async function resolveValidatedRemoteGatewayUrl(config: OpenClawConfig): Promise
 }
 
 async function resolveLocalGatewayProbeTargets(
-  config: OpenClawConfig,
+  config: OperatorConfig,
 ): Promise<GatewayProbeTarget[]> {
   const [
     { resolveGatewayPort },
@@ -661,7 +661,7 @@ function pauseNonTtyStdinForCliExit(): void {
 
 export function resolveMissingPluginCommandMessage(
   pluginId: string,
-  config?: OpenClawConfig,
+  config?: OperatorConfig,
   options?: { registry?: PluginManifestCommandAliasRegistry },
 ): string | null {
   return resolveMissingPluginCommandMessageFromPolicy(
@@ -833,7 +833,7 @@ function isKnownBuiltInCommandRoot(primary: string): boolean {
 
 async function isPluginCliRoot(params: {
   primary: string;
-  config: OpenClawConfig;
+  config: OperatorConfig;
 }): Promise<boolean | null> {
   try {
     const { resolvePluginCliRootOwnerIds } = await loadCliRegistryLoaderModule();
@@ -848,7 +848,7 @@ async function isPluginCliRoot(params: {
   }
 }
 
-function createAllowlistAgnosticCliLookupConfig(config: OpenClawConfig): OpenClawConfig {
+function createAllowlistAgnosticCliLookupConfig(config: OperatorConfig): OperatorConfig {
   if (!Array.isArray(config.plugins?.allow) || config.plugins.allow.length === 0) {
     return config;
   }
@@ -863,7 +863,7 @@ function createAllowlistAgnosticCliLookupConfig(config: OpenClawConfig): OpenCla
 
 async function resolveCliCommandSurfaceOwner(params: {
   primary: string;
-  config: OpenClawConfig;
+  config: OperatorConfig;
 }): Promise<string | undefined> {
   const { resolveManifestCliCommandSurfaceOwner } = await loadManifestCommandAliasesRuntimeModule();
   const manifestOwner = resolveManifestCliCommandSurfaceOwner({
@@ -904,7 +904,7 @@ function resolveUnownedCliPrimaryCandidate(argv: string[]): string | null {
 
 async function resolveUnownedCliPrimary(params: {
   argv: string[];
-  config: OpenClawConfig;
+  config: OperatorConfig;
 }): Promise<string | null> {
   const primary = resolveUnownedCliPrimaryCandidate(params.argv);
   if (!primary) {
@@ -919,7 +919,7 @@ async function resolveUnownedCliPrimary(params: {
 
 async function resolveUnownedCliPrimaryMessage(params: {
   primary: string;
-  config: OpenClawConfig;
+  config: OperatorConfig;
 }): Promise<string> {
   const { resolveManifestCommandAliasOwner, resolveManifestToolOwner } =
     await loadManifestCommandAliasesRuntimeModule();
@@ -1024,7 +1024,7 @@ export async function runCli(argv: string[] = process.argv) {
   }
   normalizeEnv();
   if (shouldEnsureCliPath(normalizedArgv)) {
-    ensureOpenClawCliOnPath();
+    ensureOperatorCliOnPath();
   }
 
   // Activate operator-managed proxy routing for network-capable commands.
@@ -1035,9 +1035,9 @@ export async function runCli(argv: string[] = process.argv) {
   let onSigint: (() => void) | null = null;
   let onExit: (() => void) | null = null;
   let unregisterProxySignalExitBarrier: (() => void) | null = null;
-  let bestEffortConfigPromise: Promise<OpenClawConfig> | null = null;
+  let bestEffortConfigPromise: Promise<OperatorConfig> | null = null;
   const isolateProxyConfigEnv = isGatewayRunInvocation;
-  const readBestEffortCliConfig = async (): Promise<OpenClawConfig> => {
+  const readBestEffortCliConfig = async (): Promise<OperatorConfig> => {
     if (!bestEffortConfigPromise) {
       bestEffortConfigPromise = import("../config/io.js").then(({ readBestEffortConfig }) =>
         readBestEffortConfig(
@@ -1094,7 +1094,7 @@ export async function runCli(argv: string[] = process.argv) {
     process.once("SIGINT", onSigint);
     process.once("exit", onExit);
   };
-  const replaceStartedProxy = async (config: OpenClawConfig["proxy"]) => {
+  const replaceStartedProxy = async (config: OperatorConfig["proxy"]) => {
     await stopStartedProxy();
     const { startProxy } = await loadProxyLifecycleModule();
     proxyHandle = await startProxy(config);
@@ -1192,7 +1192,7 @@ export async function runCli(argv: string[] = process.argv) {
         if (!process.stdin.isTTY || !process.stdout.isTTY) {
           console.error(
             bareRootLaunchTarget.classic
-              ? "OpenClaw config is invalid. Run `operator doctor --fix` before onboarding."
+              ? "Operator config is invalid. Run `operator doctor --fix` before onboarding."
               : "Onboarding needs an interactive TTY. Use `operator onboard --non-interactive --accept-risk ...` for automation.",
           );
           process.exitCode = 1;
@@ -1205,7 +1205,7 @@ export async function runCli(argv: string[] = process.argv) {
       if (bareRootLaunchTarget.kind === "tui") {
         if (!process.stdin.isTTY || !process.stdout.isTTY) {
           console.error(
-            "OpenClaw TUI needs an interactive TTY. Use `operator agent --local ...` for automation.",
+            "Operator TUI needs an interactive TTY. Use `operator agent --local ...` for automation.",
           );
           process.exitCode = 1;
           return;
@@ -1264,7 +1264,7 @@ export async function runCli(argv: string[] = process.argv) {
     const suppressStartupProgress = hasJsonOutputFlag(parseArgv);
     const { createCliProgress } = await loadProgressModule();
     const startupProgress = createCliProgress({
-      label: "Loading OpenClaw CLI…",
+      label: "Loading Operator CLI…",
       indeterminate: true,
       delayMs: 0,
       ...(suppressStartupProgress ? { enabled: false } : {}),
@@ -1322,7 +1322,7 @@ export async function runCli(argv: string[] = process.argv) {
           return;
         }
         for (const line of formatCliFailureLines({
-          title: "OpenClaw hit an unexpected runtime error.",
+          title: "Operator hit an unexpected runtime error.",
           error,
           argv: normalizedArgv,
         })) {

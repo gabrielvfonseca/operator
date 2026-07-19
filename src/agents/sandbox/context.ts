@@ -4,7 +4,7 @@
  * Prepares workspace layout, backend handle, filesystem bridge, browser bridge, and registry state for one run.
  */
 import fs from "node:fs/promises";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   ensureBrowserControlAuth,
   resolveBrowserControlAuth,
@@ -30,7 +30,7 @@ import { ensureSandboxWorkspace } from "./workspace.js";
 async function syncSandboxSkillsToWorkspace(params: {
   sourceWorkspaceDir: string;
   targetWorkspaceDir: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId: string;
   rawSessionKey: string;
   execOverrides?: ExecPolicyOverrides;
@@ -76,7 +76,7 @@ async function ensureSandboxWorkspaceLayout(params: {
   cfg: ReturnType<typeof resolveSandboxConfigForAgent>;
   agentId: string;
   rawSessionKey: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   execOverrides?: ExecPolicyOverrides;
   workspaceDir?: string;
 }): Promise<{
@@ -136,7 +136,7 @@ async function ensureSandboxWorkspaceLayout(params: {
 }
 
 function resolveSandboxSession(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
   sessionKey?: string;
 }) {
@@ -177,7 +177,7 @@ function resolveSandboxWorkspaceInfoWorkdir(params: {
 }
 
 export async function resolveSandboxContext(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
   execOverrides?: ExecPolicyOverrides;
   requireCurrentConfig?: boolean;
@@ -310,7 +310,7 @@ export async function resolveSandboxContext(params: {
 }
 
 export async function ensureSandboxWorkspaceForSession(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   sessionKey?: string;
   workspaceDir?: string;
 }): Promise<SandboxWorkspaceInfo | null> {

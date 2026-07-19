@@ -17,7 +17,7 @@ import {
   requireApiKey,
 } from "./model-auth.js";
 import { normalizeProviderId, parseModelRef } from "./model-selection.js";
-import { ensureOpenClawModelsJson } from "./models-config.js";
+import { ensureOperatorModelsJson } from "./models-config.js";
 import { buildAssistantMessage, buildUsageWithNoCost } from "./stream-message-shared.js";
 
 // Shared helpers for live prompt-cache regression tests. They resolve real
@@ -181,7 +181,7 @@ export function buildAssistantHistoryTurn(
   });
 }
 
-/** Compute cache-hit ratio from OpenClaw usage counters. */
+/** Compute cache-hit ratio from Operator usage counters. */
 export function computeCacheHitRate(usage: {
   input?: number;
   cacheRead?: number;
@@ -205,7 +205,7 @@ export async function resolveLiveDirectModelPool(params: {
   preferredModelIds: readonly string[];
 }): Promise<LiveResolvedModelPool> {
   const cfg = getRuntimeConfig();
-  await ensureOpenClawModelsJson(cfg);
+  await ensureOperatorModelsJson(cfg);
   const agentDir = resolveDefaultAgentDir(cfg);
   const authStorage = discoverAuthStorage(agentDir);
   const models = discoverModels(authStorage, agentDir).getAll();

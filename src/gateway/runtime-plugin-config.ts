@@ -1,19 +1,19 @@
 // Gateway runtime plugin config resolver.
 // Applies plugin auto-enable rules against the active manifest snapshot.
 import { applyPluginAutoEnable } from "../config/plugin-auto-enable.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { getCurrentPluginMetadataSnapshot } from "../plugins/current-plugin-metadata-snapshot.js";
 import type { PluginMetadataSnapshot } from "../plugins/plugin-metadata-snapshot.types.js";
 
 type CachedGatewayPluginConfig = {
   snapshot: PluginMetadataSnapshot;
-  config: OpenClawConfig;
+  config: OperatorConfig;
 };
 
-const gatewayPluginConfigCache = new WeakMap<OpenClawConfig, CachedGatewayPluginConfig>();
+const gatewayPluginConfigCache = new WeakMap<OperatorConfig, CachedGatewayPluginConfig>();
 
 /** Resolves runtime config with plugin auto-enable applied for gateway startup/reload paths. */
-export function resolveGatewayPluginConfig(params: { config: OpenClawConfig }): OpenClawConfig {
+export function resolveGatewayPluginConfig(params: { config: OperatorConfig }): OperatorConfig {
   const currentSnapshot = getCurrentPluginMetadataSnapshot({
     config: params.config,
     allowWorkspaceScopedSnapshot: true,

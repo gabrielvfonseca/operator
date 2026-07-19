@@ -9,7 +9,7 @@ import {
   MODEL_CONTEXT_TOKEN_CACHE,
   providerContextTokenCacheKey,
 } from "../agents/context-cache.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { applyModelOverrideToSessionEntry } from "../sessions/model-overrides.js";
 import {
   buildStatusMessage as buildStatusMessageRaw,
@@ -99,7 +99,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "anthropic/test:opus",
         contextTokens: 32_000,
@@ -130,7 +130,7 @@ describe("buildStatusMessage", () => {
     });
     const normalized = normalizeTestText(text);
 
-    expect(normalized).toContain("OpenClaw");
+    expect(normalized).toContain("Operator");
     expect(normalized).toContain("Model: anthropic/test:opus");
     expect(normalized).toContain("api-key");
     expect(normalized).toContain("Plugins: OK");
@@ -142,7 +142,7 @@ describe("buildStatusMessage", () => {
     expect(normalized).toContain("duration 2h 14m");
     expect(normalized).toContain("updated 4h ago");
     expect(normalized).toContain("Execution: direct");
-    expect(normalized).toContain("Runtime: OpenClaw Default");
+    expect(normalized).toContain("Runtime: Operator Default");
     expect(normalized).not.toContain("Runner:");
     expect(normalized).toContain("Think: medium");
     expect(normalized).not.toContain("verbose");
@@ -172,7 +172,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "amazon-bedrock/us.anthropic.claude-sonnet-4-6",
         contextTokens: 200_000,
@@ -404,7 +404,7 @@ describe("buildStatusMessage", () => {
               },
             },
           },
-        } as unknown as OpenClawConfig,
+        } as unknown as OperatorConfig,
         agent: {},
         now: 0,
       });
@@ -429,7 +429,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "claude-cli/opus",
       },
@@ -456,7 +456,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "claude-cli/opus",
       },
@@ -720,7 +720,7 @@ describe("buildStatusMessage", () => {
     expect(normalized).not.toContain("· codex");
   });
 
-  it("shows the default OpenClaw harness as the model runtime", () => {
+  it("shows the default Operator harness as the model runtime", () => {
     const text = buildStatusMessage({
       agent: {
         model: "openai/gpt-5.4",
@@ -737,7 +737,7 @@ describe("buildStatusMessage", () => {
 
     const normalized = normalizeTestText(text);
     expect(normalized).toContain("Fast");
-    expect(normalized).toContain("Runtime: OpenClaw Default");
+    expect(normalized).toContain("Runtime: Operator Default");
     expect(normalized).not.toContain("· openclaw");
   });
 
@@ -773,7 +773,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "openai/gpt-5.4",
       },
@@ -811,7 +811,7 @@ describe("buildStatusMessage", () => {
             },
           ],
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agentId: "main",
       agent: {
         model: "openai/gpt-5.4",
@@ -837,7 +837,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "openai/gpt-4.1",
       },
@@ -877,7 +877,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "minimax-portal/MiniMax-M2.7",
         contextTokens: 1_048_576,
@@ -916,7 +916,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "anthropic/claude-opus-4-6",
       },
@@ -1030,7 +1030,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "ollama-cloud/deepseek-v4-pro",
         contextTokens: 1_000_000,
@@ -1070,7 +1070,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "xiaomi/mimo-v2-flash",
       },
@@ -1157,7 +1157,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "anthropic/claude-opus-4-7",
       },
@@ -1202,7 +1202,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "xiaomi/mimo-v2-flash",
       },
@@ -1248,7 +1248,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "xiaomi/mimo-v2-flash",
       },
@@ -1293,7 +1293,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "xiaomi/mimo-v2-flash",
         contextTokens: 120_000,
@@ -1339,7 +1339,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "xiaomi/mimo-v2-flash",
         contextTokens: 128_000,
@@ -1384,7 +1384,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "xiaomi/mimo-v2-flash",
         contextTokens: 1_048_576,
@@ -1426,7 +1426,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "xiaomi/mimo-v2-flash",
         contextTokens: 1_048_576,
@@ -1468,7 +1468,7 @@ describe("buildStatusMessage", () => {
             { id: "discord", sandbox: { mode: "all" } },
           ],
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {},
       sessionKey: "agent:discord:discord:channel:1456350065223270435",
       sessionScope: "per-sender",
@@ -1966,7 +1966,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: { model: "anthropic/claude-opus-4-6" },
       sessionEntry: { sessionId: "c1", updatedAt: 0, inputTokens: 10 },
       sessionKey: "agent:main:main",
@@ -2383,7 +2383,7 @@ describe("buildStatusMessage", () => {
                 },
               },
             },
-          } as unknown as OpenClawConfig,
+          } as unknown as OperatorConfig,
           agent: {
             model: "openrouter/google/gemini-2.5-pro",
           },
@@ -2419,7 +2419,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "openrouter/google/gemini-2.5-pro",
       },
@@ -2456,7 +2456,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "xiaomi/mimo-v2-flash",
       },
@@ -2497,7 +2497,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "openai/gpt-4o",
       },
@@ -2656,7 +2656,7 @@ describe("buildStatusMessage", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       agent: {
         model: "xiaomi/mimo-v2-flash",
       },
@@ -2692,7 +2692,7 @@ describe("buildCommandsMessage", () => {
   it("lists commands with aliases and hints", () => {
     const text = buildCommandsMessage({
       commands: { config: false, debug: false },
-    } as unknown as OpenClawConfig);
+    } as unknown as OperatorConfig);
     expect(text).toContain("ℹ️ Slash commands");
     expect(text).toContain("Status");
     expect(text).toContain("/commands - List all slash commands.");
@@ -2708,7 +2708,7 @@ describe("buildCommandsMessage", () => {
     const text = buildCommandsMessage(
       {
         commands: { config: false, debug: false },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       [
         {
           name: "demo_skill",
@@ -2725,7 +2725,7 @@ describe("buildHelpMessage", () => {
   it("hides config/debug when disabled", () => {
     const text = buildHelpMessage({
       commands: { config: false, debug: false },
-    } as unknown as OpenClawConfig);
+    } as unknown as OperatorConfig);
     expect(text).toContain("Skills");
     expect(text).toContain("/skill <name> [input]");
     expect(text).not.toContain("/config");
@@ -2746,7 +2746,7 @@ describe("buildCommandsMessagePaginated", () => {
     const result = buildCommandsMessagePaginated(
       {
         commands: { config: false, debug: false },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       undefined,
       { surface: "telegram", page: 1, forcePaginatedList: true },
     );
@@ -2764,7 +2764,7 @@ describe("buildCommandsMessagePaginated", () => {
     const firstPage = buildCommandsMessagePaginated(
       {
         commands: { config: false, debug: false },
-      } as unknown as OpenClawConfig,
+      } as unknown as OperatorConfig,
       undefined,
       { surface: "telegram", page: 1, forcePaginatedList: true },
     );
@@ -2772,7 +2772,7 @@ describe("buildCommandsMessagePaginated", () => {
       buildCommandsMessagePaginated(
         {
           commands: { config: false, debug: false },
-        } as unknown as OpenClawConfig,
+        } as unknown as OperatorConfig,
         undefined,
         { surface: "telegram", page: index + 1, forcePaginatedList: true },
       ),

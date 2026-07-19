@@ -55,7 +55,7 @@ function isNodeVersionAffectedByCompileCacheDeadlock(nodeVersion: string | undef
   return minor < MIN_COMPILE_CACHE_NODE_24_MINOR;
 }
 
-function shouldEnableOpenClawCompileCache(params: {
+function shouldEnableOperatorCompileCache(params: {
   env?: NodeJS.ProcessEnv;
   installRoot: string;
   nodeVersion?: string;
@@ -96,7 +96,7 @@ function readPackageVersion(packageJsonPath: string): string {
   return "unknown";
 }
 
-function resolveOpenClawCompileCacheDirectory(params: {
+function resolveOperatorCompileCacheDirectory(params: {
   env?: NodeJS.ProcessEnv;
   installRoot: string;
 }): string {
@@ -122,18 +122,18 @@ function resolveOpenClawCompileCacheDirectory(params: {
   );
 }
 
-type OpenClawCompileCacheRespawnPlan = {
+type OperatorCompileCacheRespawnPlan = {
   command: string;
   args: string[];
   env: NodeJS.ProcessEnv;
   detachForProcessTree: boolean;
 };
 
-type OpenClawCompileCacheRespawnRuntime = RespawnChildRuntime & {
+type OperatorCompileCacheRespawnRuntime = RespawnChildRuntime & {
   writeError: (message: string) => void;
 };
 
-function buildOpenClawCompileCacheRespawnPlan(params: {
+function buildOperatorCompileCacheRespawnPlan(params: {
   currentFile: string;
   env?: NodeJS.ProcessEnv;
   execArgv?: string[];
@@ -143,7 +143,7 @@ function buildOpenClawCompileCacheRespawnPlan(params: {
   compileCacheDir?: string;
   nodeVersion?: string;
   platform?: NodeJS.Platform;
-}): OpenClawCompileCacheRespawnPlan | undefined {
+}): OperatorCompileCacheRespawnPlan | undefined {
   const env = params.env ?? process.env;
   const needsDisabledCompileCacheRespawn =
     isSourceCheckoutInstallRoot(params.installRoot) ||
@@ -178,11 +178,11 @@ function buildOpenClawCompileCacheRespawnPlan(params: {
   };
 }
 
-export function respawnWithoutOpenClawCompileCacheIfNeeded(params: {
+export function respawnWithoutOperatorCompileCacheIfNeeded(params: {
   currentFile: string;
   installRoot: string;
 }): boolean {
-  const plan = buildOpenClawCompileCacheRespawnPlan({
+  const plan = buildOperatorCompileCacheRespawnPlan({
     currentFile: params.currentFile,
     installRoot: params.installRoot,
     compileCacheDir: getCompileCacheDir?.(),
@@ -190,13 +190,13 @@ export function respawnWithoutOpenClawCompileCacheIfNeeded(params: {
   if (!plan) {
     return false;
   }
-  runOpenClawCompileCacheRespawnPlan(plan);
+  runOperatorCompileCacheRespawnPlan(plan);
   return true;
 }
 
-function runOpenClawCompileCacheRespawnPlan(
-  plan: OpenClawCompileCacheRespawnPlan,
-  runtime: OpenClawCompileCacheRespawnRuntime = {
+function runOperatorCompileCacheRespawnPlan(
+  plan: OperatorCompileCacheRespawnPlan,
+  runtime: OperatorCompileCacheRespawnRuntime = {
     spawn,
     attachChildProcessBridge,
     exit: process.exit.bind(process) as (code?: number) => never,
@@ -219,15 +219,15 @@ function runOpenClawCompileCacheRespawnPlan(
   });
 }
 
-export function enableOpenClawCompileCache(params: {
+export function enableOperatorCompileCache(params: {
   env?: NodeJS.ProcessEnv;
   installRoot: string;
 }): void {
-  if (!shouldEnableOpenClawCompileCache(params)) {
+  if (!shouldEnableOperatorCompileCache(params)) {
     return;
   }
   try {
-    enableCompileCache(resolveOpenClawCompileCacheDirectory(params));
+    enableCompileCache(resolveOperatorCompileCacheDirectory(params));
   } catch {
     // Best-effort only; never block startup.
   }
@@ -235,11 +235,11 @@ export function enableOpenClawCompileCache(params: {
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
   (globalThis as Record<PropertyKey, unknown>)[Symbol.for("operator.entryCompileCacheTestApi")] = {
-    buildOpenClawCompileCacheRespawnPlan,
+    buildOperatorCompileCacheRespawnPlan,
     isNodeVersionAffectedByCompileCacheDeadlock,
     isSourceCheckoutInstallRoot,
-    resolveOpenClawCompileCacheDirectory,
-    runOpenClawCompileCacheRespawnPlan,
-    shouldEnableOpenClawCompileCache,
+    resolveOperatorCompileCacheDirectory,
+    runOperatorCompileCacheRespawnPlan,
+    shouldEnableOperatorCompileCache,
   };
 }

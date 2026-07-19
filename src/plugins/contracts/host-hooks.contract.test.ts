@@ -23,7 +23,7 @@ import { pluginHostHookHandlers } from "../../gateway/server-methods/plugin-host
 import { buildGatewaySessionRow } from "../../gateway/session-utils.js";
 import { withTempConfig } from "../../gateway/test-temp-config.js";
 import { emitAgentEvent, resetAgentEventsForTest } from "../../infra/agent-events.js";
-import { resolvePreferredOpenClawTmpDir } from "../../infra/tmp-openclaw-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../../infra/tmp-openclaw-dir.js";
 import { withEnvAsync } from "../../test-utils/env.js";
 import { validatePluginCommandDefinition } from "../command-registration.js";
 import { executePluginCommand } from "../commands.js";
@@ -127,11 +127,11 @@ async function withHostHookState(
     session: { store: storePath },
   }),
 ): Promise<void> {
-  const stateDir = await fs.mkdtemp(path.join(resolvePreferredOpenClawTmpDir(), prefix));
+  const stateDir = await fs.mkdtemp(path.join(resolvePreferredOperatorTmpDir(), prefix));
   const storePath = path.join(stateDir, "sessions.json");
   const tempConfig = createTempConfig(storePath);
   try {
-    await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, async () => {
+    await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
       await withTempConfig({
         cfg: tempConfig,
         run: async () => await run({ stateDir, storePath, tempConfig }),

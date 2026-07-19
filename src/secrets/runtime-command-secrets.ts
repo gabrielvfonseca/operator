@@ -1,7 +1,7 @@
 /** Resolves command-scoped secrets, including web provider override credentials. */
 import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import { uniqueStrings } from "@operator/normalization-core/string-normalization";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveSecretInputRef } from "../config/types.secrets.js";
 import { resolveManifestContractOwnerPluginId } from "../plugins/plugin-registry.js";
 import { resolveBundledExplicitWebSearchProvidersFromPublicArtifacts } from "../plugins/web-provider-public-artifacts.explicit.js";
@@ -35,9 +35,9 @@ function hasProviderOverrides(overrides: CommandSecretProviderOverrides | undefi
 }
 
 function applyProviderOverridesToConfig(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   overrides: CommandSecretProviderOverrides | undefined,
-): OpenClawConfig {
+): OperatorConfig {
   if (!hasProviderOverrides(overrides)) {
     return config;
   }
@@ -78,7 +78,7 @@ function isWebCommandSecretPath(path: string): boolean {
 }
 
 function webSearchProviderUsesSharedSearchCredential(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   provider: string;
 }): boolean {
   const sentinel = "__operator_shared_web_search_probe__";
@@ -103,7 +103,7 @@ function webSearchProviderUsesSharedSearchCredential(params: {
 }
 
 function isProviderOverridePath(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   path: string;
   providerOverrides: CommandSecretProviderOverrides | undefined;
 }): boolean {
@@ -161,8 +161,8 @@ function isProviderOverridePath(params: {
 }
 
 function restoreInactiveWebCommandSecretTargets(params: {
-  sourceConfig: OpenClawConfig;
-  resolvedConfig: OpenClawConfig;
+  sourceConfig: OperatorConfig;
+  resolvedConfig: OperatorConfig;
   targetIds: ReadonlySet<string>;
   inactiveRefPaths: string[];
   providerOverrides: CommandSecretProviderOverrides | undefined;
@@ -214,7 +214,7 @@ function restoreInactiveWebCommandSecretTargets(params: {
 }
 
 function filterInactiveRefPaths(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   inactiveRefPaths: readonly string[];
   providerOverrides: CommandSecretProviderOverrides | undefined;
   allowedPaths?: ReadonlySet<string>;
@@ -240,8 +240,8 @@ function filterInactiveRefPaths(params: {
 }
 
 function mirrorResolvedProviderCredentialToDirectPath(params: {
-  config: OpenClawConfig;
-  resolvedConfig: OpenClawConfig;
+  config: OperatorConfig;
+  resolvedConfig: OperatorConfig;
   contract: "webSearchProviders" | "webFetchProviders";
   provider: string | undefined;
   directPathPrefix: string;
@@ -282,8 +282,8 @@ function mirrorResolvedProviderCredentialToDirectPath(params: {
 }
 
 function mirrorResolvedProviderCredentialToDirectPaths(params: {
-  config: OpenClawConfig;
-  resolvedConfig: OpenClawConfig;
+  config: OperatorConfig;
+  resolvedConfig: OperatorConfig;
   providerOverrides: CommandSecretProviderOverrides | undefined;
 }): void {
   const configuredSearchProvider =
@@ -344,8 +344,8 @@ function mirrorResolvedProviderCredentialToDirectPaths(params: {
 }
 
 async function resolveForcedActiveCommandSecretTargets(params: {
-  sourceConfig: OpenClawConfig;
-  resolvedConfig: OpenClawConfig;
+  sourceConfig: OperatorConfig;
+  resolvedConfig: OperatorConfig;
   targetIds: ReadonlySet<string>;
   allowedPaths?: ReadonlySet<string>;
   forcedActivePaths?: ReadonlySet<string>;

@@ -1,6 +1,6 @@
 // Telegram conversation routing and session-state lookup for bot handlers.
 import { resolveStoredModelOverride } from "openclaw/plugin-sdk/command-auth-native";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { resolveThreadSessionKeys } from "openclaw/plugin-sdk/routing";
 import {
   getSessionEntry,
@@ -33,7 +33,7 @@ export function createTelegramMessageSessionRuntime({
     resolvedThreadId?: number;
     botHasTopicsEnabled?: boolean;
     senderId?: string | number;
-    runtimeCfg: OpenClawConfig;
+    runtimeCfg: OperatorConfig;
   }) => {
     const resolvedThreadId =
       params.resolvedThreadId ??

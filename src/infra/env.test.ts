@@ -71,16 +71,16 @@ describe("logAcceptedEnvOption", () => {
       {
         VITEST: "",
         NODE_ENV: "development",
-        OPENCLAW_TEST_ENV: "  line one\nline two  ",
+        OPERATOR_TEST_ENV: "  line one\nline two  ",
       },
       () => {
         logAcceptedEnvOption({
-          key: "OPENCLAW_TEST_ENV",
+          key: "OPERATOR_TEST_ENV",
           description: "test option",
           redact: true,
         });
         logAcceptedEnvOption({
-          key: "OPENCLAW_TEST_ENV",
+          key: "OPERATOR_TEST_ENV",
           description: "test option",
           redact: true,
         });
@@ -91,7 +91,7 @@ describe("logAcceptedEnvOption", () => {
       expect(loggerMocks.info).toHaveBeenCalledTimes(1);
     });
     expect(loggerMocks.info).toHaveBeenCalledWith(
-      "env: OPENCLAW_TEST_ENV=<redacted> (test option)",
+      "env: OPERATOR_TEST_ENV=<redacted> (test option)",
     );
   });
 
@@ -102,11 +102,11 @@ describe("logAcceptedEnvOption", () => {
       {
         VITEST: "1",
         NODE_ENV: "development",
-        OPENCLAW_BLANK_ENV: "value",
+        OPERATOR_BLANK_ENV: "value",
       },
       () => {
         logAcceptedEnvOption({
-          key: "OPENCLAW_BLANK_ENV",
+          key: "OPERATOR_BLANK_ENV",
           description: "skipped in vitest",
         });
       },
@@ -116,11 +116,11 @@ describe("logAcceptedEnvOption", () => {
       {
         VITEST: "",
         NODE_ENV: "development",
-        OPENCLAW_BLANK_ENV: "   ",
+        OPERATOR_BLANK_ENV: "   ",
       },
       () => {
         logAcceptedEnvOption({
-          key: "OPENCLAW_BLANK_ENV",
+          key: "OPERATOR_BLANK_ENV",
           description: "blank value",
         });
       },
@@ -134,11 +134,11 @@ describe("logAcceptedEnvOption", () => {
       {
         VITEST: "",
         NODE_ENV: "development",
-        OPENCLAW_UTF16_TEST_ENV: `${"x".repeat(159)}🚀tail`,
+        OPERATOR_UTF16_TEST_ENV: `${"x".repeat(159)}🚀tail`,
       },
       () => {
         logAcceptedEnvOption({
-          key: "OPENCLAW_UTF16_TEST_ENV",
+          key: "OPERATOR_UTF16_TEST_ENV",
           description: "UTF-16 test",
         });
       },
@@ -146,7 +146,7 @@ describe("logAcceptedEnvOption", () => {
 
     await vi.waitFor(() => expect(loggerMocks.info).toHaveBeenCalledTimes(1));
     expect(loggerMocks.info).toHaveBeenCalledWith(
-      `env: OPENCLAW_UTF16_TEST_ENV=${"x".repeat(159)}… (UTF-16 test)`,
+      `env: OPERATOR_UTF16_TEST_ENV=${"x".repeat(159)}… (UTF-16 test)`,
     );
   });
 });

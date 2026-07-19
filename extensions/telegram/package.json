@@ -2,7 +2,7 @@
   "name": "@operator/telegram",
   "version": "2026.7.2",
   "private": true,
-  "description": "OpenClaw Telegram channel plugin",
+  "description": "Operator Telegram channel plugin",
   "type": "module",
   "dependencies": {
     "@grammyjs/runner": "2.0.3",

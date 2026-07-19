@@ -9,7 +9,7 @@ import path from "node:path";
 import { expectDefined } from "@operator/normalization-core";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { FILE_LOCK_TIMEOUT_ERROR_CODE, resetFileLockStateForTest } from "../../infra/file-lock.js";
-import { closeOpenClawAgentDatabasesForTest } from "../../state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../state/openclaw-agent-db.js";
 import { captureEnv, setTestEnvValue } from "../../test-utils/env.js";
 import { OAuthRefreshFailureError } from "./oauth-refresh-failure.js";
 import { buildRefreshContentionError } from "./oauth-refresh-lock-errors.js";
@@ -177,19 +177,19 @@ describe("resolveApiKeyForProfile openai refresh fallback", () => {
     const caseRoot = path.join(tempRoot, `case-${++caseIndex}`);
     agentDir = path.join(caseRoot, "agents", "main", "agent");
     await fs.mkdir(agentDir, { recursive: true });
-    setTestEnvValue("OPENCLAW_STATE_DIR", caseRoot);
-    setTestEnvValue("OPENCLAW_AGENT_DIR", agentDir);
+    setTestEnvValue("OPERATOR_STATE_DIR", caseRoot);
+    setTestEnvValue("OPERATOR_AGENT_DIR", agentDir);
   });
 
   afterEach(async () => {
     resetFileLockStateForTest();
     clearRuntimeAuthProfileStoreSnapshots();
-    closeOpenClawAgentDatabasesForTest();
+    closeOperatorAgentDatabasesForTest();
     envSnapshot.restore();
   });
 
   afterAll(async () => {
-    closeOpenClawAgentDatabasesForTest();
+    closeOperatorAgentDatabasesForTest();
     await fs.rm(tempRoot, { recursive: true, force: true });
   });
 

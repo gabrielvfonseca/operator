@@ -2,12 +2,12 @@
  * Builds host capabilities passed into context-engine runtime calls.
  */
 import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { ContextEngineRuntimeContext } from "../../context-engine/types.js";
 import { resolveBoundAgentIdForSession } from "../session-agent-binding.js";
 
 type ResolveContextEngineCapabilitiesParams = {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   sessionKey?: string;
   agentId?: string;
   authProfileId?: string;

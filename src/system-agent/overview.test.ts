@@ -1,6 +1,6 @@
-// OpenClaw overview tests cover summary output for rescue diagnostics.
+// Operator overview tests cover summary output for rescue diagnostics.
 import { describe, expect, it } from "vitest";
-import type { ConfigFileSnapshot, OpenClawConfig } from "../config/config.js";
+import type { ConfigFileSnapshot, OperatorConfig } from "../config/config.js";
 import {
   formatSystemAgentOverview,
   formatSystemAgentOnboardingWelcome,
@@ -41,7 +41,7 @@ function createOverview(defaultModel?: string): SystemAgentOverview {
 
 describe("loadSystemAgentOverview", () => {
   it("summarizes config, agents, model, tools, and gateway", async () => {
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       agents: {
         defaults: { model: { primary: "openai/gpt-5.2" } },
         list: [
@@ -67,7 +67,7 @@ describe("loadSystemAgentOverview", () => {
       legacyIssues: [],
     };
     const overview = await loadSystemAgentOverview({
-      env: { OPENCLAW_TEST_FAST: "1" },
+      env: { OPERATOR_TEST_FAST: "1" },
       deps: {
         readConfigFileSnapshot: async () => snapshot,
         resolveConfigPath: () => "/tmp/openclaw.json",
@@ -101,7 +101,7 @@ describe("loadSystemAgentOverview", () => {
       'Next: run "gateway status" or "restart gateway"',
     );
     const startup = formatSystemAgentStartupMessage(overview);
-    expect(startup).toContain("## Hi, I'm OpenClaw.");
+    expect(startup).toContain("## Hi, I'm Operator.");
     expect(startup).toContain("Using: openai/gpt-5.2");
     expect(startup).toContain("Gateway: not reachable");
     expect(startup).toContain("I can start debugging with `gateway status`");
@@ -119,7 +119,7 @@ describe("loadSystemAgentOverview", () => {
     );
     expect(startup).toContain("Inference unavailable");
     expect(startup).toContain("run `openclaw onboard`");
-    expect(startup).toContain("OpenClaw needs working inference");
+    expect(startup).toContain("Operator needs working inference");
     expect(startup).not.toContain("local Claude Code/Codex/Gemini login");
     expect(startup).not.toContain("typed commands as last resort");
   });

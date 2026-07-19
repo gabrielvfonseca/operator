@@ -3,7 +3,7 @@ import path from "node:path";
 import { expectDefined } from "@operator/normalization-core";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { SubagentRunRecord } from "../../agents/subagent-registry.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import {
   loadSessionEntry,
   replaceSessionEntry,
@@ -128,7 +128,7 @@ describe("abort detection", () => {
       ...(typeof params?.commandsTextEnabled === "boolean"
         ? { commands: { text: params.commandsTextEnabled } }
         : {}),
-    } as OpenClawConfig;
+    } as OperatorConfig;
     if (params?.sessionIdsByKey) {
       for (const sessionKey of Object.keys(params.sessionIdsByKey)) {
         trackedAbortMemoryKeys.add(sessionKey);
@@ -139,7 +139,7 @@ describe("abort detection", () => {
   }
 
   async function runStopCommand(params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     sessionKey?: string;
     parentSessionKey?: string;
     from: string;
@@ -184,7 +184,7 @@ describe("abort detection", () => {
 
   function enqueueQueuedFollowupRun(params: {
     root: string;
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     sessionId: string;
     sessionKey: string;
   }) {
@@ -280,7 +280,7 @@ describe("abort detection", () => {
       "do not do that",
       "please stop",
       "stop please",
-      "STOP OPENCLAW",
+      "STOP OPERATOR",
       "stop openclaw!!!",
       "stop don’t do anything",
       "detente",
@@ -1240,7 +1240,7 @@ describe("abort detection", () => {
 
     expect(
       stopSubagentsForRequester({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as OperatorConfig,
         requesterSessionKey: sessionKey,
       }),
     ).toEqual({ stopped: 2 });
@@ -1328,7 +1328,7 @@ describe("abort detection", () => {
       .mockReturnValueOnce([]);
 
     const result = stopSubagentsForRequester({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       requesterSessionKey: sessionKey,
     });
 
@@ -1582,7 +1582,7 @@ describe("abort detection", () => {
     });
 
     const result = stopSubagentsForRequester({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       requesterSessionKey: oldParentKey,
     });
 

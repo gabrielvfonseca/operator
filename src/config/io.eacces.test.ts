@@ -7,7 +7,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { withEnvAsync } from "../test-utils/env.js";
 import { createConfigIO, resetConfigRuntimeState, writeConfigFile } from "./io.js";
 import type { ConfigWriteOptions } from "./io.js";
-import type { OpenClawConfig } from "./types.openclaw.js";
+import type { OperatorConfig } from "./types.openclaw.js";
 
 function makeEaccesFs(configPath: string) {
   const eaccesErr = Object.assign(new Error(`EACCES: permission denied, open '${configPath}'`), {
@@ -154,7 +154,7 @@ describe("config write guard after unreadable config", () => {
       const snapshot = await io.readConfigFileSnapshot();
       expect(snapshot.readError).toEqual({ code: "EACCES" });
 
-      const skeletal: OpenClawConfig = { channels: { telegram: { enabled: true } } };
+      const skeletal: OperatorConfig = { channels: { telegram: { enabled: true } } };
       await expect(io.writeConfigFile(skeletal, writeOptions)).rejects.toMatchObject({
         code: "CONFIG_WRITE_REJECTED",
         reasons: expect.arrayContaining(["unreadable-config-before-write"]),
@@ -178,7 +178,7 @@ describe("config write guard after unreadable config", () => {
       const liveConfig = {
         gateway: { mode: "local", port: 18789, auth: { mode: "token" } },
         meta: { lastTouchedVersion: "2026.5.3-1" },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       const liveBytes = `${JSON.stringify(liveConfig, null, 2)}\n`;
       fsNode.writeFileSync(configPath, liveBytes, { mode: 0o600 });
 
@@ -187,7 +187,7 @@ describe("config write guard after unreadable config", () => {
       try {
         fsNode.chmodSync(configPath, 0o000);
         await withEnvAsync(
-          { OPENCLAW_CONFIG_PATH: configPath, OPENCLAW_TEST_FAST: "1" },
+          { OPERATOR_CONFIG_PATH: configPath, OPERATOR_TEST_FAST: "1" },
           async () => {
             await expect(
               writeConfigFile({ channels: { telegram: { enabled: true } } }),

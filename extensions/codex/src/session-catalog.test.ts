@@ -4,8 +4,8 @@ import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
 import type { SessionCatalogProvider } from "openclaw/plugin-sdk/session-catalog";
 import { resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
@@ -114,7 +114,7 @@ type SessionEntrySummary = ReturnType<
   PluginRuntime["agent"]["session"]["listSessionEntries"]
 >[number];
 
-const config = {} as OpenClawConfig;
+const config = {} as OperatorConfig;
 
 function idleThread(overrides: Partial<CodexThread> = {}): CodexThread {
   return {
@@ -366,7 +366,7 @@ function createGatewayApi(runtime: PluginRuntime) {
   const api = {
     runtime,
     registerSessionCatalog,
-  } as unknown as OpenClawPluginApi;
+  } as unknown as OperatorPluginApi;
   return { api, getProvider: () => provider, registerSessionCatalog };
 }
 
@@ -1232,7 +1232,7 @@ describe("Codex supervision catalog", () => {
     expect(runtime.nodes.list).not.toHaveBeenCalled();
   });
 
-  it("enriches only the local source row with its adopted OpenClaw session", async () => {
+  it("enriches only the local source row with its adopted Operator session", async () => {
     const control = createControl({
       listPage: vi.fn(async () => ({
         sessions: [{ threadId: "source-thread", status: "active", archived: false }],
@@ -1611,10 +1611,10 @@ describe("Codex supervision actions", () => {
   it("keeps adopted sessions discoverable when the configured default agent changes", async () => {
     const originalConfig = {
       agents: { list: [{ id: "alpha", default: true }, { id: "beta" }] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const changedConfig = {
       agents: { list: [{ id: "alpha" }, { id: "beta", default: true }] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const { runtime, createSessionEntry } = createRuntime();
     const { api } = createGatewayApi(runtime);
     const bindingStore = createCodexTestBindingStore();
@@ -1722,7 +1722,7 @@ describe("Codex supervision actions", () => {
     const control = createEligibleControl();
 
     await expect(archiveTestSession({ control, runtime })).rejects.toThrow(
-      "cannot be archived while its OpenClaw branch is initializing",
+      "cannot be archived while its Operator branch is initializing",
     );
     expect(control.readThread).not.toHaveBeenCalled();
     expect(control.archiveThread).not.toHaveBeenCalled();
@@ -1742,7 +1742,7 @@ describe("Codex supervision actions", () => {
     });
 
     await expect(archiveTestSession({ control, bindingStore, runtime })).rejects.toThrow(
-      "cannot be archived until its OpenClaw branch starts",
+      "cannot be archived until its Operator branch starts",
     );
     expect(control.archiveThread).not.toHaveBeenCalled();
 
@@ -1820,7 +1820,7 @@ describe("Codex supervision actions", () => {
     }
     expect(archiveResult.error).toBeInstanceOf(Error);
     expect((archiveResult.error as Error).message).toContain(
-      "cannot be archived until its OpenClaw branch starts",
+      "cannot be archived until its Operator branch starts",
     );
     expect(control.archiveThread).not.toHaveBeenCalled();
   });
@@ -2000,7 +2000,7 @@ describe("Codex supervision actions", () => {
         control: createEligibleControl(),
         threadId: "thread-1",
       }),
-    ).rejects.toThrow("OpenClaw session is already bound to Codex thread thread-1");
+    ).rejects.toThrow("Operator session is already bound to Codex thread thread-1");
     expect(entries).toEqual([]);
   });
 
@@ -2266,7 +2266,7 @@ describe("Codex supervision actions", () => {
         control,
         threadId: "thread-1",
       }),
-    ).rejects.toThrow("failed to bind OpenClaw session to Codex thread thread-1");
+    ).rejects.toThrow("failed to bind Operator session to Codex thread thread-1");
     expect(entries).toEqual([]);
     expect(createSessionEntry).toHaveBeenCalledOnce();
     expect(transcriptMirrorMocks.importCodexThreadHistoryToTranscript).toHaveBeenCalledOnce();
@@ -2523,7 +2523,7 @@ describe("Codex supervision actions", () => {
       appServer: { command: "codex-archive-a" },
       supervision: { enabled: true },
     };
-    let runtimeConfig = { agents: { defaults: { workspace: "/workspace/a" } } } as OpenClawConfig;
+    let runtimeConfig = { agents: { defaults: { workspace: "/workspace/a" } } } as OperatorConfig;
     pinnedConnectionMocks.request.mockImplementation(
       async (request: { method: string; requestParams?: Record<string, unknown> }) => {
         if (
@@ -2536,7 +2536,7 @@ describe("Codex supervision actions", () => {
           };
           runtimeConfig = {
             agents: { defaults: { workspace: "/workspace/b" } },
-          } as OpenClawConfig;
+          } as OperatorConfig;
           return {
             data: [idleThread({ source: "cli" })],
           };
@@ -2612,7 +2612,7 @@ describe("Codex supervision actions", () => {
     expect(pinnedConnectionMocks.releaseClient).toHaveBeenCalledWith(pinnedConnectionMocks.client);
   });
 
-  it("rejects archive while another OpenClaw session owns the native thread", async () => {
+  it("rejects archive while another Operator session owns the native thread", async () => {
     const bindingStore = createCodexTestBindingStore();
     await bindingStore.mutate(
       { kind: "conversation", bindingId: "bound-chat" },
@@ -2624,13 +2624,13 @@ describe("Codex supervision actions", () => {
     const control = createEligibleControl();
 
     await expect(archiveTestSession({ bindingStore, control })).rejects.toThrow(
-      "attached to an OpenClaw session",
+      "attached to an Operator session",
     );
     expect(control.readThread).toHaveBeenCalledWith("thread-1", false);
     expect(control.archiveThread).not.toHaveBeenCalled();
   });
 
-  it("rejects archive when a paginated spawned descendant has an OpenClaw owner", async () => {
+  it("rejects archive when a paginated spawned descendant has an Operator owner", async () => {
     const bindingStore = createCodexTestBindingStore();
     await bindingStore.mutate(
       { kind: "conversation", bindingId: "descendant-chat" },
@@ -2651,7 +2651,7 @@ describe("Codex supervision actions", () => {
     });
 
     await expect(archiveTestSession({ bindingStore, control })).rejects.toThrow(
-      "spawned descendant is owned by an OpenClaw session",
+      "spawned descendant is owned by an Operator session",
     );
     expect(control.listDescendantPage).toHaveBeenNthCalledWith(1, {
       ancestorThreadId: "thread-1",
@@ -2906,7 +2906,7 @@ describe("Codex supervision actions", () => {
   it("adopts a paired-node session with bounded history and an executable binding", async () => {
     let runtimeConfig = {
       agents: { list: [{ id: "alpha", default: true }, { id: "beta" }] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const invoke = vi.fn<PluginRuntime["nodes"]["invoke"]>(async ({ command }) => {
       if (command === CODEX_APP_SERVER_THREADS_LIST_COMMAND) {
         return {
@@ -2973,7 +2973,7 @@ describe("Codex supervision actions", () => {
     await first?.afterConversationBound?.();
     runtimeConfig = {
       agents: { list: [{ id: "alpha" }, { id: "beta", default: true }] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const second = await provider?.continueSession?.({
       hostId: "node:devbox",
       threadId: "thread-remote",

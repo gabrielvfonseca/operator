@@ -1,8 +1,8 @@
-# OpenClaw DeepInfra Provider
+# Operator DeepInfra Provider
 
-Official OpenClaw provider plugin for DeepInfra.
+Official Operator provider plugin for DeepInfra.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/deepinfra-provider

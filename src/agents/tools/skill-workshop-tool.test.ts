@@ -5,19 +5,19 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { SkillWorkshopProposalMutationBudget } from "../../skills/workshop/types.js";
 import {
-  createOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  type OperatorTestState,
 } from "../../test-utils/operator-test-state.js";
 import { createTrackedTempDirs } from "../../test-utils/tracked-temp-dirs.js";
-import { createOpenClawTools } from "../openclaw-tools.js";
+import { createOperatorTools } from "../openclaw-tools.js";
 import { createSkillWorkshopTool } from "./skill-workshop-tool.js";
 
 const tempDirs = createTrackedTempDirs();
-let testState: OpenClawTestState;
+let testState: OperatorTestState;
 let stateDir = "";
 
 beforeEach(async () => {
-  testState = await createOpenClawTestState({
+  testState = await createOperatorTestState({
     layout: "state-only",
     prefix: "openclaw-skill-workshop-state-",
   });
@@ -44,9 +44,9 @@ describe("skill_workshop tool", () => {
     expect(schema).toContain("shortens the proposal listing entry");
   });
 
-  it("is exposed in the OpenClaw tool set", async () => {
+  it("is exposed in the Operator tool set", async () => {
     const workspaceDir = await tempDirs.make("openclaw-skill-workshop-tool-");
-    const tools = createOpenClawTools({
+    const tools = createOperatorTools({
       workspaceDir,
       config: {},
       disablePluginTools: true,
@@ -56,7 +56,7 @@ describe("skill_workshop tool", () => {
 
   it("stays exposed when autonomous proposal capture is disabled", async () => {
     const workspaceDir = await tempDirs.make("openclaw-skill-workshop-tool-");
-    const tools = createOpenClawTools({
+    const tools = createOperatorTools({
       workspaceDir,
       config: {
         skills: {
@@ -89,7 +89,7 @@ describe("skill_workshop tool", () => {
   it("keeps proposal state inside an injected state directory", async () => {
     const workspaceDir = await tempDirs.make("openclaw-skill-workshop-isolated-workspace-");
     const isolatedStateDir = await tempDirs.make("openclaw-skill-workshop-isolated-state-");
-    const env = { ...process.env, OPENCLAW_STATE_DIR: isolatedStateDir };
+    const env = { ...process.env, OPERATOR_STATE_DIR: isolatedStateDir };
     const isolatedTool = createSkillWorkshopTool({ workspaceDir, env, proposalOnly: true });
 
     const created = await isolatedTool.execute("call-isolated-create", {
@@ -303,9 +303,9 @@ describe("skill_workshop tool", () => {
     expect(proposalMutationBudget.successfulMutations).toBe(3);
   });
 
-  it("is not exposed from sandboxed OpenClaw tool sets", async () => {
+  it("is not exposed from sandboxed Operator tool sets", async () => {
     const workspaceDir = await tempDirs.make("openclaw-skill-workshop-tool-");
-    const tools = createOpenClawTools({
+    const tools = createOperatorTools({
       workspaceDir,
       config: {},
       disablePluginTools: true,

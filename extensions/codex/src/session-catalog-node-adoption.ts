@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { listAgentIds, resolveDefaultAgentId } from "openclaw/plugin-sdk/agent-runtime";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
 import { parseAgentSessionKey } from "openclaw/plugin-sdk/routing";
 import { resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
@@ -77,7 +77,7 @@ export function adoptionSessionKeyRest(sessionKey: string): string {
   return parseAgentSessionKey(trimmed)?.rest ?? trimmed;
 }
 
-export function listSupervisionAgentIds(config: OpenClawConfig): string[] {
+export function listSupervisionAgentIds(config: OperatorConfig): string[] {
   const defaultAgentId = resolveDefaultAgentId(config);
   return [defaultAgentId, ...listAgentIds(config).filter((agentId) => agentId !== defaultAgentId)];
 }
@@ -134,7 +134,7 @@ function readNodeSessionMarker(entry: CatalogSessionEntry): CodexNodeSessionMark
 }
 
 export function listNodeAdoptedSessionEntries(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   runtime: PluginRuntime;
   includeInitializing?: boolean;
 }): Map<string, AdoptedSessionEntry> {
@@ -161,7 +161,7 @@ export function listNodeAdoptedSessionEntries(params: {
       const sourceKey = adoptedSourceKey(marker.sourceHostId, marker.sourceThreadId);
       if (adopted.has(sourceKey)) {
         throw new Error(
-          `multiple OpenClaw sessions adopt Codex thread ${marker.sourceThreadId} on ${marker.sourceHostId}`,
+          `multiple Operator sessions adopt Codex thread ${marker.sourceThreadId} on ${marker.sourceHostId}`,
         );
       }
       adopted.set(sourceKey, {
@@ -176,7 +176,7 @@ export function listNodeAdoptedSessionEntries(params: {
 }
 
 export function findNodeAdoptedSessionEntry(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   runtime: PluginRuntime;
   hostId: string;
   threadId: string;
@@ -202,12 +202,12 @@ export function nodeSessionMarker(params: {
 }
 
 export async function finalizeNodeAdoptedSession(params: {
-  api: OpenClawPluginApi;
+  api: OperatorPluginApi;
   adopted: AdoptedSessionEntry;
   marker: CodexNodeSessionMarker;
 }): Promise<void> {
   const changedError = () =>
-    new CatalogParamsError("Codex OpenClaw session changed before it could be bound. Retry.");
+    new CatalogParamsError("Codex Operator session changed before it could be bound. Retry.");
   let finalized: CatalogSessionEntry | null;
   try {
     finalized = await params.api.runtime.agent.session.patchSessionEntry({
@@ -264,8 +264,8 @@ export async function finalizeNodeAdoptedSession(params: {
 }
 
 export async function createOrReuseNodeAdoptedSession(params: {
-  api: OpenClawPluginApi;
-  config: OpenClawConfig;
+  api: OperatorPluginApi;
+  config: OperatorConfig;
   hostId: string;
   nodeId: string;
   record: CodexSessionCatalogSession;

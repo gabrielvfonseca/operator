@@ -5,8 +5,8 @@ import { expectDefined } from "@operator/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useAutoCleanupTempDirTracker } from "../../test-support.js";
 import { getRuntimeConfig } from "../config/config.js";
-import type { OpenClawConfig } from "../config/config.js";
-import { resolveOpenClawUserDataDir } from "./chrome.js";
+import type { OperatorConfig } from "../config/config.js";
+import { resolveOperatorUserDataDir } from "./chrome.js";
 import type { BrowserRouteContext, BrowserServerState } from "./server-context.js";
 import {
   enqueueProfileStart,
@@ -19,18 +19,18 @@ import { movePathToTrash } from "./trash.js";
 const tempDirs = useAutoCleanupTempDirTracker(afterEach);
 
 const configMocks = vi.hoisted(() => ({
-  getRuntimeConfig: vi.fn<() => OpenClawConfig>(),
-  getRuntimeConfigSourceSnapshot: vi.fn<() => OpenClawConfig | null>(() => null),
-  writeConfigFile: vi.fn<(cfg: OpenClawConfig) => Promise<void>>(async (_cfg) => {}),
+  getRuntimeConfig: vi.fn<() => OperatorConfig>(),
+  getRuntimeConfigSourceSnapshot: vi.fn<() => OperatorConfig | null>(() => null),
+  writeConfigFile: vi.fn<(cfg: OperatorConfig) => Promise<void>>(async (_cfg) => {}),
   mutateConfigFile: vi.fn(
     async (params: {
       mutate: (
-        draft: OpenClawConfig,
+        draft: OperatorConfig,
         context: {
           snapshot: {
             path: string;
-            runtimeConfig: OpenClawConfig;
-            sourceConfig: OpenClawConfig;
+            runtimeConfig: OperatorConfig;
+            sourceConfig: OperatorConfig;
           };
         },
       ) => unknown;
@@ -62,14 +62,14 @@ const configMocks = vi.hoisted(() => ({
 const writeConfigFile = configMocks.writeConfigFile;
 const lifecycleMocks = vi.hoisted(() => ({
   closeChromeMcpSession: vi.fn(async () => false),
-  stopOpenClawChrome: vi.fn(async () => {}),
+  stopOperatorChrome: vi.fn(async () => {}),
 }));
 
 vi.mock("../config/config.js", async () => {
   const actual = await vi.importActual<typeof import("../config/config.js")>("../config/config.js");
   return {
     ...actual,
-    replaceConfigFile: vi.fn(async ({ nextConfig }: { nextConfig: OpenClawConfig }) => {
+    replaceConfigFile: vi.fn(async ({ nextConfig }: { nextConfig: OperatorConfig }) => {
       await configMocks.writeConfigFile(nextConfig);
     }),
     mutateConfigFile: configMocks.mutateConfigFile,
@@ -94,8 +94,8 @@ vi.mock("./pw-ai-module.js", () => ({
 }));
 
 vi.mock("./chrome.js", () => ({
-  resolveOpenClawUserDataDir: vi.fn(() => "/tmp/openclaw-test/openclaw/user-data"),
-  stopOpenClawChrome: lifecycleMocks.stopOpenClawChrome,
+  resolveOperatorUserDataDir: vi.fn(() => "/tmp/openclaw-test/openclaw/user-data"),
+  stopOperatorChrome: lifecycleMocks.stopOperatorChrome,
 }));
 
 const [{ resolveBrowserConfig, resolveProfile }, { createBrowserProfilesService }] =
@@ -159,8 +159,8 @@ describe("BrowserProfilesService", () => {
     configMocks.getRuntimeConfigSourceSnapshot.mockReset().mockReturnValue(null);
     configMocks.writeConfigFile.mockReset().mockResolvedValue(undefined);
     lifecycleMocks.closeChromeMcpSession.mockReset().mockResolvedValue(false);
-    lifecycleMocks.stopOpenClawChrome.mockReset().mockResolvedValue(undefined);
-    vi.mocked(resolveOpenClawUserDataDir)
+    lifecycleMocks.stopOperatorChrome.mockReset().mockResolvedValue(undefined);
+    vi.mocked(resolveOperatorUserDataDir)
       .mockReset()
       .mockReturnValue("/tmp/openclaw-test/openclaw/user-data");
     vi.mocked(movePathToTrash)
@@ -318,13 +318,13 @@ describe("BrowserProfilesService", () => {
           cdpPortRangeStart: 19000,
           profiles: {},
         },
-      } as OpenClawConfig)
+      } as OperatorConfig)
       .mockReturnValue({
         browser: {
           cdpPortRangeEnd: 18801,
           profiles: {},
         },
-      } as unknown as OpenClawConfig);
+      } as unknown as OperatorConfig);
 
     const service = createBrowserProfilesService(ctx);
     const result = await service.createProfile({ name: "work" });
@@ -612,7 +612,7 @@ describe("BrowserProfilesService", () => {
     const tempDir = tempDirs.make("openclaw-profile-");
     const userDataDir = path.join(tempDir, "work", "user-data");
     fs.mkdirSync(path.dirname(userDataDir), { recursive: true });
-    vi.mocked(resolveOpenClawUserDataDir).mockReturnValue(userDataDir);
+    vi.mocked(resolveOperatorUserDataDir).mockReturnValue(userDataDir);
 
     const service = createBrowserProfilesService(ctx);
     const result = await service.deleteProfile("work");
@@ -638,7 +638,7 @@ describe("BrowserProfilesService", () => {
     const tempDir = tempDirs.make("openclaw-trash-failure-");
     const userDataDir = path.join(tempDir, "work", "user-data");
     fs.mkdirSync(path.dirname(userDataDir), { recursive: true });
-    vi.mocked(resolveOpenClawUserDataDir).mockReturnValue(userDataDir);
+    vi.mocked(resolveOperatorUserDataDir).mockReturnValue(userDataDir);
     vi.mocked(movePathToTrash).mockRejectedValueOnce(new Error("Trash unavailable"));
 
     const result = await createBrowserProfilesService(ctx).deleteProfile("work");
@@ -670,7 +670,7 @@ describe("BrowserProfilesService", () => {
     const tempDir = tempDirs.make("openclaw-delete-race-");
     const userDataDir = path.join(tempDir, "work", "user-data");
     fs.mkdirSync(userDataDir, { recursive: true });
-    vi.mocked(resolveOpenClawUserDataDir).mockReturnValue(userDataDir);
+    vi.mocked(resolveOperatorUserDataDir).mockReturnValue(userDataDir);
     const launch = deferred();
     const entered = deferred();
     const running = {
@@ -696,7 +696,7 @@ describe("BrowserProfilesService", () => {
     const startExpectation = expect(starting).rejects.toThrow(/deletion|lifecycle changed/i);
     await entered.promise;
     const order: string[] = [];
-    lifecycleMocks.stopOpenClawChrome.mockImplementationOnce(async () => {
+    lifecycleMocks.stopOperatorChrome.mockImplementationOnce(async () => {
       order.push("stop");
     });
     configMocks.writeConfigFile.mockImplementationOnce(async () => {
@@ -818,13 +818,13 @@ describe("BrowserProfilesService", () => {
     const result = await createBrowserProfilesService(ctx).deleteProfile("work");
 
     expect(result.deleted).toBe(false);
-    expect(resolveOpenClawUserDataDir).not.toHaveBeenCalled();
+    expect(resolveOperatorUserDataDir).not.toHaveBeenCalled();
     expect(movePathToTrash).not.toHaveBeenCalled();
   });
 
   it("preserves a same-name replacement config that appears during lifecycle drain", async () => {
     const originalProfile = { cdpPort: 18801, color: "#0066CC" };
-    let currentConfig: OpenClawConfig = {
+    let currentConfig: OperatorConfig = {
       browser: {
         defaultProfile: "openclaw",
         profiles: {

@@ -2,7 +2,7 @@
   "name": "@operator/admin-http-rpc",
   "version": "2026.7.2",
   "private": true,
-  "description": "OpenClaw admin HTTP RPC endpoint",
+  "description": "Operator admin HTTP RPC endpoint",
   "type": "module",
   "devDependencies": {
     "@operator/plugin-sdk": "workspace:*"

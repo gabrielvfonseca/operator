@@ -21,7 +21,7 @@ const mocks = vi.hoisted(() => {
   };
   return {
     runtime,
-    serveOpenClawChannelMcp: vi.fn(),
+    serveOperatorChannelMcp: vi.fn(),
     clearMcpOAuthCredentials: vi.fn(),
     readMcpOAuthCredentialsStatus: vi.fn(),
     runMcpOAuthLogin: vi.fn(),
@@ -31,7 +31,7 @@ const mocks = vi.hoisted(() => {
 const defaultRuntime = mocks.runtime;
 const mockLog = defaultRuntime.log;
 const mockError = defaultRuntime.error;
-const serveOpenClawChannelMcp = mocks.serveOpenClawChannelMcp;
+const serveOperatorChannelMcp = mocks.serveOperatorChannelMcp;
 const clearMcpOAuthCredentials = mocks.clearMcpOAuthCredentials;
 const readMcpOAuthCredentialsStatus = mocks.readMcpOAuthCredentialsStatus;
 const runMcpOAuthLogin = mocks.runMcpOAuthLogin;
@@ -41,7 +41,7 @@ vi.mock("../runtime.js", () => ({
 }));
 
 vi.mock("../mcp/channel-server.js", () => ({
-  serveOpenClawChannelMcp: mocks.serveOpenClawChannelMcp,
+  serveOperatorChannelMcp: mocks.serveOperatorChannelMcp,
 }));
 
 vi.mock("../agents/mcp-oauth.js", () => ({
@@ -200,7 +200,7 @@ describe("mcp cli", () => {
     });
   });
 
-  it("labels listed MCP servers as OpenClaw-managed", async () => {
+  it("labels listed MCP servers as Operator-managed", async () => {
     await withTempHome("openclaw-cli-mcp-home-", async () => {
       const workspaceDir = await createWorkspace();
       vi.spyOn(process, "cwd").mockReturnValue(workspaceDir);
@@ -211,9 +211,9 @@ describe("mcp cli", () => {
       await runMcpCommand(["mcp", "list"]);
 
       const output = mockLog.mock.calls.map((call) => String(call[0])).join("\n");
-      expect(output).toContain("OpenClaw-managed MCP servers (");
+      expect(output).toContain("Operator-managed MCP servers (");
       expect(output).toContain("- context7");
-      expect(output).toContain("OpenClaw-managed mcp.servers entries");
+      expect(output).toContain("Operator-managed mcp.servers entries");
       expect(output).toContain("does not include mcporter servers from config/mcporter.json");
     });
   });
@@ -705,7 +705,7 @@ describe("mcp cli", () => {
       mockLog.mockClear();
       await runMcpCommand(["mcp", "list"]);
       const output = mockLog.mock.calls.map((call) => String(call[0])).join("\n");
-      expect(output).toContain("No OpenClaw-managed MCP servers configured in ");
+      expect(output).toContain("No Operator-managed MCP servers configured in ");
       expect(output).toContain("does not include mcporter servers from config/mcporter.json");
     });
   });
@@ -757,7 +757,7 @@ describe("mcp cli", () => {
         "--verbose",
       ]);
 
-      expect(serveOpenClawChannelMcp).toHaveBeenCalledWith({
+      expect(serveOperatorChannelMcp).toHaveBeenCalledWith({
         gatewayUrl: "ws://127.0.0.1:18789",
         gatewayToken: "secret-token",
         gatewayPassword: undefined,

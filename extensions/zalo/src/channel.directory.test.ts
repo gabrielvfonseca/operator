@@ -4,7 +4,7 @@ import {
   expectDirectorySurface,
 } from "openclaw/plugin-sdk/channel-test-helpers";
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig, RuntimeEnv } from "../runtime-api.js";
+import type { OperatorConfig, RuntimeEnv } from "../runtime-api.js";
 import { zaloPlugin } from "./channel.js";
 
 describe("zalo directory", () => {
@@ -18,7 +18,7 @@ describe("zalo directory", () => {
           allowFrom,
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     const peers = await directory.listPeers({
       cfg,

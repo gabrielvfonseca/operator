@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { validateSystemAgentSetupVerifyParams } from "../index.js";
 import { SystemAgentSetupVerifyResultSchema } from "./openclaw.js";
 
-describe("OpenClaw setup verification protocol", () => {
+describe("Operator setup verification protocol", () => {
   it("accepts only an empty request", () => {
     expect(validateSystemAgentSetupVerifyParams({})).toBe(true);
     expect(validateSystemAgentSetupVerifyParams({ modelRef: "openai/gpt-5.5" })).toBe(false);

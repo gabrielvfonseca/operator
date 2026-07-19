@@ -18,7 +18,7 @@ import {
   resolveMainSessionKey,
 } from "../../config/sessions/main-session.js";
 import { resolveMirroredTranscriptText } from "../../config/sessions/transcript-mirror.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { TtsAutoMode } from "../../config/types.tts.js";
 import { isSuppressedControlReplyText } from "../../gateway/control-reply-text.js";
 import { sleepWithAbort } from "../../infra/backoff.js";
@@ -109,8 +109,8 @@ export function resolveCronDeliveryBestEffort(job: CronJob): boolean {
 type SuccessfulDeliveryTarget = Extract<DeliveryTargetResolution, { ok: true }>;
 
 type DispatchCronDeliveryParams = {
-  cfg: OpenClawConfig;
-  cfgWithAgentDefaults: OpenClawConfig;
+  cfg: OperatorConfig;
+  cfgWithAgentDefaults: OperatorConfig;
   deps: CliDeps;
   job: CronJob;
   agentId: string;
@@ -152,7 +152,7 @@ type DirectCronTranscriptMirror = {
   mediaUrls?: string[];
   storePath?: string;
   idempotencyKey: string;
-  config: OpenClawConfig;
+  config: OperatorConfig;
 };
 
 /** Mutable delivery-dispatch accumulator returned to the isolated cron runner. */
@@ -357,7 +357,7 @@ function getCompletedDirectCronDelivery(
 }
 
 async function maybeApplyTtsToCronPayloads(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   payloads: ReplyPayload[];
   delivery: SuccessfulDeliveryTarget;
   agentId: string;
@@ -422,7 +422,7 @@ function shouldQueueCronAwareness(params: {
 }
 
 function resolveCronAwarenessMainSessionKey(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
 }): string {
   return params.cfg.session?.scope === "global"
@@ -483,7 +483,7 @@ function formatTargetCronDeliveryFailureAwarenessText(params: {
 }
 
 async function queueCronAwarenessSystemEvent(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   jobId: string;
   agentId: string;
   deliveryIdempotencyKey: string;
@@ -606,7 +606,7 @@ function projectDeliveredDirectCronPayloadsForMirror(
 }
 
 function canonicalizeDirectCronRouteSessionKey(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
   sessionKey: string;
 }): string {
@@ -637,7 +637,7 @@ function canonicalizeDirectCronRouteSessionKey(params: {
 // Resolves the session for a concrete visible delivery target and ensures the
 // outbound session exists before cron awareness or transcript code references it.
 async function resolveCronDeliveryRouteSessionKey(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   jobId: string;
   agentId: string;
   agentSessionKey: string;
@@ -698,7 +698,7 @@ async function resolveCronDeliveryRouteSessionKey(params: {
 
 /** Resolves the transcript mirror session for direct cron delivery. */
 async function resolveDirectCronDeliverySessionKey(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   job: CronJob;
   agentId: string;
   agentSessionKey: string;
@@ -770,7 +770,7 @@ function resolveCronMessageToolAwarenessTarget(params: {
 
 /** Queues target-session context awareness for cron deliveries made via message tool. */
 export async function queueCronMessageToolDeliveryAwareness(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   job: CronJob;
   agentId: string;
   agentSessionKey: string;
@@ -1027,7 +1027,7 @@ export async function dispatchCronDelivery(
   });
   const formatDeliveryTargetError = (error: string) =>
     params.sourceDeliveryOutcome.unverifiedMessageToolDelivery
-      ? `${error}; the agent used the message tool, but OpenClaw could not verify that message matched the cron delivery target`
+      ? `${error}; the agent used the message tool, but Operator could not verify that message matched the cron delivery target`
       : error;
   const failDeliveryTarget = (error: string) =>
     params.withRunSession({

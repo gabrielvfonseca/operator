@@ -11,7 +11,7 @@ import {
   recordInboundSessionMeta,
   resolveStorePath,
 } from "../../config/sessions/inbound.runtime.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { RoutePeer } from "../../routing/resolve-route.js";
 import { resolveAgentIdFromSessionKey } from "../../routing/session-key.js";
 import { buildOutboundBaseSessionKey } from "./base-session-key.js";
@@ -32,7 +32,7 @@ export type OutboundSessionRoute = {
 
 /** Inputs required to resolve an outbound target into a session route. */
 export type ResolveOutboundSessionRouteParams = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   channel: ChannelId;
   plugin?: ChannelPlugin;
   agentId: string;
@@ -227,7 +227,7 @@ export async function resolveOutboundSessionRoute(
 
 /** Persists best-effort session metadata for an outbound-only route. */
 export async function ensureOutboundSessionEntry(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   channel: ChannelId;
   accountId?: string | null;
   route: OutboundSessionRoute;

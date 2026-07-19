@@ -6,7 +6,7 @@ import { normalizeOptionalString } from "@operator/normalization-core/string-coe
 import { resolveDefaultAgentId } from "../agents/agent-scope.js";
 import { resolveStateDir } from "../config/paths.js";
 import type { SessionScope } from "../config/sessions.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizeAgentId, normalizeMainKey } from "../routing/session-key.js";
 
 type GatewayAgentListRow = {
@@ -28,7 +28,7 @@ function listExistingAgentIdsFromDisk(): string[] {
   }
 }
 
-export function listGatewayAgentIds(cfg: OpenClawConfig): string[] {
+export function listGatewayAgentIds(cfg: OperatorConfig): string[] {
   const ids = new Set<string>();
   const defaultId = normalizeAgentId(resolveDefaultAgentId(cfg));
   ids.add(defaultId);
@@ -53,7 +53,7 @@ export function listGatewayAgentIds(cfg: OpenClawConfig): string[] {
 }
 
 /** Lists gateway-visible agent ids with default/main session metadata. */
-export function listGatewayAgentsBasic(cfg: OpenClawConfig): {
+export function listGatewayAgentsBasic(cfg: OperatorConfig): {
   defaultId: string;
   mainKey: string;
   scope: SessionScope;

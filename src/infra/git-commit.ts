@@ -5,7 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
 import { resolveGitHeadPath } from "./git-root.js";
-import { resolveOpenClawPackageRootSync } from "./operator-root.js";
+import { resolveOperatorPackageRootSync } from "./operator-root.js";
 
 const formatCommit = (value?: string | null) => {
   if (!value) {
@@ -226,7 +226,7 @@ export const resolveCommitHash = (
   if (cachedGitCommitBySearchDir.has(searchDir)) {
     return cachedGitCommitBySearchDir.get(searchDir) ?? null;
   }
-  const packageRoot = resolveOpenClawPackageRootSync({
+  const packageRoot = resolveOperatorPackageRootSync({
     cwd: options.cwd,
     moduleUrl: options.moduleUrl,
   });

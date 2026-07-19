@@ -4,7 +4,7 @@ import type { NormalizedModelCatalogRow } from "@operator/model-catalog-core/mod
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { testing as cliBackendsTesting } from "../agents/cli-backends.test-support.js";
 import type { ModelCatalogEntry } from "../agents/model-catalog.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import type { WizardMultiSelectParams, WizardPrompter } from "../wizard/prompts.js";
 import {
   applyModelAllowlist,
@@ -35,7 +35,7 @@ vi.mock("./models/list.manifest-catalog.js", () => ({
 const loadPreferredProviderPickerCatalog = vi.hoisted(() =>
   vi.fn<
     (_params: {
-      cfg: OpenClawConfig;
+      cfg: OperatorConfig;
       preferredProvider: string;
       agentDir?: string;
       workspaceDir?: string;
@@ -74,7 +74,7 @@ const resolveEnvApiKey = vi.hoisted(() =>
   ),
 );
 const hasUsableCustomProviderApiKey = vi.hoisted(() =>
-  vi.fn<(_cfg?: OpenClawConfig, _provider?: string, _env?: NodeJS.ProcessEnv) => boolean>(
+  vi.fn<(_cfg?: OperatorConfig, _provider?: string, _env?: NodeJS.ProcessEnv) => boolean>(
     () => false,
   ),
 );
@@ -86,7 +86,7 @@ const hasRuntimeAvailableProviderAuth = vi.hoisted(() =>
       env,
     }: {
       provider: string;
-      cfg?: OpenClawConfig;
+      cfg?: OperatorConfig;
       workspaceDir?: string;
       env?: NodeJS.ProcessEnv;
     }) => {
@@ -150,7 +150,7 @@ const providerAuthEvaluations = vi.hoisted(
     >(),
 );
 const createProviderAuthChecker = vi.hoisted(() =>
-  vi.fn((params: { cfg?: OpenClawConfig; workspaceDir?: string; env?: NodeJS.ProcessEnv }) => {
+  vi.fn((params: { cfg?: OperatorConfig; workspaceDir?: string; env?: NodeJS.ProcessEnv }) => {
     const checker = vi.fn(
       async (provider: string, ref?: { api?: string | null; baseUrl?: unknown }) => {
         const prepared = providerAuthEvaluations.get(provider);
@@ -340,9 +340,9 @@ function providerCallProviders() {
 }
 
 beforeEach(() => {
-  delete process.env.OPENCLAW_LOCALE;
+  delete process.env.OPERATOR_LOCALE;
   // Route hints exercise source policy even when a prior local build left stale dist artifacts.
-  vi.stubEnv("OPENCLAW_BUNDLED_PLUGINS_DIR", path.resolve("extensions"));
+  vi.stubEnv("OPERATOR_BUNDLED_PLUGINS_DIR", path.resolve("extensions"));
   vi.clearAllMocks();
   modelCatalogRouteVariants.value = undefined;
   providerAuthRoute.value = undefined;
@@ -428,7 +428,7 @@ describe("promptDefaultModel", () => {
     const prompter = makePrompter({ select });
 
     await promptDefaultModel({
-      config: { agents: { defaults: {} } } as OpenClawConfig,
+      config: { agents: { defaults: {} } } as OperatorConfig,
       prompter,
       allowKeep: false,
       includeManual: false,
@@ -438,7 +438,7 @@ describe("promptDefaultModel", () => {
     const options = pickerOptions(select as MockCallSource);
     const canonical = requireOption(options, "openai/gpt-5.5");
     expect(canonical.hint).toContain("Codex runtime route");
-    expect(canonical.hint).not.toContain("OpenClaw runtime route");
+    expect(canonical.hint).not.toContain("Operator runtime route");
   });
 
   it.each([
@@ -448,7 +448,7 @@ describe("promptDefaultModel", () => {
       { models: { "openai/gpt-5.5": { params: { text_verbosity: "low" } } } },
     ],
   ] as const)(
-    "labels official OpenAI with %s as an OpenClaw runtime route",
+    "labels official OpenAI with %s as an Operator runtime route",
     async (_label, defaults) => {
       loadModelCatalog.mockResolvedValue([
         {
@@ -462,7 +462,7 @@ describe("promptDefaultModel", () => {
       const select = vi.fn(async (params) => params.initialValue as never);
 
       await promptDefaultModel({
-        config: { agents: { defaults } } as OpenClawConfig,
+        config: { agents: { defaults } } as OperatorConfig,
         prompter: makePrompter({ select }),
         allowKeep: false,
         includeManual: false,
@@ -470,7 +470,7 @@ describe("promptDefaultModel", () => {
       });
 
       const option = requireOption(pickerOptions(select as MockCallSource), "openai/gpt-5.5");
-      expect(option.hint).toContain("OpenClaw runtime route");
+      expect(option.hint).toContain("Operator runtime route");
       expect(option.hint).not.toContain("Codex runtime route");
     },
   );
@@ -478,7 +478,7 @@ describe("promptDefaultModel", () => {
   it.each([
     ["custom endpoint", "openai-responses", "https://example.test/v1"],
     ["authored Completions", "openai-completions", "https://api.openai.com/v1"],
-  ] as const)("labels an OpenAI %s as an OpenClaw runtime route", async (_label, api, baseUrl) => {
+  ] as const)("labels an OpenAI %s as an Operator runtime route", async (_label, api, baseUrl) => {
     loadModelCatalog.mockResolvedValue([
       { provider: "openai", id: "gpt-5.5", name: "GPT-5.5", api, baseUrl },
     ]);
@@ -489,7 +489,7 @@ describe("promptDefaultModel", () => {
           openai: { api, baseUrl, models: [configuredTextModel("gpt-5.5", "GPT-5.5")] },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const select = vi.fn(async (params) => params.initialValue as never);
 
     await promptDefaultModel({
@@ -501,7 +501,7 @@ describe("promptDefaultModel", () => {
     });
 
     const option = requireOption(pickerOptions(select as MockCallSource), "openai/gpt-5.5");
-    expect(option.hint).toContain("OpenClaw runtime route");
+    expect(option.hint).toContain("Operator runtime route");
     expect(option.hint).not.toContain("Codex runtime route");
   });
 
@@ -537,7 +537,7 @@ describe("promptDefaultModel", () => {
     const select = vi.fn(async (params) => params.initialValue as never);
 
     await promptDefaultModel({
-      config: { agents: { defaults: {} } } as OpenClawConfig,
+      config: { agents: { defaults: {} } } as OperatorConfig,
       prompter: makePrompter({ select }),
       allowKeep: false,
       includeManual: false,
@@ -618,7 +618,7 @@ describe("promptDefaultModel", () => {
     const prompter = makePrompter({ select });
 
     await promptDefaultModel({
-      config: { agents: { defaults: {} } } as OpenClawConfig,
+      config: { agents: { defaults: {} } } as OperatorConfig,
       prompter,
       allowKeep: false,
       includeManual: false,
@@ -659,7 +659,7 @@ describe("promptDefaultModel", () => {
     const select = vi.fn(async (params) => params.initialValue as never);
 
     await promptDefaultModel({
-      config: { agents: { defaults: {} } } as OpenClawConfig,
+      config: { agents: { defaults: {} } } as OperatorConfig,
       prompter: makePrompter({ select }),
       allowKeep: false,
       includeManual: false,
@@ -699,7 +699,7 @@ describe("promptDefaultModel", () => {
     const prompter = makePrompter({ select });
 
     await promptDefaultModel({
-      config: { agents: { defaults: {} } } as OpenClawConfig,
+      config: { agents: { defaults: {} } } as OperatorConfig,
       prompter,
       allowKeep: false,
       includeManual: false,
@@ -723,7 +723,7 @@ describe("promptDefaultModel", () => {
     const prompter = makePrompter({ select });
 
     const result = await promptDefaultModel({
-      config: { agents: { defaults: {} } } as OpenClawConfig,
+      config: { agents: { defaults: {} } } as OperatorConfig,
       prompter,
       allowKeep: false,
       includeManual: false,
@@ -761,7 +761,7 @@ describe("promptDefaultModel", () => {
         },
       },
       agents: { defaults: {} },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptDefaultModel({
       config,
@@ -802,7 +802,7 @@ describe("promptDefaultModel", () => {
           model: "openai/gpt-5.5",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptDefaultModel({
       config,
@@ -848,7 +848,7 @@ describe("promptDefaultModel", () => {
           model: "nvidia/nemotron-3-super-120b-a12b",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     await promptDefaultModel({
       config,
@@ -896,7 +896,7 @@ describe("promptDefaultModel", () => {
     const prompter = makePrompter({ select });
 
     await promptDefaultModel({
-      config: { agents: { defaults: {} } } as OpenClawConfig,
+      config: { agents: { defaults: {} } } as OperatorConfig,
       prompter,
       allowKeep: false,
       includeManual: false,
@@ -930,7 +930,7 @@ describe("promptDefaultModel", () => {
           model: "nvidia/nemotron-3-super-120b-a12b",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptDefaultModel({
       config,
@@ -963,7 +963,7 @@ describe("promptDefaultModel", () => {
           model: "openai/gpt-5.5",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptDefaultModel({
       config,
@@ -996,7 +996,7 @@ describe("promptDefaultModel", () => {
           model: "fleet-router/qwen3.6:latest",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptDefaultModel({
       config,
@@ -1049,7 +1049,7 @@ describe("promptDefaultModel", () => {
           model: "openai/gpt-5.5",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptDefaultModel({
       config,
@@ -1096,7 +1096,7 @@ describe("promptDefaultModel", () => {
           model: "openai/gpt-5.5",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptDefaultModel({
       config,
@@ -1140,7 +1140,7 @@ describe("promptDefaultModel", () => {
           model: "nvidia/nemotron-3-super-120b-a12b",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptDefaultModel({
       config,
@@ -1186,7 +1186,7 @@ describe("promptDefaultModel", () => {
           model: "nvidia/nemotron-3-ultra-550b-a55b",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptDefaultModel({
       config,
@@ -1248,7 +1248,7 @@ describe("promptDefaultModel", () => {
             model: "nvidia/nemotron-3-super-120b-a12b",
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       prompter,
       allowKeep: true,
       includeManual: true,
@@ -1308,7 +1308,7 @@ describe("promptDefaultModel", () => {
             model: "nvidia/nemotron-3-super-120b-a12b",
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       prompter,
       allowKeep: true,
       includeManual: true,
@@ -1338,7 +1338,7 @@ describe("promptDefaultModel", () => {
     const prompter = makePrompter({ select });
     const env = {
       ...process.env,
-      OPENCLAW_STATE_DIR: "/tmp/openclaw-picker-state",
+      OPERATOR_STATE_DIR: "/tmp/openclaw-picker-state",
     };
     const config = {
       agents: {
@@ -1347,7 +1347,7 @@ describe("promptDefaultModel", () => {
           model: "nvidia/nemotron-3-super-120b-a12b",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     await promptDefaultModel({
       config,
@@ -1410,7 +1410,7 @@ describe("promptDefaultModel", () => {
       return (vllm?.value ?? "") as never;
     });
     const prompter = makePrompter({ select });
-    const config = { agents: { defaults: {} } } as OpenClawConfig;
+    const config = { agents: { defaults: {} } } as OperatorConfig;
 
     const result = await promptDefaultModel({
       config,
@@ -1477,7 +1477,7 @@ describe("promptDefaultModel", () => {
     const prompter = makePrompter({ select });
 
     await promptDefaultModel({
-      config: { agents: { defaults: {} } } as OpenClawConfig,
+      config: { agents: { defaults: {} } } as OperatorConfig,
       prompter,
       allowKeep: false,
       includeManual: false,
@@ -1502,7 +1502,7 @@ describe("promptDefaultModel", () => {
           model: "openai/gpt-5.5",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptDefaultModel({
       config,
@@ -1558,7 +1558,7 @@ describe("promptDefaultModel", () => {
     const prompter = makePrompter({ select });
 
     await promptDefaultModel({
-      config: { agents: { defaults: {} } } as OpenClawConfig,
+      config: { agents: { defaults: {} } } as OperatorConfig,
       prompter,
       allowKeep: false,
       includeManual: false,
@@ -1597,7 +1597,7 @@ describe("promptModelAllowlist", () => {
 
     const multiselect = createSelectAllMultiselect();
     const prompter = makePrompter({ multiselect });
-    const config = { agents: { defaults: {} } } as OpenClawConfig;
+    const config = { agents: { defaults: {} } } as OperatorConfig;
 
     const result = await promptModelAllowlist({
       config,
@@ -1611,7 +1611,7 @@ describe("promptModelAllowlist", () => {
   });
 
   it("localizes the model allowlist picker", async () => {
-    process.env.OPENCLAW_LOCALE = "zh-CN";
+    process.env.OPERATOR_LOCALE = "zh-CN";
     loadModelCatalog.mockResolvedValue([
       {
         provider: "openai",
@@ -1622,7 +1622,7 @@ describe("promptModelAllowlist", () => {
 
     const multiselect = createSelectAllMultiselect();
     const prompter = makePrompter({ multiselect });
-    const config = { agents: { defaults: {} } } as OpenClawConfig;
+    const config = { agents: { defaults: {} } } as OperatorConfig;
 
     await promptModelAllowlist({ config, prompter });
 
@@ -1646,7 +1646,7 @@ describe("promptModelAllowlist", () => {
 
     const multiselect = createSelectAllMultiselect();
     const prompter = makePrompter({ multiselect });
-    const config = { agents: { defaults: {} } } as OpenClawConfig;
+    const config = { agents: { defaults: {} } } as OperatorConfig;
 
     await promptModelAllowlist({
       config,
@@ -1731,7 +1731,7 @@ describe("promptModelAllowlist", () => {
     const multiselect = createSelectAllMultiselect();
 
     await promptModelAllowlist({
-      config: { agents: { defaults: {} } } as OpenClawConfig,
+      config: { agents: { defaults: {} } } as OperatorConfig,
       prompter: makePrompter({ multiselect }),
     });
 
@@ -1767,7 +1767,7 @@ describe("promptModelAllowlist", () => {
         },
       },
       agents: { defaults: {} },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptModelAllowlist({ config, prompter });
 
@@ -1800,7 +1800,7 @@ describe("promptModelAllowlist", () => {
 
     const multiselect = createSelectAllMultiselect();
     const prompter = makePrompter({ multiselect });
-    const config = { agents: { defaults: {} } } as OpenClawConfig;
+    const config = { agents: { defaults: {} } } as OperatorConfig;
 
     await promptModelAllowlist({
       config,
@@ -1844,7 +1844,7 @@ describe("promptModelAllowlist", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptModelAllowlist({
       config,
@@ -1890,7 +1890,7 @@ describe("promptModelAllowlist", () => {
         },
       },
       agents: { defaults: {} },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptModelAllowlist({
       config,
@@ -1942,7 +1942,7 @@ describe("promptModelAllowlist", () => {
         },
       },
       agents: { defaults: {} },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptModelAllowlist({
       config,
@@ -2023,7 +2023,7 @@ describe("promptModelAllowlist", () => {
         },
       },
       agents: { defaults: {} },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptModelAllowlist({
       config,
@@ -2080,7 +2080,7 @@ describe("promptModelAllowlist", () => {
         },
       },
       agents: { defaults: {} },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptModelAllowlist({
       config,
@@ -2134,7 +2134,7 @@ describe("promptModelAllowlist", () => {
         },
       },
       agents: { defaults: {} },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptModelAllowlist({
       config,
@@ -2170,7 +2170,7 @@ describe("promptModelAllowlist", () => {
         },
       },
       agents: { defaults: {} },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptModelAllowlist({
       config,
@@ -2215,7 +2215,7 @@ describe("promptModelAllowlist", () => {
         },
       },
       agents: { defaults: {} },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptModelAllowlist({ config, prompter });
 
@@ -2248,7 +2248,7 @@ describe("promptModelAllowlist", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptModelAllowlist({ config, prompter });
     const call = pickerParams(multiselect as MockCallSource);
@@ -2290,7 +2290,7 @@ describe("promptModelAllowlist", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptModelAllowlist({ config, prompter });
     const call = pickerParams(multiselect as MockCallSource);
@@ -2313,7 +2313,7 @@ describe("promptModelAllowlist", () => {
           model: "openai/gpt-5.5",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptModelAllowlist({ config, prompter });
 
@@ -2338,7 +2338,7 @@ describe("promptModelAllowlist", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptModelAllowlist({ config, prompter });
 
@@ -2378,7 +2378,7 @@ describe("promptModelAllowlist", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptModelAllowlist({
       config,
@@ -2407,7 +2407,7 @@ describe("promptModelAllowlist", () => {
           model: "openai/gpt-5.5",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptModelAllowlist({
       config,
@@ -2434,7 +2434,7 @@ describe("promptModelAllowlist", () => {
           model: "openai/gpt-5.5",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await promptModelAllowlist({
       config,
@@ -2480,7 +2480,7 @@ describe("runtime model picker visibility", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     await promptModelAllowlist({ config, prompter });
 
@@ -2507,7 +2507,7 @@ describe("router model filtering", () => {
     const multiselect = createSelectAllMultiselect();
     const defaultPrompter = makePrompter({ select });
     const allowlistPrompter = makePrompter({ multiselect });
-    const config = { agents: { defaults: {} } } as OpenClawConfig;
+    const config = { agents: { defaults: {} } } as OperatorConfig;
 
     await promptDefaultModel({
       config,
@@ -2542,7 +2542,7 @@ describe("applyModelAllowlist", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelAllowlist(config, ["openai/gpt-5.5"]);
     expect(next.agents?.defaults?.models).toEqual({
@@ -2559,7 +2559,7 @@ describe("applyModelAllowlist", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelAllowlist(config, [
       "google/gemini-3-pro-preview",
@@ -2574,7 +2574,7 @@ describe("applyModelAllowlist", () => {
   });
 
   it("keeps non-Google provider Gemini-looking refs unchanged while writing selected models", () => {
-    const config = {} as OpenClawConfig;
+    const config = {} as OperatorConfig;
 
     const next = applyModelAllowlist(config, ["litellm/gemini-3-flash", "litellm/gemini-3.1-pro"]);
     expect(next.agents?.defaults?.models).toEqual({
@@ -2594,7 +2594,7 @@ describe("applyModelAllowlist", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelAllowlist(config, ["anthropic/claude-sonnet-4-6"], {
       scopeKeys: ["anthropic/claude-opus-4-6", "anthropic/claude-sonnet-4-6"],
@@ -2614,7 +2614,7 @@ describe("applyModelAllowlist", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelAllowlist(config, []);
     expect(next.agents?.defaults?.models).toBeUndefined();
@@ -2629,7 +2629,7 @@ describe("applyModelFallbacksFromSelection", () => {
           model: { primary: "anthropic/claude-opus-4-6" },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelFallbacksFromSelection(config, [
       "anthropic/claude-opus-4-6",
@@ -2646,7 +2646,7 @@ describe("applyModelFallbacksFromSelection", () => {
       agents: {
         defaults: {},
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelFallbacksFromSelection(config, [
       "openrouter/auto",
@@ -2663,7 +2663,7 @@ describe("applyModelFallbacksFromSelection", () => {
       agents: {
         defaults: {},
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelFallbacksFromSelection(config, ["openai/gpt-5.5"]);
     expect(next).toBe(config);
@@ -2679,7 +2679,7 @@ describe("applyModelFallbacksFromSelection", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelFallbacksFromSelection(config, ["anthropic/claude-opus-4-6"]);
     expect(next.agents?.defaults?.model).toEqual({
@@ -2697,7 +2697,7 @@ describe("applyModelFallbacksFromSelection", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelFallbacksFromSelection(config, [
       "openai/gpt-5.5",
@@ -2720,7 +2720,7 @@ describe("applyModelFallbacksFromSelection", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelFallbacksFromSelection(config, [
       "google/gemini-3.1-pro-preview",
@@ -2742,7 +2742,7 @@ describe("applyModelFallbacksFromSelection", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelFallbacksFromSelection(config, ["openai/gpt-5.5"]);
     expect(next.agents?.defaults?.model).toEqual({
@@ -2760,7 +2760,7 @@ describe("applyModelFallbacksFromSelection", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelFallbacksFromSelection(config, ["openai/gpt-5.5"]);
     expect(next.agents?.defaults?.model).toEqual({
@@ -2779,7 +2779,7 @@ describe("applyModelFallbacksFromSelection", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelFallbacksFromSelection(config, ["openai/gpt-5.5"], {
       scopeKeys: ["openai/gpt-5.5", "openai/gpt-5.4"],
@@ -2800,7 +2800,7 @@ describe("applyModelFallbacksFromSelection", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelFallbacksFromSelection(config, [], {
       scopeKeys: ["openai/gpt-5.5", "openai/gpt-5.4"],
@@ -2821,7 +2821,7 @@ describe("applyModelFallbacksFromSelection", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelFallbacksFromSelection(config, ["openai/gpt-5.5", "openai/gpt-5.4"], {
       scopeKeys: ["openai/gpt-5.5", "openai/gpt-5.4"],
@@ -2845,7 +2845,7 @@ describe("applyModelFallbacksFromSelection", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelFallbacksFromSelection(config, ["openai/gpt-5.5"], {
       scopeKeys: ["openai/gpt-5.5", "openai/gpt-5.4-mini"],
@@ -2868,7 +2868,7 @@ describe("applyModelFallbacksFromSelection", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelFallbacksFromSelection(
       config,
@@ -2890,7 +2890,7 @@ describe("applyModelFallbacksFromSelection", () => {
           model: { primary: "anthropic/claude-opus-4-6", fallbacks: ["openai/gpt-5.5"] },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyModelFallbacksFromSelection(config, ["openai/gpt-5.5"]);
     expect(next.agents?.defaults?.model).toEqual({

@@ -31,12 +31,12 @@ describe("wizard i18n", () => {
     ["en_US.UTF-8", "Gateway port"],
     ["de_DE.UTF-8", "Gateway port"],
   ])("resolves the %s CLI locale through translated setup copy", (locale, expected) => {
-    vi.stubEnv("OPENCLAW_LOCALE", locale);
+    vi.stubEnv("OPERATOR_LOCALE", locale);
     expect(t("wizard.gateway.port")).toBe(expected);
   });
 
-  it("uses OPENCLAW_LOCALE before process locale variables", () => {
-    vi.stubEnv("OPENCLAW_LOCALE", "zh-TW");
+  it("uses OPERATOR_LOCALE before process locale variables", () => {
+    vi.stubEnv("OPERATOR_LOCALE", "zh-TW");
     vi.stubEnv("LC_ALL", "zh-CN");
     vi.stubEnv("LANG", "en-US");
     expect(t("wizard.gateway.port")).toBe("Gateway 連接埠");

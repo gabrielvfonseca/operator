@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, expect, it, vi } from "vitest";
-import { resolvePreferredOpenClawTmpDir } from "../infra/tmp-openclaw-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../infra/tmp-openclaw-dir.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import {
   resolveAllowedManagedMediaPath,
@@ -38,7 +38,7 @@ function makeTmpProbePath(prefix: string): string {
 async function withManagedMediaRoot<T>(run: (ctx: { stateDir: string }) => Promise<T>) {
   const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-managed-media-"));
   try {
-    return await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, async () => {
+    return await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
       await fs.mkdir(path.join(stateDir, "media", "outbound"), { recursive: true });
       await fs.mkdir(path.join(stateDir, "media", "tool-image-generation"), { recursive: true });
       return await run({ stateDir });
@@ -48,7 +48,7 @@ async function withManagedMediaRoot<T>(run: (ctx: { stateDir: string }) => Promi
   }
 }
 
-async function withOutsideHardlinkInOpenClawTmp<T>(
+async function withOutsideHardlinkInOperatorTmp<T>(
   params: {
     openClawTmpDir: string;
     hardlinkPrefix: string;
@@ -93,7 +93,7 @@ async function withOutsideHardlinkInOpenClawTmp<T>(
 describe("resolveSandboxPath", () => {
   it("keeps home-sibling roots absolute in escape diagnostics", async () => {
     const home = path.join(os.homedir(), "test-home");
-    await withEnvAsync({ HOME: home, OPENCLAW_HOME: undefined }, async () => {
+    await withEnvAsync({ HOME: home, OPERATOR_HOME: undefined }, async () => {
       const root = path.resolve(`${home}-sibling`);
       const outside = path.dirname(root);
 
@@ -105,7 +105,7 @@ describe("resolveSandboxPath", () => {
 
   it("still shortens roots beneath the home directory", async () => {
     const home = path.join(os.homedir(), "test-home");
-    await withEnvAsync({ HOME: home, OPENCLAW_HOME: undefined }, async () => {
+    await withEnvAsync({ HOME: home, OPERATOR_HOME: undefined }, async () => {
       const root = path.join(home, "openclaw-sandbox");
       const outside = path.dirname(root);
 
@@ -117,22 +117,22 @@ describe("resolveSandboxPath", () => {
 });
 
 describe("resolveSandboxedMediaSource", () => {
-  const openClawTmpDir = resolvePreferredOpenClawTmpDir();
+  const openClawTmpDir = resolvePreferredOperatorTmpDir();
 
   // Group 1: /tmp paths (the bug fix)
   it.each([
     {
-      name: "absolute paths under preferred OpenClaw tmp root",
+      name: "absolute paths under preferred Operator tmp root",
       media: path.join(openClawTmpDir, "image.png"),
       expected: path.join(openClawTmpDir, "image.png"),
     },
     {
-      name: "file:// URLs pointing to preferred OpenClaw tmp root",
+      name: "file:// URLs pointing to preferred Operator tmp root",
       media: pathToFileURL(path.join(openClawTmpDir, "photo.png")).href,
       expected: path.join(openClawTmpDir, "photo.png"),
     },
     {
-      name: "nested paths under preferred OpenClaw tmp root",
+      name: "nested paths under preferred Operator tmp root",
       media: path.join(openClawTmpDir, "subdir", "deep", "file.png"),
       expected: path.join(openClawTmpDir, "subdir", "deep", "file.png"),
     },
@@ -304,7 +304,7 @@ describe("resolveSandboxedMediaSource", () => {
     });
   });
 
-  it("rejects symlinked OpenClaw tmp paths escaping tmp root", async () => {
+  it("rejects symlinked Operator tmp paths escaping tmp root", async () => {
     if (process.platform === "win32") {
       return;
     }
@@ -346,11 +346,11 @@ describe("resolveSandboxedMediaSource", () => {
     });
   });
 
-  it("rejects hardlinked OpenClaw tmp paths to outside files", async () => {
+  it("rejects hardlinked Operator tmp paths to outside files", async () => {
     if (process.platform === "win32") {
       return;
     }
-    await withOutsideHardlinkInOpenClawTmp(
+    await withOutsideHardlinkInOperatorTmp(
       {
         openClawTmpDir,
         hardlinkPrefix: "sandbox-media-hardlink",
@@ -363,11 +363,11 @@ describe("resolveSandboxedMediaSource", () => {
     );
   });
 
-  it("rejects symlinked OpenClaw tmp paths to hardlinked outside files", async () => {
+  it("rejects symlinked Operator tmp paths to hardlinked outside files", async () => {
     if (process.platform === "win32") {
       return;
     }
-    await withOutsideHardlinkInOpenClawTmp(
+    await withOutsideHardlinkInOperatorTmp(
       {
         openClawTmpDir,
         hardlinkPrefix: "sandbox-media-hardlink-target",

@@ -1,4 +1,4 @@
-import { isTranscriptOnlyOpenClawAssistantMessage } from "../../../shared/transcript-only-operator-assistant.js";
+import { isTranscriptOnlyOperatorAssistantMessage } from "../../../shared/transcript-only-operator-assistant.js";
 import type { AgentMessage } from "../../runtime/index.js";
 /**
  * Handles sessions-yield interruption, persistence, and artifact cleanup.
@@ -245,7 +245,7 @@ export function stripSessionsYieldArtifacts(activeSession: {
         entry.type === "custom" ||
         entry.type === "label" ||
         entry.type === "session_info" ||
-        (entry.type === "message" && isTranscriptOnlyOpenClawAssistantMessage(entry.message)),
+        (entry.type === "message" && isTranscriptOnlyOperatorAssistantMessage(entry.message)),
     },
   );
 }

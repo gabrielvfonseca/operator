@@ -1,5 +1,5 @@
 import { isHttpsUrl, isHttpUrl } from "@operator/net-policy/url-protocol";
-// Assembles the canonical Zod schema for OpenClaw config parsing.
+// Assembles the canonical Zod schema for Operator config parsing.
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeStringifiedOptionalString,
@@ -614,7 +614,7 @@ const CommitmentsSchema = z
   })
   .optional();
 
-export const OpenClawSchema = z
+export const OperatorSchema = z
   .strictObject({
     $schema: z.string().optional(),
     meta: z

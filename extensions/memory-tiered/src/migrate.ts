@@ -3,7 +3,7 @@
 import { promises as fs } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type { MemoryTieredPluginConfig } from "./config.js";
 import { createEmbedder } from "./embedding.js";
 import { createSemanticClient } from "./semantic.js";
@@ -28,7 +28,7 @@ function splitMarkdownChunks(text: string): string[] {
 
 export async function migrateMarkdownToSemantic(params: {
   pluginConfig: MemoryTieredPluginConfig;
-  getConfig: () => OpenClawConfig | undefined;
+  getConfig: () => OperatorConfig | undefined;
   workspaceDir?: string;
 }): Promise<MigrateResult> {
   const result: MigrateResult = { filesScanned: 0, chunksStored: 0, errors: [] };

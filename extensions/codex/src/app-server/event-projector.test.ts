@@ -684,7 +684,7 @@ describe("CodexAppServerEventProjector", () => {
   it("saves raw Codex image-generation results as reply media", async () => {
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-codex-media-state-"));
     tempDirs.add(stateDir);
-    vi.stubEnv("OPENCLAW_STATE_DIR", stateDir);
+    vi.stubEnv("OPERATOR_STATE_DIR", stateDir);
     const projector = await createProjector();
 
     await projector.handleNotification(
@@ -826,7 +826,7 @@ describe("CodexAppServerEventProjector", () => {
   it("dedupes raw and typed Codex image-generation media for the same item", async () => {
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-codex-media-state-"));
     tempDirs.add(stateDir);
-    vi.stubEnv("OPENCLAW_STATE_DIR", stateDir);
+    vi.stubEnv("OPERATOR_STATE_DIR", stateDir);
     const projector = await createProjector();
     const savedPath = "/tmp/codex-home/generated_images/session-1/ig_123.png";
 
@@ -861,7 +861,7 @@ describe("CodexAppServerEventProjector", () => {
 
   it("prefers gateway-managed image media when the typed event arrives first", async () => {
     await withTempDir("openclaw-codex-media-state-", async (stateDir) => {
-      vi.stubEnv("OPENCLAW_STATE_DIR", stateDir);
+      vi.stubEnv("OPERATOR_STATE_DIR", stateDir);
       const projector = await createProjector();
       const savedPath = "/home/dev-user/.codex/generated_images/session-1/ig_123.png";
 
@@ -903,7 +903,7 @@ describe("CodexAppServerEventProjector", () => {
   it("preserves distinct raw image-generation items with identical image bytes", async () => {
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-codex-media-state-"));
     tempDirs.add(stateDir);
-    vi.stubEnv("OPENCLAW_STATE_DIR", stateDir);
+    vi.stubEnv("OPERATOR_STATE_DIR", stateDir);
     const projector = await createProjector();
 
     for (const id of ["ig_raw_1", "ig_raw_2"]) {
@@ -1051,7 +1051,7 @@ describe("CodexAppServerEventProjector", () => {
       }
     ).text;
     expect(emittedProgressText).toHaveLength(10_000);
-    expect(emittedProgressText).toContain("OpenClaw truncated Codex native tool output");
+    expect(emittedProgressText).toContain("Operator truncated Codex native tool output");
 
     await projector.handleNotification(
       forCurrentTurn("rawResponseItem/completed", {
@@ -3541,7 +3541,7 @@ describe("CodexAppServerEventProjector", () => {
         | undefined
     )?.output;
     expect(output).toHaveLength(10_000);
-    expect(output).toContain("OpenClaw truncated Codex native tool output");
+    expect(output).toContain("Operator truncated Codex native tool output");
     expect(output).toContain("original 12345 chars");
     expect(output).toContain("showing 10000");
 
@@ -3555,7 +3555,7 @@ describe("CodexAppServerEventProjector", () => {
     );
     const toolResultContentItem = requireRecord(toolResultContent[0], "tool result content item");
     expect(toolResultContentItem.content).toHaveLength(10_000);
-    expect(toolResultContentItem.content).toContain("OpenClaw truncated Codex native tool output");
+    expect(toolResultContentItem.content).toContain("Operator truncated Codex native tool output");
   });
 
   it("delivers completed assistant text when a native tool call finishes without a matching result", async () => {
@@ -3785,7 +3785,7 @@ describe("CodexAppServerEventProjector", () => {
     const content = requireArray(message.content, "tool result content");
     const item = requireRecord(content[0], "tool result content item");
     expect(item.content).toBe(
-      `${prefix}\n...(OpenClaw truncated Codex native tool output: original 10288 chars, showing 10000; rerun with narrower args.)`,
+      `${prefix}\n...(Operator truncated Codex native tool output: original 10288 chars, showing 10000; rerun with narrower args.)`,
     );
     // A split surrogate would leave a lone code unit behind.
     expect(item.content).not.toMatch(/[\uD800-\uDFFF]/);
@@ -3834,7 +3834,7 @@ describe("CodexAppServerEventProjector", () => {
     // A split surrogate would leave a lone code unit behind; the streamed output
     // must stay well-formed while still carrying the truncation notice.
     expect(item.content).not.toMatch(/[\uD800-\uDFFF]/);
-    expect(item.content).toContain("OpenClaw truncated Codex native tool output");
+    expect(item.content).toContain("Operator truncated Codex native tool output");
     expect(item.content).toContain("showing 10000");
   });
 
@@ -3956,7 +3956,7 @@ describe("CodexAppServerEventProjector", () => {
       trajectoryRecorder,
     });
     const userOutputWithNotice =
-      "...(OpenClaw truncated Codex native tool output is a literal line from the process)\n";
+      "...(Operator truncated Codex native tool output is a literal line from the process)\n";
 
     await projector.handleNotification(
       forCurrentTurn("item/commandExecution/outputDelta", {
@@ -4012,7 +4012,7 @@ describe("CodexAppServerEventProjector", () => {
       trajectoryRecorder,
     });
     const userOutputWithNotice =
-      "before user marker\n...(OpenClaw truncated Codex native tool output: original literal process text)\nsecond line must survive\n";
+      "before user marker\n...(Operator truncated Codex native tool output: original literal process text)\nsecond line must survive\n";
 
     await projector.handleNotification(
       forCurrentTurn("item/commandExecution/outputDelta", {
@@ -4050,7 +4050,7 @@ describe("CodexAppServerEventProjector", () => {
         | undefined
     )?.output;
     expect(output).toHaveLength(10_000);
-    expect(output).toContain("OpenClaw truncated Codex native tool output");
+    expect(output).toContain("Operator truncated Codex native tool output");
     expect(output).toContain("original 12124 chars");
     expect(output).toContain("before user marker");
     expect(output).toContain("second line must survive");
@@ -4102,10 +4102,10 @@ describe("CodexAppServerEventProjector", () => {
         | undefined
     )?.output;
     expect(output).toHaveLength(10_000);
-    expect(output).toContain("OpenClaw truncated Codex native tool output");
+    expect(output).toContain("Operator truncated Codex native tool output");
     expect(output).toContain("original 13023 chars");
     expect(output).toContain("showing 10000");
-    expect(output?.match(/OpenClaw truncated Codex native tool output/g)).toHaveLength(1);
+    expect(output?.match(/Operator truncated Codex native tool output/g)).toHaveLength(1);
 
     const result = projector.buildResult(buildEmptyToolTelemetry());
     const toolResultMessage = result.messagesSnapshot.find(
@@ -4117,7 +4117,7 @@ describe("CodexAppServerEventProjector", () => {
     );
     const toolResultContentItem = requireRecord(toolResultContent[0], "tool result content item");
     expect(toolResultContentItem.content).toHaveLength(10_000);
-    expect(toolResultContentItem.content).toContain("OpenClaw truncated Codex native tool output");
+    expect(toolResultContentItem.content).toContain("Operator truncated Codex native tool output");
   });
 
   it("uses streamed command output for failed native tool errors", async () => {
@@ -4969,7 +4969,7 @@ describe("CodexAppServerEventProjector", () => {
     });
   });
 
-  it("records dynamic OpenClaw tool calls in mirrored transcript snapshots", async () => {
+  it("records dynamic Operator tool calls in mirrored transcript snapshots", async () => {
     const projector = await createProjector();
 
     projector.recordDynamicToolCall({
@@ -5193,11 +5193,11 @@ describe("CodexAppServerEventProjector", () => {
         arguments: { action: "send", text: "hello" },
         executionStarted: false,
         outcome: "failure",
-        failure: { error: "Unknown OpenClaw tool: message" },
+        failure: { error: "Unknown Operator tool: message" },
       }),
       success: false,
       terminalType: "error",
-      contentItems: [{ type: "inputText", text: "Unknown OpenClaw tool: message" }],
+      contentItems: [{ type: "inputText", text: "Unknown Operator tool: message" }],
     });
 
     const result = projector.buildResult(buildEmptyToolTelemetry());

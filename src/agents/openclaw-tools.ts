@@ -8,7 +8,7 @@ import type { ChatType } from "../channels/chat-type.js";
 import type { InboundEventKind } from "../channels/inbound-event/kind.js";
 import type { ConversationReadInvocationOrigin } from "../channels/plugins/conversation-read-origin.js";
 import { selectApplicableRuntimeConfig } from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { callGateway } from "../gateway/call.js";
 import { isEmbeddedMode } from "../infra/embedded-mode.js";
 import { getActiveSecretsRuntimeConfigSnapshot } from "../secrets/runtime-state.js";
@@ -25,7 +25,7 @@ import {
   wrapToolWithBeforeToolCallHook,
 } from "./agent-tools.before-tool-call.js";
 import type { AuthProfileStore } from "./auth-profiles/types.js";
-import { resolveOpenClawPluginToolsForOptions } from "./operator-plugin-tools.js";
+import { resolveOperatorPluginToolsForOptions } from "./operator-plugin-tools.js";
 import {
   isToolExplicitlyAllowedByFactoryPolicy,
   mergeFactoryPolicyList,
@@ -34,8 +34,8 @@ import {
 } from "./operator-tools.media-factory-plan.js";
 import { applyNodesToolWorkspaceGuard } from "./operator-tools.nodes-workspace-guard.js";
 import {
-  collectPresentOpenClawTools,
-  shouldIncludeUpdatePlanToolForOpenClawTools,
+  collectPresentOperatorTools,
+  shouldIncludeUpdatePlanToolForOperatorTools,
 } from "./operator-tools.registration.js";
 import type { SandboxFsBridge } from "./sandbox/fs-bridge.js";
 import type { SpawnedToolContext } from "./spawned-context.js";
@@ -59,7 +59,7 @@ import { createImageTool } from "./tools/image-tool.js";
 import { createMessageTool } from "./tools/message-tool.js";
 import { createMusicGenerateTool } from "./tools/music-generate-tool.js";
 import { createNodesTool } from "./tools/nodes-tool.js";
-import { createOpenClawDelegateToolsForRun } from "./tools/operator-delegate-tool.js";
+import { createOperatorDelegateToolsForRun } from "./tools/operator-delegate-tool.js";
 import { createPdfTool } from "./tools/pdf-tool.js";
 import { createSessionStatusTool } from "./tools/session-status-tool.js";
 import { createSessionsHistoryTool } from "./tools/sessions-history-tool.js";
@@ -93,7 +93,7 @@ export function filterToolsByClientCaps(
     (tool) => !tool.requiredClientCaps?.some((requiredCap) => !clientCaps.has(requiredCap)),
   );
 }
-export function createOpenClawTools(
+export function createOperatorTools(
   options?: {
     sandboxBrowserBridgeUrl?: string;
     allowHostBrowserControl?: boolean;
@@ -121,7 +121,7 @@ export function createOpenClawTools(
     sandboxFsBridge?: SandboxFsBridge;
     fsPolicy?: ToolFsPolicy;
     sandboxed?: boolean;
-    config?: OpenClawConfig;
+    config?: OperatorConfig;
     /** Capabilities declared by the gateway client that originated this run. */
     clientCaps?: string[];
     pluginToolAllowlist?: string[];
@@ -437,7 +437,7 @@ export function createOpenClawTools(
     messageExplicitlyAllowed;
   const includeSubagentSpawnTool = !embedded || options?.allowGatewaySubagentBinding === true;
   const effectiveCallGateway = embedded ? createEmbeddedCallGateway() : callGateway;
-  const includeUpdatePlanTool = shouldIncludeUpdatePlanToolForOpenClawTools({
+  const includeUpdatePlanTool = shouldIncludeUpdatePlanToolForOperatorTools({
     config: resolvedConfig,
     agentSessionKey: options?.agentSessionKey,
     agentId: options?.requesterAgentIdOverride,
@@ -491,7 +491,7 @@ export function createOpenClawTools(
         })
       : []),
     ...(messageTool && includeMessageTool ? [messageTool] : []),
-    ...collectPresentOpenClawTools([heartbeatTool]),
+    ...collectPresentOperatorTools([heartbeatTool]),
     createTtsTool({
       agentChannel: options?.agentChannel,
       config: resolvedConfig,
@@ -499,12 +499,12 @@ export function createOpenClawTools(
       agentAccountId: options?.agentAccountId,
     }),
     ...(includeTranscriptsTool ? [createTranscriptsTool({ config: resolvedConfig })] : []),
-    ...collectPresentOpenClawTools([imageGenerateTool, musicGenerateTool, videoGenerateTool]),
+    ...collectPresentOperatorTools([imageGenerateTool, musicGenerateTool, videoGenerateTool]),
     ...(embedded
       ? []
       : [
           createGatewayTool(),
-          ...createOpenClawDelegateToolsForRun({ ...options, sessionAgentId }),
+          ...createOperatorDelegateToolsForRun({ ...options, sessionAgentId }),
         ]),
     createAgentsListTool({
       agentSessionKey: options?.agentSessionKey,
@@ -619,7 +619,7 @@ export function createOpenClawTools(
         threadId: options?.currentThreadTs ?? options?.agentThreadId,
       },
     }),
-    ...collectPresentOpenClawTools([webSearchTool, webFetchTool, imageTool, pdfTool]),
+    ...collectPresentOperatorTools([webSearchTool, webFetchTool, imageTool, pdfTool]),
   ];
   options?.recordToolPrepStage?.("operator-tools:core-tool-list");
   let allTools = tools;
@@ -630,7 +630,7 @@ export function createOpenClawTools(
     }
     allTools = [
       ...tools,
-      ...resolveOpenClawPluginToolsForOptions({
+      ...resolveOperatorPluginToolsForOptions({
         options,
         resolvedConfig,
         existingToolNames,

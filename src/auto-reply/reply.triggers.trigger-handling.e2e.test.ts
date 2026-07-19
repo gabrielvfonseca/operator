@@ -259,7 +259,7 @@ async function expectNextRunUsesTargetSession(
   );
 
   expect(params.runEmbeddedAgentMock).toHaveBeenCalledOnce();
-  const runParams = firstMockCallArg(params.runEmbeddedAgentMock, "embedded OpenClaw agent");
+  const runParams = firstMockCallArg(params.runEmbeddedAgentMock, "embedded Operator agent");
   for (const [key, value] of Object.entries(expected)) {
     expect(runParams[key]).toEqual(value);
   }
@@ -492,7 +492,7 @@ describe("trigger handling", () => {
         expect(runEmbeddedAgentMock, testCase.label).toHaveBeenCalledOnce();
         if (testCase.assertPrompt) {
           const prompt =
-            firstMockCallArg(runEmbeddedAgentMock, "embedded OpenClaw agent").prompt ?? "";
+            firstMockCallArg(runEmbeddedAgentMock, "embedded Operator agent").prompt ?? "";
           expect(prompt).toContain("Give me the status");
           expect(prompt).not.toContain("/thinking high");
           expect(prompt).not.toContain("/think high");
@@ -534,7 +534,7 @@ describe("trigger handling", () => {
         testCase.setup(cfg);
         await getReplyFromConfig(BASE_MESSAGE, { isHeartbeat: true }, cfg);
 
-        const call = firstMockCallArg(runEmbeddedAgentMock, "embedded OpenClaw agent");
+        const call = firstMockCallArg(runEmbeddedAgentMock, "embedded Operator agent");
         expect(call?.provider).toBe(testCase.expected.provider);
         expect(call?.model).toBe(testCase.expected.model);
       }
@@ -593,10 +593,10 @@ describe("trigger handling", () => {
       expect(getCompactEmbeddedAgentSessionMock()).toHaveBeenCalledOnce();
       const sessionFile = firstMockCallArg(
         getCompactEmbeddedAgentSessionMock(),
-        "embedded OpenClaw compaction",
+        "embedded Operator compaction",
       ).sessionFile;
       if (typeof sessionFile !== "string") {
-        throw new Error("expected embedded OpenClaw compaction sessionFile");
+        throw new Error("expected embedded Operator compaction sessionFile");
       }
       expect(parseSqliteSessionFileMarker(sessionFile)).toMatchObject({
         agentId: "worker1",

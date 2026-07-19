@@ -1,7 +1,7 @@
 /** Resolves plugin capability providers through manifest contracts, bundled compat, and runtime registries. */
 import { sortUniqueStrings } from "@operator/normalization-core/string-normalization";
 import { resolveVoiceModelRefs } from "../../packages/speech-core/voice-models.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { getLoadedRuntimePluginRegistry } from "./active-runtime-registry.js";
 import { loadBundledCapabilityRuntimeRegistry } from "./bundled-capability-runtime.js";
 import {
@@ -88,7 +88,7 @@ function shouldMergeManifestProvidersWhenActive(key: CapabilityProviderRegistryK
 
 function shouldSkipCapabilityResolution(params: {
   key: CapabilityProviderRegistryKey;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
 }): boolean {
   return (
     params.cfg?.plugins?.enabled === false &&
@@ -98,7 +98,7 @@ function shouldSkipCapabilityResolution(params: {
 
 /** Loads the manifest snapshot used to resolve capability-provider ownership. */
 export function loadCapabilityManifestSnapshot(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   workspaceDir?: string;
 }): Pick<PluginMetadataSnapshot, "index" | "plugins"> {
   return loadManifestContractSnapshot({
@@ -109,7 +109,7 @@ export function loadCapabilityManifestSnapshot(params: {
 
 function resolveCapabilityPluginIds(params: {
   key: CapabilityProviderRegistryKey;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   workspaceDir?: string;
   providerId?: string;
 }): CapabilityPluginResolution {
@@ -142,7 +142,7 @@ function resolveCapabilityPluginIds(params: {
 
 function resolveBundledCapabilityCompatPluginIds(params: {
   key: CapabilityProviderRegistryKey;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   workspaceDir?: string;
   providerId?: string;
 }): string[] {
@@ -151,7 +151,7 @@ function resolveBundledCapabilityCompatPluginIds(params: {
 
 function resolveCapabilityProviderConfig(params: {
   key: CapabilityProviderRegistryKey;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   workspaceDir?: string;
   pluginIds?: string[];
 }) {
@@ -168,7 +168,7 @@ function resolveCapabilityProviderConfig(params: {
 }
 
 function createCapabilityProviderFallbackLoadOptions(params: {
-  compatConfig?: OpenClawConfig;
+  compatConfig?: OperatorConfig;
   pluginIds: string[];
 }): PluginLoadOptions {
   return {
@@ -299,7 +299,7 @@ function addModelConfigProviderIds(target: Set<string>, value: unknown): void {
 }
 
 function collectRequestedSpeechProviderIds(
-  cfg: OpenClawConfig | undefined,
+  cfg: OperatorConfig | undefined,
   options: { includeVoiceModel: boolean },
 ): Set<string> {
   const requested = new Set<string>();
@@ -316,7 +316,7 @@ function collectRequestedSpeechProviderIds(
   return requested;
 }
 
-function collectRequestedVoiceModelProviderIds(cfg: OpenClawConfig | undefined): Set<string> {
+function collectRequestedVoiceModelProviderIds(cfg: OperatorConfig | undefined): Set<string> {
   const requested = new Set<string>();
   addModelConfigProviderIds(requested, cfg?.agents?.defaults?.voiceModel);
   return requested;
@@ -334,7 +334,7 @@ function addMediaModelProviders(target: Set<string>, value: unknown): void {
 }
 
 function collectRequestedMediaUnderstandingProviderIds(
-  cfg: OpenClawConfig | undefined,
+  cfg: OperatorConfig | undefined,
 ): Set<string> {
   const requested = new Set<string>();
   const media = cfg?.tools?.media;
@@ -347,7 +347,7 @@ function collectRequestedMediaUnderstandingProviderIds(
 
 function collectRequestedCapabilityProviderIds(params: {
   key: CapabilityProviderRegistryKey;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   includeVoiceModel?: boolean;
 }): Set<string> | undefined {
   switch (params.key) {
@@ -429,7 +429,7 @@ function filterLoadedProvidersForRequestedConfig<K extends CapabilityProviderReg
 
 function resolveRequestedCapabilityPluginIds(params: {
   key: CapabilityProviderRegistryKey;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   requested?: Set<string>;
 }): CapabilityPluginResolution | undefined {
   if (!params.requested || params.requested.size === 0) {
@@ -503,7 +503,7 @@ function loadCapabilityProviderEntries<K extends CapabilityProviderRegistryKey>(
 export function resolvePluginCapabilityProvider<K extends CapabilityProviderRegistryKey>(params: {
   key: K;
   providerId: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
 }): CapabilityProviderForKey<K> | undefined {
   if (shouldSkipCapabilityResolution(params)) {
     return undefined;
@@ -556,7 +556,7 @@ export function resolvePluginCapabilityProvider<K extends CapabilityProviderRegi
 
 function resolveCachedCapabilityProviderEntries<K extends CapabilityProviderRegistryKey>(params: {
   key: K;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   bundledCompatPluginIds: string[];
   loadOptions: PluginLoadOptions;
   requested?: Set<string>;
@@ -580,7 +580,7 @@ function resolveCachedCapabilityProviderEntries<K extends CapabilityProviderRegi
 
 export function resolvePluginCapabilityProviders<K extends CapabilityProviderRegistryKey>(params: {
   key: K;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
 }): CapabilityProviderForKey<K>[] {
   if (shouldSkipCapabilityResolution(params)) {
     return [];

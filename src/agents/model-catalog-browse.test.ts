@@ -3,7 +3,7 @@
  * Verifies filtered catalog output and pending load behavior.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { MAX_TIMER_TIMEOUT_MS } from "../shared/number-coercion.js";
 import {
   buildProviderConfigModelCatalogForBrowse,
@@ -21,7 +21,7 @@ const fullCatalog: ModelCatalogSnapshot = {
   routeVariants: [{ id: "gpt-full", name: "GPT Full", provider: "openai" }],
 };
 
-function config(params: { providerWildcard?: boolean } = {}): OpenClawConfig {
+function config(params: { providerWildcard?: boolean } = {}): OperatorConfig {
   return {
     agents: params.providerWildcard
       ? {
@@ -32,7 +32,7 @@ function config(params: { providerWildcard?: boolean } = {}): OpenClawConfig {
           },
         }
       : undefined,
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 describe("loadModelCatalogSnapshotForBrowse", () => {
@@ -132,7 +132,7 @@ describe("loadModelCatalogSnapshotForBrowse", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     expect(buildProviderConfigModelCatalogForBrowse({ cfg })).toMatchObject([
       { provider: "openai", id: "one", name: "One" },

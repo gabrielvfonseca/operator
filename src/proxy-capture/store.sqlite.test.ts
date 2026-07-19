@@ -4,7 +4,7 @@ import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanupTempDirs, makeTempDir } from "../../test/helpers/temp-dir.js";
 import { resolveSqliteDatabaseFilePaths } from "../infra/sqlite-files.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import {
   acquireDebugProxyCaptureStore,
   closeDebugProxyCaptureStore,
@@ -17,19 +17,19 @@ const cleanupDirs: string[] = [];
 
 afterEach(() => {
   closeDebugProxyCaptureStore();
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorStateDatabaseForTest();
   vi.restoreAllMocks();
   cleanupTempDirs(cleanupDirs);
 });
 
 function makeStore() {
   const root = makeTempDir(cleanupDirs, "openclaw-proxy-capture-");
-  return new DebugProxyCaptureStore({ env: { OPENCLAW_STATE_DIR: root } });
+  return new DebugProxyCaptureStore({ env: { OPERATOR_STATE_DIR: root } });
 }
 
 function makeStateEnv(prefix: string): NodeJS.ProcessEnv {
   const root = makeTempDir(cleanupDirs, prefix);
-  return { OPENCLAW_STATE_DIR: root };
+  return { OPERATOR_STATE_DIR: root };
 }
 
 function readMode(target: string): number {
@@ -68,7 +68,7 @@ describe("DebugProxyCaptureStore", () => {
 
     // Exit-time hook closes the shared handle out from under the cached store;
     // finalizeDebugProxyCapture then re-fetches and must not get a dead handle.
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     expect(stale.isClosed).toBe(true);
 
     const rebound = getDebugProxyCaptureStore(options);
@@ -189,7 +189,7 @@ describe("DebugProxyCaptureStore", () => {
     "stores capture blobs in the private shared state database",
     () => {
       const env = makeStateEnv("openclaw-proxy-capture-permissions-");
-      const root = env.OPENCLAW_STATE_DIR!;
+      const root = env.OPERATOR_STATE_DIR!;
       const store = new DebugProxyCaptureStore({ env });
       const blob = store.persistPayload(Buffer.from("authorization: Bearer secret"));
       const row = store.db

@@ -7,12 +7,12 @@ import path from "node:path";
 import JSZip from "jszip";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
 } from "../../state/openclaw-state-db.js";
 import {
-  createOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  type OperatorTestState,
 } from "../../test-utils/operator-test-state.js";
 import type { GatewayRequestHandlers } from "./types.js";
 
@@ -65,7 +65,7 @@ vi.mock("../../infra/replace-file.js", async (importOriginal) => {
 });
 
 let tempDirs: string[] = [];
-let testStates: OpenClawTestState[] = [];
+let testStates: OperatorTestState[] = [];
 
 type CallResult = {
   ok: boolean;
@@ -78,7 +78,7 @@ async function makeHarness(): Promise<{
   stateDir: string;
   workspaceDir: string;
 }> {
-  const testState = await createOpenClawTestState({
+  const testState = await createOperatorTestState({
     layout: "state-only",
     prefix: "openclaw-skill-upload-handler-",
   });
@@ -148,8 +148,8 @@ async function expectPathMissing(targetPath: string): Promise<void> {
 }
 
 function skillUploadExists(stateDir: string, uploadId: string): boolean {
-  const { db } = openOpenClawStateDatabase({
-    env: { ...process.env, OPENCLAW_STATE_DIR: stateDir },
+  const { db } = openOperatorStateDatabase({
+    env: { ...process.env, OPERATOR_STATE_DIR: stateDir },
   });
   return Boolean(
     db.prepare("SELECT 1 AS found FROM skill_uploads WHERE upload_id = ?").get(uploadId),
@@ -246,7 +246,7 @@ describe("skill upload gateway handlers", () => {
 
   afterEach(async () => {
     vi.restoreAllMocks();
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await Promise.all([
       ...tempDirs.splice(0).map((dir) => fs.rm(dir, { recursive: true, force: true })),
       ...testStates.splice(0).map((state) => state.cleanup()),
@@ -404,7 +404,7 @@ describe("skill upload gateway handlers", () => {
       archive: await makeSkillArchive({}),
       slug: "expired-skill",
     });
-    openOpenClawStateDatabase({ env: { ...process.env, OPENCLAW_STATE_DIR: stateDir } })
+    openOperatorStateDatabase({ env: { ...process.env, OPERATOR_STATE_DIR: stateDir } })
       .db.prepare("UPDATE skill_uploads SET expires_at = ? WHERE upload_id = ?")
       .run(Date.now() - 1, upload.uploadId);
 

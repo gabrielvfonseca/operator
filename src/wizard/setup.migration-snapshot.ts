@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 import { createReadStream } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { withFileLock } from "../infra/file-lock.js";
 import type { MigrationPlan } from "../plugins/types.js";
 import { resolveUserPath } from "../utils.js";
@@ -71,7 +71,7 @@ function hasMeaningfulWizardConfig(value: unknown): boolean {
   );
 }
 
-function hasMeaningfulConfig(config: OpenClawConfig): boolean {
+function hasMeaningfulConfig(config: OperatorConfig): boolean {
   return Object.entries(config as Record<string, unknown>).some(([key, value]) => {
     if (MEANINGFUL_CONFIG_IGNORED_KEYS.has(key)) {
       return false;
@@ -80,7 +80,7 @@ function hasMeaningfulConfig(config: OpenClawConfig): boolean {
   });
 }
 
-function buildSetupMigrationSnapshotConfig(config: OpenClawConfig): Record<string, unknown> {
+function buildSetupMigrationSnapshotConfig(config: OperatorConfig): Record<string, unknown> {
   const snapshot: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(config as Record<string, unknown>)) {
     if (MEANINGFUL_CONFIG_IGNORED_KEYS.has(key)) {
@@ -104,7 +104,7 @@ function buildSetupMigrationSnapshotConfig(config: OpenClawConfig): Record<strin
 }
 
 export async function inspectSetupMigrationFreshness(params: {
-  baseConfig: OpenClawConfig;
+  baseConfig: OperatorConfig;
   stateDir: string;
   workspaceDir: string;
 }): Promise<{ fresh: boolean; reasons: string[] }> {
@@ -127,9 +127,9 @@ export async function inspectSetupMigrationFreshness(params: {
 
 /** Preserves the acknowledgement accepted in-memory before the import lock is acquired. */
 export function preserveSetupMigrationSecurityAcknowledgement(
-  config: OpenClawConfig,
-  inMemoryConfig: OpenClawConfig,
-): OpenClawConfig {
+  config: OperatorConfig,
+  inMemoryConfig: OperatorConfig,
+): OperatorConfig {
   const securityAcknowledgedAt = inMemoryConfig.wizard?.securityAcknowledgedAt;
   if (!securityAcknowledgedAt || config.wizard?.securityAcknowledgedAt) {
     return config;
@@ -236,7 +236,7 @@ async function hashSourcePath(
 
 /** Hashes migration-owned target state without persisting raw paths or values. */
 export async function buildSetupMigrationTargetSnapshot(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   stateDir: string;
   workspaceDir: string;
 }): Promise<string> {
@@ -280,8 +280,8 @@ export async function buildSetupMigrationPlanSourceSnapshot(plan: MigrationPlan)
 
 /** Verifies planning inputs and builds the exact provider-side-effect retry boundary. */
 export async function prepareSetupMigrationAttemptBoundary(params: {
-  currentConfig: OpenClawConfig;
-  targetConfig: OpenClawConfig;
+  currentConfig: OperatorConfig;
+  targetConfig: OperatorConfig;
   stateDir: string;
   workspaceDir: string;
   plan: MigrationPlan;
@@ -315,7 +315,7 @@ export async function prepareSetupMigrationAttemptBoundary(params: {
   };
 }
 
-/** Serializes all onboarding migration writes that share one OpenClaw state target. */
+/** Serializes all onboarding migration writes that share one Operator state target. */
 export async function withSetupMigrationTargetLock<T>(
   stateDir: string,
   fn: () => Promise<T>,
@@ -338,7 +338,7 @@ export function assertFreshSetupMigrationTarget(freshness: {
   }
   throw new Error(
     [
-      "Migration import during onboarding requires a fresh OpenClaw setup.",
+      "Migration import during onboarding requires a fresh Operator setup.",
       "Create a fresh setup or reset config, credentials, sessions, and workspace before importing.",
       "Backup plus overwrite/merge imports are feature-gated for now.",
       "Existing setup:",

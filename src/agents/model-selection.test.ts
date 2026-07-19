@@ -1,6 +1,6 @@
 // Exercises core model selection, aliases, thinking defaults, and visibility policy.
 import { afterEach, describe, it, expect, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.js";
+import type { OperatorConfig } from "../config/types.js";
 import { resetLogger, setLoggerOverride } from "../logging/logger.js";
 import { createWarnLogCapture } from "../logging/test-helpers/warn-log-capture.js";
 import { resolveAgentHarnessPolicy } from "./harness/policy.js";
@@ -150,7 +150,7 @@ const EXPLICIT_ALLOWLIST_CONFIG = {
       },
     },
   },
-} as OpenClawConfig;
+} as OperatorConfig;
 
 const BUNDLED_ALLOWLIST_CATALOG = [
   { provider: "anthropic", id: "claude-sonnet-4-6", name: "Claude Sonnet 4.5" },
@@ -202,7 +202,7 @@ const CLAUDE_CLI_OPUS_48_CATALOG = [
   },
 ];
 
-function resolveAnthropicOpusThinking(cfg: OpenClawConfig) {
+function resolveAnthropicOpusThinking(cfg: OperatorConfig) {
   // Helper keeps thinking-default assertions focused on config differences
   // while using the same catalog metadata shape as production selection.
   return resolveThinkingDefault({
@@ -213,7 +213,7 @@ function resolveAnthropicOpusThinking(cfg: OpenClawConfig) {
   });
 }
 
-function resolveAnthropicOpus47Thinking(cfg: OpenClawConfig) {
+function resolveAnthropicOpus47Thinking(cfg: OperatorConfig) {
   return resolveThinkingDefault({
     cfg,
     provider: "anthropic",
@@ -222,7 +222,7 @@ function resolveAnthropicOpus47Thinking(cfg: OpenClawConfig) {
   });
 }
 
-function resolveAnthropicOpus48Thinking(cfg: OpenClawConfig) {
+function resolveAnthropicOpus48Thinking(cfg: OperatorConfig) {
   return resolveThinkingDefault({
     cfg,
     provider: "anthropic",
@@ -231,7 +231,7 @@ function resolveAnthropicOpus48Thinking(cfg: OpenClawConfig) {
   });
 }
 
-function resolveAnthropicVertexOpus48Thinking(cfg: OpenClawConfig) {
+function resolveAnthropicVertexOpus48Thinking(cfg: OperatorConfig) {
   return resolveThinkingDefault({
     cfg,
     provider: "anthropic-vertex",
@@ -240,7 +240,7 @@ function resolveAnthropicVertexOpus48Thinking(cfg: OpenClawConfig) {
   });
 }
 
-function resolveClaudeCliOpus48Thinking(cfg: OpenClawConfig) {
+function resolveClaudeCliOpus48Thinking(cfg: OperatorConfig) {
   return resolveThinkingDefault({
     cfg,
     provider: "claude-cli",
@@ -280,7 +280,7 @@ function createAgentFallbackConfig(params: {
           }
         : {}),
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 function createProviderWithModelsConfig(provider: string, models: Array<Record<string, unknown>>) {
@@ -293,12 +293,12 @@ function createProviderWithModelsConfig(provider: string, models: Array<Record<s
         },
       },
     },
-  } as Partial<OpenClawConfig>;
+  } as Partial<OperatorConfig>;
 }
 
-function resolveConfiguredRefForTest(cfg: Partial<OpenClawConfig>) {
+function resolveConfiguredRefForTest(cfg: Partial<OperatorConfig>) {
   return resolveConfiguredModelRef({
-    cfg: cfg as OpenClawConfig,
+    cfg: cfg as OperatorConfig,
     defaultProvider: "openai",
     defaultModel: "gpt-5.4",
   });
@@ -668,7 +668,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       expect(
         inferUniqueProviderFromConfiguredModels({
@@ -688,7 +688,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       expect(
         inferUniqueProviderFromConfiguredModels({
@@ -707,7 +707,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       expect(
         inferUniqueProviderFromConfiguredModels({
@@ -726,7 +726,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       expect(
         inferUniqueProviderFromConfiguredModels({
@@ -745,7 +745,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       expect(
         inferUniqueProviderFromConfiguredModels({
@@ -764,7 +764,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       expect(
         inferUniqueProviderFromConfiguredModels({
@@ -783,7 +783,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       expect(
         inferUniqueProviderFromConfiguredModels({
@@ -802,7 +802,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       expect(
         inferUniqueProviderFromConfiguredModels({
@@ -824,7 +824,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       expect(
         inferUniqueProviderFromConfiguredModels({
@@ -850,7 +850,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const model = buildConfiguredModelCatalog({ cfg }).find(
         (entry) => entry.provider === "google" && entry.id === "gemini-3.1-pro-preview",
@@ -874,7 +874,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const model = buildConfiguredModelCatalog({ cfg }).find(
         (entry) => entry.provider === "kilocode" && entry.id === "google/gemini-3.1-pro-preview",
@@ -902,7 +902,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const model = buildConfiguredModelCatalog({ cfg }).find(
         (entry) => entry.provider === "vllm" && entry.id === "Qwen/Qwen3-8B",
@@ -928,7 +928,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const model = buildConfiguredModelCatalog({ cfg }).find(
         (entry) => entry.provider === "amazon-bedrock" && entry.id === "company-fable",
@@ -953,7 +953,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const model = buildConfiguredModelCatalog({ cfg }).find(
         (entry) => entry.provider === "custom" && entry.id === "custom-reasoning",
@@ -965,7 +965,7 @@ describe("model-selection", () => {
 
   describe("buildModelAliasIndex", () => {
     it("should build alias index from config", () => {
-      const cfg: Partial<OpenClawConfig> = {
+      const cfg: Partial<OperatorConfig> = {
         agents: {
           defaults: {
             models: {
@@ -977,7 +977,7 @@ describe("model-selection", () => {
       };
 
       const index = buildModelAliasIndex({
-        cfg: cfg as OpenClawConfig,
+        cfg: cfg as OperatorConfig,
         defaultProvider: "anthropic",
       });
 
@@ -999,7 +999,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const index = buildModelAliasIndex({ cfg, defaultProvider: "openai" });
 
@@ -1018,7 +1018,7 @@ describe("model-selection", () => {
       const models = Object.fromEntries(
         Array.from({ length: 25 }, (_, index) => [`openai/gpt-5.5-aliasless-${index}`, {}]),
       );
-      const cfg: Partial<OpenClawConfig> = {
+      const cfg: Partial<OperatorConfig> = {
         agents: {
           defaults: {
             models: {
@@ -1030,7 +1030,7 @@ describe("model-selection", () => {
       };
 
       const index = buildModelAliasIndex({
-        cfg: cfg as OpenClawConfig,
+        cfg: cfg as OperatorConfig,
         defaultProvider: "openai",
       });
 
@@ -1065,7 +1065,7 @@ describe("model-selection", () => {
     });
 
     it("overlays configured provider metadata and alias onto matching catalog entries", () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           defaults: {
             model: { primary: "openai/gpt-test-z" },
@@ -1089,7 +1089,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const result = buildAllowedModelSet({
         cfg,
@@ -1111,7 +1111,7 @@ describe("model-selection", () => {
     });
 
     it("overlays configured provider metadata after manifest model normalization", () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         models: {
           providers: {
             nvidia: {
@@ -1127,7 +1127,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const result = buildAllowedModelSet({
         cfg,
@@ -1148,7 +1148,7 @@ describe("model-selection", () => {
     });
 
     it("keeps configured provider models visible when the catalog is otherwise allow-any", () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           defaults: {
             model: { primary: "ollama/existing" },
@@ -1170,7 +1170,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const result = buildAllowedModelSet({
         cfg,
@@ -1199,7 +1199,7 @@ describe("model-selection", () => {
     });
 
     it("allows every discovered catalog model for provider wildcard entries", () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           defaults: {
             models: {
@@ -1208,7 +1208,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const result = buildAllowedModelSet({
         cfg,
@@ -1237,7 +1237,7 @@ describe("model-selection", () => {
     });
 
     it("preserves provider wildcard intent when catalog rows are unavailable", () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           defaults: {
             models: {
@@ -1245,7 +1245,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const result = buildAllowedModelSet({
         cfg,
@@ -1261,7 +1261,7 @@ describe("model-selection", () => {
     });
 
     it("exposes wildcard allow and visible catalog behavior through one policy", () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           defaults: {
             models: {
@@ -1270,7 +1270,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const policy = createModelVisibilityPolicy({
         cfg,
@@ -1301,7 +1301,7 @@ describe("model-selection", () => {
     });
 
     it("keeps exact same-provider entries visible beside wildcard catalog rows", () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           defaults: {
             models: {
@@ -1310,7 +1310,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const policy = createModelVisibilityPolicy({
         cfg,
@@ -1331,7 +1331,7 @@ describe("model-selection", () => {
     });
 
     it("does not re-add a default outside mixed wildcard and exact filters", () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           defaults: {
             models: {
@@ -1340,7 +1340,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const result = buildAllowedModelSet({
         cfg,
@@ -1362,7 +1362,7 @@ describe("model-selection", () => {
     });
 
     it("unions exact model entries with provider wildcard entries", () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           defaults: {
             models: {
@@ -1371,7 +1371,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const result = buildAllowedModelSet({
         cfg,
@@ -1395,7 +1395,7 @@ describe("model-selection", () => {
     });
 
     it("matches allowlisted catalog entries with normalized provider and model ids", () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           defaults: {
             models: {
@@ -1403,7 +1403,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const result = buildAllowedModelSet({
         cfg,
@@ -1426,7 +1426,7 @@ describe("model-selection", () => {
     });
 
     it("applies configured provider metadata and alias to synthetic allowlist entries", () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           defaults: {
             model: { primary: "nvidia/moonshotai/kimi-k2.5" },
@@ -1451,7 +1451,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const result = buildAllowedModelSet({
         cfg,
@@ -1558,7 +1558,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const result = resolveAllowedModelRef({
         cfg,
@@ -1575,7 +1575,7 @@ describe("model-selection", () => {
     });
 
     it("strips trailing auth profile suffix before allowlist matching", () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           defaults: {
             models: {
@@ -1583,7 +1583,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const result = resolveAllowedModelRef({
         cfg,
@@ -1609,7 +1609,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       // When session default is openai, switching to a bare "kimi-k2.6"
       // should resolve to opencode-go/kimi-k2.6, not openai/kimi-k2.6
@@ -1637,7 +1637,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const result = resolveAllowedModelRef({
         cfg,
@@ -1691,7 +1691,7 @@ describe("model-selection", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         defaultProvider: "openai",
       });
 
@@ -1849,7 +1849,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -1863,7 +1863,7 @@ describe("model-selection", () => {
     it("should fall back to the configured default provider and warn if provider is missing for non-alias", async () => {
       const warnLogs = createWarnLogCapture("openclaw-model-selection-test");
       try {
-        const cfg: Partial<OpenClawConfig> = {
+        const cfg: Partial<OperatorConfig> = {
           agents: {
             defaults: {
               model: { primary: "claude-3-5-sonnet" },
@@ -1872,7 +1872,7 @@ describe("model-selection", () => {
         };
 
         const result = resolveConfiguredModelRef({
-          cfg: cfg as OpenClawConfig,
+          cfg: cfg as OperatorConfig,
           defaultProvider: "google",
           defaultModel: "gemini-pro",
         });
@@ -1891,7 +1891,7 @@ describe("model-selection", () => {
     it("sanitizes control characters in providerless-model warnings", async () => {
       const warnLogs = createWarnLogCapture("openclaw-model-selection-test");
       try {
-        const cfg: Partial<OpenClawConfig> = {
+        const cfg: Partial<OperatorConfig> = {
           agents: {
             defaults: {
               model: { primary: "\u001B[31mclaude-3-5-sonnet\nspoof" },
@@ -1900,7 +1900,7 @@ describe("model-selection", () => {
         };
 
         const result = resolveConfiguredModelRef({
-          cfg: cfg as OpenClawConfig,
+          cfg: cfg as OperatorConfig,
           defaultProvider: "google",
           defaultModel: "gemini-pro",
         });
@@ -1931,7 +1931,7 @@ describe("model-selection", () => {
               },
             },
           },
-        } as OpenClawConfig;
+        } as OperatorConfig;
 
         const result = resolveConfiguredModelRef({
           cfg,
@@ -1962,7 +1962,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -1995,7 +1995,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -2030,7 +2030,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -2054,7 +2054,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -2080,7 +2080,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -2103,7 +2103,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -2126,7 +2126,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -2149,7 +2149,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -2181,7 +2181,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -2213,7 +2213,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -2239,7 +2239,7 @@ describe("model-selection", () => {
             models,
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -2254,9 +2254,9 @@ describe("model-selection", () => {
     });
 
     it("should use default provider/model if config is empty", () => {
-      const cfg: Partial<OpenClawConfig> = {};
+      const cfg: Partial<OperatorConfig> = {};
       const result = resolveConfiguredModelRef({
-        cfg: cfg as OpenClawConfig,
+        cfg: cfg as OperatorConfig,
         defaultProvider: "openai",
         defaultModel: "gpt-4",
       });
@@ -2302,7 +2302,7 @@ describe("model-selection", () => {
             model: { primary: "google-vertex/gemini-3.1-flash-lite" },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -2333,7 +2333,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       expect(
         resolveConfiguredModelRef({
@@ -2360,7 +2360,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       expect(
         resolveConfiguredModelRef({
@@ -2379,7 +2379,7 @@ describe("model-selection", () => {
             model: { primary: "modelstudio/qwen3.5-plus" },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       expect(
         resolveConfiguredModelRef({
@@ -2399,7 +2399,7 @@ describe("model-selection", () => {
     it("should warn when specified model cannot be resolved and falls back to default", async () => {
       const warnLogs = createWarnLogCapture("openclaw-model-selection-test");
       try {
-        const cfg: Partial<OpenClawConfig> = {
+        const cfg: Partial<OperatorConfig> = {
           agents: {
             defaults: {
               model: { primary: "openai/" },
@@ -2408,7 +2408,7 @@ describe("model-selection", () => {
         };
 
         const result = resolveConfiguredModelRef({
-          cfg: cfg as OpenClawConfig,
+          cfg: cfg as OperatorConfig,
           defaultProvider: "openai",
           defaultModel: "gpt-5.4",
         });
@@ -2431,7 +2431,7 @@ describe("model-selection", () => {
             model: { primary: "openrouter:auto" },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -2452,7 +2452,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -2491,7 +2491,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -2514,7 +2514,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const catalog = [
         {
@@ -2567,7 +2567,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const catalog = [
         {
@@ -2607,7 +2607,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       expect(resolveAnthropicOpusThinking(cfg)).toBe("high");
     });
@@ -2623,7 +2623,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       expect(
         resolveThinkingDefault({
@@ -2645,7 +2645,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       expect(resolveAnthropicOpusThinking(cfg)).toBe("adaptive");
     });
@@ -2661,7 +2661,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       expect(
         resolveThinkingDefault({
@@ -2683,7 +2683,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       expect(
         resolveThinkingDefault({
@@ -2705,7 +2705,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       expect(
         resolveThinkingDefault({
@@ -2723,7 +2723,7 @@ describe("model-selection", () => {
             model: { primary: "anthropic/claude-opus-4-7" },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       expect(resolveAnthropicOpus47Thinking(cfg)).toBe("off");
     });
@@ -2735,7 +2735,7 @@ describe("model-selection", () => {
             model: { primary: "anthropic/claude-opus-4-8" },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       expect(resolveAnthropicOpus48Thinking(cfg)).toBe("off");
     });
@@ -2747,7 +2747,7 @@ describe("model-selection", () => {
             model: { primary: "anthropic-vertex/claude-opus-4-8" },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       expect(resolveAnthropicVertexOpus48Thinking(cfg)).toBe("off");
     });
@@ -2759,13 +2759,13 @@ describe("model-selection", () => {
             model: { primary: "claude-cli/claude-opus-4-8" },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       expect(resolveClaudeCliOpus48Thinking(cfg)).toBe("off");
     });
 
     it("uses provider policy thinking defaults when no explicit config overrides them", () => {
-      const cfg = {} as OpenClawConfig;
+      const cfg = {} as OperatorConfig;
 
       expect(resolveAnthropicOpusThinking(cfg)).toBe("adaptive");
       expect(
@@ -2786,7 +2786,7 @@ describe("model-selection", () => {
     });
 
     it("falls back to medium when no provider thinking policy is active", () => {
-      const cfg = {} as OpenClawConfig;
+      const cfg = {} as OperatorConfig;
 
       expect(
         resolveThinkingDefault({
@@ -2826,7 +2826,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       expect(
         resolveThinkingDefault({
@@ -2857,7 +2857,7 @@ describe("resolveDefaultModelForAgent", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(resolveDefaultModelForAgent({ cfg, agentId: "main" })).toEqual({
       provider: "openai",
@@ -2909,7 +2909,7 @@ describe("resolveSubagentConfiguredModelSelection", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(resolveSubagentConfiguredModelSelection({ cfg, agentId: "research" })).toBe(
       "openai/gpt-5.4",
@@ -2931,7 +2931,7 @@ describe("resolveSubagentConfiguredModelSelection", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(resolveSubagentConfiguredModelSelection({ cfg, agentId: "research" })).toBe(
       "google/gemini-2.5-pro",
@@ -2949,7 +2949,7 @@ describe("resolveSubagentConfiguredModelSelection", () => {
         },
         list: [{ id: "research", model: "anthropic/claude-opus-4-7" }],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const resolved = resolveSubagentConfiguredModelSelection({ cfg, agentId: "research" });
 
@@ -2979,7 +2979,7 @@ describe("resolveSubagentSpawnModelSelection", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(
       resolveSubagentSpawnModelSelection({ cfg, agentId: "main", modelOverride: "opus" }),
@@ -3002,7 +3002,7 @@ describe("resolveSubagentSpawnModelSelection", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(
       resolveSubagentSpawnModelSelection({
@@ -3024,7 +3024,7 @@ describe("resolveSubagentSpawnModelSelection", () => {
           subagents: { model: "gpt" },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(resolveSubagentSpawnModelSelection({ cfg, agentId: "main" })).toBe("openai/gpt-5.4");
   });
@@ -3036,7 +3036,7 @@ describe("resolveSubagentSpawnModelSelection", () => {
           model: { primary: "anthropic/claude-sonnet-4-6" },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(
       resolveSubagentSpawnModelSelection({
@@ -3054,7 +3054,7 @@ describe("resolveSubagentSpawnModelSelection", () => {
           model: { primary: "anthropic/claude-sonnet-4-6" },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(resolveSubagentSpawnModelSelection({ cfg, agentId: "main" })).toBe(
       "anthropic/claude-sonnet-4-6",

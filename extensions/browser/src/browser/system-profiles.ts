@@ -3,11 +3,11 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { getRuntimeConfig } from "../config/config.js";
-import { resolvePreferredOpenClawTmpDir } from "../infra/tmp-openclaw-dir.js";
-import { resolveOpenClawUserDataDir } from "./chrome.js";
-import { usesOpenClawMockKeychain } from "./chrome.profile-decoration.js";
+import { resolvePreferredOperatorTmpDir } from "../infra/tmp-openclaw-dir.js";
+import { resolveOperatorUserDataDir } from "./chrome.js";
+import { usesOperatorMockKeychain } from "./chrome.profile-decoration.js";
 import { BrowserProfileUnavailableError } from "./errors.js";
 import { getPwAiModule } from "./pw-ai-module.js";
 import { type BrowserRouteContext, runProfileContextOperation } from "./server-context.js";
@@ -47,7 +47,7 @@ type CreateProfile = (params: { name: string; driver?: "openclaw" }) => Promise<
 type SystemProfileDeps = {
   platform?: NodeJS.Platform;
   homeDir?: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   readSecret?: KeychainSecretReader;
 };
 
@@ -138,7 +138,7 @@ function snapshotCookieDatabase(source: string): {
   databasePath: string;
   cleanup: () => void;
 } {
-  const tmpRoot = resolvePreferredOpenClawTmpDir();
+  const tmpRoot = resolvePreferredOperatorTmpDir();
   fs.mkdirSync(tmpRoot, { recursive: true });
   const tempDir = fs.mkdtempSync(path.join(tmpRoot, "openclaw-system-cookies-"));
   const databasePath = path.join(tempDir, "Cookies");
@@ -158,7 +158,7 @@ function snapshotCookieDatabase(source: string): {
   };
 }
 
-/** Import decrypted system-profile cookies into one managed OpenClaw profile. */
+/** Import decrypted system-profile cookies into one managed Operator profile. */
 export async function importSystemProfileCookies(
   params: ImportSystemProfileParams,
   runtime: {
@@ -201,7 +201,7 @@ export async function importSystemProfileCookies(
     profileCtx.profile.attachOnly
   ) {
     throw new Error(
-      `profile "${into}" is not a locally managed OpenClaw profile; import into a fresh profile name`,
+      `profile "${into}" is not a locally managed Operator profile; import into a fresh profile name`,
     );
   }
   for (let attempt = 0; attempt < 2; attempt += 1) {
@@ -211,19 +211,19 @@ export async function importSystemProfileCookies(
         runtime.signal,
         async (signal, profileRuntime) => {
           await profileCtx.ensureBrowserAvailable({ headless: true, signal });
-          const userDataDir = resolveOpenClawUserDataDir(into);
+          const userDataDir = resolveOperatorUserDataDir(into);
           const runningUserDataDir = profileRuntime.running?.userDataDir;
           if (
             !runningUserDataDir ||
             path.resolve(runningUserDataDir) !== path.resolve(userDataDir)
           ) {
             throw new Error(
-              `managed profile "${into}" is not owned by this OpenClaw browser runtime; stop it and import into a fresh profile name`,
+              `managed profile "${into}" is not owned by this Operator browser runtime; stop it and import into a fresh profile name`,
             );
           }
-          if (!usesOpenClawMockKeychain(userDataDir)) {
+          if (!usesOperatorMockKeychain(userDataDir)) {
             throw new Error(
-              `managed profile "${into}" does not use the OpenClaw mock keychain; import into a fresh profile name`,
+              `managed profile "${into}" does not use the Operator mock keychain; import into a fresh profile name`,
             );
           }
 

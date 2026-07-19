@@ -9,14 +9,14 @@ import { encodePluginInstallDirName, validatePluginId } from "./install-paths.js
 import {
   defaultLogger,
   emitSuccessfulPluginInstallSecurityEvent,
-  ensureOpenClawExtensions,
+  ensureOperatorExtensions,
   installPluginDirectoryIntoExtensions,
   loadPluginInstallRuntime,
   readOptionalPackageManifest,
   resolvePreparedDirectoryInstallTarget,
   runInstallSourceScan,
   sourceFamilyForInstallPolicyKind,
-  validateOpenClawPackageInstallCompatibility,
+  validateOperatorPackageInstallCompatibility,
   type PreparedInstallTarget,
 } from "./install-shared.js";
 import {
@@ -128,7 +128,7 @@ async function installBundleFromSourceDir(
   const packageMetadata = packageManifestResult.manifest
     ? runtime.getPackageManifestMetadata(packageManifestResult.manifest)
     : undefined;
-  const compatibilityError = validateOpenClawPackageInstallCompatibility({
+  const compatibilityError = validateOperatorPackageInstallCompatibility({
     runtime,
     pluginId,
     packageMetadata,
@@ -223,7 +223,7 @@ async function detectNativePackageInstallSource(packageDir: string): Promise<boo
 
   try {
     const manifest = await runtime.readJsonFile<PackageManifest>(manifestPath);
-    return ensureOpenClawExtensions({ manifest }).ok;
+    return ensureOperatorExtensions({ manifest }).ok;
   } catch {
     return false;
   }

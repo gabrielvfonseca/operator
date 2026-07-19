@@ -2,13 +2,13 @@ import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
 } from "../../infra/kysely-sync.js";
-import type { OpenClawAgentDatabase } from "../../state/operator-agent-db.js";
+import type { OperatorAgentDatabase } from "../../state/operator-agent-db.js";
 import { normalizeSqliteNumber } from "./session-accessor.sqlite-normalize.js";
 import { getSessionKysely, type ResolvedTranscriptScope } from "./session-accessor.sqlite-scope.js";
 import { deleteSessionTranscriptIndexInTransaction } from "./session-transcript-index.js";
 
 export function ensureTranscriptSessionRoot(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   scope: ResolvedTranscriptScope,
   updatedAt: number,
 ): void {
@@ -39,7 +39,7 @@ export function ensureTranscriptSessionRoot(
 }
 
 export function writeSessionRoute(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   params: { sessionId: string; sessionKey: string; updatedAt: number },
 ): void {
   const db = getSessionKysely(database.db);
@@ -62,7 +62,7 @@ export function writeSessionRoute(
 }
 
 function writeTranscriptSessionRoute(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   params: { sessionId: string; sessionKey: string; updatedAt: number },
 ): void {
   const db = getSessionKysely(database.db);
@@ -81,7 +81,7 @@ function writeTranscriptSessionRoute(
   writeSessionRoute(database, params);
 }
 
-export function readNextTranscriptSeq(database: OpenClawAgentDatabase, sessionId: string): number {
+export function readNextTranscriptSeq(database: OperatorAgentDatabase, sessionId: string): number {
   const db = getSessionKysely(database.db);
   const row = executeSqliteQueryTakeFirstSync(
     database.db,
@@ -101,7 +101,7 @@ function normalizeTranscriptMutationAtMs(value: number): number | undefined {
 }
 
 export function readTranscriptMutationStateInTransaction(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   sessionId: string,
 ): { observedAt: number | null; updatedAt: number | null } {
   const db = getSessionKysely(database.db);
@@ -119,7 +119,7 @@ export function readTranscriptMutationStateInTransaction(
 }
 
 export function advanceTranscriptMutationAtInTransaction(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   sessionId: string,
   value: number,
   options: { strictly?: boolean } = {},
@@ -146,7 +146,7 @@ export function advanceTranscriptMutationAtInTransaction(
 }
 
 export function touchTranscriptMutationInTransaction(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   sessionId: string,
 ): void {
   const now = normalizeTranscriptMutationAtMs(Date.now());
@@ -156,7 +156,7 @@ export function touchTranscriptMutationInTransaction(
 }
 
 export function deleteSqliteTranscriptEventsInTransaction(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   sessionId: string,
 ): boolean {
   const db = getSessionKysely(database.db);

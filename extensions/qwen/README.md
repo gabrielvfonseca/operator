@@ -1,8 +1,8 @@
-# OpenClaw Qwen Cloud Provider
+# Operator Qwen Cloud Provider
 
-Official OpenClaw provider plugin for Qwen Cloud.
+Official Operator provider plugin for Qwen Cloud.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/qwen-provider

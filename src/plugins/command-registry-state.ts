@@ -5,10 +5,10 @@ import { normalizeAgentPromptSurfaceKind } from "./agent-prompt-surface-kind.js"
 import type {
   AgentPromptGuidance,
   AgentPromptSurfaceKind,
-  OpenClawPluginCommandDefinition,
+  OperatorPluginCommandDefinition,
 } from "./types.js";
 
-export type RegisteredPluginCommand = OpenClawPluginCommandDefinition & {
+export type RegisteredPluginCommand = OperatorPluginCommandDefinition & {
   pluginId: string;
   pluginName?: string;
   pluginRoot?: string;

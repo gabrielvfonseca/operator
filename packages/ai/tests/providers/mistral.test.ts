@@ -771,7 +771,7 @@ describe("Mistral provider", () => {
     };
     const systemMessage = payload.messages.find((message) => message.role === "system");
     expect(systemMessage?.content).toBe("Stable\nDynamic");
-    expect(JSON.stringify(payload)).not.toContain("OPENCLAW_CACHE_BOUNDARY");
+    expect(JSON.stringify(payload)).not.toContain("OPERATOR_CACHE_BOUNDARY");
   });
 
   it("serializes structured non-image blocks in tool results as JSON text", async () => {

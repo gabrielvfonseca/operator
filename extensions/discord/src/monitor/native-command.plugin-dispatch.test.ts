@@ -2,7 +2,7 @@
 import { ChannelType } from "discord-api-types/v10";
 import type { NativeCommandSpec } from "openclaw/plugin-sdk/command-auth-native";
 import { resolveDirectStatusReplyForSession } from "openclaw/plugin-sdk/command-status-runtime";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   clearPluginCommands,
   executePluginCommand,
@@ -38,14 +38,14 @@ const runtimeModuleMocks = vi.hoisted(() => ({
   getSessionEntry: vi.fn(),
 }));
 
-function createConfig(): OpenClawConfig {
+function createConfig(): OperatorConfig {
   return {
     channels: {
       discord: {
         dm: { enabled: true, policy: "open", allowFrom: ["*"] },
       },
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 function createConfiguredAcpBinding(params: {
@@ -111,7 +111,7 @@ function createConfiguredAcpCase(params: {
           agentId: params.agentId,
         }),
       ],
-    } as OpenClawConfig,
+    } as OperatorConfig,
     interaction: createInteraction({
       channelType: params.channelType,
       channelId: params.channelId,
@@ -121,7 +121,7 @@ function createConfiguredAcpCase(params: {
   };
 }
 
-async function createNativeCommand(cfg: OpenClawConfig, commandSpec: NativeCommandSpec) {
+async function createNativeCommand(cfg: OperatorConfig, commandSpec: NativeCommandSpec) {
   return createDiscordNativeCommand({
     command: commandSpec,
     cfg,
@@ -271,7 +271,7 @@ function expectNoFollowUpContent(interaction: MockCommandInteraction, content: s
   expect(matched).toBe(false);
 }
 
-async function createPluginCommand(params: { cfg: OpenClawConfig; name: string }) {
+async function createPluginCommand(params: { cfg: OperatorConfig; name: string }) {
   return createDiscordNativeCommand({
     command: {
       name: params.name,
@@ -324,7 +324,7 @@ function registerScopedPairPlugin(
 }
 
 async function expectPairCommandReply(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   commandName: string;
   interaction: MockCommandInteraction;
   expectedRegisteredName?: string;
@@ -357,7 +357,7 @@ async function expectPairCommandReply(params: {
   expect(params.interaction.reply).not.toHaveBeenCalled();
 }
 
-async function createStatusCommand(cfg: OpenClawConfig) {
+async function createStatusCommand(cfg: OperatorConfig) {
   return await createNativeCommand(cfg, {
     name: "status",
     description: "Status",
@@ -376,7 +376,7 @@ function createDispatchSpy() {
 }
 
 async function expectBoundStatusCommandDirectReply(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   interaction: MockCommandInteraction;
   expectedPattern: RegExp;
 }) {
@@ -464,12 +464,12 @@ describe("Discord native plugin command dispatch", () => {
     const sourceCfg = {
       ...createConfig(),
       session: { dmScope: "main" },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const runtimeCfg = {
       ...sourceCfg,
       session: { dmScope: "per-channel-peer" },
-    } as OpenClawConfig;
-    const resolveRouteState = vi.fn(async (params: { cfg: OpenClawConfig }) =>
+    } as OperatorConfig;
+    const resolveRouteState = vi.fn(async (params: { cfg: OperatorConfig }) =>
       createUnboundRouteState({
         sessionKey:
           params.cfg.session?.dmScope === "per-channel-peer"
@@ -625,7 +625,7 @@ describe("Discord native plugin command dispatch", () => {
           dm: { enabled: true, policy: "open", allowFrom: ["user:owner"] },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const interaction = createInteraction();
     interaction.options.getString.mockReturnValue("now");
     const handler = registerScopedPairPlugin();
@@ -650,7 +650,7 @@ describe("Discord native plugin command dispatch", () => {
           dm: { enabled: true, policy: "open", allowFrom: ["*"] },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const interaction = createInteraction({ userId: "123456789012345678" });
     interaction.options.getString.mockReturnValue("now");
     const handler = registerScopedPairPlugin();
@@ -701,7 +701,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const commandSpec: NativeCommandSpec = {
       name: "pair",
       description: "Pair",
@@ -763,7 +763,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const commandSpec: NativeCommandSpec = {
       name: "pair",
       description: "Pair",
@@ -823,7 +823,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const commandSpec: NativeCommandSpec = {
       name: "pair",
       description: "Pair",
@@ -880,7 +880,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const interaction = createInteraction({
       channelType: ChannelType.GroupDM,
       channelId: "blocked-group",
@@ -1068,7 +1068,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const commandSpec: NativeCommandSpec = {
       name: "cron_jobs",
       description: "List cron jobs",
@@ -1136,7 +1136,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const commandSpec: NativeCommandSpec = {
       name: "cron_jobs",
       description: "List cron jobs",
@@ -1241,7 +1241,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const interaction = createInteraction({
       channelType: ChannelType.GuildText,
       channelId,

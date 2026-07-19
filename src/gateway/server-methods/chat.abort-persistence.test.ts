@@ -13,8 +13,8 @@ import {
 } from "../../config/sessions/session-accessor.js";
 import { formatSqliteSessionFileMarker } from "../../config/sessions/sqlite-marker.js";
 import { onAgentEvent, resetAgentEventsForTest } from "../../infra/agent-events.js";
-import { closeOpenClawAgentDatabasesForTest } from "../../state/openclaw-agent-db.js";
-import { closeOpenClawStateDatabaseForTest } from "../../state/openclaw-state-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../state/openclaw-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../state/openclaw-state-db.js";
 import {
   createActiveRun,
   createChatAbortContext,
@@ -231,8 +231,8 @@ async function createMissingEntryFixture(prefix: string) {
 afterEach(async () => {
   vi.restoreAllMocks();
   resetAgentEventsForTest();
-  closeOpenClawAgentDatabasesForTest();
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorAgentDatabasesForTest();
+  closeOperatorStateDatabaseForTest();
   transcriptFixtures.clear();
   const dirs = [...fixtureDirs];
   fixtureDirs.clear();

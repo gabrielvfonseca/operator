@@ -5,7 +5,7 @@ import {
   clearMemoryPluginState,
   registerMemoryCorpusSupplement,
 } from "openclaw/plugin-sdk/memory-host-core";
-import type { AnyAgentTool, OpenClawPluginToolFactory } from "openclaw/plugin-sdk/plugin-entry";
+import type { AnyAgentTool, OperatorPluginToolFactory } from "openclaw/plugin-sdk/plugin-entry";
 import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
 import { describe, expect, it } from "vitest";
 import memoryCorePlugin from "../../memory-core/index.js";
@@ -34,8 +34,8 @@ function textContent(result: { content: Array<{ type: string; text?: string }> }
 
 function registerMemoryCoreToolFactories(
   appConfig: OperatorConfig,
-): Map<string, OpenClawPluginToolFactory> {
-  const factories = new Map<string, OpenClawPluginToolFactory>();
+): Map<string, OperatorPluginToolFactory> {
+  const factories = new Map<string, OperatorPluginToolFactory>();
   memoryCorePlugin.register(
     createTestPluginApi({
       id: "memory-core",
@@ -54,7 +54,7 @@ function registerMemoryCoreToolFactories(
 }
 
 function createMemoryCoreTool(params: {
-  factories: Map<string, OpenClawPluginToolFactory>;
+  factories: Map<string, OperatorPluginToolFactory>;
   name: "memory_search" | "memory_get";
   appConfig: OperatorConfig;
   agentId: string;

@@ -2,7 +2,7 @@
 import type { Command } from "commander";
 import type { PluginManifestRecord } from "../plugins/manifest-registry.js";
 import { loadPluginManifestRegistry } from "../plugins/manifest-registry.js";
-import type { OpenClawConfig } from "./config-contracts.js";
+import type { OperatorConfig } from "./config-contracts.js";
 import {
   loadBundledPluginPublicSurfaceModuleSync,
   tryLoadActivatedBundledPluginPublicSurfaceModuleSync,
@@ -94,7 +94,7 @@ type QaRunnerTransportAdapterDefinition = {
   }>;
   createGatewayConfig: (params: {
     baseUrl: string;
-  }) => Pick<OpenClawConfig, "channels" | "messages">;
+  }) => Pick<OperatorConfig, "channels" | "messages">;
   waitReady: (params: {
     gateway: {
       call: (
@@ -119,7 +119,7 @@ type QaRunnerTransportAdapterDefinition = {
   handleAction: (params: {
     action: "delete" | "edit" | "react" | "thread-create";
     args: Record<string, unknown>;
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     accountId?: string | null;
   }) => Promise<unknown>;
   createReportNotes: (params: {

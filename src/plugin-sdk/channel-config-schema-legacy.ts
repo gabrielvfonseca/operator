@@ -1,7 +1,7 @@
 /**
  * @deprecated Compatibility surface for bundled channel schemas.
  *
- * OpenClaw-maintained bundled plugins should import
+ * Operator-maintained bundled plugins should import
  * operator/plugin-sdk/bundled-channel-config-schema. Third-party plugins should
  * define plugin-local schemas and import primitives from
  * operator/plugin-sdk/channel-config-schema instead of depending on bundled

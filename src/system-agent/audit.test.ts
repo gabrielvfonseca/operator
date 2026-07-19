@@ -1,23 +1,23 @@
-// OpenClaw audit tests cover filesystem-backed rescue audit scenarios.
+// Operator audit tests cover filesystem-backed rescue audit scenarios.
 import fs from "node:fs/promises";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { withTempDir } from "../test-helpers/temp-dir.js";
 import { appendSystemAgentAuditEntry, resolveSystemAgentAuditPath } from "./audit.js";
 
-describe("OpenClaw audit log", () => {
-  const previousStateDir = process.env.OPENCLAW_STATE_DIR;
+describe("Operator audit log", () => {
+  const previousStateDir = process.env.OPERATOR_STATE_DIR;
 
   afterEach(() => {
     if (previousStateDir === undefined) {
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.OPERATOR_STATE_DIR;
     } else {
-      process.env.OPENCLAW_STATE_DIR = previousStateDir;
+      process.env.OPERATOR_STATE_DIR = previousStateDir;
     }
   });
 
-  it("writes jsonl records under the OpenClaw audit dir", async () => {
+  it("writes jsonl records under the Operator audit dir", async () => {
     await withTempDir({ prefix: "openclaw-audit-" }, async (tempDir) => {
-      vi.stubEnv("OPENCLAW_STATE_DIR", tempDir);
+      vi.stubEnv("OPERATOR_STATE_DIR", tempDir);
 
       const auditPath = await appendSystemAgentAuditEntry({
         operation: "config.setDefaultModel",

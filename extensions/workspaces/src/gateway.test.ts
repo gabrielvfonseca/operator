@@ -1,15 +1,15 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import { describe, expect, it, vi } from "vitest";
 import { workspaceBroadcast } from "./broadcast.js";
 import { registerWorkspaceGatewayMethods } from "./gateway.js";
 import { WorkspaceStore } from "./store.js";
 
 type RegisteredMethod = {
-  handler: Parameters<OpenClawPluginApi["registerGatewayMethod"]>[1];
-  opts: Parameters<OpenClawPluginApi["registerGatewayMethod"]>[2];
+  handler: Parameters<OperatorPluginApi["registerGatewayMethod"]>[1];
+  opts: Parameters<OperatorPluginApi["registerGatewayMethod"]>[2];
 };
 
 async function withTempStateDir<T>(run: (stateDir: string) => Promise<T>): Promise<T> {
@@ -29,7 +29,7 @@ function createApi() {
         methods.set(method, { handler, opts });
       },
     ),
-  } as unknown as OpenClawPluginApi;
+  } as unknown as OperatorPluginApi;
   return { api, methods };
 }
 

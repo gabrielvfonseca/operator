@@ -143,7 +143,7 @@ describe("createDiscordGatewayPlugin", () => {
     expect(resolveDiscordGatewayInfoTimeoutMs({ configuredTimeoutMs: 45_000 })).toBe(45_000);
     expect(
       resolveDiscordGatewayInfoTimeoutMs({
-        env: { OPENCLAW_DISCORD_GATEWAY_INFO_TIMEOUT_MS: "25000" },
+        env: { OPERATOR_DISCORD_GATEWAY_INFO_TIMEOUT_MS: "25000" },
       }),
     ).toBe(25_000);
     expect(resolveDiscordGatewayInfoTimeoutMs({ env: {} })).toBe(30_000);
@@ -223,7 +223,7 @@ describe("createDiscordGatewayPlugin", () => {
     );
   });
 
-  it("leaves autoInteractions disabled so OpenClaw owns interaction handoff", () => {
+  it("leaves autoInteractions disabled so Operator owns interaction handoff", () => {
     const plugin = createPlugin();
 
     expect(
@@ -249,7 +249,7 @@ describe("createDiscordGatewayPlugin", () => {
     });
   });
 
-  it("keeps OpenClaw metadata timeout out of gateway options", () => {
+  it("keeps Operator metadata timeout out of gateway options", () => {
     const plugin = createDiscordGatewayPlugin({
       discordConfig: { gatewayInfoTimeoutMs: 5_000 },
       runtime: {

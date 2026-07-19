@@ -77,7 +77,7 @@ describe("resolveConfigOpenCommand", () => {
 
 describe("config.openFile", () => {
   it("opens the configured file without shell interpolation", async () => {
-    await withEnvAsync({ OPENCLAW_CONFIG_PATH: "/tmp/config $(touch pwned).json" }, async () => {
+    await withEnvAsync({ OPERATOR_CONFIG_PATH: "/tmp/config $(touch pwned).json" }, async () => {
       runExecMock.mockImplementation(async (command: string, args: string[]) => {
         expect(["open", "xdg-open", "powershell.exe"]).toContain(command);
         expect(args).toEqual(["/tmp/config $(touch pwned).json"]);
@@ -98,7 +98,7 @@ describe("config.openFile", () => {
   });
 
   it("returns a detailed error and logs details when the opener fails", async () => {
-    await withEnvAsync({ OPENCLAW_CONFIG_PATH: "/tmp/config.json" }, async () => {
+    await withEnvAsync({ OPERATOR_CONFIG_PATH: "/tmp/config.json" }, async () => {
       mockRunExecError(Object.assign(new Error("spawn xdg-open ENOENT"), { code: "ENOENT" }));
 
       const { respond, logGateway } = await invokeConfigOpenFile();
@@ -120,7 +120,7 @@ describe("config.openFile", () => {
 
   it("does not split surrogate pairs when truncating the failed config path", async () => {
     const pathPrefix = `/tmp/${"a".repeat(111)}`;
-    await withEnvAsync({ OPENCLAW_CONFIG_PATH: `${pathPrefix}😀tail.json` }, async () => {
+    await withEnvAsync({ OPERATOR_CONFIG_PATH: `${pathPrefix}😀tail.json` }, async () => {
       mockRunExecError(new Error("open failed"));
 
       const { logGateway } = await invokeConfigOpenFile();
@@ -132,7 +132,7 @@ describe("config.openFile", () => {
   });
 
   it("returns actionable headless environment error when xdg-open reports no method available", async () => {
-    await withEnvAsync({ OPENCLAW_CONFIG_PATH: "/tmp/config.json" }, async () => {
+    await withEnvAsync({ OPERATOR_CONFIG_PATH: "/tmp/config.json" }, async () => {
       mockRunExecError(new Error("xdg-open: no method available for opening '/tmp/config.json'"));
 
       const { respond, logGateway } = await invokeConfigOpenFile();

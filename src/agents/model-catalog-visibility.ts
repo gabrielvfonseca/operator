@@ -4,7 +4,7 @@
  * auth-backed availability.
  */
 import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type {
   ModelAuthAvailabilityEvaluation,
   ModelAuthAvailabilityRef,
@@ -110,7 +110,7 @@ function dedupeLogicalModelCatalogEntries(
  * policy, configured models, and providers with usable auth.
  */
 type ResolveVisibleModelCatalogParams = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   catalog: ModelCatalogEntry[];
   defaultProvider: string;
   defaultModel?: string;
@@ -180,7 +180,7 @@ async function resolveVisibleModelCatalogWithPolicy(
 
 /** Resolves logical rows while keeping provider-owned physical route precedence. */
 export async function resolveLogicalVisibleModelCatalog(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   catalog: ModelCatalogEntry[];
   defaultProvider: string;
   defaultModel?: string;

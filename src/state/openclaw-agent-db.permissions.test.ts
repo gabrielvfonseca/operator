@@ -18,27 +18,27 @@ vi.mock("node:fs", async (importOriginal) => {
 });
 
 const {
-  closeOpenClawAgentDatabasesForTest,
-  openOpenClawAgentDatabase,
-  runOpenClawAgentWriteTransaction,
+  closeOperatorAgentDatabasesForTest,
+  openOperatorAgentDatabase,
+  runOperatorAgentWriteTransaction,
 } = await import("./openclaw-agent-db.js");
-const { closeOpenClawStateDatabaseForTest } = await import("./openclaw-state-db.js");
+const { closeOperatorStateDatabaseForTest } = await import("./openclaw-state-db.js");
 const tempDirs = useAutoCleanupTempDirTracker(afterEach);
 
 describe("agent database permission repair", () => {
   afterEach(() => {
     chmodFailHook.error = undefined;
-    closeOpenClawAgentDatabasesForTest();
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorAgentDatabasesForTest();
+    closeOperatorStateDatabaseForTest();
   });
 
   it("rolls back an outer write when pre-commit permission repair fails", () => {
     const stateDir = tempDirs.make("openclaw-agent-chmod-");
     const options = {
       agentId: "worker-1",
-      env: { OPENCLAW_STATE_DIR: stateDir },
+      env: { OPERATOR_STATE_DIR: stateDir },
     };
-    const database = openOpenClawAgentDatabase(options);
+    const database = openOperatorAgentDatabase(options);
     const before = database.db
       .prepare("SELECT updated_at FROM schema_meta WHERE meta_key = 'primary'")
       .get() as { updated_at: number };
@@ -48,7 +48,7 @@ describe("agent database permission repair", () => {
     chmodFailHook.error = permissionError;
 
     expect(() =>
-      runOpenClawAgentWriteTransaction((writeDatabase) => {
+      runOperatorAgentWriteTransaction((writeDatabase) => {
         writeDatabase.db
           .prepare("UPDATE schema_meta SET updated_at = ? WHERE meta_key = 'primary'")
           .run(before.updated_at + 1);
@@ -60,7 +60,7 @@ describe("agent database permission repair", () => {
       database.db.prepare("SELECT updated_at FROM schema_meta WHERE meta_key = 'primary'").get(),
     ).toEqual(before);
 
-    runOpenClawAgentWriteTransaction((writeDatabase) => {
+    runOperatorAgentWriteTransaction((writeDatabase) => {
       writeDatabase.db
         .prepare("UPDATE schema_meta SET updated_at = ? WHERE meta_key = 'primary'")
         .run(before.updated_at + 2);

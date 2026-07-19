@@ -11,11 +11,11 @@ import {
 import { normalizeSqliteNumber } from "../infra/sqlite-number.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { resolveAgentIdFromSessionKey } from "../routing/session-key.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
-  type OpenClawStateDatabaseOptions,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
+  type OperatorStateDatabaseOptions,
 } from "../state/operator-state-db.js";
 import type { InputProvenance } from "./input-provenance.js";
 import {
@@ -58,12 +58,12 @@ type SessionStateEventRecord = {
 };
 
 type SessionStateDatabase = Pick<
-  OpenClawStateKyselyDatabase,
+  OperatorStateKyselyDatabase,
   "session_state_events" | "session_state_heads" | "session_watch_cursors"
 >;
-type SessionStateEventsTable = OpenClawStateKyselyDatabase["session_state_events"];
+type SessionStateEventsTable = OperatorStateKyselyDatabase["session_state_events"];
 type SessionStateEventRow = Selectable<SessionStateEventsTable>;
-type SessionWatchCursorRow = Selectable<OpenClawStateKyselyDatabase["session_watch_cursors"]>;
+type SessionWatchCursorRow = Selectable<OperatorStateKyselyDatabase["session_watch_cursors"]>;
 
 const SESSION_STATE_RETENTION_MS = 30 * 24 * 60 * 60_000;
 const SESSION_STATE_MAX_ROWS = 50_000;
@@ -250,7 +250,7 @@ function clampSessionStateOccurredAt(value: number | undefined, now: number): nu
 
 export function recordSessionStateEvent(
   input: SessionStateEventInput,
-  options: OpenClawStateDatabaseOptions & { now?: number } = {},
+  options: OperatorStateDatabaseOptions & { now?: number } = {},
 ): SessionStateEventRecord | undefined {
   const now = options.now ?? Date.now();
   const occurredAt = clampSessionStateOccurredAt(input.occurredAt, now);
@@ -260,7 +260,7 @@ export function recordSessionStateEvent(
     lastSeenSequence: number;
   }> = [];
   try {
-    const event = runOpenClawStateWriteTransaction(({ db }) => {
+    const event = runOperatorStateWriteTransaction(({ db }) => {
       const insert = executeSqliteQuerySync(
         db,
         getSessionStateKysely(db)
@@ -370,10 +370,10 @@ export function recordSessionStateEvent(
 export function getSessionStateVersion(
   sessionKey: string,
   agentId: string,
-  options: OpenClawStateDatabaseOptions = {},
+  options: OperatorStateDatabaseOptions = {},
 ): number {
   try {
-    const { db } = openOpenClawStateDatabase(options);
+    const { db } = openOperatorStateDatabase(options);
     const row = executeSqliteQueryTakeFirstSync(
       db,
       getSessionStateKysely(db)
@@ -393,7 +393,7 @@ export function getSessionStateVersion(
 /** Batch durable signal-log heads for session-list enrichment, keyed agent → session key. */
 export function getSessionStateVersions(
   refs: ReadonlyArray<{ sessionKey: string; agentId: string }>,
-  options: OpenClawStateDatabaseOptions = {},
+  options: OperatorStateDatabaseOptions = {},
 ): Record<string, Record<string, number>> {
   const keys = [...new Set(refs.map((ref) => ref.sessionKey).filter(Boolean))];
   if (keys.length === 0) {
@@ -401,7 +401,7 @@ export function getSessionStateVersions(
   }
   const byAgent: Record<string, Record<string, number>> = {};
   try {
-    const { db } = openOpenClawStateDatabase(options);
+    const { db } = openOperatorStateDatabase(options);
     // Chunk IN() binds: sessions_list accepts arbitrary limits and SQLite caps
     // host parameters per statement.
     for (let offset = 0; offset < keys.length; offset += 500) {
@@ -430,7 +430,7 @@ export function listSessionStateEventsSince(
   agentId: string,
   afterSequence: number,
   limit = 200,
-  options: OpenClawStateDatabaseOptions = {},
+  options: OperatorStateDatabaseOptions = {},
 ): {
   events: SessionStateEventRecord[];
   truncated: boolean;
@@ -439,7 +439,7 @@ export function listSessionStateEventsSince(
 } {
   try {
     const boundedLimit = Math.max(1, Math.min(200, Math.floor(limit)));
-    const { db } = openOpenClawStateDatabase(options);
+    const { db } = openOperatorStateDatabase(options);
     const kysely = getSessionStateKysely(db);
     const rows = executeSqliteQuerySync(
       db,
@@ -492,7 +492,7 @@ export function listSessionStateEventsSince(
 export function acknowledgeSessionStateNotices(
   watcherSessionKey: string,
   targetSessionKeys: readonly string[],
-  options: OpenClawStateDatabaseOptions & { now?: number } = {},
+  options: OperatorStateDatabaseOptions & { now?: number } = {},
 ): void {
   const now = options.now ?? Date.now();
   const followups: Array<{
@@ -501,7 +501,7 @@ export function acknowledgeSessionStateNotices(
     lastSeenSequence: number;
   }> = [];
   try {
-    runOpenClawStateWriteTransaction(({ db }) => {
+    runOperatorStateWriteTransaction(({ db }) => {
       for (const targetSessionKey of new Set(targetSessionKeys)) {
         const row = readCursor(db, watcherSessionKey, targetSessionKey);
         if (!row) {
@@ -542,10 +542,10 @@ export function acknowledgeSessionStateNotices(
 /** Reset parent-side assumptions while retaining target history across session incarnations. */
 export function handleSessionStateSessionReset(
   sessionKey: string,
-  options: OpenClawStateDatabaseOptions = {},
+  options: OperatorStateDatabaseOptions = {},
 ): void {
   try {
-    runOpenClawStateWriteTransaction(({ db }) => {
+    runOperatorStateWriteTransaction(({ db }) => {
       // Cursor rows only exist for agent-qualified watcher keys (see
       // isNotifiableWatcherKey), so a bare-key reset cannot cross agents here.
       executeSqliteQuerySync(
@@ -564,11 +564,11 @@ export function handleSessionStateSessionReset(
 export function handleSessionStateSessionDeleted(
   sessionKey: string,
   agentId: string,
-  options: OpenClawStateDatabaseOptions = {},
+  options: OperatorStateDatabaseOptions = {},
 ): void {
   deleteSessionUpstreamLink(sessionKey, agentId, options);
   try {
-    runOpenClawStateWriteTransaction(({ db }) => {
+    runOperatorStateWriteTransaction(({ db }) => {
       const kysely = getSessionStateKysely(db);
       executeSqliteQuerySync(
         db,
@@ -611,11 +611,11 @@ function sessionExists(sessionKey: string, env?: NodeJS.ProcessEnv): boolean {
 
 /** Re-materialize pending notices after the in-memory queue is lost on restart. */
 export function sweepSessionStateWatchNotices(
-  options: OpenClawStateDatabaseOptions & { now?: number } = {},
+  options: OperatorStateDatabaseOptions & { now?: number } = {},
 ): void {
   const now = options.now ?? Date.now();
   try {
-    const { db } = openOpenClawStateDatabase(options);
+    const { db } = openOperatorStateDatabase(options);
     const pendingRows = executeSqliteQuerySync(
       db,
       getSessionStateKysely(db)
@@ -623,7 +623,7 @@ export function sweepSessionStateWatchNotices(
         .selectAll()
         .whereRef("material_sequence", ">", "last_seen_sequence"),
     ).rows.filter((row) => sessionExists(row.watcher_session_key, options.env));
-    runOpenClawStateWriteTransaction(({ db: writeDb }) => {
+    runOperatorStateWriteTransaction(({ db: writeDb }) => {
       for (const row of pendingRows) {
         executeSqliteQuerySync(
           writeDb,
@@ -650,11 +650,11 @@ export function sweepSessionStateWatchNotices(
 
 /** Enforce bounded retained history without regressing durable per-session heads. */
 function pruneSessionStateEvents(
-  options: OpenClawStateDatabaseOptions & { now?: number } = {},
+  options: OperatorStateDatabaseOptions & { now?: number } = {},
 ): void {
   const now = options.now ?? Date.now();
   try {
-    runOpenClawStateWriteTransaction(({ db }) => {
+    runOperatorStateWriteTransaction(({ db }) => {
       const kysely = getSessionStateKysely(db);
       // Stamp per-session pruned watermarks BEFORE deleting: historyGap can only be
       // answered from what pruning actually removed for that session, never inferred
@@ -773,10 +773,10 @@ export function recordSessionGoalChanged(params: {
 /** True when any seeded or explicitly registered watcher cursor targets this session. */
 function hasSessionStateWatchers(
   targetSessionKey: string,
-  options: OpenClawStateDatabaseOptions = {},
+  options: OperatorStateDatabaseOptions = {},
 ): boolean {
   try {
-    const { db } = openOpenClawStateDatabase(options);
+    const { db } = openOperatorStateDatabase(options);
     const row = executeSqliteQueryTakeFirstSync(
       db,
       getSessionStateKysely(db)
@@ -796,7 +796,7 @@ function hasSessionStateWatchers(
 /** Register an explicit watcher (e.g. a sessions_send coordinator) for a target session. */
 export function registerSessionStateWatch(
   params: { watcherSessionKey: string; targetSessionKey: string; targetAgentId?: string },
-  options: OpenClawStateDatabaseOptions & { now?: number } = {},
+  options: OperatorStateDatabaseOptions & { now?: number } = {},
 ): boolean {
   if (
     params.watcherSessionKey === params.targetSessionKey ||
@@ -807,7 +807,7 @@ export function registerSessionStateWatch(
   const now = options.now ?? Date.now();
   try {
     let registered = false;
-    runOpenClawStateWriteTransaction(({ db }) => {
+    runOperatorStateWriteTransaction(({ db }) => {
       // Re-watching must not clobber pending-notice cursor state.
       if (readCursor(db, params.watcherSessionKey, params.targetSessionKey)) {
         registered = true;
@@ -851,7 +851,7 @@ export function recordSessionHumanDirectMessage(
     payload?: Record<string, unknown>;
     occurredAt?: number;
   },
-  options: OpenClawStateDatabaseOptions & { now?: number } = {},
+  options: OperatorStateDatabaseOptions & { now?: number } = {},
 ): SessionStateEventRecord | undefined {
   const watcherSessionKey = params.entry?.spawnedBy ?? params.entry?.parentSessionKey;
   if (params.actor.actorType !== "human") {

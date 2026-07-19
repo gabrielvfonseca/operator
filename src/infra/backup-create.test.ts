@@ -9,13 +9,13 @@ import { describe, expect, it, vi } from "vitest";
 import { saveAuthProfileStore } from "../agents/auth-profiles/store.js";
 import { backupVerifyCommand } from "../commands/backup-verify.js";
 import type { RuntimeEnv } from "../runtime.js";
-import { closeOpenClawAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
 import {
-  closeOpenClawStateDatabase,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabase,
+  openOperatorStateDatabase,
 } from "../state/openclaw-state-db.js";
-import { resolveOpenClawStateSqlitePath } from "../state/openclaw-state-db.paths.js";
-import { withOpenClawTestState } from "../test-utils/operator-test-state.js";
+import { resolveOperatorStateSqlitePath } from "../state/openclaw-state-db.paths.js";
+import { withOperatorTestState } from "../test-utils/operator-test-state.js";
 import {
   createBackupArchive,
   formatBackupCreateSummary,
@@ -405,7 +405,7 @@ describe("writeTarArchiveWithRetry", () => {
 
 describe("createBackupVolatileStatCache", () => {
   it("lets tar filter a volatile file that disappears before lstat", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-volatile-stat-cache-",
@@ -451,7 +451,7 @@ describe("createBackupVolatileStatCache", () => {
 
 describe("createBackupArchive", () => {
   it("falls back when injected nowMs is outside Date range", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-invalid-now-",
@@ -481,7 +481,7 @@ describe("createBackupArchive", () => {
   });
 
   it("falls back to epoch when injected nowMs and Date.now are outside Date range", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-invalid-fallback-now-",
@@ -511,7 +511,7 @@ describe("createBackupArchive", () => {
   });
 
   it("skips current live volatile state files while preserving workspace locks", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "split",
         prefix: "openclaw-backup-volatile-",
@@ -577,7 +577,7 @@ describe("createBackupArchive", () => {
   });
 
   it("scrubs transient SQLite delivery queue rows from archive snapshots", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-sqlite-queue-",
@@ -588,7 +588,7 @@ describe("createBackupArchive", () => {
         const extractDir = state.path("extract");
         await fs.mkdir(outputDir, { recursive: true });
         await fs.mkdir(extractDir, { recursive: true });
-        const { db } = openOpenClawStateDatabase({ env: state.env });
+        const { db } = openOperatorStateDatabase({ env: state.env });
         db.prepare(
           `
             INSERT INTO delivery_queue_entries (
@@ -629,14 +629,14 @@ describe("createBackupArchive", () => {
             count: 1,
           });
         } finally {
-          closeOpenClawStateDatabase();
+          closeOperatorStateDatabase();
         }
       },
     );
   });
 
   it("rejects stale secondary indexes before creating a backup archive", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-unsafe-index-",
@@ -645,9 +645,9 @@ describe("createBackupArchive", () => {
       async (state) => {
         const outputDir = state.path("backups");
         await fs.mkdir(outputDir, { recursive: true });
-        openOpenClawStateDatabase({ env: state.env });
-        closeOpenClawStateDatabase();
-        createUnsafeIndexDrift(resolveOpenClawStateSqlitePath(state.env));
+        openOperatorStateDatabase({ env: state.env });
+        closeOperatorStateDatabase();
+        createUnsafeIndexDrift(resolveOperatorStateSqlitePath(state.env));
 
         await expect(
           createBackupArchive({
@@ -664,7 +664,7 @@ describe("createBackupArchive", () => {
   });
 
   it("rejects foreign-key violations before creating a backup archive", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-foreign-key-",
@@ -673,11 +673,11 @@ describe("createBackupArchive", () => {
       async (state) => {
         const outputDir = state.path("backups");
         await fs.mkdir(outputDir, { recursive: true });
-        openOpenClawStateDatabase({ env: state.env });
-        closeOpenClawStateDatabase();
+        openOperatorStateDatabase({ env: state.env });
+        closeOperatorStateDatabase();
 
         const sqlite = requireNodeSqlite();
-        const database = new sqlite.DatabaseSync(resolveOpenClawStateSqlitePath(state.env));
+        const database = new sqlite.DatabaseSync(resolveOperatorStateSqlitePath(state.env));
         try {
           database.exec("PRAGMA foreign_keys = OFF;");
           database
@@ -706,7 +706,7 @@ describe("createBackupArchive", () => {
   });
 
   it("snapshots per-agent SQLite auth stores without deleted secret pages", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-agent-sqlite-",
@@ -731,10 +731,10 @@ describe("createBackupArchive", () => {
           state.agentDir(),
           { syncExternalCli: false },
         );
-        closeOpenClawAgentDatabasesForTest();
+        closeOperatorAgentDatabasesForTest();
         const sqlite = requireNodeSqlite();
         const liveDbPath = path.join(state.agentDir(), "openclaw-agent.sqlite");
-        const deletedSecretMarker = "OPENCLAW_DELETED_SECRET_PAGE_MARKER";
+        const deletedSecretMarker = "OPERATOR_DELETED_SECRET_PAGE_MARKER";
         const deletedSecret = `${deletedSecretMarker}-${"x".repeat(16_384)}`;
         const liveDb = new sqlite.DatabaseSync(liveDbPath);
         try {
@@ -794,7 +794,7 @@ describe("createBackupArchive", () => {
   });
 
   it("snapshots and verifies a canonical agent database when the agent id is node_modules", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-agent-node-modules-",
@@ -864,7 +864,7 @@ describe("createBackupArchive", () => {
   });
 
   it("snapshots nested live SQLite databases with transaction continuity", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-nested-sqlite-",
@@ -963,7 +963,7 @@ describe("createBackupArchive", () => {
   });
 
   it("fails closed when a plugin SQLite schema cannot be compacted safely", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-plugin-capability-",
@@ -996,7 +996,7 @@ describe("createBackupArchive", () => {
   });
 
   it("scrubs deleted plugin SQLite bytes from archive snapshots", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-plugin-deleted-bytes-",
@@ -1047,7 +1047,7 @@ describe("createBackupArchive", () => {
   });
 
   it("fails instead of raw-copying malformed nested SQLite databases", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-malformed-sqlite-",
@@ -1074,7 +1074,7 @@ describe("createBackupArchive", () => {
   it.each(["late.sqlite", "late.sqlite-wal"])(
     "fails when SQLite-looking state appears after snapshot discovery: %s",
     async (lateName) => {
-      await withOpenClawTestState(
+      await withOperatorTestState(
         {
           layout: "state-only",
           prefix: "openclaw-backup-late-sqlite-",
@@ -1122,7 +1122,7 @@ describe("createBackupArchive", () => {
   );
 
   it("omits pre-existing orphan SQLite sidecars without failing backup", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-orphan-sqlite-sidecars-",
@@ -1156,7 +1156,7 @@ describe("createBackupArchive", () => {
   });
 
   it("omits transient memory reindex databases and sidecars", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-memory-reindex-lock-",
@@ -1209,7 +1209,7 @@ describe("createBackupArchive", () => {
       return;
     }
 
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-symlinked-sqlite-",
@@ -1246,7 +1246,7 @@ describe("createBackupArchive", () => {
       return;
     }
 
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-global-sqlite-symlink-",
@@ -1345,7 +1345,7 @@ describe("createBackupArchive", () => {
   });
 
   it("fails when the canonical global SQLite path is not a file", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-global-sqlite-directory-",
@@ -1370,7 +1370,7 @@ describe("createBackupArchive", () => {
   });
 
   it("omits installed plugin node_modules from the real archive while keeping plugin files", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-plugin-deps-",
@@ -1450,7 +1450,7 @@ describe("createBackupArchive", () => {
   });
 
   it("dereferences hardlinks instead of emitting restore-hostile Link entries", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-hardlink-",
@@ -1489,7 +1489,7 @@ describe("createBackupArchive", () => {
   });
 
   it("does not duplicate the root manifest when the system tempdir lives inside the state dir", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-tmp-overlap-",
@@ -1526,7 +1526,7 @@ describe("createBackupArchive", () => {
   });
 
   it("does not duplicate the root manifest when the system tempdir is the state dir itself", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-backup-tmp-equals-state-",
@@ -1601,7 +1601,7 @@ describe("createBackupArchive", () => {
             )
         : undefined;
       try {
-        await withOpenClawTestState(
+        await withOperatorTestState(
           {
             layout: "state-only",
             prefix: "openclaw-backup-mode-",

@@ -1,7 +1,7 @@
 {
   "name": "@operator/diffs-language-pack",
   "version": "2026.7.2",
-  "description": "OpenClaw diffs viewer syntax highlighting language pack",
+  "description": "Operator diffs viewer syntax highlighting language pack",
   "repository": {
     "type": "git",
     "url": "https://github.com/openclaw/openclaw"

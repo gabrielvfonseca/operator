@@ -1,5 +1,5 @@
 // Discord plugin module owns realtime voice activation policy.
-import type { DiscordAccountConfig, OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { DiscordAccountConfig, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   normalizeSupportedRealtimeVoiceActivationName,
   sortRealtimeVoiceActivationNames,
@@ -36,7 +36,7 @@ export function isDiscordRealtimeWakeNameRequired(
 
 export function resolveDiscordRealtimeWakeNames(params: {
   config: DiscordRealtimeVoiceConfig;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
 }): string[] {
   const rawConfigured = params.config?.wakeNames;
@@ -50,7 +50,7 @@ export function resolveDiscordRealtimeWakeNames(params: {
   const configuredAgentNames = [agent?.name, agent?.identity?.name]
     .map((name) => normalizeSupportedRealtimeVoiceActivationName(name))
     .filter((name): name is string => Boolean(name));
-  const productWakeNames = [normalizeSupportedRealtimeVoiceActivationName("OpenClaw")].filter(
+  const productWakeNames = [normalizeSupportedRealtimeVoiceActivationName("Operator")].filter(
     (name): name is string => Boolean(name),
   );
   const defaults =

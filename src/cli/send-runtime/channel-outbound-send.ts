@@ -3,12 +3,12 @@ import { normalizeOptionalString } from "@operator/normalization-core/string-coe
 import { loadChannelOutboundAdapter } from "../../channels/plugins/outbound/load.js";
 import type { ChannelId } from "../../channels/plugins/types.public.js";
 import { getRuntimeConfig } from "../../config/config.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { OutboundDeliveryFormattingOptions } from "../../infra/outbound/formatting.js";
 import type { OutboundMediaAccess } from "../../media/load-options.js";
 
 type RuntimeSendOpts = {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   blocks?: unknown;
   mediaUrl?: string;
   mediaAccess?: OutboundMediaAccess;

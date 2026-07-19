@@ -11,7 +11,7 @@ import { maybeWrapCommandWithShellSnapshot } from "./shell-snapshot.js";
 import { getBashShellConfig, getShellConfig } from "./shell-utils.js";
 
 const isWin = process.platform === "win32";
-const EXEC_SHELL_SNAPSHOT_ENV = "OPENCLAW_EXEC_SHELL_SNAPSHOT";
+const EXEC_SHELL_SNAPSHOT_ENV = "OPERATOR_EXEC_SHELL_SNAPSHOT";
 
 function resolveShellSnapshotDirForTest(
   env: Record<string, string | undefined> = process.env,
@@ -54,7 +54,7 @@ function setSnapshotStateForTest(
   options: { home?: string; zdotdir?: string } = {},
 ): void {
   // Snapshot tests mutate trusted process env, not per-command untrusted env.
-  setTestEnvValue("OPENCLAW_STATE_DIR", stateDir);
+  setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
   if (options.home) {
     setTestEnvValue("HOME", options.home);
   }
@@ -72,8 +72,8 @@ describe("exec shell snapshots", () => {
   beforeEach(() => {
     envSnapshot = captureEnv([
       "HOME",
-      "OPENCLAW_STATE_DIR",
-      "OPENCLAW_EXEC_SHELL_SNAPSHOT",
+      "OPERATOR_STATE_DIR",
+      "OPERATOR_EXEC_SHELL_SNAPSHOT",
       "PNPM_HOME",
       "ZDOTDIR",
     ]);
@@ -118,7 +118,7 @@ describe("exec shell snapshots", () => {
     });
 
     expect(wrapped).toBe(command);
-    expect(fs.existsSync(resolveShellSnapshotDirForTest({ OPENCLAW_STATE_DIR: stateDir }))).toBe(
+    expect(fs.existsSync(resolveShellSnapshotDirForTest({ OPERATOR_STATE_DIR: stateDir }))).toBe(
       false,
     );
   });
@@ -152,7 +152,7 @@ describe("exec shell snapshots", () => {
         ...process.env,
         HOME: untrustedHome,
         [EXEC_SHELL_SNAPSHOT_ENV]: "0",
-        OPENCLAW_STATE_DIR: untrustedStateDir,
+        OPERATOR_STATE_DIR: untrustedStateDir,
         SSH_CLIENT: "127.0.0.1 1000 22",
         SSH_CONNECTION: "127.0.0.1 1000 127.0.0.1 22",
       },
@@ -160,10 +160,10 @@ describe("exec shell snapshots", () => {
 
     expect(wrapped).not.toBe(command);
     expect(
-      fs.existsSync(resolveShellSnapshotDirForTest({ OPENCLAW_STATE_DIR: untrustedStateDir })),
+      fs.existsSync(resolveShellSnapshotDirForTest({ OPERATOR_STATE_DIR: untrustedStateDir })),
     ).toBe(false);
     expect(
-      fs.existsSync(resolveShellSnapshotDirForTest({ OPENCLAW_STATE_DIR: trustedStateDir })),
+      fs.existsSync(resolveShellSnapshotDirForTest({ OPERATOR_STATE_DIR: trustedStateDir })),
     ).toBe(true);
     expect(fs.existsSync(sideEffectPath)).toBe(false);
   });
@@ -184,7 +184,7 @@ describe("exec shell snapshots", () => {
       [
         "alias oc_snap_alias='printf alias-ok'",
         'alias oc_snap_secret="printf $OPENAI_API_KEY"',
-        '[ "$OPENCLAW_SHELL" = exec ] && alias oc_snap_exec_alias="printf marker-ok"',
+        '[ "$OPERATOR_SHELL" = exec ] && alias oc_snap_exec_alias="printf marker-ok"',
         "oc_snap_fn() { printf fn-ok; }",
         'export PATH="/snapshot/bin:$PATH"',
         'export OPENAI_API_KEY="snapshot-secret"',
@@ -195,8 +195,8 @@ describe("exec shell snapshots", () => {
     const env = {
       ...process.env,
       HOME: home,
-      OPENCLAW_STATE_DIR: stateDir,
-      OPENCLAW_SHELL: "exec",
+      OPERATOR_STATE_DIR: stateDir,
+      OPERATOR_SHELL: "exec",
       OPENAI_API_KEY: "inherited-secret",
     };
     const shellArgs = getPosixShellArgs(bash);
@@ -302,7 +302,7 @@ describe("exec shell snapshots", () => {
       const env = {
         ...process.env,
         HOME: home,
-        OPENCLAW_STATE_DIR: stateDir,
+        OPERATOR_STATE_DIR: stateDir,
         PNPM_HOME: pnpmHome,
       };
       const wrapped = await maybeWrapCommandWithShellSnapshot({
@@ -342,7 +342,7 @@ describe("exec shell snapshots", () => {
     const env = {
       ...process.env,
       HOME: home,
-      OPENCLAW_STATE_DIR: stateDir,
+      OPERATOR_STATE_DIR: stateDir,
       PLUGIN_SAFE: "plugin-ok",
     };
     const shellArgs = getPosixShellArgs(bash);
@@ -390,7 +390,7 @@ describe("exec shell snapshots", () => {
     const env = {
       ...process.env,
       HOME: home,
-      OPENCLAW_STATE_DIR: stateDir,
+      OPERATOR_STATE_DIR: stateDir,
       VIRTUAL_ENV: "/tmp/venv",
     };
     const shellArgs = getPosixShellArgs(bash);
@@ -496,7 +496,7 @@ describe("exec shell snapshots", () => {
     const env = {
       ...process.env,
       HOME: home,
-      OPENCLAW_STATE_DIR: stateDir,
+      OPERATOR_STATE_DIR: stateDir,
     };
     const shellArgs = getPosixShellArgs(bash);
     const wrap = async (): Promise<string> =>
@@ -520,7 +520,7 @@ describe("exec shell snapshots", () => {
     fs.writeFileSync(
       snapshotPath,
       [
-        "# OpenClaw exec shell snapshot. Generated; do not edit.",
+        "# Operator exec shell snapshot. Generated; do not edit.",
         "unalias -a 2>/dev/null || true",
         "oc_broken_fn() {",
         "        --!(no-*)dir*",
@@ -568,7 +568,7 @@ describe("exec shell snapshots", () => {
     const env = {
       ...process.env,
       HOME: home,
-      OPENCLAW_STATE_DIR: stateDir,
+      OPERATOR_STATE_DIR: stateDir,
     };
     const command = "echo fallback";
     const wrapped = await maybeWrapCommandWithShellSnapshot({
@@ -610,7 +610,7 @@ describe("exec shell snapshots", () => {
     const env = {
       ...process.env,
       HOME: home,
-      OPENCLAW_STATE_DIR: stateDir,
+      OPERATOR_STATE_DIR: stateDir,
     };
     const shellArgs = getPosixShellArgs(zsh);
     const wrapped = await maybeWrapCommandWithShellSnapshot({
@@ -655,7 +655,7 @@ describe("exec shell snapshots", () => {
     const env = {
       ...process.env,
       HOME: home,
-      OPENCLAW_STATE_DIR: stateDir,
+      OPERATOR_STATE_DIR: stateDir,
       ZDOTDIR: zdotdir,
     };
     const shellArgs = getPosixShellArgs(zsh);

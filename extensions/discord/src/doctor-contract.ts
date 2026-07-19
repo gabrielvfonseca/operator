@@ -3,7 +3,7 @@ import type {
   ChannelDoctorConfigMutation,
   ChannelDoctorLegacyConfigRule,
 } from "openclaw/plugin-sdk/channel-contract";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   isSupportedRealtimeVoiceActivationName,
   normalizeRealtimeVoiceActivationNamePrefix,
@@ -11,7 +11,7 @@ import {
 import { asObjectRecord, defineChannelAliasMigration } from "openclaw/plugin-sdk/runtime-doctor";
 
 const LEGACY_TTS_PROVIDER_KEYS = ["openai", "elevenlabs", "microsoft", "edge"] as const;
-type AgentBindingConfig = NonNullable<OpenClawConfig["bindings"]>[number];
+type AgentBindingConfig = NonNullable<OperatorConfig["bindings"]>[number];
 
 const streamingAliasMigration = defineChannelAliasMigration({
   channelId: "discord",
@@ -237,7 +237,7 @@ function normalizeUnsupportedRealtimeWakeNames(
     const nextRealtime = { ...realtime };
     delete nextRealtime.wakeNames;
     changes.push(
-      `Removed empty ${pathPrefix}.voice.realtime.wakeNames; unset wake names use the default agent/OpenClaw fallback.`,
+      `Removed empty ${pathPrefix}.voice.realtime.wakeNames; unset wake names use the default agent/Operator fallback.`,
     );
     return {
       entry: {
@@ -370,7 +370,7 @@ function isDiscordChannelAgentBinding(
 }
 
 function normalizeDiscordGuildChannelAgentIds(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   entry: Record<string, unknown>;
   pathPrefix: string;
   accountId?: string;
@@ -507,7 +507,7 @@ export const legacyConfigRules: ChannelDoctorLegacyConfigRule[] = [
 export function normalizeCompatibilityConfig({
   cfg,
 }: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
 }): ChannelDoctorConfigMutation {
   const changes: string[] = [];
   const bindingsToAdd: AgentBindingConfig[] = [];
@@ -610,7 +610,7 @@ export function normalizeCompatibilityConfig({
       channels: {
         ...aliases.config.channels,
         discord: updated,
-      } as OpenClawConfig["channels"],
+      } as OperatorConfig["channels"],
       bindings:
         bindingsToAdd.length > 0 ? [...(cfg.bindings ?? []), ...bindingsToAdd] : cfg.bindings,
     },

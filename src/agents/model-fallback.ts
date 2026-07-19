@@ -8,7 +8,7 @@ import {
   resolveAgentModelFallbackValues,
   resolveAgentModelPrimaryValue,
 } from "../config/model-input.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { isCronTerminalAbortReasonText } from "../cron/service/execution-errors.js";
 import { emitFailoverEvent } from "../infra/diagnostic-events.js";
 import { formatErrorMessage, toErrorObject } from "../infra/errors.js";
@@ -33,7 +33,7 @@ import { isActiveUnusableWindow } from "./auth-profiles/usage-state.js";
 import { DEFAULT_MODEL, DEFAULT_PROVIDER } from "./defaults.js";
 import { isLikelyContextOverflowError } from "./embedded-agent-helpers/errors.js";
 import type { FailoverReason } from "./embedded-agent-helpers/types.js";
-import { isOpenClawAbortableWrapper } from "./embedded-agent-runner/run/abortable.js";
+import { isOperatorAbortableWrapper } from "./embedded-agent-runner/run/abortable.js";
 import {
   FailoverError,
   buildFailoverRemediationHint,
@@ -99,7 +99,7 @@ function isTranscriptNotContinuableError(err: unknown): boolean {
 }
 
 function hasExactConfiguredProviderModel(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   provider: string;
   model: string;
 }): boolean {
@@ -117,7 +117,7 @@ function hasExactConfiguredProviderModel(params: {
   return false;
 }
 
-function hasConfiguredProvider(params: { cfg?: OpenClawConfig; provider: string }): boolean {
+function hasConfiguredProvider(params: { cfg?: OperatorConfig; provider: string }): boolean {
   const normalizedProvider = normalizeProviderId(params.provider);
   if (!params.cfg || !normalizedProvider) {
     return false;
@@ -128,7 +128,7 @@ function hasConfiguredProvider(params: { cfg?: OpenClawConfig; provider: string 
 }
 
 function allowPluginModelNormalizationForRef(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   provider: string;
   model: string;
 }): boolean {
@@ -184,7 +184,7 @@ type ModelFallbackRunOptions = {
 };
 
 type ModelFallbackRuntimeContext = {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   agentId?: string;
   sessionKey?: string;
   resolveAgentHarnessRuntimeOverride?: (provider: string, model: string) => string | undefined;
@@ -265,7 +265,7 @@ function isTerminalAbortFromError(err: unknown): boolean {
       return true;
     }
   }
-  if (!isOpenClawAbortableWrapper(err)) {
+  if (!isOperatorAbortableWrapper(err)) {
     return false;
   }
   return causeCandidates.some(isTerminalAbortCandidate);
@@ -556,7 +556,7 @@ function sameModelCandidate(a: ModelCandidate, b: ModelCandidate): boolean {
   return a.provider === b.provider && a.model === b.model;
 }
 
-function isCliAgentRuntime(runtime: string | undefined, cfg: OpenClawConfig | undefined): boolean {
+function isCliAgentRuntime(runtime: string | undefined, cfg: OperatorConfig | undefined): boolean {
   const normalized = normalizeOptionalString(runtime);
   if (!normalized) {
     return false;
@@ -612,7 +612,7 @@ async function resolveModelFallbackCandidateHarnessAuthPrecheck(
     return result(true);
   }
   if (isCliAgentRuntime(agentRuntime, params.cfg)) {
-    // CLI runtimes own their transport/auth, so stale OpenClaw provider
+    // CLI runtimes own their transport/auth, so stale Operator provider
     // profile state must not block the candidate before the CLI starts.
     return result(true);
   }
@@ -735,7 +735,7 @@ function throwFallbackFailureSummary(params: {
   formatAttempt: (attempt: FallbackAttempt) => string;
   soonestCooldownExpiry?: number | null;
   attribution?: FailoverAttribution;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   agentDir?: string;
 }): never {
   if (params.attempts.length <= 1 && params.lastError) {
@@ -773,7 +773,7 @@ function resolveFallbackSoonestCooldownExpiry(params: {
   authRuntime: ModelFallbackAuthRuntime | null;
   authStore: AuthProfileStore | null;
   agentDir?: string;
-  cfg: OpenClawConfig | undefined;
+  cfg: OperatorConfig | undefined;
   candidates: ModelCandidate[];
 }): number | null {
   if (!params.authRuntime || !params.authStore) {
@@ -813,7 +813,7 @@ function resolveFallbackSoonestCooldownExpiry(params: {
 
 export function resolveImageFallbackCandidates(
   params: {
-    cfg: OpenClawConfig | undefined;
+    cfg: OperatorConfig | undefined;
     defaultProvider: string;
     modelOverride?: string;
   } & ModelManifestNormalizationContext,
@@ -869,7 +869,7 @@ export function resolveImageFallbackCandidates(
   return candidates;
 }
 
-export function resolveImageFallbackDefaultProvider(cfg: OpenClawConfig | undefined): string {
+export function resolveImageFallbackDefaultProvider(cfg: OperatorConfig | undefined): string {
   const configuredPrimary = resolveAgentModelPrimaryValue(cfg?.agents?.defaults?.imageModel);
   if (configuredPrimary?.trim()) {
     const aliasIndex = buildModelAliasIndex({
@@ -891,7 +891,7 @@ export function resolveImageFallbackDefaultProvider(cfg: OpenClawConfig | undefi
 
 export function resolveModelCandidateChain(
   params: {
-    cfg: OpenClawConfig | undefined;
+    cfg: OperatorConfig | undefined;
     provider: string;
     model: string;
     /** Optional explicit fallbacks list; when provided (even empty), replaces agents.defaults.model.fallbacks. */
@@ -928,7 +928,7 @@ function cloneModelCandidate(candidate: ModelCandidate): ModelCandidate {
 
 function resolveFallbackCandidateCacheKey(
   params: {
-    cfg: OpenClawConfig | undefined;
+    cfg: OperatorConfig | undefined;
     provider: string;
     model: string;
     fallbacksOverride?: string[];
@@ -982,7 +982,7 @@ function resolveFallbackCandidateCacheKey(
   });
 }
 
-function resolveFallbackCandidateModelProviderCacheParts(cfg: OpenClawConfig | undefined): unknown {
+function resolveFallbackCandidateModelProviderCacheParts(cfg: OperatorConfig | undefined): unknown {
   const providers = cfg?.models?.providers;
   if (!providers) {
     return undefined;
@@ -1000,7 +1000,7 @@ function resolveFallbackCandidateModelProviderCacheParts(cfg: OpenClawConfig | u
 
 function resolveFallbackCandidatesUncached(
   params: {
-    cfg: OpenClawConfig | undefined;
+    cfg: OperatorConfig | undefined;
     provider: string;
     model: string;
     /** Optional explicit fallbacks list; when provided (even empty), replaces agents.defaults.model.fallbacks. */
@@ -1340,7 +1340,7 @@ function resolveCooldownDecision(params: {
 }
 
 type RunWithModelFallbackParams<T> = {
-  cfg: OpenClawConfig | undefined;
+  cfg: OperatorConfig | undefined;
   provider: string;
   model: string;
   runId?: string;
@@ -2026,7 +2026,7 @@ async function runWithModelFallbackInternal<T>(
 }
 
 export async function runWithImageModelFallback<T>(params: {
-  cfg: OpenClawConfig | undefined;
+  cfg: OperatorConfig | undefined;
   modelOverride?: string;
   run: (provider: string, model: string) => Promise<T>;
   onError?: ModelFallbackErrorHandler;

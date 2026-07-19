@@ -4,8 +4,8 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
 } from "../state/openclaw-state-db.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import {
@@ -62,7 +62,7 @@ describe("subagent registry sqlite store", () => {
   });
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     if (tempStateDir) {
       await fs.rm(tempStateDir, { recursive: true, force: true, maxRetries: 5, retryDelay: 50 });
       tempStateDir = null;
@@ -73,7 +73,7 @@ describe("subagent registry sqlite store", () => {
     if (!tempStateDir) {
       throw new Error("expected temp state dir");
     }
-    return await withEnvAsync({ OPENCLAW_STATE_DIR: tempStateDir }, fn);
+    return await withEnvAsync({ OPERATOR_STATE_DIR: tempStateDir }, fn);
   }
 
   it("persists subagent runs in the shared sqlite state database", async () => {
@@ -141,7 +141,7 @@ describe("subagent registry sqlite store", () => {
       expect(restored).toEqual(new Map());
       await expect(fs.stat(registryPath)).resolves.toBeTruthy();
       expect(
-        openOpenClawStateDatabase().db.prepare("SELECT COUNT(*) AS count FROM subagent_runs").get(),
+        openOperatorStateDatabase().db.prepare("SELECT COUNT(*) AS count FROM subagent_runs").get(),
       ).toEqual({ count: 0 });
     });
   });

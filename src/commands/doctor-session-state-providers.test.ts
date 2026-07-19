@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { SessionEntry } from "../config/sessions.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { runPluginSessionStateDoctorRepairs } from "./doctor-session-state-providers.js";
 
 const codexOwner = {
@@ -36,7 +36,7 @@ vi.mock("../plugins/doctor-contract-registry.js", async () => {
 });
 
 async function runDoctor(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   store: Record<string, SessionEntry>;
   confirm?: boolean;
   env?: NodeJS.ProcessEnv;
@@ -131,7 +131,7 @@ describe("doctor session state provider routes", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await runDoctor({ cfg, store });
 
@@ -161,7 +161,7 @@ describe("doctor session state provider routes", () => {
     };
     const cfg = {
       agents: { defaults: { model: { primary: "github-copilot/gpt-5-mini" } } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await runDoctor({ cfg, store });
     const repaired = result.store[sessionKey] as unknown as Record<string, unknown>;
@@ -193,7 +193,7 @@ describe("doctor session state provider routes", () => {
     };
     const cfg = {
       agents: { defaults: { model: { primary: "github-copilot/gpt-5-mini" } } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await runDoctor({ cfg, store });
 
@@ -223,7 +223,7 @@ describe("doctor session state provider routes", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await runDoctor({ cfg, store });
     const repaired = result.store[sessionKey] as unknown as Record<string, unknown>;
@@ -268,7 +268,7 @@ describe("doctor session state provider routes", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await runDoctor({ cfg, store });
 

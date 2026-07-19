@@ -1,5 +1,5 @@
 // Telegram account helpers resolve Telegram plugin account config and display metadata.
-import type { OpenClawConfig } from "./config-types.js";
+import type { OperatorConfig } from "./config-types.js";
 import { loadBundledPluginPublicSurfaceModuleSync } from "./facade-loader.js";
 
 /**
@@ -7,7 +7,7 @@ import { loadBundledPluginPublicSurfaceModuleSync } from "./facade-loader.js";
  * New channel plugins should prefer injected runtime helpers and generic SDK subpaths.
  */
 export type TelegramAccountConfig = NonNullable<
-  NonNullable<OpenClawConfig["channels"]>["telegram"]
+  NonNullable<OperatorConfig["channels"]>["telegram"]
 >;
 
 /**
@@ -25,7 +25,7 @@ export type ResolvedTelegramAccount = {
 
 type TelegramAccountFacadeModule = {
   resolveTelegramAccount: (params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     accountId?: string | null;
   }) => ResolvedTelegramAccount;
 };
@@ -42,7 +42,7 @@ function loadTelegramAccountFacadeModule(): TelegramAccountFacadeModule {
  * New channel plugins should prefer injected runtime helpers and generic SDK subpaths.
  */
 export function resolveTelegramAccount(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
 }): ResolvedTelegramAccount {
   return loadTelegramAccountFacadeModule().resolveTelegramAccount(params);

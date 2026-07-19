@@ -1,6 +1,6 @@
 // Bundled health checks define built-in doctor checks for runtime readiness.
 import { asOptionalObjectRecord as readRecord } from "@operator/normalization-core/record-coerce";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizePluginsConfig } from "../plugins/config-state.js";
 import { passesManifestOwnerBasePolicy } from "../plugins/manifest-owner-policy.js";
 import { loadBundledPluginPublicArtifactModuleSync } from "../plugins/public-surface-loader.js";
@@ -12,7 +12,7 @@ type BundledHealthApi = {
 };
 
 /** Registers bundled health checks that are explicitly enabled by config and owner policy. */
-export function registerBundledHealthChecks(params: { cfg: OpenClawConfig; cwd?: string }): void {
+export function registerBundledHealthChecks(params: { cfg: OperatorConfig; cwd?: string }): void {
   if (!shouldRegisterPolicyHealth(params)) {
     return;
   }
@@ -22,7 +22,7 @@ export function registerBundledHealthChecks(params: { cfg: OpenClawConfig; cwd?:
   }).registerPolicyDoctorChecks?.({ registerHealthCheck });
 }
 
-function shouldRegisterPolicyHealth(params: { cfg: OpenClawConfig; cwd?: string }): boolean {
+function shouldRegisterPolicyHealth(params: { cfg: OperatorConfig; cwd?: string }): boolean {
   const entry = params.cfg.plugins?.entries?.policy;
   const config = readRecord(entry?.config) ?? {};
   if (entry === undefined || entry.enabled === false || config.enabled === false) {

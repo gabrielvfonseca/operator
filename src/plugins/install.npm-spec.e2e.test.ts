@@ -7,7 +7,7 @@ import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
 import { afterEach, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { resolvePluginNpmProjectDir } from "./install-paths.js";
 import { installPluginFromNpmSpec, PLUGIN_INSTALL_ERROR_CODE } from "./install.js";
 
@@ -53,7 +53,7 @@ async function makeTempDir(label: string): Promise<string> {
   return dir;
 }
 
-function configWithInstalledPackageTreeBlockPolicy(): OpenClawConfig {
+function configWithInstalledPackageTreeBlockPolicy(): OperatorConfig {
   return {
     security: {
       installPolicy: {
@@ -351,12 +351,12 @@ describe("installPluginFromNpmSpec e2e", () => {
     const rootDir = await makeTempDir("npm-plugin-compatible-version-e2e");
     const npmRoot = path.join(rootDir, "managed-npm");
     const packageName = `compatible-plugin-${crypto.randomUUID().replace(/-/g, "").slice(0, 12)}`;
-    const compatibleOpenClaw = {
+    const compatibleOperator = {
       extensions: ["./dist/index.js"],
       install: { minHostVersion: ">=2026.4.25" },
       compat: { pluginApi: ">=2026.5.10-beta.1" },
     };
-    const incompatibleOpenClaw = {
+    const incompatibleOperator = {
       extensions: ["./dist/index.js"],
       install: { minHostVersion: ">=2026.4.25" },
       compat: { pluginApi: ">=2026.5.27" },
@@ -367,21 +367,21 @@ describe("installPluginFromNpmSpec e2e", () => {
         pluginId: packageName,
         version: "2026.5.26",
         rootDir,
-        openclaw: compatibleOpenClaw,
+        openclaw: compatibleOperator,
       }),
       await packPlugin({
         packageName,
         pluginId: packageName,
         version: "2026.5.27",
         rootDir,
-        openclaw: incompatibleOpenClaw,
+        openclaw: incompatibleOperator,
       }),
     ];
     const registry = await startStaticRegistry([{ packageName, latest: "2026.5.27", versions }]);
     process.env.NPM_CONFIG_REGISTRY = registry;
     process.env.npm_config_registry = registry;
-    const previousHostVersion = process.env.OPENCLAW_COMPATIBILITY_HOST_VERSION;
-    process.env.OPENCLAW_COMPATIBILITY_HOST_VERSION = "2026.5.10-beta.1";
+    const previousHostVersion = process.env.OPERATOR_COMPATIBILITY_HOST_VERSION;
+    process.env.OPERATOR_COMPATIBILITY_HOST_VERSION = "2026.5.10-beta.1";
     const warnings: string[] = [];
 
     try {
@@ -408,9 +408,9 @@ describe("installPluginFromNpmSpec e2e", () => {
       expect(installedPackageJson.version).toBe("2026.5.26");
     } finally {
       if (previousHostVersion === undefined) {
-        delete process.env.OPENCLAW_COMPATIBILITY_HOST_VERSION;
+        delete process.env.OPERATOR_COMPATIBILITY_HOST_VERSION;
       } else {
-        process.env.OPENCLAW_COMPATIBILITY_HOST_VERSION = previousHostVersion;
+        process.env.OPERATOR_COMPATIBILITY_HOST_VERSION = previousHostVersion;
       }
     }
   });
@@ -473,11 +473,11 @@ describe("installPluginFromNpmSpec e2e", () => {
     ) as {
       packages?: Record<string, unknown>;
     };
-    const rawOpenClawLockEntry = rawLock.packages?.["node_modules/openclaw"] as
+    const rawOperatorLockEntry = rawLock.packages?.["node_modules/openclaw"] as
       | { peer?: unknown; version?: unknown }
       | undefined;
-    expect(rawOpenClawLockEntry?.peer).toBe(true);
-    expect(rawOpenClawLockEntry?.version).toBe("2026.0.0");
+    expect(rawOperatorLockEntry?.peer).toBe(true);
+    expect(rawOperatorLockEntry?.version).toBe("2026.0.0");
 
     const result = await installPluginFromNpmSpec({
       spec: `${packageName}@1.0.0`,

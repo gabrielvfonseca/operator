@@ -12,7 +12,7 @@ import { loadSessionEntry, listSessionEntries } from "../../config/sessions/sess
 import { resolveSessionKey } from "../../config/sessions/session-key.js";
 import { formatSqliteSessionFileMarker } from "../../config/sessions/sqlite-marker.js";
 import type { SessionEntry, SessionScope } from "../../config/sessions/types.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   isModelSelectionLocked,
   MODEL_SELECTION_LOCKED_RESET_MESSAGE,
@@ -52,15 +52,15 @@ function resolveFastSessionKey(params: {
   return resolveSessionKey(params.sessionScope, ctx, params.mainKey);
 }
 
-export function withFullRuntimeReplyConfig<T extends OpenClawConfig>(config: T): T {
+export function withFullRuntimeReplyConfig<T extends OperatorConfig>(config: T): T {
   return markReplyConfigRuntimeMode(config, "full");
 }
 
 export function resolveGetReplyConfig(params: {
-  getRuntimeConfig: () => OpenClawConfig;
+  getRuntimeConfig: () => OperatorConfig;
   isFastTestEnv: boolean;
-  configOverride?: OpenClawConfig;
-}): OpenClawConfig {
+  configOverride?: OperatorConfig;
+}): OperatorConfig {
   const { configOverride } = params;
   if (configOverride == null) {
     return params.getRuntimeConfig();
@@ -76,12 +76,12 @@ export function resolveGetReplyConfig(params: {
   if (isCompleteReplyConfig(configOverride)) {
     return configOverride;
   }
-  return applyMergePatch(params.getRuntimeConfig(), configOverride) as OpenClawConfig;
+  return applyMergePatch(params.getRuntimeConfig(), configOverride) as OperatorConfig;
 }
 
 export function shouldUseReplyFastTestBootstrap(params: {
   isFastTestEnv: boolean;
-  configOverride?: OpenClawConfig;
+  configOverride?: OperatorConfig;
 }): boolean {
   return (
     params.isFastTestEnv &&
@@ -91,7 +91,7 @@ export function shouldUseReplyFastTestBootstrap(params: {
 }
 
 export function shouldUseReplyFastTestRuntime(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   isFastTestEnv: boolean;
 }): boolean {
   return (
@@ -119,7 +119,7 @@ export function shouldUseReplyFastDirectiveExecution(params: {
 
 export function buildFastReplyCommandContext(params: {
   ctx: MsgContext;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId?: string;
   sessionKey?: string;
   isGroup: boolean;
@@ -155,7 +155,7 @@ export function buildFastReplyCommandContext(params: {
 }
 
 export function shouldHandleFastReplyTextCommands(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   commandSource?: string;
 }): boolean {
   return params.commandSource === "native" || params.cfg.commands?.text !== false;
@@ -163,7 +163,7 @@ export function shouldHandleFastReplyTextCommands(params: {
 
 export function initFastReplySessionState(params: {
   ctx: MsgContext;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
   commandAuthorized: boolean;
   workspaceDir: string;

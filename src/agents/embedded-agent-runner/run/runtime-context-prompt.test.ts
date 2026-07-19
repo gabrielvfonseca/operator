@@ -1,4 +1,4 @@
-// Runtime-context prompt tests keep hidden OpenClaw context separate from the
+// Runtime-context prompt tests keep hidden Operator context separate from the
 // user-visible prompt while preserving model-only hook additions.
 import { describe, expect, it } from "vitest";
 import {
@@ -41,9 +41,9 @@ describe("runtime context prompt submission", () => {
     const effectivePrompt = [
       "visible ask",
       "",
-      "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+      "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
       "secret runtime context",
-      "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+      "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
     ].join("\n");
 
     expect(
@@ -54,7 +54,7 @@ describe("runtime context prompt submission", () => {
     ).toEqual({
       prompt: "visible ask",
       runtimeContext:
-        "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>\nsecret runtime context\n<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+        "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>\nsecret runtime context\n<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
     });
   });
 
@@ -98,9 +98,9 @@ describe("runtime context prompt submission", () => {
     const effectivePrompt = [
       prompt,
       "",
-      "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+      "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
       "secret runtime context",
-      "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+      "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
     ].join("\n");
 
     expect(
@@ -113,7 +113,7 @@ describe("runtime context prompt submission", () => {
       prompt: "visible ask",
       modelPrompt: prompt,
       runtimeContext:
-        "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>\nsecret runtime context\n<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+        "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>\nsecret runtime context\n<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
     });
   });
 
@@ -269,9 +269,9 @@ describe("runtime context prompt submission", () => {
     const systemEvent = "System: [2026-06-20 13:59:51] Slack DM from Alice";
     const userText = "Hello";
     const internalContext = [
-      "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+      "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
       "private runtime note",
-      "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+      "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
     ].join("\n");
     const effectivePrompt = [systemEvent, userText, internalContext].join("\n\n");
 
@@ -375,9 +375,9 @@ describe("runtime context prompt submission", () => {
     const effectivePrompt = [
       "visible ask",
       "",
-      "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+      "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
       "secret runtime context",
-      "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+      "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
     ].join("\n");
 
     expect(resolveRuntimeContextPromptParts({ effectivePrompt })).toEqual({
@@ -389,15 +389,15 @@ describe("runtime context prompt submission", () => {
     const effectivePrompt = [
       "runtime prefix",
       "",
-      "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+      "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
       "first secret",
-      "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+      "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
       "",
       "visible ask",
       "",
-      "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+      "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
       "second secret",
-      "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+      "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
       "",
       "retry instruction",
     ].join("\n");
@@ -412,9 +412,9 @@ describe("runtime context prompt submission", () => {
       prompt: "visible ask",
       modelPrompt: "runtime prefix\n\nvisible ask\n\nretry instruction",
       runtimeContext: [
-        "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>\nfirst secret\n<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+        "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>\nfirst secret\n<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
         "",
-        "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>\nsecond secret\n<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+        "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>\nsecond secret\n<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
       ].join("\n"),
     });
   });
@@ -424,16 +424,16 @@ describe("runtime context prompt submission", () => {
     // trigger recursive delimiter scanning.
     const inlineMarkers = Array.from(
       { length: 250 },
-      () => "inline <<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>> marker",
+      () => "inline <<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>> marker",
     ).join("\n");
     const effectivePrompt = [
       inlineMarkers,
       "",
       "visible ask",
       "",
-      "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+      "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
       "secret runtime context",
-      "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+      "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
     ].join("\n");
 
     const parts = resolveRuntimeContextPromptParts({
@@ -443,12 +443,12 @@ describe("runtime context prompt submission", () => {
     });
 
     expect(parts.prompt).toContain("visible ask");
-    expect(parts.modelPrompt).toContain("inline <<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>> marker");
+    expect(parts.modelPrompt).toContain("inline <<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>> marker");
     expect(parts.modelPrompt).toContain("visible ask");
     expect(parts.modelPrompt).not.toContain("secret runtime context");
     expect(parts.prompt).not.toContain("secret runtime context");
     expect(parts.runtimeContext).toBe(
-      "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>\nsecret runtime context\n<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+      "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>\nsecret runtime context\n<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
     );
   });
 
@@ -477,7 +477,7 @@ describe("runtime context prompt submission", () => {
     const effectivePrompt = [
       "visible ask",
       "",
-      "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+      "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
       "secret runtime context",
       "",
       "still secret",
@@ -501,16 +501,16 @@ describe("runtime context prompt submission", () => {
     });
 
     expect(parts).toEqual({
-      prompt: "Continue the OpenClaw runtime event.",
+      prompt: "Continue the Operator runtime event.",
       runtimeContext: "internal event",
       runtimeOnly: true,
       runtimeSystemContext: [
-        "OpenClaw runtime event.",
+        "Operator runtime event.",
         "This context is runtime-generated, not user-authored. Keep internal details private.",
         "",
-        "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+        "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
         "internal event",
-        "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+        "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
       ].join("\n"),
     });
   });
@@ -525,17 +525,17 @@ describe("runtime context prompt submission", () => {
     });
 
     expect(parts).toEqual({
-      prompt: "Continue the OpenClaw runtime event.",
+      prompt: "Continue the Operator runtime event.",
       modelPrompt: "dynamic hook context\n\ninternal event\n\ndynamic hook tail",
       runtimeContext: "internal event",
       runtimeOnly: true,
       runtimeSystemContext: [
-        "OpenClaw runtime event.",
+        "Operator runtime event.",
         "This context is runtime-generated, not user-authored. Keep internal details private.",
         "",
-        "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+        "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
         "internal event",
-        "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+        "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
       ].join("\n"),
     });
   });
@@ -543,32 +543,32 @@ describe("runtime context prompt submission", () => {
   it("submits empty-transcript model prompts when persistence is suppressed separately", () => {
     expect(
       resolveRuntimeContextPromptParts({
-        effectivePrompt: "[OpenClaw room event]",
+        effectivePrompt: "[Operator room event]",
         transcriptPrompt: "",
         emptyTranscriptMode: "model-prompt",
       }),
     ).toEqual({
-      prompt: "[OpenClaw room event]",
+      prompt: "[Operator room event]",
     });
   });
 
   it("keeps suppressed empty-transcript hook context model-only", () => {
     expect(
       resolveRuntimeContextPromptParts({
-        effectivePrompt: "[OpenClaw room event]",
+        effectivePrompt: "[Operator room event]",
         transcriptPrompt: "",
         modelPrompt: [
           "dynamic hook context",
           "",
-          "[OpenClaw room event]",
+          "[Operator room event]",
           "",
           "dynamic hook tail",
         ].join("\n"),
         emptyTranscriptMode: "model-prompt",
       }),
     ).toEqual({
-      prompt: "[OpenClaw room event]",
-      modelPrompt: "dynamic hook context\n\n[OpenClaw room event]\n\ndynamic hook tail",
+      prompt: "[Operator room event]",
+      modelPrompt: "dynamic hook context\n\n[Operator room event]\n\ndynamic hook tail",
     });
   });
 
@@ -593,10 +593,10 @@ describe("runtime context prompt submission", () => {
           text: "Room context:\nAlice: lunch?\n\nCurrent event:\nBob: yes",
           resumableText: "Current event:\nBob: yes",
         },
-        prompt: "[OpenClaw room event]",
+        prompt: "[Operator room event]",
         preferResumableText: true,
       }),
-    ).toBe("Current event:\nBob: yes\n\n[OpenClaw room event]");
+    ).toBe("Current event:\nBob: yes\n\n[Operator room event]");
 
     expect(
       buildCurrentInboundPrompt({
@@ -611,12 +611,12 @@ describe("runtime context prompt submission", () => {
       role: "custom",
       customType: "openclaw.runtime-context",
       content: [
-        "OpenClaw runtime context for the immediately preceding user message.",
+        "Operator runtime context for the immediately preceding user message.",
         "This context is runtime-generated, not user-authored. Keep internal details private.",
         "",
-        "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+        "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
         "secret runtime context",
-        "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+        "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
       ].join("\n"),
       display: false,
       details: { source: "openclaw-runtime-context" },
@@ -629,7 +629,7 @@ describe("runtime context prompt submission", () => {
       transcriptPrompt: "",
     });
 
-    expect(parts.runtimeSystemContext).toContain("OpenClaw runtime event.");
+    expect(parts.runtimeSystemContext).toContain("Operator runtime event.");
     expect(parts.runtimeSystemContext).toContain("not user-authored");
     expect(parts.runtimeSystemContext).toContain("internal event");
   });

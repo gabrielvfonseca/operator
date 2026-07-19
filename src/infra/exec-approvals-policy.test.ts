@@ -1,7 +1,7 @@
 // Tests execution approval policy matching and persistence.
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { DEFAULT_AGENT_ID } from "../routing/session-key.js";
 import {
   makeMockCommandResolution,
@@ -602,10 +602,10 @@ describe("exec approvals policy helpers", () => {
     });
   });
 
-  it("uses OPENCLAW_STATE_DIR when reporting default host sources", () => {
-    const originalOpenClawStateDir = process.env.OPENCLAW_STATE_DIR;
+  it("uses OPERATOR_STATE_DIR when reporting default host sources", () => {
+    const originalOperatorStateDir = process.env.OPERATOR_STATE_DIR;
     const stateDir = path.join(process.cwd(), ".tmp-openclaw-state");
-    process.env.OPENCLAW_STATE_DIR = stateDir;
+    process.env.OPERATOR_STATE_DIR = stateDir;
     try {
       const summary = summarizeExecPolicyScopeSnapshot({
         approvals: {
@@ -625,10 +625,10 @@ describe("exec approvals policy helpers", () => {
         `${path.join(stateDir, "exec-approvals.json")} defaults.security`,
       );
     } finally {
-      if (originalOpenClawStateDir === undefined) {
-        delete process.env.OPENCLAW_STATE_DIR;
+      if (originalOperatorStateDir === undefined) {
+        delete process.env.OPERATOR_STATE_DIR;
       } else {
-        process.env.OPENCLAW_STATE_DIR = originalOpenClawStateDir;
+        process.env.OPERATOR_STATE_DIR = originalOperatorStateDir;
       }
     }
   });
@@ -766,7 +766,7 @@ describe("exec approvals policy helpers", () => {
     });
   });
 
-  it("reports askFallback from the OpenClaw default when approvals omit it", () => {
+  it("reports askFallback from the Operator default when approvals omit it", () => {
     const summary = summarizeExecPolicyScopeSnapshot({
       approvals: {
         version: 1,
@@ -778,7 +778,7 @@ describe("exec approvals policy helpers", () => {
 
     expect(summary.askFallback).toEqual({
       effective: "deny",
-      source: "OpenClaw default (deny)",
+      source: "Operator default (deny)",
     });
   });
 
@@ -823,7 +823,7 @@ describe("exec approvals policy helpers", () => {
         agents: {
           list: [{ id: "runner" }],
         },
-      } satisfies OpenClawConfig,
+      } satisfies OperatorConfig,
       approvals: {
         version: 1,
         agents: {
@@ -865,7 +865,7 @@ describe("exec approvals policy helpers", () => {
             ask: "off",
           },
         },
-      } satisfies OpenClawConfig,
+      } satisfies OperatorConfig,
       approvals: {
         version: 1,
         agents: {
@@ -909,7 +909,7 @@ describe("exec approvals policy helpers", () => {
             },
           ],
         },
-      } satisfies OpenClawConfig,
+      } satisfies OperatorConfig,
       approvals: {
         version: 1,
       },

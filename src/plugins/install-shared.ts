@@ -14,7 +14,7 @@ import {
   type PluginInstallLogger,
   type PluginInstallPolicyRequest,
 } from "./install-types.js";
-import { resolvePackageExtensionEntries, type OpenClawPackageManifest } from "./manifest.js";
+import { resolvePackageExtensionEntries, type OperatorPackageManifest } from "./manifest.js";
 import { resolvePackagePluginApiRange } from "./package-compat.js";
 import {
   emitPluginAuditSecurityEvent,
@@ -33,16 +33,16 @@ export type PluginInstallRuntime = Awaited<ReturnType<typeof loadPluginInstallRu
 
 export const defaultLogger: PluginInstallLogger = {};
 
-export function formatUnresolvedOpenClawPeerLinkError(packageName: string): string {
-  return `Installed plugin ${packageName} declares operator as a peer dependency, but OpenClaw could not create a plugin-local node_modules/operator link. Run from a packaged OpenClaw install or reinstall OpenClaw, then retry.`;
+export function formatUnresolvedOperatorPeerLinkError(packageName: string): string {
+  return `Installed plugin ${packageName} declares operator as a peer dependency, but Operator could not create a plugin-local node_modules/operator link. Run from a packaged Operator install or reinstall Operator, then retry.`;
 }
 
 const MISSING_EXTENSIONS_ERROR =
   'package.json missing operator.extensions; update the plugin package to include operator.extensions (for example ["./dist/index.js"]). See https://docs.operator.ai/help/troubleshooting#plugin-install-fails-with-missing-operator-extensions';
-function validateOpenClawPackageCompatibility(params: {
+function validateOperatorPackageCompatibility(params: {
   pluginId: string;
   currentHostVersion: string;
-  packageMetadata?: OpenClawPackageManifest;
+  packageMetadata?: OperatorPackageManifest;
 }): PluginInstallFailureResult | null {
   const pluginApiRangeCheck = resolvePackagePluginApiRange(params.packageMetadata);
   if (!pluginApiRangeCheck.ok) {
@@ -56,7 +56,7 @@ function validateOpenClawPackageCompatibility(params: {
   if (pluginApiRange && !satisfiesPluginApiRange(params.currentHostVersion, pluginApiRange)) {
     return {
       ok: false,
-      error: `plugin "${params.pluginId}" requires plugin API ${pluginApiRange}, but this OpenClaw runtime exposes ${params.currentHostVersion}. Upgrade OpenClaw or install a compatible plugin version and retry.`,
+      error: `plugin "${params.pluginId}" requires plugin API ${pluginApiRange}, but this Operator runtime exposes ${params.currentHostVersion}. Upgrade Operator or install a compatible plugin version and retry.`,
       code: PLUGIN_INSTALL_ERROR_CODE.INCOMPATIBLE_PLUGIN_API,
     };
   }
@@ -64,10 +64,10 @@ function validateOpenClawPackageCompatibility(params: {
   return null;
 }
 
-export function validateOpenClawPackageInstallCompatibility(params: {
+export function validateOperatorPackageInstallCompatibility(params: {
   runtime: PluginInstallRuntime;
   pluginId: string;
-  packageMetadata?: OpenClawPackageManifest;
+  packageMetadata?: OperatorPackageManifest;
 }): PluginInstallFailureResult | null {
   const currentHostVersion = params.runtime.resolveCompatibilityHostVersion();
   const minHostVersionCheck = params.runtime.checkMinHostVersion({
@@ -85,18 +85,18 @@ export function validateOpenClawPackageInstallCompatibility(params: {
     if (minHostVersionCheck.kind === "unknown_host_version") {
       return {
         ok: false,
-        error: `plugin "${params.pluginId}" requires OpenClaw >=${minHostVersionCheck.requirement.minimumLabel}, but this host version could not be determined. Re-run from a released build or set OPERATOR_VERSION and retry.`,
+        error: `plugin "${params.pluginId}" requires Operator >=${minHostVersionCheck.requirement.minimumLabel}, but this host version could not be determined. Re-run from a released build or set OPERATOR_VERSION and retry.`,
         code: PLUGIN_INSTALL_ERROR_CODE.UNKNOWN_HOST_VERSION,
       };
     }
     return {
       ok: false,
-      error: `plugin "${params.pluginId}" requires OpenClaw >=${minHostVersionCheck.requirement.minimumLabel}, but this host is ${minHostVersionCheck.currentVersion}. Upgrade OpenClaw and retry.`,
+      error: `plugin "${params.pluginId}" requires Operator >=${minHostVersionCheck.requirement.minimumLabel}, but this host is ${minHostVersionCheck.currentVersion}. Upgrade Operator and retry.`,
       code: PLUGIN_INSTALL_ERROR_CODE.INCOMPATIBLE_HOST_VERSION,
     };
   }
 
-  return validateOpenClawPackageCompatibility({
+  return validateOperatorPackageCompatibility({
     pluginId: params.pluginId,
     currentHostVersion,
     packageMetadata: params.packageMetadata,
@@ -122,7 +122,7 @@ export async function readOptionalPackageManifest(params: {
   }
 }
 
-export function ensureOpenClawExtensions(params: { manifest: PackageManifest }):
+export function ensureOperatorExtensions(params: { manifest: PackageManifest }):
   | {
       ok: true;
       entries: string[];

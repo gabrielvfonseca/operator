@@ -9,7 +9,7 @@ import {
   resolveDefaultAgentId,
 } from "../../agents/agent-scope-config.js";
 import { resolveSandboxConfigForAgent } from "../../agents/sandbox/config.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { normalizeAgentId } from "../../routing/session-key.js";
 
 /** Why a terminal cannot open, or `null` when it can. */
@@ -38,7 +38,7 @@ export type TerminalLaunchResolution =
 type TerminalLaunchPolicy = {
   resolve: (agentId?: string) => TerminalLaunchResolution;
   isEnabled: () => boolean;
-  prepareConfig: (config: OpenClawConfig, options: { restartPending: boolean }) => void;
+  prepareConfig: (config: OperatorConfig, options: { restartPending: boolean }) => void;
   commitConfig: () => void;
   acceptConfig: (options: { retireRejectedRestart: boolean }) => void;
 };
@@ -77,7 +77,7 @@ function resolveTerminalShell(params: {
  * main session on the host, so a host terminal is allowed there.
  */
 function resolveTerminalLaunch(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   enabled: boolean;
   agentId?: string;
   configuredShell?: string;
@@ -116,16 +116,16 @@ function resolveTerminalLaunch(params: {
 }
 
 /** Maintains fail-closed terminal admission across deferred config restarts. */
-export function createTerminalLaunchPolicy(initialConfig: OpenClawConfig): TerminalLaunchPolicy {
+export function createTerminalLaunchPolicy(initialConfig: OperatorConfig): TerminalLaunchPolicy {
   let activeConfig = initialConfig;
   let hasPendingRestart = false;
   let terminalDisabledUntilRestart = false;
-  let preparedConfig: OpenClawConfig | null = null;
-  let appliedConfigWhileRestartPending: OpenClawConfig | null = null;
+  let preparedConfig: OperatorConfig | null = null;
+  let appliedConfigWhileRestartPending: OperatorConfig | null = null;
   let terminalDisabledUntilCommit = false;
   const blockedAgentsUntilRestart = new Map<string, TerminalLaunchBlock>();
   const blockedAgentsUntilCommit = new Map<string, TerminalLaunchBlock>();
-  const preserveTerminalConfig = (config: OpenClawConfig, owner: OpenClawConfig) => {
+  const preserveTerminalConfig = (config: OperatorConfig, owner: OperatorConfig) => {
     const { terminal: _ignored, ...gateway } = config.gateway ?? {};
     const terminal = owner.gateway?.terminal;
     return {
@@ -136,7 +136,7 @@ export function createTerminalLaunchPolicy(initialConfig: OpenClawConfig): Termi
       },
     };
   };
-  const resolveForConfig = (config: OpenClawConfig, agentId?: string) => {
+  const resolveForConfig = (config: OperatorConfig, agentId?: string) => {
     const terminalConfig = config.gateway?.terminal;
     return resolveTerminalLaunch({
       config,
@@ -145,7 +145,7 @@ export function createTerminalLaunchPolicy(initialConfig: OpenClawConfig): Termi
       configuredShell: terminalConfig?.shell,
     });
   };
-  const accumulateRestartRestrictions = (config: OpenClawConfig) => {
+  const accumulateRestartRestrictions = (config: OperatorConfig) => {
     if (config.gateway?.terminal?.enabled !== true) {
       terminalDisabledUntilRestart = true;
       return;
@@ -161,7 +161,7 @@ export function createTerminalLaunchPolicy(initialConfig: OpenClawConfig): Termi
       }
     }
   };
-  const accumulateCommitRestrictions = (config: OpenClawConfig) => {
+  const accumulateCommitRestrictions = (config: OperatorConfig) => {
     if (config.gateway?.terminal?.enabled !== true) {
       terminalDisabledUntilCommit = true;
       return;
@@ -284,7 +284,7 @@ export function buildTerminalEnv(baseEnv: NodeJS.ProcessEnv): Record<string, str
     }
   }
   env.TERM = env.TERM ?? "xterm-256color";
-  // Lets shells and prompts detect that they are inside an OpenClaw terminal.
+  // Lets shells and prompts detect that they are inside an Operator terminal.
   env.OPERATOR_TERMINAL = "1";
   return env;
 }

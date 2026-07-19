@@ -262,7 +262,7 @@ export function registerDnsCli(program: Command) {
         defaultRuntime.log("");
         defaultRuntime.log(
           theme.muted(
-            "Note: enable discovery.wideArea.enabled in the active OpenClaw config ($OPERATOR_CONFIG_PATH, default ~/.operator/operator.json) on the gateway and restart the gateway so it writes the DNS-SD zone.",
+            "Note: enable discovery.wideArea.enabled in the active Operator config ($OPERATOR_CONFIG_PATH, default ~/.operator/operator.json) on the gateway and restart the gateway so it writes the DNS-SD zone.",
           ),
         );
       }

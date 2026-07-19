@@ -1,7 +1,7 @@
 /**
  * Canvas plugin config parsing, enablement, and schema metadata.
  */
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   normalizePluginsConfig,
   resolveEffectiveEnableState,
@@ -62,7 +62,7 @@ export function parseCanvasPluginConfig(value: unknown): CanvasPluginConfig {
 }
 
 /** Returns whether the bundled Canvas plugin is effectively enabled. */
-export function isCanvasPluginEnabled(config?: OpenClawConfig): boolean {
+export function isCanvasPluginEnabled(config?: OperatorConfig): boolean {
   if (!config) {
     return true;
   }
@@ -77,7 +77,7 @@ export function isCanvasPluginEnabled(config?: OpenClawConfig): boolean {
 
 /** Resolves Canvas host config from plugin config or root config. */
 export function resolveCanvasHostConfig(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   pluginConfig?: Record<string, unknown>;
 }): CanvasHostConfig {
   const pluginConfig =
@@ -87,8 +87,8 @@ export function resolveCanvasHostConfig(params: {
 }
 
 /** Returns whether the Canvas hosted route/server surface should be active. */
-export function isCanvasHostEnabled(config?: OpenClawConfig): boolean {
-  if (isTruthyEnvValue(process.env.OPENCLAW_SKIP_CANVAS_HOST)) {
+export function isCanvasHostEnabled(config?: OperatorConfig): boolean {
+  if (isTruthyEnvValue(process.env.OPERATOR_SKIP_CANVAS_HOST)) {
     return false;
   }
   if (!isCanvasPluginEnabled(config)) {
@@ -112,7 +112,7 @@ export const canvasConfigSchema: CanvasPluginConfigSchema = {
     },
     "host.root": {
       label: "Canvas Host Root Directory",
-      help: "Directory to serve. Defaults to the OpenClaw state canvas directory.",
+      help: "Directory to serve. Defaults to the Operator state canvas directory.",
       advanced: true,
     },
     "host.port": {

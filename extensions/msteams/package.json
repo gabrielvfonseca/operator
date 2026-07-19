@@ -1,7 +1,7 @@
 {
   "name": "@operator/msteams",
   "version": "2026.7.2",
-  "description": "OpenClaw Microsoft Teams channel plugin for bot conversations.",
+  "description": "Operator Microsoft Teams channel plugin for bot conversations.",
   "repository": {
     "type": "git",
     "url": "https://github.com/openclaw/openclaw"

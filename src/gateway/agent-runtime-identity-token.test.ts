@@ -4,7 +4,7 @@ import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { captureEnv, setTestEnvValue } from "../test-utils/env.js";
 
-const envSnapshot = captureEnv(["HOME", "OPENCLAW_HOME", "OPENCLAW_STATE_DIR"]);
+const envSnapshot = captureEnv(["HOME", "OPERATOR_HOME", "OPERATOR_STATE_DIR"]);
 
 const tempHomes: string[] = [];
 
@@ -12,8 +12,8 @@ function useTempHome(): string {
   const home = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-agent-runtime-"));
   tempHomes.push(home);
   setTestEnvValue("HOME", home);
-  setTestEnvValue("OPENCLAW_HOME", home);
-  setTestEnvValue("OPENCLAW_STATE_DIR", "");
+  setTestEnvValue("OPERATOR_HOME", home);
+  setTestEnvValue("OPERATOR_STATE_DIR", "");
   return home;
 }
 

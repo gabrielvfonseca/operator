@@ -5,7 +5,7 @@ import {
   appendAssistantMessageToSessionTranscript,
   type SessionTranscriptDeliveryMirror,
 } from "../../config/sessions/transcript.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { logVerbose } from "../../globals.js";
 import { formatErrorMessage } from "../../infra/errors.js";
 import { getReplyPayloadMetadata, type ReplyPayload } from "../reply-payload.js";
@@ -27,7 +27,7 @@ type TranscriptMirror = SourceReplyTranscriptMirror & {
 
 export async function mirrorDeliveredReplyToTranscript(params: {
   metadata?: TranscriptMirror;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
 }): Promise<void> {
   const mirror = params.metadata;
   if (!mirror) {
@@ -190,7 +190,7 @@ export async function mirrorTranscriptAfterDispatcherSettled(params: {
   dispatcher: ReplyDispatcher;
   before: { cancelled: number; failed: number };
   metadata: () => TranscriptMirror | undefined;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
 }): Promise<void> {
   const after = getDispatcherFinalOutcomeCounts(params.dispatcher);
   const metadata = params.metadata();

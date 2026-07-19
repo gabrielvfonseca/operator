@@ -3,9 +3,9 @@ import path from "node:path";
 import process from "node:process";
 import { resolveNodeHostExecutable } from "openclaw/plugin-sdk/node-host";
 import type {
-  OpenClawPluginApi,
-  OpenClawPluginNodeHostCommand,
-  OpenClawPluginNodeInvokePolicy,
+  OperatorPluginApi,
+  OperatorPluginNodeHostCommand,
+  OperatorPluginNodeInvokePolicy,
 } from "openclaw/plugin-sdk/plugin-entry";
 import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
 import type {
@@ -149,7 +149,7 @@ function isOpenCodeSessionCatalogEnabled(pluginConfig: unknown): boolean {
   );
 }
 
-function createOpenCodeSessionNodeHostCommands(): OpenClawPluginNodeHostCommand[] {
+function createOpenCodeSessionNodeHostCommands(): OperatorPluginNodeHostCommand[] {
   const available = ({ config, env }: { config: unknown; env: NodeJS.ProcessEnv }) =>
     fullConfigCatalogEnabled(config) && executableOnPath("opencode", env);
   return [
@@ -173,7 +173,7 @@ function createOpenCodeSessionNodeHostCommands(): OpenClawPluginNodeHostCommand[
   ];
 }
 
-function createOpenCodeSessionNodeInvokePolicies(): OpenClawPluginNodeInvokePolicy[] {
+function createOpenCodeSessionNodeInvokePolicies(): OperatorPluginNodeInvokePolicy[] {
   return [
     {
       commands: [
@@ -401,7 +401,7 @@ async function readOpenCodeTranscript(
   };
 }
 
-export function registerOpenCodeSessionCatalog(api: OpenClawPluginApi): void {
+export function registerOpenCodeSessionCatalog(api: OperatorPluginApi): void {
   if (!isOpenCodeSessionCatalogEnabled(api.pluginConfig)) {
     return;
   }

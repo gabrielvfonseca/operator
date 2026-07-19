@@ -1,10 +1,10 @@
 // Canonical shared-SQLite store for Web Push subscriptions and VAPID identity.
 import type { Insertable, Selectable } from "kysely";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
-  type OpenClawStateDatabaseOptions,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
+  type OperatorStateDatabaseOptions,
 } from "../state/operator-state-db.js";
 import { sha256HexPrefix } from "./crypto-digest.js";
 import {
@@ -41,14 +41,14 @@ export function createWebPushVapidKeyPair(
 }
 
 export type WebPushDatabase = Pick<
-  OpenClawStateKyselyDatabase,
+  OperatorStateKyselyDatabase,
   "web_push_subscriptions" | "web_push_vapid_keys"
 >;
 type WebPushSubscriptionRow = Selectable<WebPushDatabase["web_push_subscriptions"]>;
 type WebPushSubscriptionInsert = Insertable<WebPushDatabase["web_push_subscriptions"]>;
 type WebPushVapidKeyInsert = Insertable<WebPushDatabase["web_push_vapid_keys"]>;
 
-function webPushStateDatabaseOptions(stateDir?: string): OpenClawStateDatabaseOptions {
+function webPushStateDatabaseOptions(stateDir?: string): OperatorStateDatabaseOptions {
   return stateDir
     ? { env: { ...process.env, OPERATOR_STATE_DIR: stateDir } }
     : { env: process.env };
@@ -126,7 +126,7 @@ export function webPushSubscriptionsEqual(
 }
 
 export function listWebPushSubscriptions(stateDir?: string): WebPushSubscription[] {
-  const database = openOpenClawStateDatabase(webPushStateDatabaseOptions(stateDir));
+  const database = openOperatorStateDatabase(webPushStateDatabaseOptions(stateDir));
   const stateDb = getNodeSqliteKysely<WebPushDatabase>(database.db);
   return executeSqliteQuerySync(
     database.db,
@@ -147,7 +147,7 @@ export function upsertWebPushSubscription(params: {
   nowMs: number;
   stateDir?: string;
 }): WebPushSubscription {
-  return runOpenClawStateWriteTransaction(({ db }) => {
+  return runOperatorStateWriteTransaction(({ db }) => {
     const stateDb = getNodeSqliteKysely<WebPushDatabase>(db);
     const existingRow = executeSqliteQueryTakeFirstSync(
       db,
@@ -194,7 +194,7 @@ export function deleteWebPushSubscriptionByEndpoint(params: {
   endpoint: string;
   stateDir?: string;
 }): boolean {
-  return runOpenClawStateWriteTransaction(({ db }) => {
+  return runOperatorStateWriteTransaction(({ db }) => {
     const result = executeSqliteQuerySync(
       db,
       getNodeSqliteKysely<WebPushDatabase>(db)
@@ -213,7 +213,7 @@ export function deleteWebPushSubscriptionIfCurrent(params: {
   stateDir?: string;
 }): boolean {
   const subscription = params.subscription;
-  return runOpenClawStateWriteTransaction(({ db }) => {
+  return runOperatorStateWriteTransaction(({ db }) => {
     const result = executeSqliteQuerySync(
       db,
       getNodeSqliteKysely<WebPushDatabase>(db)
@@ -230,7 +230,7 @@ export function deleteWebPushSubscriptionIfCurrent(params: {
 }
 
 export function readPersistedVapidKeyPair(stateDir?: string): VapidKeyPair | null {
-  const database = openOpenClawStateDatabase(webPushStateDatabaseOptions(stateDir));
+  const database = openOperatorStateDatabase(webPushStateDatabaseOptions(stateDir));
   const row = executeSqliteQueryTakeFirstSync(
     database.db,
     getNodeSqliteKysely<WebPushDatabase>(database.db)
@@ -247,7 +247,7 @@ export function insertVapidKeyPairIfAbsent(params: {
   nowMs: number;
   stateDir?: string;
 }): VapidKeyPair {
-  return runOpenClawStateWriteTransaction(({ db }) => {
+  return runOperatorStateWriteTransaction(({ db }) => {
     const stateDb = getNodeSqliteKysely<WebPushDatabase>(db);
     const existing = executeSqliteQueryTakeFirstSync(
       db,

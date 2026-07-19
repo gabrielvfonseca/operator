@@ -26,9 +26,9 @@ import {
 } from "@operator/normalization-core/number-coercion";
 import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
 import { stripAnsi } from "../../../packages/terminal-core/src/ansi.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { toErrorObject } from "../../infra/errors.js";
-import { resolveOpenClawPackageRootSync } from "../../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../../infra/operator-root.js";
 import { privateFileStoreSync } from "../../infra/private-file-store.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
 import { listAgentToolResultMiddlewares } from "../../plugins/agent-tool-result-middleware.js";
@@ -102,7 +102,7 @@ type NativeHookRelayRegistration = {
   agentId?: string;
   sessionId: string;
   sessionKey?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   runId: string;
   channelId?: string;
   allowedEvents: readonly NativeHookRelayEvent[];
@@ -135,11 +135,11 @@ type RegisterNativeHookRelayParams = {
   agentId?: string;
   sessionId: string;
   sessionKey?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   runId: string;
   channelId?: string;
   allowedEvents?: readonly NativeHookRelayEvent[];
-  /** Whether this relay should run OpenClaw loop detection from native PreToolUse hooks. */
+  /** Whether this relay should run Operator loop detection from native PreToolUse hooks. */
   preToolUseLoopDetection?: boolean;
   ttlMs?: number;
   command?: NativeHookRelayCommandOptions;
@@ -413,7 +413,7 @@ const nativeHookRelayProviderAdapters: Record<
               ? { behavior: "allow" }
               : {
                   behavior: "deny",
-                  message: message?.trim() || "Denied by OpenClaw",
+                  message: message?.trim() || "Denied by Operator",
                 },
         },
       })}\n`,
@@ -576,7 +576,7 @@ export function buildNativeHookRelayCommand(params: {
   nodeExecutable?: string;
 }): string {
   const timeoutMs = normalizePositiveInteger(params.timeoutMs, DEFAULT_RELAY_TIMEOUT_MS);
-  const executable = params.executable ?? resolveOpenClawCliExecutable();
+  const executable = params.executable ?? resolveOperatorCliExecutable();
   const argv =
     executable === "operator"
       ? ["operator"]
@@ -814,7 +814,7 @@ async function resolveNativeHookRelayPreToolUseApproval(
       handled: true,
       outcome: "denied",
       reason:
-        "OpenClaw tool policy rewrote Codex app-server approval params; refusing original request.",
+        "Operator tool policy rewrote Codex app-server approval params; refusing original request.",
     };
   }
   return {
@@ -1007,7 +1007,7 @@ function isNativeHookRelayBridgePidDead(pid: number): boolean {
 
 function registerNativeHookRelayBridge(registration: ActiveNativeHookRelayRegistration): void {
   // Prune actually stale bridge files from prior gateway processes. The bridge
-  // directory is scoped by OS user (uid) and is shared across all OpenClaw
+  // directory is scoped by OS user (uid) and is shared across all Operator
   // gateways/profiles run by that user, so a record with a non-current PID is
   // NOT automatically stale — it can legitimately belong to another live
   // gateway under the same uid. Only prune records whose owning PID is dead
@@ -1523,7 +1523,7 @@ async function runNativeHookRelayPreToolUse(params: {
     // Codex app-server may continue with the original params when updatedInput
     // is unsupported, so rewrites must fail closed here.
     return params.adapter.renderPreToolUseBlockResponse(
-      "OpenClaw tool policy rewrote Codex app-server approval params; refusing original request.",
+      "Operator tool policy rewrote Codex app-server approval params; refusing original request.",
     );
   }
   return params.adapter.renderNoopResponse(params.invocation.event);
@@ -2266,12 +2266,12 @@ function truncateText(value: string, maxLength: number): string {
   return `${truncateUtf16Safe(value, Math.max(0, maxLength - 3))}...`;
 }
 
-function resolveOpenClawCliExecutable(): string {
+function resolveOperatorCliExecutable(): string {
   const envPath = process.env.OPERATOR_CLI_PATH?.trim();
   if (envPath && existsSync(envPath)) {
     return envPath;
   }
-  const packageRoot = resolveOpenClawPackageRootSync({
+  const packageRoot = resolveOperatorPackageRootSync({
     moduleUrl: import.meta.url,
     argv1: process.argv[1],
     cwd: process.cwd(),
@@ -2294,7 +2294,7 @@ function resolveOpenClawCliExecutable(): string {
       return resolved;
     }
   }
-  throw new Error("Cannot resolve OpenClaw CLI executable path for native hook relay");
+  throw new Error("Cannot resolve Operator CLI executable path for native hook relay");
 }
 
 function normalizeAllowedEvents(

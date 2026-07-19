@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { Command } from "commander";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import { Value } from "typebox/value";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { registerWorkspaceCli } from "./cli.js";
@@ -53,7 +53,7 @@ function details(result: unknown): Record<string, unknown> {
 }
 
 function toolsByName(store: WorkspaceStore, broadcast?: (event: string, payload: unknown) => void) {
-  const api = {} as unknown as OpenClawPluginApi;
+  const api = {} as unknown as OperatorPluginApi;
   return new Map(
     createWorkspaceTools({
       api,
@@ -372,11 +372,11 @@ describe("workspace tools", () => {
   it("shares one store between tool writes and CLI reads", async () => {
     await withTempStateDir(async (stateDir) => {
       const store = new WorkspaceStore({ stateDir });
-      const methods = new Map<string, Parameters<OpenClawPluginApi["registerGatewayMethod"]>[1]>();
+      const methods = new Map<string, Parameters<OperatorPluginApi["registerGatewayMethod"]>[1]>();
       registerWorkspaceGatewayMethods({
         api: {
           registerGatewayMethod: vi.fn((method: string, handler) => methods.set(method, handler)),
-        } as unknown as OpenClawPluginApi,
+        } as unknown as OperatorPluginApi,
         store,
       });
       gatewayRuntime.callGatewayFromCli.mockImplementation(

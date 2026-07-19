@@ -13,7 +13,7 @@ import { CONTEXT_WINDOW_HARD_MIN_TOKENS } from "../agents/context-window-guard.j
 import { DEFAULT_PROVIDER } from "../agents/defaults.js";
 import { buildModelAliasIndex, modelKey } from "../agents/model-selection.js";
 import type { ModelProviderConfig } from "../config/types.models.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { isSecretRef, type SecretInput } from "../config/types.secrets.js";
 import { applyPrimaryModel } from "../plugins/provider-model-primary.js";
 import { normalizeOptionalSecretInput } from "../utils/normalize-secret-input.js";
@@ -177,15 +177,15 @@ export type CustomApiCompatibility = "openai" | "openai-responses" | "anthropic"
 
 /** Config mutation result for a custom API setup pass. */
 export type CustomApiResult = {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   providerId?: string;
   modelId?: string;
   providerIdRenamedFrom?: string;
 };
 
-/** Inputs used to persist a custom provider in the OpenClaw config. */
+/** Inputs used to persist a custom provider in the Operator config. */
 type ApplyCustomApiConfigParams = {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   baseUrl: string;
   modelId: string;
   compatibility: CustomApiCompatibility;
@@ -235,7 +235,7 @@ export class CustomApiError extends Error {
 }
 
 type ResolveCustomProviderIdParams = {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   baseUrl: string;
   providerId?: string;
 };
@@ -296,7 +296,7 @@ function resolveUniqueEndpointId(params: {
 /** Returns a human-readable alias collision error for a custom model ref. */
 export function resolveCustomModelAliasError(params: {
   raw: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   modelRef: string;
 }): string | undefined {
   const trimmed = params.raw.trim();
@@ -667,7 +667,7 @@ export function applyCustomApiConfig(params: ApplyCustomApiConfigParams): Custom
   // Azure clients use api-key headers and no bearer Authorization header.
   const azureHeaders = isAzure && normalizedApiKey ? { "api-key": normalizedApiKey } : undefined;
 
-  let config: OpenClawConfig = {
+  let config: OperatorConfig = {
     ...params.config,
     models: {
       ...params.config.models,

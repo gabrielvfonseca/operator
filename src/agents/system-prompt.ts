@@ -1,5 +1,5 @@
 /**
- * OpenClaw system prompt renderer.
+ * Operator system prompt renderer.
  *
  * Assembles runtime, workspace, tooling, memory, delegation, channel, and cache-boundary prompt sections.
  */
@@ -46,8 +46,8 @@ import type {
 } from "./embedded-agent-runner/types.js";
 import { buildPromisedWorkPromptSection } from "./promised-work-prompt.js";
 import {
-  buildOpenClawToolFallbackText,
-  shouldRenderOpenClawToolWorkflowHints,
+  buildOperatorToolFallbackText,
+  shouldRenderOperatorToolWorkflowHints,
 } from "./prompt-surface.js";
 import { sanitizeForPromptLiteral } from "./sanitize-for-prompt.js";
 import {
@@ -537,7 +537,7 @@ function buildMessagingSection(params: {
     "- Cross-session: `sessions_send(sessionKey, message)`.",
     subagentOrchestrationGuidance,
     completionEventGuidance,
-    "- Provider messaging: never exec/curl; OpenClaw routes.",
+    "- Provider messaging: never exec/curl; Operator routes.",
     params.availableTools.has("message")
       ? [
           "",
@@ -614,8 +614,8 @@ function buildDocsSection(params: {
     docsPath ? "Mirror: https://docs.operator.ai" : undefined,
     sourcePath ? `Source: ${sourcePath}` : "Source: https://github.com/operator/operator",
     docsPath
-      ? `OpenClaw behavior questions: docs first via \`${params.readToolName}\`/local search. AGENTS/project/workspace/profile/memory = instructions/user memory, not product design truth.`
-      : "OpenClaw behavior questions: docs mirror first when web exists. AGENTS/project/workspace/profile/memory = instructions/user memory, not product design truth.",
+      ? `Operator behavior questions: docs first via \`${params.readToolName}\`/local search. AGENTS/project/workspace/profile/memory = instructions/user memory, not product design truth.`
+      : "Operator behavior questions: docs mirror first when web exists. AGENTS/project/workspace/profile/memory = instructions/user memory, not product design truth.",
     "Config field: `gateway(config.schema.lookup)` exact path. Broader: `docs/gateway/configuration.md`, `docs/gateway/configuration-reference.md`.",
     sourcePath
       ? "If docs are silent/stale, say so and inspect local source."
@@ -721,7 +721,7 @@ export function buildAgentSystemPrompt(params: {
   proactiveSubagentOrchestration?: boolean;
   /** Whether ACP-specific routing guidance should be included. Defaults to true. */
   acpEnabled?: boolean;
-  /** Prompt surface controls runtime-specific fallback fragments. Defaults to OpenClaw main. */
+  /** Prompt surface controls runtime-specific fallback fragments. Defaults to Operator main. */
   promptSurface?: AgentPromptSurfaceKind;
   /** Registered runtime slash/native command names such as `codex`. */
   nativeCommandNames?: string[];
@@ -787,7 +787,7 @@ export function buildAgentSystemPrompt(params: {
     operator: "System setup/config expert; writes need human approval",
     gateway: "Read gateway config/schema",
     agents_list: acpSpawnRuntimeEnabled
-      ? "List allowed OpenClaw subagent ids; not ACP ids"
+      ? "List allowed Operator subagent ids; not ACP ids"
       : "List allowed subagent ids",
     sessions_list: "List other sessions/subagents; filters/last",
     sessions_history: "Read other session/subagent history",
@@ -884,13 +884,13 @@ export function buildAgentSystemPrompt(params: {
     toolLines.push(summary ? `- ${name}: ${summary}` : `- ${name}`);
   }
   const toolSchemaDirectoryPrompt = params.toolSchemaDirectoryPrompt?.trim();
-  const renderOpenClawToolWorkflowHints = shouldRenderOpenClawToolWorkflowHints({
+  const renderOperatorToolWorkflowHints = shouldRenderOperatorToolWorkflowHints({
     surface: promptSurface,
     hasToolList: toolLines.length > 0,
   });
 
   const hasGateway = availableTools.has("gateway");
-  const hasOpenClaw = availableTools.has("operator");
+  const hasOperator = availableTools.has("operator");
   const readToolName = resolveToolName("read");
   const execToolName = resolveToolName("exec");
   const processToolName = resolveToolName("process");
@@ -1002,7 +1002,7 @@ export function buildAgentSystemPrompt(params: {
 
   // For "none" mode, return just the basic identity line
   if (promptMode === "none") {
-    return ["You are a personal assistant running inside OpenClaw.", modelIdentityLine]
+    return ["You are a personal assistant running inside Operator.", modelIdentityLine]
       .filter(Boolean)
       .join("\n");
   }
@@ -1020,9 +1020,9 @@ export function buildAgentSystemPrompt(params: {
     toolLines,
     toolSchemaDirectoryPrompt,
     capabilityToolNames: [...availableTools].toSorted(),
-    renderOpenClawToolWorkflowHints,
+    renderOperatorToolWorkflowHints,
     hasGateway,
-    hasOpenClaw,
+    hasOperator,
     readToolName,
     execToolName,
     processToolName,
@@ -1057,13 +1057,13 @@ export function buildAgentSystemPrompt(params: {
   });
   const stablePrefix = cacheStablePromptPrefix(stablePrefixCacheKey, () => {
     const lines = [
-      "You are a personal assistant running inside OpenClaw.",
+      "You are a personal assistant running inside Operator.",
       "",
       "## Tooling",
       "Tools policy-filtered. Names case-sensitive; call exact.",
       toolLines.length > 0
         ? toolLines.join("\n")
-        : buildOpenClawToolFallbackText({
+        : buildOperatorToolFallbackText({
             surface: promptSurface,
             execToolName,
             processToolName,
@@ -1072,7 +1072,7 @@ export function buildAgentSystemPrompt(params: {
         ? ["", "### Deferred Tool Schemas", toolSchemaDirectoryPrompt]
         : []),
       "TOOLS.md guides usage; never grants availability.",
-      ...(renderOpenClawToolWorkflowHints
+      ...(renderOperatorToolWorkflowHints
         ? [
             `Long wait: no rapid poll. Use ${execToolName} yieldMs or ${processToolName}(poll, timeout=<ms>).`,
             "Large work: `sessions_spawn`; completion push-based.",
@@ -1098,7 +1098,7 @@ export function buildAgentSystemPrompt(params: {
               : []),
           ]
         : []),
-      ...(renderOpenClawToolWorkflowHints
+      ...(renderOperatorToolWorkflowHints
         ? [
             availableTools.has("sessions_yield")
               ? "Never loop-poll `subagents list`/`sessions_list`; wait with `sessions_yield`. Status only on-demand/intervention/debug/request."
@@ -1146,11 +1146,11 @@ export function buildAgentSystemPrompt(params: {
         fallback: [],
       }),
       ...safetySection,
-      "## OpenClaw Control",
+      "## Operator Control",
       "Do not invent commands.",
-      ...(hasOpenClaw
+      ...(hasOperator
         ? [
-            "Config, channels, plugins, new agents, model/provider, updates: ask `operator`. Never write own config; OpenClaw is system expert.",
+            "Config, channels, plugins, new agents, model/provider, updates: ask `operator`. Never write own config; Operator is system expert.",
           ]
         : [
             "Config read: `gateway` (`config.get|config.schema.lookup`). Write/restart unavailable; ask human.",
@@ -1244,7 +1244,7 @@ export function buildAgentSystemPrompt(params: {
       }),
       ...bootstrapSystemPromptSections,
       "## Workspace Files (injected)",
-      "User-editable; OpenClaw loads below as Project Context.",
+      "User-editable; Operator loads below as Project Context.",
       "",
       ...buildAssistantOutputDirectivesSection({ isMinimal, sourceMessageToolOnly }),
     ];

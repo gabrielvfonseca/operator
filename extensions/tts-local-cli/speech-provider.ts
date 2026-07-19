@@ -14,7 +14,7 @@ import type {
   SpeechSynthesisRequest,
   SpeechTelephonySynthesisRequest,
 } from "openclaw/plugin-sdk/speech-core";
-import { tempWorkspace, resolvePreferredOpenClawTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { tempWorkspace, resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
 import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
 
 const log = createSubsystemLogger("tts-local-cli");
@@ -344,7 +344,7 @@ export function buildCliSpeechProvider(): SpeechProviderPlugin {
       log.debug(`synthesize: text=${truncateUtf16Safe(req.text, 50)}...`);
 
       const temp = await tempWorkspace({
-        rootDir: resolvePreferredOpenClawTmpDir(),
+        rootDir: resolvePreferredOperatorTmpDir(),
         prefix: "openclaw-cli-tts-",
       });
       const tempDir = temp.dir;
@@ -417,7 +417,7 @@ export function buildCliSpeechProvider(): SpeechProviderPlugin {
       log.debug(`synthesizeTelephony: text=${truncateUtf16Safe(req.text, 50)}...`);
 
       const temp = await tempWorkspace({
-        rootDir: resolvePreferredOpenClawTmpDir(),
+        rootDir: resolvePreferredOperatorTmpDir(),
         prefix: "openclaw-cli-tts-",
       });
       const tempDir = temp.dir;

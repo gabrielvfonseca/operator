@@ -14,7 +14,7 @@ import type { ThinkLevel, VerboseLevel } from "../../auto-reply/thinking.js";
 import type { CliSessionBinding } from "../../config/sessions.js";
 import { formatSqliteSessionFileMarker } from "../../config/sessions/sqlite-marker.js";
 import type { AgentDefaultsConfig } from "../../config/types.agent-defaults.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { SourceDeliveryPlan } from "../../infra/outbound/source-delivery-plan.js";
 import {
   createUserTurnTranscriptRecorder,
@@ -194,8 +194,8 @@ export type CronExecutionResult = {
 
 /** Creates the model-fallback executor for one isolated cron prompt run. */
 function createCronPromptExecutor(params: {
-  cfg: OpenClawConfig;
-  cfgWithAgentDefaults: OpenClawConfig;
+  cfg: OperatorConfig;
+  cfgWithAgentDefaults: OperatorConfig;
   job: CronJob;
   agentId: string;
   agentDir: string;
@@ -407,7 +407,7 @@ function createCronPromptExecutor(params: {
         const bootstrapPromptWarningSignature =
           bootstrapPromptWarningSignaturesSeen[bootstrapPromptWarningSignaturesSeen.length - 1];
         // CLI providers can resume provider-native sessions; embedded providers
-        // use OpenClaw's transcript/session file plus prompt-cache affinity.
+        // use Operator's transcript/session file plus prompt-cache affinity.
         if (cliExecution) {
           const cliSessionBinding = params.cronSession.isNewSession
             ? undefined
@@ -612,8 +612,8 @@ function createCronPromptExecutor(params: {
 
 /** Executes an isolated cron prompt, including live model-switch and interim-ack retries. */
 export async function executeCronRun(params: {
-  cfg: OpenClawConfig;
-  cfgWithAgentDefaults: OpenClawConfig;
+  cfg: OperatorConfig;
+  cfgWithAgentDefaults: OperatorConfig;
   job: CronJob;
   agentId: string;
   agentDir: string;

@@ -1,5 +1,5 @@
 import path from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   normalizePluginsConfig,
   resolveEffectiveEnableState,
@@ -23,7 +23,7 @@ export default definePluginEntry({
     const startupConfig = parseOnePasswordConfig(api.pluginConfig);
     const resolveCurrentConfig = () => {
       const liveConfig = api.runtime.config?.current
-        ? (api.runtime.config.current() as OpenClawConfig)
+        ? (api.runtime.config.current() as OperatorConfig)
         : undefined;
       if (!liveConfig) {
         return startupConfig;

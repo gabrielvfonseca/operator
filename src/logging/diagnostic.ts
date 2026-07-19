@@ -3,7 +3,7 @@ import { monitorEventLoopDelay, performance } from "node:perf_hooks";
 import { resolveCompactionTimeoutMs } from "../agents/embedded-agent-runner/compaction-safety-timeout.js";
 import { getRuntimeConfig } from "../config/config.js";
 import { resolveAllAgentSessionStoreTargetsSync } from "../config/sessions/targets.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   areDiagnosticsEnabledForProcess,
   emitInternalDiagnosticEvent as emitDiagnosticEvent,
@@ -125,14 +125,14 @@ type SampleDiagnosticLiveness = (
 ) => DiagnosticLivenessSample | null;
 
 type StartDiagnosticHeartbeatOptions = {
-  getConfig?: () => OpenClawConfig;
+  getConfig?: () => OperatorConfig;
   emitMemorySample?: EmitDiagnosticMemorySample;
   sampleLiveness?: SampleDiagnosticLiveness;
   recoverStuckSession?: RecoverStuckSession;
   startupGraceMs?: number;
 };
 
-function resolveDiagnosticSessionStorePaths(config?: OpenClawConfig): string[] | undefined {
+function resolveDiagnosticSessionStorePaths(config?: OperatorConfig): string[] | undefined {
   if (!config) {
     return undefined;
   }
@@ -144,7 +144,7 @@ function resolveDiagnosticSessionStorePaths(config?: OpenClawConfig): string[] |
   }
 }
 
-function shouldWriteCriticalMemoryPressureBundle(config?: OpenClawConfig): boolean {
+function shouldWriteCriticalMemoryPressureBundle(config?: OperatorConfig): boolean {
   return config?.diagnostics?.memoryPressureSnapshot === true;
 }
 
@@ -182,7 +182,7 @@ async function recoverStuckSession(
  * (#101910); reply admission owns stale-run reclaim now. Kept only because the
  * plugin SDK re-exports this module; scheduled for removal in the next SDK major.
  */
-export function isStuckSessionRecoveryEnabled(config?: OpenClawConfig): boolean {
+export function isStuckSessionRecoveryEnabled(config?: OperatorConfig): boolean {
   return areDiagnosticsEnabledForProcess() && isDiagnosticsEnabled(config);
 }
 
@@ -474,7 +474,7 @@ function formatDiagnosticWorkLabels(work: DiagnosticWorkSnapshot): string {
   return parts.join(" ");
 }
 
-export function resolveStuckSessionWarnMs(config?: OpenClawConfig): number {
+export function resolveStuckSessionWarnMs(config?: OperatorConfig): number {
   const raw = config?.diagnostics?.stuckSessionWarnMs;
   if (typeof raw !== "number" || !Number.isFinite(raw)) {
     return DEFAULT_STUCK_SESSION_WARN_MS;
@@ -487,7 +487,7 @@ export function resolveStuckSessionWarnMs(config?: OpenClawConfig): number {
 }
 
 export function resolveStuckSessionAbortMs(
-  config: OpenClawConfig | undefined,
+  config: OperatorConfig | undefined,
   stuckSessionWarnMs: number,
 ): number {
   const raw = config?.diagnostics?.stuckSessionAbortMs;
@@ -1208,7 +1208,7 @@ let heartbeatInterval: NodeJS.Timeout | null = null;
 let lastDiagnosticHeartbeatTickAt: number | undefined;
 
 export function startDiagnosticHeartbeat(
-  config?: OpenClawConfig,
+  config?: OperatorConfig,
   opts?: StartDiagnosticHeartbeatOptions,
 ) {
   if (!areDiagnosticsEnabledForProcess() || !isDiagnosticsEnabled(config)) {

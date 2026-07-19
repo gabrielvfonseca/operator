@@ -3,7 +3,7 @@
  *
  * Defines setup/allowlist approval hooks used by pairing flows.
  */
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { RuntimeEnv } from "../../runtime.js";
 
 /**
@@ -18,7 +18,7 @@ export type ChannelPairingAdapter = {
     meta?: Record<string, string>;
   }) => string | null | undefined;
   notifyApproval?: (params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     id: string;
     accountId?: string;
     runtime?: RuntimeEnv;

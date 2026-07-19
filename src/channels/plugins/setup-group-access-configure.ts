@@ -3,7 +3,7 @@
  *
  * Applies prompted group policy and allowlist entries through channel-specific hooks.
  */
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { WizardPrompter } from "../../wizard/prompts.js";
 import { promptChannelAccessConfig, type ChannelAccessPolicy } from "./setup-group-access.js";
 
@@ -11,7 +11,7 @@ import { promptChannelAccessConfig, type ChannelAccessPolicy } from "./setup-gro
  * Applies prompted group access config through channel-specific policy/allowlist hooks.
  */
 export async function configureChannelAccessWithAllowlist<TResolved>(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   prompter: WizardPrompter;
   label: string;
   currentPolicy: ChannelAccessPolicy;
@@ -19,10 +19,10 @@ export async function configureChannelAccessWithAllowlist<TResolved>(params: {
   placeholder: string;
   updatePrompt: boolean;
   skipAllowlistEntries?: boolean;
-  setPolicy: (cfg: OpenClawConfig, policy: ChannelAccessPolicy) => OpenClawConfig;
-  resolveAllowlist?: (params: { cfg: OpenClawConfig; entries: string[] }) => Promise<TResolved>;
-  applyAllowlist?: (params: { cfg: OpenClawConfig; resolved: TResolved }) => OpenClawConfig;
-}): Promise<OpenClawConfig> {
+  setPolicy: (cfg: OperatorConfig, policy: ChannelAccessPolicy) => OperatorConfig;
+  resolveAllowlist?: (params: { cfg: OperatorConfig; entries: string[] }) => Promise<TResolved>;
+  applyAllowlist?: (params: { cfg: OperatorConfig; resolved: TResolved }) => OperatorConfig;
+}): Promise<OperatorConfig> {
   let next = params.cfg;
   const accessConfig = await promptChannelAccessConfig({
     prompter: params.prompter,

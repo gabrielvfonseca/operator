@@ -213,7 +213,7 @@ export function registerAgentsCommands(program: Command): void {
         `
 ${theme.heading("Examples:")}
 ${formatHelpExamples([
-  ['operator agents set-identity --agent main --name "OpenClaw" --emoji "🦞"', "Set name + emoji."],
+  ['operator agents set-identity --agent main --name "Operator" --emoji "🦞"', "Set name + emoji."],
   ["operator agents set-identity --agent main --avatar avatars/operator.png", "Set avatar path."],
   [
     "operator agents set-identity --workspace ~/.operator/workspace --from-identity",

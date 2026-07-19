@@ -1,6 +1,6 @@
 // Google provider module implements model/runtime integration.
 import type {
-  OpenClawPluginApi,
+  OperatorPluginApi,
   ProviderReasoningOutputModeContext,
 } from "openclaw/plugin-sdk/plugin-entry";
 import { createProviderApiKeyAuthMethod } from "openclaw/plugin-sdk/provider-auth-api-key";
@@ -109,6 +109,6 @@ export function buildGoogleProvider(): ProviderPlugin {
   };
 }
 
-export function registerGoogleProvider(api: OpenClawPluginApi) {
+export function registerGoogleProvider(api: OperatorPluginApi) {
   api.registerProvider(buildGoogleProvider());
 }

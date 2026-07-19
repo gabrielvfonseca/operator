@@ -2,7 +2,7 @@
 
 import { expectDefined } from "@operator/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../../config/types.openclaw.js";
 import * as manifestRegistry from "../../../plugins/manifest-registry.js";
 import {
   channelPluginBlockerHitToHealthFinding,
@@ -177,7 +177,7 @@ describe("channel plugin blockers", () => {
           enabled: true,
         },
       },
-    } as OpenClawConfig);
+    } as OperatorConfig);
 
     expect(hits).toEqual([
       {
@@ -610,7 +610,7 @@ describe("channel plugin blockers", () => {
           origin: "bundled",
           channels: ["twitch"],
           channelEnvVars: {
-            twitch: ["OPENCLAW_TWITCH_ACCESS_TOKEN"],
+            twitch: ["OPERATOR_TWITCH_ACCESS_TOKEN"],
           },
           enabledByDefault: false,
         },
@@ -619,7 +619,7 @@ describe("channel plugin blockers", () => {
     } as unknown as ReturnType<typeof manifestRegistry.loadPluginManifestRegistry>);
 
     const hits = scanConfiguredChannelPluginBlockers({}, {
-      OPENCLAW_TWITCH_ACCESS_TOKEN: "configured",
+      OPERATOR_TWITCH_ACCESS_TOKEN: "configured",
     } as NodeJS.ProcessEnv);
 
     expect(hits).toEqual([
@@ -642,7 +642,7 @@ describe("channel plugin blockers", () => {
           origin: "bundled",
           channels: ["twitch"],
           channelEnvVars: {
-            twitch: ["OPENCLAW_TWITCH_ACCESS_TOKEN"],
+            twitch: ["OPERATOR_TWITCH_ACCESS_TOKEN"],
           },
           enabledByDefault: false,
         },
@@ -657,7 +657,7 @@ describe("channel plugin blockers", () => {
         },
       },
       {
-        OPENCLAW_TWITCH_ACCESS_TOKEN: "configured",
+        OPERATOR_TWITCH_ACCESS_TOKEN: "configured",
       } as NodeJS.ProcessEnv,
     );
 
@@ -826,7 +826,7 @@ describe("channel plugin blockers", () => {
       diagnostics: [],
     } as unknown as ReturnType<typeof manifestRegistry.loadPluginManifestRegistry>);
 
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: OperatorConfig = {
       channels: {
         discord: {
           enabled: true,
@@ -867,7 +867,7 @@ describe("channel plugin blockers", () => {
       diagnostics: [],
     } as unknown as ReturnType<typeof manifestRegistry.loadPluginManifestRegistry>);
 
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: OperatorConfig = {
       channels: {
         "workspace-chat": {
           enabled: true,

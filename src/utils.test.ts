@@ -80,19 +80,19 @@ describe("resolveConfigDir", () => {
     });
   });
 
-  it("expands OPENCLAW_STATE_DIR using the provided env", () => {
+  it("expands OPERATOR_STATE_DIR using the provided env", () => {
     const env = {
       HOME: "/tmp/openclaw-home",
-      OPENCLAW_STATE_DIR: "~/state",
+      OPERATOR_STATE_DIR: "~/state",
     } as NodeJS.ProcessEnv;
 
     expect(resolveConfigDir(env)).toBe(path.resolve("/tmp/openclaw-home", "state"));
   });
 
-  it("falls back to the config file directory when only OPENCLAW_CONFIG_PATH is set", () => {
+  it("falls back to the config file directory when only OPERATOR_CONFIG_PATH is set", () => {
     const env = {
       HOME: "/tmp/openclaw-home",
-      OPENCLAW_CONFIG_PATH: "~/profiles/dev/openclaw.json",
+      OPERATOR_CONFIG_PATH: "~/profiles/dev/openclaw.json",
     } as NodeJS.ProcessEnv;
 
     expect(resolveConfigDir(env)).toBe(path.resolve("/tmp/openclaw-home", "profiles", "dev"));
@@ -104,46 +104,46 @@ describe("resolveConfigDir", () => {
     try {
       expect(
         pinConfigDir({
-          OPENCLAW_STATE_DIR: selectedConfigDir,
-          OPENCLAW_TEST_FAST: "1",
+          OPERATOR_STATE_DIR: selectedConfigDir,
+          OPERATOR_TEST_FAST: "1",
         }),
       ).toBe(selectedConfigDir);
       expect(CONFIG_DIR).toBe(selectedConfigDir);
     } finally {
       pinConfigDir({
-        OPENCLAW_STATE_DIR: originalConfigDir,
-        OPENCLAW_TEST_FAST: "1",
+        OPERATOR_STATE_DIR: originalConfigDir,
+        OPERATOR_TEST_FAST: "1",
       });
     }
   });
 });
 
 describe("resolveHomeDir", () => {
-  it("prefers OPENCLAW_HOME over HOME", () => {
-    withEnv({ OPENCLAW_HOME: "/srv/openclaw-home", HOME: "/home/other" }, () => {
+  it("prefers OPERATOR_HOME over HOME", () => {
+    withEnv({ OPERATOR_HOME: "/srv/openclaw-home", HOME: "/home/other" }, () => {
       expect(resolveHomeDir()).toBe(path.resolve("/srv/openclaw-home"));
     });
   });
 });
 
 describe("shortenHomePath", () => {
-  it("uses $OPENCLAW_HOME prefix when OPENCLAW_HOME is set", () => {
-    withEnv({ OPENCLAW_HOME: "/srv/openclaw-home", HOME: "/home/other" }, () => {
+  it("uses $OPERATOR_HOME prefix when OPERATOR_HOME is set", () => {
+    withEnv({ OPERATOR_HOME: "/srv/openclaw-home", HOME: "/home/other" }, () => {
       expect(shortenHomePath(`${path.resolve("/srv/openclaw-home")}/.openclaw/openclaw.json`)).toBe(
-        "$OPENCLAW_HOME/.openclaw/openclaw.json",
+        "$OPERATOR_HOME/.openclaw/openclaw.json",
       );
     });
   });
 });
 
 describe("shortenHomeInString", () => {
-  it("uses $OPENCLAW_HOME replacement when OPENCLAW_HOME is set", () => {
-    withEnv({ OPENCLAW_HOME: "/srv/openclaw-home", HOME: "/home/other" }, () => {
+  it("uses $OPERATOR_HOME replacement when OPERATOR_HOME is set", () => {
+    withEnv({ OPERATOR_HOME: "/srv/openclaw-home", HOME: "/home/other" }, () => {
       expect(
         shortenHomeInString(
           `config: ${path.resolve("/srv/openclaw-home")}/.openclaw/openclaw.json`,
         ),
-      ).toBe("config: $OPENCLAW_HOME/.openclaw/openclaw.json");
+      ).toBe("config: $OPERATOR_HOME/.openclaw/openclaw.json");
     });
   });
 });
@@ -163,8 +163,8 @@ describe("resolveUserPath", () => {
     expect(resolveUserPath("tmp/dir")).toBe(path.resolve("tmp/dir"));
   });
 
-  it("prefers OPENCLAW_HOME for tilde expansion", () => {
-    withEnv({ OPENCLAW_HOME: "/srv/openclaw-home", HOME: "/home/other" }, () => {
+  it("prefers OPERATOR_HOME for tilde expansion", () => {
+    withEnv({ OPERATOR_HOME: "/srv/openclaw-home", HOME: "/home/other" }, () => {
       expect(resolveUserPath("~/openclaw")).toBe(path.resolve("/srv/openclaw-home", "openclaw"));
     });
   });
@@ -172,7 +172,7 @@ describe("resolveUserPath", () => {
   it("uses the provided env for tilde expansion", () => {
     const env = {
       HOME: "/tmp/openclaw-home",
-      OPENCLAW_HOME: "/srv/openclaw-home",
+      OPERATOR_HOME: "/srv/openclaw-home",
     } as NodeJS.ProcessEnv;
 
     expect(resolveUserPath("~/openclaw", env)).toBe(path.resolve("/srv/openclaw-home", "openclaw"));

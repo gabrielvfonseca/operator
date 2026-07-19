@@ -1,10 +1,10 @@
 // Proves startup update discovery through the real extended-stable registry resolver.
 import http from "node:http";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import {
-  createOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  type OperatorTestState,
 } from "../test-utils/operator-test-state.js";
 import type { UpdateCheckResult } from "./update-check.js";
 
@@ -12,7 +12,7 @@ vi.mock("./openclaw-root.js", async () => {
   const actual = await vi.importActual<typeof import("./openclaw-root.js")>("./openclaw-root.js");
   return {
     ...actual,
-    resolveOpenClawPackageRoot: vi.fn(async () => "/opt/openclaw"),
+    resolveOperatorPackageRoot: vi.fn(async () => "/opt/openclaw"),
   };
 });
 
@@ -36,18 +36,18 @@ vi.mock("../version.js", () => ({
 }));
 
 describe("extended-stable startup update integration", () => {
-  let testState: OpenClawTestState;
+  let testState: OperatorTestState;
   let server: http.Server | undefined;
 
   beforeEach(async () => {
     server = undefined;
-    testState = await createOpenClawTestState({
+    testState = await createOperatorTestState({
       layout: "state-only",
       prefix: "openclaw-update-startup-integration-",
       env: {
         NODE_ENV: "test",
         NPM_CONFIG_REGISTRY: undefined,
-        OPENCLAW_UPDATE_PACKAGE_SPEC: undefined,
+        OPERATOR_UPDATE_PACKAGE_SPEC: undefined,
         VITEST: undefined,
       },
     });
@@ -60,7 +60,7 @@ describe("extended-stable startup update integration", () => {
         activeServer.close((error) => (error ? reject(error) : resolve()));
       });
     }
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await testState.cleanup();
   });
 
@@ -79,7 +79,7 @@ describe("extended-stable startup update integration", () => {
     if (!address || typeof address === "string") {
       throw new Error("expected loopback registry address");
     }
-    process.env.OPENCLAW_UPDATE_PACKAGE_SPEC = "openclaw";
+    process.env.OPERATOR_UPDATE_PACKAGE_SPEC = "openclaw";
     process.env.NPM_CONFIG_REGISTRY = `http://127.0.0.1:${address.port}/`;
 
     const { runGatewayUpdateCheck, resetUpdateAvailableStateForTest } =

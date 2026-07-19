@@ -1,6 +1,6 @@
 // Stale subagent allowlist tests cover doctor warnings for obsolete subagent allowlists.
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../../config/types.openclaw.js";
 import {
   collectStaleSubagentAllowlistWarnings,
   maybeRepairStaleSubagentAllowlists,
@@ -26,7 +26,7 @@ describe("stale subagent allowlist doctor repair", () => {
           { id: "planner" },
         ],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(scanStaleSubagentAllowlistReferences(cfg)).toStrictEqual([
       {
@@ -42,7 +42,7 @@ describe("stale subagent allowlist doctor repair", () => {
     ]);
   });
 
-  it("keeps wildcard, configured OpenClaw agents, and configured ACP targets", () => {
+  it("keeps wildcard, configured Operator agents, and configured ACP targets", () => {
     const cfg = {
       acp: {
         defaultAgent: "claude",
@@ -63,7 +63,7 @@ describe("stale subagent allowlist doctor repair", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(scanStaleSubagentAllowlistReferences(cfg)).toStrictEqual([
       {
@@ -92,7 +92,7 @@ describe("stale subagent allowlist doctor repair", () => {
           { id: "planner" },
         ],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = maybeRepairStaleSubagentAllowlists(cfg);
 

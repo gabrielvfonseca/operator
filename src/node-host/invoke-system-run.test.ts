@@ -48,19 +48,19 @@ type MockedSendNodeEvent = Mock<HandleSystemRunInvokeOptions["sendNodeEvent"]>;
 
 describe("handleSystemRunInvoke mac app exec host routing", () => {
   let sharedFixtureRoot = "";
-  let sharedOpenClawHome = "";
+  let sharedOperatorHome = "";
   let sharedRuntimeBinDir = "";
   let sharedFixtureId = 0;
-  let previousOpenClawHome: string | undefined;
+  let previousOperatorHome: string | undefined;
   const sharedRuntimeBins = new Set<string>();
 
   beforeAll(() => {
     sharedFixtureRoot = fs.realpathSync(
       fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-node-host-fixtures-")),
     );
-    sharedOpenClawHome = path.join(sharedFixtureRoot, "openclaw-home");
+    sharedOperatorHome = path.join(sharedFixtureRoot, "openclaw-home");
     sharedRuntimeBinDir = path.join(sharedFixtureRoot, "bin");
-    fs.mkdirSync(sharedOpenClawHome, { recursive: true });
+    fs.mkdirSync(sharedOperatorHome, { recursive: true });
     fs.mkdirSync(sharedRuntimeBinDir, { recursive: true });
   });
 
@@ -77,18 +77,18 @@ describe("handleSystemRunInvoke mac app exec host routing", () => {
   }
 
   beforeEach(() => {
-    previousOpenClawHome = process.env.OPENCLAW_HOME;
-    process.env.OPENCLAW_HOME = sharedOpenClawHome;
+    previousOperatorHome = process.env.OPERATOR_HOME;
+    process.env.OPERATOR_HOME = sharedOperatorHome;
     fs.rmSync(resolveExecApprovalsPath(), { force: true });
     clearRuntimeConfigSnapshot();
   });
 
   afterEach(() => {
     clearRuntimeConfigSnapshot();
-    if (previousOpenClawHome === undefined) {
-      delete process.env.OPENCLAW_HOME;
+    if (previousOperatorHome === undefined) {
+      delete process.env.OPERATOR_HOME;
     } else {
-      process.env.OPENCLAW_HOME = previousOpenClawHome;
+      process.env.OPERATOR_HOME = previousOperatorHome;
     }
   });
 
@@ -382,8 +382,8 @@ describe("handleSystemRunInvoke mac app exec host routing", () => {
     approvals: Parameters<typeof saveExecApprovals>[0];
     run: (ctx: { tempHome: string }) => Promise<T>;
   }): Promise<T> {
-    const tempHome = sharedOpenClawHome;
-    return await withEnvAsync({ OPENCLAW_HOME: tempHome }, async () => {
+    const tempHome = sharedOperatorHome;
+    return await withEnvAsync({ OPERATOR_HOME: tempHome }, async () => {
       saveExecApprovals(params.approvals);
       return await params.run({ tempHome });
     });
@@ -1078,8 +1078,8 @@ describe("handleSystemRunInvoke mac app exec host routing", () => {
         preferMacAppExecHost: false,
         security: "allowlist",
         ask: "off",
-        command: ["/bin/sh", "-lc", "head -c${IFS}16${IFS}${OPENCLAW_CONFIG_PATH}"],
-        rawCommand: "head -c${IFS}16${IFS}${OPENCLAW_CONFIG_PATH}",
+        command: ["/bin/sh", "-lc", "head -c${IFS}16${IFS}${OPERATOR_CONFIG_PATH}"],
+        rawCommand: "head -c${IFS}16${IFS}${OPERATOR_CONFIG_PATH}",
       });
 
       expect(runCommand).not.toHaveBeenCalled();
@@ -1738,7 +1738,7 @@ describe("handleSystemRunInvoke mac app exec host routing", () => {
       ask: "off",
       command: ["/bin/sh", "./script.sh"],
       env: {
-        OPENCLAW_TEST: "1",
+        OPERATOR_TEST: "1",
         LANG: "C",
         LC_TIME: "C",
       },

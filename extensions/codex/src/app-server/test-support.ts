@@ -8,7 +8,7 @@ import path from "node:path";
 import { PassThrough, Writable } from "node:stream";
 import type { EmbeddedRunAttemptParams } from "openclaw/plugin-sdk/agent-harness-runtime";
 import type { Model } from "openclaw/plugin-sdk/llm";
-import { resolvePreferredOpenClawTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
 import { vi } from "vitest";
 import { CodexAppServerClient } from "./client.js";
 import type { CodexAppServerClientFactory, CodexAppServerClientOptions } from "./shared-client.js";
@@ -90,7 +90,7 @@ export function useAutoCleanupTempDirTracker(registerCleanup: (cleanup: () => vo
   return {
     dirs,
     make(prefix: string): string {
-      const dir = fs.mkdtempSync(path.join(resolvePreferredOpenClawTmpDir(), prefix));
+      const dir = fs.mkdtempSync(path.join(resolvePreferredOperatorTmpDir(), prefix));
       dirs.add(dir);
       return dir;
     },

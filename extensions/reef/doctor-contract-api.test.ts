@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   createPluginStateKeyedStoreForTests,
   resetPluginStateStoreForTests,
@@ -35,7 +35,7 @@ function createDoctorContext(env: NodeJS.ProcessEnv): PluginDoctorStateMigration
   };
 }
 
-function legacyConfig(): OpenClawConfig {
+function legacyConfig(): OperatorConfig {
   const identity = generateIdentity();
   return {
     channels: {
@@ -57,7 +57,7 @@ function legacyConfig(): OpenClawConfig {
         },
       },
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 describe("Reef doctor contract", () => {
@@ -67,7 +67,7 @@ describe("Reef doctor contract", () => {
   beforeEach(() => {
     resetPluginStateStoreForTests();
     stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-reef-doctor-"));
-    env = { ...process.env, OPENCLAW_STATE_DIR: stateDir };
+    env = { ...process.env, OPERATOR_STATE_DIR: stateDir };
   });
 
   afterEach(() => {

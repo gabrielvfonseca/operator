@@ -14,10 +14,10 @@ import {
 import { listQaRunnerCliContributions } from "./qa-runner-runtime.js";
 
 const ORIGINAL_ENV = {
-  OPENCLAW_DISABLE_BUNDLED_PLUGINS: process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS,
-  OPENCLAW_CONFIG_PATH: process.env.OPENCLAW_CONFIG_PATH,
-  OPENCLAW_STATE_DIR: process.env.OPENCLAW_STATE_DIR,
-  OPENCLAW_TEST_FAST: process.env.OPENCLAW_TEST_FAST,
+  OPERATOR_DISABLE_BUNDLED_PLUGINS: process.env.OPERATOR_DISABLE_BUNDLED_PLUGINS,
+  OPERATOR_CONFIG_PATH: process.env.OPERATOR_CONFIG_PATH,
+  OPERATOR_STATE_DIR: process.env.OPERATOR_STATE_DIR,
+  OPERATOR_TEST_FAST: process.env.OPERATOR_TEST_FAST,
 } as const;
 
 const tempDirs: string[] = [];
@@ -36,8 +36,8 @@ function resetQaRunnerRuntimeState() {
 describe("plugin-sdk qa-runner-runtime linked plugin smoke", () => {
   beforeEach(() => {
     resetQaRunnerRuntimeState();
-    process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS = "1";
-    process.env.OPENCLAW_TEST_FAST = "1";
+    process.env.OPERATOR_DISABLE_BUNDLED_PLUGINS = "1";
+    process.env.OPERATOR_TEST_FAST = "1";
   });
 
   afterEach(() => {
@@ -66,8 +66,8 @@ describe("plugin-sdk qa-runner-runtime linked plugin smoke", () => {
       }),
       "utf8",
     );
-    process.env.OPENCLAW_CONFIG_PATH = configPath;
-    process.env.OPENCLAW_STATE_DIR = stateDir;
+    process.env.OPERATOR_CONFIG_PATH = configPath;
+    process.env.OPERATOR_STATE_DIR = stateDir;
 
     fs.mkdirSync(pluginDir, { recursive: true });
     fs.writeFileSync(

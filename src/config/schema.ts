@@ -1,4 +1,4 @@
-// Builds and validates the canonical OpenClaw configuration schema.
+// Builds and validates the canonical Operator configuration schema.
 import crypto from "node:crypto";
 import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
 import { CHANNEL_IDS } from "../channels/ids.js";

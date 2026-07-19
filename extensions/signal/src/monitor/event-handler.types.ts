@@ -1,5 +1,5 @@
 // Signal type declarations define plugin contracts.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type {
   DmPolicy,
   GroupPolicy,
@@ -93,7 +93,7 @@ export type SignalEventHandlerDeps = {
   runtime: RuntimeEnv;
   abortSignal?: AbortSignal;
   runTrackedTask?: (task: () => Promise<void>) => void;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   baseUrl: string;
   account?: string;
   accountUuid?: string;
@@ -121,7 +121,7 @@ export type SignalEventHandlerDeps = {
     maxBytes: number;
   }) => Promise<{ path: string; contentType?: string } | null>;
   deliverReplies: (params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     replies: ReplyPayload[];
     target: string;
     baseUrl: string;

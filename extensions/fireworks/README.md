@@ -1,6 +1,6 @@
-# Fireworks OpenClaw provider
+# Fireworks Operator provider
 
-Official OpenClaw provider plugin for Fireworks.
+Official Operator provider plugin for Fireworks.
 
 ## Install
 
@@ -10,4 +10,4 @@ openclaw plugins install @operator/fireworks-provider
 
 ## Docs
 
-See `docs/providers/fireworks.md` in the OpenClaw repository, or the published docs at `https://docs.openclaw.ai/providers/fireworks`.
+See `docs/providers/fireworks.md` in the Operator repository, or the published docs at `https://docs.openclaw.ai/providers/fireworks`.

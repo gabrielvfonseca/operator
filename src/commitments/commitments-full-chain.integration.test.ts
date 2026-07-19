@@ -1,13 +1,13 @@
 // Exercises the full commitment extraction-to-follow-up chain.
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { runHeartbeatOnce } from "../infra/heartbeat-runner.js";
 import { installHeartbeatRunnerTestRuntime } from "../infra/heartbeat-runner.test-harness.js";
 import {
   seedSessionStore,
   withTempHeartbeatSandbox,
 } from "../infra/heartbeat-runner.test-utils.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import { enqueueCommitmentExtraction } from "./runtime.js";
 import {
@@ -25,7 +25,7 @@ describe("commitments full-chain integration", () => {
   const dueMs = writeMs + 10 * 60_000;
 
   afterEach(() => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     resetCommitmentExtractionRuntimeForTests();
     vi.useRealTimers();
     vi.unstubAllEnvs();
@@ -36,9 +36,9 @@ describe("commitments full-chain integration", () => {
     vi.setSystemTime(writeMs);
 
     await withTempHeartbeatSandbox(async ({ tmpDir, storePath, replySpy }) => {
-      await withEnvAsync({ OPENCLAW_STATE_DIR: tmpDir }, async () => {
+      await withEnvAsync({ OPERATOR_STATE_DIR: tmpDir }, async () => {
         const sessionKey = "agent:main:telegram:user-155462274";
-        const cfg: OpenClawConfig = {
+        const cfg: OperatorConfig = {
           agents: {
             defaults: {
               workspace: tmpDir,

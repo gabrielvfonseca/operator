@@ -8,7 +8,7 @@ import {
   resolveTextCommand,
 } from "../auto-reply/commands-registry.js";
 import { formatThinkingLevels, listThinkingLevelLabels } from "../auto-reply/thinking.js";
-import type { OpenClawConfig } from "../config/types.js";
+import type { OperatorConfig } from "../config/types.js";
 
 const VERBOSE_LEVELS = ["on", "off"];
 const TRACE_LEVELS = ["on", "off"];
@@ -24,7 +24,7 @@ type ParsedCommand = {
 };
 
 type SlashCommandOptions = {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   provider?: string;
   model?: string;
   agentRuntime?: string;
@@ -116,7 +116,7 @@ export function getSlashCommands(options: SlashCommandOptions = {}): SlashComman
     ...(options.local ? [{ name: "auth", description: "Run provider auth/login flow" }] : []),
     { name: "agent", description: "Switch agent (or open picker)" },
     { name: "agents", description: "Open agent picker" },
-    { name: "operator", description: "Return to OpenClaw" },
+    { name: "operator", description: "Return to Operator" },
     { name: "session", description: "Switch session (or open picker)" },
     { name: "sessions", description: "Open session picker" },
     {

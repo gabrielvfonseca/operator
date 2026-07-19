@@ -8,12 +8,12 @@ import {
 } from "../../agents/auth-profiles/sqlite.js";
 import { executeSqliteQueryTakeFirstSync, getNodeSqliteKysely } from "../../infra/kysely-sync.js";
 import { onSessionTranscriptUpdate } from "../../sessions/transcript-events.js";
-import type { DB as OpenClawAgentKyselyDatabase } from "../../state/openclaw-agent-db.generated.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../../state/openclaw-agent-db.generated.js";
 import {
-  closeOpenClawAgentDatabasesForTest,
-  openOpenClawAgentDatabase,
+  closeOperatorAgentDatabasesForTest,
+  openOperatorAgentDatabase,
 } from "../../state/openclaw-agent-db.js";
-import { closeOpenClawStateDatabaseForTest } from "../../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../state/openclaw-state-db.js";
 import { appendSqliteTrajectoryRuntimeEvents } from "../../trajectory/runtime-store.sqlite.js";
 import { readSessionArchiveContentSync } from "./archive-compression.js";
 import {
@@ -135,20 +135,20 @@ const publicAccessorAdapter: AccessorAdapter = {
   usesSqliteStore: true,
   entryScope: (paths) => ({
     agentId: "main",
-    env: { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir },
+    env: { ...process.env, OPERATOR_STATE_DIR: paths.stateDir },
     sessionKey: "agent:main:main",
     storePath: paths.sqlitePath,
   }),
   transcriptScope: (paths, id = "session-1") => ({
     agentId: "main",
-    env: { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir },
+    env: { ...process.env, OPERATOR_STATE_DIR: paths.stateDir },
     sessionId: id,
     sessionKey: "agent:main:main",
     storePath: paths.sqlitePath,
   }),
   transcriptReadScope: (paths, id = "session-1") => ({
     agentId: "main",
-    env: { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir },
+    env: { ...process.env, OPERATOR_STATE_DIR: paths.stateDir },
     sessionId: id,
     storePath: paths.sqlitePath,
   }),
@@ -173,20 +173,20 @@ const sqliteAdapter: AccessorAdapter = {
   usesSqliteStore: true,
   entryScope: (paths) => ({
     agentId: "main",
-    env: { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir },
+    env: { ...process.env, OPERATOR_STATE_DIR: paths.stateDir },
     sessionKey: "agent:main:main",
     storePath: paths.sqlitePath,
   }),
   transcriptScope: (paths, id = "session-1") => ({
     agentId: "main",
-    env: { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir },
+    env: { ...process.env, OPERATOR_STATE_DIR: paths.stateDir },
     sessionId: id,
     sessionKey: "agent:main:main",
     storePath: paths.sqlitePath,
   }),
   transcriptReadScope: (paths, id = "session-1") => ({
     agentId: "main",
-    env: { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir },
+    env: { ...process.env, OPERATOR_STATE_DIR: paths.stateDir },
     sessionId: id,
     storePath: paths.sqlitePath,
   }),
@@ -230,8 +230,8 @@ describe.each([publicAccessorAdapter, sqliteAdapter])(
     });
 
     afterEach(() => {
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       fs.rmSync(paths.tempDir, { recursive: true, force: true });
     });
 
@@ -462,12 +462,12 @@ describe.each([publicAccessorAdapter, sqliteAdapter])(
       });
       if (usesSqliteStore) {
         expect(fs.existsSync(cleanupStorePath)).toBe(false);
-        const database = openOpenClawAgentDatabase({
+        const database = openOperatorAgentDatabase({
           agentId: "main",
-          env: { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir },
+          env: { ...process.env, OPERATOR_STATE_DIR: paths.stateDir },
           path: path.join(paths.stateDir, "agents", "main", "agent", "openclaw-agent.sqlite"),
         });
-        const db = getNodeSqliteKysely<OpenClawAgentKyselyDatabase>(database.db);
+        const db = getNodeSqliteKysely<OperatorAgentKyselyDatabase>(database.db);
         const removedRoute = executeSqliteQueryTakeFirstSync(
           database.db,
           db
@@ -577,7 +577,7 @@ describe.each([publicAccessorAdapter, sqliteAdapter])(
         "openclaw-agent.sqlite",
       );
       const scope = {
-        env: { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir },
+        env: { ...process.env, OPERATOR_STATE_DIR: paths.stateDir },
         sessionKey: "voice:123",
         storePath: legacyStorePath,
       };
@@ -616,7 +616,7 @@ describe.each([publicAccessorAdapter, sqliteAdapter])(
       const customStorePath = path.join(paths.tempDir, "custom-sessions.json");
       const sqlitePath = path.join(paths.tempDir, "custom-sessions.voice.sqlite");
       const scope = {
-        env: { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir },
+        env: { ...process.env, OPERATOR_STATE_DIR: paths.stateDir },
         sessionKey: "agent:voice:main",
         storePath: customStorePath,
       };
@@ -645,7 +645,7 @@ describe.each([publicAccessorAdapter, sqliteAdapter])(
       );
       const scope = {
         agentId: "support",
-        env: { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir },
+        env: { ...process.env, OPERATOR_STATE_DIR: paths.stateDir },
         sessionKey: "agent:support:main",
         storePath: customStorePath,
       };
@@ -1134,13 +1134,13 @@ describe("sqlite session normalization", () => {
   });
 
   afterEach(() => {
-    closeOpenClawAgentDatabasesForTest();
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorAgentDatabasesForTest();
+    closeOperatorStateDatabaseForTest();
     fs.rmSync(paths.tempDir, { recursive: true, force: true });
   });
 
   it("maintains normalized session root and route rows", async () => {
-    const env = { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir };
+    const env = { ...process.env, OPERATOR_STATE_DIR: paths.stateDir };
     await upsertSqliteSessionEntry(
       {
         agentId: "main",
@@ -1172,12 +1172,12 @@ describe("sqlite session normalization", () => {
       },
     );
 
-    const database = openOpenClawAgentDatabase({
+    const database = openOperatorAgentDatabase({
       agentId: "main",
       env,
       path: paths.sqlitePath,
     });
-    const db = getNodeSqliteKysely<OpenClawAgentKyselyDatabase>(database.db);
+    const db = getNodeSqliteKysely<OperatorAgentKyselyDatabase>(database.db);
     const session = executeSqliteQueryTakeFirstSync(
       database.db,
       db
@@ -1235,7 +1235,7 @@ describe("sqlite session normalization", () => {
   });
 
   it("exposes same-key rollover lineage when a killed session is replaced", async () => {
-    const env = { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir };
+    const env = { ...process.env, OPERATOR_STATE_DIR: paths.stateDir };
     const sessionKey = "agent:main:telegram:group:-1003774691294:topic:29020";
     const oldSessionId = "f1321535-878b-47cd-b35e-2f5f4bae2bb5";
     const newSessionId = "c0daccb0-0555-47d8-8747-9b53addf1fe2";
@@ -1296,7 +1296,7 @@ describe("sqlite session normalization", () => {
   });
 
   it("keeps exact SQLite replacement entries free of inferred rollover lineage", async () => {
-    const env = { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir };
+    const env = { ...process.env, OPERATOR_STATE_DIR: paths.stateDir };
     const scope = {
       agentId: "main",
       env,
@@ -1320,7 +1320,7 @@ describe("sqlite session normalization", () => {
   });
 
   it("skips parent fork when transcript rows exceed the token budget and entry totals are stale", async () => {
-    const env = { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir };
+    const env = { ...process.env, OPERATOR_STATE_DIR: paths.stateDir };
     const parentKey = "agent:main:parent";
     const childKey = "agent:main:subagent:child";
     await upsertSqliteSessionEntry(
@@ -1384,7 +1384,7 @@ describe("sqlite session normalization", () => {
   });
 
   it("does not move current routes back to stale transcript session ids", async () => {
-    const env = { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir };
+    const env = { ...process.env, OPERATOR_STATE_DIR: paths.stateDir };
     const scope = {
       agentId: "main",
       env,
@@ -1407,12 +1407,12 @@ describe("sqlite session normalization", () => {
       },
     );
 
-    const database = openOpenClawAgentDatabase({
+    const database = openOperatorAgentDatabase({
       agentId: "main",
       env,
       path: paths.sqlitePath,
     });
-    const db = getNodeSqliteKysely<OpenClawAgentKyselyDatabase>(database.db);
+    const db = getNodeSqliteKysely<OperatorAgentKyselyDatabase>(database.db);
     const route = executeSqliteQueryTakeFirstSync(
       database.db,
       db
@@ -1433,7 +1433,7 @@ describe("sqlite session normalization", () => {
         },
       },
     });
-    const env = { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir };
+    const env = { ...process.env, OPERATOR_STATE_DIR: paths.stateDir };
     const scopeFor = (sessionKey: string) => ({
       agentId: "main",
       env,
@@ -1573,7 +1573,7 @@ describe("sqlite session normalization", () => {
         },
       },
     });
-    const env = { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir };
+    const env = { ...process.env, OPERATOR_STATE_DIR: paths.stateDir };
     const scopeFor = (sessionKey: string) => ({
       agentId: "main",
       env,
@@ -1685,7 +1685,7 @@ describe("sqlite session normalization", () => {
   });
 
   it("resolves confirmed lowercased legacy SQLite session aliases", async () => {
-    const env = { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir };
+    const env = { ...process.env, OPERATOR_STATE_DIR: paths.stateDir };
     const canonicalKey = "agent:main:matrix:channel:!MixedCase:example.org";
     const legacyKey = canonicalKey.toLowerCase();
     await upsertSqliteSessionEntry(
@@ -1780,7 +1780,7 @@ describe("sqlite session normalization", () => {
   });
 
   it("normalizes missing entry updatedAt before writing root and entry rows", async () => {
-    const env = { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir };
+    const env = { ...process.env, OPERATOR_STATE_DIR: paths.stateDir };
     await replaceSqliteSessionEntry(
       {
         agentId: "main",
@@ -1806,12 +1806,12 @@ describe("sqlite session normalization", () => {
       updatedAt: 123,
     });
 
-    const database = openOpenClawAgentDatabase({
+    const database = openOperatorAgentDatabase({
       agentId: "main",
       env,
       path: paths.sqlitePath,
     });
-    const db = getNodeSqliteKysely<OpenClawAgentKyselyDatabase>(database.db);
+    const db = getNodeSqliteKysely<OperatorAgentKyselyDatabase>(database.db);
     const row = executeSqliteQueryTakeFirstSync(
       database.db,
       db
@@ -1866,7 +1866,7 @@ describe("sqlite session normalization", () => {
   });
 
   it("branches a checkpoint by copying SQLite rows and creating the entry transactionally", async () => {
-    const env = { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir };
+    const env = { ...process.env, OPERATOR_STATE_DIR: paths.stateDir };
     const sourceScope = {
       agentId: "main",
       env,
@@ -1969,7 +1969,7 @@ describe("sqlite session normalization", () => {
   });
 
   it("falls back to post-compaction SQLite rows when no pre-compaction rows exist", async () => {
-    const env = { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir };
+    const env = { ...process.env, OPERATOR_STATE_DIR: paths.stateDir };
     const sourceScope = {
       agentId: "main",
       env,
@@ -2038,7 +2038,7 @@ describe("sqlite session normalization", () => {
   });
 
   it("restores a checkpoint by copying SQLite rows and replacing the entry transactionally", async () => {
-    const env = { ...process.env, OPENCLAW_STATE_DIR: paths.stateDir };
+    const env = { ...process.env, OPERATOR_STATE_DIR: paths.stateDir };
     const sourceScope = {
       agentId: "main",
       env,

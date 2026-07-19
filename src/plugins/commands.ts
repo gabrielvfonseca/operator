@@ -9,7 +9,7 @@ import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/st
 import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
 import { resolveBoundAgentIdForSession } from "../agents/session-agent-binding.js";
 import { resolveConversationBindingContext } from "../channels/conversation-binding-context.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { ADMIN_SCOPE, isOperatorScope } from "../gateway/operator-scopes.js";
 import { logVerbose } from "../globals.js";
 import {
@@ -34,7 +34,7 @@ import {
 } from "./conversation-binding.js";
 import { getActivePluginChannelRegistry } from "./runtime.js";
 import type {
-  OpenClawPluginCommandDefinition,
+  OperatorPluginCommandDefinition,
   PluginCommandContext,
   PluginCommandResult,
 } from "./types.js";
@@ -123,7 +123,7 @@ function sanitizeArgs(args: string | undefined): string | undefined {
 }
 
 function resolveBindingConversationFromCommand(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   channel: string;
   senderId?: string;
   from?: string;
@@ -145,7 +145,7 @@ function resolveBindingConversationFromCommand(params: {
     return null;
   }
   return resolveConversationBindingContext({
-    cfg: params.config ?? ({} as OpenClawConfig),
+    cfg: params.config ?? ({} as OperatorConfig),
     channel: params.channel,
     accountId: params.accountId,
     threadId: params.messageThreadId,
@@ -164,7 +164,7 @@ type PluginCommandLlmCompleteParams = Parameters<
 
 function buildPluginCommandRuntimeContext(params: {
   command: RegisteredPluginCommand;
-  config: OpenClawConfig;
+  config: OperatorConfig;
   agentId?: string;
   sessionKey?: string;
   authProfileId?: string;
@@ -227,7 +227,7 @@ export async function executePluginCommand(params: {
   sessionFile?: PluginCommandContext["sessionFile"];
   authProfileId?: string;
   commandBody: string;
-  config: OpenClawConfig;
+  config: OperatorConfig;
   from?: PluginCommandContext["from"];
   to?: PluginCommandContext["to"];
   accountId?: PluginCommandContext["accountId"];
@@ -435,6 +435,6 @@ export function listPluginCommands(): Array<{
   }));
 }
 
-function listPluginInvocationNames(command: OpenClawPluginCommandDefinition): string[] {
+function listPluginInvocationNames(command: OperatorPluginCommandDefinition): string[] {
   return listPluginInvocationKeys(command);
 }

@@ -11,8 +11,8 @@ import { getRegistryWorktree } from "../agents/worktrees/registry.js";
 import { managedWorktrees } from "../agents/worktrees/service.js";
 import { upsertSqliteSessionEntry } from "../config/sessions/session-accessor.sqlite.js";
 import { clearSessionStoreCacheForTest } from "../config/sessions/store.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import { testing as agentCommandTesting } from "./agent.js";
 import { createThrowingTestRuntime } from "./test-runtime-config-helpers.js";
 
@@ -32,7 +32,7 @@ const runtime = createThrowingTestRuntime();
 const sessionKey = "agent:main:worktree-race";
 
 function recordProof(line: string): void {
-  const out = process.env.OPENCLAW_PROOF_OUT;
+  const out = process.env.OPERATOR_PROOF_OUT;
   if (out) {
     fsSync.appendFileSync(out, `${line}\n`);
   }
@@ -46,7 +46,7 @@ async function initializeRepository(root: string): Promise<string> {
   const repo = path.join(root, "repo");
   await fs.mkdir(repo, { recursive: true });
   await git(repo, "init", "-b", "main");
-  await git(repo, "config", "user.name", "OpenClaw Test");
+  await git(repo, "config", "user.name", "Operator Test");
   await git(repo, "config", "user.email", "openclaw-test@example.invalid");
   await fs.writeFile(path.join(repo, "README.md"), "base\n");
   await git(repo, "add", "README.md");
@@ -54,7 +54,7 @@ async function initializeRepository(root: string): Promise<string> {
   return await fs.realpath(repo);
 }
 
-function mockConfig(home: string, storePath: string): OpenClawConfig {
+function mockConfig(home: string, storePath: string): OperatorConfig {
   const cfg = {
     agents: {
       defaults: {
@@ -64,7 +64,7 @@ function mockConfig(home: string, storePath: string): OpenClawConfig {
       },
     },
     session: { store: storePath, mainKey: "main" },
-  } as OpenClawConfig;
+  } as OperatorConfig;
   configIoMocks.loadConfig.mockReturnValue(cfg);
   return cfg;
 }
@@ -106,7 +106,7 @@ describe("agent command worktree admission", () => {
   });
 
   afterEach(() => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
   });
 
   it("holds the lease through workspace preparation so a racing removal is rejected", async () => {

@@ -1,7 +1,7 @@
 // Imported by register.test.ts to keep its mocked suite in one Vitest module graph.
 import { promises as fs } from "node:fs";
 import { join } from "node:path";
-import { runDoctorLintChecks, type OpenClawConfig } from "openclaw/plugin-sdk/health";
+import { runDoctorLintChecks, type OperatorConfig } from "openclaw/plugin-sdk/health";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { collectPolicyEvidence } from "../policy-state.js";
 import { registerPolicyDoctorChecks } from "./register.js";
@@ -35,7 +35,7 @@ describe("registerPolicyDoctorChecks", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -65,7 +65,7 @@ describe("registerPolicyDoctorChecks", () => {
           oauth: { provider: "github", mode: "oauth" },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -104,7 +104,7 @@ describe("registerPolicyDoctorChecks", () => {
       diagnostics: { otel: { enabled: true, captureContent: { enabled: true, toolInputs: true } } },
       session: { maintenance: { mode: "warn" } },
       memory: { backend: "qmd", qmd: { sessions: { enabled: true } } },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -178,7 +178,7 @@ describe("registerPolicyDoctorChecks", () => {
     const cfg = {
       ...cfgWithPolicy(),
       session: {},
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -212,7 +212,7 @@ describe("registerPolicyDoctorChecks", () => {
     const cfg = {
       ...cfgWithPolicy(),
       diagnostics: { otel: { captureContent: { toolInputs: true } } },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -234,7 +234,7 @@ describe("registerPolicyDoctorChecks", () => {
         enabled: false,
         otel: { enabled: true, captureContent: true },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -255,7 +255,7 @@ describe("registerPolicyDoctorChecks", () => {
       diagnostics: {
         otel: { enabled: true, traces: false, logs: true, captureContent: true },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -286,7 +286,7 @@ describe("registerPolicyDoctorChecks", () => {
           captureContent: { enabled: true, toolInputs: true },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -313,7 +313,7 @@ describe("registerPolicyDoctorChecks", () => {
           { id: "buddy", memorySearch: { experimental: { sessionMemory: false } } },
         ],
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -350,7 +350,7 @@ describe("registerPolicyDoctorChecks", () => {
           memorySearch: { experimental: { sessionMemory: true }, sources: ["sessions"] },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -392,7 +392,7 @@ describe("registerPolicyDoctorChecks", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1106,11 +1106,11 @@ describe("registerPolicyDoctorChecks", () => {
     ]);
   });
 
-  it("uses OPENCLAW_HOME for the default exec approvals artifact path", async () => {
+  it("uses OPERATOR_HOME for the default exec approvals artifact path", async () => {
     const configPath = join(workspaceDir, "openclaw.jsonc");
     const openclawHome = join(workspaceDir, "home");
     const approvalsDir = join(openclawHome, ".openclaw");
-    const previousOpenClawHome = process.env.OPENCLAW_HOME;
+    const previousOperatorHome = process.env.OPERATOR_HOME;
     await fs.mkdir(approvalsDir, { recursive: true });
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
@@ -1124,7 +1124,7 @@ describe("registerPolicyDoctorChecks", () => {
       "utf-8",
     );
 
-    process.env.OPENCLAW_HOME = openclawHome;
+    process.env.OPERATOR_HOME = openclawHome;
     try {
       registerPolicyDoctorChecks();
       const result = await runDoctorLintChecks(ctx(configPath, cfgWithPolicy()));
@@ -1136,15 +1136,15 @@ describe("registerPolicyDoctorChecks", () => {
         }),
       ]);
     } finally {
-      if (previousOpenClawHome === undefined) {
-        delete process.env.OPENCLAW_HOME;
+      if (previousOperatorHome === undefined) {
+        delete process.env.OPERATOR_HOME;
       } else {
-        process.env.OPENCLAW_HOME = previousOpenClawHome;
+        process.env.OPERATOR_HOME = previousOperatorHome;
       }
     }
   });
 
-  it("uses OPENCLAW_STATE_DIR for the exec approvals artifact path", async () => {
+  it("uses OPERATOR_STATE_DIR for the exec approvals artifact path", async () => {
     const configPath = join(workspaceDir, "openclaw.jsonc");
     const stateDir = join(workspaceDir, "state");
     await fs.mkdir(stateDir, { recursive: true });
@@ -1165,7 +1165,7 @@ describe("registerPolicyDoctorChecks", () => {
       "utf-8",
     );
 
-    process.env.OPENCLAW_STATE_DIR = stateDir;
+    process.env.OPERATOR_STATE_DIR = stateDir;
 
     registerPolicyDoctorChecks();
     const result = await runDoctorLintChecks(ctx(configPath, cfgWithPolicy()));
@@ -1303,7 +1303,7 @@ describe("registerPolicyDoctorChecks", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1419,7 +1419,7 @@ describe("registerPolicyDoctorChecks", () => {
           allowPrivateNetwork: true,
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -1445,7 +1445,7 @@ describe("registerPolicyDoctorChecks", () => {
           openrouter: {},
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),

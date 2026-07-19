@@ -4,7 +4,7 @@
 import path from "node:path";
 import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
 import type { CliBackendConfig } from "../../config/types.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   CLI_FRESH_WATCHDOG_DEFAULTS,
   CLI_RESUME_WATCHDOG_DEFAULTS,
@@ -97,7 +97,7 @@ export function resolveCliNoOutputTimeoutMs(params: {
 }
 
 export function resolveCliRunTimeoutOverrideMs(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   lane?: string;
   timeoutMs: number;
   runTimeoutOverrideMs?: number;

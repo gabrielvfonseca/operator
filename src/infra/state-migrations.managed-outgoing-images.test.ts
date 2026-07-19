@@ -12,8 +12,8 @@ import {
 } from "../gateway/managed-image-record-store.js";
 import type { ManagedImageRecordDatabase } from "../gateway/managed-image-record-store.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
 } from "../state/openclaw-state-db.js";
 import { executeSqliteQueryTakeFirstSync, getNodeSqliteKysely } from "./kysely-sync.js";
 import {
@@ -91,7 +91,7 @@ describe("legacy managed outgoing image migration", () => {
   });
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await fsp.rm(stateDir, { recursive: true, force: true });
   });
 
@@ -116,8 +116,8 @@ describe("legacy managed outgoing image migration", () => {
         path: undefined,
       },
     });
-    const database = openOpenClawStateDatabase({
-      env: { ...process.env, OPENCLAW_STATE_DIR: stateDir },
+    const database = openOperatorStateDatabase({
+      env: { ...process.env, OPERATOR_STATE_DIR: stateDir },
     });
     const row = executeSqliteQueryTakeFirstSync(
       database.db,

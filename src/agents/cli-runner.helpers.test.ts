@@ -8,7 +8,7 @@ import { expectDefined } from "@operator/normalization-core";
 import type { ImageContent } from "openclaw/plugin-sdk/llm";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createSolidPngBuffer } from "../../test/helpers/image-fixtures.js";
-import { resolvePreferredOpenClawTmpDir } from "../infra/tmp-openclaw-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../infra/tmp-openclaw-dir.js";
 import { escapeRegExp } from "../shared/regexp.js";
 import { captureEnv, setTestEnvValue } from "../test-utils/env.js";
 import {
@@ -43,7 +43,7 @@ describe("prepareCliPromptImagePayload prompt references", () => {
     expect(sanitizeImageBlocksSpy).not.toHaveBeenCalled();
   });
 
-  it("does not reload OpenClaw CLI image cache paths from prior prompt text", async () => {
+  it("does not reload Operator CLI image cache paths from prior prompt text", async () => {
     const loadImageFromRefSpy = vi.spyOn(promptImageUtils, "loadImageFromRef");
     const sanitizeImageBlocksSpy = vi.spyOn(toolImages, "sanitizeImageBlocks");
 
@@ -75,7 +75,7 @@ describe("prepareCliPromptImagePayload prompt references", () => {
       mimeType: "image/jpeg",
     };
     const workspaceDir = await fs.mkdtemp(
-      path.join(resolvePreferredOpenClawTmpDir(), "openclaw-cli-ref-image-"),
+      path.join(resolvePreferredOperatorTmpDir(), "openclaw-cli-ref-image-"),
     );
 
     const loadImageFromRefSpy = vi
@@ -129,7 +129,7 @@ describe("prepareCliPromptImagePayload prompt references", () => {
       .mockResolvedValueOnce({ images: [loadedImage], dropped: 0 });
 
     const workspaceDir = await fs.mkdtemp(
-      path.join(resolvePreferredOpenClawTmpDir(), "openclaw-cli-ref-dedupe-"),
+      path.join(resolvePreferredOperatorTmpDir(), "openclaw-cli-ref-dedupe-"),
     );
     try {
       const result = await prepareCliPromptImagePayload({
@@ -245,7 +245,7 @@ describe("buildCliArgs", () => {
 describe("writeCliImages", () => {
   it("uses stable hashed file paths so repeated image hydration reuses the same path", async () => {
     const workspaceDir = await fs.mkdtemp(
-      path.join(resolvePreferredOpenClawTmpDir(), "openclaw-cli-write-images-"),
+      path.join(resolvePreferredOperatorTmpDir(), "openclaw-cli-write-images-"),
     );
     const image: ImageContent = {
       type: "image",
@@ -270,7 +270,7 @@ describe("writeCliImages", () => {
       expect(first.imagePaths).toStrictEqual([
         expect.stringMatching(
           new RegExp(
-            `^${escapeRegExp(`${resolvePreferredOpenClawTmpDir()}/openclaw-cli-images/`)}.*\\.png$`,
+            `^${escapeRegExp(`${resolvePreferredOperatorTmpDir()}/openclaw-cli-images/`)}.*\\.png$`,
           ),
         ),
       ]);
@@ -288,7 +288,7 @@ describe("writeCliImages", () => {
 
   it("uses the shared media extension map for image formats beyond the tiny builtin list", async () => {
     const workspaceDir = await fs.mkdtemp(
-      path.join(resolvePreferredOpenClawTmpDir(), "openclaw-cli-write-heic-"),
+      path.join(resolvePreferredOperatorTmpDir(), "openclaw-cli-write-heic-"),
     );
     const image: ImageContent = {
       type: "image",
@@ -315,7 +315,7 @@ describe("writeCliImages", () => {
 
   it("sweeps stale workspace-scoped CLI image files", async () => {
     const workspaceDir = await fs.mkdtemp(
-      path.join(resolvePreferredOpenClawTmpDir(), "openclaw-cli-write-sweep-"),
+      path.join(resolvePreferredOperatorTmpDir(), "openclaw-cli-write-sweep-"),
     );
     const imageRoot = path.join(workspaceDir, ".openclaw-cli-images");
     const stalePath = path.join(imageRoot, "stale.png");
@@ -352,7 +352,7 @@ describe("writeCliImages", () => {
 
   it("hydrates prompt media refs into codex image args through the helper seams", async () => {
     const tempDir = await fs.mkdtemp(
-      path.join(resolvePreferredOpenClawTmpDir(), "openclaw-cli-prompt-image-"),
+      path.join(resolvePreferredOperatorTmpDir(), "openclaw-cli-prompt-image-"),
     );
     const sourceImage = path.join(tempDir, "bb-image.png");
     await fs.writeFile(sourceImage, createSolidPngBuffer(1, 1, { r: 255, g: 255, b: 255 }));
@@ -398,7 +398,7 @@ describe("writeCliImages", () => {
 
   it("appends hydrated prompt media refs for stdin backends through the helper seams", async () => {
     const tempDir = await fs.mkdtemp(
-      path.join(resolvePreferredOpenClawTmpDir(), "openclaw-cli-prompt-image-generic-"),
+      path.join(resolvePreferredOperatorTmpDir(), "openclaw-cli-prompt-image-generic-"),
     );
     const sourceImage = path.join(tempDir, "claude-image.png");
     await fs.writeFile(sourceImage, createSolidPngBuffer(1, 1, { r: 255, g: 255, b: 255 }));
@@ -427,7 +427,7 @@ describe("writeCliImages", () => {
 
   it("appends Gemini prompt refs with @-prefixed image paths", async () => {
     const tempDir = await fs.mkdtemp(
-      path.join(resolvePreferredOpenClawTmpDir(), "openclaw-cli-prompt-image-gemini-"),
+      path.join(resolvePreferredOperatorTmpDir(), "openclaw-cli-prompt-image-gemini-"),
     );
     const explicitImage: ImageContent = {
       type: "image",
@@ -478,7 +478,7 @@ describe("writeCliImages", () => {
 
   it("prefers explicit images over prompt refs through the helper seams", async () => {
     const tempDir = await fs.mkdtemp(
-      path.join(resolvePreferredOpenClawTmpDir(), "openclaw-cli-explicit-images-"),
+      path.join(resolvePreferredOperatorTmpDir(), "openclaw-cli-explicit-images-"),
     );
     const sourceImage = path.join(tempDir, "ignored-prompt-image.png");
     await fs.writeFile(sourceImage, createSolidPngBuffer(1, 1, { r: 255, g: 255, b: 255 }));
@@ -537,8 +537,8 @@ describe("writeCliImages", () => {
     await fs.mkdir(inboundDir, { recursive: true });
     await fs.writeFile(path.join(inboundDir, mediaId), offloadedImage);
     await fs.writeFile(historyImagePath, historyImage);
-    const envSnapshot = captureEnv(["OPENCLAW_STATE_DIR"]);
-    setTestEnvValue("OPENCLAW_STATE_DIR", stateDir);
+    const envSnapshot = captureEnv(["OPERATOR_STATE_DIR"]);
+    setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
     const currentTurn = `compare these\n[media attached: media://inbound/${mediaId}]`;
 
     try {

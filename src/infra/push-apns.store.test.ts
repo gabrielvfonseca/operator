@@ -2,11 +2,11 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
 } from "../state/openclaw-state-db.js";
 import { createTrackedTempDirs } from "../test-utils/tracked-temp-dirs.js";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "./kysely-sync.js";
@@ -21,7 +21,7 @@ const tempDirs = createTrackedTempDirs();
 const APNS_DEVICE_FIELD = "token";
 const APNS_DEVICE_IDENTIFIER = "ABCD1234ABCD1234ABCD1234ABCD1234";
 
-type TestDatabase = Pick<OpenClawStateKyselyDatabase, "apns_registrations">;
+type TestDatabase = Pick<OperatorStateKyselyDatabase, "apns_registrations">;
 
 async function makeTempDir(): Promise<string> {
   return await tempDirs.make("openclaw-push-apns-store-test-");
@@ -43,12 +43,12 @@ async function registerDirectApnsRegistration(params: {
 }
 
 function databaseEnv(baseDir: string): NodeJS.ProcessEnv {
-  return { ...process.env, OPENCLAW_STATE_DIR: baseDir };
+  return { ...process.env, OPERATOR_STATE_DIR: baseDir };
 }
 
 afterEach(async () => {
   vi.useRealTimers();
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorStateDatabaseForTest();
   await tempDirs.cleanup();
 });
 
@@ -137,7 +137,7 @@ describe("push APNs registration store", () => {
       throw new Error("expected direct APNs registration");
     }
 
-    const database = openOpenClawStateDatabase({ env: databaseEnv(baseDir) });
+    const database = openOperatorStateDatabase({ env: databaseEnv(baseDir) });
     const row = database.db
       .prepare("SELECT * FROM apns_registrations WHERE node_id = ?")
       .get("ios-node-switch") as Record<string, unknown>;
@@ -156,7 +156,7 @@ describe("push APNs registration store", () => {
   it("preserves request order, duplicates, and batches above the SQLite bind chunk", async () => {
     const baseDir = await makeTempDir();
     const env = databaseEnv(baseDir);
-    runOpenClawStateWriteTransaction(
+    runOperatorStateWriteTransaction(
       ({ db }) => {
         const stateDb = getNodeSqliteKysely<TestDatabase>(db);
         for (let index = 0; index < 505; index += 1) {
@@ -218,7 +218,7 @@ describe("push APNs registration store", () => {
         baseDir,
       }),
     ).resolves.toBe(true);
-    const database = openOpenClawStateDatabase({ env: databaseEnv(baseDir) });
+    const database = openOperatorStateDatabase({ env: databaseEnv(baseDir) });
     expect(
       database.db
         .prepare(
@@ -292,7 +292,7 @@ describe("push APNs registration store", () => {
   it("fails loudly for a malformed canonical row", async () => {
     const baseDir = await makeTempDir();
     const env = databaseEnv(baseDir);
-    runOpenClawStateWriteTransaction(
+    runOperatorStateWriteTransaction(
       ({ db }) => {
         db.prepare(
           `INSERT INTO apns_registrations (

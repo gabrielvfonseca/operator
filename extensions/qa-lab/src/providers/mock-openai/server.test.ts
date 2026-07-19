@@ -135,12 +135,12 @@ function makeUserInput(text: string) {
 }
 
 const TEST_RUNTIME_CONTEXT_CARRIER = [
-  "OpenClaw runtime context for the immediately preceding user message.",
+  "Operator runtime context for the immediately preceding user message.",
   "This context is runtime-generated, not user-authored. Keep internal details private.",
   "",
-  "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+  "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
   "runtime metadata",
-  "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+  "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
 ].join("\n");
 
 function makeDeveloperInput(text: string) {
@@ -872,7 +872,7 @@ describe("qa mock openai server", () => {
         {
           type: "function_call_output",
           call_id: "call_mock_read_1",
-          output: JSON.stringify({ text: "QA mission: understand this OpenClaw repo." }),
+          output: JSON.stringify({ text: "QA mission: understand this Operator repo." }),
         },
       ],
     });
@@ -893,7 +893,7 @@ describe("qa mock openai server", () => {
         {
           type: "function_call_output",
           call_id: "call_mock_read_1",
-          output: JSON.stringify({ text: "QA mission: understand this OpenClaw repo." }),
+          output: JSON.stringify({ text: "QA mission: understand this Operator repo." }),
         },
       ],
     });
@@ -1961,7 +1961,7 @@ describe("qa mock openai server", () => {
             content: [
               {
                 type: "input_text",
-                text: "Task: prepare a local OpenClaw PR readiness note.\nPending: wait for maintainer feedback before publishing.\nBlocked: publishing needs explicit user approval.\nDone: local evidence captured in personal-task-status.txt.\n",
+                text: "Task: prepare a local Operator PR readiness note.\nPending: wait for maintainer feedback before publishing.\nBlocked: publishing needs explicit user approval.\nDone: local evidence captured in personal-task-status.txt.\n",
               },
             ],
           },
@@ -4364,7 +4364,7 @@ describe("qa mock openai server", () => {
 
     const response = await postResponses(server, {
       stream: false,
-      instructions: "Codex dynamic OpenClaw tools available in this turn: web_search.",
+      instructions: "Codex dynamic Operator tools available in this turn: web_search.",
       input: [
         makeUserInput(
           "tool search qa check target=web_search. Call exactly that tool once and then summarize.",
@@ -4376,7 +4376,7 @@ describe("qa mock openai server", () => {
     const toolPlanOutput = outputItem(await response.json());
     expect(toolPlanOutput.type).toBe("function_call");
     expect(toolPlanOutput.name).toBe("web_search");
-    expect(String(toolPlanOutput.arguments)).toContain("OpenClaw runtime parity fixed query");
+    expect(String(toolPlanOutput.arguments)).toContain("Operator runtime parity fixed query");
   });
 
   it("plans QA tool-search calls from explicit fixture targets even without Responses tools", async () => {
@@ -4514,7 +4514,7 @@ describe("qa mock openai server", () => {
     const toolPlanOutput = outputItem(await response.json());
     expect(toolPlanOutput.type).toBe("function_call");
     expect(toolPlanOutput.name).toBe("web_search");
-    expect(String(toolPlanOutput.arguments)).toContain("OPENCLAW_QA_WEB_SEARCH_DENIED_INPUT");
+    expect(String(toolPlanOutput.arguments)).toContain("OPERATOR_QA_WEB_SEARCH_DENIED_INPUT");
   });
 
   it("plans QA subagent handoff calls even when Codex dynamic tools are not in body.tools", async () => {
@@ -4962,7 +4962,7 @@ describe("qa mock openai server", () => {
           },
           {
             type: "function_call_output",
-            output: "QA mission: Understand this OpenClaw repo from source + docs before acting.",
+            output: "QA mission: Understand this Operator repo from source + docs before acting.",
           },
         ],
       }),
@@ -5117,7 +5117,7 @@ describe("qa mock openai server", () => {
       },
       body:
         '--qa\r\ncontent-disposition: form-data; name="file"; filename="upload.ogg"\r\n\r\n' +
-        "OPENCLAW_QA_GROUP_AUDIO_TRIGGER\r\n--qa--\r\n",
+        "OPERATOR_QA_GROUP_AUDIO_TRIGGER\r\n--qa--\r\n",
     });
     const quiet = await fetch(`${server.baseUrl}/v1/audio/transcriptions`, {
       method: "POST",
@@ -5765,7 +5765,7 @@ describe("qa mock openai server", () => {
         makeUserInput(QA_REASONING_ONLY_RECOVERY_PROMPT),
         {
           type: "function_call_output",
-          output: "QA mission: Understand this OpenClaw repo from source + docs before acting.",
+          output: "QA mission: Understand this Operator repo from source + docs before acting.",
         },
       ],
     });
@@ -5787,7 +5787,7 @@ describe("qa mock openai server", () => {
         makeUserInput(QA_REASONING_ONLY_RETRY_INSTRUCTION),
         {
           type: "function_call_output",
-          output: "QA mission: Understand this OpenClaw repo from source + docs before acting.",
+          output: "QA mission: Understand this Operator repo from source + docs before acting.",
         },
       ],
     });
@@ -5918,7 +5918,7 @@ describe("qa mock openai server", () => {
         makeUserInput(QA_EMPTY_RESPONSE_RECOVERY_PROMPT),
         {
           type: "function_call_output",
-          output: "QA mission: Understand this OpenClaw repo from source + docs before acting.",
+          output: "QA mission: Understand this Operator repo from source + docs before acting.",
         },
       ],
     });
@@ -5936,7 +5936,7 @@ describe("qa mock openai server", () => {
         makeUserInput(QA_EMPTY_RESPONSE_RETRY_INSTRUCTION),
         {
           type: "function_call_output",
-          output: "QA mission: Understand this OpenClaw repo from source + docs before acting.",
+          output: "QA mission: Understand this Operator repo from source + docs before acting.",
         },
       ],
     });
@@ -5961,7 +5961,7 @@ describe("qa mock openai server", () => {
         makeUserInput(QA_EMPTY_RESPONSE_EXHAUSTION_PROMPT),
         {
           type: "function_call_output",
-          output: "QA mission: Understand this OpenClaw repo from source + docs before acting.",
+          output: "QA mission: Understand this Operator repo from source + docs before acting.",
         },
       ],
     });
@@ -5977,7 +5977,7 @@ describe("qa mock openai server", () => {
         makeUserInput(QA_EMPTY_RESPONSE_RETRY_INSTRUCTION),
         {
           type: "function_call_output",
-          output: "QA mission: Understand this OpenClaw repo from source + docs before acting.",
+          output: "QA mission: Understand this Operator repo from source + docs before acting.",
         },
       ],
     });

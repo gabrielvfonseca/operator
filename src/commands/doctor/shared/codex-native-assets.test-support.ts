@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../../config/types.operator.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import "./codex-native-assets.js";
 
 type CodexNativeAssetHit = {
@@ -8,7 +8,7 @@ type CodexNativeAssetHit = {
 
 type TestApi = {
   scanCodexNativeAssets(params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     env?: NodeJS.ProcessEnv;
   }): Promise<CodexNativeAssetHit[]>;
 };

@@ -123,8 +123,8 @@ async function collectProviderTimelineEvents(run: () => Promise<void>) {
   const timelinePath = join(root, "timeline.jsonl");
   await withEnvAsync(
     {
-      OPENCLAW_DIAGNOSTICS: "1",
-      OPENCLAW_DIAGNOSTICS_TIMELINE_PATH: timelinePath,
+      OPERATOR_DIAGNOSTICS: "1",
+      OPERATOR_DIAGNOSTICS_TIMELINE_PATH: timelinePath,
     },
     run,
   );

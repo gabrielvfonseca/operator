@@ -1,6 +1,6 @@
-// Workshop config helpers resolve skill workshop settings from OpenClaw config.
+// Workshop config helpers resolve skill workshop settings from Operator config.
 import { asNullableRecord } from "@operator/normalization-core/record-coerce";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 
 /** Runtime configuration for the skill workshop proposal flow. */
 export type SkillWorkshopConfig = {
@@ -37,7 +37,7 @@ function readApprovalPolicy(value: unknown, fallback: SkillWorkshopConfig["appro
   return value === "pending" || value === "auto" ? value : fallback;
 }
 
-export function resolveSkillWorkshopConfig(config?: OpenClawConfig): SkillWorkshopConfig {
+export function resolveSkillWorkshopConfig(config?: OperatorConfig): SkillWorkshopConfig {
   const raw = asNullableRecord(config?.skills?.workshop) ?? {};
   const autonomous = asNullableRecord(raw.autonomous) ?? {};
   return {

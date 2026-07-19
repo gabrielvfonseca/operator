@@ -1,4 +1,4 @@
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/core";
 // Line plugin module implements card command behavior.
 import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
 import type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
@@ -158,7 +158,7 @@ function parseCardArgs(argsStrInput: string): {
   return result;
 }
 
-export function registerLineCardCommand(api: OpenClawPluginApi): void {
+export function registerLineCardCommand(api: OperatorPluginApi): void {
   api.registerCommand({
     name: "card",
     description: "Send a rich card message (LINE).",

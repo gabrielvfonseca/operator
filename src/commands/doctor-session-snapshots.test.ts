@@ -11,7 +11,7 @@ import {
   updateSessionStore,
 } from "../config/sessions/store.js";
 import type { SessionEntry } from "../config/sessions/types.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { AGENT_HARNESS_SESSION_KEY_RESERVED_MESSAGE } from "../sessions/agent-harness-session-key.js";
 import type { Skill } from "../skills/loading/skill-contract.js";
 
@@ -278,7 +278,7 @@ describe("doctor session snapshot stale runtime metadata", () => {
 
     const findings = scanSessionStoreForStaleRuntimeSnapshotPaths({
       bundledSkillsDir,
-      env: { OPENCLAW_STATE_DIR: stateDir },
+      env: { OPERATOR_STATE_DIR: stateDir },
       store: {
         "agent:imsg": sessionEntry({
           skillsSnapshot: {
@@ -309,7 +309,7 @@ describe("doctor session snapshot stale runtime metadata", () => {
 
     const findings = scanSessionStoreForStaleRuntimeSnapshotPaths({
       bundledSkillsDir: packageSkillsDir,
-      env: { OPENCLAW_STATE_DIR: stateDir },
+      env: { OPERATOR_STATE_DIR: stateDir },
       store: {
         "agent:imsg": sessionEntry({
           skillsSnapshot: {
@@ -551,9 +551,9 @@ describe("doctor session snapshot stale runtime metadata", () => {
     });
 
     await noteSessionSnapshotHealth({
-      cfg: { session: { store: configuredStorePath } } as OpenClawConfig,
+      cfg: { session: { store: configuredStorePath } } as OperatorConfig,
       bundledSkillsDir,
-      env: { OPENCLAW_STATE_DIR: stateDir },
+      env: { OPERATOR_STATE_DIR: stateDir },
     });
 
     expect(note).toHaveBeenCalledTimes(1);
@@ -588,9 +588,9 @@ describe("doctor session snapshot stale runtime metadata", () => {
       cfg: {
         session: { store: templatedStore },
         agents: { list: [{ id: "main" }, { id: "ops" }] },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       bundledSkillsDir,
-      env: { OPENCLAW_STATE_DIR: path.join(root, "state") },
+      env: { OPERATOR_STATE_DIR: path.join(root, "state") },
     });
 
     expect(note).toHaveBeenCalledTimes(1);

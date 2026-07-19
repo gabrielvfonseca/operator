@@ -3,7 +3,7 @@
  *
  * Selects per-run workspace directories and redacts run identifiers for logs/prompts.
  */
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { logWarn } from "../logger.js";
 import { redactIdentifier } from "../logging/redact-identifier.js";
 import {
@@ -30,7 +30,7 @@ type ResolveRunWorkspaceResult = {
 function resolveRunAgentId(params: {
   sessionKey?: string;
   agentId?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }): {
   agentId: string;
   agentIdSource: AgentIdSource;
@@ -82,7 +82,7 @@ export function resolveRunWorkspaceDir(params: {
   workspaceDir: unknown;
   sessionKey?: string;
   agentId?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   env?: NodeJS.ProcessEnv;
 }): ResolveRunWorkspaceResult {
   const env = params.env ?? process.env;

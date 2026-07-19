@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import type {
   ProviderModelRouteCandidate,
   ProviderModelRouteResolution,
@@ -49,7 +49,7 @@ function authStore(
 }
 
 function evaluate(params: {
-  cfg?: OpenClawConfig | Record<string, unknown>;
+  cfg?: OperatorConfig | Record<string, unknown>;
   env?: NodeJS.ProcessEnv;
   ref?: ModelAuthAvailabilityRef;
   resolution?: ProviderModelRouteResolution | null;
@@ -57,7 +57,7 @@ function evaluate(params: {
   syntheticAuthProviderRefs?: readonly string[];
 }) {
   return createModelAuthAvailabilityResolver({
-    cfg: (params.cfg ?? {}) as OpenClawConfig,
+    cfg: (params.cfg ?? {}) as OperatorConfig,
     authStore: params.store ?? authStore(),
     env: params.env ?? {},
     routeResolverFactory: routeResolverFactory(params.resolution ?? dualRoutes),
@@ -229,7 +229,7 @@ describe("createModelAuthAvailabilityResolver", () => {
       const result = evaluate({
         cfg: {
           models: { providers: { openai: { auth, baseUrl: "", models: [] } } },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         store: authStore({ "openai:wrong-route": profile }),
       });
 
@@ -250,7 +250,7 @@ describe("createModelAuthAvailabilityResolver", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(
       evaluate({
@@ -290,7 +290,7 @@ describe("createModelAuthAvailabilityResolver", () => {
               openai: { apiKey: "openai:bound", baseUrl: "", models: [] },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         store: authStore({
           "openai:bound": {
             type: "api_key",
@@ -319,7 +319,7 @@ describe("createModelAuthAvailabilityResolver", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(
       evaluate({
@@ -468,7 +468,7 @@ describe("createModelAuthAvailabilityResolver", () => {
               openai: { apiKey: "configured-platform-key", baseUrl: "", models: [] },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         env: { OPENAI_API_KEY: "environment-key" },
       }),
     ).toMatchObject({
@@ -492,7 +492,7 @@ describe("createModelAuthAvailabilityResolver", () => {
       label: "OAuth environment after unavailable Platform auth",
       cfg: {
         models: { providers: { openai: { auth: "oauth", baseUrl: "", models: [] } } },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       env: { OPENAI_API_KEY: "environment-token" },
       profileId: "openai:platform-missing",
       profile: { type: "api_key" as const, provider: "openai", key: "" },
@@ -672,7 +672,7 @@ describe("createModelAuthAvailabilityResolver", () => {
     });
   });
 
-  it("does not let Codex synthetic auth own an OpenClaw-only route", () => {
+  it("does not let Codex synthetic auth own an Operator-only route", () => {
     const openClawOnlyRoute = {
       ...platformRoute,
       runtimePolicy: { compatibleIds: ["openclaw"] },
@@ -706,7 +706,7 @@ describe("createModelAuthAvailabilityResolver", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     },
     { label: "implicit", cfg: {} },
   ])("keeps an $label Bedrock AWS SDK route ready", ({ cfg }) => {

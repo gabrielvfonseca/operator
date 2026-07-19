@@ -7,11 +7,11 @@ import {
   runSessionStartupMigration,
   type SessionStartupMigrationLogger,
 } from "../config/sessions/startup-migration.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 
 type SessionSqliteStartupImportRunner = (params: {
   allAgents: true;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   env: NodeJS.ProcessEnv;
   mode: "import";
 }) => Promise<DoctorSessionSqliteReport>;
@@ -47,7 +47,7 @@ const STARTUP_WARNING_ISSUE_CODES = new Set([
  * for hot legacy session issues because runtime no longer falls back to JSONL.
  */
 export async function runStartupSessionMigration(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   env?: NodeJS.ProcessEnv;
   log: SessionStartupMigrationLogger;
   deps?: SessionMigrationDeps;
@@ -57,7 +57,7 @@ export async function runStartupSessionMigration(params: {
 }
 
 async function runStartupSessionSqliteImport(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   env?: NodeJS.ProcessEnv;
   log: SessionStartupMigrationLogger;
   deps?: SessionMigrationDeps;
@@ -115,7 +115,7 @@ async function runStartupSessionSqliteImport(params: {
 
 async function restoreFailedStartupSessionSqliteRun(
   params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     env?: NodeJS.ProcessEnv;
     log: SessionStartupMigrationLogger;
     deps?: SessionMigrationDeps;

@@ -7,8 +7,8 @@ import type { Message, Usage } from "openclaw/plugin-sdk/llm";
 import { afterAll, describe, expect, it } from "vitest";
 import { replaceTranscriptEvents } from "../config/sessions/session-accessor.js";
 import { formatSqliteSessionFileMarker } from "../config/sessions/sqlite-marker.js";
-import { closeOpenClawAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import { exportTrajectoryBundle, resolveDefaultTrajectoryExportDir } from "./export.js";
 import { TRAJECTORY_RUNTIME_FILE_MAX_BYTES, resolveTrajectoryPointerFilePath } from "./paths.js";
 import { appendSqliteTrajectoryRuntimeEvents } from "./runtime-store.sqlite.js";
@@ -192,8 +192,8 @@ function writeToolCallSessionFile(sessionFile: string): void {
 }
 
 afterAll(() => {
-  closeOpenClawAgentDatabasesForTest();
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorAgentDatabasesForTest();
+  closeOperatorStateDatabaseForTest();
   fs.rmSync(tempRoot, { recursive: true, force: true });
 });
 
@@ -1242,8 +1242,8 @@ describe("exportTrajectoryBundle", () => {
       })}\n`,
       "utf8",
     );
-    const previous = process.env.OPENCLAW_TRAJECTORY_DIR;
-    process.env.OPENCLAW_TRAJECTORY_DIR = envRuntimeDir;
+    const previous = process.env.OPERATOR_TRAJECTORY_DIR;
+    process.env.OPERATOR_TRAJECTORY_DIR = envRuntimeDir;
     try {
       const bundle = await exportTrajectoryBundle({
         outputDir,
@@ -1257,9 +1257,9 @@ describe("exportTrajectoryBundle", () => {
       expect(eventTypes(bundle.events)).not.toContain("env-runtime");
     } finally {
       if (previous === undefined) {
-        delete process.env.OPENCLAW_TRAJECTORY_DIR;
+        delete process.env.OPERATOR_TRAJECTORY_DIR;
       } else {
-        process.env.OPENCLAW_TRAJECTORY_DIR = previous;
+        process.env.OPERATOR_TRAJECTORY_DIR = previous;
       }
     }
   });

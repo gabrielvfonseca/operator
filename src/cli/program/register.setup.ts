@@ -138,7 +138,7 @@ async function runOnboardingEntry(
 
 function addSystemAgentOptions(command: Command): Command {
   return command
-    .option("-m, --message <text>", "Run one OpenClaw request")
+    .option("-m, --message <text>", "Run one Operator request")
     .option("--yes", "Approve persistent config writes for one --message request", false)
     .option("--json", "Output system overview or onboarding summary as JSON", false);
 }
@@ -147,13 +147,13 @@ function addSystemAgentOptions(command: Command): Command {
 export function registerSetupCommand(program: Command): void {
   const command = program
     .command("setup")
-    .description("Chat with OpenClaw; onboard when setup is incomplete")
+    .description("Chat with Operator; onboard when setup is incomplete")
     .addHelpText(
       "after",
       () =>
         `\n${theme.heading("Examples:")}\n` +
         `  ${theme.command("operator setup")}\n` +
-        `    ${theme.muted("Chat with OpenClaw, or onboard when setup is incomplete.")}\n` +
+        `    ${theme.muted("Chat with Operator, or onboard when setup is incomplete.")}\n` +
         `  ${theme.command('operator setup -m "status"')}\n` +
         `    ${theme.muted("Run one system-agent request.")}\n` +
         `  ${theme.command("operator setup --wizard")}\n` +

@@ -2,10 +2,10 @@
 import fs from "node:fs";
 import type { SessionStoreTarget } from "../config/sessions/targets.js";
 import {
-  assertOpenClawAgentDatabaseForMaintenance,
-  ensureOpenClawAgentDatabasePermissions,
-  isOpenClawAgentDatabaseOpen,
-  migrateOpenClawAgentDatabaseForMaintenance,
+  assertOperatorAgentDatabaseForMaintenance,
+  ensureOperatorAgentDatabasePermissions,
+  isOperatorAgentDatabaseOpen,
+  migrateOperatorAgentDatabaseForMaintenance,
 } from "../state/operator-agent-db.js";
 import { resolveTargetSqlitePath } from "./doctor-session-sqlite-readers.js";
 import type { DoctorSessionSqliteCompactReport } from "./doctor-session-sqlite-types.js";
@@ -33,15 +33,15 @@ export function compactDoctorSessionSqliteTarget(
     };
   }
   if (!stat.isFile()) {
-    throw new Error(`OpenClaw agent database is not a regular file: ${sqlitePath}`);
+    throw new Error(`Operator agent database is not a regular file: ${sqlitePath}`);
   }
-  if (isOpenClawAgentDatabaseOpen(sqlitePath)) {
+  if (isOperatorAgentDatabaseOpen(sqlitePath)) {
     throw new Error(
-      `OpenClaw agent database ${sqlitePath} is already open in this process. Stop OpenClaw and retry.`,
+      `Operator agent database ${sqlitePath} is already open in this process. Stop Operator and retry.`,
     );
   }
   if (options.migrateOlderSchema) {
-    migrateOpenClawAgentDatabaseForMaintenance({
+    migrateOperatorAgentDatabaseForMaintenance({
       agentId: target.agentId,
       pathname: sqlitePath,
     });
@@ -49,13 +49,13 @@ export function compactDoctorSessionSqliteTarget(
 
   const compact = compactDoctorSqliteFile({
     afterMutation: () =>
-      ensureOpenClawAgentDatabasePermissions(sqlitePath, {
+      ensureOperatorAgentDatabasePermissions(sqlitePath, {
         agentId: target.agentId,
         path: sqlitePath,
       }),
     sqlitePath,
     validateBeforeMutation: (database) =>
-      assertOpenClawAgentDatabaseForMaintenance(database, {
+      assertOperatorAgentDatabaseForMaintenance(database, {
         agentId: target.agentId,
         pathname: sqlitePath,
       }),

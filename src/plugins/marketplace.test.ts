@@ -459,7 +459,7 @@ describe("marketplace plugins", () => {
       );
 
       const shortcut = await withEnvAsync(
-        { HOME: homeDir, OPENCLAW_HOME: openClawHome },
+        { HOME: homeDir, OPERATOR_HOME: openClawHome },
         async () => await resolveMarketplaceInstallShortcut("superpowers@claude-plugins-official"),
       );
 

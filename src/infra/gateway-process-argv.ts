@@ -19,7 +19,7 @@ export function parseProcCmdline(raw: string): string[] {
   return normalizeStringEntries(raw.split("\0"));
 }
 
-export function isOpenClawCommandArgv(args: string[], command: string): boolean {
+export function isOperatorCommandArgv(args: string[], command: string): boolean {
   const normalized = args.map(normalizeProcArg);
   const exe = (normalized[0] ?? "").replace(/\.(bat|cmd|exe)$/i, "");
   if (!normalized.includes(normalizeProcArg(command))) {
@@ -35,7 +35,7 @@ export function isGatewayArgv(args: string[], opts?: { allowGatewayBinary?: bool
   const normalized = args.map(normalizeProcArg);
   const exe = (normalized[0] ?? "").replace(/\.(bat|cmd|exe)$/i, "");
   const isGatewayBinary = exe.endsWith("/operator-gateway") || exe === "operator-gateway";
-  if (!isOpenClawCommandArgv(args, "gateway")) {
+  if (!isOperatorCommandArgv(args, "gateway")) {
     return opts?.allowGatewayBinary === true && isGatewayBinary;
   }
   return true;

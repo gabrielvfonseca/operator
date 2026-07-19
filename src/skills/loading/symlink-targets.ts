@@ -3,11 +3,11 @@ import fs from "node:fs";
 import path from "node:path";
 import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import { uniqueStrings } from "@operator/normalization-core/string-normalization";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { isPathInside } from "../../infra/path-guards.js";
 import { resolveUserPath } from "../../utils.js";
 
-export function resolveAllowedSkillSymlinkTargetRealPaths(config?: OpenClawConfig): string[] {
+export function resolveAllowedSkillSymlinkTargetRealPaths(config?: OperatorConfig): string[] {
   const rawTargets = config?.skills?.load?.allowSymlinkTargets ?? [];
   const targetPaths = rawTargets
     .map((dir) => normalizeOptionalString(dir) ?? "")

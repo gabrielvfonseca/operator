@@ -1,7 +1,7 @@
 // Covers Tencent setup config migration registration in the plugin setup registry.
 import path from "node:path";
 import { describe, expect, test } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { runPluginSetupConfigMigrations } from "./setup-registry.js";
 
 describe("Tencent setup config migration", () => {
@@ -9,7 +9,7 @@ describe("Tencent setup config migration", () => {
     const result = runPluginSetupConfigMigrations({
       env: {
         ...process.env,
-        OPENCLAW_BUNDLED_PLUGINS_DIR: path.resolve("extensions"),
+        OPERATOR_BUNDLED_PLUGINS_DIR: path.resolve("extensions"),
       },
       config: {
         agents: {
@@ -20,7 +20,7 @@ describe("Tencent setup config migration", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     });
 
     expect(result.changes).toEqual([

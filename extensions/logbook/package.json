@@ -2,7 +2,7 @@
   "name": "@operator/logbook",
   "version": "2026.7.2",
   "private": true,
-  "description": "OpenClaw automatic work journal plugin",
+  "description": "Operator automatic work journal plugin",
   "type": "module",
   "devDependencies": {
     "@operator/plugin-sdk": "workspace:*",

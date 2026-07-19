@@ -6,10 +6,10 @@ import {
   isValidAgentId,
   normalizeAgentId,
 } from "../routing/session-key.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
 } from "../state/operator-state-db.js";
 import {
   executeSqliteQuerySync,
@@ -48,12 +48,12 @@ const DEFAULT_ROUTING: VoiceWakeRoutingConfig = {
 };
 
 type VoiceWakeRoutingDatabase = Pick<
-  OpenClawStateKyselyDatabase,
+  OperatorStateKyselyDatabase,
   "voicewake_routing_config" | "voicewake_routing_routes"
 >;
 
 function openStateDatabase(stateDir?: string) {
-  return openOpenClawStateDatabase({
+  return openOperatorStateDatabase({
     env: stateDir ? { ...process.env, OPERATOR_STATE_DIR: stateDir } : process.env,
   });
 }
@@ -352,7 +352,7 @@ export async function setVoiceWakeRoutingConfig(
     ...normalized,
     updatedAtMs,
   };
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     ({ db }) => {
       const routingDb = getNodeSqliteKysely<VoiceWakeRoutingDatabase>(db);
       executeSqliteQuerySync(

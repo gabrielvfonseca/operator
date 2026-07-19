@@ -22,7 +22,7 @@ import type {
   PluginHookBeforeMessageWriteResult,
 } from "../plugins/types.js";
 import { emitSessionTranscriptUpdate } from "../sessions/transcript-events.js";
-import { isTranscriptOnlyOpenClawAssistantModel } from "../shared/transcript-only-operator-assistant.js";
+import { isTranscriptOnlyOperatorAssistantModel } from "../shared/transcript-only-operator-assistant.js";
 import { formatContextLimitTruncationNotice } from "./embedded-agent-runner/context-truncation-notice.js";
 import {
   DEFAULT_MAX_LIVE_TOOL_RESULT_CHARS,
@@ -182,7 +182,7 @@ function redactPersistedDetailString(
   const redactedPrefix =
     boundaryIndex >= 0
       ? redactedScan.slice(0, boundaryIndex)
-      : "[OpenClaw persisted detail redacted: boundary marker removed]";
+      : "[Operator persisted detail redacted: boundary marker removed]";
   const safePrefixChars = Math.max(
     0,
     maxChars - Math.min(maxChars, MAX_PERSISTED_DETAIL_BOUNDARY_OVERLAP_CHARS),
@@ -191,10 +191,10 @@ function redactPersistedDetailString(
   const persistedPrefix =
     PARTIAL_STRUCTURED_SECRET_VALUE_RE.test(initialPersistedPrefix) ||
     PARTIAL_PRIVATE_KEY_BLOCK_RE.test(initialPersistedPrefix)
-      ? "[OpenClaw persisted detail redacted: partial secret span omitted]"
+      ? "[Operator persisted detail redacted: partial secret span omitted]"
       : initialPersistedPrefix;
-  const boundaryNotice = "[OpenClaw persisted detail redacted: boundary overlap omitted]";
-  return `${persistedPrefix}${persistedPrefix ? "\n" : ""}${boundaryNotice}\n\n[OpenClaw persisted detail truncated: ${Math.max(
+  const boundaryNotice = "[Operator persisted detail redacted: boundary overlap omitted]";
+  return `${persistedPrefix}${persistedPrefix ? "\n" : ""}${boundaryNotice}\n\n[Operator persisted detail truncated: ${Math.max(
     0,
     value.length - maxChars,
   )} original chars omitted]`;
@@ -241,7 +241,7 @@ function redactPersistedDetailValue(
     return value;
   }
   if (depth >= 8) {
-    return "[OpenClaw persisted detail redacted: max depth exceeded]";
+    return "[Operator persisted detail redacted: max depth exceeded]";
   }
   if (Array.isArray(value)) {
     let changed = false;
@@ -579,13 +579,13 @@ function normalizePersistedToolResultName(
   return toolResult;
 }
 
-function isTranscriptOnlyOpenClawAssistantMessage(message: AgentMessage): boolean {
+function isTranscriptOnlyOperatorAssistantMessage(message: AgentMessage): boolean {
   if (!message || message.role !== "assistant") {
     return false;
   }
   const provider = normalizeOptionalString((message as { provider?: unknown }).provider) ?? "";
   const model = normalizeOptionalString((message as { model?: unknown }).model) ?? "";
-  return isTranscriptOnlyOpenClawAssistantModel(provider, model);
+  return isTranscriptOnlyOperatorAssistantModel(provider, model);
 }
 
 export function installSessionToolResultGuard(
@@ -844,7 +844,7 @@ export function installSessionToolResultGuard(
     const transcriptOnlyAssistant =
       nextRole === "assistant" &&
       toolCalls.length === 0 &&
-      isTranscriptOnlyOpenClawAssistantMessage(nextMessage);
+      isTranscriptOnlyOperatorAssistantMessage(nextMessage);
     if (
       !transcriptOnlyAssistant &&
       pendingState.shouldFlushBeforeNonToolResult(nextRole, toolCalls.length)

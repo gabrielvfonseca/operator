@@ -1,5 +1,5 @@
 // Moonshot tests cover kimi web search provider plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/provider-onboard";
+import type { OperatorConfig } from "openclaw/plugin-sdk/provider-onboard";
 import { withEnvAsync } from "openclaw/plugin-sdk/test-env";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { testing } from "../test-api.js";
@@ -61,7 +61,7 @@ describe("kimi web search provider", () => {
         throw new Error("Expected tool definition");
       }
 
-      const result = await tool.execute({ query: "OpenClaw docs" });
+      const result = await tool.execute({ query: "Operator docs" });
 
       expect(result.error).toBe("missing_kimi_api_key");
       expectStringFieldContains(
@@ -84,10 +84,10 @@ describe("kimi web search provider", () => {
   it("inherits native Moonshot chat baseUrl when kimi baseUrl is unset", () => {
     const cnConfig = {
       models: { providers: { moonshot: { baseUrl: "https://api.moonshot.cn/v1" } } },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     const cnConfigWithTrailingSlash = {
       models: { providers: { moonshot: { baseUrl: "https://api.moonshot.cn/v1/" } } },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     expect(testing.resolveKimiBaseUrl(undefined, cnConfig)).toBe("https://api.moonshot.cn/v1");
     expect(testing.resolveKimiBaseUrl(undefined, cnConfigWithTrailingSlash)).toBe(
@@ -98,7 +98,7 @@ describe("kimi web search provider", () => {
   it("does not inherit non-native Moonshot baseUrl for web search", () => {
     const proxyConfig = {
       models: { providers: { moonshot: { baseUrl: "https://proxy.example/v1" } } },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     expect(testing.resolveKimiBaseUrl(undefined, proxyConfig)).toBe("https://api.moonshot.ai/v1");
   });
@@ -106,7 +106,7 @@ describe("kimi web search provider", () => {
   it("keeps explicit kimi baseUrl over models.providers.moonshot.baseUrl", () => {
     const moonshotConfig = {
       models: { providers: { moonshot: { baseUrl: "https://api.moonshot.cn/v1" } } },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     expect(
       testing.resolveKimiBaseUrl({ baseUrl: "https://api.moonshot.ai/v1" }, moonshotConfig),
@@ -194,7 +194,7 @@ describe("kimi web search provider", () => {
 
   it("accepts final responses backed by Kimi web search tool replay", async () => {
     const toolArguments = JSON.stringify({
-      query: "OpenClaw GitHub repository",
+      query: "Operator GitHub repository",
       usage: { total_tokens: 1200 },
     });
     const fetchMock = vi
@@ -225,7 +225,7 @@ describe("kimi web search provider", () => {
           choices: [
             {
               finish_reason: "stop",
-              message: { content: "OpenClaw is available on GitHub." },
+              message: { content: "Operator is available on GitHub." },
             },
           ],
         }),
@@ -236,7 +236,7 @@ describe("kimi web search provider", () => {
       const result = await executeKimiSearch("kimi grounded tool replay");
 
       expect(result.provider).toBe("kimi");
-      expectStringFieldContains(result, "content", "OpenClaw is available on GitHub.");
+      expectStringFieldContains(result, "content", "Operator is available on GitHub.");
       expect(result.citations).toEqual([]);
       expect(result).not.toHaveProperty("error");
     });
@@ -245,11 +245,11 @@ describe("kimi web search provider", () => {
   it("accepts final responses with search result citations", async () => {
     const fetchMock = vi.fn().mockResolvedValue(
       jsonResponse({
-        search_results: [{ title: "OpenClaw", url: "https://github.com/openclaw/openclaw" }],
+        search_results: [{ title: "Operator", url: "https://github.com/openclaw/openclaw" }],
         choices: [
           {
             finish_reason: "stop",
-            message: { content: "OpenClaw is on GitHub." },
+            message: { content: "Operator is on GitHub." },
           },
         ],
       }),
@@ -260,7 +260,7 @@ describe("kimi web search provider", () => {
       const result = await executeKimiSearch("kimi grounded citation");
 
       expect(result.provider).toBe("kimi");
-      expectStringFieldContains(result, "content", "OpenClaw is on GitHub.");
+      expectStringFieldContains(result, "content", "Operator is on GitHub.");
       expect(result.citations).toEqual(["https://github.com/openclaw/openclaw"]);
       expect(result).not.toHaveProperty("error");
     });

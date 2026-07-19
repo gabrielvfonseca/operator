@@ -18,7 +18,7 @@ import {
   resolveCrabboxBinary,
 } from "./crabbox-worker-profile.js";
 
-export { resolveOpenClawRoot } from "./crabbox-worker-profile.js";
+export { resolveOperatorRoot } from "./crabbox-worker-profile.js";
 
 const CRABBOX_WORKER_PROVIDER_ID = "crabbox";
 const CRABBOX_KEY_REF_PROVIDER = "crabbox";

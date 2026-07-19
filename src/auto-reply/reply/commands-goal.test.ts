@@ -5,7 +5,7 @@ import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { loadSessionEntry, replaceSessionEntry } from "../../config/sessions/session-accessor.js";
 import type { SessionEntry } from "../../config/sessions/types.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import { takeCommandSessionMetadataChanges } from "./command-session-metadata.js";
 import {
   formatGoalContinuationPrompt,
@@ -51,7 +51,7 @@ function getSessionEntry(params: {
 
 function buildGoalParams(commandBodyNormalized: string, storePath: string): HandleCommandsParams {
   return {
-    cfg: {} as OpenClawConfig,
+    cfg: {} as OperatorConfig,
     ctx: {
       Provider: "web",
       Surface: "web",

@@ -3,9 +3,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
-  auditOpenClawPeerDependenciesInManagedNpmRoot,
-  linkOpenClawPeerDependencies,
-  relinkOpenClawPeerDependenciesInManagedNpmRoot,
+  auditOperatorPeerDependenciesInManagedNpmRoot,
+  linkOperatorPeerDependencies,
+  relinkOperatorPeerDependenciesInManagedNpmRoot,
 } from "./plugin-peer-link.js";
 import { cleanupTrackedTempDirs, makeTrackedTempDir } from "./test-helpers/fs-fixtures.js";
 
@@ -37,7 +37,7 @@ describe("plugin peer links", () => {
     );
 
     const messages: string[] = [];
-    const result = await relinkOpenClawPeerDependenciesInManagedNpmRoot({
+    const result = await relinkOperatorPeerDependenciesInManagedNpmRoot({
       npmRoot,
       logger: {
         info: (message) => messages.push(message),
@@ -68,7 +68,7 @@ describe("plugin peer links", () => {
       "utf8",
     );
 
-    const result = await auditOpenClawPeerDependenciesInManagedNpmRoot({ npmRoot });
+    const result = await auditOperatorPeerDependenciesInManagedNpmRoot({ npmRoot });
 
     const linkPath = path.join(packageDir, "node_modules", "openclaw");
     expect(result.checked).toBe(1);
@@ -89,7 +89,7 @@ describe("plugin peer links", () => {
       fs.symlinkSync(outsideDir, path.join(packageDir, "node_modules"), "dir");
 
       const warnings: string[] = [];
-      const result = await linkOpenClawPeerDependencies({
+      const result = await linkOperatorPeerDependencies({
         installedDir: packageDir,
         peerDependencies: {
           openclaw: ">=2026.0.0",
@@ -108,12 +108,12 @@ describe("plugin peer links", () => {
   it("replaces an existing real openclaw package directory", async () => {
     const root = makeTempDir();
     const packageDir = path.join(root, "peer-plugin");
-    const existingOpenClawDir = path.join(packageDir, "node_modules", "openclaw");
-    fs.mkdirSync(existingOpenClawDir, { recursive: true });
-    fs.writeFileSync(path.join(existingOpenClawDir, "package.json"), '{"name":"openclaw"}', "utf8");
+    const existingOperatorDir = path.join(packageDir, "node_modules", "openclaw");
+    fs.mkdirSync(existingOperatorDir, { recursive: true });
+    fs.writeFileSync(path.join(existingOperatorDir, "package.json"), '{"name":"openclaw"}', "utf8");
 
     const messages: string[] = [];
-    const result = await linkOpenClawPeerDependencies({
+    const result = await linkOperatorPeerDependencies({
       installedDir: packageDir,
       peerDependencies: {
         openclaw: ">=2026.0.0",
@@ -124,24 +124,24 @@ describe("plugin peer links", () => {
     });
 
     expect(result).toEqual({ repaired: 1, skipped: 0 });
-    expect(fs.lstatSync(existingOpenClawDir).isSymbolicLink()).toBe(true);
-    expect(fs.realpathSync(existingOpenClawDir)).toBe(fs.realpathSync(process.cwd()));
+    expect(fs.lstatSync(existingOperatorDir).isSymbolicLink()).toBe(true);
+    expect(fs.realpathSync(existingOperatorDir)).toBe(fs.realpathSync(process.cwd()));
     expect(messages.join("\n")).toContain('Linked peerDependency "openclaw"');
   });
 
   it("does not delete an unrelated existing package directory", async () => {
     const root = makeTempDir();
     const packageDir = path.join(root, "peer-plugin");
-    const existingOpenClawDir = path.join(packageDir, "node_modules", "openclaw");
-    fs.mkdirSync(existingOpenClawDir, { recursive: true });
+    const existingOperatorDir = path.join(packageDir, "node_modules", "openclaw");
+    fs.mkdirSync(existingOperatorDir, { recursive: true });
     fs.writeFileSync(
-      path.join(existingOpenClawDir, "package.json"),
+      path.join(existingOperatorDir, "package.json"),
       '{"name":"not-openclaw"}',
       "utf8",
     );
 
     const warnings: string[] = [];
-    const result = await linkOpenClawPeerDependencies({
+    const result = await linkOperatorPeerDependencies({
       installedDir: packageDir,
       peerDependencies: {
         openclaw: ">=2026.0.0",
@@ -152,7 +152,7 @@ describe("plugin peer links", () => {
     });
 
     expect(result).toEqual({ repaired: 0, skipped: 1 });
-    expect(fs.existsSync(path.join(existingOpenClawDir, "package.json"))).toBe(true);
+    expect(fs.existsSync(path.join(existingOperatorDir, "package.json"))).toBe(true);
     expect(warnings.join("\n")).toContain("already exists and is not a symlink");
   });
 });

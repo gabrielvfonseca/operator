@@ -47,7 +47,7 @@ import {
   type SessionEntry,
   type SessionScope,
 } from "../../config/sessions/types.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { TtsAutoMode } from "../../config/types.tts.js";
 import {
   forgetActiveSessionForShutdown,
@@ -122,7 +122,7 @@ function resolveExplicitSessionEndReason(matchedResetTriggerLower?: string): Rep
 }
 
 function resolveSessionDefaultAccountId(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   channelRaw?: string;
   accountIdRaw?: string;
   persistedLastAccountId?: string;
@@ -178,7 +178,7 @@ export type SessionInitResult = {
 };
 
 type InitSessionStateParams = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   commandAuthorized: boolean;
   ctx: MsgContext;
   expectedExistingSessionId?: string;
@@ -201,7 +201,7 @@ type InitSessionStateAttemptOutcome =
   | { kind: "lifecycle-mutation"; sessionId: string; sessionKey: string };
 
 function resolveSessionConversationBindingContext(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   ctx: MsgContext,
 ): {
   channel: string;
@@ -227,7 +227,7 @@ function resolveSessionConversationBindingContext(
 }
 
 function resolveBoundConversationSessionKey(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   ctx: MsgContext;
   touch?: boolean;
   bindingContext?: {

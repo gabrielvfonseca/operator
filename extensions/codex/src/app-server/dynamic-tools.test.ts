@@ -26,14 +26,14 @@ import {
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createCodexDynamicToolBridge } from "./dynamic-tools.js";
 import {
-  CODEX_OPENCLAW_DIRECT_DYNAMIC_TOOL_NAMESPACE,
+  CODEX_OPERATOR_DIRECT_DYNAMIC_TOOL_NAMESPACE,
   type CodexDynamicToolFunctionSpec,
   type CodexDynamicToolSpec,
   type JsonValue,
 } from "./protocol.js";
 import { settleCodexSourceReplyFinality } from "./source-reply-finality.js";
 
-const CODEX_OPENCLAW_DYNAMIC_TOOL_NAMESPACE = "openclaw";
+const CODEX_OPERATOR_DYNAMIC_TOOL_NAMESPACE = "openclaw";
 
 const COMPUTER_FRAME_IMAGE =
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=";
@@ -195,7 +195,7 @@ afterEach(() => {
 });
 
 describe("createCodexDynamicToolBridge", () => {
-  it("keeps OpenClaw control-path tools direct while deferring broad tools", () => {
+  it("keeps Operator control-path tools direct while deferring broad tools", () => {
     const bridge = createCodexDynamicToolBridge({
       tools: [
         createTool({ name: "web_search" }),
@@ -218,17 +218,17 @@ describe("createCodexDynamicToolBridge", () => {
 
     expectDynamicSpec(webSearch, {
       name: "web_search",
-      namespace: CODEX_OPENCLAW_DYNAMIC_TOOL_NAMESPACE,
+      namespace: CODEX_OPERATOR_DYNAMIC_TOOL_NAMESPACE,
       deferLoading: true,
     });
     expectDynamicSpec(message, {
       name: "message",
-      namespace: CODEX_OPENCLAW_DYNAMIC_TOOL_NAMESPACE,
+      namespace: CODEX_OPERATOR_DYNAMIC_TOOL_NAMESPACE,
       deferLoading: true,
     });
     expectDynamicSpec(heartbeat, {
       name: HEARTBEAT_RESPONSE_TOOL_NAME,
-      namespace: CODEX_OPENCLAW_DYNAMIC_TOOL_NAMESPACE,
+      namespace: CODEX_OPERATOR_DYNAMIC_TOOL_NAMESPACE,
       deferLoading: true,
     });
     expectNoNamespace(agentsList);
@@ -253,7 +253,7 @@ describe("createCodexDynamicToolBridge", () => {
       specs.find((tool) => tool.name === "web_search"),
       {
         name: "web_search",
-        namespace: CODEX_OPENCLAW_DYNAMIC_TOOL_NAMESPACE,
+        namespace: CODEX_OPERATOR_DYNAMIC_TOOL_NAMESPACE,
         deferLoading: true,
       },
     );
@@ -275,7 +275,7 @@ describe("createCodexDynamicToolBridge", () => {
       specs.find((tool) => tool.name === "computer"),
       {
         name: "computer",
-        namespace: CODEX_OPENCLAW_DIRECT_DYNAMIC_TOOL_NAMESPACE,
+        namespace: CODEX_OPERATOR_DIRECT_DYNAMIC_TOOL_NAMESPACE,
       },
     );
     expect(specs.find((tool) => tool.name === "computer")).not.toHaveProperty("deferLoading");
@@ -316,7 +316,7 @@ describe("createCodexDynamicToolBridge", () => {
       contentItems: [
         {
           type: "inputText",
-          text: `OpenClaw tool is not available for this turn: ${HEARTBEAT_RESPONSE_TOOL_NAME}`,
+          text: `Operator tool is not available for this turn: ${HEARTBEAT_RESPONSE_TOOL_NAME}`,
         },
       ],
     });
@@ -329,12 +329,12 @@ describe("createCodexDynamicToolBridge", () => {
         content: [
           {
             type: "text",
-            text: `OpenClaw tool is not available for this turn: ${HEARTBEAT_RESPONSE_TOOL_NAME}`,
+            text: `Operator tool is not available for this turn: ${HEARTBEAT_RESPONSE_TOOL_NAME}`,
           },
         ],
         details: {
           status: "failed",
-          error: `OpenClaw tool is not available for this turn: ${HEARTBEAT_RESPONSE_TOOL_NAME}`,
+          error: `Operator tool is not available for this turn: ${HEARTBEAT_RESPONSE_TOOL_NAME}`,
         },
       },
       isError: true,
@@ -671,7 +671,7 @@ describe("createCodexDynamicToolBridge", () => {
 
     expect(result).toEqual({
       success: false,
-      contentItems: [{ type: "inputText", text: "Unknown OpenClaw tool: fuzzplugin_move_angles" }],
+      contentItems: [{ type: "inputText", text: "Unknown Operator tool: fuzzplugin_move_angles" }],
     });
     expect(result.executionStarted).toBe(false);
     expect(result.executedArguments).toEqual({});
@@ -842,7 +842,7 @@ describe("createCodexDynamicToolBridge", () => {
     }
     const text = firstItem.text;
     expect(text.length).toBeLessThanOrEqual(180);
-    expect(text).toContain("OpenClaw truncated dynamic tool result");
+    expect(text).toContain("Operator truncated dynamic tool result");
     expect(text).toContain("original 400 chars");
     expect(text).toContain("rerun with narrower args");
   });
@@ -850,7 +850,7 @@ describe("createCodexDynamicToolBridge", () => {
   it("keeps a whole code point when dynamic tool text crosses the configured boundary", async () => {
     const maxChars = 180;
     const totalChars = 400;
-    const noticeText = `...(OpenClaw truncated dynamic tool result: original ${totalChars} chars, showing ${maxChars}; rerun with narrower args.)`;
+    const noticeText = `...(Operator truncated dynamic tool result: original ${totalChars} chars, showing ${maxChars}; rerun with narrower args.)`;
     const textBudget = maxChars - noticeText.length - 1;
     const prefix = "a".repeat(textBudget - 1);
     const longText = `${prefix}😀${"z".repeat(totalChars - prefix.length - 2)}`;
@@ -928,7 +928,7 @@ describe("createCodexDynamicToolBridge", () => {
       throw new Error("expected inputText tool result");
     }
     expect(firstItem.text.length).toBeLessThanOrEqual(180);
-    expect(firstItem.text).toContain("OpenClaw truncated dynamic tool result");
+    expect(firstItem.text).toContain("Operator truncated dynamic tool result");
   });
 
   it("keeps truncation notices within tiny configured caps", async () => {
@@ -969,7 +969,7 @@ describe("createCodexDynamicToolBridge", () => {
       throw new Error("expected inputText tool result");
     }
     expect(firstItem.text.length).toBeLessThanOrEqual(32);
-    expect(firstItem.text).toBe("...(OpenClaw truncated dynamic tool".slice(0, 32));
+    expect(firstItem.text).toBe("...(Operator truncated dynamic tool".slice(0, 32));
   });
 
   it("budgets configured truncation across all text result blocks", async () => {
@@ -1015,7 +1015,7 @@ describe("createCodexDynamicToolBridge", () => {
       .map((item) => (item.type === "inputText" && typeof item.text === "string" ? item.text : ""))
       .join("");
     expect(text.length).toBeLessThanOrEqual(180);
-    expect(text).toContain("OpenClaw truncated dynamic tool result");
+    expect(text).toContain("Operator truncated dynamic tool result");
     expect(text).toContain("original 400 chars");
     expect(text).not.toContain("b".repeat(100));
   });
@@ -2781,7 +2781,7 @@ describe("createCodexDynamicToolBridge", () => {
     expect(result.sideEffectEvidence).toBeUndefined();
   });
 
-  it("shares replay-safe classification with OpenClaw for read-only dynamic tools", async () => {
+  it("shares replay-safe classification with Operator for read-only dynamic tools", async () => {
     const bridge = createBridgeWithToolResult("web_search", textToolResult("done"));
 
     const result = await bridge.handleToolCall({
@@ -3666,7 +3666,7 @@ describe("createCodexDynamicToolBridge", () => {
     expect(result).toMatchObject({
       success: false,
       diagnosticTerminalReason: "failed",
-      contentItems: [{ type: "inputText", text: "OpenClaw dynamic tool call failed." }],
+      contentItems: [{ type: "inputText", text: "Operator dynamic tool call failed." }],
     });
     expect(onAgentToolResult).toHaveBeenCalledOnce();
   });

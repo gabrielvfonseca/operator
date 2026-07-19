@@ -4,7 +4,7 @@
  */
 import crypto from "node:crypto";
 import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { ensureAuthProfileStore, loadAuthProfileStoreForRuntime } from "./auth-profiles/store.js";
 import type { AuthProfileCredential, AuthProfileStore } from "./auth-profiles/types.js";
 import { resolveCliBackendConfig } from "./cli-backends.js";
@@ -294,7 +294,7 @@ export async function resolveCliAuthEpoch(params: {
  */
 export function resolveCliAuthBindingFingerprint(params: {
   provider: string;
-  config: OpenClawConfig;
+  config: OperatorConfig;
   agentDir?: string;
   authProfileId?: string;
   /** Exact selected profile material actually forwarded to this execution. */
@@ -343,7 +343,7 @@ export function resolveCliAuthBindingFingerprint(params: {
 
 type CliRuntimeArtifactFingerprintParams = {
   provider: string;
-  config: OpenClawConfig;
+  config: OperatorConfig;
   agentId?: string;
   runtimeArtifactId?: string;
   cwd?: string;
@@ -411,7 +411,7 @@ export async function resolveCliRuntimeArtifactFingerprint(
  */
 export async function resolveCliRuntimeOwnerFingerprint(params: {
   provider: string;
-  config: OpenClawConfig;
+  config: OperatorConfig;
   agentDir?: string;
   agentId?: string;
   runtimeOwnerId?: string;

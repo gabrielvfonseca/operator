@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import type { SessionEntry } from "../../config/sessions.js";
 import { replaceSessionEntry } from "../../config/sessions/session-accessor.js";
 import type { HookRunner } from "../../plugins/hooks.js";
@@ -125,7 +125,7 @@ async function createStoredSession(params: {
   return { storePath, transcriptPath };
 }
 
-type SessionResetConfig = NonNullable<NonNullable<OpenClawConfig["session"]>["reset"]>;
+type SessionResetConfig = NonNullable<NonNullable<OperatorConfig["session"]>["reset"]>;
 
 async function initStoredSessionState(params: {
   prefix: string;
@@ -141,7 +141,7 @@ async function initStoredSessionState(params: {
       store: storePath,
       ...(params.reset ? { reset: params.reset } : {}),
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 
   await initSessionState({
     ctx: { Body: "hello", SessionKey: params.sessionKey },
@@ -212,7 +212,7 @@ describe("session hook context wiring", () => {
     const sessionKey = "agent:main:telegram:direct:123";
     const storePath = await createStorePath("openclaw-session-hook-start");
     await writeStore(storePath, {});
-    const cfg = { session: { store: storePath } } as OpenClawConfig;
+    const cfg = { session: { store: storePath } } as OperatorConfig;
 
     await initSessionState({
       ctx: { Body: "hello", SessionKey: sessionKey },
@@ -233,7 +233,7 @@ describe("session hook context wiring", () => {
       sessionKey,
       sessionId: "old-session",
     });
-    const cfg = { session: { store: storePath } } as OpenClawConfig;
+    const cfg = { session: { store: storePath } } as OperatorConfig;
 
     await initSessionState({
       ctx: { Body: "/new", SessionKey: sessionKey },
@@ -284,7 +284,7 @@ describe("session hook context wiring", () => {
 
     await initSessionState({
       ctx: { Body: "/new", SessionKey: sessionKey },
-      cfg: { session: { store: storePath } } as OpenClawConfig,
+      cfg: { session: { store: storePath } } as OperatorConfig,
       commandAuthorized: true,
     });
 
@@ -323,7 +323,7 @@ describe("session hook context wiring", () => {
       markGatewayRestartDraining();
       await initSessionState({
         ctx: { Body: "/new", SessionKey: sessionKey },
-        cfg: { session: { store: storePath } } as OpenClawConfig,
+        cfg: { session: { store: storePath } } as OperatorConfig,
         commandAuthorized: true,
       });
       await vi.waitFor(() => expect(releases).toHaveLength(3));
@@ -348,7 +348,7 @@ describe("session hook context wiring", () => {
       sessionId: "reset-session",
       text: "reset me",
     });
-    const cfg = { session: { store: storePath } } as OpenClawConfig;
+    const cfg = { session: { store: storePath } } as OperatorConfig;
 
     await initSessionState({
       ctx: { Body: "/reset", SessionKey: sessionKey },
@@ -373,7 +373,7 @@ describe("session hook context wiring", () => {
         store: storePath,
         resetTriggers: ["/fresh"],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     await initSessionState({
       ctx: { Body: "/fresh", SessionKey: sessionKey },

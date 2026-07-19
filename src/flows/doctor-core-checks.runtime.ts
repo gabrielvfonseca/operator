@@ -12,7 +12,7 @@ import {
   resolveAgentWorkspaceDir,
   resolveDefaultAgentId,
 } from "../agents/agent-scope.js";
-import { createOpenClawCodingTools } from "../agents/agent-tools.js";
+import { createOperatorCodingTools } from "../agents/agent-tools.js";
 import { resolveEffectiveToolPolicy } from "../agents/agent-tools.policy.js";
 import { resolveConversationCapabilityProfile } from "../agents/conversation-capability-profile.js";
 import { DEFAULT_MODEL, DEFAULT_PROVIDER } from "../agents/defaults.js";
@@ -35,7 +35,7 @@ import type { AnyAgentTool } from "../agents/tools/common.js";
 import { probeGatewayStatus } from "../cli/daemon-cli/probe.js";
 import { collectUnavailableAgentSkills } from "../commands/doctor-skills-core.js";
 import { gatewayProbeResultSawGateway } from "../commands/gateway-health-auth-diagnostic.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   getSystemdCgroupHygieneSummary,
   type GatewayServiceRuntime,
@@ -62,7 +62,7 @@ function formatGatewayHealthTarget(url: string): string {
   return redactSensitiveUrlLikeString(url);
 }
 
-export function detectUnavailableSkills(cfg: OpenClawConfig): SkillStatusEntry[] {
+export function detectUnavailableSkills(cfg: OperatorConfig): SkillStatusEntry[] {
   const agentId = resolveDefaultAgentId(cfg);
   const workspaceDir = resolveAgentWorkspaceDir(cfg, agentId);
   const report = buildWorkspaceSkillStatus(workspaceDir, {
@@ -603,7 +603,7 @@ function groupProviderCatalogsForDoctor(providers: readonly ProviderPlugin[]): {
 }
 
 export async function collectProviderCatalogProjectionFindings(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
 ): Promise<readonly HealthFinding[]> {
   const { runProviderStaticCatalog } = await import("../plugins/provider-discovery.js");
   const { resolvePluginProviders } = await import("../plugins/providers.runtime.js");
@@ -774,7 +774,7 @@ function collectToolSchemaFindings(params: {
 function collectNormalizedToolSchemaFindings(params: {
   agentId: string;
   tools: AnyAgentTool[];
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   workspaceDir: string;
   modelRef: { provider: string; model: string };
   model: ProviderRuntimeModel;
@@ -820,7 +820,7 @@ function collectNormalizedToolSchemaFindings(params: {
 
 function collectBundleMcpRuntimeToolSchemaFindings(params: {
   bundleRuntime: BundleMcpToolRuntime;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
   workspaceDir: string;
   modelRef: { provider: string; model: string };
@@ -880,7 +880,7 @@ function agentRuntimeToolNormalizationFailureFinding(params: {
 }
 
 function collectAgentRuntimeToolSchemaFindings(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
   workspaceDir: string;
   modelRef: { provider: string; model: string };
@@ -888,7 +888,7 @@ function collectAgentRuntimeToolSchemaFindings(params: {
 }): readonly HealthFinding[] {
   let tools: AnyAgentTool[];
   try {
-    tools = createOpenClawCodingTools({
+    tools = createOperatorCodingTools({
       agentId: params.agentId,
       workspaceDir: params.workspaceDir,
       config: params.cfg,
@@ -990,7 +990,7 @@ function synthesizeBundleMcpAllowlistSentinelName(params: {
 }
 
 function collectBundleMcpDiagnosticSentinels(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
   modelRef: { provider: string; model: string };
   diagnostic: McpToolCatalogDiagnostic;
@@ -1033,7 +1033,7 @@ function collectBundleMcpDiagnosticSentinels(params: {
 }
 
 function shouldReportBundleMcpRuntimeDiagnostic(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
   modelRef: { provider: string; model: string };
   diagnostic: McpToolCatalogDiagnostic;
@@ -1056,7 +1056,7 @@ function shouldReportBundleMcpRuntimeDiagnostic(params: {
 
 function filterPolicyActiveBundleMcpDiagnostics(params: {
   diagnostics: readonly McpToolCatalogDiagnostic[];
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
   modelRef: { provider: string; model: string };
 }): readonly McpToolCatalogDiagnostic[] {
@@ -1070,7 +1070,7 @@ function filterPolicyActiveBundleMcpDiagnostics(params: {
   );
 }
 
-function isAcpRuntimeAgent(cfg: OpenClawConfig, agentId: string): boolean {
+function isAcpRuntimeAgent(cfg: OperatorConfig, agentId: string): boolean {
   const entry = listAgentEntries(cfg).find(
     (candidate) => normalizeAgentId(candidate.id) === agentId,
   );
@@ -1078,7 +1078,7 @@ function isAcpRuntimeAgent(cfg: OpenClawConfig, agentId: string): boolean {
 }
 
 export async function collectRuntimeToolSchemaFindings(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
 ): Promise<readonly HealthFinding[]> {
   const catalog = await loadModelCatalog({ config: cfg });
   const findings: HealthFinding[] = [];

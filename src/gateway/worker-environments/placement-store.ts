@@ -2,9 +2,9 @@ import { randomUUID } from "node:crypto";
 import type { DatabaseSync } from "node:sqlite";
 import { executeSqliteQuerySync } from "../../infra/kysely-sync.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
-  type OpenClawStateDatabase,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
+  type OperatorStateDatabase,
 } from "../../state/operator-state-db.js";
 import {
   assertRecordShape,
@@ -66,16 +66,16 @@ function updateTransition(
 }
 
 export function createWorkerSessionPlacementStore(
-  options: { database?: OpenClawStateDatabase; now?: () => number } = {},
+  options: { database?: OperatorStateDatabase; now?: () => number } = {},
 ) {
-  const path = (options.database ?? openOpenClawStateDatabase()).path;
+  const path = (options.database ?? openOperatorStateDatabase()).path;
   const now = options.now ?? Date.now;
   const runtime: PlacementStoreRuntime = {
     path,
     instanceId: randomUUID(),
     now,
-    read: () => openOpenClawStateDatabase({ path }).db,
-    write: (operation) => runOpenClawStateWriteTransaction(({ db }) => operation(db), { path }),
+    read: () => openOperatorStateDatabase({ path }).db,
+    write: (operation) => runOperatorStateWriteTransaction(({ db }) => operation(db), { path }),
   };
   const { read, write } = runtime;
 

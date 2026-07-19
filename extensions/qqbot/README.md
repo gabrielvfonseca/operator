@@ -1,11 +1,11 @@
-# OpenClaw QQ Bot
+# Operator QQ Bot
 
-Official OpenClaw channel plugin for QQ Bot group and direct-message workflows.
+Official Operator channel plugin for QQ Bot group and direct-message workflows.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugin add @operator/qqbot
 ```
 
-Configure QQ Bot credentials in OpenClaw, then connect the bot to the groups or direct-message contexts where agents should operate.
+Configure QQ Bot credentials in Operator, then connect the bot to the groups or direct-message contexts where agents should operate.

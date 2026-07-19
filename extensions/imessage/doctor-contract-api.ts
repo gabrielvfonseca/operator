@@ -3,7 +3,7 @@ import type {
   ChannelDoctorConfigMutation,
   ChannelDoctorLegacyConfigRule,
 } from "openclaw/plugin-sdk/channel-contract";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { defineChannelAliasMigration } from "openclaw/plugin-sdk/runtime-doctor";
 import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
 
@@ -53,7 +53,7 @@ export const legacyConfigRules: ChannelDoctorLegacyConfigRule[] = [
 export function normalizeCompatibilityConfig({
   cfg,
 }: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
 }): ChannelDoctorConfigMutation {
   const channels = cfg.channels as Record<string, unknown> | undefined;
   const imessage = channels?.imessage;
@@ -94,7 +94,7 @@ export function normalizeCompatibilityConfig({
     cfg:
       nextImessage === imessage
         ? cfg
-        : ({ ...cfg, channels: { ...channels, imessage: nextImessage } } as OpenClawConfig),
+        : ({ ...cfg, channels: { ...channels, imessage: nextImessage } } as OperatorConfig),
     changes,
   });
   if (changes.length === 0) {

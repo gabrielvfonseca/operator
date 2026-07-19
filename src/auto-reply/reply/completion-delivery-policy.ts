@@ -1,6 +1,6 @@
 // Resolves whether completed replies should send visibly or stay tool-only.
 import { normalizeChatType, type ChatType } from "../../channels/chat-type.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { deriveSessionChatTypeFromKey } from "../../sessions/session-chat-type-shared.js";
 import type { DeliveryContext } from "../../utils/delivery-context.types.js";
 import type { SourceReplyDeliveryMode } from "../source-reply-delivery-mode.types.js";
@@ -42,7 +42,7 @@ function resolveCompletionChatType(params: {
 }
 
 export function completionRequiresMessageToolDelivery(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   requesterSessionKey?: string | null;
   targetRequesterSessionKey?: string | null;
   requesterEntry?: CompletionDeliverySessionEntry;

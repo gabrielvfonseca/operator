@@ -1,8 +1,8 @@
-// Covers OpenClaw CLI PATH construction.
+// Covers Operator CLI PATH construction.
 import fs from "node:fs";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { ensureOpenClawCliOnPath } from "./path-env.js";
+import { ensureOperatorCliOnPath } from "./path-env.js";
 
 const state = vi.hoisted(() => ({
   dirs: new Set<string>(),
@@ -46,11 +46,11 @@ vi.mock("./env.js", () => ({
   isTruthyEnvValue: (value?: string) => value === "1" || value === "true",
 }));
 
-describe("ensureOpenClawCliOnPath", () => {
+describe("ensureOperatorCliOnPath", () => {
   const envKeys = [
     "PATH",
-    "OPENCLAW_PATH_BOOTSTRAPPED",
-    "OPENCLAW_ALLOW_PROJECT_LOCAL_BIN",
+    "OPERATOR_PATH_BOOTSTRAPPED",
+    "OPERATOR_ALLOW_PROJECT_LOCAL_BIN",
     "MISE_DATA_DIR",
     "PNPM_HOME",
     "NPM_CONFIG_PREFIX",
@@ -98,14 +98,14 @@ describe("ensureOpenClawCliOnPath", () => {
     platform: NodeJS.Platform;
     allowProjectLocalBin?: boolean;
   }) {
-    ensureOpenClawCliOnPath(params);
+    ensureOperatorCliOnPath(params);
     return (process.env.PATH ?? "").split(path.delimiter);
   }
 
   function resetBootstrapEnv(pathValue = "/usr/bin") {
     process.env.PATH = pathValue;
-    delete process.env.OPENCLAW_PATH_BOOTSTRAPPED;
-    delete process.env.OPENCLAW_ALLOW_PROJECT_LOCAL_BIN;
+    delete process.env.OPERATOR_PATH_BOOTSTRAPPED;
+    delete process.env.OPERATOR_ALLOW_PROJECT_LOCAL_BIN;
     delete process.env.HOMEBREW_PREFIX;
     delete process.env.HOMEBREW_BREW_FILE;
     delete process.env.XDG_BIN_HOME;
@@ -159,8 +159,8 @@ describe("ensureOpenClawCliOnPath", () => {
 
   it("is idempotent", () => {
     process.env.PATH = "/bin";
-    process.env.OPENCLAW_PATH_BOOTSTRAPPED = "1";
-    ensureOpenClawCliOnPath({
+    process.env.OPERATOR_PATH_BOOTSTRAPPED = "1";
+    ensureOperatorCliOnPath({
       execPath: "/tmp/does-not-matter",
       cwd: "/tmp",
       homeDir: "/tmp",
@@ -221,9 +221,9 @@ describe("ensureOpenClawCliOnPath", () => {
 
       resetBootstrapEnv();
       if (envValue === undefined) {
-        delete process.env.OPENCLAW_ALLOW_PROJECT_LOCAL_BIN;
+        delete process.env.OPERATOR_ALLOW_PROJECT_LOCAL_BIN;
       } else {
-        process.env.OPENCLAW_ALLOW_PROJECT_LOCAL_BIN = envValue;
+        process.env.OPERATOR_ALLOW_PROJECT_LOCAL_BIN = envValue;
       }
 
       const withOptIn = bootstrapPath({
@@ -243,13 +243,13 @@ describe("ensureOpenClawCliOnPath", () => {
     setDir(localBinDir);
     setExe(path.join(localBinDir, "openclaw"));
     resetBootstrapEnv();
-    process.env.OPENCLAW_ALLOW_PROJECT_LOCAL_BIN = "1";
+    process.env.OPERATOR_ALLOW_PROJECT_LOCAL_BIN = "1";
     const cwdSpy = vi.spyOn(process, "cwd").mockImplementation(() => {
       throw new Error("ENOENT: uv_cwd");
     });
 
     try {
-      ensureOpenClawCliOnPath({ execPath: appCli, homeDir: tmp, platform: "darwin" });
+      ensureOperatorCliOnPath({ execPath: appCli, homeDir: tmp, platform: "darwin" });
     } finally {
       cwdSpy.mockRestore();
     }

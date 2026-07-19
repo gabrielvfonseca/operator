@@ -1,7 +1,7 @@
 // Tests inbound metadata normalization before prompt injection.
 import { describe, expect, it, vi } from "vitest";
 import type { SessionEntry, SessionGoalStatus } from "../../config/sessions/types.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import { resetPluginRuntimeStateForTest, setActivePluginRegistry } from "../../plugins/runtime.js";
 import { createTestRegistry } from "../../test-utils/channel-plugins.js";
 import { withEnv } from "../../test-utils/env.js";
@@ -12,10 +12,10 @@ import {
   refreshActiveGoalContext,
 } from "./inbound-meta.js";
 
-const EMPTY_CFG = {} as OpenClawConfig;
+const EMPTY_CFG = {} as OperatorConfig;
 
 const { formattingHintCalls } = vi.hoisted(() => ({
-  formattingHintCalls: [] as Array<{ cfg: OpenClawConfig; accountId?: string | null }>,
+  formattingHintCalls: [] as Array<{ cfg: OperatorConfig; accountId?: string | null }>,
 }));
 
 vi.mock("../../channels/plugins/registry-loaded.js", () => ({
@@ -24,7 +24,7 @@ vi.mock("../../channels/plugins/registry-loaded.js", () => ({
       ? {
           agentPrompt: {
             inboundFormattingHints: (params: {
-              cfg: OpenClawConfig;
+              cfg: OperatorConfig;
               accountId?: string | null;
             }) => {
               formattingHintCalls.push(params);
@@ -295,7 +295,7 @@ describe("buildInboundMetaSystemPrompt", () => {
 
     const cfg = {
       channels: { slack: { botToken: "test-token-placeholder" } },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const prompt = buildInboundMetaSystemPrompt(
       {
         OriginatingTo: "channel:C123",

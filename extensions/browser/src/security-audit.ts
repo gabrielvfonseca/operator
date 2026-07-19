@@ -1,7 +1,7 @@
 /**
  * Browser plugin security audit checks for auth and remote CDP exposure.
  */
-import type { OpenClawPluginSecurityAuditContext } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginSecurityAuditContext } from "openclaw/plugin-sdk/plugin-entry";
 import { hasConfiguredSecretInput } from "openclaw/plugin-sdk/secret-input";
 import { formatCliCommand } from "openclaw/plugin-sdk/setup-tools";
 import { isPrivateNetworkOptInEnabled, isPrivateIpAddress } from "openclaw/plugin-sdk/ssrf-policy";
@@ -22,7 +22,7 @@ function isTrustedPrivateHostname(hostname: string): boolean {
 }
 
 /** Collects Browser plugin security audit findings for the current config/env. */
-export function collectBrowserSecurityAuditFindings(ctx: OpenClawPluginSecurityAuditContext) {
+export function collectBrowserSecurityAuditFindings(ctx: OperatorPluginSecurityAuditContext) {
   const findings: Array<{
     checkId: string;
     severity: "warn" | "critical";
@@ -53,7 +53,7 @@ export function collectBrowserSecurityAuditFindings(ctx: OpenClawPluginSecurityA
   const explicitAuthMode = ctx.config.gateway?.auth?.mode;
   const tokenConfigured =
     Boolean(browserAuth.token) ||
-    hasNonEmptyString(ctx.env.OPENCLAW_GATEWAY_TOKEN) ||
+    hasNonEmptyString(ctx.env.OPERATOR_GATEWAY_TOKEN) ||
     hasConfiguredSecretInput(ctx.config.gateway?.auth?.token, ctx.config.secrets?.defaults);
   const passwordCanWin =
     explicitAuthMode === "password" ||
@@ -64,7 +64,7 @@ export function collectBrowserSecurityAuditFindings(ctx: OpenClawPluginSecurityA
   const passwordConfigured =
     Boolean(browserAuth.password) ||
     (passwordCanWin &&
-      (hasNonEmptyString(ctx.env.OPENCLAW_GATEWAY_PASSWORD) ||
+      (hasNonEmptyString(ctx.env.OPERATOR_GATEWAY_PASSWORD) ||
         hasConfiguredSecretInput(
           ctx.config.gateway?.auth?.password,
           ctx.config.secrets?.defaults,

@@ -1,11 +1,11 @@
-# OpenClaw LINE
+# Operator LINE
 
-Official OpenClaw channel plugin for LINE Bot API chats.
+Official Operator channel plugin for LINE Bot API chats.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugin add @operator/line
 ```
 
-Configure LINE channel credentials in OpenClaw, then connect the bot to the chats where agents should receive and send messages.
+Configure LINE channel credentials in Operator, then connect the bot to the chats where agents should receive and send messages.

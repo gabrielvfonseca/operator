@@ -7,7 +7,7 @@ import { Command } from "commander";
 import { SessionManager } from "openclaw/plugin-sdk/agent-sessions";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { withEnvOverride } from "../config/test-helpers.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { testApi as usageTestApi, usageHandlers } from "../gateway/server-methods/usage.js";
 import { GatewayLockError } from "../infra/gateway-lock.js";
 import { registerGatewayCli } from "./gateway-cli.js";
@@ -305,7 +305,7 @@ describe("gateway-cli coverage", () => {
         list: [{ id: "main", default: true }, { id: "dev" }],
       },
       session: {},
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const seedUsage = (agentId: string, totalTokens: number, totalCost: number) => {
       const sessionsDir = path.join(stateDir, "agents", agentId, "sessions");
       fs.mkdirSync(sessionsDir, { recursive: true });
@@ -336,7 +336,7 @@ describe("gateway-cli coverage", () => {
     };
 
     try {
-      await withEnvOverride({ OPENCLAW_STATE_DIR: stateDir }, async () => {
+      await withEnvOverride({ OPERATOR_STATE_DIR: stateDir }, async () => {
         seedUsage("main", 30, 0.03);
         seedUsage("dev", 70, 0.07);
         usageTestApi.costUsageCache.clear();
@@ -579,7 +579,7 @@ describe("gateway-cli coverage", () => {
       fs.mkdirSync(bundleDir, { recursive: true });
       fs.writeFileSync(bundlePath, `${JSON.stringify(bundle, null, 2)}\n`, "utf8");
 
-      await withEnvOverride({ OPENCLAW_STATE_DIR: tempDir }, async () => {
+      await withEnvOverride({ OPERATOR_STATE_DIR: tempDir }, async () => {
         await runGatewayCommand(["gateway", "stability", "--bundle", "latest"]);
       });
 
@@ -604,7 +604,7 @@ describe("gateway-cli coverage", () => {
     try {
       const outputPath = path.join(tempDir, "diagnostics.zip");
       await withEnvOverride(
-        { OPENCLAW_STATE_DIR: tempDir, OPENCLAW_TEST_FILE_LOG: undefined },
+        { OPERATOR_STATE_DIR: tempDir, OPERATOR_TEST_FILE_LOG: undefined },
         async () => {
           await runGatewayCommand([
             "gateway",
@@ -647,7 +647,7 @@ describe("gateway-cli coverage", () => {
     discoverGatewayBeacons.mockClear();
     discoverGatewayBeacons.mockResolvedValueOnce([
       {
-        instanceName: "Studio (OpenClaw)",
+        instanceName: "Studio (Operator)",
         displayName: "Studio",
         domain: "openclaw.internal.",
         host: "studio.openclaw.internal",
@@ -740,14 +740,14 @@ describe("gateway-cli coverage", () => {
         LAUNCH_JOB_LABEL: undefined,
         LAUNCH_JOB_NAME: undefined,
         XPC_SERVICE_NAME: undefined,
-        OPENCLAW_LAUNCHD_LABEL: undefined,
-        OPENCLAW_SYSTEMD_UNIT: undefined,
+        OPERATOR_LAUNCHD_LABEL: undefined,
+        OPERATOR_SYSTEMD_UNIT: undefined,
         INVOCATION_ID: undefined,
         SYSTEMD_EXEC_PID: undefined,
         JOURNAL_STREAM: undefined,
-        OPENCLAW_WINDOWS_TASK_NAME: undefined,
-        OPENCLAW_SERVICE_MARKER: undefined,
-        OPENCLAW_SERVICE_KIND: undefined,
+        OPERATOR_WINDOWS_TASK_NAME: undefined,
+        OPERATOR_SERVICE_MARKER: undefined,
+        OPERATOR_SERVICE_KIND: undefined,
       },
       async () => {
         serviceIsLoaded.mockResolvedValue(true);
@@ -792,7 +792,7 @@ describe("gateway-cli coverage", () => {
   });
 
   it("uses env/config port when --port is omitted", async () => {
-    await withEnvOverride({ OPENCLAW_GATEWAY_PORT: "19001" }, async () => {
+    await withEnvOverride({ OPERATOR_GATEWAY_PORT: "19001" }, async () => {
       runtimeLogs.length = 0;
       runtimeErrors.length = 0;
       startGatewayServer.mockClear();

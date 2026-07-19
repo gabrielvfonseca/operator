@@ -2,7 +2,7 @@ import { sanitizeTerminalText } from "../../packages/terminal-core/src/safe-text
 import { VERSION } from "../version.js";
 import { hashConfigRaw } from "./io.read-helpers.js";
 import { loggedConfigWarningFingerprints, warnedFutureTouchedVersions } from "./io.state.js";
-import type { OpenClawConfig } from "./types.js";
+import type { OperatorConfig } from "./types.js";
 import { shouldWarnOnTouchedVersion } from "./version.js";
 
 export function warnOnConfigMiskeys(raw: unknown, logger: Pick<typeof console, "warn">): void {
@@ -44,7 +44,7 @@ export function logConfigWarningsOnce(params: {
 }
 
 export function warnIfConfigFromFuture(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   logger: Pick<typeof console, "warn">,
 ): void {
   const touched = cfg.meta?.lastTouchedVersion;
@@ -57,9 +57,9 @@ export function warnIfConfigFromFuture(
   warnedFutureTouchedVersions.add(touched);
   logger.warn(
     [
-      `Your OpenClaw config was written by version ${touched}, but this command is running ${VERSION}.`,
+      `Your Operator config was written by version ${touched}, but this command is running ${VERSION}.`,
       "Check: `operator --version`, `which operator`, and `operator gateway status --deep`.",
-      "If unexpected, update PATH so `operator` points to the version you want, or reinstall the Gateway service from that same OpenClaw install.",
+      "If unexpected, update PATH so `operator` points to the version you want, or reinstall the Gateway service from that same Operator install.",
     ].join("\n"),
   );
 }

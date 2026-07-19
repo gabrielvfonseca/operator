@@ -1,5 +1,5 @@
 /**
- * Fast OpenClaw tool-bundle mock.
+ * Fast Operator tool-bundle mock.
  *
  * Provides lightweight built-in tool stubs for inventory-heavy tests.
  */
@@ -48,7 +48,7 @@ const coreTools = [
   stubTool("pdf"),
 ];
 
-const createOpenClawToolsMock = vi.fn(
+const createOperatorToolsMock = vi.fn(
   (options?: { enableHeartbeatTool?: boolean; recordToolPrepStage?: (name: string) => void }) => {
     options?.recordToolPrepStage?.("operator-tools:test-helper");
     return coreTools
@@ -63,7 +63,7 @@ const createOpenClawToolsMock = vi.fn(
 vi.mock("../operator-tools.js", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../operator-tools.js")>();
   return {
-    createOpenClawTools: createOpenClawToolsMock,
+    createOperatorTools: createOperatorToolsMock,
     filterToolsByClientCaps: actual.filterToolsByClientCaps,
     testing: {
       setDepsForTest: () => {},

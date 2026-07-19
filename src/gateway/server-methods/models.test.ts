@@ -9,10 +9,10 @@ import {
   replaceRuntimeAuthProfileStoreSnapshots,
 } from "../../agents/auth-profiles.js";
 import { clearRuntimeConfigSnapshot, setRuntimeConfigSnapshot } from "../../config/config.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import { createDeferred } from "../../test-utils/deferred.js";
 import { withEnvAsync } from "../../test-utils/env.js";
-import { withOpenClawTestState } from "../../test-utils/operator-test-state.js";
+import { withOperatorTestState } from "../../test-utils/operator-test-state.js";
 import { expectGatewayErrorResponse } from "./gateway-response.test-helpers.js";
 import { modelsHandlers } from "./models.js";
 import type { RespondFn } from "./types.js";
@@ -48,7 +48,7 @@ function createDemoOAuthStore(params: { access: string; expires: number }) {
 function requestModelsList(params: {
   view: "default" | "configured" | "provider-config" | "all";
   respond?: ReturnType<typeof vi.fn>;
-  runtimeConfig?: OpenClawConfig;
+  runtimeConfig?: OperatorConfig;
   loadGatewayModelCatalog: (params?: {
     readOnly?: boolean;
   }) => Promise<Array<Record<string, unknown>>>;
@@ -77,7 +77,7 @@ function requestModelsList(params: {
     client: null,
     isWebchatConnect: () => false,
     context: {
-      getRuntimeConfig: () => params.runtimeConfig ?? ({} as OpenClawConfig),
+      getRuntimeConfig: () => params.runtimeConfig ?? ({} as OperatorConfig),
       loadGatewayModelCatalog: params.loadGatewayModelCatalog,
       loadGatewayModelCatalogSnapshot: async (
         loadParams: Parameters<typeof params.loadGatewayModelCatalog>[0],
@@ -170,7 +170,7 @@ describe("models.list", () => {
           vllm: sourceProvider,
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     const runtimeConfig = {
       ...sourceConfig,
       models: {
@@ -182,7 +182,7 @@ describe("models.list", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     const loadGatewayModelCatalog = vi.fn(() => Promise.resolve([]));
     setRuntimeConfigSnapshot(runtimeConfig, sourceConfig);
     try {
@@ -247,7 +247,7 @@ describe("models.list", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     setRuntimeConfigSnapshot(config, config);
     try {
       const { request, respond } = requestModelsList({
@@ -290,7 +290,7 @@ describe("models.list", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
       try {
@@ -353,7 +353,7 @@ describe("models.list", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
     try {
@@ -483,7 +483,7 @@ describe("models.list", () => {
             vllm: { apiKey: "test-key" },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       const loadConfiguredCatalog = vi.fn(() => Promise.resolve(catalog));
       const { request: configuredRequest, respond: configuredRespond } = requestModelsList({
@@ -563,7 +563,7 @@ describe("models.list", () => {
 
   it("keeps keyless local provider wildcard discoveries visible with unknown availability", async () => {
     await withoutOpenAIEnvAuth(async () => {
-      await withOpenClawTestState(
+      await withOperatorTestState(
         {
           layout: "state-only",
           prefix: "openclaw-models-list-local-wildcard-",
@@ -598,7 +598,7 @@ describe("models.list", () => {
                 },
               },
             },
-          } as unknown as OpenClawConfig;
+          } as unknown as OperatorConfig;
           const expected = {
             models: [
               {
@@ -633,7 +633,7 @@ describe("models.list", () => {
 
   it("marks legacy OpenAI Codex aliases available through ChatGPT OAuth", async () => {
     await withoutOpenAIEnvAuth(async () => {
-      await withOpenClawTestState(
+      await withOperatorTestState(
         {
           layout: "state-only",
           prefix: "openclaw-models-list-codex-alias-",
@@ -692,7 +692,7 @@ describe("models.list", () => {
 
   it("marks catalog models available through their configured CLI runtime", async () => {
     await withEnvAsync({ ANTHROPIC_API_KEY: undefined }, async () => {
-      await withOpenClawTestState(
+      await withOperatorTestState(
         {
           layout: "state-only",
           prefix: "openclaw-models-list-cli-runtime-",
@@ -722,7 +722,7 @@ describe("models.list", () => {
                 },
               },
             },
-          } as unknown as OpenClawConfig;
+          } as unknown as OperatorConfig;
           const { request, respond } = requestModelsList({
             view: "all",
             runtimeConfig,
@@ -789,7 +789,7 @@ describe("models.list", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     const { request, respond } = requestModelsList({
       view: "all",
@@ -825,7 +825,7 @@ describe("models.list", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     const { request, respond } = requestModelsList({
       view: "all",
@@ -847,7 +847,7 @@ describe("models.list", () => {
   });
 
   it("uses an exact hydrated runtime snapshot as managed SecretRef proof", async () => {
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: OperatorConfig = {
       secrets: {
         providers: {
           "mounted-json": {
@@ -875,7 +875,7 @@ describe("models.list", () => {
       sourceConfig.models?.providers?.vllm,
       "source vLLM provider",
     );
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: OperatorConfig = {
       ...sourceConfig,
       models: {
         providers: {
@@ -911,7 +911,7 @@ describe("models.list", () => {
   });
 
   it("does not mark catalog rows available from expired OAuth profiles", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-models-list-expired-profile-",
@@ -953,7 +953,7 @@ describe("models.list", () => {
   });
 
   it("uses refreshed persisted OAuth when the runtime auth snapshot is stale", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-models-list-stale-runtime-profile-",
@@ -1011,7 +1011,7 @@ describe("models.list", () => {
   });
 
   it("marks env SecretRef-backed auth profiles available", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-models-list-env-profile-",
@@ -1065,7 +1065,7 @@ describe("models.list", () => {
   });
 
   it("keeps non-env SecretRef-backed auth profile availability unknown", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-models-list-file-profile-",
@@ -1100,7 +1100,7 @@ describe("models.list", () => {
                 },
               },
             },
-          } as OpenClawConfig,
+          } as OperatorConfig,
           loadGatewayModelCatalog: vi.fn(() =>
             Promise.resolve([{ id: "demo-model", name: "Demo Model", provider: "demo-provider" }]),
           ),
@@ -1127,7 +1127,7 @@ describe("models.list", () => {
   });
 
   it("uses an exact hydrated runtime profile SecretRef as read-only proof", async () => {
-    await withOpenClawTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         prefix: "openclaw-models-list-hydrated-file-profile-",
@@ -1178,7 +1178,7 @@ describe("models.list", () => {
                   },
                 },
               },
-            } as OpenClawConfig,
+            } as OperatorConfig,
             loadGatewayModelCatalog: vi.fn(() =>
               Promise.resolve([
                 { id: "demo-model", name: "Demo Model", provider: "demo-provider" },
@@ -1221,13 +1221,13 @@ describe("models.list", () => {
       },
       { name: "managed-marker", apiKey: "secretref-managed" },
     ] as const) {
-      await withOpenClawTestState(
+      await withOperatorTestState(
         {
           layout: "state-only",
           prefix: `openclaw-models-list-provider-${fixture.name}-profile-`,
           agentEnv: "main",
           env: {
-            OPENCLAW_TEST_PROFILE_API_KEY: "test-token",
+            OPERATOR_TEST_PROFILE_API_KEY: "test-token",
             VLLM_API_KEY: undefined,
           },
         },
@@ -1241,7 +1241,7 @@ describe("models.list", () => {
                 keyRef: {
                   source: "env",
                   provider: "default",
-                  id: "OPENCLAW_TEST_PROFILE_API_KEY",
+                  id: "OPERATOR_TEST_PROFILE_API_KEY",
                 },
               },
             },
@@ -1262,7 +1262,7 @@ describe("models.list", () => {
                 },
               },
             },
-          } as unknown as OpenClawConfig;
+          } as unknown as OperatorConfig;
 
           const { request, respond } = requestModelsList({
             view: "all",

@@ -7,14 +7,14 @@ import {
 } from "openclaw/plugin-sdk/plugin-test-runtime";
 import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/setup";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig, OpenClawPluginApi } from "../runtime-api.js";
+import type { OperatorConfig, OperatorPluginApi } from "../runtime-api.js";
 
 const resolveMattermostAccount = vi.hoisted(() => vi.fn());
 const normalizeMattermostBaseUrl = vi.hoisted(() => vi.fn((value: string | undefined) => value));
 const hasConfiguredSecretInput = vi.hoisted(() => vi.fn((value: unknown) => Boolean(value)));
 
 vi.mock("./setup.accounts.runtime.js", () => ({
-  listMattermostAccountIds: vi.fn((cfg: OpenClawConfig) => {
+  listMattermostAccountIds: vi.fn((cfg: OperatorConfig) => {
     const accounts = cfg.channels?.mattermost?.accounts;
     const ids = accounts ? Object.keys(accounts) : [];
     return ids.length > 0 ? ids : [DEFAULT_ACCOUNT_ID];
@@ -48,15 +48,15 @@ vi.mock("./setup.secret-input.runtime.js", () => ({
 }));
 
 function createApi(
-  registrationMode: OpenClawPluginApi["registrationMode"],
+  registrationMode: OperatorPluginApi["registrationMode"],
   registerHttpRoute = vi.fn(),
-): OpenClawPluginApi {
+): OperatorPluginApi {
   return createTestPluginApi({
     id: "mattermost",
     name: "Mattermost",
     source: "test",
     config: {},
-    runtime: {} as OpenClawPluginApi["runtime"],
+    runtime: {} as OperatorPluginApi["runtime"],
     registrationMode,
     registerHttpRoute,
   });
@@ -74,7 +74,7 @@ describe("mattermost setup", () => {
     ({ isMattermostConfigured, resolveMattermostAccountWithSecrets, mattermostSetupAdapter } =
       await import("./setup-core.js"));
     plugin = {
-      register(api: OpenClawPluginApi) {
+      register(api: OperatorPluginApi) {
         if (api.registrationMode === "full") {
           api.registerHttpRoute({
             path: "/api/channels/mattermost/command",
@@ -266,7 +266,7 @@ describe("mattermost setup", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     });
 
     expect(configured).toBe(true);
@@ -291,7 +291,7 @@ describe("mattermost setup", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       accountId: undefined,
     });
 
@@ -305,7 +305,7 @@ describe("mattermost setup", () => {
           channels: {
             mattermost: {},
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         accountId: "default",
       } as never),
     ).toBe(true);
@@ -323,7 +323,7 @@ describe("mattermost setup", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         accountId: "default",
       } as never),
     ).toBe(false);
@@ -335,14 +335,14 @@ describe("mattermost setup", () => {
 
     expect(
       mattermostSetupWizard.envShortcut?.isAvailable?.({
-        cfg: { channels: { mattermost: {} } } as OpenClawConfig,
+        cfg: { channels: { mattermost: {} } } as OperatorConfig,
         accountId: "default",
       } as never),
     ).toBe(true);
 
     expect(
       mattermostSetupWizard.envShortcut?.isAvailable?.({
-        cfg: { channels: { mattermost: {} } } as OpenClawConfig,
+        cfg: { channels: { mattermost: {} } } as OperatorConfig,
         accountId: "work",
       } as never),
     ).toBe(false);
@@ -351,7 +351,7 @@ describe("mattermost setup", () => {
   it("keeps env shortcut as a no-op patch for the selected account", () => {
     expect(
       mattermostSetupWizard.envShortcut?.apply?.({
-        cfg: { channels: { mattermost: { enabled: false } } } as OpenClawConfig,
+        cfg: { channels: { mattermost: { enabled: false } } } as OperatorConfig,
         accountId: "default",
       } as never),
     ).toEqual({
@@ -384,7 +384,7 @@ describe("mattermost setup", () => {
 
     const result = await runSetupWizardConfigure({
       configure: adapter.configure,
-      cfg: { channels: { mattermost: {} } } as OpenClawConfig,
+      cfg: { channels: { mattermost: {} } } as OperatorConfig,
       prompter: queued.prompter,
       options: { secretInputMode: "plaintext" as const },
     });

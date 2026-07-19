@@ -1,6 +1,6 @@
-# Venice OpenClaw provider
+# Venice Operator provider
 
-Official OpenClaw provider plugin for Venice.
+Official Operator provider plugin for Venice.
 
 ## Install
 
@@ -10,4 +10,4 @@ openclaw plugins install @operator/venice-provider
 
 ## Docs
 
-See `docs/providers/venice.md` in the OpenClaw repository, or the published docs at `https://docs.openclaw.ai/providers/venice`.
+See `docs/providers/venice.md` in the Operator repository, or the published docs at `https://docs.openclaw.ai/providers/venice`.

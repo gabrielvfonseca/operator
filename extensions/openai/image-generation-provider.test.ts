@@ -1,5 +1,5 @@
 // Openai tests cover image generation provider plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildOpenAIImageGenerationProvider } from "./image-generation-provider.js";
 
@@ -743,7 +743,7 @@ describe("openai image generation provider", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     const result = await provider.generateImage({
       provider: "openai",
       model: "gpt-image-2",
@@ -903,7 +903,7 @@ describe("openai image generation provider", () => {
 
   it("allows loopback image requests for openai only inside the QA harness envelope", async () => {
     mockGeneratedPngResponse();
-    vi.stubEnv("OPENCLAW_QA_ALLOW_LOCAL_IMAGE_PROVIDER", "1");
+    vi.stubEnv("OPERATOR_QA_ALLOW_LOCAL_IMAGE_PROVIDER", "1");
 
     const provider = buildOpenAIImageGenerationProvider();
     const result = await provider.generateImage({
@@ -929,7 +929,7 @@ describe("openai image generation provider", () => {
 
   it("uses a model-specific QA image endpoint without changing the text provider route", async () => {
     mockGeneratedPngResponse();
-    vi.stubEnv("OPENCLAW_QA_ALLOW_LOCAL_IMAGE_PROVIDER", "1");
+    vi.stubEnv("OPERATOR_QA_ALLOW_LOCAL_IMAGE_PROVIDER", "1");
 
     const provider = buildOpenAIImageGenerationProvider();
     await provider.generateImage({

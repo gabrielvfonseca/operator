@@ -1,6 +1,6 @@
 /** Verifies provider auth choice helper defaults, sorting, and config matching. */
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import type { ModelProviderConfig } from "../config/types.models.js";
 import { applyDefaultModel, applyProviderAuthConfigPatch } from "./provider-auth-choice-helpers.js";
 
@@ -104,7 +104,7 @@ describe("applyProviderAuthConfigPatch", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const patch = {
       agents: {
         defaults: {
@@ -143,7 +143,7 @@ describe("applyProviderAuthConfigPatch", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const patch = {
       models: {
         providers: {
@@ -275,7 +275,7 @@ describe("applyProviderAuthConfigPatch", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const next = applyProviderAuthConfigPatch({}, patch, { providerConfigNormalizer });
 
@@ -305,7 +305,7 @@ describe("applyProviderAuthConfigPatch", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const next = applyProviderAuthConfigPatch({}, patch, { providerConfigNormalizer });
 
@@ -317,7 +317,7 @@ describe("applyDefaultModel", () => {
   it("sets the primary when none exists", () => {
     const config = {
       agents: { defaults: {} },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const next = applyDefaultModel(config, "openrouter/auto");
     expect(next.agents?.defaults?.model).toEqual({ primary: "openrouter/auto" });
   });
@@ -329,7 +329,7 @@ describe("applyDefaultModel", () => {
           model: { primary: "anthropic/claude-opus-4-6" },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const next = applyDefaultModel(config, "openrouter/auto");
     expect(next.agents?.defaults?.model).toEqual({
       primary: "openrouter/auto",
@@ -343,7 +343,7 @@ describe("applyDefaultModel", () => {
           model: { primary: "anthropic/claude-opus-4-6" },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const next = applyDefaultModel(config, "openrouter/auto", {
       preserveExistingPrimary: true,
     });
@@ -363,7 +363,7 @@ describe("applyDefaultModel", () => {
           model: { primary: "google/gemini-3-pro-preview" },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const next = applyDefaultModel(config, "openrouter/auto", {
       preserveExistingPrimary: true,
     });
@@ -382,7 +382,7 @@ describe("applyDefaultModel", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const next = applyDefaultModel(config, "openrouter/auto", {
       preserveExistingPrimary: true,
     });
@@ -400,7 +400,7 @@ describe("applyDefaultModel", () => {
   it("adds the model to the allowlist", () => {
     const config = {
       agents: { defaults: { models: { "anthropic/claude-sonnet-4-6": {} } } },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const next = applyDefaultModel(config, "openrouter/auto");
     expect(next.agents?.defaults?.models).toEqual({
       "anthropic/claude-sonnet-4-6": {},
@@ -411,7 +411,7 @@ describe("applyDefaultModel", () => {
   it("normalizes retired Google Gemini default models before writing config", () => {
     const config = {
       agents: { defaults: { models: { "anthropic/claude-sonnet-4-6": {} } } },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const next = applyDefaultModel(config, "google/gemini-3-pro-preview");
     expect(next.agents?.defaults?.model).toEqual({
       primary: "google/gemini-3.1-pro-preview",
@@ -434,7 +434,7 @@ describe("applyDefaultModel", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const next = applyDefaultModel(config, "google/gemini-3.1-pro-preview");
 
@@ -456,7 +456,7 @@ describe("applyDefaultModel", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const next = applyDefaultModel(config, "openrouter/auto");
     expect(next.agents?.defaults?.model).toEqual({
       primary: "openrouter/auto",

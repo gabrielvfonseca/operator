@@ -4,7 +4,7 @@
  * Adapts declarative wizard definitions into imperative setup adapters used by onboarding.
  */
 import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { DEFAULT_ACCOUNT_ID } from "../../routing/session-key.js";
 import { configureChannelAccessWithAllowlist } from "./setup-group-access-configure.js";
 import {
@@ -71,7 +71,7 @@ async function buildStatus(
 // inputs funnel through them unless a field supplies a narrower writer.
 function applySetupInput(params: {
   plugin: ChannelSetupWizardPlugin;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId: string;
   input: ChannelSetupInput;
 }) {
@@ -113,7 +113,7 @@ function applySetupInput(params: {
 
 function collectCredentialValues(params: {
   wizard: ChannelSetupWizard;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId: string;
 }): ChannelSetupWizardCredentialValues {
   const values: ChannelSetupWizardCredentialValues = {};
@@ -136,7 +136,7 @@ function collectCredentialValues(params: {
 async function applyWizardTextInputValue(params: {
   plugin: ChannelSetupWizardPlugin;
   input: ChannelSetupWizardTextInput;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId: string;
   value: string;
 }) {

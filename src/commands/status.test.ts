@@ -8,8 +8,8 @@ import { captureEnv, deleteTestEnvValue, setTestEnvValue } from "../test-utils/e
 let envSnapshot: ReturnType<typeof captureEnv>;
 
 beforeAll(() => {
-  envSnapshot = captureEnv(["OPENCLAW_PROFILE"]);
-  process.env.OPENCLAW_PROFILE = "isolated";
+  envSnapshot = captureEnv(["OPERATOR_PROFILE"]);
+  process.env.OPERATOR_PROFILE = "isolated";
 });
 
 afterAll(() => {
@@ -206,12 +206,12 @@ async function createStatusServiceSummary(
     label: service.label,
     installed: Boolean(command) || runtime?.status === "running",
     loaded,
-    managedByOpenClaw: Boolean(command),
+    managedByOperator: Boolean(command),
     externallyManaged: !command && runtime?.status === "running",
     loadedText: service.loadedText,
     runtime,
     runtimeShort: runtime?.pid ? `pid ${runtime.pid}` : null,
-    wrapperPath: command?.environment?.OPENCLAW_WRAPPER?.trim() || undefined,
+    wrapperPath: command?.environment?.OPERATOR_WRAPPER?.trim() || undefined,
   };
 }
 
@@ -355,8 +355,8 @@ async function createMockStatusScanResult(params: { includePluginCompatibility?:
     gatewayConnection: { url: "ws://127.0.0.1:18789" },
     remoteUrlMissing: false,
     gatewayMode: "local" as const,
-    gatewayProbeAuth: process.env.OPENCLAW_GATEWAY_TOKEN
-      ? { token: process.env.OPENCLAW_GATEWAY_TOKEN }
+    gatewayProbeAuth: process.env.OPERATOR_GATEWAY_TOKEN
+      ? { token: process.env.OPERATOR_GATEWAY_TOKEN }
       : {},
     gatewayProbeAuthWarning: gatewayAuthWarning,
     gatewayProbe,
@@ -684,7 +684,7 @@ vi.mock("../gateway/call.js", () => ({
           path: "gateway.auth.token",
         });
       }
-      const envToken = process.env.OPENCLAW_GATEWAY_TOKEN?.trim();
+      const envToken = process.env.OPERATOR_GATEWAY_TOKEN?.trim();
       return envToken ? { token: envToken } : {};
     },
   ),
@@ -693,8 +693,8 @@ vi.mock("../gateway/agent-list.js", () => ({
   listGatewayAgentsBasic: mocks.listGatewayAgentsBasic,
 }));
 vi.mock("../infra/openclaw-root.js", () => ({
-  resolveOpenClawPackageRoot: vi.fn().mockResolvedValue("/tmp/openclaw"),
-  resolveOpenClawPackageRootSync: vi.fn(() => "/tmp/openclaw"),
+  resolveOperatorPackageRoot: vi.fn().mockResolvedValue("/tmp/openclaw"),
+  resolveOperatorPackageRootSync: vi.fn(() => "/tmp/openclaw"),
 }));
 vi.mock("../infra/os-summary.js", () => ({
   resolveOsSummary: () => ({
@@ -883,7 +883,7 @@ vi.mock("./status.daemon.js", () => ({
       label: service.label,
       installed: Boolean(command) || runtimeValue?.status === "running",
       loaded,
-      managedByOpenClaw: Boolean(command),
+      managedByOperator: Boolean(command),
       externallyManaged: !command && runtimeValue?.status === "running",
       loadedText: loaded ? service.loadedText : service.notLoadedText,
       runtimeShort: runtimeValue?.pid ? `pid ${runtimeValue.pid}` : null,
@@ -898,7 +898,7 @@ vi.mock("./status.daemon.js", () => ({
       label: service.label,
       installed: Boolean(command) || runtimeLocal?.status === "running",
       loaded,
-      managedByOpenClaw: Boolean(command),
+      managedByOperator: Boolean(command),
       externallyManaged: !command && runtimeLocal?.status === "running",
       loadedText: loaded ? service.loadedText : service.notLoadedText,
       runtimeShort: runtimeLocal?.pid ? `pid ${runtimeLocal.pid}` : null,
@@ -1141,7 +1141,7 @@ describe("statusCommand", () => {
     ]);
     const logs = await runStatusAndGetLogs({ verbose: true });
     for (const token of [
-      "OpenClaw status",
+      "Operator status",
       "Overview",
       "Security audit",
       "Skipped in fast status",
@@ -1291,7 +1291,7 @@ describe("statusCommand", () => {
       session: {},
       channels: { whatsapp: { allowFrom: ["*"] } },
     });
-    await withEnvVar("OPENCLAW_GATEWAY_TOKEN", "abcd1234", async () => {
+    await withEnvVar("OPERATOR_GATEWAY_TOKEN", "abcd1234", async () => {
       mockProbeGatewayResult({
         ok: true,
         connectLatencyMs: 123,
@@ -1342,7 +1342,7 @@ describe("statusCommand", () => {
       ...service,
       readCommand: async () => ({
         programArguments: [wrapperPath, "node", "dist/entry.js", "gateway"],
-        environment: { OPENCLAW_WRAPPER: wrapperPath },
+        environment: { OPERATOR_WRAPPER: wrapperPath },
         sourcePath: "/tmp/Library/LaunchAgents/ai.openclaw.gateway.plist",
       }),
     });
@@ -1361,15 +1361,15 @@ describe("statusCommand", () => {
       },
     });
 
-    await withOptionalEnvVar("OPENCLAW_WRAPPER", undefined, async () => {
+    await withOptionalEnvVar("OPERATOR_WRAPPER", undefined, async () => {
       const logs = await runStatusAndGetLogs();
       expectLogsInclude(logs, "Secret diagnostics:");
-      expectLogsInclude(logs, "installed gateway service uses OPENCLAW_WRAPPER");
+      expectLogsInclude(logs, "installed gateway service uses OPERATOR_WRAPPER");
       expectLogsInclude(logs, "not running with that same wrapper");
       expectLogsInclude(logs, "current CLI process rather than the installed gateway service");
     });
 
-    await withEnvVar("OPENCLAW_WRAPPER", wrapperPath, async () => {
+    await withEnvVar("OPERATOR_WRAPPER", wrapperPath, async () => {
       const logs = await runStatusAndGetLogs();
       expectLogsInclude(logs, "Secret diagnostics:");
       expectLogsExclude(logs, "not running with that same wrapper");

@@ -7,7 +7,7 @@ import os from "node:os";
 import nodePath from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
 import {
-  closeOpenClawStateDatabaseForTest,
+  closeOperatorStateDatabaseForTest,
   createChannelIngressQueueForTests as createChannelIngressQueue,
 } from "openclaw/plugin-sdk/plugin-state-test-runtime";
 import { WEBHOOK_RATE_LIMIT_DEFAULTS } from "openclaw/plugin-sdk/webhook-ingress";
@@ -239,7 +239,7 @@ beforeEach(async () => {
 
 afterEach(async () => {
   clearTelegramRuntime();
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorStateDatabaseForTest();
   const stateDir = webhookStateDir;
   webhookStateDir = undefined;
   webhookSpoolDir = undefined;

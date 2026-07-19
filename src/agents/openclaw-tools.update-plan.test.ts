@@ -1,28 +1,28 @@
-// Verifies update_plan registration gates and base OpenClaw tool inclusion policy.
+// Verifies update_plan registration gates and base Operator tool inclusion policy.
 import { afterEach, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { setEmbeddedMode } from "../infra/embedded-mode.js";
 import { isToolWrappedWithBeforeToolCallHook } from "./agent-tools.before-tool-call.js";
 import { resolveCoreToolFactoryFamily } from "./core-tool-factory-descriptors.js";
-import { createOpenClawTools } from "./openclaw-tools.js";
-import { shouldIncludeUpdatePlanToolForOpenClawTools } from "./openclaw-tools.registration.js";
+import { createOperatorTools } from "./openclaw-tools.js";
+import { shouldIncludeUpdatePlanToolForOperatorTools } from "./openclaw-tools.registration.js";
 import { createUpdatePlanTool } from "./tools/update-plan-tool.js";
 
-type UpdatePlanGatingParams = Parameters<typeof shouldIncludeUpdatePlanToolForOpenClawTools>[0];
-type CreateOpenClawToolsOptions = NonNullable<Parameters<typeof createOpenClawTools>[0]>;
+type UpdatePlanGatingParams = Parameters<typeof shouldIncludeUpdatePlanToolForOperatorTools>[0];
+type CreateOperatorToolsOptions = NonNullable<Parameters<typeof createOperatorTools>[0]>;
 
 function expectUpdatePlanEnabled(params: UpdatePlanGatingParams, expected: boolean): void {
-  expect(shouldIncludeUpdatePlanToolForOpenClawTools(params)).toBe(expected);
+  expect(shouldIncludeUpdatePlanToolForOperatorTools(params)).toBe(expected);
 }
 
-function toolNames(tools: ReturnType<typeof createOpenClawTools>): string[] {
+function toolNames(tools: ReturnType<typeof createOperatorTools>): string[] {
   return tools.map((tool) => tool.name);
 }
 
-function createFastToolNames(options: CreateOpenClawToolsOptions): string[] {
+function createFastToolNames(options: CreateOperatorToolsOptions): string[] {
   // Disable unrelated dynamic surfaces so registration assertions stay deterministic.
   return toolNames(
-    createOpenClawTools({
+    createOperatorTools({
       disableMessageTool: true,
       disablePluginTools: true,
       wrapBeforeToolCallHook: false,
@@ -32,9 +32,9 @@ function createFastToolNames(options: CreateOpenClawToolsOptions): string[] {
 }
 
 function expectToolNamed(
-  tools: ReturnType<typeof createOpenClawTools>,
+  tools: ReturnType<typeof createOperatorTools>,
   name: string,
-): ReturnType<typeof createOpenClawTools>[number] {
+): ReturnType<typeof createOperatorTools>[number] {
   const tool = tools.find((candidate) => candidate.name === name);
   if (!tool) {
     throw new Error(`Expected tool ${name} to be registered`);
@@ -47,13 +47,13 @@ describe("openclaw-tools update_plan gating", () => {
     setEmbeddedMode(false);
   });
 
-  it("keeps concrete OpenClaw tool names in the factory descriptor catalog", () => {
+  it("keeps concrete Operator tool names in the factory descriptor catalog", () => {
     const emittedNames = createFastToolNames({
       agentSessionKey: "agent:main:main",
       config: {
         tools: { allow: ["update_plan"] },
         transcripts: { enabled: true },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       cwd: "/repo",
       enableHeartbeatTool: true,
       taskSuggestionDeliveryMode: "gateway",
@@ -65,33 +65,33 @@ describe("openclaw-tools update_plan gating", () => {
   });
 
   it("enables update_plan by default", () => {
-    expectUpdatePlanEnabled({ config: {} as OpenClawConfig }, true);
+    expectUpdatePlanEnabled({ config: {} as OperatorConfig }, true);
   });
 
   it("exposes update_plan from default tool construction for every embedded model", () => {
     const defaultTools = createFastToolNames({
-      config: {} as OpenClawConfig,
+      config: {} as OperatorConfig,
       modelProvider: "anthropic",
       modelId: "claude-sonnet-4-6",
     });
     const emptyAllowlistParams = {
-      config: {} as OpenClawConfig,
+      config: {} as OperatorConfig,
       pluginToolAllowlist: [],
       modelProvider: "anthropic",
       modelId: "claude-sonnet-4-6",
     };
 
     expect(defaultTools).toContain("update_plan");
-    expect(shouldIncludeUpdatePlanToolForOpenClawTools(emptyAllowlistParams)).toBe(true);
+    expect(shouldIncludeUpdatePlanToolForOperatorTools(emptyAllowlistParams)).toBe(true);
   });
 
   it("wraps constructed tools with before-tool-call hooks by default", () => {
-    const tools = createOpenClawTools({
-      config: {} as OpenClawConfig,
+    const tools = createOperatorTools({
+      config: {} as OperatorConfig,
       disablePluginTools: true,
     });
-    const unwrappedTools = createOpenClawTools({
-      config: {} as OpenClawConfig,
+    const unwrappedTools = createOperatorTools({
+      config: {} as OperatorConfig,
       disablePluginTools: true,
       wrapBeforeToolCallHook: false,
     });
@@ -104,8 +104,8 @@ describe("openclaw-tools update_plan gating", () => {
 
   it("keeps message tool in embedded message-tool-only completions", () => {
     setEmbeddedMode(true);
-    const tools = createOpenClawTools({
-      config: {} as OpenClawConfig,
+    const tools = createOperatorTools({
+      config: {} as OperatorConfig,
       disablePluginTools: true,
       wrapBeforeToolCallHook: false,
       sourceReplyDeliveryMode: "message_tool_only",
@@ -116,21 +116,21 @@ describe("openclaw-tools update_plan gating", () => {
 
   it("exposes delegation only to regular unsandboxed gateway agents", () => {
     const regular = createFastToolNames({
-      config: {} as OpenClawConfig,
+      config: {} as OperatorConfig,
       agentSessionKey: "agent:main:main",
     });
     const sandboxed = createFastToolNames({
-      config: {} as OpenClawConfig,
+      config: {} as OperatorConfig,
       agentSessionKey: "agent:main:main",
       sandboxed: true,
     });
     const system = createFastToolNames({
-      config: {} as OpenClawConfig,
+      config: {} as OperatorConfig,
       agentSessionKey: "agent:openclaw:main",
     });
     setEmbeddedMode(true);
     const embedded = createFastToolNames({
-      config: {} as OpenClawConfig,
+      config: {} as OperatorConfig,
       agentSessionKey: "agent:main:main",
     });
 
@@ -142,10 +142,10 @@ describe("openclaw-tools update_plan gating", () => {
 
   it("requires explicit transcripts enablement before registering the transcripts tool", () => {
     const defaultTools = createFastToolNames({
-      config: {} as OpenClawConfig,
+      config: {} as OperatorConfig,
     });
     const enabledTools = createFastToolNames({
-      config: { transcripts: { enabled: true } } as OpenClawConfig,
+      config: { transcripts: { enabled: true } } as OperatorConfig,
     });
 
     expect(defaultTools).not.toContain("transcripts");
@@ -154,17 +154,17 @@ describe("openclaw-tools update_plan gating", () => {
 
   it("registers task suggestions only for sessions with an actionable gateway sink", () => {
     const withoutSession = createFastToolNames({
-      config: {} as OpenClawConfig,
+      config: {} as OperatorConfig,
       cwd: "/repo",
       taskSuggestionDeliveryMode: "gateway",
     });
     const withoutSink = createFastToolNames({
-      config: {} as OpenClawConfig,
+      config: {} as OperatorConfig,
       agentSessionKey: "agent:main:main",
       cwd: "/repo",
     });
     const withSink = createFastToolNames({
-      config: {} as OpenClawConfig,
+      config: {} as OperatorConfig,
       agentSessionKey: "agent:main:main",
       cwd: "/repo",
       taskSuggestionDeliveryMode: "gateway",
@@ -179,19 +179,19 @@ describe("openclaw-tools update_plan gating", () => {
 
   it("keeps explicitly allowed message tool in embedded completions", () => {
     setEmbeddedMode(true);
-    const fromRuntimeAllowlist = createOpenClawTools({
-      config: {} as OpenClawConfig,
+    const fromRuntimeAllowlist = createOperatorTools({
+      config: {} as OperatorConfig,
       disablePluginTools: true,
       pluginToolAllowlist: ["message"],
       wrapBeforeToolCallHook: false,
     });
-    const fromGlobalAlsoAllow = createOpenClawTools({
-      config: { tools: { profile: "minimal", alsoAllow: ["message"] } } as OpenClawConfig,
+    const fromGlobalAlsoAllow = createOperatorTools({
+      config: { tools: { profile: "minimal", alsoAllow: ["message"] } } as OperatorConfig,
       disablePluginTools: true,
       wrapBeforeToolCallHook: false,
     });
-    const denied = createOpenClawTools({
-      config: {} as OpenClawConfig,
+    const denied = createOperatorTools({
+      config: {} as OperatorConfig,
       disablePluginTools: true,
       pluginToolAllowlist: ["message"],
       pluginToolDenylist: ["message"],
@@ -206,10 +206,10 @@ describe("openclaw-tools update_plan gating", () => {
   it("keeps subagent spawn available for trusted embedded gateway-bound runs", () => {
     setEmbeddedMode(true);
     const defaultTools = createFastToolNames({
-      config: {} as OpenClawConfig,
+      config: {} as OperatorConfig,
     });
     const gatewayBoundTools = createFastToolNames({
-      config: {} as OpenClawConfig,
+      config: {} as OperatorConfig,
       allowGatewaySubagentBinding: true,
     });
 
@@ -226,7 +226,7 @@ describe("openclaw-tools update_plan gating", () => {
           planTool: true,
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expectUpdatePlanEnabled({ config }, true);
     expect(createUpdatePlanTool().displaySummary).toBe("Track short work plan.");
@@ -234,7 +234,7 @@ describe("openclaw-tools update_plan gating", () => {
 
   it("registers update_plan when the runtime allowlist explicitly requests it", () => {
     const tools = createFastToolNames({
-      config: {} as OpenClawConfig,
+      config: {} as OperatorConfig,
       pluginToolAllowlist: ["update_plan"],
       modelProvider: "anthropic",
       modelId: "claude-sonnet-4-6",
@@ -244,8 +244,8 @@ describe("openclaw-tools update_plan gating", () => {
   });
 
   it("includes update_plan when a config allowlist group includes it", () => {
-    const includeUpdatePlan = shouldIncludeUpdatePlanToolForOpenClawTools({
-      config: { tools: { allow: ["group:agents"] } } as OpenClawConfig,
+    const includeUpdatePlan = shouldIncludeUpdatePlanToolForOperatorTools({
+      config: { tools: { allow: ["group:agents"] } } as OperatorConfig,
       modelProvider: "anthropic",
       modelId: "claude-sonnet-4-6",
     });
@@ -254,8 +254,8 @@ describe("openclaw-tools update_plan gating", () => {
   });
 
   it("includes update_plan when a runtime allowlist group includes it", () => {
-    const includeUpdatePlan = shouldIncludeUpdatePlanToolForOpenClawTools({
-      config: {} as OpenClawConfig,
+    const includeUpdatePlan = shouldIncludeUpdatePlanToolForOperatorTools({
+      config: {} as OperatorConfig,
       pluginToolAllowlist: ["group:agents"],
       modelProvider: "anthropic",
       modelId: "claude-sonnet-4-6",
@@ -266,7 +266,7 @@ describe("openclaw-tools update_plan gating", () => {
 
   it("leaves normal deny policy enforcement to the assembled tool set", () => {
     const tools = createFastToolNames({
-      config: {} as OpenClawConfig,
+      config: {} as OperatorConfig,
       pluginToolAllowlist: ["group:agents"],
       pluginToolDenylist: ["update_plan"],
       modelProvider: "anthropic",
@@ -283,7 +283,7 @@ describe("openclaw-tools update_plan gating", () => {
           planTool: false,
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expectUpdatePlanEnabled({ config: cfg, modelProvider: "openai", modelId: "gpt-5.4" }, false);
     expectUpdatePlanEnabled(

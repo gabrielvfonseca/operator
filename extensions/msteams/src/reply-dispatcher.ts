@@ -13,7 +13,7 @@ import {
   createChannelMessageReplyPipeline,
   logTypingFailure,
   resolveChannelMediaMaxBytes,
-  type OpenClawConfig,
+  type OperatorConfig,
   type MSTeamsReplyStyle,
   type ReplyPayload,
   type RuntimeEnv,
@@ -41,7 +41,7 @@ import type { MSTeamsTurnContext } from "./sdk-types.js";
 import type { MSTeamsApp } from "./sdk.js";
 
 export function createMSTeamsReplyDispatcher(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
   sessionKey: string;
   accountId?: string;

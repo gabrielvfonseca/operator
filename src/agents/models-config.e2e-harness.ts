@@ -4,7 +4,7 @@
  */
 import { afterEach, beforeEach } from "vitest";
 import { clearConfigCache, clearRuntimeConfigSnapshot } from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { withTempHome as withTempHomeBase } from "../plugin-sdk/test-helpers/temp-home.js";
 import { resetPluginLoaderTestStateForTest } from "../plugins/loader.test-fixtures.js";
 import { resetModelsJsonReadyCacheForTest } from "./models-config-state.test-support.js";
@@ -25,13 +25,13 @@ export function installModelsConfigTestHooks(opts?: {
   resetPluginLoaderState?: boolean;
 }) {
   let previousHome: string | undefined;
-  let previousOpenClawAgentDir: string | undefined;
+  let previousOperatorAgentDir: string | undefined;
   const originalFetch = globalThis.fetch;
   const shouldResetPluginLoaderState = opts?.resetPluginLoaderState !== false;
 
   beforeEach(() => {
     previousHome = process.env.HOME;
-    previousOpenClawAgentDir = process.env.OPERATOR_AGENT_DIR;
+    previousOperatorAgentDir = process.env.OPERATOR_AGENT_DIR;
     delete process.env.OPERATOR_AGENT_DIR;
     clearRuntimeConfigSnapshot();
     clearConfigCache();
@@ -43,10 +43,10 @@ export function installModelsConfigTestHooks(opts?: {
 
   afterEach(() => {
     process.env.HOME = previousHome;
-    if (previousOpenClawAgentDir === undefined) {
+    if (previousOperatorAgentDir === undefined) {
       delete process.env.OPERATOR_AGENT_DIR;
     } else {
-      process.env.OPERATOR_AGENT_DIR = previousOpenClawAgentDir;
+      process.env.OPERATOR_AGENT_DIR = previousOperatorAgentDir;
     }
     clearRuntimeConfigSnapshot();
     clearConfigCache();
@@ -149,7 +149,7 @@ export const MODELS_CONFIG_IMPLICIT_ENV_VARS = [
 ];
 
 /** Canonical custom proxy provider config used by models-config tests. */
-export const CUSTOM_PROXY_MODELS_CONFIG: OpenClawConfig = {
+export const CUSTOM_PROXY_MODELS_CONFIG: OperatorConfig = {
   models: {
     providers: {
       "custom-proxy": {

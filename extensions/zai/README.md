@@ -1,6 +1,6 @@
-# Z.AI OpenClaw provider
+# Z.AI Operator provider
 
-Official OpenClaw provider plugin for Z.AI.
+Official Operator provider plugin for Z.AI.
 
 ## Install
 
@@ -10,4 +10,4 @@ openclaw plugins install @operator/zai-provider
 
 ## Docs
 
-See `docs/providers/zai.md` in the OpenClaw repository, or the published docs at `https://docs.openclaw.ai/providers/zai`.
+See `docs/providers/zai.md` in the Operator repository, or the published docs at `https://docs.openclaw.ai/providers/zai`.

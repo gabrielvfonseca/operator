@@ -1,7 +1,7 @@
 // Tests stop command target resolution across active sessions and channel routes.
 import { expectDefined } from "@operator/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import {
   getActivePluginRegistry,
   resetPluginRuntimeStateForTest,
@@ -106,7 +106,7 @@ function buildStopParams(): HandleCommandsParams {
     cfg: {
       commands: { text: true },
       channels: { telegram: { allowFrom: ["*"] } },
-    } as OpenClawConfig,
+    } as OperatorConfig,
     ctx: {
       Provider: "telegram",
       Surface: "telegram",
@@ -231,7 +231,7 @@ describe("handleStopCommand target fallback", () => {
     const cfg = {
       commands: { text: true, allowFrom: { "*": ["*"] } },
       channels: { telegram: { allowFrom: ["*"] } },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const ctx = {
       Provider: "telegram",
       Surface: "telegram",

@@ -2,7 +2,7 @@
 import { createInboundDebouncer } from "openclaw/plugin-sdk/channel-inbound-debounce";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { monitorMattermostProvider } from "./monitor.js";
-import type { OpenClawConfig, ReplyPayload, RuntimeEnv } from "./runtime-api.js";
+import type { OperatorConfig, ReplyPayload, RuntimeEnv } from "./runtime-api.js";
 
 class FakeWebSocket {
   public readonly sent: string[] = [];
@@ -145,7 +145,7 @@ vi.mock("./runtime-api.js", async () => {
       readStoreForDmPolicy: vi.fn(async () => []),
       upsertPairingRequest: vi.fn(async () => ({ code: "123456", created: true })),
     })),
-    createChannelMessageReplyPipeline: vi.fn((params: { cfg: OpenClawConfig }) => ({
+    createChannelMessageReplyPipeline: vi.fn((params: { cfg: OperatorConfig }) => ({
       onModelSelected: vi.fn(),
       typingCallbacks: {},
       resolveResponsePrefix: () => params.cfg.messages?.responsePrefix,
@@ -165,7 +165,7 @@ vi.mock("./send.js", async () => {
 });
 
 function createRuntimeCore(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   routeOverride?: {
     accountId?: string;
     agentId?: string;
@@ -373,7 +373,7 @@ function createRuntimeCore(
   };
 }
 
-const testConfig: OpenClawConfig = {
+const testConfig: OperatorConfig = {
   channels: {
     mattermost: {
       enabled: true,
@@ -618,7 +618,7 @@ describe("mattermost inbound user posts", () => {
       stop: vi.fn(async () => {}),
     };
     mockState.createMattermostDraftStream.mockReturnValue(draftStream);
-    const progressConfig: OpenClawConfig = {
+    const progressConfig: OperatorConfig = {
       channels: {
         mattermost: {
           enabled: true,
@@ -722,7 +722,7 @@ describe("mattermost inbound user posts", () => {
     const socket = new FakeWebSocket();
     const abortController = new AbortController();
     mockState.abortController = abortController;
-    const inlineCommandConfig: OpenClawConfig = {
+    const inlineCommandConfig: OperatorConfig = {
       commands: { useAccessGroups: true },
       channels: {
         mattermost: {
@@ -798,7 +798,7 @@ describe("mattermost inbound user posts", () => {
     const socket = new FakeWebSocket();
     const abortController = new AbortController();
     mockState.abortController = abortController;
-    const directConfig: OpenClawConfig = {
+    const directConfig: OperatorConfig = {
       channels: {
         mattermost: {
           enabled: true,
@@ -925,7 +925,7 @@ describe("mattermost inbound user posts", () => {
     const socket = new FakeWebSocket();
     const abortController = new AbortController();
     mockState.abortController = abortController;
-    const channelTypeConfig: OpenClawConfig = {
+    const channelTypeConfig: OperatorConfig = {
       channels: {
         mattermost: {
           enabled: true,
@@ -984,7 +984,7 @@ describe("mattermost inbound user posts", () => {
     const socket = new FakeWebSocket();
     const abortController = new AbortController();
     mockState.abortController = abortController;
-    const mentionConfig: OpenClawConfig = {
+    const mentionConfig: OperatorConfig = {
       commands: { useAccessGroups: false },
       messages: { inbound: { debounceMs: 60_000 } },
       channels: {
@@ -1076,7 +1076,7 @@ describe("mattermost inbound user posts", () => {
     const socket = new FakeWebSocket();
     const abortController = new AbortController();
     mockState.abortController = abortController;
-    const directConfig: OpenClawConfig = {
+    const directConfig: OperatorConfig = {
       channels: {
         mattermost: {
           enabled: true,
@@ -1152,7 +1152,7 @@ describe("mattermost inbound user posts", () => {
     const socket = new FakeWebSocket();
     const abortController = new AbortController();
     mockState.abortController = abortController;
-    const directConfig: OpenClawConfig = {
+    const directConfig: OperatorConfig = {
       session: { dmScope: "per-channel-peer" },
       channels: {
         mattermost: {
@@ -1228,7 +1228,7 @@ describe("mattermost inbound user posts", () => {
   });
 
   it("keeps core block streaming enabled when preview streaming is off", async () => {
-    const offConfig: OpenClawConfig = {
+    const offConfig: OperatorConfig = {
       channels: {
         mattermost: {
           enabled: true,
@@ -1274,7 +1274,7 @@ describe("mattermost inbound user posts", () => {
   });
 
   it("preserves text-tool-text boundaries while grouping interleaved tool updates", async () => {
-    const blockConfig: OpenClawConfig = {
+    const blockConfig: OperatorConfig = {
       channels: {
         mattermost: {
           enabled: true,
@@ -1499,7 +1499,7 @@ describe("mattermost inbound user posts", () => {
   });
 
   it("finalizes only the current block when the terminal reply is cumulative", async () => {
-    const blockConfig: OpenClawConfig = {
+    const blockConfig: OperatorConfig = {
       messages: { responsePrefix: "[bot]" },
       channels: {
         mattermost: {
@@ -1589,7 +1589,7 @@ describe("mattermost inbound user posts", () => {
   });
 
   it("records participation when the confirmed preview already contains the final", async () => {
-    const blockConfig: OpenClawConfig = {
+    const blockConfig: OperatorConfig = {
       channels: {
         mattermost: {
           enabled: true,

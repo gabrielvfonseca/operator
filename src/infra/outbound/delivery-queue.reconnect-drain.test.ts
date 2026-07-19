@@ -1,8 +1,8 @@
 // Covers reconnect-triggered queue drain selection, active claims, backoff
 // bypass, and concurrent drain suppression.
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
-import { openOpenClawStateDatabase } from "../../state/openclaw-state-db.js";
+import type { OperatorConfig } from "../../config/config.js";
+import { openOperatorStateDatabase } from "../../state/openclaw-state-db.js";
 import { loadPendingDeliveries } from "./delivery-queue-storage.js";
 import {
   type DeliverFn,
@@ -23,7 +23,7 @@ import {
 
 const RECOVERY_REPLAY_SPACING_MS = 250;
 const MAX_RETRIES = 5;
-const stubCfg = {} as OpenClawConfig;
+const stubCfg = {} as OperatorConfig;
 const NO_LISTENER_ERROR = "No active DirectChat listener";
 
 function normalizeReconnectAccountIdForTest(accountId?: string | null): string {
@@ -64,8 +64,8 @@ function expectLogMessageWith(logFn: ReturnType<typeof vi.fn>, text: string): vo
 }
 
 function readOutboundQueueStatus(tmpDir: string, id: string): string | undefined {
-  const { db } = openOpenClawStateDatabase({
-    env: { ...process.env, OPENCLAW_STATE_DIR: tmpDir },
+  const { db } = openOperatorStateDatabase({
+    env: { ...process.env, OPERATOR_STATE_DIR: tmpDir },
   });
   const row = db
     .prepare("SELECT status FROM delivery_queue_entries WHERE queue_name = 'outbound' AND id = ?")

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { BundledPluginSource } from "./bundled-sources.js";
-import { isOpenClawTrustedPluginInstallSpec } from "./install-provenance.js";
+import { isOperatorTrustedPluginInstallSpec } from "./install-provenance.js";
 
 const bundledSources = new Map<string, BundledPluginSource>([
   [
@@ -22,14 +22,14 @@ describe("plugin install provenance", () => {
     "brave",
     "npm:@operator/brave-plugin",
     "clawhub:openclaw-demo",
-  ])("trusts OpenClaw-owned install source %s", (spec) => {
-    expect(isOpenClawTrustedPluginInstallSpec(spec, bundledSources)).toBe(true);
+  ])("trusts Operator-owned install source %s", (spec) => {
+    expect(isOperatorTrustedPluginInstallSpec(spec, bundledSources)).toBe(true);
   });
 
   it.each(["npm:discord", "npm:@example/plugin", "/tmp/example-plugin"])(
     "keeps arbitrary install source %s untrusted",
     (spec) => {
-      expect(isOpenClawTrustedPluginInstallSpec(spec, bundledSources)).toBe(false);
+      expect(isOperatorTrustedPluginInstallSpec(spec, bundledSources)).toBe(false);
     },
   );
 });

@@ -1,7 +1,7 @@
 // Xai provider module implements model/runtime integration.
 import {
   isProviderAuthProfileConfigured,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "openclaw/plugin-sdk/provider-auth";
 import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/provider-auth-runtime";
 import { normalizeResolvedSecretInputString } from "openclaw/plugin-sdk/secret-input";
@@ -317,7 +317,7 @@ export function buildXaiSpeechProvider(): SpeechProviderPlugin {
 // 3. xAI OAuth auth profile (cfg-scoped)
 async function resolveOptionalXaiAudioApiKey(
   configApiKey: string | undefined,
-  cfg?: OpenClawConfig,
+  cfg?: OperatorConfig,
 ): Promise<string | undefined> {
   const direct = trimToUndefined(configApiKey) ?? trimToUndefined(process.env.XAI_API_KEY);
   if (direct) {
@@ -332,7 +332,7 @@ async function resolveOptionalXaiAudioApiKey(
 
 async function resolveXaiAudioApiKey(
   configApiKey: string | undefined,
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
 ): Promise<string> {
   const apiKey = await resolveOptionalXaiAudioApiKey(configApiKey, cfg);
   if (apiKey) {

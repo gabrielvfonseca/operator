@@ -5,7 +5,7 @@ vi.mock("../api.js", async () => {
   const actual = await vi.importActual<typeof import("../api.js")>("../api.js");
   return {
     ...actual,
-    resolvePreferredOpenClawTmpDir: () => "/tmp",
+    resolvePreferredOperatorTmpDir: () => "/tmp",
   };
 });
 
@@ -329,7 +329,7 @@ describe("llm-task tool (json-only)", () => {
     expect(call.agentHarnessRuntimeOverride).toBe("codex");
   });
 
-  it("lets an explicit OpenClaw model runtime own Luna Ultra", async () => {
+  it("lets an explicit Operator model runtime own Luna Ultra", async () => {
     mockEmbeddedRunJson({ ok: true });
     const config = {
       agents: {

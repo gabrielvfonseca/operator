@@ -29,8 +29,8 @@ import {
 import { readSqliteUserVersion } from "../infra/sqlite-user-version.js";
 import { runExec } from "../process/exec.js";
 import { isValidAgentId, normalizeAgentId } from "../routing/session-key.js";
-import { assertOpenClawAgentDatabaseForMaintenance } from "../state/operator-agent-db.js";
-import { assertOpenClawStateDatabaseForMaintenance } from "../state/operator-state-db.js";
+import { assertOperatorAgentDatabaseForMaintenance } from "../state/operator-agent-db.js";
+import { assertOperatorStateDatabaseForMaintenance } from "../state/operator-state-db.js";
 import {
   containsAsciiControlCharacter,
   copySnapshotArtifact,
@@ -710,11 +710,11 @@ function buildDatabaseValidator(
 ): SqliteSnapshotValidator {
   if (identity.role === "global") {
     return (database, pathname) =>
-      assertOpenClawStateDatabaseForMaintenance(database, { pathname });
+      assertOperatorStateDatabaseForMaintenance(database, { pathname });
   }
   if (identity.role === "agent") {
     return (database, pathname) =>
-      assertOpenClawAgentDatabaseForMaintenance(database, {
+      assertOperatorAgentDatabaseForMaintenance(database, {
         agentId: identity.agentId,
         pathname,
       });

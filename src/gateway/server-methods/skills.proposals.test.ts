@@ -5,14 +5,14 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  createOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  type OperatorTestState,
 } from "../../test-utils/operator-test-state.js";
 import { createTrackedTempDirs } from "../../test-utils/tracked-temp-dirs.js";
 import { callGatewayHandler } from "./skills.test-helpers.js";
 
 const tempDirs = createTrackedTempDirs();
-let testState: OpenClawTestState;
+let testState: OperatorTestState;
 let stateDir = "";
 
 const mocks = vi.hoisted(() => ({
@@ -53,7 +53,7 @@ vi.mock("../../infra/clawhub.js", () => ({
 
 vi.mock("../../skills/security/clawhub-verdicts.js", () => ({
   collectClawHubVerdictTargets: vi.fn(() => []),
-  fetchOpenClawSkillSecurityVerdicts: vi.fn(),
+  fetchOperatorSkillSecurityVerdicts: vi.fn(),
 }));
 
 vi.mock("./chat.js", () => ({
@@ -70,7 +70,7 @@ function callHandler(method: string, params: Record<string, unknown>) {
 
 describe("skills proposal gateway handlers", () => {
   beforeEach(async () => {
-    testState = await createOpenClawTestState({
+    testState = await createOperatorTestState({
       layout: "state-only",
       prefix: "openclaw-skills-proposals-gateway-state-",
     });

@@ -1,5 +1,5 @@
 // Whatsapp tests cover outbound adapter.poll plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const hoisted = vi.hoisted(() => ({
@@ -35,7 +35,7 @@ describe("whatsappOutbound sendPoll", () => {
   });
 
   it("threads cfg through poll send options", async () => {
-    const cfg = { marker: "resolved-cfg" } as OpenClawConfig;
+    const cfg = { marker: "resolved-cfg" } as OperatorConfig;
     const poll = {
       question: "Lunch?",
       options: ["Pizza", "Sushi"],

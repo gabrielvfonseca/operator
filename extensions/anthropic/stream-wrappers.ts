@@ -36,14 +36,14 @@ const ANTHROPIC_GA_1M_MODEL_PREFIXES = [
   "claude-sonnet-4-6",
   "claude-sonnet-4.6",
 ] as const;
-const OPENCLAW_DEFAULT_ANTHROPIC_BETAS = [
+const OPERATOR_DEFAULT_ANTHROPIC_BETAS = [
   "fine-grained-tool-streaming-2025-05-14",
   "interleaved-thinking-2025-05-14",
 ] as const;
-const OPENCLAW_OAUTH_ANTHROPIC_BETAS = [
+const OPERATOR_OAUTH_ANTHROPIC_BETAS = [
   "claude-code-20250219",
   "oauth-2025-04-20",
-  ...OPENCLAW_DEFAULT_ANTHROPIC_BETAS,
+  ...OPERATOR_DEFAULT_ANTHROPIC_BETAS,
 ] as const;
 
 type AnthropicServiceTier = "auto" | "standard_only";
@@ -143,7 +143,7 @@ export function resolveAnthropicBetas(
   return betas.size > 0 ? [...betas] : undefined;
 }
 
-/** Wrap a stream function to merge OpenClaw and configured Anthropic beta headers. */
+/** Wrap a stream function to merge Operator and configured Anthropic beta headers. */
 export function createAnthropicBetaHeadersWrapper(
   baseStreamFn: StreamFn | undefined,
   betas: string[],
@@ -154,8 +154,8 @@ export function createAnthropicBetaHeadersWrapper(
     const effectiveBetas = betas.filter((beta) => beta !== ANTHROPIC_CONTEXT_1M_BETA_LEGACY);
 
     const openClawBetas = isOauth
-      ? (OPENCLAW_OAUTH_ANTHROPIC_BETAS as readonly string[])
-      : (OPENCLAW_DEFAULT_ANTHROPIC_BETAS as readonly string[]);
+      ? (OPERATOR_OAUTH_ANTHROPIC_BETAS as readonly string[])
+      : (OPERATOR_DEFAULT_ANTHROPIC_BETAS as readonly string[]);
     const allBetas = [...new Set([...openClawBetas, ...effectiveBetas])];
     return underlying(model, context, {
       ...options,

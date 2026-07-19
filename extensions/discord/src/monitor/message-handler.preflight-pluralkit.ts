@@ -7,7 +7,7 @@ export async function resolveDiscordPreflightPluralKitInfo(params: {
   message: DiscordMessageEvent["message"];
   config?: NonNullable<
     NonNullable<
-      import("openclaw/plugin-sdk/config-contracts").OpenClawConfig["channels"]
+      import("openclaw/plugin-sdk/config-contracts").OperatorConfig["channels"]
     >["discord"]
   >["pluralkit"];
   abortSignal?: AbortSignal;

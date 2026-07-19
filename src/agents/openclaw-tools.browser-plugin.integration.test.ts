@@ -1,10 +1,10 @@
-// Verifies OpenClaw plugin tools are resolved with browser/runtime context.
+// Verifies Operator plugin tools are resolved with browser/runtime context.
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { resetConfigRuntimeState, setRuntimeConfigSnapshot } from "../config/config.js";
 import { activateSecretsRuntimeSnapshot, clearSecretsRuntimeSnapshot } from "../secrets/runtime.js";
 import { getRuntimeAuthProfileStoreCredentialsRevision } from "./auth-profiles/runtime-snapshots.js";
-import { resolveOpenClawPluginToolsForOptions } from "./openclaw-plugin-tools.js";
+import { resolveOperatorPluginToolsForOptions } from "./openclaw-plugin-tools.js";
 
 const hoisted = vi.hoisted(() => ({
   resolvePluginTools: vi.fn(),
@@ -15,7 +15,7 @@ vi.mock("../plugins/tools.js", () => ({
 }));
 
 function firstResolvePluginToolsParams(): Record<string, unknown> {
-  // Captures the plugin runtime contract passed from OpenClaw tool resolution.
+  // Captures the plugin runtime contract passed from Operator tool resolution.
   const call = hoisted.resolvePluginTools.mock.calls[0];
   if (!call) {
     throw new Error("Expected plugin tool resolution");
@@ -23,7 +23,7 @@ function firstResolvePluginToolsParams(): Record<string, unknown> {
   return call[0] as Record<string, unknown>;
 }
 
-describe("createOpenClawTools browser plugin integration", () => {
+describe("createOperatorTools browser plugin integration", () => {
   afterEach(() => {
     hoisted.resolvePluginTools.mockReset();
     clearSecretsRuntimeSnapshot();
@@ -51,9 +51,9 @@ describe("createOpenClawTools browser plugin integration", () => {
       plugins: {
         allow: ["browser"],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
-    const tools = resolveOpenClawPluginToolsForOptions({
+    const tools = resolveOperatorPluginToolsForOptions({
       options: { config },
       resolvedConfig: config,
     });
@@ -73,9 +73,9 @@ describe("createOpenClawTools browser plugin integration", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
-    const tools = resolveOpenClawPluginToolsForOptions({
+    const tools = resolveOperatorPluginToolsForOptions({
       options: { config },
       resolvedConfig: config,
     });
@@ -106,20 +106,20 @@ describe("createOpenClawTools browser plugin integration", () => {
       ];
     });
 
-    const tools = resolveOpenClawPluginToolsForOptions({
+    const tools = resolveOperatorPluginToolsForOptions({
       options: {
         config: {
           plugins: {
             allow: ["browser"],
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         fsPolicy: { workspaceOnly: true },
       },
       resolvedConfig: {
         plugins: {
           allow: ["browser"],
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     });
 
     const browserTool = tools.find((tool) => tool.name === "browser");
@@ -138,9 +138,9 @@ describe("createOpenClawTools browser plugin integration", () => {
       plugins: {
         allow: ["browser"],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
-    resolveOpenClawPluginToolsForOptions({
+    resolveOperatorPluginToolsForOptions({
       options: { config, allowGatewaySubagentBinding: true },
       resolvedConfig: config,
     });
@@ -172,9 +172,9 @@ describe("createOpenClawTools browser plugin integration", () => {
       plugins: {
         allow: ["xai"],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
-    resolveOpenClawPluginToolsForOptions({
+    resolveOperatorPluginToolsForOptions({
       options: {
         config,
         authProfileStore: {
@@ -209,9 +209,9 @@ describe("createOpenClawTools browser plugin integration", () => {
       plugins: {
         allow: ["browser"],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
-    resolveOpenClawPluginToolsForOptions({
+    resolveOperatorPluginToolsForOptions({
       options: {
         config,
         pluginToolAllowlist: ["*"],
@@ -232,12 +232,12 @@ describe("createOpenClawTools browser plugin integration", () => {
       plugins: {
         allow: ["old-plugin"],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const staleRuntimeConfig = {
       plugins: {
         allow: ["old-plugin"],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const resolvedRunConfig = {
       plugins: {
         allow: ["browser"],
@@ -247,10 +247,10 @@ describe("createOpenClawTools browser plugin integration", () => {
           planTool: true,
         },
       },
-    } as OpenClawConfig;
-    let capturedRuntimeConfig: OpenClawConfig | undefined;
+    } as OperatorConfig;
+    let capturedRuntimeConfig: OperatorConfig | undefined;
     hoisted.resolvePluginTools.mockImplementation((params: unknown) => {
-      capturedRuntimeConfig = (params as { context?: { runtimeConfig?: OpenClawConfig } }).context
+      capturedRuntimeConfig = (params as { context?: { runtimeConfig?: OperatorConfig } }).context
         ?.runtimeConfig;
       return [];
     });
@@ -273,7 +273,7 @@ describe("createOpenClawTools browser plugin integration", () => {
       },
     });
 
-    resolveOpenClawPluginToolsForOptions({
+    resolveOperatorPluginToolsForOptions({
       options: { config: resolvedRunConfig },
       resolvedConfig: resolvedRunConfig,
     });
@@ -286,7 +286,7 @@ describe("createOpenClawTools browser plugin integration", () => {
       plugins: {
         allow: ["old-plugin"],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const explicitConfig = {
       plugins: {
         allow: ["browser"],
@@ -296,15 +296,15 @@ describe("createOpenClawTools browser plugin integration", () => {
           planTool: true,
         },
       },
-    } as OpenClawConfig;
-    let capturedRuntimeConfig: OpenClawConfig | undefined;
-    let getRuntimeConfig: (() => OpenClawConfig | undefined) | undefined;
+    } as OperatorConfig;
+    let capturedRuntimeConfig: OperatorConfig | undefined;
+    let getRuntimeConfig: (() => OperatorConfig | undefined) | undefined;
     hoisted.resolvePluginTools.mockImplementation((params: unknown) => {
       const context = (
         params as {
           context?: {
-            runtimeConfig?: OpenClawConfig;
-            getRuntimeConfig?: () => OpenClawConfig | undefined;
+            runtimeConfig?: OperatorConfig;
+            getRuntimeConfig?: () => OperatorConfig | undefined;
           };
         }
       ).context;
@@ -314,7 +314,7 @@ describe("createOpenClawTools browser plugin integration", () => {
     });
     setRuntimeConfigSnapshot(pinnedRuntimeConfig);
 
-    resolveOpenClawPluginToolsForOptions({
+    resolveOperatorPluginToolsForOptions({
       options: { config: explicitConfig },
       resolvedConfig: explicitConfig,
     });
@@ -328,29 +328,29 @@ describe("createOpenClawTools browser plugin integration", () => {
       plugins: {
         allow: ["memory-core"],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const firstRuntimeConfig = {
       plugins: {
         allow: ["memory-core"],
         entries: { "memory-core": { enabled: true } },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const nextRuntimeConfig = {
       plugins: {
         allow: ["memory-core"],
         entries: { "memory-core": { enabled: false } },
       },
-    } as OpenClawConfig;
-    let getRuntimeConfig: (() => OpenClawConfig | undefined) | undefined;
+    } as OperatorConfig;
+    let getRuntimeConfig: (() => OperatorConfig | undefined) | undefined;
     hoisted.resolvePluginTools.mockImplementation((params: unknown) => {
       getRuntimeConfig = (
-        params as { context?: { getRuntimeConfig?: () => OpenClawConfig | undefined } }
+        params as { context?: { getRuntimeConfig?: () => OperatorConfig | undefined } }
       ).context?.getRuntimeConfig;
       return [];
     });
     setRuntimeConfigSnapshot(firstRuntimeConfig, sourceConfig);
 
-    resolveOpenClawPluginToolsForOptions({
+    resolveOperatorPluginToolsForOptions({
       options: { config: sourceConfig },
       resolvedConfig: sourceConfig,
     });

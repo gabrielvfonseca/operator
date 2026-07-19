@@ -8,8 +8,8 @@ export {
 } from "../plugin-state/plugin-state-store.js";
 export { createChannelIngressQueue as createChannelIngressQueueForTests } from "../channels/message/ingress-queue.js";
 export { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-sync.js";
-export type { DB as OpenClawStateKyselyDatabaseForTests } from "../state/operator-state-db.generated.js";
+export type { DB as OperatorStateKyselyDatabaseForTests } from "../state/operator-state-db.generated.js";
 export {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
 } from "../state/operator-state-db.js";

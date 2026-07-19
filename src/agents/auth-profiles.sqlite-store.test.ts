@@ -10,12 +10,12 @@ import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  closeOpenClawAgentDatabasesForTest,
-  OPENCLAW_AGENT_SCHEMA_VERSION,
-  openOpenClawAgentDatabase,
+  closeOperatorAgentDatabasesForTest,
+  OPERATOR_AGENT_SCHEMA_VERSION,
+  openOperatorAgentDatabase,
 } from "../state/openclaw-agent-db.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
-import { resolveOpenClawStateSqlitePath } from "../state/openclaw-state-db.paths.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { resolveOperatorStateSqlitePath } from "../state/openclaw-state-db.paths.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import { resolveAgentDir } from "./agent-scope.js";
 import { loadPersistedAuthProfileStore } from "./auth-profiles/persisted.js";
@@ -70,14 +70,14 @@ async function withAgentDirEnv(prefix: string, run: (agentDir: string) => void |
     fs.mkdirSync(agentDir, { recursive: true });
     await withEnvAsync(
       {
-        OPENCLAW_STATE_DIR: root,
-        OPENCLAW_AGENT_DIR: agentDir,
+        OPERATOR_STATE_DIR: root,
+        OPERATOR_AGENT_DIR: agentDir,
       },
       async () => await run(agentDir),
     );
   } finally {
-    closeOpenClawAgentDatabasesForTest();
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorAgentDatabasesForTest();
+    closeOperatorStateDatabaseForTest();
     fs.rmSync(root, { recursive: true, force: true });
   }
 }
@@ -154,7 +154,7 @@ describe("auth profile sqlite store", () => {
   it("rejects a newer agent database that has no current auth table", async () => {
     await withAgentDirEnv("openclaw-auth-sqlite-newer-schema-", (agentDir) => {
       const database = new DatabaseSync(resolveAuthProfileDatabasePath(agentDir));
-      database.exec(`PRAGMA user_version = ${OPENCLAW_AGENT_SCHEMA_VERSION + 1};`);
+      database.exec(`PRAGMA user_version = ${OPERATOR_AGENT_SCHEMA_VERSION + 1};`);
       database.close();
 
       expect(inspectPersistedAuthProfileStoreRaw(agentDir)).toEqual({ status: "unreadable" });
@@ -176,9 +176,9 @@ describe("auth profile sqlite store", () => {
   it("reads existing sqlite auth stores without registering shared state", async () => {
     await withAgentDirEnv("openclaw-auth-sqlite-readonly-", (agentDir) => {
       saveAuthProfileStore(apiKeyStore("sk-test"), agentDir);
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
-      const stateDbPath = resolveOpenClawStateSqlitePath();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
+      const stateDbPath = resolveOperatorStateSqlitePath();
       fs.rmSync(path.dirname(stateDbPath), { recursive: true, force: true });
 
       const loaded = loadPersistedAuthProfileStore(agentDir);
@@ -191,7 +191,7 @@ describe("auth profile sqlite store", () => {
   it("waits for brief rollback-journal contention before reading persisted auth", async () => {
     await withAgentDirEnv("openclaw-auth-sqlite-contention-", async (agentDir) => {
       saveAuthProfileStore(apiKeyStore("sk-test"), agentDir);
-      closeOpenClawAgentDatabasesForTest();
+      closeOperatorAgentDatabasesForTest();
 
       const databasePath = resolveAuthProfileDatabasePath(agentDir);
       const setup = new DatabaseSync(databasePath);
@@ -262,7 +262,7 @@ describe("auth profile sqlite store", () => {
 
       saveAuthProfileStore(apiKeyStore("sk-test"), agentDir);
 
-      const database = openOpenClawAgentDatabase({
+      const database = openOperatorAgentDatabase({
         agentId: "coder",
         path: resolveAuthProfileDatabasePath(agentDir),
       });

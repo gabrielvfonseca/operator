@@ -7,7 +7,7 @@ import {
   normalizeOptionalLowercaseString,
 } from "@operator/normalization-core/string-coerce";
 import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { AssistantMessage } from "../../llm/types.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
 import {
@@ -1337,7 +1337,7 @@ export function classifyAssistantFailoverReason(
 export function formatAssistantErrorText(
   msg: AssistantMessage,
   opts?: {
-    cfg?: OpenClawConfig;
+    cfg?: OperatorConfig;
     sessionKey?: string;
     provider?: string;
     model?: string;
@@ -1577,7 +1577,7 @@ function isRawAssistantErrorPassthrough(params: {
 export function formatUserFacingAssistantErrorText(
   msg: AssistantMessage,
   opts?: {
-    cfg?: OpenClawConfig;
+    cfg?: OperatorConfig;
     sessionKey?: string;
     provider?: string;
     model?: string;

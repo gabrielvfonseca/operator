@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { DEFAULT_CONTEXT_TOKENS } from "../agents/defaults.js";
 import type { PluginManifestRegistry } from "../plugins/manifest-registry.js";
 import { applyModelDefaults as applyModelDefaultsWithPolicy } from "./defaults.js";
-import type { ModelProviderConfig, OpenClawConfig } from "./types.js";
+import type { ModelProviderConfig, OperatorConfig } from "./types.js";
 
 const providerPolicyMocks = vi.hoisted(() => ({
   normalizeProviderConfigForConfigDefaults: vi.fn(
@@ -14,7 +14,7 @@ const providerPolicyMocks = vi.hoisted(() => ({
 }));
 
 vi.mock("./provider-policy.js", () => ({
-  applyProviderConfigDefaultsForConfig: (params: { config: OpenClawConfig }) => params.config,
+  applyProviderConfigDefaultsForConfig: (params: { config: OperatorConfig }) => params.config,
   normalizeProviderConfigForConfigDefaults: (
     ...args: Parameters<typeof providerPolicyMocks.normalizeProviderConfigForConfigDefaults>
   ) => providerPolicyMocks.normalizeProviderConfigForConfigDefaults(...args),
@@ -23,7 +23,7 @@ vi.mock("./provider-policy.js", () => ({
 const emptyManifestRegistry = { plugins: [] } satisfies Pick<PluginManifestRegistry, "plugins">;
 
 function applyModelDefaults(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   options?: Parameters<typeof applyModelDefaultsWithPolicy>[1],
 ) {
   return applyModelDefaultsWithPolicy(cfg, options ?? { manifestRegistry: emptyManifestRegistry });
@@ -63,7 +63,7 @@ describe("applyModelDefaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
   }
 
   function buildMistralProviderConfig(overrides?: {
@@ -92,7 +92,7 @@ describe("applyModelDefaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
   }
 
   function buildCustomProviderManifestRegistry() {
@@ -136,7 +136,7 @@ describe("applyModelDefaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const next = applyModelDefaults(cfg);
 
     expect(next.agents?.defaults?.models?.["anthropic/claude-opus-4-8"]?.alias).toBe("opus");
@@ -153,7 +153,7 @@ describe("applyModelDefaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const next = applyModelDefaults(cfg);
 
@@ -170,7 +170,7 @@ describe("applyModelDefaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const next = applyModelDefaults(cfg);
 
@@ -189,7 +189,7 @@ describe("applyModelDefaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const next = applyModelDefaults(cfg);
 
@@ -211,7 +211,7 @@ describe("applyModelDefaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const next = applyModelDefaults(cfg);
 
@@ -230,7 +230,7 @@ describe("applyModelDefaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const next = applyModelDefaults(cfg);
 
@@ -253,7 +253,7 @@ describe("applyModelDefaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const next = applyModelDefaults(cfg);
 
@@ -282,7 +282,7 @@ describe("applyModelDefaults", () => {
           },
         ],
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const next = applyModelDefaults(cfg);
 
@@ -317,7 +317,7 @@ describe("applyModelDefaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const provider = cfg.models.providers.google;
     mockNormalizedProvider({
@@ -354,7 +354,7 @@ describe("applyModelDefaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const provider = cfg.models.providers.google;
     mockNormalizedProvider({
@@ -470,7 +470,7 @@ describe("applyModelDefaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     mockNormalizedProvider({
       ...cfg.models.providers.anthropic,

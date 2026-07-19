@@ -1,8 +1,8 @@
-// Provider-neutral live inference ladder for delegated OpenClaw sessions.
+// Provider-neutral live inference ladder for delegated Operator sessions.
 import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
 import { resolveDefaultAgentId } from "../agents/agent-scope.js";
 import { hasAvailableAuthForProvider } from "../agents/model-auth.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 import type { RuntimeEnv } from "../runtime.js";
 import {
@@ -26,9 +26,9 @@ const RETRYABLE_INFERENCE_STATUSES = new Set([
 const CREDENTIAL_SCOPED_FAILURE_STATUSES = new Set(["auth", "billing", "rate_limit"]);
 
 type InferenceFallbackDeps = {
-  readConfig?: () => Promise<OpenClawConfig>;
+  readConfig?: () => Promise<OperatorConfig>;
   resolveRoute?: (
-    config: OpenClawConfig,
+    config: OperatorConfig,
     agentId: string,
   ) => Promise<SystemAgentConfiguredRoute | null>;
   hasAuth?: typeof hasAvailableAuthForProvider;
@@ -39,7 +39,7 @@ type InferenceFallbackDeps = {
   }) => Promise<BoundVerifySetupInferenceResult>;
 };
 
-async function readCurrentConfig(): Promise<OpenClawConfig> {
+async function readCurrentConfig(): Promise<OperatorConfig> {
   const { readConfigFileSnapshot } = await import("../config/config.js");
   const snapshot = await readConfigFileSnapshot();
   if (!snapshot.exists || !snapshot.valid) {

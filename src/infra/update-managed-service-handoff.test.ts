@@ -7,12 +7,12 @@ import os from "node:os";
 import path from "node:path";
 import { PassThrough } from "node:stream";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
 } from "../state/openclaw-state-db.js";
-import { resolveOpenClawStateSqlitePath } from "../state/openclaw-state-db.paths.js";
+import { resolveOperatorStateSqlitePath } from "../state/openclaw-state-db.paths.js";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
@@ -42,7 +42,7 @@ function createSpawnMock(params?: { pid?: number }) {
 }
 
 function signalHandoffReady(child: ReturnType<typeof createSpawnMock>): void {
-  child.stdout.write("OPENCLAW_UPDATE_HANDOFF_READY\n");
+  child.stdout.write("OPERATOR_UPDATE_HANDOFF_READY\n");
 }
 
 vi.mock("node:child_process", async () => {
@@ -61,7 +61,7 @@ vi.mock("../process/child-process-tree.js", async () => {
 });
 
 const tempDirs = new Set<string>();
-type GatewayRestartSentinelDatabase = Pick<OpenClawStateKyselyDatabase, "gateway_restart_sentinel">;
+type GatewayRestartSentinelDatabase = Pick<OperatorStateKyselyDatabase, "gateway_restart_sentinel">;
 
 beforeEach(() => {
   forceKillChildProcessTreeMock.mockReset();
@@ -77,7 +77,7 @@ beforeEach(() => {
 
 afterEach(async () => {
   vi.useRealTimers();
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorStateDatabaseForTest();
   await Promise.all([...tempDirs].map((dir) => fs.rm(dir, { recursive: true, force: true })));
   tempDirs.clear();
 });
@@ -92,7 +92,7 @@ async function pathExists(filePath: string): Promise<boolean> {
 }
 
 function writeRestartSentinelRow(env: NodeJS.ProcessEnv, sentinel: unknown): void {
-  const { db } = openOpenClawStateDatabase({ env });
+  const { db } = openOperatorStateDatabase({ env });
   const stateDb = getNodeSqliteKysely<GatewayRestartSentinelDatabase>(db);
   const payload =
     sentinel && typeof sentinel === "object" && (sentinel as { version?: unknown }).version === 1
@@ -142,7 +142,7 @@ function writeRestartSentinelRow(env: NodeJS.ProcessEnv, sentinel: unknown): voi
 }
 
 function readRestartSentinelPayload(env: NodeJS.ProcessEnv): unknown {
-  const { db } = openOpenClawStateDatabase({ env });
+  const { db } = openOperatorStateDatabase({ env });
   const stateDb = getNodeSqliteKysely<GatewayRestartSentinelDatabase>(db);
   const row = executeSqliteQueryTakeFirstSync(
     db,
@@ -194,7 +194,7 @@ async function runHelperWithExistingSentinel(params: {
     string,
     unknown
   >;
-  const env = { OPENCLAW_STATE_DIR: tmpDir } as NodeJS.ProcessEnv;
+  const env = { OPERATOR_STATE_DIR: tmpDir } as NodeJS.ProcessEnv;
   await params.prepareStateDatabase?.(env);
   if (params.sentinel !== undefined) {
     writeRestartSentinelRow(env, params.sentinel);
@@ -207,7 +207,7 @@ async function runHelperWithExistingSentinel(params: {
         ...helperParams,
         parentPid: process.pid,
         parentExitTimeoutMs: 1,
-        stateDatabasePath: resolveOpenClawStateSqlitePath(env),
+        stateDatabasePath: resolveOperatorStateSqlitePath(env),
         logPath: path.join(tmpDir, "handoff.log"),
         sensitivePaths: [],
       },
@@ -233,7 +233,7 @@ async function runHelperWithExistingSentinel(params: {
 
 async function createLegacyRestartSentinelTable(env: NodeJS.ProcessEnv): Promise<void> {
   const sqlite = await import("node:sqlite");
-  const stateDatabasePath = resolveOpenClawStateSqlitePath(env);
+  const stateDatabasePath = resolveOperatorStateSqlitePath(env);
   await fs.mkdir(path.dirname(stateDatabasePath), { recursive: true });
   const db = new sqlite.DatabaseSync(stateDatabasePath);
   try {
@@ -309,7 +309,7 @@ async function runHelperWithCommand(params: {
           params.parentExitTimeoutMs === undefined ? 5000 : params.parentExitTimeoutMs,
         cwd: tmpDir,
         commandArgv: params.commandArgv,
-        stateDatabasePath: resolveOpenClawStateSqlitePath({ OPENCLAW_STATE_DIR: tmpDir }),
+        stateDatabasePath: resolveOperatorStateSqlitePath({ OPERATOR_STATE_DIR: tmpDir }),
         logPath: path.join(tmpDir, "handoff.log"),
         sensitivePaths: [],
         ...(params.serviceRecovery ? { serviceRecovery: params.serviceRecovery } : {}),
@@ -453,7 +453,7 @@ describe("managed service update handoff", () => {
       execPath: "/usr/local/bin/node",
       argv1: "/opt/openclaw/openclaw.mjs",
       supervisor: "systemd",
-      env: { PATH: binDir, OPENCLAW_SYSTEMD_UNIT: "openclaw-gateway.service" },
+      env: { PATH: binDir, OPERATOR_SYSTEMD_UNIT: "openclaw-gateway.service" },
       meta: {},
     });
     await vi.waitFor(() => expect(spawnMock).toHaveBeenCalledTimes(1));
@@ -511,9 +511,9 @@ describe("managed service update handoff", () => {
     const { startManagedServiceUpdateHandoff } =
       await import("./update-managed-service-handoff.js");
     const serviceIdentityEnv = {
-      OPENCLAW_LAUNCHD_LABEL: "com.example.openclaw.test",
-      OPENCLAW_SYSTEMD_UNIT: "openclaw-test.service",
-      OPENCLAW_WINDOWS_TASK_NAME: "OpenClaw Test Gateway",
+      OPERATOR_LAUNCHD_LABEL: "com.example.openclaw.test",
+      OPERATOR_SYSTEMD_UNIT: "openclaw-test.service",
+      OPERATOR_WINDOWS_TASK_NAME: "Operator Test Gateway",
     } satisfies NodeJS.ProcessEnv;
     const supervisorEnv = Object.fromEntries(
       SUPERVISOR_HINT_ENV_VARS.map((key) => [key, "supervised"]),
@@ -558,7 +558,7 @@ describe("managed service update handoff", () => {
     )) {
       expect(options.env[key]).toBeUndefined();
     }
-    expect(options.env.OPENCLAW_UPDATE_RUN_HANDOFF).toBe("1");
+    expect(options.env.OPERATOR_UPDATE_RUN_HANDOFF).toBe("1");
     expect(options.env[CONTROL_PLANE_UPDATE_SENTINEL_META_ENV]).toBe(helperParams.metaPath);
   });
 
@@ -583,7 +583,7 @@ describe("managed service update handoff", () => {
       supervisor: "systemd",
       env: {
         PATH: binDir,
-        OPENCLAW_SYSTEMD_UNIT: "openclaw-gateway.service",
+        OPERATOR_SYSTEMD_UNIT: "openclaw-gateway.service",
         INVOCATION_ID: "gateway-invocation",
         KEEP_ME: "1",
       },
@@ -636,10 +636,10 @@ describe("managed service update handoff", () => {
     ]);
     expect(helperParams.handoffId).toBe("handoff-123");
     expect(options.detached).toBe(true);
-    expect(options.env.OPENCLAW_SYSTEMD_UNIT).toBe("openclaw-gateway.service");
+    expect(options.env.OPERATOR_SYSTEMD_UNIT).toBe("openclaw-gateway.service");
     expect(options.env.INVOCATION_ID).toBeUndefined();
     expect(options.env.KEEP_ME).toBe("1");
-    expect(options.env.OPENCLAW_UPDATE_RUN_HANDOFF).toBe("1");
+    expect(options.env.OPERATOR_UPDATE_RUN_HANDOFF).toBe("1");
   });
 
   it("serializes extended-stable into the detached CLI command", async () => {
@@ -735,7 +735,7 @@ describe("managed service update handoff", () => {
     const cases = [
       {
         supervisor: "launchd" as const,
-        env: { OPENCLAW_LAUNCHD_LABEL: "com.example.openclaw.test", HOME: "/Users/test" },
+        env: { OPERATOR_LAUNCHD_LABEL: "com.example.openclaw.test", HOME: "/Users/test" },
         expected: {
           kind: "launchd",
           uid: typeof process.getuid === "function" ? process.getuid() : 501,
@@ -745,8 +745,8 @@ describe("managed service update handoff", () => {
       },
       {
         supervisor: "schtasks" as const,
-        env: { OPENCLAW_WINDOWS_TASK_NAME: "OpenClaw Test Gateway" },
-        expected: { kind: "schtasks", taskName: "OpenClaw Test Gateway" },
+        env: { OPERATOR_WINDOWS_TASK_NAME: "Operator Test Gateway" },
+        expected: { kind: "schtasks", taskName: "Operator Test Gateway" },
       },
     ];
 
@@ -793,7 +793,7 @@ describe("managed service update handoff", () => {
       },
     });
     if (process.platform !== "win32") {
-      const mode = (await fs.stat(resolveOpenClawStateSqlitePath(env))).mode & 0o777;
+      const mode = (await fs.stat(resolveOperatorStateSqlitePath(env))).mode & 0o777;
       expect(mode).toBe(0o600);
     }
   });
@@ -804,10 +804,10 @@ describe("managed service update handoff", () => {
       handoffId: "handoff-locked",
       metaHandoffId: "handoff-locked",
       prepareStateDatabase: async (stateEnv) => {
-        openOpenClawStateDatabase({ env: stateEnv });
-        closeOpenClawStateDatabaseForTest();
+        openOperatorStateDatabase({ env: stateEnv });
+        closeOperatorStateDatabaseForTest();
         const sqlite = await import("node:sqlite");
-        const lock = new sqlite.DatabaseSync(resolveOpenClawStateSqlitePath(stateEnv));
+        const lock = new sqlite.DatabaseSync(resolveOperatorStateSqlitePath(stateEnv));
         lock.exec("BEGIN IMMEDIATE;");
         lockReleased = new Promise((resolve) => {
           setTimeout(() => {

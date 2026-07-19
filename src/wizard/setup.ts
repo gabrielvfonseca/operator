@@ -2,7 +2,7 @@ import { formatCliCommand } from "../cli/command-format.js";
 import type { GatewayAuthChoice, OnboardMode, OnboardOptions } from "../commands/onboard-types.js";
 import { resolveGatewayPort } from "../config/config.js";
 import { resolveAgentModelPrimaryValue } from "../config/model-input.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizeSecretInputString } from "../config/types.secrets.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { withConsoleSubsystemsSuppressed } from "../logging/console.js";
@@ -41,18 +41,18 @@ const loadOnboardConfigModule = createLazyRuntimeModule(
   () => import("../commands/onboard-config.js"),
 );
 
-function hasConfiguredDefaultModel(config: OpenClawConfig): boolean {
+function hasConfiguredDefaultModel(config: OperatorConfig): boolean {
   return resolveAgentModelPrimaryValue(config.agents?.defaults?.model) !== undefined;
 }
 
 async function offerLiveModelVerification(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   opts: OnboardOptions;
   prompter: WizardPrompter;
   runtime: RuntimeEnv;
   workspaceDir: string;
-  writeConfig: (config: OpenClawConfig) => Promise<OpenClawConfig>;
-}): Promise<OpenClawConfig> {
+  writeConfig: (config: OperatorConfig) => Promise<OperatorConfig>;
+}): Promise<OperatorConfig> {
   const shouldTest = await params.prompter.confirm({
     message: t("wizard.setup.testAiAccess"),
     initialValue: true,
@@ -140,7 +140,7 @@ async function runSetupWizardOnce(
   await prompter.intro(t("wizard.setup.intro"));
 
   const snapshot = await readSetupConfigFileSnapshot();
-  let baseConfig: OpenClawConfig = snapshot.valid
+  let baseConfig: OperatorConfig = snapshot.valid
     ? snapshot.exists
       ? (snapshot.sourceConfig ?? snapshot.config)
       : {}
@@ -149,9 +149,9 @@ async function runSetupWizardOnce(
   // Ordinary onboard reruns must preserve existing agents.list / bindings. Only
   // explicit reset or import flows are allowed to shrink the config — see issue
   // operator#84692.
-  let pendingPluginInstallMigrationBaseConfig: OpenClawConfig | undefined = baseConfig;
+  let pendingPluginInstallMigrationBaseConfig: OperatorConfig | undefined = baseConfig;
   const writeSetupConfigFile = async (
-    config: OpenClawConfig,
+    config: OperatorConfig,
     optsLocal: { allowConfigSizeDrop?: boolean } = {},
   ) =>
     await writeWizardConfigFile(config, {
@@ -301,7 +301,7 @@ async function runSetupWizardOnce(
     });
     const migratedSnapshot = await readSetupConfigFileSnapshot();
     if (!migratedSnapshot.valid) {
-      throw new Error("Migration produced an invalid OpenClaw config. Run `operator doctor`.");
+      throw new Error("Migration produced an invalid Operator config. Run `operator doctor`.");
     }
     baseConfig = migratedSnapshot.sourceConfig ?? migratedSnapshot.config;
     pendingPluginInstallMigrationBaseConfig = baseConfig;
@@ -506,7 +506,7 @@ async function runSetupWizardOnce(
 
   const { applyLocalSetupWorkspaceConfig, applySkipBootstrapConfig } =
     await loadOnboardConfigModule();
-  let nextConfig: OpenClawConfig = applyLocalSetupWorkspaceConfig(baseConfig, workspaceDir);
+  let nextConfig: OperatorConfig = applyLocalSetupWorkspaceConfig(baseConfig, workspaceDir);
   if (opts.skipBootstrap) {
     nextConfig = applySkipBootstrapConfig(nextConfig);
   }

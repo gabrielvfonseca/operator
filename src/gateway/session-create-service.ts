@@ -28,7 +28,7 @@ import {
   createSessionEntryWithTranscript,
   resolveSessionEntryAccessTarget,
 } from "../config/sessions/session-accessor.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   createInternalHookEvent,
   hasInternalHookListeners,
@@ -70,7 +70,7 @@ type RequestedSessionAgentIdResolution =
   | { ok: false; error: ErrorShape };
 
 export function resolveRequestedSessionAgentId(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   key: string,
   explicitAgentId?: string,
 ): RequestedSessionAgentIdResolution {
@@ -182,7 +182,7 @@ type CreateGatewaySessionResult =
   | { ok: false; error: ErrorShape };
 
 export async function createGatewaySession(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   key?: string;
   agentId?: string;
   label?: string;

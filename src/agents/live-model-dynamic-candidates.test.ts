@@ -3,7 +3,7 @@
  * Verifies provider hooks, normalization, de-duping, and prioritized refs.
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import type { Model } from "../llm/types.js";
 
 const providerRuntimeMocks = vi.hoisted(() => ({
@@ -78,7 +78,7 @@ describe("appendPrioritizedDynamicLiveModels", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await appendPrioritizedDynamicLiveModels({
       models: [model("anthropic", "claude-sonnet-4-6")],
@@ -172,7 +172,7 @@ describe("appendPrioritizedDynamicLiveModels", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const result = await appendPrioritizedDynamicLiveModels({
       models: [],
       config,

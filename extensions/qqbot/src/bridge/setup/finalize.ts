@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 // Qqbot plugin module implements finalize behavior.
 import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
 import type { ChannelSetupWizard } from "openclaw/plugin-sdk/setup";
@@ -10,7 +10,7 @@ type SetupPrompter = Parameters<NonNullable<ChannelSetupWizard["finalize"]>>[0][
 type SetupRuntime = Parameters<NonNullable<ChannelSetupWizard["finalize"]>>[0]["runtime"];
 type SetupOptions = Parameters<NonNullable<ChannelSetupWizard["finalize"]>>[0]["options"];
 
-function isQQBotAccountConfigured(cfg: OpenClawConfig, accountId: string): boolean {
+function isQQBotAccountConfigured(cfg: OperatorConfig, accountId: string): boolean {
   const account = resolveQQBotAccount(cfg, accountId, { allowUnresolvedSecretRef: true });
   return Boolean(account.appId && account.clientSecret);
 }
@@ -29,12 +29,12 @@ async function reportQQBotLinkFailure(
 }
 
 async function linkViaQrCode(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId: string;
   prompter: SetupPrompter;
   runtime: SetupRuntime;
   beforePersistentEffect?: () => Promise<void>;
-}): Promise<OpenClawConfig> {
+}): Promise<OperatorConfig> {
   let connector: typeof import("@tencent-connect/qqbot-connector");
   try {
     connector = await import("@tencent-connect/qqbot-connector");
@@ -82,10 +82,10 @@ async function linkViaQrCode(params: {
 }
 
 async function linkViaManualInput(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId: string;
   prompter: SetupPrompter;
-}): Promise<OpenClawConfig> {
+}): Promise<OperatorConfig> {
   const appId = await params.prompter.text({
     message: "请输入 QQ Bot AppID",
     validate: (value: string) => (value.trim() ? undefined : "AppID 不能为空"),
@@ -106,13 +106,13 @@ async function linkViaManualInput(params: {
 }
 
 export async function finalizeQQBotSetup(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId: string;
   forceAllowFrom: boolean;
   prompter: SetupPrompter;
   runtime: SetupRuntime;
   options?: SetupOptions;
-}): Promise<{ cfg: OpenClawConfig }> {
+}): Promise<{ cfg: OperatorConfig }> {
   const accountId = params.accountId.trim() || DEFAULT_ACCOUNT_ID;
   let next = params.cfg;
 

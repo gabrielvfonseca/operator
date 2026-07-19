@@ -1,4 +1,4 @@
-// Memory Wiki plugin entrypoint registers its OpenClaw integration.
+// Memory Wiki plugin entrypoint registers its Operator integration.
 import { definePluginEntry, type OperatorConfig } from "./api.js";
 import { registerWikiCli } from "./src/cli.js";
 import {
@@ -30,7 +30,7 @@ import {
 export default definePluginEntry({
   id: "memory-wiki",
   name: "Memory Wiki",
-  description: "Persistent wiki compiler and Obsidian-friendly knowledge vault for OpenClaw.",
+  description: "Persistent wiki compiler and Obsidian-friendly knowledge vault for Operator.",
   configSchema: memoryWikiConfigSchema,
   register(api) {
     const config = resolveMemoryWikiConfig(api.pluginConfig);

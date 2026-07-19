@@ -70,7 +70,7 @@ describe("discordPlugin security", () => {
           dm: { policy: "allowlist", allowFrom: ["  discord:<@!123456789>  "] },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = resolveDmPolicy({
       cfg,
@@ -109,7 +109,7 @@ describe("discordPlugin groups", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(
       discordPlugin.groups?.resolveRequireMention?.({

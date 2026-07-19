@@ -1,6 +1,6 @@
 // Imported by dispatch-from-config.test.ts to keep its mocked suite in one Vitest module graph.
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import type { SessionBindingRecord } from "../../infra/outbound/session-binding-service.js";
 import { setReplyPayloadMetadata } from "../reply-payload.js";
 import type { MsgContext } from "../templating.js";
@@ -261,7 +261,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
 
     await dispatchReplyFromConfig({
       ctx,
-      cfg: { diagnostics: { enabled: true } } as OpenClawConfig,
+      cfg: { diagnostics: { enabled: true } } as OperatorConfig,
       dispatcher,
       replyResolver: async () => ({ text: "agent reply" }),
     });
@@ -386,7 +386,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       dispatcher,
       replyResolver,
     });
@@ -408,7 +408,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
     const dispatcher = createDispatcher();
     let capturedOnToolResult: ((payload: ReplyPayload) => Promise<void>) | undefined;
     const replyResolver = vi.fn(
-      async (_ctx: MsgContext, opts?: GetReplyOptions, _cfg?: OpenClawConfig) => {
+      async (_ctx: MsgContext, opts?: GetReplyOptions, _cfg?: OperatorConfig) => {
         capturedOnToolResult = opts?.onToolResult as
           | ((payload: ReplyPayload) => Promise<void>)
           | undefined;
@@ -441,7 +441,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       | ((payload: ReplyPayload, context?: unknown) => Promise<void>)
       | undefined;
     const replyResolver = vi.fn(
-      async (_ctx: MsgContext, opts?: GetReplyOptions, _cfg?: OpenClawConfig) => {
+      async (_ctx: MsgContext, opts?: GetReplyOptions, _cfg?: OperatorConfig) => {
         capturedOnBlockReply = opts?.onBlockReply as
           | ((payload: ReplyPayload, context?: unknown) => Promise<void>)
           | undefined;
@@ -773,7 +773,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
         messages: {
           groupChat: { visibleReplies: "message_tool" },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       expectedClaim: { channel: "discord" },
       pluginReply: { text: "Codex native reply" },
       expectPluginReplyDelivered: true,
@@ -808,7 +808,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
     bindingId: string;
     conversation: SessionBindingRecord["conversation"];
     ctx: Partial<MsgContext>;
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     replyOptions?: { sourceReplyDeliveryMode: "message_tool_only" };
     expectedClaim: Record<string, unknown>;
     pluginReply?: ReplyPayload;
@@ -1094,7 +1094,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       updatedAt: 0,
       sendPolicy: "allow",
     };
-    const cfg = { messages: { visibleReplies: "message_tool" } } as OpenClawConfig;
+    const cfg = { messages: { visibleReplies: "message_tool" } } as OperatorConfig;
     const dispatcher = createDispatcher();
     const replyResolver = vi.fn(async () => ({ text: "reset ack" }) satisfies ReplyPayload);
     const ctx = buildTestCtx({

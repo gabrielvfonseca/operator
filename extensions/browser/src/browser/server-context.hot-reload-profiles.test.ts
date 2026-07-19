@@ -44,7 +44,7 @@ const lifecycleMocks = vi.hoisted(() => ({
   closeChromeMcpSession: vi.fn(async () => false),
   closePlaywrightBrowserConnection: vi.fn(async (_opts: { cdpUrl: string }) => {}),
   retirePlaywrightBrowserConnection: vi.fn((_opts: { cdpUrl: string }) => true),
-  stopOpenClawChrome: vi.fn(async () => {}),
+  stopOperatorChrome: vi.fn(async () => {}),
 }));
 
 function buildConfig(): TestConfig {
@@ -80,7 +80,7 @@ vi.mock("./config-refresh-source.js", () => ({
 }));
 
 vi.mock("./chrome.js", () => ({
-  stopOpenClawChrome: lifecycleMocks.stopOpenClawChrome,
+  stopOperatorChrome: lifecycleMocks.stopOperatorChrome,
 }));
 
 vi.mock("./chrome-mcp.runtime.js", () => ({
@@ -139,7 +139,7 @@ describe("server-context hot-reload profiles", () => {
     lifecycleMocks.closeChromeMcpSession.mockResolvedValue(false);
     lifecycleMocks.closePlaywrightBrowserConnection.mockResolvedValue(undefined);
     lifecycleMocks.retirePlaywrightBrowserConnection.mockReturnValue(true);
-    lifecycleMocks.stopOpenClawChrome.mockResolvedValue(undefined);
+    lifecycleMocks.stopOperatorChrome.mockResolvedValue(undefined);
     mockState.cfgProfiles = {
       openclaw: { cdpPort: 18800, color: "#FF4500" },
     };
@@ -720,8 +720,8 @@ describe("server-context hot-reload profiles", () => {
     await getProfileLifecycle(oldRuntime).tail;
     await Promise.resolve();
     expect(state.profiles.has("work")).toBe(false);
-    expect(lifecycleMocks.stopOpenClawChrome).toHaveBeenCalledOnce();
-    expect(lifecycleMocks.stopOpenClawChrome).toHaveBeenCalledWith(lateRunning);
+    expect(lifecycleMocks.stopOperatorChrome).toHaveBeenCalledOnce();
+    expect(lifecycleMocks.stopOperatorChrome).toHaveBeenCalledWith(lateRunning);
     const replacement = getOrCreateProfileRuntime(state, workB);
     expect(replacement).not.toBe(oldRuntime);
     await expect(

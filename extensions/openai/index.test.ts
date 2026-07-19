@@ -1,6 +1,6 @@
 // Openai tests cover index plugin behavior.
 import { expectDefined } from "@operator/normalization-core";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
 import { requireRegisteredProvider } from "openclaw/plugin-sdk/plugin-test-runtime";
 import * as providerAuth from "openclaw/plugin-sdk/provider-auth-runtime";
@@ -286,7 +286,7 @@ describe("openai plugin", () => {
               },
             },
           },
-        } satisfies OpenClawConfig,
+        } satisfies OperatorConfig,
       }),
     ).rejects.toThrow("Blocked hostname or private/internal/special-use IP address");
 

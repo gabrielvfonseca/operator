@@ -64,7 +64,7 @@ describe("browser client fetch attachOnly diagnostics", () => {
         2,
       ),
     );
-    process.env.OPENCLAW_CONFIG_PATH = configPath;
+    process.env.OPERATOR_CONFIG_PATH = configPath;
     clearRuntimeConfigSnapshot();
 
     try {
@@ -73,9 +73,9 @@ describe("browser client fetch attachOnly diagnostics", () => {
       );
       expect(thrown).toBeInstanceOf(Error);
       const message = thrown instanceof Error ? thrown.message : String(thrown);
-      expect(message).toContain("browser profile is external to OpenClaw");
-      expect(message).toContain("Restarting the OpenClaw gateway will not launch it");
-      expect(message).not.toContain("Restart the OpenClaw gateway");
+      expect(message).toContain("browser profile is external to Operator");
+      expect(message).toContain("Restarting the Operator gateway will not launch it");
+      expect(message).not.toContain("Restart the Operator gateway");
       expect(message).not.toContain("Do NOT retry the browser tool");
     } finally {
       for (const socket of sockets) {

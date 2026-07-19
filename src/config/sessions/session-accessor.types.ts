@@ -1,5 +1,5 @@
 import type { SessionTranscriptUpdate } from "../../sessions/transcript-events.js";
-import type { OpenClawConfig } from "../types.operator.js";
+import type { OperatorConfig } from "../types.operator.js";
 import type {
   SessionTranscriptTurnExpectedState,
   SessionTranscriptTurnLifecyclePatch,
@@ -56,7 +56,7 @@ export type SessionAccessScope = {
 
 export type LogicalSessionAccessScope = {
   /** Runtime config whose session store rules define the logical session owner. */
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   /** Environment override used when resolving configured/discovered agent stores. */
   env?: NodeJS.ProcessEnv;
   /** Canonical or alias session key for the logical entry being read or written. */
@@ -89,7 +89,7 @@ export type SessionEntryCandidateAccessScope = {
   /** Ordered session keys to test inside the resolved store. */
   candidateKeys: readonly string[];
   /** Runtime config whose session store rule selects the backend target. */
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   /** Environment override used when resolving agent-scoped store paths in tests/tools. */
   env?: NodeJS.ProcessEnv;
   /** Optional synthesized entry returned only when no candidate exists. */
@@ -201,7 +201,7 @@ export type SessionTranscriptStats = {
 
 export type TranscriptMessageAppendOptions<TMessage> = {
   /** Runtime config used for message redaction and transcript header metadata. */
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   /** Working directory recorded in a newly created transcript header. */
   cwd?: string;
   /** How duplicate message idempotency keys are detected before append. */
@@ -272,7 +272,7 @@ export type SessionTranscriptTurnWriteContext = {
 
 export type SessionTranscriptTurnPersistOptions = {
   /** Runtime config used for lock settings, redaction, and header metadata. */
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   /** Working directory recorded in a newly created transcript header. */
   cwd?: string;
   /**

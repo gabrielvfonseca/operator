@@ -3,7 +3,7 @@
  *
  * Bridges old DM allowlist/pairing behavior to channel ingress access decisions.
  */
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   expandAllowFromWithAccessGroups,
   type AccessGroupMembershipResolver,
@@ -21,7 +21,7 @@ export type { AccessGroupMembershipResolver } from "../plugin-sdk/access-groups.
 
 /** Runtime hooks needed by the legacy direct-DM access resolver. */
 export type DirectDmCommandAuthorizationRuntime = {
-  shouldComputeCommandAuthorized: (rawBody: string, cfg: OpenClawConfig) => boolean;
+  shouldComputeCommandAuthorized: (rawBody: string, cfg: OperatorConfig) => boolean;
   /** @deprecated Command authorization is resolved by channel ingress. Kept for runtime injection compatibility. */
   resolveCommandAuthorizedFromAuthorizers?: (params: {
     useAccessGroups: boolean;
@@ -64,7 +64,7 @@ function toLegacyDmReasonCode(reasonCode: string): DmGroupAccessReasonCode {
  * @deprecated Use `resolveChannelMessageIngress` from `operator/plugin-sdk/channel-ingress-runtime`.
  */
 export async function resolveInboundDirectDmAccessWithRuntime(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   channel: ChannelId;
   accountId: string;
   dmPolicy?: string | null;

@@ -2,8 +2,8 @@ import { randomUUID } from "node:crypto";
 import { uniqueStrings } from "@operator/normalization-core/string-normalization";
 import { executeSqliteQuerySync } from "../../infra/kysely-sync.js";
 import {
-  runOpenClawAgentWriteTransaction,
-  type OpenClawAgentDatabase,
+  runOperatorAgentWriteTransaction,
+  type OperatorAgentDatabase,
 } from "../../state/operator-agent-db.js";
 import type { TranscriptEvent } from "./session-accessor.sqlite-contract.js";
 import {
@@ -86,7 +86,7 @@ export async function branchSqliteCompactionCheckpointSession(
     let result: SqliteCompactionCheckpointSessionMutationResult | undefined;
     let previousIdentity = new Map<string, SessionEntry>();
     let currentIdentity = new Map<string, SessionEntry>();
-    runOpenClawAgentWriteTransaction((database) => {
+    runOperatorAgentWriteTransaction((database) => {
       const identityKeys = uniqueStrings([
         ...collectSessionEntryLookupKeys(database, sourceKey),
         ...collectSessionEntryLookupKeys(database, targetKey),
@@ -122,7 +122,7 @@ export async function restoreSqliteCompactionCheckpointSession(
     let result: SqliteCompactionCheckpointSessionMutationResult | undefined;
     let previousIdentity = new Map<string, SessionEntry>();
     let currentIdentity = new Map<string, SessionEntry>();
-    runOpenClawAgentWriteTransaction((database) => {
+    runOperatorAgentWriteTransaction((database) => {
       const identityKeys = uniqueStrings([
         ...collectSessionEntryLookupKeys(database, sessionKey),
         ...collectSessionEntryLookupKeys(database, targetKey),
@@ -144,7 +144,7 @@ export async function restoreSqliteCompactionCheckpointSession(
 /** Publishes a transcript update using the SQLite transcript scope target. */
 
 function branchSqliteCompactionCheckpointSessionInTransaction(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   params: {
     checkpointId: string;
     parentSessionKey: string;
@@ -190,7 +190,7 @@ function branchSqliteCompactionCheckpointSessionInTransaction(
 }
 
 function restoreSqliteCompactionCheckpointSessionInTransaction(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   params: {
     checkpointId: string;
     resolved: ResolvedSqliteScope;
@@ -231,7 +231,7 @@ function restoreSqliteCompactionCheckpointSessionInTransaction(
 }
 
 function forkSqliteCheckpointTranscriptInTransaction(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   resolved: ResolvedSqliteScope,
   params: {
     checkpoint: SessionCompactionCheckpoint;
@@ -325,7 +325,7 @@ function resolveSqliteCheckpointTranscriptForkSources(
 }
 
 function readSqliteTranscriptRowsForFork(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   source: { sessionId: string; leafId?: string },
 ): { status: "created"; events: TranscriptEvent[] } | { status: "missing-boundary" | "failed" } {
   const boundarySeq = source.leafId

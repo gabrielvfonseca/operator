@@ -97,8 +97,8 @@ describe("update global helpers", () => {
   });
 
   it("prefers explicit package spec overrides", () => {
-    envSnapshot = captureEnv(["OPENCLAW_UPDATE_PACKAGE_SPEC"]);
-    process.env.OPENCLAW_UPDATE_PACKAGE_SPEC = "file:/tmp/openclaw.tgz";
+    envSnapshot = captureEnv(["OPERATOR_UPDATE_PACKAGE_SPEC"]);
+    process.env.OPERATOR_UPDATE_PACKAGE_SPEC = "file:/tmp/openclaw.tgz";
 
     expect(resolveGlobalInstallSpec({ packageName: "openclaw", tag: "latest" })).toBe(
       "file:/tmp/openclaw.tgz",
@@ -107,7 +107,7 @@ describe("update global helpers", () => {
       resolveGlobalInstallSpec({
         packageName: "openclaw",
         tag: "beta",
-        env: { OPENCLAW_UPDATE_PACKAGE_SPEC: "openclaw@next" },
+        env: { OPERATOR_UPDATE_PACKAGE_SPEC: "openclaw@next" },
       }),
     ).toBe("openclaw@next");
   });
@@ -214,14 +214,14 @@ describe("update global helpers", () => {
         const trustedLocalAppData = path.join(base, "trusted-local-app-data");
         const injectedGitDir = path.join(
           injectedLocalAppData,
-          "OpenClaw",
+          "Operator",
           "deps",
           "portable-git",
           "cmd",
         );
         const trustedGitDir = path.join(
           trustedLocalAppData,
-          "OpenClaw",
+          "Operator",
           "deps",
           "portable-git",
           "cmd",

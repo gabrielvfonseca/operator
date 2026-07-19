@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import { rememberWorkspaceBroadcast } from "./broadcast.js";
 import { resolveBinding, type ResolveBindingOptions } from "./data-read.js";
 import { snapshotApprovedWidget } from "./manifest.js";
@@ -28,13 +28,13 @@ const WIDGET_ID_PATTERN = /^[A-Za-z0-9_-]{1,48}$/;
 const CUSTOM_WIDGET_NAME_PATTERN = /^(?!__proto__$)[A-Za-z0-9._-]{1,64}$/;
 
 type GatewayMethodContext = Parameters<
-  Parameters<OpenClawPluginApi["registerGatewayMethod"]>[1]
+  Parameters<OperatorPluginApi["registerGatewayMethod"]>[1]
 >[0];
 type GatewayRespond = GatewayMethodContext["respond"];
 type GatewayBroadcast = GatewayMethodContext["context"]["broadcast"];
 
 type WorkspaceGatewayMethodOptions = {
-  api: OpenClawPluginApi;
+  api: OperatorPluginApi;
   store?: WorkspaceStore;
   dataRead?: ResolveBindingOptions;
 };

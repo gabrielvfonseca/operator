@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../../../config/config.js";
+import type { OperatorConfig } from "../../../config/config.js";
 import { makeTempWorkspace, writeWorkspaceFile } from "../../../test-helpers/workspace.js";
 import {
   type AgentBootstrapHookContext,
@@ -10,7 +10,7 @@ import {
 } from "../../internal-hooks.js";
 import handler from "./handler.js";
 
-function createBootstrapExtraConfig(paths: string[]): OpenClawConfig {
+function createBootstrapExtraConfig(paths: string[]): OperatorConfig {
   return {
     hooks: {
       internal: {
@@ -27,7 +27,7 @@ function createBootstrapExtraConfig(paths: string[]): OpenClawConfig {
 
 async function createBootstrapContext(params: {
   workspaceDir: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   sessionKey: string;
   rootFiles: Array<{ name: string; content: string }>;
 }): Promise<AgentBootstrapHookContext> {

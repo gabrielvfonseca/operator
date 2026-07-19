@@ -1,5 +1,5 @@
 import { randomInt } from "node:crypto";
-// Inference backend detection shared by onboarding bootstrap and OpenClaw setup.
+// Inference backend detection shared by onboarding bootstrap and Operator setup.
 import os from "node:os";
 import path from "node:path";
 import { expectDefined } from "@operator/normalization-core";
@@ -10,7 +10,7 @@ import {
 } from "../agents/cli-credentials.js";
 import { resolveDefaultModelForAgent } from "../agents/model-selection.js";
 import { resolveAgentModelPrimaryValue } from "../config/model-input.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { probeLocalCommand, type LocalCommandProbe } from "../system-agent/probes.js";
 
 /**
@@ -58,7 +58,7 @@ type DetectInferenceBackendsDeps = {
 };
 
 type DetectInferenceBackendsOptions = {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   env?: NodeJS.ProcessEnv;
   platform?: NodeJS.Platform;
   deps?: DetectInferenceBackendsDeps;

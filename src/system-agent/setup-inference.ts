@@ -40,7 +40,7 @@ import {
   normalizeAgentModelRefForConfig,
   resolveAgentModelPrimaryValue,
 } from "../config/model-input.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
@@ -287,7 +287,7 @@ export type ActivateSetupInferenceDeps = {
   clearLoadInstalledPluginIndexInstallRecordsCache?: typeof import("../plugins/installed-plugin-index-records.js").clearLoadInstalledPluginIndexInstallRecordsCache;
   clearPluginMetadataLifecycleCaches?: typeof import("../plugins/plugin-metadata-lifecycle.js").clearPluginMetadataLifecycleCaches;
   invalidatePluginRuntimeDiscoveryAfterConfigMutation?: typeof import("../plugins/registry-refresh.js").invalidatePluginRuntimeDiscoveryAfterConfigMutation;
-  disposeOpenClawAgentDatabaseByPath?: typeof import("../state/operator-agent-db.js").disposeOpenClawAgentDatabaseByPath;
+  disposeOperatorAgentDatabaseByPath?: typeof import("../state/operator-agent-db.js").disposeOperatorAgentDatabaseByPath;
   createTempDir?: () => Promise<string>;
   removeTempDir?: (dir: string) => Promise<void>;
   timeoutMs?: number;
@@ -326,7 +326,7 @@ function invalidSetupConfigError(snapshot: {
 }): string {
   const issue = snapshot.issues?.[0];
   const detail = issue ? ` (${issue.path ? `${issue.path}: ` : ""}${issue.message})` : "";
-  return `OpenClaw config ${snapshot.path} is invalid${detail}. Fix it before running setup.`;
+  return `Operator config ${snapshot.path} is invalid${detail}. Fix it before running setup.`;
 }
 
 async function resolveSetupInferenceWorkspace(params: {
@@ -487,8 +487,8 @@ type SetupInferenceTestPlan = {
   provider: string;
   model: string;
   modelRef: string;
-  config: OpenClawConfig;
-  /** Execution identity used by the real OpenClaw turn. */
+  config: OperatorConfig;
+  /** Execution identity used by the real Operator turn. */
   agentId?: string;
   /** Default-agent owner whose model/runtime config is being selected. */
   routeAgentId?: string;
@@ -500,14 +500,14 @@ type SetupInferenceTestPlan = {
   persistModelRef?: string;
   manualAuth?: {
     profiles: ProviderAuthResult["profiles"];
-    runtimeConfigBase: OpenClawConfig;
-    sourceConfigBase: OpenClawConfig;
+    runtimeConfigBase: OperatorConfig;
+    sourceConfigBase: OperatorConfig;
     configPatch: unknown;
     pluginId?: string;
   };
 };
 
-function configureCodexCliPreparedAuth(cfg: OpenClawConfig): OpenClawConfig {
+function configureCodexCliPreparedAuth(cfg: OperatorConfig): OperatorConfig {
   const entry = cfg.plugins?.entries?.codex;
   const pluginConfig = entry?.config ?? {};
   const appServer =
@@ -672,7 +672,7 @@ function parseRef(modelRef: string): { provider: string; model: string } {
     : { provider: modelRef.slice(0, slash), model: modelRef.slice(slash + 1) };
 }
 
-function projectSetupTargetModelMetadata(config: OpenClawConfig, modelRef: string): unknown {
+function projectSetupTargetModelMetadata(config: OperatorConfig, modelRef: string): unknown {
   const target = parseRef(modelRef);
   const canonicalKey = modelKey(target.provider, target.model);
   const keys = new Set(
@@ -738,15 +738,15 @@ function mapFailoverReasonToSetupStatus(reason?: string | null): SetupInferenceF
 }
 
 function prepareManualAuthForActivation(params: {
-  baseConfig: OpenClawConfig;
-  preparedConfig: OpenClawConfig;
+  baseConfig: OperatorConfig;
+  preparedConfig: OperatorConfig;
   profiles: ProviderAuthResult["profiles"];
   selectedProfileId: string;
   modelRef: string;
   providerId: string;
   pluginId?: string;
 }): {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   profiles: ProviderAuthResult["profiles"];
   selectedProfileId: string;
 } {
@@ -772,8 +772,8 @@ function prepareManualAuthForActivation(params: {
 }
 
 function copySelectedModelMetadata(params: {
-  target: OpenClawConfig;
-  prepared: OpenClawConfig;
+  target: OperatorConfig;
+  prepared: OperatorConfig;
   modelRef: string;
 }): void {
   const preparedDefaultModels = params.prepared.agents?.defaults?.models;
@@ -823,7 +823,7 @@ function copySelectedModelMetadata(params: {
 }
 
 function findSelectedProviderConfigKey(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   providerId: string,
 ): string | undefined {
   const providers = config.models?.providers;
@@ -841,18 +841,18 @@ function findSelectedProviderConfigKey(
 
 /**
  * Provider auth hooks are untrusted setup input. Carry only the selected
- * inference route's config into the probe; OpenClaw owns every other setup
+ * inference route's config into the probe; Operator owns every other setup
  * surface after intelligence exists.
  */
 function projectManualInferenceConfig(params: {
-  baseConfig: OpenClawConfig;
-  preparedConfig: OpenClawConfig;
+  baseConfig: OperatorConfig;
+  preparedConfig: OperatorConfig;
   selectedProfile?: ProviderAuthResult["profiles"][number];
   selectedProfileId?: string;
   modelRef: string;
   providerId: string;
   pluginId?: string;
-}): OpenClawConfig {
+}): OperatorConfig {
   const config = structuredClone(params.baseConfig);
   if (params.selectedProfile && params.selectedProfileId) {
     const metadata = params.preparedConfig.auth?.profiles?.[params.selectedProfile.profileId] ?? {
@@ -904,7 +904,7 @@ function projectManualInferenceConfig(params: {
 }
 
 function canonicalizeSetupModelRef(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   raw: string;
   defaultProvider: string;
 }): string {
@@ -926,8 +926,8 @@ async function buildTestPlan(params: {
   modelRef?: string;
   authChoice?: string;
   apiKey?: string;
-  cfg: OpenClawConfig;
-  sourceCfg: OpenClawConfig;
+  cfg: OperatorConfig;
+  sourceCfg: OperatorConfig;
   workspaceDir: string;
   pluginWorkspaceDir: string;
   agentDir: string;
@@ -1268,7 +1268,7 @@ async function buildTestPlan(params: {
         };
       }
       let result: ProviderAuthResult;
-      let preparedConfig: OpenClawConfig;
+      let preparedConfig: OperatorConfig;
       try {
         if (interactive) {
           if (!params.prompter) {
@@ -1388,14 +1388,14 @@ async function buildTestPlan(params: {
 }
 
 async function runProviderManualSecretMethod(params: {
-  config: OpenClawConfig;
-  baseConfig: OpenClawConfig;
+  config: OperatorConfig;
+  baseConfig: OperatorConfig;
   choice: ProviderAuthChoiceMetadata;
   method: ProviderAuthMethod;
   apiKey: string;
   agentDir: string;
   workspaceDir: string;
-}): Promise<{ result: ProviderAuthResult; config: OpenClawConfig }> {
+}): Promise<{ result: ProviderAuthResult; config: OperatorConfig }> {
   const optionKey = params.choice.optionKey;
   const runNonInteractive = params.method.runNonInteractive;
   if (!optionKey || !params.choice.cliOption || !runNonInteractive) {
@@ -1514,8 +1514,8 @@ async function activateSetupInferenceUnredacted(
   if (snapshot.exists && !snapshot.valid) {
     throw new Error(invalidSetupConfigError(snapshot));
   }
-  const cfg: OpenClawConfig = snapshot.exists ? (snapshot.runtimeConfig ?? snapshot.config) : {};
-  const sourceCfg: OpenClawConfig = snapshot.exists
+  const cfg: OperatorConfig = snapshot.exists ? (snapshot.runtimeConfig ?? snapshot.config) : {};
+  const sourceCfg: OperatorConfig = snapshot.exists
     ? (snapshot.sourceConfig ?? snapshot.config)
     : {};
   const workspace = params.workspace?.trim()
@@ -1724,7 +1724,7 @@ async function activateSetupInferenceUnredacted(
       sourceCfg,
       stagedRoute.modelLabel,
     );
-    // OpenClaw executes through the reserved agent id but reuses the default
+    // Operator executes through the reserved agent id but reuses the default
     // route's agent directory. Only a submitted key stays in the isolated store.
     if (testPlan.runner === "embedded" && stagedRoute.runner === "embedded") {
       testPlan = {
@@ -1823,7 +1823,7 @@ async function activateSetupInferenceUnredacted(
         ok: false,
         status: "unknown",
         error:
-          "Inference succeeded, but its runtime did not report an owner that OpenClaw can safely reuse. No model or credential route was saved.",
+          "Inference succeeded, but its runtime did not report an owner that Operator can safely reuse. No model or credential route was saved.",
       };
     }
     if (
@@ -1866,7 +1866,7 @@ async function activateSetupInferenceUnredacted(
         };
       }
     }
-    let committedConfig: OpenClawConfig | undefined;
+    let committedConfig: OperatorConfig | undefined;
     if (!needsPersistence) {
       const latestSnapshot = await readSnapshot();
       const latestRuntime =
@@ -1925,9 +1925,9 @@ async function activateSetupInferenceUnredacted(
           })
         : undefined;
       const stageCandidate = (
-        current: OpenClawConfig,
+        current: OperatorConfig,
         configKind: "runtime" | "source",
-      ): OpenClawConfig => {
+      ): OperatorConfig => {
         let next =
           codexPluginPatch === undefined ? current : stripPendingPluginInstallRecords(current);
         if (plan.manualAuth) {
@@ -1939,7 +1939,7 @@ async function activateSetupInferenceUnredacted(
           );
         }
         if (codexPluginPatch !== undefined) {
-          const patched = applyMergePatch(next, codexPluginPatch) as OpenClawConfig;
+          const patched = applyMergePatch(next, codexPluginPatch) as OperatorConfig;
           const enabledCodex = enablePluginInConfig(
             normalizePluginTargetConfig(patched, "codex"),
             "codex",
@@ -2036,7 +2036,7 @@ async function activateSetupInferenceUnredacted(
           base: "source",
           // The transform stays side-effect free so a config conflict can retry
           // without replaying credential writes in another agent directory.
-          afterWrite: { mode: "none", reason: "OpenClaw activates verified inference" },
+          afterWrite: { mode: "none", reason: "Operator activates verified inference" },
           transform: async (current, context) => {
             const latestRuntime = context.snapshot.runtimeConfig ?? context.snapshot.config;
             // Validate that the candidate is still admissible before reporting
@@ -2189,7 +2189,7 @@ async function activateSetupInferenceUnredacted(
       try {
         await appendSystemAgentAuditEntry({
           operation: "operator.setup",
-          summary: "Verified and configured AI access through OpenClaw setup",
+          summary: "Verified and configured AI access through Operator setup",
           configPath: after?.path ?? snapshot.path,
           configHashBefore: snapshot.hash ?? null,
           configHashAfter: after?.hash ?? null,
@@ -2198,7 +2198,7 @@ async function activateSetupInferenceUnredacted(
       } catch (error) {
         // Inference is already verified and its route may already be durable.
         // Surface audit failure as a warning instead of misreporting setup failure.
-        const warning = `Inference setup completed, but OpenClaw could not record its audit entry: ${formatErrorMessage(error)}`;
+        const warning = `Inference setup completed, but Operator could not record its audit entry: ${formatErrorMessage(error)}`;
         params.runtime.error?.(warning);
         lines = [...lines, warning];
       }
@@ -2298,7 +2298,7 @@ export async function verifySetupInference(
     return {
       ok: false,
       status: "unavailable",
-      error: "No OpenClaw config exists. Run `operator onboard` first.",
+      error: "No Operator config exists. Run `operator onboard` first.",
     };
   }
   if (!snapshot.valid) {
@@ -2308,7 +2308,7 @@ export async function verifySetupInference(
       error: invalidSetupConfigError(snapshot),
     };
   }
-  const cfg: OpenClawConfig = snapshot.runtimeConfig ?? snapshot.config;
+  const cfg: OperatorConfig = snapshot.runtimeConfig ?? snapshot.config;
   const baselineRoute = await projectInferenceRoute(cfg, params.agentId);
   let verifiedBinding: SystemAgentVerifiedInferenceBinding | undefined;
   const verification = await verifySetupInferenceConfig({
@@ -2357,7 +2357,7 @@ export async function verifySetupInference(
       ok: false,
       status: "unknown",
       error:
-        "The successful inference run did not report an exact execution binding. Retry setup before starting OpenClaw.",
+        "The successful inference run did not report an exact execution binding. Retry setup before starting Operator.",
     };
   }
   return { ...verification, binding: verifiedBinding };
@@ -2439,7 +2439,7 @@ export async function resolvePersistentApplyInference(params: {
 
 /** Live-test a staged default-agent route before any caller persists it. */
 export async function verifySetupInferenceConfig(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   agentId?: string;
   runtime: RuntimeEnv;
   timeoutMs?: number;
@@ -2598,8 +2598,8 @@ async function cleanupSetupInferenceTempDir(params: {
 }): Promise<void> {
   try {
     const disposeDatabase =
-      params.deps.disposeOpenClawAgentDatabaseByPath ??
-      (await import("../state/operator-agent-db.js")).disposeOpenClawAgentDatabaseByPath;
+      params.deps.disposeOperatorAgentDatabaseByPath ??
+      (await import("../state/operator-agent-db.js")).disposeOperatorAgentDatabaseByPath;
     disposeDatabase(path.join(params.tempDir, "agent", "operator-agent.sqlite"));
   } catch {
     // Windows cannot remove an open SQLite file. Keep cleanup nonfatal, but
@@ -2719,11 +2719,11 @@ async function reloadCodexRegistryAfterActivation(params: {
   const runtimeConfig =
     snapshot.exists && snapshot.valid
       ? (snapshot.runtimeConfig ?? snapshot.config)
-      : ({} satisfies OpenClawConfig);
+      : ({} satisfies OperatorConfig);
   const sourceConfig =
     snapshot.exists && snapshot.valid
       ? (snapshot.sourceConfig ?? snapshot.config)
-      : ({} satisfies OpenClawConfig);
+      : ({} satisfies OperatorConfig);
   try {
     const refreshPluginRegistry =
       params.deps.refreshPluginRegistryAfterConfigMutation ??
@@ -2778,11 +2778,11 @@ function mergePatchConflicts(base: unknown, current: unknown, patch: unknown): b
 }
 
 function applyManualAuthConfig(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   manualAuth: NonNullable<SetupInferenceTestPlan["manualAuth"]>,
   configKind: "runtime" | "source",
   enablePlugin: typeof enablePluginInConfig = enablePluginInConfig,
-): OpenClawConfig {
+): OperatorConfig {
   let enabledConfig = config;
   if (manualAuth.pluginId) {
     const enableResult = enablePlugin(config, manualAuth.pluginId);
@@ -2800,7 +2800,7 @@ function applyManualAuthConfig(
       "Provider configuration changed during the live inference test, so the verified credential was not saved. Review the current provider settings and retry.",
     );
   }
-  return applyMergePatch(enabledConfig, manualAuth.configPatch) as OpenClawConfig;
+  return applyMergePatch(enabledConfig, manualAuth.configPatch) as OperatorConfig;
 }
 
 type ManualAuthPersistenceReceipt = {
@@ -2838,7 +2838,7 @@ function modelSelectionReferencesProfile(value: unknown, profileIds: ReadonlySet
 }
 
 function configReferencesManualAuthProfiles(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   receipt: ManualAuthPersistenceReceipt,
 ): boolean {
   const profileIds = new Set(receipt.profiles.map((profile) => profile.profileId));
@@ -3140,7 +3140,7 @@ async function runSetupInferenceTest(params: {
         ok: false,
         status: "unknown",
         error:
-          "Inference succeeded, but its runtime did not report an owner that OpenClaw can safely reuse.",
+          "Inference succeeded, but its runtime did not report an owner that Operator can safely reuse.",
       };
     }
     return {

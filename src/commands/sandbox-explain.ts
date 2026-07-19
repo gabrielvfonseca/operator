@@ -31,7 +31,7 @@ import {
   type SessionEntry,
 } from "../config/sessions.js";
 import { loadSessionEntry } from "../config/sessions/session-accessor.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   buildAgentMainSessionKey,
   normalizeAgentId,
@@ -51,7 +51,7 @@ type SandboxExplainOptions = {
 const SANDBOX_DOCS_URL = "https://docs.operator.ai/sandbox";
 
 function normalizeExplainSessionKey(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
   session?: string;
 }): string {
@@ -77,7 +77,7 @@ function normalizeExplainSessionKey(params: {
 }
 
 function inferProviderFromSessionKey(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   sessionKey: string;
 }): string | undefined {
   const parsed = parseAgentSessionKey(params.sessionKey);
@@ -109,7 +109,7 @@ function inferProviderFromSessionKey(params: {
 }
 
 function resolveActiveChannel(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   entry?: SessionEntry;
   sessionKey: string;
 }): string | undefined {

@@ -48,13 +48,13 @@ describe("proxy validation", () => {
     });
   });
 
-  it("reports disabled proxy config when only OPENCLAW_PROXY_URL is present", async () => {
+  it("reports disabled proxy config when only OPERATOR_PROXY_URL is present", async () => {
     const fetchCheck = vi.fn();
 
     const result = await runProxyValidation({
       config: {},
       env: {
-        OPENCLAW_PROXY_URL: "http://env-proxy.example:3128",
+        OPERATOR_PROXY_URL: "http://env-proxy.example:3128",
       },
       fetchCheck,
     });
@@ -66,7 +66,7 @@ describe("proxy validation", () => {
         enabled: false,
         proxyUrl: "http://env-proxy.example:3128",
         source: "env",
-        errors: ["proxy validation requires proxy.enabled to be true for OPENCLAW_PROXY_URL"],
+        errors: ["proxy validation requires proxy.enabled to be true for OPERATOR_PROXY_URL"],
       },
       checks: [],
     });
@@ -91,7 +91,7 @@ describe("proxy validation", () => {
     expect(fetchCheck).toHaveBeenCalled();
   });
 
-  it("prefers the configured proxy URL over OPENCLAW_PROXY_URL", async () => {
+  it("prefers the configured proxy URL over OPERATOR_PROXY_URL", async () => {
     const fetchCheck = vi.fn().mockResolvedValue({ ok: true, status: 200 });
 
     const result = await runProxyValidation({
@@ -100,7 +100,7 @@ describe("proxy validation", () => {
         proxyUrl: "http://config-proxy.example:3128",
       },
       env: {
-        OPENCLAW_PROXY_URL: "http://env-proxy.example:3128",
+        OPERATOR_PROXY_URL: "http://env-proxy.example:3128",
       },
       allowedUrls: ["https://example.com/"],
       deniedUrls: [],
@@ -133,7 +133,7 @@ describe("proxy validation", () => {
     expect(fetchCheck).not.toHaveBeenCalled();
     expect(result.config).toMatchObject({ enabled: true, source: "missing" });
     expect(result.config.errors).toEqual([
-      "proxy validation requires proxy.proxyUrl, --proxy-url, or OPENCLAW_PROXY_URL",
+      "proxy validation requires proxy.proxyUrl, --proxy-url, or OPERATOR_PROXY_URL",
     ]);
   });
 
@@ -167,7 +167,7 @@ describe("proxy validation", () => {
         enabled: false,
         source: "disabled",
         errors: [
-          "proxy validation requires proxy.enabled=true with proxy.proxyUrl or OPENCLAW_PROXY_URL, or --proxy-url",
+          "proxy validation requires proxy.enabled=true with proxy.proxyUrl or OPERATOR_PROXY_URL, or --proxy-url",
         ],
       },
       checks: [],

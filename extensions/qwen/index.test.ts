@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 // Qwen tests cover index plugin behavior.
 import {
   registerProviderPlugin,
@@ -270,7 +270,7 @@ describe("qwen provider plugin", () => {
       contextWindow: 8192,
       maxTokens: 2048,
     });
-    const global: OpenClawConfig = {
+    const global: OperatorConfig = {
       ...initialGlobal,
       models: {
         ...initialGlobal.models,
@@ -286,9 +286,9 @@ describe("qwen provider plugin", () => {
     const cnFromGlobal = applyQwenTokenPlanConfig(global, "cn");
     const globalAgain = applyQwenTokenPlanConfig(cnFromGlobal, "global");
 
-    const tokenPlanProvider = (config: OpenClawConfig) =>
+    const tokenPlanProvider = (config: OperatorConfig) =>
       config.models?.providers?.[QWEN_TOKEN_PLAN_PROVIDER_ID];
-    const glmContext = (config: OpenClawConfig) =>
+    const glmContext = (config: OperatorConfig) =>
       tokenPlanProvider(config)?.models?.find((model) => model.id === "glm-5.2")?.contextWindow;
     expect(glmContext(global)).toBe(1_000_000);
     expect(glmContext(cnFromGlobal)).toBe(1_000_000);

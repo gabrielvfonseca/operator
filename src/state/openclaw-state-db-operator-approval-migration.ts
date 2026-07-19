@@ -53,7 +53,7 @@ function hasCanonicalOperatorApprovalKinds(db: DatabaseSync): boolean {
 export function assertCanonicalOperatorApprovalKinds(db: DatabaseSync, pathname: string): void {
   if (!hasCanonicalOperatorApprovalKinds(db)) {
     throw new Error(
-      `OpenClaw state database ${pathname} has a legacy operator approval schema; run operator doctor --fix to migrate it.`,
+      `Operator state database ${pathname} has a legacy operator approval schema; run operator doctor --fix to migrate it.`,
     );
   }
 }
@@ -143,6 +143,6 @@ function repairOperatorApprovalKinds(db: DatabaseSync): boolean {
 
 export function repairOperatorApprovalSchema(db: DatabaseSync): string[] {
   return repairOperatorApprovalKinds(db)
-    ? ["Migrated shared state operator approvals → OpenClaw system changes"]
+    ? ["Migrated shared state operator approvals → Operator system changes"]
     : [];
 }

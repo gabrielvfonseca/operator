@@ -1,10 +1,10 @@
 // Resolves exec command highlighting config for agent sessions.
 import { normalizeAgentId } from "../routing/session-key.js";
-import type { OpenClawConfig } from "./types.operator.js";
+import type { OperatorConfig } from "./types.operator.js";
 
 /** Resolves whether exec command highlighting is enabled for the current agent scope. */
 export function resolveExecCommandHighlighting(params: {
-  config?: OpenClawConfig | null;
+  config?: OperatorConfig | null;
   agentId?: string | null;
 }): boolean {
   const config = params.config ?? {};

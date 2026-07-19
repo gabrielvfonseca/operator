@@ -25,12 +25,12 @@ import {
 
 const TEST_ENV_KEYS = [
   "HOME",
-  "OPENCLAW_STATE_DIR",
-  "OPENCLAW_CONFIG_PATH",
-  "OPENCLAW_GATEWAY_URL",
-  "OPENCLAW_GATEWAY_TOKEN",
-  "OPENCLAW_GATEWAY_PASSWORD",
-  "OPENCLAW_GATEWAY_PORT",
+  "OPERATOR_STATE_DIR",
+  "OPERATOR_CONFIG_PATH",
+  "OPERATOR_GATEWAY_URL",
+  "OPERATOR_GATEWAY_TOKEN",
+  "OPERATOR_GATEWAY_PASSWORD",
+  "OPERATOR_GATEWAY_PORT",
 ];
 
 describe("plugin.approval.request turn-source routing (real gateway)", () => {
@@ -41,10 +41,10 @@ describe("plugin.approval.request turn-source routing (real gateway)", () => {
 
   beforeAll(async () => {
     envSnapshot = captureEnv(TEST_ENV_KEYS);
-    deleteTestEnvValue("OPENCLAW_CONFIG_PATH");
-    deleteTestEnvValue("OPENCLAW_GATEWAY_URL");
-    deleteTestEnvValue("OPENCLAW_GATEWAY_TOKEN");
-    deleteTestEnvValue("OPENCLAW_GATEWAY_PASSWORD");
+    deleteTestEnvValue("OPERATOR_CONFIG_PATH");
+    deleteTestEnvValue("OPERATOR_GATEWAY_URL");
+    deleteTestEnvValue("OPERATOR_GATEWAY_TOKEN");
+    deleteTestEnvValue("OPERATOR_GATEWAY_PASSWORD");
 
     tempHome = await fs.mkdtemp(
       path.join(os.tmpdir(), "openclaw-plugin-approval-turn-source-e2e-"),
@@ -52,12 +52,12 @@ describe("plugin.approval.request turn-source routing (real gateway)", () => {
     const stateDir = path.join(tempHome, ".openclaw");
     await fs.mkdir(stateDir, { recursive: true });
     setTestEnvValue("HOME", tempHome);
-    setTestEnvValue("OPENCLAW_STATE_DIR", stateDir);
+    setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
 
     const port = await getFreeGatewayPort();
     const token = "plugin-approval-turn-source-e2e-token";
     const url = `ws://127.0.0.1:${port}`;
-    setTestEnvValue("OPENCLAW_GATEWAY_PORT", String(port));
+    setTestEnvValue("OPERATOR_GATEWAY_PORT", String(port));
 
     server = await startGatewayServer(port, {
       bind: "loopback",

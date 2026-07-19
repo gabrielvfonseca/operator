@@ -2,7 +2,7 @@
  * Anthropic config defaulting helpers. They seed default Anthropic/Claude CLI
  * model refs and cache-retention params based on configured auth mode.
  */
-import type { OpenClawConfig } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "openclaw/plugin-sdk/plugin-entry";
 import {
   isRecord,
   normalizeLowercaseStringOrEmpty,
@@ -28,7 +28,7 @@ function normalizeProviderId(provider: string): string {
 }
 
 function resolveAnthropicDefaultAuthMode(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   env: NodeJS.ProcessEnv,
 ): "api_key" | "oauth" | null {
   const profiles = config.auth?.profiles ?? {};
@@ -133,7 +133,7 @@ function isAnthropicCacheRetentionTarget(
   );
 }
 
-function usesClaudeCliModelSelection(config: OpenClawConfig): boolean {
+function usesClaudeCliModelSelection(config: OperatorConfig): boolean {
   const primary = resolveModelPrimaryValue(
     config.agents?.defaults?.model as
       | string
@@ -157,7 +157,7 @@ function usesClaudeCliModelSelection(config: OpenClawConfig): boolean {
   });
 }
 
-function usesSelectedClaudeCliAuthProfile(config: OpenClawConfig): boolean {
+function usesSelectedClaudeCliAuthProfile(config: OperatorConfig): boolean {
   const profiles = config.auth?.profiles ?? {};
   const orderedProfileIds = [
     ...(config.auth?.order?.anthropic ?? []),
@@ -243,7 +243,7 @@ function collectClaudeCliRuntimeRefsFromModelMap(
   return [...refs];
 }
 
-function collectClaudeCliRuntimeRefsFromConfig(config: OpenClawConfig): string[] {
+function collectClaudeCliRuntimeRefsFromConfig(config: OperatorConfig): string[] {
   const refs = new Set<string>(
     collectClaudeCliRuntimeRefs(
       config.agents?.defaults?.model as
@@ -292,11 +292,11 @@ export function normalizeAnthropicProviderConfigForProvider<
   return normalizeAnthropicProviderConfig(params.providerConfig);
 }
 
-/** Apply Anthropic and Claude CLI defaults to an OpenClaw config object. */
+/** Apply Anthropic and Claude CLI defaults to an Operator config object. */
 export function applyAnthropicConfigDefaults(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   env: NodeJS.ProcessEnv;
-}): OpenClawConfig {
+}): OperatorConfig {
   const defaults = params.config.agents?.defaults;
   if (!defaults) {
     return params.config;

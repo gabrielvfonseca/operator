@@ -6,7 +6,7 @@
 import os from "node:os";
 import path from "node:path";
 import { addTimerTimeoutGraceMs } from "@operator/normalization-core/number-coercion";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { ToolLoopDetectionConfig } from "../config/types.tools.js";
 import { GatewayClientRequestError } from "../gateway/client.js";
 import {
@@ -136,7 +136,7 @@ export type ToolOutcomeObserver = (observation: ToolOutcomeObservation) => void;
 
 export type HookContext = {
   agentId?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   /** Tool execution cwd for host-derived path facts. */
   cwd?: string;
   /** Host workspace used to resolve relative tool params for diagnostics only. */

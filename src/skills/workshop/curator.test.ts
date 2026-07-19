@@ -9,10 +9,10 @@ import {
   waitForDiagnosticEventsDrained,
 } from "../../infra/diagnostic-events.js";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../../infra/kysely-sync.js";
-import type { DB as OpenClawStateDatabase } from "../../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateDatabase } from "../../state/openclaw-state-db.generated.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
 } from "../../state/openclaw-state-db.js";
 import { loadSkills } from "../loading/session.js";
 import {
@@ -126,8 +126,8 @@ async function runSkillCuratorSweep(options: {
 }
 
 function readSkillUsageFiles(): string[] {
-  const database = openOpenClawStateDatabase({ env: process.env });
-  const kysely = getNodeSqliteKysely<Pick<OpenClawStateDatabase, "skill_usage">>(database.db);
+  const database = openOperatorStateDatabase({ env: process.env });
+  const kysely = getNodeSqliteKysely<Pick<OperatorStateDatabase, "skill_usage">>(database.db);
   return executeSqliteQuerySync(
     database.db,
     kysely.selectFrom("skill_usage").select("skill_file").orderBy("skill_file", "asc"),
@@ -206,8 +206,8 @@ beforeEach(() => {
   rootDir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-curator-")));
   stateDir = path.join(rootDir, "state-root");
   fs.mkdirSync(stateDir, { recursive: true });
-  originalStateDir = process.env.OPENCLAW_STATE_DIR;
-  process.env.OPENCLAW_STATE_DIR = stateDir;
+  originalStateDir = process.env.OPERATOR_STATE_DIR;
+  process.env.OPERATOR_STATE_DIR = stateDir;
   store.entries.length = 0;
   store.records.clear();
   store.readManifest.mockReset().mockImplementation(async () => ({
@@ -221,12 +221,12 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorStateDatabaseForTest();
   resetDiagnosticEventsForTest();
   if (originalStateDir === undefined) {
-    delete process.env.OPENCLAW_STATE_DIR;
+    delete process.env.OPERATOR_STATE_DIR;
   } else {
-    process.env.OPENCLAW_STATE_DIR = originalStateDir;
+    process.env.OPERATOR_STATE_DIR = originalStateDir;
   }
   fs.rmSync(rootDir, { recursive: true, force: true });
 });

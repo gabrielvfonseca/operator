@@ -1,7 +1,7 @@
 /**
  * Tool Search catalog compaction.
  *
- * Presents large OpenClaw/MCP/client tool inventories through search, describe, call, and optional code-mode tools.
+ * Presents large Operator/MCP/client tool inventories through search, describe, call, and optional code-mode tools.
  */
 import { spawn } from "node:child_process";
 import os from "node:os";
@@ -14,7 +14,7 @@ import {
 } from "@operator/normalization-core/string-normalization";
 import { sliceUtf16Safe, truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
 import { Type } from "typebox";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { getPluginToolMeta, type PluginToolMcpMeta } from "../plugins/tools.js";
 import {
   isToolWrappedWithBeforeToolCallHook,
@@ -106,8 +106,8 @@ export type ToolSearchConfig = {
 
 /** Per-run/session context used by Tool Search control tools. */
 export type ToolSearchToolContext = {
-  config?: OpenClawConfig;
-  runtimeConfig?: OpenClawConfig;
+  config?: OperatorConfig;
+  runtimeConfig?: OperatorConfig;
   agentId?: string;
   sessionKey?: string;
   sessionId?: string;
@@ -425,7 +425,7 @@ const catalogFingerprints = new WeakMap<ToolSearchCatalogSession, string>();
 const catalogToolIdentities = new WeakMap<object, number>();
 let nextCatalogToolIdentity = 1;
 
-function readToolSearchConfig(config?: OpenClawConfig): Record<string, unknown> {
+function readToolSearchConfig(config?: OperatorConfig): Record<string, unknown> {
   const tools = isRecord(config?.tools) ? config.tools : undefined;
   const toolSearch = tools?.toolSearch;
   if (toolSearch === true) {
@@ -459,7 +459,7 @@ function resolveMinCodeTimeoutMs(): number {
   return toolSearchMinCodeTimeoutMsForTest ?? 1000;
 }
 
-export function resolveToolSearchConfig(config?: OpenClawConfig): ToolSearchConfig {
+export function resolveToolSearchConfig(config?: OperatorConfig): ToolSearchConfig {
   const raw = readToolSearchConfig(config);
   const rawMode = typeof raw.mode === "string" ? raw.mode : "code";
   const requestedMode: ToolSearchMode =
@@ -916,7 +916,7 @@ export function createToolSearchCatalogRef(): ToolSearchCatalogRef {
 /** Replace visible tools with Tool Search controls and register hidden catalog entries. */
 export function applyToolSearchCatalog(params: {
   tools: AnyAgentTool[];
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   sessionId?: string;
   sessionKey?: string;
   agentId?: string;
@@ -944,7 +944,7 @@ export function applyToolSearchCatalog(params: {
 /** Keep tool names discoverable while deferring heavyweight JSON schemas behind describe/call. */
 export function applyToolSchemaDirectoryCatalog(params: {
   tools: AnyAgentTool[];
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   sessionId?: string;
   sessionKey?: string;
   agentId?: string;
@@ -1031,7 +1031,7 @@ export function resolveToolSearchCatalogTool(
 /** Move client-provided tools into an existing Tool Search catalog. */
 export function addClientToolsToToolSearchCatalog(params: {
   tools: ToolDefinition[];
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   sessionId?: string;
   sessionKey?: string;
   agentId?: string;
@@ -2367,7 +2367,7 @@ export function createToolSearchTools(ctx: ToolSearchToolContext): AnyAgentTool[
     {
       name: TOOL_CALL_RAW_TOOL_NAME,
       label: "Tool Call",
-      description: "Call a selected Tool Search catalog entry through OpenClaw.",
+      description: "Call a selected Tool Search catalog entry through Operator.",
       parameters: Type.Object({
         id: Type.String({ description: "Tool search result id or tool name." }),
         args: Type.Optional(

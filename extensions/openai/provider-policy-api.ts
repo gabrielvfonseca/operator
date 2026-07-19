@@ -27,7 +27,7 @@ const OPENAI_COMPLETIONS_API = "openai-completions";
 const OPENAI_CHATGPT_RESPONSES_API = "openai-chatgpt-responses";
 const OPENAI_AGENT_RUNTIME_ID = "openclaw";
 const CODEX_AGENT_RUNTIME_ID = "codex";
-const OPENCLAW_RUNTIME_COMPATIBLE_IDS = [OPENAI_AGENT_RUNTIME_ID] as const;
+const OPERATOR_RUNTIME_COMPATIBLE_IDS = [OPENAI_AGENT_RUNTIME_ID] as const;
 const CODEX_RUNTIME_COMPATIBLE_IDS = [OPENAI_AGENT_RUNTIME_ID, CODEX_AGENT_RUNTIME_ID] as const;
 
 type OpenAIResolveSingleModelRouteContext = Omit<
@@ -113,7 +113,7 @@ function withRuntimePolicy(
     runtimePolicy: {
       compatibleIds: codexCanReproduceRoute(candidate, sourceBaseUrl)
         ? CODEX_RUNTIME_COMPATIBLE_IDS
-        : OPENCLAW_RUNTIME_COMPATIBLE_IDS,
+        : OPERATOR_RUNTIME_COMPATIBLE_IDS,
     },
   };
 }
@@ -287,7 +287,7 @@ function resolveSingleObservedModelRoute(
   const sourceBaseUrl = effectiveBaseUrl;
   // An authored Completions adapter is a concrete transport contract, not an
   // alias for Responses. Codex does not execute that adapter, so preserve it
-  // and let the OpenClaw runtime own the request.
+  // and let the Operator runtime own the request.
   const platformApi =
     configuredRoute && effectiveApi === OPENAI_COMPLETIONS_API
       ? OPENAI_COMPLETIONS_API

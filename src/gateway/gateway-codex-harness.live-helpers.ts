@@ -78,7 +78,7 @@ export const EXPECTED_CODEX_MODELS_COMMAND_TEXT = [
   "Active model: `codex/",
   "Current active model is `openai/",
   "Current active model is `codex/",
-  "Current OpenClaw session status reports the active model as:",
+  "Current Operator session status reports the active model as:",
 ] as const;
 
 const HEALTHY_CODEX_MODELS_COMMAND_TEXT = [
@@ -138,7 +138,7 @@ const HEALTHY_CODEX_MODELS_COMMAND_TEXT = [
   "Active model: `codex/",
   "Current active model is `openai/",
   "Current active model is `codex/",
-  "Current OpenClaw session status reports the active model as:",
+  "Current Operator session status reports the active model as:",
 ] as const;
 
 /** Accepted `/codex status` response fragments for live harness probes. */
@@ -148,13 +148,13 @@ export const EXPECTED_CODEX_STATUS_COMMAND_TEXT = [
   "Model: codex/",
   "Session: `agent:dev:live-codex-harness`",
   "Session: agent:dev:live-codex-harness",
-  "OpenClaw `",
-  "OpenClaw status:",
+  "Operator `",
+  "Operator status:",
   "Status: running on",
   "model `codex/",
   "session `agent:dev:live-codex-harness`",
   "Model/status card shown above",
-  "OpenClaw status shown above.",
+  "Operator status shown above.",
   "Status shown above.",
   "No active task is running.",
   "No active work is running.",
@@ -166,7 +166,7 @@ export const EXPECTED_CODEX_STATUS_COMMAND_TEXT = [
 /** Returns true when text matches a known healthy Codex status response shape. */
 export function isExpectedCodexStatusCommandText(text: string): boolean {
   const normalized = text.toLowerCase();
-  const mentionsOpenClawStatus =
+  const mentionsOperatorStatus =
     normalized.includes("operator is running on") ||
     /operator\s+\S+\s+is running on/u.test(normalized) ||
     normalized.includes("operator status:") ||
@@ -220,7 +220,7 @@ export function isExpectedCodexStatusCommandText(text: string): boolean {
     isIdleReadyStatus ||
     isReadyStatus ||
     isOnlineIdleStatus ||
-    (mentionsOpenClawStatus && mentionsHarnessSession && mentionsModel)
+    (mentionsOperatorStatus && mentionsHarnessSession && mentionsModel)
   );
 }
 

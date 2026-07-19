@@ -6,7 +6,7 @@ import {
   type ModelAuthAvailabilityRef,
 } from "../../agents/model-auth-availability.js";
 import type { createOpenAIModelRoutesResolver } from "../../agents/openai-model-routes.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { PluginMetadataSnapshot } from "../../plugins/plugin-metadata-snapshot.types.js";
 import { loadPluginRegistrySnapshotWithMetadata } from "../../plugins/plugin-registry.js";
 
@@ -18,7 +18,7 @@ export type ModelListAuthIndex = {
 };
 
 type CreateModelListAuthIndexParams = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   authStore: AuthProfileStore;
   agentDir?: string;
   workspaceDir?: string;
@@ -30,7 +30,7 @@ type CreateModelListAuthIndexParams = {
 };
 
 function listValidatedSyntheticAuthProviderRefs(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   workspaceDir?: string;
   env: NodeJS.ProcessEnv;
   metadataSnapshot?: PluginMetadataSnapshot;

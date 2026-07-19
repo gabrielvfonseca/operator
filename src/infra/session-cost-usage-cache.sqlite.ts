@@ -1,8 +1,8 @@
 import { normalizeAgentId } from "../routing/session-key.js";
-import type { DB as OpenClawAgentKyselyDatabase } from "../state/operator-agent-db.generated.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../state/operator-agent-db.generated.js";
 import {
-  openOpenClawAgentDatabase,
-  runOpenClawAgentWriteTransaction,
+  openOperatorAgentDatabase,
+  runOperatorAgentWriteTransaction,
 } from "../state/operator-agent-db.js";
 // Per-agent SQLite storage for the rebuildable session cost/usage cache.
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "./kysely-sync.js";
@@ -11,7 +11,7 @@ const CACHE_SCOPE = "session-cost-usage";
 const CACHE_KEY = "cache";
 const REFRESH_LOCK_KEY = "refresh-lock";
 
-type AgentCacheDatabase = Pick<OpenClawAgentKyselyDatabase, "cache_entries">;
+type AgentCacheDatabase = Pick<OperatorAgentKyselyDatabase, "cache_entries">;
 
 type SessionCostUsageRefreshLock = {
   pid: number;
@@ -24,7 +24,7 @@ function readCacheValue(
   key: string,
   databasePath?: string,
 ): string | null {
-  const database = openOpenClawAgentDatabase({
+  const database = openOperatorAgentDatabase({
     agentId: normalizeAgentId(agentId),
     ...(databasePath ? { path: databasePath } : {}),
   });
@@ -48,7 +48,7 @@ function upsertCacheValue(params: {
   valueJson: string;
   updatedAt: number;
 }): void {
-  runOpenClawAgentWriteTransaction(
+  runOperatorAgentWriteTransaction(
     (database) => {
       const kysely = getNodeSqliteKysely<AgentCacheDatabase>(database.db);
       executeSqliteQuerySync(
@@ -87,7 +87,7 @@ function deleteCacheValueIfUnchanged(params: {
   key: string;
   valueJson: string;
 }): void {
-  runOpenClawAgentWriteTransaction(
+  runOperatorAgentWriteTransaction(
     (database) => {
       const kysely = getNodeSqliteKysely<AgentCacheDatabase>(database.db);
       executeSqliteQuerySync(
@@ -191,7 +191,7 @@ export function acquireSessionCostUsageRefreshLock(
     ownerNonce: `${process.pid}:${Date.now()}:${process.hrtime.bigint()}`,
   };
   const lockJson = JSON.stringify(lock);
-  const acquired = runOpenClawAgentWriteTransaction(
+  const acquired = runOperatorAgentWriteTransaction(
     (database) => {
       const kysely = getNodeSqliteKysely<AgentCacheDatabase>(database.db);
       const currentRaw =

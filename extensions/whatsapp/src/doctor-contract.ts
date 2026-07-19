@@ -3,7 +3,7 @@ import type {
   ChannelDoctorConfigMutation,
   ChannelDoctorLegacyConfigRule,
 } from "openclaw/plugin-sdk/channel-contract";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { asObjectRecord, defineChannelAliasMigration } from "openclaw/plugin-sdk/runtime-doctor";
 import { normalizeCompatibilityConfig as normalizeAckReactionConfig } from "./doctor.js";
 
@@ -58,10 +58,10 @@ function fillMissingStreamingFields(
 // the settings the account previously inherited, or `doctor --fix` silently
 // changes effective delivery behavior for that account.
 function seedMigratedAccountStreaming(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountsWithoutStreamingBefore: ReadonlySet<string>;
   changes: string[];
-}): OpenClawConfig {
+}): OperatorConfig {
   const channels = params.cfg.channels as Record<string, unknown> | undefined;
   const entry = asObjectRecord(channels?.whatsapp);
   const accounts = asObjectRecord(entry?.accounts);
@@ -119,13 +119,13 @@ function seedMigratedAccountStreaming(params: {
       ...channels,
       whatsapp: { ...entry, accounts: nextAccounts },
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 export function normalizeCompatibilityConfig({
   cfg,
 }: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
 }): ChannelDoctorConfigMutation {
   const ackReaction = normalizeAckReactionConfig({ cfg });
   const accountsBefore = asObjectRecord(

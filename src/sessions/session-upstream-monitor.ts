@@ -8,7 +8,7 @@ import type { SessionEntry } from "../config/sessions/types.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { getPluginRegistryState } from "../plugins/runtime-state.js";
 import type { SessionCatalogProvider, SessionUpstreamProbe } from "../plugins/session-catalog.js";
-import type { OpenClawStateDatabaseOptions } from "../state/operator-state-db.js";
+import type { OperatorStateDatabaseOptions } from "../state/operator-state-db.js";
 import {
   recordSessionHumanDirectMessage,
   recordSessionStateEvent,
@@ -27,7 +27,7 @@ const SESSION_UPSTREAM_MISSING_THRESHOLD = 3;
 
 const log = createSubsystemLogger("sessions/upstream-monitor");
 
-type SessionUpstreamMonitorOptions = OpenClawStateDatabaseOptions & {
+type SessionUpstreamMonitorOptions = OperatorStateDatabaseOptions & {
   providers?: readonly SessionCatalogProvider[];
   now?: () => number;
   loadEntry?: typeof loadSessionEntry;
@@ -51,7 +51,7 @@ function currentProviders(): SessionCatalogProvider[] {
   );
 }
 
-function databaseOptions(options: SessionUpstreamMonitorOptions): OpenClawStateDatabaseOptions {
+function databaseOptions(options: SessionUpstreamMonitorOptions): OperatorStateDatabaseOptions {
   return {
     ...(options.env ? { env: options.env } : {}),
     ...(options.path ? { path: options.path } : {}),

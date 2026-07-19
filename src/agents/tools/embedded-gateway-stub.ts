@@ -8,7 +8,7 @@ import type {
   SessionsListParams,
   SessionsResolveParams,
 } from "../../../packages/gateway-protocol/src/index.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { CallGatewayOptions } from "../../gateway/call.js";
 import type {
   ReadSessionMessagesAsyncOptions,
@@ -26,14 +26,14 @@ const SESSIONS_SEARCH_MAX_QUERY_CHARS = 4096;
 interface EmbeddedGatewayRuntime {
   resolveSessionAgentId: (opts: {
     sessionKey: string;
-    config: OpenClawConfig;
+    config: OperatorConfig;
     agentId?: string;
   }) => string;
-  getRuntimeConfig: () => OpenClawConfig;
-  resolveDefaultAgentId: (config: OpenClawConfig) => string;
-  resolveSessionStoreKey: (params: { cfg: OpenClawConfig; sessionKey: string }) => string;
+  getRuntimeConfig: () => OperatorConfig;
+  resolveDefaultAgentId: (config: OperatorConfig) => string;
+  resolveSessionStoreKey: (params: { cfg: OperatorConfig; sessionKey: string }) => string;
   resolveStoredSessionKeyForAgentStore: (params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     agentId: string;
     sessionKey: string;
   }) => string;
@@ -62,7 +62,7 @@ interface EmbeddedGatewayRuntime {
     messages: unknown[];
     maxSingleMessageBytes: number;
   }) => { messages: unknown[] };
-  resolveEffectiveChatHistoryMaxChars: (cfg: OpenClawConfig) => number;
+  resolveEffectiveChatHistoryMaxChars: (cfg: OperatorConfig) => number;
   dropPreSessionStartAnnouncePairs: (
     messages: unknown[],
     sessionStartedAt: number | undefined,
@@ -74,27 +74,27 @@ interface EmbeddedGatewayRuntime {
   ) => unknown[];
   capArrayByJsonBytes: (items: unknown[], maxBytes: number) => { items: unknown[] };
   listSessionsFromStoreAsync: (opts: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     storePath: string;
     store: unknown;
     opts: SessionsListParams;
   }) => Promise<SessionsListResult>;
   loadCombinedSessionStoreForGateway: (
-    cfg: OpenClawConfig,
+    cfg: OperatorConfig,
     opts?: { agentId?: string },
   ) => {
     storePath: string;
     store: unknown;
   };
   resolveSessionKeyFromResolveParams: (opts: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     p: SessionsResolveParams;
   }) => Promise<SessionsResolveResult>;
   loadSessionEntry: (
     sessionKey: string,
     opts?: { agentId?: string },
   ) => {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     storePath: string | undefined;
     entry: Record<string, unknown> | undefined;
   };
@@ -111,7 +111,7 @@ interface EmbeddedGatewayRuntime {
     opts: { offset: number; maxMessages: number; allowResetArchiveFallback?: boolean },
   ) => Promise<{ messages: unknown[]; totalMessages: number }>;
   resolveSessionModelRef: (
-    cfg: OpenClawConfig,
+    cfg: OperatorConfig,
     entry: unknown,
     sessionAgentId: string,
   ) => { provider: string | undefined };

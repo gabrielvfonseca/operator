@@ -9,7 +9,7 @@ import type {
   ChannelMessageActionName,
   ChannelPlugin,
 } from "../../channels/plugins/types.public.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import {
   normalizeMessagePresentation,
   renderMessagePresentationFallbackText,
@@ -411,7 +411,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "pin",
         params: {
           channel: "actionhub",
@@ -433,7 +433,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "list-pins",
         params: {
           channel: "actionhub",
@@ -482,7 +482,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "edit",
         params: {
           channel: "actionhub",
@@ -520,7 +520,7 @@ describe("runMessageAction plugin dispatch", () => {
                 enabled: true,
               },
             },
-          } as OpenClawConfig,
+          } as OperatorConfig,
           action: "react",
           params: {
             channel: "actionhub",
@@ -539,7 +539,7 @@ describe("runMessageAction plugin dispatch", () => {
       const stateDir = path.join("/tmp", "openclaw-plugin-dispatch-media-roots");
       const expectedWorkspaceRoot = path.resolve(stateDir, "workspace-alpha");
 
-      await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, async () => {
+      await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
         await runMessageAction({
           cfg: {
             channels: {
@@ -547,7 +547,7 @@ describe("runMessageAction plugin dispatch", () => {
                 enabled: true,
               },
             },
-          } as OpenClawConfig,
+          } as OperatorConfig,
           action: "pin",
           params: {
             channel: "actionhub",
@@ -608,7 +608,7 @@ describe("runMessageAction plugin dispatch", () => {
             enabled: true,
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       await expect(
         runMessageAction({
@@ -684,7 +684,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "channel-info",
         params: {
           channel: "actionhub",
@@ -720,7 +720,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "pin",
         params: {
           channel: "actionhub",
@@ -789,7 +789,7 @@ describe("runMessageAction plugin dispatch", () => {
             enabled: true,
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       setActivePluginRegistry(
         createTestRegistry([
@@ -903,7 +903,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "react",
         params: {
           channel: "gatewaychat",
@@ -1006,7 +1006,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "react",
         params: {
           channel: "gatewaychat",
@@ -1071,7 +1071,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "react",
         params: {
           channel: "gatewaychat",
@@ -1155,7 +1155,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "react",
         params: {
           channel: "gatewaychat",
@@ -1223,7 +1223,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "send",
         conversationReadOrigin: "direct-operator",
         sourceReplyDeliveryMode: "message_tool_only",
@@ -1333,7 +1333,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "send",
         params: {
           channel: "gatewaychat",
@@ -1412,7 +1412,7 @@ describe("runMessageAction plugin dispatch", () => {
       });
 
       await runMessageAction({
-        cfg: { channels: { gatewaychat: { enabled: true } } } as OpenClawConfig,
+        cfg: { channels: { gatewaychat: { enabled: true } } } as OperatorConfig,
         action: "send",
         params: { channel: "gatewaychat", target: "user-123", message: "terminal answer" },
         sourceReplyFinal: true,
@@ -1460,7 +1460,7 @@ describe("runMessageAction plugin dispatch", () => {
 
       await expect(
         runMessageAction({
-          cfg: { channels: { gatewaychat: { enabled: true } } } as OpenClawConfig,
+          cfg: { channels: { gatewaychat: { enabled: true } } } as OperatorConfig,
           action: "send",
           params: { channel: "gatewaychat", target: "user-123", message: "terminal answer" },
           sourceReplyFinal: true,
@@ -1507,7 +1507,7 @@ describe("runMessageAction plugin dispatch", () => {
 
       await expect(
         runMessageAction({
-          cfg: { channels: { gatewaychat: { enabled: true } } } as OpenClawConfig,
+          cfg: { channels: { gatewaychat: { enabled: true } } } as OperatorConfig,
           action: "send",
           params: { channel: "gatewaychat", target: "user-123", message: "terminal answer" },
           sourceReplyFinal: true,
@@ -1551,7 +1551,7 @@ describe("runMessageAction plugin dispatch", () => {
 
       await expect(
         runMessageAction({
-          cfg: { channels: { gatewaychat: { enabled: true } } } as OpenClawConfig,
+          cfg: { channels: { gatewaychat: { enabled: true } } } as OperatorConfig,
           action: "send",
           params: { channel: "gatewaychat", target: "user-123", message: "terminal answer" },
           sourceReplyFinal: true,
@@ -1603,7 +1603,7 @@ describe("runMessageAction plugin dispatch", () => {
 
       await expect(
         runMessageAction({
-          cfg: { channels: { gatewaychat: { enabled: true } } } as OpenClawConfig,
+          cfg: { channels: { gatewaychat: { enabled: true } } } as OperatorConfig,
           action: "send",
           params: { channel: "gatewaychat", target: "user-123", message: "terminal answer" },
           sourceReplyFinal: true,
@@ -1652,7 +1652,7 @@ describe("runMessageAction plugin dispatch", () => {
         .mockResolvedValueOnce(failedPayload);
 
       await runMessageAction({
-        cfg: { channels: { gatewaychat: { enabled: true } } } as OpenClawConfig,
+        cfg: { channels: { gatewaychat: { enabled: true } } } as OperatorConfig,
         action: "send",
         params: { channel: "gatewaychat", target: "user-123", message: "terminal answer" },
         sourceReplyFinal: true,
@@ -1694,7 +1694,7 @@ describe("runMessageAction plugin dispatch", () => {
 
       await expect(
         runMessageAction({
-          cfg: { channels: { gatewaychat: { enabled: true } } } as OpenClawConfig,
+          cfg: { channels: { gatewaychat: { enabled: true } } } as OperatorConfig,
           action: "send",
           params: { channel: "gatewaychat", target: "user-123", message: "terminal answer" },
           sourceReplyFinal: true,
@@ -1737,7 +1737,7 @@ describe("runMessageAction plugin dispatch", () => {
 
       await expect(
         runMessageAction({
-          cfg: { channels: { gatewaychat: { enabled: true } } } as OpenClawConfig,
+          cfg: { channels: { gatewaychat: { enabled: true } } } as OperatorConfig,
           action: "send",
           params: { channel: "gatewaychat", target: "user-123", message: "terminal answer" },
           sourceReplyFinal: true,
@@ -1793,7 +1793,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "send",
         params: {
           channel: "gatewaychat",
@@ -1916,7 +1916,7 @@ describe("runMessageAction plugin dispatch", () => {
                 enabled: true,
               },
             },
-          } as OpenClawConfig,
+          } as OperatorConfig,
           action: "send",
           params: {
             channel: "gatewaychat",
@@ -1970,7 +1970,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "broadcast",
         params: {
           channel: "gatewaychat",
@@ -2035,7 +2035,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "broadcast",
         params: {
           channel: "gatewaychat",
@@ -2098,7 +2098,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "send",
         params: {
           channel: "gatewaychat",
@@ -2180,7 +2180,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "send",
         params: {
           channel: "gatewaydeliver",
@@ -2253,7 +2253,7 @@ describe("runMessageAction plugin dispatch", () => {
               auto: "tagged",
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "send",
         params: {
           channel: "gatewaychat",
@@ -2330,7 +2330,7 @@ describe("runMessageAction plugin dispatch", () => {
               auto: "tagged",
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "send",
         params: {
           channel: "localchat",
@@ -2413,7 +2413,7 @@ describe("runMessageAction plugin dispatch", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "send",
         params: {
           channel: "policydest",
@@ -2489,7 +2489,7 @@ describe("runMessageAction plugin dispatch", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "send",
         params: {
           channel: "policydest",
@@ -2580,7 +2580,7 @@ describe("runMessageAction plugin dispatch", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "send",
         params: {
           channel: "policydest",
@@ -2662,7 +2662,7 @@ describe("runMessageAction plugin dispatch", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "send",
         params: {
           channel: "policychat",
@@ -2687,7 +2687,7 @@ describe("runMessageAction plugin dispatch", () => {
     const handleAction = vi.fn(async ({ params }: { params: Record<string, unknown> }) =>
       jsonResult({ ok: true, params }),
     );
-    const cfg = { channels: { forumchat: { enabled: true } } } as OpenClawConfig;
+    const cfg = { channels: { forumchat: { enabled: true } } } as OperatorConfig;
     const threading: ChannelPlugin["threading"] = {
       resolveAutoThreadId: ({ toolContext, to }) =>
         toolContext?.currentChannelId === to ? toolContext.currentThreadTs : undefined,
@@ -2769,7 +2769,7 @@ describe("runMessageAction plugin dispatch", () => {
 
   describe("presentation send routing", () => {
     const handleAction = vi.fn(
-      async ({ cfg, params }: { cfg: OpenClawConfig; params: Record<string, unknown> }) => {
+      async ({ cfg, params }: { cfg: OperatorConfig; params: Record<string, unknown> }) => {
         const message = typeof params.message === "string" ? params.message : "";
         const responsePrefix = cfg.messages?.responsePrefix;
         const rawMessage =
@@ -2835,7 +2835,7 @@ describe("runMessageAction plugin dispatch", () => {
             enabled: true,
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       const presentation = {
         blocks: [{ type: "text", text: "Presentation-only payload" }],
@@ -2910,7 +2910,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "send",
         params: {
           channel: "cardchat",
@@ -2998,7 +2998,7 @@ describe("runMessageAction plugin dispatch", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "send",
         params: {
           channel: "cardchat",
@@ -3046,7 +3046,7 @@ describe("runMessageAction plugin dispatch", () => {
             },
           },
           messages: { responsePrefix: "[Nexus]" },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "send",
         params: {
           channel: "cardchat",
@@ -3119,7 +3119,7 @@ describe("runMessageAction plugin dispatch", () => {
               botToken: "tok",
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "poll",
         params: {
           channel: "pollchat",
@@ -3208,7 +3208,7 @@ describe("runMessageAction plugin dispatch", () => {
               botToken: "tok",
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "poll",
         params: {
           channel: "pollchat",
@@ -3317,7 +3317,7 @@ describe("runMessageAction plugin dispatch", () => {
               token: "tok",
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         action: "poll",
         params: {
           channel: "guildchat",
@@ -3404,7 +3404,7 @@ describe("runMessageAction plugin dispatch", () => {
         blocks: [{ type: "buttons", buttons: [{ label: "A", value: "a" }] }],
       };
       const result = await runMessageAction({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as OperatorConfig,
         action: "send",
         params: {
           channel: "componentchat",
@@ -3430,7 +3430,7 @@ describe("runMessageAction plugin dispatch", () => {
     it("throws on invalid presentation JSON strings", async () => {
       await expect(
         runMessageAction({
-          cfg: {} as OpenClawConfig,
+          cfg: {} as OperatorConfig,
           action: "send",
           params: {
             channel: "componentchat",
@@ -3490,7 +3490,7 @@ describe("runMessageAction plugin dispatch", () => {
       {
         name: "uses defaultAccountId override",
         args: {
-          cfg: {} as OpenClawConfig,
+          cfg: {} as OperatorConfig,
           defaultAccountId: "ops",
         },
         expectedAccountId: "ops",
@@ -3502,7 +3502,7 @@ describe("runMessageAction plugin dispatch", () => {
             bindings: [
               { agentId: "agent-b", match: { channel: "accountchat", accountId: "account-b" } },
             ],
-          } as OpenClawConfig,
+          } as OperatorConfig,
           agentId: "agent-b",
         },
         expectedAccountId: "account-b",
@@ -3533,7 +3533,7 @@ describe("runMessageAction plugin dispatch", () => {
                 match: { channel: "accountchat", accountId: "agent-fallback" },
               },
             ],
-          } as OpenClawConfig,
+          } as OperatorConfig,
           agentId: "agent-b",
           target: "channel:C_TARGET",
         },

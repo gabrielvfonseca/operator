@@ -55,7 +55,7 @@ vi.mock("../../plugins/bundled-dir.js", async (importOriginal) => {
   return {
     ...actual,
     resolveBundledPluginsDir: (env: NodeJS.ProcessEnv = process.env) =>
-      env.OPENCLAW_BUNDLED_PLUGINS_DIR ?? actual.resolveBundledPluginsDir(env),
+      env.OPERATOR_BUNDLED_PLUGINS_DIR ?? actual.resolveBundledPluginsDir(env),
   };
 });
 
@@ -103,7 +103,7 @@ vi.mock("../../plugins/plugin-module-loader-cache.js", async (importOriginal) =>
     );
   }
 
-  function loadOpenClawPlugins(params: LoaderParams) {
+  function loadOperatorPlugins(params: LoaderParams) {
     const onlyPluginIds = new Set(params.onlyPluginIds ?? []);
     const diagnostics: Array<{
       level: "error";
@@ -165,7 +165,7 @@ vi.mock("../../plugins/plugin-module-loader-cache.js", async (importOriginal) =>
           modulePathEndsWith(modulePath, "/plugins/loader.js") ||
           modulePathEndsWith(modulePath, "/plugins/loader.ts")
         ) {
-          return { loadOpenClawPlugins };
+          return { loadOperatorPlugins };
         }
         return actualLoader(modulePath);
       }) as ReturnType<typeof actual.getCachedPluginModuleLoader>;
@@ -360,7 +360,7 @@ function writeBundledSetupChannelPlugin(
   } = {},
 ) {
   const bundledRoot = makeTempDir();
-  process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledRoot;
+  process.env.OPERATOR_BUNDLED_PLUGINS_DIR = bundledRoot;
   const pluginId = options.pluginId ?? "bundled-chat";
   const channelId = options.channelId ?? pluginId;
   const envVar = options.envVar ?? "BUNDLED_CHAT_TOKEN";

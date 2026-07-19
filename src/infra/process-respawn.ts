@@ -3,7 +3,7 @@ import { spawn, type ChildProcess } from "node:child_process";
 import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
 import { isContainerEnvironment } from "./container-environment.js";
 import { formatErrorMessage } from "./errors.js";
-import { triggerOpenClawRestart } from "./restart.js";
+import { triggerOperatorRestart } from "./restart.js";
 import { detectRespawnSupervisor } from "./supervisor-markers.js";
 
 type RespawnMode = "spawned" | "supervised" | "disabled" | "failed";
@@ -29,9 +29,9 @@ function isTruthy(value: string | undefined): boolean {
 const PNPM_VERSIONED_OPERATOR_ENTRY_PATTERN =
   /^(.*?)([\\/])node_modules\2\.pnpm\2operator@[^\\/]+\2node_modules\2operator\2.+$/;
 
-function rewritePnpmVersionedOpenClawEntryPath(entryPath: string): string {
+function rewritePnpmVersionedOperatorEntryPath(entryPath: string): string {
   // pnpm can expose argv[1] as a versioned realpath that self-update removes.
-  // Respawn through the stable OpenClaw package wrapper instead.
+  // Respawn through the stable Operator package wrapper instead.
   return entryPath.replace(
     PNPM_VERSIONED_OPERATOR_ENTRY_PATTERN,
     "$1$2node_modules$2operator$2operator.mjs",
@@ -45,7 +45,7 @@ function spawnDetachedGatewayProcess(opts: GatewayRespawnOptions = {}): {
   const [entryArg, ...entryArgs] = process.argv.slice(1);
   const args = [
     ...process.execArgv,
-    ...(entryArg ? [rewritePnpmVersionedOpenClawEntryPath(entryArg)] : []),
+    ...(entryArg ? [rewritePnpmVersionedOperatorEntryPath(entryArg)] : []),
     ...entryArgs,
   ];
   const child = spawn(process.execPath, args, {
@@ -79,7 +79,7 @@ export function restartGatewayProcessWithFreshPid(
     // Avoid detached kickstart/start handoffs here so restart timing stays tied
     // to launchd's native supervision rather than a second helper process.
     if (supervisor === "schtasks") {
-      const restart = triggerOpenClawRestart();
+      const restart = triggerOperatorRestart();
       if (!restart.ok) {
         return {
           mode: "failed",
@@ -122,13 +122,13 @@ export function respawnGatewayProcessForUpdate(
   opts: GatewayRespawnOptions = {},
 ): GatewayUpdateRespawnResult {
   const supervisor = detectRespawnSupervisor(process.env, process.platform, {
-    includeLinuxOpenClawGatewayServiceMarker: true,
+    includeLinuxOperatorGatewayServiceMarker: true,
   });
   if (supervisor) {
     // Managed update handoffs require the original PID to exit before the
     // detached helper can mutate the install, even when respawn is disabled.
     if (supervisor === "schtasks") {
-      const restart = triggerOpenClawRestart();
+      const restart = triggerOperatorRestart();
       if (!restart.ok) {
         return {
           mode: "failed",

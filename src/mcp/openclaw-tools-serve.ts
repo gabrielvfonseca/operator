@@ -1,5 +1,5 @@
 /**
- * Standalone MCP server for selected built-in OpenClaw tools.
+ * Standalone MCP server for selected built-in Operator tools.
  *
  * Run via: node --import tsx src/mcp/operator-tools-serve.ts
  * Or: bun src/mcp/operator-tools-serve.ts
@@ -12,10 +12,10 @@ import { createSystemAgentTool } from "../agents/tools/system-agent-tool.js";
 import type { SystemAgentToolOptions } from "../agents/tools/system-agent-tool.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import {
-  resolveOpenClawToolsMcpSystemAgentApproval,
-  resolveOpenClawToolsMcpSystemAgentSurface,
-  resolveOpenClawToolsMcpToolSelection,
-  type OpenClawToolsMcpToolId,
+  resolveOperatorToolsMcpSystemAgentApproval,
+  resolveOperatorToolsMcpSystemAgentSurface,
+  resolveOperatorToolsMcpToolSelection,
+  type OperatorToolsMcpToolId,
 } from "./operator-tools-serve-config.js";
 import { connectToolsMcpServerToStdio, createToolsMcpServer } from "./tools-stdio-server.js";
 
@@ -26,29 +26,29 @@ export {
 
 export const OPERATOR_TOOLS_MCP_AGENT_SESSION_KEY_ENV = "OPERATOR_TOOLS_MCP_AGENT_SESSION_KEY";
 
-export function resolveOpenClawToolsMcpAgentSessionKey(
+export function resolveOperatorToolsMcpAgentSessionKey(
   env: NodeJS.ProcessEnv = process.env,
 ): string | undefined {
   return env[OPERATOR_TOOLS_MCP_AGENT_SESSION_KEY_ENV]?.trim() || undefined;
 }
 
-export function resolveOpenClawToolsForMcp(
+export function resolveOperatorToolsForMcp(
   params: {
     agentSessionKey?: string;
-    tools?: OpenClawToolsMcpToolId[];
+    tools?: OperatorToolsMcpToolId[];
     systemAgentSurface?: SystemAgentToolOptions["surface"];
   } = {},
 ): AnyAgentTool[] {
-  const selection = params.tools ?? resolveOpenClawToolsMcpToolSelection();
+  const selection = params.tools ?? resolveOperatorToolsMcpToolSelection();
   return selection.map((tool) => {
     if (tool === "operator") {
       return createSystemAgentTool({
-        surface: params.systemAgentSurface ?? resolveOpenClawToolsMcpSystemAgentSurface(),
-        ...resolveOpenClawToolsMcpSystemAgentApproval(),
+        surface: params.systemAgentSurface ?? resolveOperatorToolsMcpSystemAgentSurface(),
+        ...resolveOperatorToolsMcpSystemAgentApproval(),
       });
     }
     const agentSessionKey = (
-      params.agentSessionKey ?? resolveOpenClawToolsMcpAgentSessionKey()
+      params.agentSessionKey ?? resolveOperatorToolsMcpAgentSessionKey()
     )?.trim();
     if (!agentSessionKey) {
       throw new Error(`${OPERATOR_TOOLS_MCP_AGENT_SESSION_KEY_ENV} is required`);
@@ -57,22 +57,22 @@ export function resolveOpenClawToolsForMcp(
   });
 }
 
-function createOpenClawToolsMcpServer(
+function createOperatorToolsMcpServer(
   params: {
     tools?: AnyAgentTool[];
   } = {},
 ): Server {
-  const tools = params.tools ?? resolveOpenClawToolsForMcp();
+  const tools = params.tools ?? resolveOperatorToolsForMcp();
   return createToolsMcpServer({ name: "operator-tools", tools });
 }
 
-async function serveOpenClawToolsMcp(): Promise<void> {
-  const server = createOpenClawToolsMcpServer();
+async function serveOperatorToolsMcp(): Promise<void> {
+  const server = createOperatorToolsMcpServer();
   await connectToolsMcpServerToStdio(server);
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {
-  serveOpenClawToolsMcp().catch((err: unknown) => {
+  serveOperatorToolsMcp().catch((err: unknown) => {
     process.stderr.write(`operator-tools-serve: ${formatErrorMessage(err)}\n`);
     process.exit(1);
   });

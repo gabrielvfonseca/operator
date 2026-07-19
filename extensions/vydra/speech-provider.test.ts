@@ -53,7 +53,7 @@ describe("vydra speech provider", () => {
     vi.stubGlobal("fetch", fetchMock);
 
     const result = await provider.synthesize({
-      text: "OpenClaw test",
+      text: "Operator test",
       cfg: {} as never,
       providerConfig: { apiKey: "vydra-test-key" },
       target: "audio-file",
@@ -66,7 +66,7 @@ describe("vydra speech provider", () => {
     expect(init.method).toBe("POST");
     expect(init.body).toBe(
       JSON.stringify({
-        text: "OpenClaw test",
+        text: "Operator test",
         voice_id: "21m00Tcm4TlvDq8ikWAM",
       }),
     );
@@ -101,7 +101,7 @@ describe("vydra speech provider", () => {
 
     await expect(
       provider.synthesize({
-        text: "OpenClaw test",
+        text: "Operator test",
         cfg: { agents: { defaults: { mediaMaxMb: 0.000001 } } } as never,
         providerConfig: { apiKey: "vydra-test-key" },
         target: "audio-file",
@@ -115,7 +115,7 @@ describe("vydra speech provider", () => {
 
     await expect(
       provider.synthesize({
-        text: "OpenClaw test",
+        text: "Operator test",
         cfg: {} as never,
         providerConfig: { apiKey: "vydra-test-key" },
         target: "audio-file",

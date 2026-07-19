@@ -24,7 +24,7 @@ import {
   type PluginDoctorStateMigration,
 } from "openclaw/plugin-sdk/runtime-doctor";
 import {
-  ensureOpenClawAgentDatabaseSchema,
+  ensureOperatorAgentDatabaseSchema,
   resolveOperatorAgentSqlitePath,
 } from "openclaw/plugin-sdk/sqlite-runtime";
 import {
@@ -736,7 +736,7 @@ async function collectLegacyMemorySidecarSources(params: {
     }
   } catch {}
 
-  const migrationEnv = { ...params.env, OPENCLAW_STATE_DIR: params.stateDir };
+  const migrationEnv = { ...params.env, OPERATOR_STATE_DIR: params.stateDir };
   const sources: LegacyMemorySidecarSource[] = [];
   const seen = new Set<string>();
   async function addSource(agentId: string, legacyPath: string): Promise<void> {
@@ -916,9 +916,9 @@ async function migrateLegacyMemorySidecarSource(params: {
   try {
     const migrationEnv = {
       ...params.env,
-      OPENCLAW_STATE_DIR: params.source.stateDir,
+      OPERATOR_STATE_DIR: params.source.stateDir,
     };
-    ensureOpenClawAgentDatabaseSchema(db, {
+    ensureOperatorAgentDatabaseSchema(db, {
       agentId: params.source.agentId,
       env: migrationEnv,
       path: params.source.agentDatabasePath,

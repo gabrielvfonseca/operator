@@ -14,8 +14,8 @@ const dotenvState = vi.hoisted(() => {
   return {
     state,
     loadDotEnv: vi.fn(() => {
-      state.profileAtDotenvLoad = process.env.OPENCLAW_PROFILE;
-      state.containerAtDotenvLoad = process.env.OPENCLAW_CONTAINER;
+      state.profileAtDotenvLoad = process.env.OPERATOR_PROFILE;
+      state.containerAtDotenvLoad = process.env.OPERATOR_CONTAINER;
     }),
   };
 });
@@ -53,7 +53,7 @@ vi.mock("../infra/runtime-guard.js", () => ({
 }));
 
 vi.mock("../infra/path-env.js", () => ({
-  ensureOpenClawCliOnPath: vi.fn(),
+  ensureOperatorCliOnPath: vi.fn(),
 }));
 
 vi.mock("./route.js", () => ({
@@ -77,25 +77,25 @@ import { runCli } from "./run-main.js";
 
 describe("runCli profile env bootstrap", () => {
   const envSnapshot = captureEnv([
-    "OPENCLAW_PROFILE",
-    "OPENCLAW_STATE_DIR",
-    "OPENCLAW_CONFIG_PATH",
-    "OPENCLAW_CONTAINER",
-    "OPENCLAW_GATEWAY_PORT",
-    "OPENCLAW_GATEWAY_URL",
-    "OPENCLAW_GATEWAY_TOKEN",
-    "OPENCLAW_GATEWAY_PASSWORD",
+    "OPERATOR_PROFILE",
+    "OPERATOR_STATE_DIR",
+    "OPERATOR_CONFIG_PATH",
+    "OPERATOR_CONTAINER",
+    "OPERATOR_GATEWAY_PORT",
+    "OPERATOR_GATEWAY_URL",
+    "OPERATOR_GATEWAY_TOKEN",
+    "OPERATOR_GATEWAY_PASSWORD",
   ]);
 
   beforeEach(() => {
-    deleteTestEnvValue("OPENCLAW_PROFILE");
-    deleteTestEnvValue("OPENCLAW_STATE_DIR");
-    deleteTestEnvValue("OPENCLAW_CONFIG_PATH");
-    deleteTestEnvValue("OPENCLAW_CONTAINER");
-    deleteTestEnvValue("OPENCLAW_GATEWAY_PORT");
-    deleteTestEnvValue("OPENCLAW_GATEWAY_URL");
-    deleteTestEnvValue("OPENCLAW_GATEWAY_TOKEN");
-    deleteTestEnvValue("OPENCLAW_GATEWAY_PASSWORD");
+    deleteTestEnvValue("OPERATOR_PROFILE");
+    deleteTestEnvValue("OPERATOR_STATE_DIR");
+    deleteTestEnvValue("OPERATOR_CONFIG_PATH");
+    deleteTestEnvValue("OPERATOR_CONTAINER");
+    deleteTestEnvValue("OPERATOR_GATEWAY_PORT");
+    deleteTestEnvValue("OPERATOR_GATEWAY_URL");
+    deleteTestEnvValue("OPERATOR_GATEWAY_TOKEN");
+    deleteTestEnvValue("OPERATOR_GATEWAY_PASSWORD");
     dotenvState.state.profileAtDotenvLoad = undefined;
     dotenvState.state.containerAtDotenvLoad = undefined;
     dotenvState.loadDotEnv.mockClear();
@@ -113,7 +113,7 @@ describe("runCli profile env bootstrap", () => {
 
     expect(dotenvState.loadDotEnv).toHaveBeenCalledOnce();
     expect(dotenvState.state.profileAtDotenvLoad).toBe("rawdog");
-    expect(process.env.OPENCLAW_PROFILE).toBe("rawdog");
+    expect(process.env.OPERATOR_PROFILE).toBe("rawdog");
   });
 
   it("rejects --container combined with --profile", async () => {
@@ -122,7 +122,7 @@ describe("runCli profile env bootstrap", () => {
     ).rejects.toThrow("--container cannot be combined with --profile/--dev");
 
     expect(dotenvState.loadDotEnv).not.toHaveBeenCalled();
-    expect(process.env.OPENCLAW_PROFILE).toBe("rawdog");
+    expect(process.env.OPERATOR_PROFILE).toBe("rawdog");
   });
 
   it("rejects --container combined with interleaved --profile", async () => {
@@ -140,15 +140,15 @@ describe("runCli profile env bootstrap", () => {
   it("does not let dotenv change container target resolution", async () => {
     fileState.hasCliDotEnv = true;
     dotenvState.loadDotEnv.mockImplementationOnce(() => {
-      process.env.OPENCLAW_CONTAINER = "demo";
-      dotenvState.state.profileAtDotenvLoad = process.env.OPENCLAW_PROFILE;
-      dotenvState.state.containerAtDotenvLoad = process.env.OPENCLAW_CONTAINER;
+      process.env.OPERATOR_CONTAINER = "demo";
+      dotenvState.state.profileAtDotenvLoad = process.env.OPERATOR_PROFILE;
+      dotenvState.state.containerAtDotenvLoad = process.env.OPERATOR_CONTAINER;
     });
 
     await runCli(["node", "openclaw", "status"]);
 
     expect(dotenvState.loadDotEnv).toHaveBeenCalledOnce();
-    expect(process.env.OPENCLAW_CONTAINER).toBe("demo");
+    expect(process.env.OPERATOR_CONTAINER).toBe("demo");
     expect(dotenvState.state.containerAtDotenvLoad).toBe("demo");
     expect(maybeRunCliInContainerMock).toHaveBeenCalledWith(["node", "openclaw", "status"]);
     expect(maybeRunCliInContainerMock).toHaveReturnedWith({
@@ -157,8 +157,8 @@ describe("runCli profile env bootstrap", () => {
     });
   });
 
-  it("allows container mode when OPENCLAW_PROFILE is already set in env", async () => {
-    setTestEnvValue("OPENCLAW_PROFILE", "work");
+  it("allows container mode when OPERATOR_PROFILE is already set in env", async () => {
+    setTestEnvValue("OPERATOR_PROFILE", "work");
 
     await expect(
       runCli(["node", "openclaw", "--container", "demo", "status"]),
@@ -166,10 +166,10 @@ describe("runCli profile env bootstrap", () => {
   });
 
   it.each([
-    ["OPENCLAW_GATEWAY_PORT", "19001"],
-    ["OPENCLAW_GATEWAY_URL", "ws://127.0.0.1:18789"],
-    ["OPENCLAW_GATEWAY_TOKEN", "demo-token"],
-    ["OPENCLAW_GATEWAY_PASSWORD", "demo-password"],
+    ["OPERATOR_GATEWAY_PORT", "19001"],
+    ["OPERATOR_GATEWAY_URL", "ws://127.0.0.1:18789"],
+    ["OPERATOR_GATEWAY_TOKEN", "demo-token"],
+    ["OPERATOR_GATEWAY_PASSWORD", "demo-password"],
   ])("allows container mode when %s is set in env", async (key, value) => {
     setTestEnvValue(key, value);
 
@@ -178,16 +178,16 @@ describe("runCli profile env bootstrap", () => {
     ).resolves.toBeUndefined();
   });
 
-  it("allows container mode when only OPENCLAW_STATE_DIR is set in env", async () => {
-    setTestEnvValue("OPENCLAW_STATE_DIR", "/tmp/openclaw-host-state");
+  it("allows container mode when only OPERATOR_STATE_DIR is set in env", async () => {
+    setTestEnvValue("OPERATOR_STATE_DIR", "/tmp/openclaw-host-state");
 
     await expect(
       runCli(["node", "openclaw", "--container", "demo", "status"]),
     ).resolves.toBeUndefined();
   });
 
-  it("allows container mode when only OPENCLAW_CONFIG_PATH is set in env", async () => {
-    setTestEnvValue("OPENCLAW_CONFIG_PATH", "/tmp/openclaw-host-state/openclaw.json");
+  it("allows container mode when only OPERATOR_CONFIG_PATH is set in env", async () => {
+    setTestEnvValue("OPERATOR_CONFIG_PATH", "/tmp/openclaw-host-state/openclaw.json");
 
     await expect(
       runCli(["node", "openclaw", "--container", "demo", "status"]),

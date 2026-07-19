@@ -1,8 +1,8 @@
 # @operator/diagnostics-otel
 
-Official OpenTelemetry diagnostics exporter for OpenClaw.
+Official OpenTelemetry diagnostics exporter for Operator.
 
-This plugin exports OpenClaw Gateway traces, metrics, and logs to an OTLP collector for observability stacks such as Grafana, Datadog, Honeycomb, New Relic, Tempo, and compatible collectors. It can also write diagnostic log records as stdout JSONL for container log pipelines.
+This plugin exports Operator Gateway traces, metrics, and logs to an OTLP collector for observability stacks such as Grafana, Datadog, Honeycomb, New Relic, Tempo, and compatible collectors. It can also write diagnostic log records as stdout JSONL for container log pipelines.
 
 ## Install
 
@@ -24,4 +24,4 @@ The full config surface, metric names, span names, and collector examples live i
 
 - Plugin id: `diagnostics-otel`
 - Package: `@operator/diagnostics-otel`
-- Minimum OpenClaw host: `2026.4.25`
+- Minimum Operator host: `2026.4.25`

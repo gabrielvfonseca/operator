@@ -1,6 +1,6 @@
 // Skill discovery status helpers summarize installed, workspace, and bundled skills.
 import path from "node:path";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { evaluateEntryRequirementsForCurrentPlatform } from "../../shared/entry-status.js";
 import type { RequirementConfigCheck, Requirements } from "../../shared/requirements.js";
 import { CONFIG_DIR } from "../../utils.js";
@@ -245,7 +245,7 @@ function normalizeInstallOptions(
 }
 
 type BuildSkillStatusContext = {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   prefs: SkillsInstallPreferences;
   eligibility?: SkillEligibilityContext;
   allowBundled: ReadonlySet<string> | undefined;
@@ -344,7 +344,7 @@ function buildSkillStatus(
 export function buildWorkspaceSkillStatus(
   workspaceDir: string,
   opts?: {
-    config?: OpenClawConfig;
+    config?: OperatorConfig;
     managedSkillsDir?: string;
     entries?: SkillEntry[];
     eligibility?: SkillEligibilityContext;

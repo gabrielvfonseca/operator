@@ -7,7 +7,7 @@ import {
   resolveAllAgentSessionStoreTargetsSync,
   type SessionStoreTarget,
 } from "../config/sessions/targets.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { withPluginHostCleanupTimeout } from "./host-hook-cleanup-timeout.js";
 import {
   cleanupPluginSessionSchedulerJobs,
@@ -43,7 +43,7 @@ function cleanupTargetKey(target: SessionStoreTarget): string {
   return `${target.agentId}\0${target.storePath}`;
 }
 
-function resolveExistingSessionStoreTargets(cfg: OpenClawConfig): SessionStoreTarget[] {
+function resolveExistingSessionStoreTargets(cfg: OperatorConfig): SessionStoreTarget[] {
   const targets = new Map<string, SessionStoreTarget>();
   for (const target of resolveAllAgentSessionStoreTargetsSync(cfg)) {
     targets.set(cleanupTargetKey(target), target);
@@ -52,7 +52,7 @@ function resolveExistingSessionStoreTargets(cfg: OpenClawConfig): SessionStoreTa
 }
 
 function createMemoizedCleanupSessionStoreTargetResolver(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
 ): ResolveCleanupSessionStoreTargets {
   let targets: readonly SessionStoreTarget[] | undefined;
   return () => {
@@ -69,7 +69,7 @@ function pathsToCleanupTargets(storePaths: readonly string[]): SessionStoreTarge
 }
 
 function resolveCleanupSessionStoreTargets(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   storePaths?: readonly string[];
   storeTargets?: readonly SessionStoreTarget[];
   resolveStoreTargets?: ResolveCleanupSessionStoreTargets;
@@ -83,7 +83,7 @@ function resolveCleanupSessionStoreTargets(params: {
 }
 
 async function clearPluginOwnedSessionStores(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   pluginId?: string;
   sessionKey?: string;
   sessionEntrySlotKeys?: ReadonlySet<string>;
@@ -117,7 +117,7 @@ async function clearPluginOwnedSessionStores(params: {
 }
 
 async function clearPromotedSessionEntrySlotStores(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   pluginId?: string;
   sessionKey?: string;
   sessionEntrySlotKeys: ReadonlySet<string>;
@@ -189,7 +189,7 @@ function collectAgentHarnessIds(
 /** Runs persistent and in-memory cleanup for a plugin, session, or host lifecycle event. */
 /** Runs cleanup callbacks for one plugin and returns failures instead of throwing. */
 export async function runPluginHostCleanup(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   registry?: PluginRegistry | null;
   pluginId?: string;
   reason: PluginHostCleanupReason;
@@ -409,7 +409,7 @@ function collectRestartPromotedSessionEntrySlotKeys(
 
 /** Cleans up plugin host state when a registry snapshot is replaced. */
 export async function cleanupReplacedPluginHostRegistry(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   previousRegistry?: PluginRegistry | null;
   nextRegistry?: PluginRegistry | null;
   shouldCleanup?: () => boolean;

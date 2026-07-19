@@ -22,7 +22,7 @@ export type NodeMatchCandidate = {
   remoteIp?: string;
   /** Connected nodes win only after the strongest match type is chosen. */
   connected?: boolean;
-  /** Client id used to prefer current OpenClaw nodes over legacy migration ties. */
+  /** Client id used to prefer current Operator nodes over legacy migration ties. */
   clientId?: string;
 };
 
@@ -71,7 +71,7 @@ function formatNodeCandidateLabel(node: NodeMatchCandidate): string {
   return `${label} [${details.join(", ")}]`;
 }
 
-function isCurrentOpenClawClient(clientId: string | undefined): boolean {
+function isCurrentOperatorClient(clientId: string | undefined): boolean {
   const normalized = normalizeOptionalLowercaseString(clientId) ?? "";
   return normalized.startsWith("operator-");
 }
@@ -84,7 +84,7 @@ function isLegacyClawdbotClient(clientId: string | undefined): boolean {
 function pickPreferredLegacyMigrationMatch(
   matches: NodeMatchCandidate[],
 ): NodeMatchCandidate | undefined {
-  const current = matches.filter((match) => isCurrentOpenClawClient(match.clientId));
+  const current = matches.filter((match) => isCurrentOperatorClient(match.clientId));
   if (current.length !== 1) {
     return undefined;
   }
@@ -92,7 +92,7 @@ function pickPreferredLegacyMigrationMatch(
   if (legacyCount === 0 || current.length + legacyCount !== matches.length) {
     return undefined;
   }
-  // During Clawdbot -> OpenClaw migration, a unique current client should win only
+  // During Clawdbot -> Operator migration, a unique current client should win only
   // when every other tie is a known legacy client for the same human-facing node.
   return current[0];
 }
@@ -133,7 +133,7 @@ function scoreNodeCandidate(node: NodeMatchCandidate, matchScore: number): numbe
   if (node.connected === true) {
     score += 100;
   }
-  if (isCurrentOpenClawClient(node.clientId)) {
+  if (isCurrentOperatorClient(node.clientId)) {
     score += 10;
   } else if (isLegacyClawdbotClient(node.clientId)) {
     score -= 10;

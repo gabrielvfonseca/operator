@@ -24,17 +24,17 @@ import { createExecTool } from "./bash-tools.exec.js";
 
 const TEST_ENV_KEYS = [
   "HOME",
-  "OPENCLAW_STATE_DIR",
-  "OPENCLAW_CONFIG_PATH",
-  "OPENCLAW_GATEWAY_TOKEN",
-  "OPENCLAW_GATEWAY_PORT",
-  "OPENCLAW_SKIP_CHANNELS",
-  "OPENCLAW_SKIP_GMAIL_WATCHER",
-  "OPENCLAW_SKIP_CRON",
-  "OPENCLAW_SKIP_CANVAS_HOST",
-  "OPENCLAW_SKIP_BROWSER_CONTROL_SERVER",
-  "OPENCLAW_SKIP_PROVIDERS",
-  "OPENCLAW_TEST_MINIMAL_GATEWAY",
+  "OPERATOR_STATE_DIR",
+  "OPERATOR_CONFIG_PATH",
+  "OPERATOR_GATEWAY_TOKEN",
+  "OPERATOR_GATEWAY_PORT",
+  "OPERATOR_SKIP_CHANNELS",
+  "OPERATOR_SKIP_GMAIL_WATCHER",
+  "OPERATOR_SKIP_CRON",
+  "OPERATOR_SKIP_CANVAS_HOST",
+  "OPERATOR_SKIP_BROWSER_CONTROL_SERVER",
+  "OPERATOR_SKIP_PROVIDERS",
+  "OPERATOR_TEST_MINIMAL_GATEWAY",
 ];
 const GATEWAY_CONNECT_TIMEOUT_MS = 120_000;
 const EXEC_APPROVAL_E2E_TIMEOUT_MS = 180_000;
@@ -54,7 +54,7 @@ describe("gateway-hosted exec approvals", () => {
   });
 
   it(
-    "lets OpenClaw-style gateway tool calls request and wait for approval over separate connections",
+    "lets Operator-style gateway tool calls request and wait for approval over separate connections",
     async () => {
       const envSnapshot = captureEnv(TEST_ENV_KEYS);
       cleanup.push(() => envSnapshot.restore());
@@ -93,17 +93,17 @@ describe("gateway-hosted exec approvals", () => {
       );
 
       setTestEnvValue("HOME", tempHome);
-      setTestEnvValue("OPENCLAW_STATE_DIR", stateDir);
-      setTestEnvValue("OPENCLAW_CONFIG_PATH", configPath);
-      setTestEnvValue("OPENCLAW_GATEWAY_TOKEN", token);
-      setTestEnvValue("OPENCLAW_GATEWAY_PORT", String(port));
-      setTestEnvValue("OPENCLAW_SKIP_CHANNELS", "1");
-      setTestEnvValue("OPENCLAW_SKIP_GMAIL_WATCHER", "1");
-      setTestEnvValue("OPENCLAW_SKIP_CRON", "1");
-      setTestEnvValue("OPENCLAW_SKIP_CANVAS_HOST", "1");
-      setTestEnvValue("OPENCLAW_SKIP_BROWSER_CONTROL_SERVER", "1");
-      setTestEnvValue("OPENCLAW_SKIP_PROVIDERS", "1");
-      setTestEnvValue("OPENCLAW_TEST_MINIMAL_GATEWAY", "1");
+      setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
+      setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
+      setTestEnvValue("OPERATOR_GATEWAY_TOKEN", token);
+      setTestEnvValue("OPERATOR_GATEWAY_PORT", String(port));
+      setTestEnvValue("OPERATOR_SKIP_CHANNELS", "1");
+      setTestEnvValue("OPERATOR_SKIP_GMAIL_WATCHER", "1");
+      setTestEnvValue("OPERATOR_SKIP_CRON", "1");
+      setTestEnvValue("OPERATOR_SKIP_CANVAS_HOST", "1");
+      setTestEnvValue("OPERATOR_SKIP_BROWSER_CONTROL_SERVER", "1");
+      setTestEnvValue("OPERATOR_SKIP_PROVIDERS", "1");
+      setTestEnvValue("OPERATOR_TEST_MINIMAL_GATEWAY", "1");
       clearRuntimeConfigSnapshot();
       clearConfigCache();
       clearSessionStoreCacheForTest();

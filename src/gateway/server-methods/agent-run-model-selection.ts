@@ -2,15 +2,15 @@ import { resolveCliRuntimeExecutionProvider } from "../../agents/model-runtime-a
 import { isCliProvider } from "../../agents/model-selection.js";
 import { resolveProviderIdForAuth } from "../../agents/provider-auth-aliases.js";
 import { applySessionEntryReplacements } from "../../config/sessions/session-accessor.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { updateChatRunProvider } from "../chat-abort.js";
 import type { GatewayRequestHandlerOptions } from "./types.js";
 
 export function createAgentRunModelSelectionHandler(params: {
   context: GatewayRequestHandlerOptions["context"];
   runId: string;
-  cfg: OpenClawConfig;
-  cfgForAgent?: OpenClawConfig;
+  cfg: OperatorConfig;
+  cfgForAgent?: OperatorConfig;
   restoredCronContinuationLifecycleRevision?: string;
   resolvedSessionKey?: string;
   lifecycleStorePath: string;

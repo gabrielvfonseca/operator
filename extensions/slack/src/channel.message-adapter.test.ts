@@ -8,7 +8,7 @@ import {
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { slackPlugin } from "./channel.js";
 import { SLACK_PRESENTATION_CAPABILITIES } from "./presentation.js";
-import type { OpenClawConfig } from "./runtime-api.js";
+import type { OperatorConfig } from "./runtime-api.js";
 
 const cfg = {
   channels: {
@@ -17,7 +17,7 @@ const cfg = {
       appToken: "xapp-test",
     },
   },
-} as OpenClawConfig;
+} as OperatorConfig;
 
 type SlackMessageAdapter = NonNullable<typeof slackPlugin.message>;
 type SlackMessageSender = NonNullable<SlackMessageAdapter["send"]>;

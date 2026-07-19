@@ -4,7 +4,7 @@ import type {
   ChannelDoctorLegacyConfigRule,
 } from "openclaw/plugin-sdk/channel-contract";
 import type { GroupToolPolicyConfig } from "openclaw/plugin-sdk/channel-policy";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { asObjectRecord } from "openclaw/plugin-sdk/runtime-doctor";
 
 const RESTRICTED_GROUP_TOOLS: GroupToolPolicyConfig = {
@@ -170,7 +170,7 @@ export const legacyConfigRules: ChannelDoctorLegacyConfigRule[] = [
 export function normalizeCompatibilityConfig({
   cfg,
 }: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
 }): ChannelDoctorConfigMutation {
   const rawEntry = asObjectRecord((cfg.channels as Record<string, unknown> | undefined)?.qqbot);
   if (!rawEntry) {
@@ -251,8 +251,8 @@ export function normalizeCompatibilityConfig({
       ...cfg,
       channels: {
         ...cfg.channels,
-        qqbot: updated as unknown as NonNullable<OpenClawConfig["channels"]>["qqbot"],
-      } as OpenClawConfig["channels"],
+        qqbot: updated as unknown as NonNullable<OperatorConfig["channels"]>["qqbot"],
+      } as OperatorConfig["channels"],
     },
     changes,
   };

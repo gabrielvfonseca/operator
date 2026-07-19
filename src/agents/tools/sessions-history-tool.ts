@@ -7,7 +7,7 @@ import { estimateBase64DecodedBytes } from "@operator/media-core/base64";
 import { readStringValue } from "@operator/normalization-core/string-coerce";
 import { Type } from "typebox";
 import { getRuntimeConfig } from "../../config/config.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { callGateway } from "../../gateway/call.js";
 import { capArrayByJsonBytes } from "../../gateway/session-transcript-readers.js";
 import { jsonUtf8Bytes } from "../../infra/json-utf8-bytes.js";
@@ -348,7 +348,7 @@ function resolveSessionsHistoryPaginationMetadata(params: {
 export function createSessionsHistoryTool(opts?: {
   agentSessionKey?: string;
   sandboxed?: boolean;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   callGateway?: GatewayCaller;
 }): AnyAgentTool {
   return {

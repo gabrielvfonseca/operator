@@ -20,9 +20,9 @@ import {
   getRuntimeConfigSnapshotMetadata,
   getRuntimeConfigSourceSnapshot,
 } from "../config/runtime-snapshot.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import type { SecretRef } from "../config/types.secrets.js";
-import { closeOpenClawAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
 import { captureEnv } from "../test-utils/env.js";
 import {
   activateSecretsRuntimeSnapshotState,
@@ -41,7 +41,7 @@ describe("secrets runtime state", () => {
   const autoCleanupTempDirs = useAutoCleanupTempDirTracker(afterEach);
 
   beforeEach(() => {
-    envSnapshot = captureEnv(["OPENCLAW_STATE_DIR"]);
+    envSnapshot = captureEnv(["OPERATOR_STATE_DIR"]);
   });
 
   afterEach(() => {
@@ -83,7 +83,7 @@ describe("secrets runtime state", () => {
     const secretRef = {
       source: "env" as const,
       provider: "default",
-      id: "OPENCLAW_DEBUG_AUTH_TOKEN",
+      id: "OPERATOR_DEBUG_AUTH_TOKEN",
     };
     const snapshot: PreparedSecretsRuntimeSnapshot = {
       sourceConfig: { gateway: { auth: { mode: "token", token: secretRef } } },
@@ -106,11 +106,11 @@ describe("secrets runtime state", () => {
     if (!metadata) {
       throw new Error("expected runtime config metadata");
     }
-    const rawSourceConfig = { gateway: { port: 19_030 } } satisfies OpenClawConfig;
+    const rawSourceConfig = { gateway: { port: 19_030 } } satisfies OperatorConfig;
     const secretsSourceConfig = {
       ...rawSourceConfig,
       gateway: { ...rawSourceConfig.gateway, auth: { mode: "token" as const, token: secretRef } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     expect(
       setSecretsRuntimeSourceSnapshotIfCurrent({
@@ -1365,7 +1365,7 @@ describe("secrets runtime state", () => {
         ).toMatchObject({ keyRef: previousRef });
       } finally {
         clearSecretsRuntimeSnapshot();
-        closeOpenClawAgentDatabasesForTest();
+        closeOperatorAgentDatabasesForTest();
         fs.rmSync(root, { recursive: true, force: true });
       }
     },
@@ -1916,12 +1916,12 @@ describe("secrets runtime state", () => {
         secrets: {
           providers: { vault: { source: "file", path: "/tmp/old-secrets.json" } },
         },
-      } satisfies OpenClawConfig,
+      } satisfies OperatorConfig,
       candidateSourceConfig: {
         secrets: {
           providers: { vault: { source: "file", path: "/tmp/rejected-secrets.json" } },
         },
-      } satisfies OpenClawConfig,
+      } satisfies OperatorConfig,
     },
     {
       evictLineage: false,
@@ -1937,7 +1937,7 @@ describe("secrets runtime state", () => {
           },
         },
         plugins: { entries: { "secret-plugin": { enabled: true } } },
-      } satisfies OpenClawConfig,
+      } satisfies OperatorConfig,
       candidateSourceConfig: {
         secrets: {
           providers: {
@@ -1948,20 +1948,20 @@ describe("secrets runtime state", () => {
           },
         },
         plugins: { entries: { "secret-plugin": { enabled: false } } },
-      } satisfies OpenClawConfig,
+      } satisfies OperatorConfig,
     },
   ] as Array<{
     evictLineage: boolean;
     label: string;
     keyRef: SecretRef;
-    previousSourceConfig: OpenClawConfig;
-    candidateSourceConfig: OpenClawConfig;
+    previousSourceConfig: OperatorConfig;
+    candidateSourceConfig: OperatorConfig;
   }>)(
     "restores resolved values when a same-ref $label was rejected",
     ({ keyRef, previousSourceConfig, candidateSourceConfig, evictLineage }) => {
       const agentDir = `/tmp/openclaw-auth-provider-dependency-${keyRef.provider}`;
       const snapshot = (params: {
-        sourceConfig: OpenClawConfig;
+        sourceConfig: OperatorConfig;
         apiKey: string;
         port: number;
       }): PreparedSecretsRuntimeSnapshot => ({
@@ -2224,7 +2224,7 @@ describe("secrets runtime state", () => {
         key: string;
         keyRef: SecretRef;
         port: number;
-        sourceConfig: OpenClawConfig;
+        sourceConfig: OperatorConfig;
       }): PreparedSecretsRuntimeSnapshot => ({
         sourceConfig: { ...params.sourceConfig, gateway: { port: params.port } },
         config: { gateway: { port: params.port } },

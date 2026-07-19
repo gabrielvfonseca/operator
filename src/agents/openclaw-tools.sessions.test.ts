@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ChannelMessagingAdapter } from "../channels/plugins/types.public.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import {
   appendTranscriptMessage,
   upsertSessionEntry,
@@ -58,7 +58,7 @@ const TEST_CONFIG = {
     sessions: { visibility: "all" },
     agentToAgent: { enabled: true },
   },
-} as OpenClawConfig;
+} as OperatorConfig;
 
 function countMatching<T>(items: readonly T[], predicate: (item: T) => boolean) {
   let count = 0;
@@ -136,11 +136,11 @@ function installMessagingTestRegistry() {
   );
 }
 
-function createOpenClawTools(options?: {
+function createOperatorTools(options?: {
   agentSessionKey?: string;
   agentChannel?: string;
   sandboxed?: boolean;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }) {
   // Sessions tests exercise the related tools as a small local bundle.
   const config = options?.config ?? TEST_CONFIG;
@@ -264,7 +264,7 @@ describe("sessions tools", () => {
   });
 
   it("uses integer schemas for session count and window parameters", () => {
-    const tools = createOpenClawTools();
+    const tools = createOperatorTools();
     const byName = (name: string) => {
       const tool = tools.find((candidate) => candidate.name === name);
       if (!tool) {
@@ -325,7 +325,7 @@ describe("sessions tools", () => {
     { alias: "content", value: "hello from content" },
     { alias: "text", value: "hello from text" },
   ])("sessions_send prepares hidden $alias alias before validation", ({ alias, value }) => {
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_send");
+    const tool = createOperatorTools().find((candidate) => candidate.name === "sessions_send");
     if (!tool) {
       throw new Error("missing sessions_send tool");
     }
@@ -356,7 +356,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_send");
+    const tool = createOperatorTools().find((candidate) => candidate.name === "sessions_send");
     if (!tool) {
       throw new Error("missing sessions_send tool");
     }
@@ -384,7 +384,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_send");
+    const tool = createOperatorTools().find((candidate) => candidate.name === "sessions_send");
     if (!tool) {
       throw new Error("missing sessions_send tool");
     }
@@ -405,7 +405,7 @@ describe("sessions tools", () => {
   });
 
   it("sessions_send prepares sanitized aliases without exposing alias keys", () => {
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_send");
+    const tool = createOperatorTools().find((candidate) => candidate.name === "sessions_send");
     if (!tool?.prepareArguments) {
       throw new Error("missing sessions_send prepareArguments");
     }
@@ -490,7 +490,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_list");
+    const tool = createOperatorTools().find((candidate) => candidate.name === "sessions_list");
     if (!tool) {
       throw new Error("missing sessions_list tool");
     }
@@ -623,7 +623,7 @@ describe("sessions tools", () => {
         return {};
       });
 
-      const tool = createOpenClawTools({
+      const tool = createOperatorTools({
         agentSessionKey: "agent:main:main",
         config: {
           ...TEST_CONFIG,
@@ -631,7 +631,7 @@ describe("sessions tools", () => {
             sessions: { visibility: "agent" },
             agentToAgent: { enabled: false },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
       }).find((candidate) => candidate.name === "sessions_list");
       if (!tool) {
         throw new Error("missing sessions_list tool");
@@ -711,7 +711,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_list");
+    const tool = createOperatorTools().find((candidate) => candidate.name === "sessions_list");
     if (!tool) {
       throw new Error("missing sessions_list tool");
     }
@@ -757,7 +757,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_history");
+    const tool = createOperatorTools().find((candidate) => candidate.name === "sessions_history");
     if (!tool) {
       throw new Error("missing sessions_history tool");
     }
@@ -823,7 +823,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_history");
+    const tool = createOperatorTools().find((candidate) => candidate.name === "sessions_history");
     if (!tool) {
       throw new Error("missing sessions_history tool");
     }
@@ -888,7 +888,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_history");
+    const tool = createOperatorTools().find((candidate) => candidate.name === "sessions_history");
     if (!tool) {
       throw new Error("missing sessions_history tool");
     }
@@ -936,7 +936,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_history");
+    const tool = createOperatorTools().find((candidate) => candidate.name === "sessions_history");
     if (!tool) {
       throw new Error("missing sessions_history tool");
     }
@@ -976,7 +976,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_history");
+    const tool = createOperatorTools().find((candidate) => candidate.name === "sessions_history");
     if (!tool) {
       throw new Error("missing sessions_history tool");
     }
@@ -1013,7 +1013,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_history");
+    const tool = createOperatorTools().find((candidate) => candidate.name === "sessions_history");
     if (!tool) {
       throw new Error("missing sessions_history tool");
     }
@@ -1043,7 +1043,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_history");
+    const tool = createOperatorTools().find((candidate) => candidate.name === "sessions_history");
     if (!tool) {
       throw new Error("missing sessions_history tool");
     }
@@ -1117,7 +1117,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       agentSessionKey: requesterKey,
       agentChannel: "discord",
     }).find((candidate) => candidate.name === "sessions_send");
@@ -1229,7 +1229,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       agentSessionKey: "discord:group:req",
       agentChannel: "discord",
     }).find((candidate) => candidate.name === "sessions_send");
@@ -1278,7 +1278,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       agentSessionKey: "main",
       agentChannel: "discord",
     }).find((candidate) => candidate.name === "sessions_send");
@@ -1373,7 +1373,7 @@ describe("sessions tools", () => {
       callGateway: (opts: unknown) => callGatewayMock(opts),
     });
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       agentSessionKey: requesterKey,
       agentChannel: "discord",
     }).find((candidate) => candidate.name === "sessions_send");
@@ -1477,7 +1477,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       agentSessionKey: requesterKey,
       agentChannel: "discord",
       config: {
@@ -1566,7 +1566,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       agentSessionKey: requesterKey,
       agentChannel: "telegram",
       config: {
@@ -1630,7 +1630,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       agentSessionKey: "agent:re-portal:main",
       agentChannel: "telegram",
       config: {
@@ -1686,7 +1686,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       agentSessionKey: "agent:re-portal:main",
       agentChannel: "telegram",
       config: {
@@ -1763,7 +1763,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       agentSessionKey: requesterKey,
       agentChannel: "telegram",
       config: {
@@ -1841,7 +1841,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       agentSessionKey: "agent:re-portal:main",
       agentChannel: "telegram",
       config: {
@@ -1894,7 +1894,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       agentSessionKey: "agent:re-portal:main",
       agentChannel: "telegram",
     }).find((candidate) => candidate.name === "sessions_send");
@@ -1946,7 +1946,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       agentSessionKey: "agent:re-portal:main",
       agentChannel: "telegram",
     }).find((candidate) => candidate.name === "sessions_send");
@@ -1997,7 +1997,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       agentSessionKey: requesterKey,
       agentChannel: "discord",
     }).find((candidate) => candidate.name === "sessions_send");
@@ -2037,7 +2037,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       agentSessionKey: "agent:main:main",
       agentChannel: "discord",
     }).find((candidate) => candidate.name === "sessions_send");
@@ -2102,7 +2102,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       agentSessionKey: requesterKey,
       agentChannel: "discord",
     }).find((candidate) => candidate.name === "sessions_send");
@@ -2236,7 +2236,7 @@ describe("sessions tools", () => {
       callGateway: (opts: unknown) => callGatewayMock(opts),
     });
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       agentSessionKey: requesterKey,
       agentChannel: "discord",
     }).find((candidate) => candidate.name === "sessions_send");

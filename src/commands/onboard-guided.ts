@@ -1,6 +1,6 @@
 import { formatCliCommand } from "../cli/command-format.js";
 import { formatConfigIssueLines } from "../config/issue-format.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { withConsoleSubsystemsSuppressed } from "../logging/console.js";
 import type { RuntimeEnv } from "../runtime.js";
 // Guided onboarding: detect AI access, live-test it, then persist only a working route.
@@ -35,7 +35,7 @@ export type GuidedOnboardingDeps = {
     acceptRisk: boolean,
   ) => Promise<void>;
   createPrompter?: () => WizardPrompter | Promise<WizardPrompter>;
-  persistRiskAcknowledgement?: (config: OpenClawConfig) => Promise<void>;
+  persistRiskAcknowledgement?: (config: OperatorConfig) => Promise<void>;
 };
 
 type GuidedOnboardingHandoff = { workspace: string };
@@ -131,7 +131,7 @@ async function tryCandidate(params: {
 async function runManualStage(params: {
   detection: SetupInferenceDetection;
   autoAttemptedKinds: ReadonlySet<SetupInferenceCandidate["kind"]>;
-  config: OpenClawConfig;
+  config: OperatorConfig;
   workspace: string;
   runtime: RuntimeEnv;
   prompter: WizardPrompter;
@@ -272,7 +272,7 @@ function activationLines(result: Extract<ActivateSetupInferenceResult, { ok: tru
   ];
 }
 
-async function persistRiskAcknowledgement(config: OpenClawConfig): Promise<void> {
+async function persistRiskAcknowledgement(config: OperatorConfig): Promise<void> {
   const securityAcknowledgedAt = config.wizard?.securityAcknowledgedAt;
   if (!securityAcknowledgedAt) {
     return;
@@ -334,8 +334,8 @@ async function runGuidedOnboardingFlow(
     await (deps.persistRiskAcknowledgement ?? persistRiskAcknowledgement)(acknowledgedConfig);
   }
 
-  // Inference is the only prerequisite for OpenClaw. Use the caller's or
-  // current default workspace as isolated probe context; OpenClaw owns any
+  // Inference is the only prerequisite for Operator. Use the caller's or
+  // current default workspace as isolated probe context; Operator owns any
   // workspace choice and persistence after the live completion succeeds.
   const workspace = resolveUserPath(
     opts.workspace?.trim() ||
@@ -429,7 +429,7 @@ export async function runGuidedOnboarding(
   const handoff = state.handoff;
   if (handoff) {
     // The live completion makes conversational setup safe. Start only after
-    // the wizard lifecycle restores stdin so OpenClaw receives a clean TTY.
+    // the wizard lifecycle restores stdin so Operator receives a clean TTY.
     await openSystemAgentChat(deps, handoff.workspace, runtime, true);
   }
 }

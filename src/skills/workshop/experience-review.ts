@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import type { ChatType } from "../../channels/chat-type.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
 import { CommandLane } from "../../process/lanes.js";
 import { resolveSkillWorkshopConfig } from "./config.js";
@@ -64,12 +64,12 @@ type ExperienceReviewAgentContext = {
 export type SkillExperienceReviewParams = {
   event: ExperienceReviewAgentEndEvent;
   ctx: ExperienceReviewAgentContext;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 };
 
 export type ExperienceReviewCandidate = {
   ctx: ExperienceReviewAgentContext;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   transcript: string;
   modelIterations: number;
 };
@@ -142,7 +142,7 @@ function countModelIterations(messages: readonly unknown[]): number {
 
 export async function prepareSkillExperienceReviewCandidate(
   candidate: ExperienceReviewCandidate,
-  config: OpenClawConfig,
+  config: OperatorConfig,
 ): Promise<ExperienceReviewCandidate | undefined> {
   if (!resolveSkillWorkshopConfig(config).autonomous.enabled) {
     return undefined;

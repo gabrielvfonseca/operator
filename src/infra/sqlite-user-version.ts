@@ -14,6 +14,6 @@ export function createNewerSqliteSchemaVersionError(
   supportedVersion: number,
 ): Error {
   return new Error(
-    `${databaseLabel} ${pathname} uses newer schema version ${schemaVersion}; this OpenClaw build supports ${supportedVersion}. Upgrade OpenClaw before opening this database. Do not downgrade OpenClaw or modify the database. To run this older build, use a separate state directory or restore a compatible backup.`,
+    `${databaseLabel} ${pathname} uses newer schema version ${schemaVersion}; this Operator build supports ${supportedVersion}. Upgrade Operator before opening this database. Do not downgrade Operator or modify the database. To run this older build, use a separate state directory or restore a compatible backup.`,
   );
 }

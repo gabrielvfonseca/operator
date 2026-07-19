@@ -12,7 +12,7 @@ import {
   renderSolidColorPngBase64,
 } from "../../test/helpers/live-image-probe.js";
 import { isLiveTestEnabled } from "../agents/live-test-helpers.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import type { ContextEngine } from "../context-engine/types.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import { extractFirstTextBlock } from "../shared/chat-message-content.js";
@@ -36,32 +36,32 @@ import {
   assertCronJobVisibleViaCli,
   buildLiveCronProbeMessage,
   createLiveCronProbeSpec,
-  runOpenClawCliJson,
+  runOperatorCliJson,
   type CronListJob,
 } from "./live-agent-probes.js";
 import { restoreLiveEnv, snapshotLiveEnv, type LiveEnvSnapshot } from "./live-env-test-helpers.js";
 
 const LIVE = isLiveTestEnabled();
-const CODEX_HARNESS_LIVE = isTruthyEnvValue(process.env.OPENCLAW_LIVE_CODEX_HARNESS);
-const CODEX_HARNESS_DEBUG = isTruthyEnvValue(process.env.OPENCLAW_LIVE_CODEX_HARNESS_DEBUG);
+const CODEX_HARNESS_LIVE = isTruthyEnvValue(process.env.OPERATOR_LIVE_CODEX_HARNESS);
+const CODEX_HARNESS_DEBUG = isTruthyEnvValue(process.env.OPERATOR_LIVE_CODEX_HARNESS_DEBUG);
 const CODEX_HARNESS_IMAGE_PROBE = isTruthyEnvValue(
-  process.env.OPENCLAW_LIVE_CODEX_HARNESS_IMAGE_PROBE,
+  process.env.OPERATOR_LIVE_CODEX_HARNESS_IMAGE_PROBE,
 );
 const CODEX_HARNESS_CHAT_IMAGE_PROBE = isTruthyEnvValue(
-  process.env.OPENCLAW_LIVE_CODEX_HARNESS_CHAT_IMAGE_PROBE,
+  process.env.OPERATOR_LIVE_CODEX_HARNESS_CHAT_IMAGE_PROBE,
 );
-const CODEX_HARNESS_MCP_PROBE = isTruthyEnvValue(process.env.OPENCLAW_LIVE_CODEX_HARNESS_MCP_PROBE);
+const CODEX_HARNESS_MCP_PROBE = isTruthyEnvValue(process.env.OPERATOR_LIVE_CODEX_HARNESS_MCP_PROBE);
 const CODEX_HARNESS_SUBAGENT_PROBE = isTruthyEnvValue(
-  process.env.OPENCLAW_LIVE_CODEX_HARNESS_SUBAGENT_PROBE,
+  process.env.OPERATOR_LIVE_CODEX_HARNESS_SUBAGENT_PROBE,
 );
 const CODEX_HARNESS_GUARDIAN_PROBE = isTruthyEnvValue(
-  process.env.OPENCLAW_LIVE_CODEX_HARNESS_GUARDIAN_PROBE,
+  process.env.OPERATOR_LIVE_CODEX_HARNESS_GUARDIAN_PROBE,
 );
 const CODEX_HARNESS_CODE_MODE_ONLY = isTruthyEnvValue(
-  process.env.OPENCLAW_LIVE_CODEX_HARNESS_CODE_MODE_ONLY,
+  process.env.OPERATOR_LIVE_CODEX_HARNESS_CODE_MODE_ONLY,
 );
 const CODEX_HARNESS_DISABLE_LOOP_RELAY = isTruthyEnvValue(
-  process.env.OPENCLAW_LIVE_CODEX_HARNESS_DISABLE_LOOP_RELAY,
+  process.env.OPERATOR_LIVE_CODEX_HARNESS_DISABLE_LOOP_RELAY,
 );
 const CODEX_HARNESS_SUBAGENT_ONLY =
   CODEX_HARNESS_SUBAGENT_PROBE &&
@@ -69,12 +69,12 @@ const CODEX_HARNESS_SUBAGENT_ONLY =
   !CODEX_HARNESS_IMAGE_PROBE &&
   !CODEX_HARNESS_MCP_PROBE &&
   !CODEX_HARNESS_GUARDIAN_PROBE &&
-  process.env.OPENCLAW_LIVE_CODEX_HARNESS_SUBAGENT_ONLY !== "0";
+  process.env.OPERATOR_LIVE_CODEX_HARNESS_SUBAGENT_ONLY !== "0";
 const CODEX_HARNESS_REQUIRE_GUARDIAN_EVENTS = isTruthyEnvValue(
-  process.env.OPENCLAW_LIVE_CODEX_HARNESS_REQUIRE_GUARDIAN_EVENTS,
+  process.env.OPERATOR_LIVE_CODEX_HARNESS_REQUIRE_GUARDIAN_EVENTS,
 );
 const CODEX_HARNESS_REQUEST_TIMEOUT_MS = resolveLiveTimeoutMs(
-  process.env.OPENCLAW_LIVE_CODEX_HARNESS_REQUEST_TIMEOUT_MS,
+  process.env.OPERATOR_LIVE_CODEX_HARNESS_REQUEST_TIMEOUT_MS,
   300_000,
 );
 const CODEX_HARNESS_AGENT_TIMEOUT_SECONDS = Math.max(
@@ -82,9 +82,9 @@ const CODEX_HARNESS_AGENT_TIMEOUT_SECONDS = Math.max(
   Math.ceil(CODEX_HARNESS_REQUEST_TIMEOUT_MS / 1000) - 10,
 );
 const CODEX_HARNESS_AUTH_MODE =
-  process.env.OPENCLAW_LIVE_CODEX_HARNESS_AUTH === "api-key" ? "api-key" : "codex-auth";
+  process.env.OPERATOR_LIVE_CODEX_HARNESS_AUTH === "api-key" ? "api-key" : "codex-auth";
 const CODEX_HARNESS_THINKING = resolveCodexHarnessThinkingLevel(
-  process.env.OPENCLAW_LIVE_CODEX_HARNESS_THINKING,
+  process.env.OPERATOR_LIVE_CODEX_HARNESS_THINKING,
 );
 const describeLive = LIVE && CODEX_HARNESS_LIVE ? describe : describe.skip;
 const describeDisabled = LIVE && !CODEX_HARNESS_LIVE ? describe : describe.skip;
@@ -117,7 +117,7 @@ function resolveLiveTimeoutMs(raw: string | undefined, fallback: number): number
 function resolveCodexHarnessThinkingLevel(raw: string | undefined): CodexHarnessThinkingLevel {
   const normalized = raw?.trim().toLowerCase() || "low";
   if (!["off", "minimal", "low", "medium", "high", "xhigh", "max", "ultra"].includes(normalized)) {
-    throw new Error(`invalid OPENCLAW_LIVE_CODEX_HARNESS_THINKING: ${raw}`);
+    throw new Error(`invalid OPERATOR_LIVE_CODEX_HARNESS_THINKING: ${raw}`);
   }
   return normalized as CodexHarnessThinkingLevel;
 }
@@ -152,7 +152,7 @@ async function subscribeCodexLiveDebugEvents(sessionKey: string): Promise<() => 
 }
 
 function snapshotEnv(): LiveEnvSnapshot {
-  return snapshotLiveEnv(["OPENCLAW_ALLOW_SLOW_REPLY_TESTS"]);
+  return snapshotLiveEnv(["OPERATOR_ALLOW_SLOW_REPLY_TESTS"]);
 }
 
 function restoreEnv(snapshot: LiveEnvSnapshot): void {
@@ -283,7 +283,7 @@ async function writeLiveGatewayConfig(params: {
   workspace: string;
 }): Promise<void> {
   parseModelKey(params.modelKey);
-  const cfg: OpenClawConfig = {
+  const cfg: OperatorConfig = {
     gateway: {
       mode: "local",
       port: params.port,
@@ -404,7 +404,7 @@ async function requestAgentText(params: {
     `expected an actual Codex app-server turn for ${params.sessionKey}; events=${JSON.stringify(events)}`,
   ).toBeDefined();
   const expectedModel = parseModelKey(
-    process.env.OPENCLAW_LIVE_CODEX_HARNESS_MODEL ?? DEFAULT_CODEX_MODEL,
+    process.env.OPERATOR_LIVE_CODEX_HARNESS_MODEL ?? DEFAULT_CODEX_MODEL,
   ).modelId;
   expect(turnStarting?.data).toMatchObject({
     model: expectedModel,
@@ -426,7 +426,7 @@ async function verifyCodexCodeModeOnlyDynamicToolProbe(params: {
     sessionKey: params.sessionKey,
     message: [
       "Code-mode-only bridge probe.",
-      "Before replying, call the OpenClaw sessions_list tool exactly once.",
+      "Before replying, call the Operator sessions_list tool exactly once.",
       "Use limit=1 and includeLastMessage=false.",
       `After the tool result returns, reply exactly ${expectedToken} and nothing else.`,
     ].join("\n"),
@@ -782,7 +782,7 @@ async function verifyCodexGuardianProbe(params: {
   setPluginApprovalDecision?: (decision: GuardianPluginApprovalDecision | undefined) => void;
   sessionKey: string;
 }): Promise<void> {
-  const allowToken = `OPENCLAW-GUARDIAN-ALLOW-${randomBytes(3).toString("hex").toUpperCase()}`;
+  const allowToken = `OPERATOR-GUARDIAN-ALLOW-${randomBytes(3).toString("hex").toUpperCase()}`;
   const resolvedPluginApprovalCountBeforeAllow = params.getResolvedPluginApprovalCount?.();
   params.setPluginApprovalDecision?.("allow-once");
   const allowResult = await requestAgentTextWithEvents({
@@ -807,7 +807,7 @@ async function verifyCodexGuardianProbe(params: {
   const allowStatus = findGuardianReviewStatus(allowResult.events);
   if (allowStatus === "denied") {
     // Guardian policy is owned by Codex and may reject even low-risk escalations.
-    // The OpenClaw contract is that the review completes and the agent receives
+    // The Operator contract is that the review completes and the agent receives
     // a final response instead of hanging on approval plumbing.
     expect(allowResult.text.toLowerCase()).toMatch(/approv|permission|guardian|reject|denied/);
     expect(allowReview?.data?.status).toBe("denied");
@@ -829,8 +829,8 @@ async function verifyCodexGuardianProbe(params: {
     expect(allowStatus ?? "approved").toBe("approved");
   }
 
-  const askBackToken = `OPENCLAW-GUARDIAN-ASK-BACK-${randomBytes(3).toString("hex").toUpperCase()}`;
-  const fakeSecret = `OPENCLAW_FAKE_SECRET_${randomBytes(4).toString("hex").toUpperCase()}`;
+  const askBackToken = `OPERATOR-GUARDIAN-ASK-BACK-${randomBytes(3).toString("hex").toUpperCase()}`;
+  const fakeSecret = `OPERATOR_FAKE_SECRET_${randomBytes(4).toString("hex").toUpperCase()}`;
   params.setPluginApprovalDecision?.("deny");
   const deniedResult = await requestAgentTextWithEvents({
     client: params.client,
@@ -852,7 +852,7 @@ async function verifyCodexGuardianProbe(params: {
     requireEvents: false,
   });
   // The approve/deny call is Codex policy-owned and may change independently.
-  // OpenClaw's strict projection contract is covered by the allow probe above.
+  // Operator's strict projection contract is covered by the allow probe above.
   // Riskier prompts may be refused or ask back before Codex creates a review
   // event, depending on current policy/model behavior.
   if (review?.data?.status === "denied") {
@@ -923,7 +923,7 @@ async function verifyCodexCronMcpProbe(params: {
     expectedSessionTarget: "current",
   });
   if (createdJob.id) {
-    await runOpenClawCliJson(
+    await runOperatorCliJson(
       [
         "cron",
         "rm",
@@ -1132,7 +1132,7 @@ describeLive("gateway live (Codex harness)", () => {
   it(
     "runs gateway agent turns through the plugin-owned Codex app-server harness",
     async () => {
-      const modelKey = process.env.OPENCLAW_LIVE_CODEX_HARNESS_MODEL ?? DEFAULT_CODEX_MODEL;
+      const modelKey = process.env.OPERATOR_LIVE_CODEX_HARNESS_MODEL ?? DEFAULT_CODEX_MODEL;
       const { clearRuntimeConfigSnapshot } = await import("../config/config.js");
       const { startGatewayServer } = await import("./server.js");
 
@@ -1145,7 +1145,7 @@ describeLive("gateway live (Codex harness)", () => {
       const port = await getFreeGatewayPort();
 
       clearRuntimeConfigSnapshot();
-      process.env.OPENCLAW_AGENT_RUNTIME = "codex";
+      process.env.OPERATOR_AGENT_RUNTIME = "codex";
       // Keep the runtime fixed on the plugin-owned Codex app-server harness.
       // CI can opt into API-key auth to avoid stale OAuth refresh secrets,
       // while local maintainer runs can continue exercising staged ~/.codex auth.
@@ -1157,17 +1157,17 @@ describeLive("gateway live (Codex harness)", () => {
       } else if (!process.env.OPENAI_BASE_URL?.trim()) {
         delete process.env.OPENAI_BASE_URL;
       }
-      setTestEnvValue("OPENCLAW_CONFIG_PATH", configPath);
+      setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
       // This live lane exercises the full config-loaded runtime inside Vitest's
       // fast-test envelope, so config-override completeness checks do not apply.
-      setTestEnvValue("OPENCLAW_ALLOW_SLOW_REPLY_TESTS", "1");
-      process.env.OPENCLAW_GATEWAY_TOKEN = token;
-      process.env.OPENCLAW_SKIP_BROWSER_CONTROL_SERVER = "1";
-      process.env.OPENCLAW_SKIP_CANVAS_HOST = "1";
-      process.env.OPENCLAW_SKIP_CHANNELS = "1";
-      process.env.OPENCLAW_SKIP_CRON = "1";
-      process.env.OPENCLAW_SKIP_GMAIL_WATCHER = "1";
-      setTestEnvValue("OPENCLAW_STATE_DIR", stateDir);
+      setTestEnvValue("OPERATOR_ALLOW_SLOW_REPLY_TESTS", "1");
+      process.env.OPERATOR_GATEWAY_TOKEN = token;
+      process.env.OPERATOR_SKIP_BROWSER_CONTROL_SERVER = "1";
+      process.env.OPERATOR_SKIP_CANVAS_HOST = "1";
+      process.env.OPERATOR_SKIP_CHANNELS = "1";
+      process.env.OPERATOR_SKIP_CRON = "1";
+      process.env.OPERATOR_SKIP_GMAIL_WATCHER = "1";
+      setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
 
       await fs.mkdir(stateDir, { recursive: true });
       await writeLiveGatewayConfig({

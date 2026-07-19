@@ -8,7 +8,7 @@ import {
 } from "openclaw/plugin-sdk/channel-inbound";
 import { hasControlCommand } from "openclaw/plugin-sdk/command-detection";
 import type {
-  OpenClawConfig,
+  OperatorConfig,
   TelegramGroupConfig,
   TelegramTopicConfig,
 } from "openclaw/plugin-sdk/config-contracts";
@@ -30,7 +30,7 @@ import { isTelegramForumServiceMessage } from "./forum-service-message.js";
 import { resolveTelegramCommandIngressAuthorization } from "./ingress.js";
 
 type MediaAuthorization = {
-  authorizationCfg: OpenClawConfig;
+  authorizationCfg: OperatorConfig;
   chatId: number;
   isGroup: boolean;
   isForum: boolean;

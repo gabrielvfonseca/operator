@@ -1,7 +1,7 @@
 // Verifies harness lifecycle capability checks, diagnostics, and trace scoping.
 import type { Model } from "openclaw/plugin-sdk/llm";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { OPENCLAW_EMBEDDED_CONTEXT_ENGINE_HOST } from "../../context-engine/host-compat.js";
+import { OPERATOR_EMBEDDED_CONTEXT_ENGINE_HOST } from "../../context-engine/host-compat.js";
 import type { ContextEngine } from "../../context-engine/types.js";
 import {
   onTrustedInternalDiagnosticEvent,
@@ -16,7 +16,7 @@ import {
   type DiagnosticTraceContext,
 } from "../../infra/diagnostic-trace-context.js";
 import type { EmbeddedRunAttemptResult } from "../embedded-agent-runner/run/types.js";
-import { createOpenClawAgentHarness } from "./builtin-openclaw.js";
+import { createOperatorAgentHarness } from "./builtin-openclaw.js";
 import { runAgentHarnessLifecycleAttempt } from "./lifecycle.js";
 import type { AgentHarness, AgentHarnessAttemptParams } from "./types.js";
 
@@ -190,11 +190,11 @@ describe("AgentHarness lifecycle runner", () => {
     expect(runAttempt).toHaveBeenCalledOnce();
   });
 
-  it("advertises OpenClaw embedded host capabilities", async () => {
-    const harness = createOpenClawAgentHarness();
+  it("advertises Operator embedded host capabilities", async () => {
+    const harness = createOperatorAgentHarness();
 
     expect(harness.contextEngineHostCapabilities).toEqual(
-      OPENCLAW_EMBEDDED_CONTEXT_ENGINE_HOST.capabilities,
+      OPERATOR_EMBEDDED_CONTEXT_ENGINE_HOST.capabilities,
     );
   });
 

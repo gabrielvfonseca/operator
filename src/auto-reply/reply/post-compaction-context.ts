@@ -7,7 +7,7 @@ import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
 import { resolveAgentContextLimits } from "../../agents/agent-scope.js";
 import { resolveCronStyleNow } from "../../agents/current-time.js";
 import { formatDateStamp, resolveUserTimezone } from "../../agents/date-time.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { openRootFile } from "../../infra/boundary-file-read.js";
 
 const MAX_CONTEXT_CHARS = 1800;
@@ -50,7 +50,7 @@ function matchesSectionSet(sectionNames: string[], expectedSections: string[]): 
  * daily memory files instead of guessing based on training cutoff.
  */
 type PostCompactionContextOptions = {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   agentId?: string;
   nowMs?: number;
 };

@@ -1,10 +1,10 @@
 import { createRequire } from "node:module";
-// Verifies chat-facing CLI snippets execute the OpenClaw CLI even from harness-hosted gateways.
+// Verifies chat-facing CLI snippets execute the Operator CLI even from harness-hosted gateways.
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
-  buildCurrentOpenClawCliArgv,
-  buildCurrentOpenClawCliExecEnv,
+  buildCurrentOperatorCliArgv,
+  buildCurrentOperatorCliExecEnv,
 } from "./commands-openclaw-cli.js";
 
 const requireFromHere = createRequire(import.meta.url);
@@ -16,7 +16,7 @@ function setArgv1(value: string): void {
   process.argv.splice(0, process.argv.length, process.execPath, value);
 }
 
-describe("buildCurrentOpenClawCliArgv", () => {
+describe("buildCurrentOperatorCliArgv", () => {
   afterEach(() => {
     process.argv.splice(0, process.argv.length, ...originalArgv);
   });
@@ -24,7 +24,7 @@ describe("buildCurrentOpenClawCliArgv", () => {
   it("falls back to the package CLI entry when hosted by a test harness", () => {
     setArgv1(path.join(process.cwd(), "scripts", "test-live.mjs"));
 
-    expect(buildCurrentOpenClawCliArgv(["sessions", "export-trajectory"])).toEqual([
+    expect(buildCurrentOperatorCliArgv(["sessions", "export-trajectory"])).toEqual([
       process.execPath,
       "--import",
       trustedTsxLoader,
@@ -34,10 +34,10 @@ describe("buildCurrentOpenClawCliArgv", () => {
     ]);
   });
 
-  it("preserves a real OpenClaw launcher entry", () => {
+  it("preserves a real Operator launcher entry", () => {
     setArgv1("/opt/openclaw/openclaw.mjs");
 
-    expect(buildCurrentOpenClawCliArgv(["sessions", "export-trajectory"])).toEqual([
+    expect(buildCurrentOperatorCliArgv(["sessions", "export-trajectory"])).toEqual([
       process.execPath,
       ...process.execArgv,
       "/opt/openclaw/openclaw.mjs",
@@ -46,11 +46,11 @@ describe("buildCurrentOpenClawCliArgv", () => {
     ]);
   });
 
-  it("preserves OpenClaw dist entries from the package root", () => {
+  it("preserves Operator dist entries from the package root", () => {
     const distEntry = path.join(process.cwd(), "dist", "entry.js");
     setArgv1(distEntry);
 
-    expect(buildCurrentOpenClawCliArgv(["sessions", "export-trajectory"])).toEqual([
+    expect(buildCurrentOperatorCliArgv(["sessions", "export-trajectory"])).toEqual([
       process.execPath,
       ...process.execArgv,
       distEntry,
@@ -59,11 +59,11 @@ describe("buildCurrentOpenClawCliArgv", () => {
     ]);
   });
 
-  it("preserves OpenClaw source entries from the package root", () => {
+  it("preserves Operator source entries from the package root", () => {
     const sourceEntry = path.join(process.cwd(), "src", "entry.ts");
     setArgv1(sourceEntry);
 
-    expect(buildCurrentOpenClawCliArgv(["sessions", "export-trajectory"])).toEqual([
+    expect(buildCurrentOperatorCliArgv(["sessions", "export-trajectory"])).toEqual([
       process.execPath,
       ...process.execArgv,
       sourceEntry,
@@ -72,10 +72,10 @@ describe("buildCurrentOpenClawCliArgv", () => {
     ]);
   });
 
-  it("does not treat foreign dist entries as OpenClaw launchers", () => {
+  it("does not treat foreign dist entries as Operator launchers", () => {
     setArgv1("/app/dist/index.js");
 
-    expect(buildCurrentOpenClawCliArgv(["sessions", "export-trajectory"])).toEqual([
+    expect(buildCurrentOperatorCliArgv(["sessions", "export-trajectory"])).toEqual([
       process.execPath,
       "--import",
       trustedTsxLoader,
@@ -87,16 +87,16 @@ describe("buildCurrentOpenClawCliArgv", () => {
 
   it("clears inherited Vitest runner environment for CLI child processes", () => {
     expect(
-      buildCurrentOpenClawCliExecEnv({
+      buildCurrentOperatorCliExecEnv({
         PATH: "/usr/bin",
         VITEST: "true",
         VITEST_POOL_ID: "pool",
-        OPENCLAW_VITEST_MAX_WORKERS: "1",
+        OPERATOR_VITEST_MAX_WORKERS: "1",
       }),
     ).toEqual({
       VITEST: "",
       VITEST_POOL_ID: "",
-      OPENCLAW_VITEST_MAX_WORKERS: "",
+      OPERATOR_VITEST_MAX_WORKERS: "",
     });
   });
 });

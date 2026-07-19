@@ -1,6 +1,6 @@
 # @operator/llama-cpp-provider
 
-Official llama.cpp embedding provider for OpenClaw.
+Official llama.cpp embedding provider for Operator.
 
 This plugin runs local GGUF embedding models through `node-llama-cpp`.
 
@@ -24,4 +24,4 @@ Face model URI, or HTTPS model URL.
 
 - Plugin id: `llama-cpp`
 - Package: `@operator/llama-cpp-provider`
-- Minimum OpenClaw host: `2026.6.2`
+- Minimum Operator host: `2026.6.2`

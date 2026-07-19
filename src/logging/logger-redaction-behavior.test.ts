@@ -95,7 +95,7 @@ describe("file log redaction", () => {
         },
       }),
     );
-    withEnv({ OPENCLAW_CONFIG_PATH: configPath }, () => {
+    withEnv({ OPERATOR_CONFIG_PATH: configPath }, () => {
       setLoggerOverride({ level: "info", file: logPath });
 
       getLogger().info({
@@ -125,7 +125,7 @@ describe("file log redaction", () => {
         },
       }),
     );
-    withEnv({ OPENCLAW_CONFIG_PATH: configPath, OPENCLAW_TEST_FILE_LOG: "1" }, () => {
+    withEnv({ OPERATOR_CONFIG_PATH: configPath, OPERATOR_TEST_FILE_LOG: "1" }, () => {
       getLogger().info({ message: "configured log path works" });
     });
 

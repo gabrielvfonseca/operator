@@ -1,7 +1,7 @@
 // Lightweight static projections for deciding whether plugin repair can be skipped.
 import { isRecord } from "@operator/normalization-core/record-coerce";
 import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { BUNDLED_OFFICIAL_EXTERNAL_PLUGIN_CATALOG_ENTRIES } from "./official-external-plugin-bundled-catalogs.js";
 
 type StaticProvider = {
@@ -88,7 +88,7 @@ export function hasOfficialExternalWebContractEnvTarget(params: {
 }
 
 export function hasOfficialExternalChannelTarget(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   env: NodeJS.ProcessEnv;
 }): boolean {
   const channels = isRecord(params.config.channels) ? params.config.channels : undefined;

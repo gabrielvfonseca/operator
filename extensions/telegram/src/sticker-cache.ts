@@ -7,7 +7,7 @@ import {
   modelSupportsVision,
 } from "openclaw/plugin-sdk/agent-runtime";
 import { resolveDefaultModelForAgent } from "openclaw/plugin-sdk/agent-runtime";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { resolveAutoImageModel } from "openclaw/plugin-sdk/media-runtime";
 import {
   resolveAutoMediaKeyProviders,
@@ -40,7 +40,7 @@ function isMinimaxVlmProvider(provider: string): boolean {
 
 export interface DescribeStickerParams {
   imagePath: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentDir?: string;
   agentId?: string;
 }

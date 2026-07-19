@@ -26,7 +26,7 @@ import {
   getRuntimeConfigSourceSnapshot,
   selectApplicableRuntimeConfig,
 } from "../../config/runtime-snapshot.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { resolveOutboundChannelPlugin } from "../../infra/outbound/channel-resolution.js";
 import { resolveMessageChannelSelection } from "../../infra/outbound/channel-selection.js";
 import {
@@ -265,8 +265,8 @@ async function resolveRequestedChannel(params: {
   rejectWebchatAsInternalOnly?: boolean;
 }): Promise<
   | {
-      cfg: OpenClawConfig;
-      sourceCfg: OpenClawConfig;
+      cfg: OperatorConfig;
+      sourceCfg: OperatorConfig;
       channel: string;
     }
   | {
@@ -309,8 +309,8 @@ async function resolveInternalDeliveryChannel(
 ): Promise<
   | {
       kind: "ready";
-      cfg: OpenClawConfig;
-      sourceCfg: OpenClawConfig;
+      cfg: OperatorConfig;
+      sourceCfg: OperatorConfig;
       channel: string;
     }
   | {
@@ -336,7 +336,7 @@ async function resolveInternalDeliveryChannel(
 function resolveGatewayOutboundTarget(params: {
   channel: string;
   to: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string;
 }):
   | {
@@ -364,9 +364,9 @@ function resolveGatewayOutboundTarget(params: {
 }
 
 function resolveMessageActionRuntimeConfig(params: {
-  cfg: OpenClawConfig;
-  sourceCfg: OpenClawConfig;
-}): OpenClawConfig {
+  cfg: OperatorConfig;
+  sourceCfg: OperatorConfig;
+}): OperatorConfig {
   const runtimeConfig = getRuntimeConfigSnapshot();
   const runtimeSourceConfig = getRuntimeConfigSourceSnapshot();
   if (!runtimeConfig || !runtimeSourceConfig) {

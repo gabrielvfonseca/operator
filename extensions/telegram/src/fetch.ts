@@ -213,10 +213,10 @@ function hasEnvHttpProxyForTelegramApi(env: NodeJS.ProcessEnv = process.env): bo
   return hasEnvHttpProxyAgentConfigured(env);
 }
 
-function resolveOpenClawProxyUrlForTelegram(
+function resolveOperatorProxyUrlForTelegram(
   env: NodeJS.ProcessEnv = process.env,
 ): string | undefined {
-  const proxyUrl = env.OPENCLAW_PROXY_URL?.trim();
+  const proxyUrl = env.OPERATOR_PROXY_URL?.trim();
   return proxyUrl ? proxyUrl : undefined;
 }
 
@@ -583,7 +583,7 @@ export function resolveTelegramTransport(
     : undefined;
   const hasEnvProxy = !explicitProxyUrl && hasEnvHttpProxyForTelegramApi();
   const managedProxyUrl =
-    !effectiveProxyFetch && !hasEnvProxy ? resolveOpenClawProxyUrlForTelegram() : undefined;
+    !effectiveProxyFetch && !hasEnvProxy ? resolveOperatorProxyUrlForTelegram() : undefined;
   const resolvedExplicitProxyUrl = explicitProxyUrl ?? managedProxyUrl;
   const undiciSourceFetch = resolveWrappedFetch(undiciFetch as unknown as typeof fetch);
   const sourceFetch = resolvedExplicitProxyUrl

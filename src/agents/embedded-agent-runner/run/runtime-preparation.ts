@@ -225,7 +225,7 @@ export async function prepareEmbeddedRunRuntime(input: {
   const pluginHarnessHasPreparedApiKeyAttempt = preparedAuthAttempts.some(
     (attempt) => attempt.plan.modelRoute?.authRequirement === "api-key",
   );
-  const pluginHarnessNeedsOpenClawAuthBootstrap =
+  const pluginHarnessNeedsOperatorAuthBootstrap =
     pluginHarnessOwnsTransport &&
     usesOpenAIAuthRouting &&
     (preparedApiKeyRoute ||
@@ -417,7 +417,7 @@ export async function prepareEmbeddedRunRuntime(input: {
     ? advancePluginHarnessAuthAttempt
     : authController.advanceAuthProfile;
 
-  if (!pluginHarnessOwnsTransport || pluginHarnessNeedsOpenClawAuthBootstrap) {
+  if (!pluginHarnessOwnsTransport || pluginHarnessNeedsOperatorAuthBootstrap) {
     await authController.initializeAuthProfile();
   } else if (lockedProfileId) {
     lastProfileId = lockedProfileId;

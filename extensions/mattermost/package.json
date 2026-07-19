@@ -1,7 +1,7 @@
 {
   "name": "@operator/mattermost",
   "version": "2026.7.2",
-  "description": "OpenClaw Mattermost channel plugin",
+  "description": "Operator Mattermost channel plugin",
   "repository": {
     "type": "git",
     "url": "https://github.com/openclaw/openclaw"

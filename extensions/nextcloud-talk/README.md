@@ -1,11 +1,11 @@
-# OpenClaw Nextcloud Talk
+# Operator Nextcloud Talk
 
-Official OpenClaw channel plugin for Nextcloud Talk conversations.
+Official Operator channel plugin for Nextcloud Talk conversations.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugin add @operator/nextcloud-talk
 ```
 
-Configure the Nextcloud server and Talk credentials in OpenClaw, then enable the conversations where agents should receive and send messages.
+Configure the Nextcloud server and Talk credentials in Operator, then enable the conversations where agents should receive and send messages.

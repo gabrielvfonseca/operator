@@ -2,7 +2,7 @@
   "name": "@operator/migrate-claude",
   "version": "2026.7.2",
   "private": true,
-  "description": "Claude to OpenClaw migration provider",
+  "description": "Claude to Operator migration provider",
   "type": "module",
   "devDependencies": {
     "@operator/plugin-sdk": "workspace:*",

@@ -1,14 +1,14 @@
 // Normalizes agent prompt surface kinds advertised by plugins.
 import type { AgentPromptSurfaceKind } from "./types.js";
 
-/** Normalizes legacy prompt surface names to current OpenClaw surface names. */
+/** Normalizes legacy prompt surface names to current Operator surface names. */
 export function normalizeAgentPromptSurfaceKind(
   surface: AgentPromptSurfaceKind,
 ): AgentPromptSurfaceKind {
   return surface === "pi_main" ? "operator_main" : surface;
 }
 
-/** True when a prompt surface targets the main OpenClaw prompt. */
-export function isOpenClawMainPromptSurface(surface: AgentPromptSurfaceKind): boolean {
+/** True when a prompt surface targets the main Operator prompt. */
+export function isOperatorMainPromptSurface(surface: AgentPromptSurfaceKind): boolean {
   return normalizeAgentPromptSurfaceKind(surface) === "operator_main";
 }

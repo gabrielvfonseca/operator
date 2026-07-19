@@ -1,4 +1,4 @@
-/** Reads Codex/Claude/Cursor bundle manifests into OpenClaw plugin manifest metadata. */
+/** Reads Codex/Claude/Cursor bundle manifests into Operator plugin manifest metadata. */
 import path from "node:path";
 import {
   normalizeLowercaseStringOrEmpty,
@@ -31,7 +31,7 @@ type BundlePluginManifest = {
   version?: string;
   skills: string[];
   settingsFiles?: string[];
-  // Only include hook roots that OpenClaw can execute via HOOK.md + handler files.
+  // Only include hook roots that Operator can execute via HOOK.md + handler files.
   hooks: string[];
   bundleFormat: PluginBundleFormat;
   activation?: PluginManifestActivation;

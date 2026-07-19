@@ -1,4 +1,4 @@
-// Google Meet plugin entrypoint registers its OpenClaw integration.
+// Google Meet plugin entrypoint registers its Operator integration.
 import {
   optionalPositiveIntegerSchema,
   readPositiveIntegerParam,
@@ -11,7 +11,7 @@ import {
   type GatewayRequestHandlerOptions,
 } from "openclaw/plugin-sdk/gateway-runtime";
 import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { definePluginEntry, type OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import { definePluginEntry, type OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import { normalizeAgentId, parseAgentSessionKey } from "openclaw/plugin-sdk/routing";
 import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
 import { jsonResult as json } from "openclaw/plugin-sdk/tool-results";
@@ -69,7 +69,7 @@ const googleMeetConfigSchema = {
     },
     defaultMode: {
       label: "Default Mode",
-      help: "Agent uses realtime transcription plus regular OpenClaw TTS. Bidi uses the realtime voice model directly. Transcribe observes only.",
+      help: "Agent uses realtime transcription plus regular Operator TTS. Bidi uses the realtime voice model directly. Transcribe observes only.",
     },
     "chrome.audioBackend": {
       label: "Chrome Audio Backend",
@@ -87,7 +87,7 @@ const googleMeetConfigSchema = {
     },
     "chrome.autoJoin": {
       label: "Auto Join Guest Screen",
-      help: "Best-effort guest-name fill and Join Now click through OpenClaw browser automation.",
+      help: "Best-effort guest-name fill and Join Now click through Operator browser automation.",
     },
     "chrome.waitForInCallMs": {
       label: "Wait For In-Call (ms)",
@@ -182,7 +182,7 @@ const googleMeetConfigSchema = {
     },
     "realtime.transcriptionProvider": {
       label: "Realtime Transcription Provider",
-      help: "Agent mode uses this provider to transcribe meeting audio before regular OpenClaw TTS answers.",
+      help: "Agent mode uses this provider to transcribe meeting audio before regular Operator TTS answers.",
     },
     "realtime.voiceProvider": {
       label: "Bidi Voice Provider",
@@ -190,7 +190,7 @@ const googleMeetConfigSchema = {
     },
     "realtime.model": {
       label: "Bidi Realtime Model",
-      help: "Only used by mode=bidi. Agent mode answers with the configured OpenClaw agent and regular TTS.",
+      help: "Only used by mode=bidi. Agent mode answers with the configured Operator agent and regular TTS.",
       advanced: true,
     },
     "realtime.instructions": { label: "Realtime Instructions", advanced: true },
@@ -200,7 +200,7 @@ const googleMeetConfigSchema = {
     },
     "realtime.agentId": {
       label: "Realtime Consult Agent",
-      help: 'OpenClaw agent id used by openclaw_agent_consult. Defaults to "main".',
+      help: 'Operator agent id used by openclaw_agent_consult. Defaults to "main".',
       advanced: true,
     },
     "realtime.toolPolicy": {
@@ -275,7 +275,7 @@ const GoogleMeetToolSchema = Type.Object({
     Type.String({
       enum: ["agent", "bidi", "transcribe"],
       description:
-        "Join mode. agent uses realtime transcription, the configured OpenClaw agent, and regular TTS. bidi uses the realtime voice model directly. transcribe joins observe-only.",
+        "Join mode. agent uses realtime transcription, the configured Operator agent, and regular TTS. bidi uses the realtime voice model directly. transcribe joins observe-only.",
     }),
   ),
   dialInNumber: Type.Optional(
@@ -481,7 +481,7 @@ async function callGoogleMeetGatewayFromTool(params: {
   config: GoogleMeetConfig;
   action: GoogleMeetGatewayToolAction;
   raw: Record<string, unknown>;
-  runtime?: OpenClawPluginApi["runtime"];
+  runtime?: OperatorPluginApi["runtime"];
 }): Promise<unknown> {
   try {
     if (params.runtime) {
@@ -528,7 +528,7 @@ function keepTrustedToolAgentId(
 
 async function createMeetFromParams(params: {
   config: GoogleMeetConfig;
-  runtime: OpenClawPluginApi["runtime"];
+  runtime: OperatorPluginApi["runtime"];
   raw: Record<string, unknown>;
 }) {
   const create = await loadGoogleMeetCreateModule();
@@ -537,7 +537,7 @@ async function createMeetFromParams(params: {
 
 async function createAndJoinMeetFromParams(params: {
   config: GoogleMeetConfig;
-  runtime: OpenClawPluginApi["runtime"];
+  runtime: OperatorPluginApi["runtime"];
   raw: Record<string, unknown>;
   ensureRuntime: () => Promise<GoogleMeetRuntime>;
 }) {
@@ -715,7 +715,7 @@ export default definePluginEntry({
   name: "Google Meet",
   description: "Join Google Meet calls through Chrome or Twilio transports",
   configSchema: googleMeetConfigSchema,
-  register(api: OpenClawPluginApi) {
+  register(api: OperatorPluginApi) {
     const config = googleMeetConfigSchema.parse(api.pluginConfig);
     let runtime: GoogleMeetRuntime | null = null;
 

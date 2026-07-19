@@ -1,6 +1,6 @@
 # @operator/twitch
 
-Twitch channel plugin for OpenClaw.
+Twitch channel plugin for Operator.
 
 ## Install (local checkout)
 

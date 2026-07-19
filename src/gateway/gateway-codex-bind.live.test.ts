@@ -8,7 +8,7 @@ import { renderCatFacePngBase64 } from "../../test/helpers/live-image-probe.js";
 import { isLiveTestEnabled } from "../agents/live-test-helpers.js";
 import type { ChannelOutboundContext } from "../channels/plugins/types.public.js";
 import { clearConfigCache, clearRuntimeConfigSnapshot } from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import { getSessionBindingService } from "../infra/outbound/session-binding-service.js";
 import { findBundledPluginMetadataById } from "../plugins/bundled-plugin-metadata.js";
@@ -32,14 +32,14 @@ import { restoreLiveEnv, snapshotLiveEnv, type LiveEnvSnapshot } from "./live-en
 import { startGatewayServer } from "./server.js";
 
 const LIVE = isLiveTestEnabled();
-const CODEX_BIND_LIVE = isTruthyEnvValue(process.env.OPENCLAW_LIVE_CODEX_BIND);
+const CODEX_BIND_LIVE = isTruthyEnvValue(process.env.OPERATOR_LIVE_CODEX_BIND);
 const describeLive = LIVE && CODEX_BIND_LIVE ? describe : describe.skip;
 const CODEX_BIND_TIMEOUT_MS = resolveLiveTimeoutMs(
-  process.env.OPENCLAW_LIVE_CODEX_BIND_TIMEOUT_MS,
+  process.env.OPERATOR_LIVE_CODEX_BIND_TIMEOUT_MS,
   900_000,
 );
 const CODEX_BIND_REQUEST_TIMEOUT_MS = resolveLiveTimeoutMs(
-  process.env.OPENCLAW_LIVE_CODEX_BIND_REQUEST_TIMEOUT_MS,
+  process.env.OPERATOR_LIVE_CODEX_BIND_REQUEST_TIMEOUT_MS,
   300_000,
 );
 const DEFAULT_CODEX_BIND_MODEL = "gpt-5.6-luna";
@@ -346,7 +346,7 @@ async function writeGatewayConfig(params: {
   workspace: string;
 }): Promise<void> {
   const modelProvider = params.modelProvider?.trim() || "codex";
-  const cfg: OpenClawConfig = {
+  const cfg: OperatorConfig = {
     gateway: {
       mode: "local",
       port: params.port,
@@ -384,11 +384,11 @@ async function writeGatewayConfig(params: {
 }
 
 function resolveCodexBindModelProvider(): string | undefined {
-  const configured = process.env.OPENCLAW_LIVE_CODEX_BIND_PROVIDER?.trim();
+  const configured = process.env.OPERATOR_LIVE_CODEX_BIND_PROVIDER?.trim();
   if (configured) {
     return configured;
   }
-  return process.env.OPENCLAW_LIVE_CODEX_HARNESS_AUTH === "api-key" ? "openai" : undefined;
+  return process.env.OPERATOR_LIVE_CODEX_HARNESS_AUTH === "api-key" ? "openai" : undefined;
 }
 
 describeLive("gateway live (native Codex conversation binding)", () => {
@@ -408,7 +408,7 @@ describeLive("gateway live (native Codex conversation binding)", () => {
       const slackUserId = `U${randomUUID().replace(/-/g, "").slice(0, 10).toUpperCase()}`;
       const conversationId = `user:${slackUserId}`;
       const bindModel =
-        process.env.OPENCLAW_LIVE_CODEX_BIND_MODEL?.trim() || DEFAULT_CODEX_BIND_MODEL;
+        process.env.OPERATOR_LIVE_CODEX_BIND_MODEL?.trim() || DEFAULT_CODEX_BIND_MODEL;
       const bindProvider = resolveCodexBindModelProvider();
       const outboundReplies: CapturedOutboundReply[] = [];
 
@@ -445,13 +445,13 @@ describeLive("gateway live (native Codex conversation binding)", () => {
         deleteTestEnvValue("CODEX_HOME");
       }
       setTestEnvValue("HOME", tempHome);
-      setTestEnvValue("OPENCLAW_CONFIG_PATH", configPath);
-      setTestEnvValue("OPENCLAW_GATEWAY_TOKEN", token);
-      setTestEnvValue("OPENCLAW_SKIP_CANVAS_HOST", "1");
-      setTestEnvValue("OPENCLAW_SKIP_CHANNELS", "1");
-      setTestEnvValue("OPENCLAW_SKIP_CRON", "1");
-      setTestEnvValue("OPENCLAW_SKIP_GMAIL_WATCHER", "1");
-      setTestEnvValue("OPENCLAW_STATE_DIR", stateDir);
+      setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
+      setTestEnvValue("OPERATOR_GATEWAY_TOKEN", token);
+      setTestEnvValue("OPERATOR_SKIP_CANVAS_HOST", "1");
+      setTestEnvValue("OPERATOR_SKIP_CHANNELS", "1");
+      setTestEnvValue("OPERATOR_SKIP_CRON", "1");
+      setTestEnvValue("OPERATOR_SKIP_GMAIL_WATCHER", "1");
+      setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
       let server: Awaited<ReturnType<typeof startGatewayServer>> | undefined;
       let client: Awaited<ReturnType<typeof connectTestGatewayClient>> | undefined;
       let pinnedChannelRegistry:

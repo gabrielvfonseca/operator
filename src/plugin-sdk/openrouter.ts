@@ -1,10 +1,10 @@
 // Manual facade. Keep loader boundary explicit.
-import type { ModelProviderConfig, OpenClawConfig } from "../config/types.js";
+import type { ModelProviderConfig, OperatorConfig } from "../config/types.js";
 import { loadBundledPluginPublicSurfaceModuleSync } from "./facade-loader.js";
 
 type FacadeModule = {
-  applyOpenrouterConfig: (cfg: OpenClawConfig) => OpenClawConfig;
-  applyOpenrouterProviderConfig: (cfg: OpenClawConfig) => OpenClawConfig;
+  applyOpenrouterConfig: (cfg: OperatorConfig) => OperatorConfig;
+  applyOpenrouterProviderConfig: (cfg: OperatorConfig) => OperatorConfig;
   buildOpenrouterProvider: () => ModelProviderConfig;
   OPENROUTER_DEFAULT_MODEL_REF: string;
 };
@@ -15,7 +15,7 @@ function loadFacadeModule(): FacadeModule {
     artifactBasename: "api.js",
   });
 }
-/** Apply OpenRouter defaults to the full OpenClaw config. */
+/** Apply OpenRouter defaults to the full Operator config. */
 export const applyOpenrouterConfig: FacadeModule["applyOpenrouterConfig"] = ((...args) =>
   loadFacadeModule()["applyOpenrouterConfig"](...args)) as FacadeModule["applyOpenrouterConfig"];
 /** Apply only OpenRouter provider config defaults. */

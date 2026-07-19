@@ -7,12 +7,12 @@ import { resolveIngressWorkspaceOverrideForSessionRun } from "../../agents/spawn
 import { normalizeReasoningLevel, normalizeThinkLevel } from "../../auto-reply/thinking.js";
 import type { SessionEntry } from "../../config/sessions.js";
 import { resolveSessionTranscriptRuntimeTarget } from "../../config/sessions/session-accessor.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { resolveSessionModelRef } from "../session-utils.js";
 
 export async function runGatewaySessionCompaction(params: {
   agentId: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   entry: SessionEntry;
   sessionId: string;
   sessionKey: string;

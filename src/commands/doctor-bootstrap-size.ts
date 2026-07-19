@@ -10,7 +10,7 @@ import {
   resolveBootstrapMaxChars,
   resolveBootstrapTotalMaxChars,
 } from "../agents/embedded-agent-helpers.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 
 function formatInt(value: number): string {
   return new Intl.NumberFormat("en-US").format(Math.max(0, Math.floor(value)));
@@ -36,7 +36,7 @@ function formatCauses(causes: Array<"per-file-limit" | "total-limit">): string {
  *
  * Returns the raw budget analysis for tests and callers that need structured evidence.
  */
-export async function noteBootstrapFileSize(cfg: OpenClawConfig) {
+export async function noteBootstrapFileSize(cfg: OperatorConfig) {
   const defaultAgentId = resolveDefaultAgentId(cfg);
   const workspaceDir = resolveAgentWorkspaceDir(cfg, defaultAgentId);
   const bootstrapMaxChars = resolveBootstrapMaxChars(cfg, defaultAgentId);

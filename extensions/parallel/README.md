@@ -1,8 +1,8 @@
-# OpenClaw Parallel Plugin
+# Operator Parallel Plugin
 
-Official OpenClaw plugin for Parallel.
+Official Operator plugin for Parallel.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/parallel-plugin

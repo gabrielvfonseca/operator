@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it, vi } from "vitest";
-import type { ConfigFileSnapshot, OpenClawConfig } from "../config/types.openclaw.js";
+import type { ConfigFileSnapshot, OperatorConfig } from "../config/types.openclaw.js";
 import { SystemAgentChatEngine } from "./chat-engine.js";
 import { createSystemAgentVerifiedInferenceTestFixture } from "./system-agent.test-helpers.js";
 import type {
@@ -19,7 +19,7 @@ const verifiedInferenceConfig = {
       },
     },
   },
-} satisfies OpenClawConfig;
+} satisfies OperatorConfig;
 
 let verifiedInference: SystemAgentVerifiedInferenceBinding;
 let verifiedInferenceDeps: SystemAgentVerifiedInferenceDeps;
@@ -100,7 +100,7 @@ beforeAll(async () => {
   verifiedInferenceDeps = fixture.deps;
 });
 
-describe("OpenClaw chat channel setup", () => {
+describe("Operator chat channel setup", () => {
   it("runs collected channel hooks after writing config", async () => {
     const engine = new SystemAgentChatEngine({
       verifiedInference,

@@ -6,7 +6,7 @@ import { loadSessionEntry, replaceSessionEntry } from "../config/sessions/sessio
 import type { SessionEntry } from "../config/sessions/types.js";
 import { saveCronStore } from "../cron/store.js";
 import type { RuntimeEnv } from "../runtime.js";
-import { closeOpenClawAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
 import { createManagedTaskFlow as createManagedTaskFlowOrNull } from "../tasks/task-flow-registry.js";
 import type { TaskFlowRecord } from "../tasks/task-flow-registry.types.js";
 import {
@@ -23,8 +23,8 @@ import {
   resetTaskRegistryDeliveryRuntimeForTests,
   resetTaskRegistryForTests,
 } from "../tasks/task-runtime.test-helpers.js";
-import { withOpenClawTestState } from "../test-utils/operator-test-state.js";
-import type { OpenClawTestState } from "../test-utils/operator-test-state.js";
+import { withOperatorTestState } from "../test-utils/operator-test-state.js";
+import type { OperatorTestState } from "../test-utils/operator-test-state.js";
 import type { TaskSystemAuditCode, TaskSystemAuditSeverity } from "./tasks-audit-system.js";
 import {
   tasksAuditCommand,
@@ -98,9 +98,9 @@ async function writeSessionEntries(
 }
 
 async function withTaskCommandStateDir(
-  run: (state: OpenClawTestState) => Promise<void>,
+  run: (state: OperatorTestState) => Promise<void>,
 ): Promise<void> {
-  await withOpenClawTestState(
+  await withOperatorTestState(
     { layout: "state-only", prefix: "openclaw-tasks-command-" },
     async (state) => {
       taskRegistryMaintenance.stopTaskRegistryMaintenance();
@@ -110,7 +110,7 @@ async function withTaskCommandStateDir(
       resetTaskRegistryDeliveryRuntimeForTests();
       resetTaskRegistryForTests({ persist: false });
       resetTaskFlowRegistryForTests({ persist: false });
-      closeOpenClawAgentDatabasesForTest();
+      closeOperatorAgentDatabasesForTest();
       try {
         await run(state);
       } finally {
@@ -121,7 +121,7 @@ async function withTaskCommandStateDir(
         resetTaskRegistryDeliveryRuntimeForTests();
         resetTaskRegistryForTests({ persist: false });
         resetTaskFlowRegistryForTests({ persist: false });
-        closeOpenClawAgentDatabasesForTest();
+        closeOperatorAgentDatabasesForTest();
       }
     },
   );
@@ -141,7 +141,7 @@ describe("tasks commands", () => {
     resetTaskRegistryDeliveryRuntimeForTests();
     resetTaskRegistryForTests({ persist: false });
     resetTaskFlowRegistryForTests({ persist: false });
-    closeOpenClawAgentDatabasesForTest();
+    closeOperatorAgentDatabasesForTest();
     mocks.callGateway.mockReset();
   });
 

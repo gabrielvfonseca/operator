@@ -1,5 +1,5 @@
 // Qa Lab tests cover live gateway plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const { startQaGatewayChild, startQaProviderServer } = vi.hoisted(() => ({
@@ -22,7 +22,7 @@ type GatewayOptions = {
   providerBaseUrl?: string;
   providerMode?: string;
   transportBaseUrl?: string;
-  mutateConfig?: (cfg: OpenClawConfig) => OpenClawConfig;
+  mutateConfig?: (cfg: OperatorConfig) => OperatorConfig;
 };
 
 function createStubTransport(baseUrl = "http://127.0.0.1:43123") {
@@ -34,7 +34,7 @@ function createStubTransport(baseUrl = "http://127.0.0.1:43123") {
           enabled: true,
           baseUrl,
           botUserId: "openclaw",
-          botDisplayName: "OpenClaw QA",
+          botDisplayName: "Operator QA",
           allowFrom: ["*"],
           pollTimeoutMs: 250,
         },

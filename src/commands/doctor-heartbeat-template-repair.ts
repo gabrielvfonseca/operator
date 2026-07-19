@@ -5,7 +5,7 @@ import { note } from "../../packages/terminal-core/src/note.js";
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../agents/agent-scope.js";
 import { resolveWorkspaceTemplateDir } from "../agents/workspace-templates.js";
 import { DEFAULT_HEARTBEAT_FILENAME } from "../agents/workspace.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { HealthFinding } from "../flows/health-checks.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { writeTextAtomic } from "../infra/json-files.js";
@@ -44,7 +44,7 @@ const LEGACY_HEARTBEAT_FENCED_RELATED_TEMPLATE = [
 
 const DOCS_HEARTBEAT_TEMPLATE_PAGE_AS_TEMPLATE = [
   "# HEARTBEAT.md template",
-  "`HEARTBEAT.md` lives in the agent workspace. Keep the file empty, or with only Markdown comments and headings, when you want OpenClaw to skip heartbeat model calls.",
+  "`HEARTBEAT.md` lives in the agent workspace. Keep the file empty, or with only Markdown comments and headings, when you want Operator to skip heartbeat model calls.",
   "The default runtime template is:",
   "```markdown",
   "# Keep this file empty (or with only comments) to skip heartbeat API calls.",
@@ -72,7 +72,7 @@ const KNOWN_DIRTY_HEARTBEAT_TEMPLATE_LINES = new Set([
   "```",
   "# HEARTBEAT.md Template",
   "# HEARTBEAT.md template",
-  "`HEARTBEAT.md` lives in the agent workspace. Keep the file empty, or with only Markdown comments and headings, when you want OpenClaw to skip heartbeat model calls.",
+  "`HEARTBEAT.md` lives in the agent workspace. Keep the file empty, or with only Markdown comments and headings, when you want Operator to skip heartbeat model calls.",
   "The default runtime template is:",
   "Add short tasks below the comments only when you want the agent to check something periodically. Keep heartbeat instructions small because they are read during recurring wakes.",
   ...LEGACY_HEARTBEAT_PROSE_TEMPLATE,
@@ -154,7 +154,7 @@ function heartbeatTemplateAnalysisToHealthFinding(
 
 /** Collects read-only structured findings for legacy HEARTBEAT.md template wrappers. */
 export async function collectHeartbeatTemplateHealthFindings(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   deps?: {
     readFile?: (filePath: string) => Promise<string>;
   },
@@ -190,7 +190,7 @@ export async function collectHeartbeatTemplateHealthFindings(
 
 /** Replaces known dirty heartbeat templates with the clean runtime template when repair is enabled. */
 export async function maybeRepairHeartbeatTemplate(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   shouldRepair: boolean;
 }): Promise<void> {
   const workspaceDir = resolveAgentWorkspaceDir(params.cfg, resolveDefaultAgentId(params.cfg));

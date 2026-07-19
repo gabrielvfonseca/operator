@@ -1,5 +1,5 @@
 // Duckduckgo plugin module implements ddg client behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { decodeHtmlEntities as decodeHtmlEntity } from "openclaw/plugin-sdk/html-entity-runtime";
 import { readProviderTextResponse } from "openclaw/plugin-sdk/provider-http";
 import {
@@ -117,7 +117,7 @@ function parseDuckDuckGoHtml(html: string): DuckDuckGoResult[] {
 }
 
 export async function runDuckDuckGoSearch(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   query: string;
   count?: number;
   region?: string;

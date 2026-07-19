@@ -12,7 +12,7 @@ import {
 import { useAutoCleanupTempDirTracker } from "../../test/helpers/temp-dir.js";
 import { createPinnedLookup } from "../infra/net/ssrf.js";
 import { setMediaStoreNetworkDepsForTest } from "../media/store.test-support.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import {
   insertManagedImageRecord,
@@ -285,7 +285,7 @@ describe("handleManagedOutgoingImageHttpRequest", () => {
   });
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     setMediaStoreNetworkDepsForTest();
     await fs.rm(stateDir, { recursive: true, force: true });
   });
@@ -326,9 +326,9 @@ describe("handleManagedOutgoingImageHttpRequest", () => {
     try {
       await withEnvAsync(
         {
-          OPENCLAW_CONFIG_PATH: path.join(externalConfigDir, "config.json"),
-          OPENCLAW_HOME: isolatedHome,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_CONFIG_PATH: path.join(externalConfigDir, "config.json"),
+          OPERATOR_HOME: isolatedHome,
+          OPERATOR_STATE_DIR: undefined,
         },
         async () => {
           const pathName = `/api/chat/media/outgoing/${encodeURIComponent(fixture.sessionKey)}/${fixture.attachmentId}/full`;
@@ -630,7 +630,7 @@ describe("createManagedOutgoingImageBlocks", () => {
   });
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     setMediaStoreNetworkDepsForTest();
     await fs.rm(stateDir, { recursive: true, force: true });
   });
@@ -733,7 +733,7 @@ describe("createManagedOutgoingImageBlocks", () => {
     await fs.mkdir(path.dirname(sourcePath), { recursive: true });
     await fs.writeFile(sourcePath, Buffer.from(TINY_PNG_BASE64, "base64"));
 
-    await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, async () => {
+    await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
       const blocks = await createManagedOutgoingImageBlocks({
         stateDir,
         sessionKey: "agent:main:main",
@@ -780,7 +780,7 @@ describe("createManagedOutgoingImageBlocks", () => {
     });
 
     try {
-      await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, async () => {
+      await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
         const sourceUrl = `http://127.0.0.1:${address.port}/remote-cat.png?sig=secret`;
         const blocks = await createManagedOutgoingImageBlocks({
           stateDir,
@@ -825,9 +825,9 @@ describe("createManagedOutgoingImageBlocks", () => {
     try {
       await withEnvAsync(
         {
-          OPENCLAW_HOME: openClawHome,
-          OPENCLAW_CONFIG_PATH: path.join(externalConfigDir, "config.json"),
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_HOME: openClawHome,
+          OPERATOR_CONFIG_PATH: path.join(externalConfigDir, "config.json"),
+          OPERATOR_STATE_DIR: undefined,
         },
         async () => {
           const blocks = await createManagedOutgoingImageBlocks({
@@ -873,7 +873,7 @@ describe("createManagedOutgoingImageBlocks", () => {
         },
       );
     } finally {
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(openClawHome, { recursive: true, force: true });
       await fs.rm(externalConfigDir, { recursive: true, force: true });
     }
@@ -961,7 +961,7 @@ describe("createManagedOutgoingImageBlocks", () => {
     });
 
     try {
-      await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, async () => {
+      await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
         const blocks = await createManagedOutgoingImageBlocks({
           sessionKey: "agent:main:main",
           mediaUrls: [`http://127.0.0.1:${address.port}/large-image.png`],
@@ -1020,7 +1020,7 @@ describe("createManagedOutgoingImageBlocks", () => {
     await fs.mkdir(path.dirname(inboundPath), { recursive: true });
     await fs.writeFile(inboundPath, Buffer.from(TINY_PNG_BASE64, "base64"));
 
-    await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, async () => {
+    await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
       const blocks = await createManagedOutgoingImageBlocks({
         sessionKey: "agent:main:main",
         mediaUrls: [inboundPath],
@@ -1156,7 +1156,7 @@ describe("attachManagedOutgoingImagesToMessage", () => {
   });
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await fs.rm(stateDir, { recursive: true, force: true });
   });
 
@@ -1191,7 +1191,7 @@ describe("cleanupManagedOutgoingImageRecords", () => {
   });
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await fs.rm(stateDir, { recursive: true, force: true });
   });
 

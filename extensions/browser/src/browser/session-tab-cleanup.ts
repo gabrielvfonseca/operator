@@ -1,5 +1,5 @@
 /**
- * Periodic cleanup for browser tabs tracked to primary OpenClaw sessions.
+ * Periodic cleanup for browser tabs tracked to primary Operator sessions.
  */
 import {
   isAcpSessionKey,

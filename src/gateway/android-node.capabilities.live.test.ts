@@ -10,7 +10,7 @@ import {
 } from "../../test/helpers/gateway/android-node-capabilities-required-commands.js";
 import { isLiveTestEnabled } from "../agents/live-test-helpers.js";
 import { getRuntimeConfig } from "../config/config.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import { parseNodeList, parsePairingList } from "../shared/node-list-parse.js";
 import type { NodeListNode } from "../shared/node-list-types.js";
@@ -21,7 +21,7 @@ import { resolveGatewayCredentialsFromConfig } from "./credentials.js";
 import { resolveNodeCommandAllowlist } from "./node-command-policy.js";
 
 const LIVE = isLiveTestEnabled();
-const LIVE_ANDROID_NODE = isTruthyEnvValue(process.env.OPENCLAW_LIVE_ANDROID_NODE);
+const LIVE_ANDROID_NODE = isTruthyEnvValue(process.env.OPERATOR_LIVE_ANDROID_NODE);
 const describeLive = LIVE && LIVE_ANDROID_NODE ? describe : describe.skip;
 const SKIPPED_INTERACTIVE_COMMANDS = new Set<string>();
 
@@ -325,13 +325,13 @@ const COMMAND_PROFILES: Record<string, CommandProfile> = {
 
 function resolveGatewayConnection() {
   const cfg = getRuntimeConfig();
-  const urlOverride = readString(process.env.OPENCLAW_ANDROID_GATEWAY_URL);
+  const urlOverride = readString(process.env.OPERATOR_ANDROID_GATEWAY_URL);
   const details = buildGatewayConnectionDetails({
     config: cfg,
     ...(urlOverride ? { url: urlOverride } : {}),
   });
-  const tokenOverride = readString(process.env.OPENCLAW_ANDROID_GATEWAY_TOKEN);
-  const passwordOverride = readString(process.env.OPENCLAW_ANDROID_GATEWAY_PASSWORD);
+  const tokenOverride = readString(process.env.OPERATOR_ANDROID_GATEWAY_TOKEN);
+  const passwordOverride = readString(process.env.OPERATOR_ANDROID_GATEWAY_PASSWORD);
   const creds = resolveGatewayCredentialsFromConfig({
     cfg,
     explicitAuth: {
@@ -350,8 +350,8 @@ function resolveGatewayConnection() {
 async function resolvePolicyConfigForRun(params: {
   client: GatewayClient;
   connectionDetails: ReturnType<typeof buildGatewayConnectionDetails>;
-  loadLocalConfig?: () => OpenClawConfig;
-}): Promise<OpenClawConfig> {
+  loadLocalConfig?: () => OperatorConfig;
+}): Promise<OperatorConfig> {
   if (shouldFetchRemotePolicyConfig(params.connectionDetails)) {
     const raw = await params.client.request("config.get", {});
     return unwrapRemoteConfigSnapshot(raw);
@@ -384,7 +384,7 @@ describe("resolvePolicyConfigForRun", () => {
   });
 
   it("still uses local config loading for local loopback runs", async () => {
-    const localConfig = { gateway: { bind: "127.0.0.1" } } as unknown as OpenClawConfig;
+    const localConfig = { gateway: { bind: "127.0.0.1" } } as unknown as OperatorConfig;
     const loadLocalConfig = vi.fn(() => localConfig);
 
     const result = await resolvePolicyConfigForRun({
@@ -454,22 +454,22 @@ function isAndroidNode(node: NodeListNode): boolean {
 }
 
 function selectTargetNode(nodes: NodeListNode[]): NodeListNode {
-  const nodeIdOverride = readString(process.env.OPENCLAW_ANDROID_NODE_ID);
+  const nodeIdOverride = readString(process.env.OPERATOR_ANDROID_NODE_ID);
   if (nodeIdOverride) {
     const match = nodes.find((node) => node.nodeId === nodeIdOverride);
     if (!match) {
-      throw new Error(`OPENCLAW_ANDROID_NODE_ID not found in node.list: ${nodeIdOverride}`);
+      throw new Error(`OPERATOR_ANDROID_NODE_ID not found in node.list: ${nodeIdOverride}`);
     }
     return match;
   }
 
-  const nodeNameOverride = readString(process.env.OPENCLAW_ANDROID_NODE_NAME)?.toLowerCase();
+  const nodeNameOverride = readString(process.env.OPERATOR_ANDROID_NODE_NAME)?.toLowerCase();
   if (nodeNameOverride) {
     const match = nodes.find(
       (node) => readString(node.displayName)?.toLowerCase() === nodeNameOverride,
     );
     if (!match) {
-      throw new Error(`OPENCLAW_ANDROID_NODE_NAME not found in node.list: ${nodeNameOverride}`);
+      throw new Error(`OPERATOR_ANDROID_NODE_NAME not found in node.list: ${nodeNameOverride}`);
     }
     return match;
   }

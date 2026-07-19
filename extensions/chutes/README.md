@@ -1,8 +1,8 @@
-# OpenClaw Chutes Provider
+# Operator Chutes Provider
 
-Official OpenClaw provider plugin for Chutes.
+Official Operator provider plugin for Chutes.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/chutes-provider

@@ -11,7 +11,7 @@ import {
 } from "../../sessions/agent-harness-session-key.js";
 import { createLazyRuntimeModule } from "../../shared/lazy-runtime.js";
 import { getFileStatSnapshot } from "../cache-utils.js";
-import type { OpenClawConfig } from "../types.operator.js";
+import type { OperatorConfig } from "../types.operator.js";
 import type { SessionUnreferencedArtifactSweepResult } from "./disk-budget.js";
 import { resolveSessionStorePathForScope } from "./session-store-path.js";
 import {
@@ -265,7 +265,7 @@ export type SessionEntryLifecycleMutationResult = {
 
 export type DeletedAgentSessionEntryPurgeParams = {
   /** Runtime config used to preserve legacy default-agent key ownership rules. */
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   /** Deleted agent whose session entries should be purged. */
   agentId: string;
   /** Agent id represented by the current store path for legacy unscoped keys. */

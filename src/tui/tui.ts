@@ -16,7 +16,7 @@ import {
 import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
 import type { CommandEntry } from "../../packages/gateway-protocol/src/index.js";
 import { resolveAgentIdByWorkspacePath, resolveDefaultAgentId } from "../agents/agent-scope.js";
-import { getRuntimeConfig, type OpenClawConfig } from "../config/config.js";
+import { getRuntimeConfig, type OperatorConfig } from "../config/config.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { tryProcessCwd } from "../infra/safe-cwd.js";
 import { registerUncaughtExceptionHandler } from "../infra/unhandled-rejections.js";
@@ -112,7 +112,7 @@ type RunTuiOptions = TuiOptions & {
     password?: string;
     tlsFingerprint?: string;
   };
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   title?: string;
 };
 
@@ -214,7 +214,7 @@ export function resolveTuiSessionKey(params: {
 }
 
 export function resolveTuiFooterHostLabel(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   connectionUrl: string;
 }): string | null {
   if (params.config.tui?.footer?.showRemoteHost !== true) {
@@ -224,7 +224,7 @@ export function resolveTuiFooterHostLabel(params: {
 }
 
 export function resolveInitialTuiAgentId(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   fallbackAgentId: string;
   initialSessionInput?: string;
   cwd?: string;
@@ -523,7 +523,7 @@ export function resolveTuiCtrlCAction(params: {
   return resolveCtrlCAction(params);
 }
 
-function resolveEmptySessionInfoDefaults(config: OpenClawConfig): SessionInfo {
+function resolveEmptySessionInfoDefaults(config: OperatorConfig): SessionInfo {
   return {
     verboseLevel: config.agents?.defaults?.verboseDefault,
   };

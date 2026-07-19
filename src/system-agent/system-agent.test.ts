@@ -1,6 +1,6 @@
-// OpenClaw tests cover main rescue and audit command behavior.
+// Operator tests cover main rescue and audit command behavior.
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { SystemAgentInferenceUnavailableError } from "./inference-error.js";
 import type { SystemAgentCommandDeps } from "./operations.js";
 import type { SystemAgentOverview } from "./overview.js";
@@ -56,9 +56,9 @@ const verifiedConfig = {
       },
     },
   },
-} satisfies OpenClawConfig;
+} satisfies OperatorConfig;
 
-function configSnapshot(config: OpenClawConfig) {
+function configSnapshot(config: OperatorConfig) {
   return {
     exists: true,
     valid: true,
@@ -160,7 +160,7 @@ describe("runSystemAgent", () => {
     const { runtime } = createSystemAgentTestRuntime();
     const changedConfig = {
       agents: { defaults: { model: "anthropic/claude-opus-4-8" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const readConfigFileSnapshot = vi
       .fn()
       .mockResolvedValueOnce(configSnapshot(verifiedConfig))
@@ -190,7 +190,7 @@ describe("runSystemAgent", () => {
     const { runtime } = createSystemAgentTestRuntime();
     const changedConfig = {
       agents: { defaults: { model: "anthropic/claude-opus-4-8" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const readConfigFileSnapshot = vi
       .fn()
       .mockResolvedValueOnce(configSnapshot(verifiedConfig))
@@ -304,8 +304,8 @@ describe("runSystemAgent", () => {
     const { runtime, lines } = createSystemAgentTestRuntime();
     const changedConfig = {
       agents: { defaults: { model: "anthropic/claude-opus-4-8" } },
-    } satisfies OpenClawConfig;
-    let currentConfig: OpenClawConfig = verifiedConfig;
+    } satisfies OperatorConfig;
+    let currentConfig: OperatorConfig = verifiedConfig;
     const verified = await createVerifiedRunOptions({
       readConfigFileSnapshot: vi.fn(async () => configSnapshot(currentConfig)) as never,
     });
@@ -327,7 +327,7 @@ describe("runSystemAgent", () => {
     expect(lines).not.toContain("stale reply");
   });
 
-  it("starts interactive OpenClaw in the TUI shell", async () => {
+  it("starts interactive Operator in the TUI shell", async () => {
     const { runtime, lines } = createSystemAgentTestRuntime();
     let runInteractiveTuiCalls = 0;
     let onReadyCalls = 0;
@@ -415,7 +415,7 @@ describe("runSystemAgent", () => {
 
     expect(runInteractiveTuiCalls).toBe(0);
     expect(lines.join("\n")).toContain(
-      "OpenClaw needs an interactive TTY. Use --message for one command.",
+      "Operator needs an interactive TTY. Use --message for one command.",
     );
   });
 });

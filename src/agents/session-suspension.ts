@@ -9,7 +9,7 @@ import { resolveAgentMaxConcurrent, resolveSubagentMaxConcurrent } from "../conf
 import { resolveCronMaxConcurrentRuns } from "../config/cron-limits.js";
 import { patchSessionEntry } from "../config/sessions/session-accessor.js";
 import type { QuotaSuspension } from "../config/sessions/types.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { setCommandLaneConcurrency } from "../process/command-queue.js";
 import { CommandLane } from "../process/lanes.js";
@@ -110,7 +110,7 @@ type SessionSuspensionTarget =
   | { mode: "defer"; defer: (params: SessionSuspensionParams) => void }
   | { mode: "suspend" };
 export type SessionSuspensionParams = {
-  cfg: OpenClawConfig | undefined;
+  cfg: OperatorConfig | undefined;
   agentDir?: string;
   sessionId: string;
   laneId?: string;
@@ -121,7 +121,7 @@ export type SessionSuspensionParams = {
   ttlMs?: number;
 };
 
-function resolveLaneResumeConcurrency(cfg: OpenClawConfig | undefined, laneId: string): number {
+function resolveLaneResumeConcurrency(cfg: OperatorConfig | undefined, laneId: string): number {
   switch (laneId) {
     case "main":
       return resolveAgentMaxConcurrent(cfg);

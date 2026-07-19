@@ -10,7 +10,7 @@ import {
   normalizeOptionalString,
 } from "@operator/normalization-core/string-coerce";
 import { getRuntimeConfig } from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { planManifestModelCatalogRows } from "../model-catalog/manifest-planner.js";
 import { getCurrentPluginMetadataSnapshot } from "../plugins/current-plugin-metadata-snapshot.js";
@@ -47,7 +47,7 @@ import {
 } from "./model-selection-shared.js";
 import {
   buildModelsJsonSourceFingerprint,
-  prepareOpenClawModelsJsonSource,
+  prepareOperatorModelsJsonSource,
 } from "./models-config.js";
 import {
   filterGeneratedPluginModelCatalogProviders,
@@ -87,7 +87,7 @@ type AgentDiscoveryModule = typeof import("./agent-model-discovery.js");
 
 export type LoadModelCatalogParams = {
   agentDir?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   useCache?: boolean;
   cacheOnly?: boolean;
   readOnly?: boolean;
@@ -105,10 +105,10 @@ type ManifestModelCatalogCacheEntry = {
   snapshot: PluginMetadataSnapshot;
   rows: ModelCatalogEntry[];
 };
-let manifestModelCatalogCache = new WeakMap<OpenClawConfig, ManifestModelCatalogCacheEntry>();
+let manifestModelCatalogCache = new WeakMap<OperatorConfig, ManifestModelCatalogCacheEntry>();
 function buildLoadModelCatalogStateCacheKey(params: {
   agentDir: string;
-  config: OpenClawConfig;
+  config: OperatorConfig;
   metadataSnapshot?: PluginMetadataSnapshot;
   sourceFingerprint: string;
   workspaceDir?: string;
@@ -345,7 +345,7 @@ function createModelCatalogSnapshot(
 }
 
 export function loadManifestModelCatalog(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   fallbackToMetadataScan?: boolean;
@@ -536,7 +536,7 @@ async function loadReadOnlyPersistedProviderRows(
 }
 
 async function loadReadOnlyPersistedModelCatalog(params?: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   metadataSnapshot?: PluginMetadataSnapshot;
 }): Promise<ModelCatalogSnapshot> {
   const cfg = params?.config ?? getRuntimeConfig();
@@ -622,7 +622,7 @@ async function loadReadOnlyPersistedModelCatalog(params?: {
   return createModelCatalogSnapshot(models, routeVariants);
 }
 
-function hasConfiguredProviderRowsNeedingManifestLookup(cfg: OpenClawConfig): boolean {
+function hasConfiguredProviderRowsNeedingManifestLookup(cfg: OperatorConfig): boolean {
   const providers = cfg.models?.providers;
   if (!providers || typeof providers !== "object") {
     return false;
@@ -634,7 +634,7 @@ function hasConfiguredProviderRowsNeedingManifestLookup(cfg: OpenClawConfig): bo
 }
 
 function loadReadOnlyStaticModelCatalog(params?: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   metadataSnapshot?: PluginMetadataSnapshot;
 }): ModelCatalogSnapshot {
   const cfg = params?.config ?? getRuntimeConfig();
@@ -756,7 +756,7 @@ export async function loadModelCatalogSnapshot(
         }
       }
       if (!readOnly) {
-        const preparedSource = await prepareOpenClawModelsJsonSource(cfg, agentDir, {
+        const preparedSource = await prepareOperatorModelsJsonSource(cfg, agentDir, {
           pluginMetadataSnapshot: params?.metadataSnapshot,
           workspaceDir,
         });

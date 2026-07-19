@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { PluginInstallRecord } from "../../config/types.plugins.js";
 import type { PostCorePluginUpdateResult } from "./update-command-plugins.js";
 import "./update-command-plugins.js";
@@ -17,7 +17,7 @@ type UpdateCommandPluginsTestApi = {
   };
   collectMissingPluginInstallPayloads(params: {
     records: Record<string, PluginInstallRecord>;
-    config?: OpenClawConfig;
+    config?: OperatorConfig;
     skipDisabledPlugins?: boolean;
     syncOfficialPluginInstalls?: boolean;
     env?: NodeJS.ProcessEnv;

@@ -4,7 +4,7 @@
  * Custom OpenAI-compatible base URLs intentionally bypass Codex-runtime defaults.
  */
 import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { ProviderRouteOverridePresence } from "../plugin-sdk/provider-model-types.js";
 import { resolveAgentIdFromSessionKey } from "../routing/session-key.js";
 import {
@@ -40,7 +40,7 @@ export function resolveOpenAIImplicitAgentRuntime(params: {
   modelId?: string;
   api?: string | null;
   baseUrl?: unknown;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
   sessionKey?: string;
   env?: Readonly<Record<string, string | undefined>>;
@@ -72,7 +72,7 @@ export function resolveOpenAIImplicitAgentRuntime(params: {
   });
   if (!resolution) {
     // Endpoint and adapter ownership stays in the provider artifact. Without
-    // that policy, keep credentials and traffic on the core OpenClaw runtime.
+    // that policy, keep credentials and traffic on the core Operator runtime.
     return "operator";
   }
   return resolution.kind !== "incompatible" && resolution.defaultRuntimeId === "codex"
@@ -95,7 +95,7 @@ export function parseModelRefProvider(value: unknown): string | undefined {
 /** Returns true when selected model config should ensure the Codex plugin exists. */
 export function modelSelectionShouldEnsureCodexPlugin(params: {
   model?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
 }): boolean {
   const provider = parseModelRefProvider(params.model);
@@ -141,7 +141,7 @@ export function listOpenAIAuthProfileProvidersForAgentRuntime(params: {
   provider: string;
   harnessRuntime?: string;
   agentHarnessId?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }): string[] {
   if (!isOpenAIProvider(params.provider)) {
     return [params.provider];
@@ -156,7 +156,7 @@ export function resolveOpenAIRuntimeProvider(params: {
   agentHarnessId?: string;
   authProfileProvider?: string;
   authProfileId?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   workspaceDir?: string;
 }): string {
   return isOpenAIProvider(params.provider) ? OPENAI_PROVIDER_ID : params.provider;
@@ -169,7 +169,7 @@ export function resolveSelectedOpenAIRuntimeProvider(params: {
   agentHarnessId?: string;
   authProfileProvider?: string;
   authProfileId?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   workspaceDir?: string;
 }): string {
   return isOpenAIProvider(params.provider) ? OPENAI_PROVIDER_ID : params.provider;
@@ -179,7 +179,7 @@ export function resolveSelectedOpenAIRuntimeProvider(params: {
 export function resolveContextConfigProviderForRuntime(params: {
   provider: string;
   runtimeId?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }): string {
   return isOpenAIProvider(params.provider) ? OPENAI_PROVIDER_ID : params.provider;
 }

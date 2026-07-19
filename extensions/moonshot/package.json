@@ -1,7 +1,7 @@
 {
   "name": "@operator/moonshot-provider",
   "version": "2026.7.2",
-  "description": "OpenClaw Moonshot provider plugin",
+  "description": "Operator Moonshot provider plugin",
   "type": "module",
   "devDependencies": {
     "@operator/plugin-sdk": "workspace:*"

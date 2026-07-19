@@ -10,7 +10,7 @@ import {
   resolvePositiveTimerTimeoutMs,
 } from "@operator/normalization-core/number-coercion";
 import type { ModelProviderLocalServiceConfig } from "../config/types.models.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { toErrorObject } from "../infra/errors.js";
 import type { Model } from "../llm/types.js";
 import { isSensitiveFieldKey, redactSensitiveText } from "../logging/redact.js";
@@ -89,7 +89,7 @@ export type AcquireConfiguredProviderLocalService = (
 
 /** Bind local-service acquisition to a host-owned config snapshot. */
 export function createConfiguredProviderLocalServiceAcquirer(
-  getConfig: () => OpenClawConfig,
+  getConfig: () => OperatorConfig,
 ): AcquireConfiguredProviderLocalService {
   return async (target, signal) => {
     const provider = getConfig().models?.providers?.[target.providerId];

@@ -6,9 +6,9 @@ import {
 } from "../../infra/kysely-sync.js";
 import { getChildLogger } from "../../logging/logger.js";
 import {
-  openOpenClawAgentDatabase,
-  runOpenClawAgentWriteTransaction,
-  type OpenClawAgentDatabase,
+  openOperatorAgentDatabase,
+  runOperatorAgentWriteTransaction,
+  type OperatorAgentDatabase,
 } from "../../state/operator-agent-db.js";
 import type { SessionDiskBudgetSweepResult } from "./disk-budget.js";
 import {
@@ -85,7 +85,7 @@ function sumSessionEntryJsonBytes() {
   );
 }
 
-function readSqliteSessionRowBytes(database: OpenClawAgentDatabase): SqliteSessionRowBytes {
+function readSqliteSessionRowBytes(database: OperatorAgentDatabase): SqliteSessionRowBytes {
   const db = getSessionKysely(database.db);
   const entryRows = executeSqliteQuerySync(
     database.db,
@@ -125,7 +125,7 @@ function readSqliteSessionRowBytes(database: OpenClawAgentDatabase): SqliteSessi
 }
 
 function hasSqliteSessionDiskBudgetOverflow(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   maintenance: ResolvedSessionMaintenanceConfig,
 ): boolean {
   if (maintenance.maxDiskBytes == null || maintenance.highWaterBytes == null) {
@@ -151,7 +151,7 @@ function hasSqliteSessionDiskBudgetOverflow(
 }
 
 function applySqliteSessionDiskBudget(params: {
-  database: OpenClawAgentDatabase;
+  database: OperatorAgentDatabase;
   store: Record<string, SessionEntry>;
   maintenance: ResolvedSessionMaintenanceConfig;
   preserveKeys: ReadonlySet<string>;
@@ -167,7 +167,7 @@ function applySqliteSessionDiskBudget(params: {
 }
 
 function enforceSqliteSessionDiskBudgetInStore(params: {
-  database: OpenClawAgentDatabase;
+  database: OperatorAgentDatabase;
   store: Record<string, SessionEntry>;
   maintenance: Pick<ResolvedSessionMaintenanceConfig, "maxDiskBytes" | "highWaterBytes">;
   preserveKeys?: ReadonlySet<string>;
@@ -200,7 +200,7 @@ export function previewSqliteSessionDiskBudget(params: {
     sessionKey: "",
     storePath: params.storePath,
   });
-  const database = openOpenClawAgentDatabase(toDatabaseOptions(resolved));
+  const database = openOperatorAgentDatabase(toDatabaseOptions(resolved));
   const baseKeys = collectSqliteSessionMaintenanceBaseKeys(
     params.store,
     params.activeSessionKey ?? "",
@@ -222,7 +222,7 @@ export function previewSqliteSessionDiskBudget(params: {
 }
 
 function hasStaleSqliteSessionEntryCandidate(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   pruneAfterMs: number,
   preserveKeys: ReadonlySet<string> | undefined,
 ): boolean {
@@ -240,7 +240,7 @@ function hasStaleSqliteSessionEntryCandidate(
 }
 
 export function applySqliteSessionEntryMaintenance(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   params: {
     activeSessionKey: string;
     archiveDirectory: string;
@@ -395,7 +395,7 @@ export function finalizeSqliteSessionEntryMaintenancePlansBestEffort(
   try {
     const materializedPlans = materializeSqliteSessionStateDeletePlans(stateDeletePlans);
     let archivedTranscripts: SessionLifecycleArchivedTranscript[] = [];
-    runOpenClawAgentWriteTransaction((database) => {
+    runOperatorAgentWriteTransaction((database) => {
       deletePlannedSqliteLifecycleArtifactEntries(database, entryRemovals);
       archivedTranscripts = deleteMaterializedSqliteSessionStatePlans(database, materializedPlans);
     }, toDatabaseOptions(scope));

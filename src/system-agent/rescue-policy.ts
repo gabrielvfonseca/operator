@@ -1,9 +1,9 @@
-// OpenClaw rescue policy gates remote writes by owner, DM, sandbox, and YOLO posture.
-import type { OpenClawConfig } from "../config/types.operator.js";
+// Operator rescue policy gates remote writes by owner, DM, sandbox, and YOLO posture.
+import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 
 /**
- * Policy checks for remote OpenClaw rescue commands.
+ * Policy checks for remote Operator rescue commands.
  *
  * Rescue intentionally opens only for owner-controlled, non-sandboxed YOLO host
  * posture unless config explicitly enables it, because remote commands can write local state.
@@ -29,7 +29,7 @@ type SystemAgentRescueDecision =
     };
 
 type SystemAgentRescuePolicyInput = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId?: string;
   senderIsOwner: boolean;
   isDirectMessage: boolean;
@@ -39,7 +39,7 @@ function resolvePendingTtlMinutes(value: unknown): number {
   return typeof value === "number" && Number.isFinite(value) && value > 0 ? value : 15;
 }
 
-function resolveAgentEntry(cfg: OpenClawConfig, agentId?: string) {
+function resolveAgentEntry(cfg: OperatorConfig, agentId?: string) {
   if (!agentId) {
     return undefined;
   }
@@ -49,12 +49,12 @@ function resolveAgentEntry(cfg: OpenClawConfig, agentId?: string) {
   );
 }
 
-function resolveScopedExecConfig(cfg: OpenClawConfig, agentId?: string) {
+function resolveScopedExecConfig(cfg: OperatorConfig, agentId?: string) {
   return resolveAgentEntry(cfg, agentId)?.tools?.exec;
 }
 
 function resolveScopedSandboxMode(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   agentId?: string,
 ): "off" | "non-main" | "all" {
   return (
@@ -62,7 +62,7 @@ function resolveScopedSandboxMode(
   );
 }
 
-function isYoloHostPosture(cfg: OpenClawConfig, agentId?: string): boolean {
+function isYoloHostPosture(cfg: OperatorConfig, agentId?: string): boolean {
   const scopedExec = resolveScopedExecConfig(cfg, agentId);
   const globalExec = cfg.tools?.exec;
   const security = scopedExec?.security ?? globalExec?.security ?? "full";
@@ -93,7 +93,7 @@ export function resolveSystemAgentRescuePolicy(
       sandboxActive,
       reason: "disabled",
       message:
-        "OpenClaw rescue is disabled. Set systemAgent.rescue.enabled=true or use YOLO host posture with sandboxing off.",
+        "Operator rescue is disabled. Set systemAgent.rescue.enabled=true or use YOLO host posture with sandboxing off.",
     };
   }
   if (sandboxActive) {
@@ -106,7 +106,7 @@ export function resolveSystemAgentRescuePolicy(
       sandboxActive,
       reason: "sandbox-active",
       message:
-        "OpenClaw rescue is blocked because OpenClaw sandboxing is active. Fix the install locally or disable sandboxing before using remote rescue.",
+        "Operator rescue is blocked because Operator sandboxing is active. Fix the install locally or disable sandboxing before using remote rescue.",
     };
   }
   if (configuredEnabled === "auto" && !yolo) {
@@ -119,7 +119,7 @@ export function resolveSystemAgentRescuePolicy(
       sandboxActive,
       reason: "not-yolo",
       message:
-        "OpenClaw rescue auto-mode only opens in YOLO host posture: tools.exec.security=full, tools.exec.ask=off, and sandboxing off.",
+        "Operator rescue auto-mode only opens in YOLO host posture: tools.exec.security=full, tools.exec.ask=off, and sandboxing off.",
     };
   }
   if (!input.senderIsOwner) {
@@ -131,7 +131,7 @@ export function resolveSystemAgentRescuePolicy(
       yolo,
       sandboxActive,
       reason: "not-owner",
-      message: "OpenClaw rescue only accepts commands from an OpenClaw owner.",
+      message: "Operator rescue only accepts commands from an Operator owner.",
     };
   }
   if (ownerDmOnly && !input.isDirectMessage) {
@@ -143,7 +143,7 @@ export function resolveSystemAgentRescuePolicy(
       yolo,
       sandboxActive,
       reason: "not-direct-message",
-      message: "OpenClaw rescue is restricted to owner DMs by default.",
+      message: "Operator rescue is restricted to owner DMs by default.",
     };
   }
   return {

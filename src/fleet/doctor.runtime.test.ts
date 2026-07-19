@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import { createSuiteTempRootTracker } from "../test-helpers/temp-dir.js";
 import { cellAuthSecretDir, cellOwnerId } from "./cell-profile.js";
 import type {
@@ -27,7 +27,7 @@ function healthyInspection(): Extract<FleetContainerInspectResult, { kind: "ok" 
       "openclaw.fleet.tenant": "acme",
       "openclaw.fleet.owner": cellOwnerId(record.dataDir),
     },
-    environment: { OPENCLAW_GATEWAY_TOKEN: "secret" },
+    environment: { OPERATOR_GATEWAY_TOKEN: "secret" },
     imageId: "sha256:image",
     memory: "2147483648",
     cpus: "2",
@@ -77,7 +77,7 @@ function runtimeMock(
 
 beforeEach(async () => {
   root = await tempRoot.setup();
-  env = { ...process.env, OPENCLAW_STATE_DIR: root };
+  env = { ...process.env, OPERATOR_STATE_DIR: root };
   record = reserveFleetCell(env, {
     tenantId: "acme",
     createdAtMs: 0,
@@ -91,7 +91,7 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorStateDatabaseForTest();
   await tempRoot.cleanup();
 });
 
@@ -208,7 +208,7 @@ describe("fleet doctor", () => {
       "gateway-token-env",
       "fail",
       (inspection: ReturnType<typeof healthyInspection>) => {
-        inspection.environment.OPENCLAW_GATEWAY_TOKEN = "";
+        inspection.environment.OPERATOR_GATEWAY_TOKEN = "";
       },
     ],
     [

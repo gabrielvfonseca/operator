@@ -14,21 +14,21 @@ import {
 } from "./config.js";
 import { getBrowserProfileCapabilities } from "./profile-capabilities.js";
 
-const OPENCLAW_BROWSER_HEADLESS_ENV = "OPENCLAW_BROWSER_HEADLESS";
+const OPERATOR_BROWSER_HEADLESS_ENV = "OPERATOR_BROWSER_HEADLESS";
 
 // Isolate the extension relay secret (read from stateDir/credentials) so the
 // extension-token assertions do not pick up a developer's real secret file.
 let isolatedStateDir = "";
-const prevStateDir = process.env.OPENCLAW_STATE_DIR;
+const prevStateDir = process.env.OPERATOR_STATE_DIR;
 beforeEach(() => {
   isolatedStateDir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-cfg-")));
-  process.env.OPENCLAW_STATE_DIR = isolatedStateDir;
+  process.env.OPERATOR_STATE_DIR = isolatedStateDir;
 });
 afterEach(() => {
   if (prevStateDir === undefined) {
-    delete process.env.OPENCLAW_STATE_DIR;
+    delete process.env.OPERATOR_STATE_DIR;
   } else {
-    process.env.OPENCLAW_STATE_DIR = prevStateDir;
+    process.env.OPERATOR_STATE_DIR = prevStateDir;
   }
   fs.rmSync(isolatedStateDir, { recursive: true, force: true });
 });
@@ -155,8 +155,8 @@ describe("browser config", () => {
     );
   });
 
-  it("derives default ports from OPENCLAW_GATEWAY_PORT when unset", () => {
-    withEnv({ OPENCLAW_GATEWAY_PORT: "19001" }, () => {
+  it("derives default ports from OPERATOR_GATEWAY_PORT when unset", () => {
+    withEnv({ OPERATOR_GATEWAY_PORT: "19001" }, () => {
       const resolved = resolveBrowserConfig(undefined);
       expect(resolved.controlPort).toBe(19003);
       expect(resolveProfile(resolved, "chrome-relay")).toBe(null);
@@ -168,7 +168,7 @@ describe("browser config", () => {
   });
 
   it("derives default ports from gateway.port when env is unset", () => {
-    withEnv({ OPENCLAW_GATEWAY_PORT: undefined }, () => {
+    withEnv({ OPERATOR_GATEWAY_PORT: undefined }, () => {
       const resolved = resolveBrowserConfig(undefined, { gateway: { port: 19011 } });
       expect(resolved.controlPort).toBe(19013);
       expect(resolveProfile(resolved, "chrome-relay")).toBe(null);
@@ -418,7 +418,7 @@ describe("browser config", () => {
     const noDisplayEnv = {
       DISPLAY: undefined,
       WAYLAND_DISPLAY: undefined,
-      [OPENCLAW_BROWSER_HEADLESS_ENV]: undefined,
+      [OPERATOR_BROWSER_HEADLESS_ENV]: undefined,
     };
 
     it("falls back to headless for local managed Linux profiles without display", () => {
@@ -478,7 +478,7 @@ describe("browser config", () => {
       ).toEqual({ headless: false, source: "config" });
     });
 
-    it("lets OPENCLAW_BROWSER_HEADLESS override profile/global config", () => {
+    it("lets OPERATOR_BROWSER_HEADLESS override profile/global config", () => {
       const resolved = resolveBrowserConfig({
         profiles: {
           openclaw: { cdpPort: 18800, color: "#FF4500", headless: false },
@@ -489,7 +489,7 @@ describe("browser config", () => {
       expect(
         resolveManagedBrowserHeadlessMode(resolved, profile, {
           platform: "linux",
-          env: { ...noDisplayEnv, [OPENCLAW_BROWSER_HEADLESS_ENV]: "1" },
+          env: { ...noDisplayEnv, [OPERATOR_BROWSER_HEADLESS_ENV]: "1" },
         }),
       ).toEqual({ headless: true, source: "env" });
     });
@@ -507,7 +507,7 @@ describe("browser config", () => {
         resolveManagedBrowserHeadlessMode(resolved, profile, {
           headlessOverride: true,
           platform: "linux",
-          env: { ...noDisplayEnv, [OPENCLAW_BROWSER_HEADLESS_ENV]: "0" },
+          env: { ...noDisplayEnv, [OPERATOR_BROWSER_HEADLESS_ENV]: "0" },
         }),
       ).toEqual({ headless: true, source: "request" });
     });

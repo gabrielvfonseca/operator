@@ -58,7 +58,7 @@ $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 $targetPort = ${port}
 ${sourceTypeSetup}
-function Test-OpenClawPortMatch($value) {
+function Test-OperatorPortMatch($value) {
   foreach ($entry in @($value)) {
     $text = ([string]$entry).Trim()
     if ($text -eq 'Any') { return $true }
@@ -79,7 +79,7 @@ $matchingRules = New-Object System.Collections.ArrayList
 foreach ($rule in $rules) {
   foreach ($portFilter in @($rule | Get-NetFirewallPortFilter)) {
     $protocol = $portFilter.Protocol.ToString()
-    if (($protocol -eq 'Any' -or $protocol -eq 'TCP') -and (Test-OpenClawPortMatch $portFilter.LocalPort)) {
+    if (($protocol -eq 'Any' -or $protocol -eq 'TCP') -and (Test-OperatorPortMatch $portFilter.LocalPort)) {
       $appFilter = $rule | Get-NetFirewallApplicationFilter
       $addressFilter = $rule | Get-NetFirewallAddressFilter
       [void]$matchingRules.Add([pscustomobject]@{
@@ -116,7 +116,7 @@ function buildWindowsFirewallRulesCommand(port: number): string {
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 $targetPort = ${port}
-function Test-OpenClawPortMatch($value) {
+function Test-OperatorPortMatch($value) {
   $text = ([string]$value).Trim()
   if ($text -eq '' -or $text -eq '*') { return $true }
   foreach ($part in $text -split ',') {
@@ -130,7 +130,7 @@ function Test-OpenClawPortMatch($value) {
   }
   return $false
 }
-function Resolve-OpenClawProgramScope($rule) {
+function Resolve-OperatorProgramScope($rule) {
   $program = ([string]$rule.ApplicationName).Trim()
   if ($program) { return $program }
   foreach ($field in @('serviceName', 'LocalAppPackageId', 'LocalUserOwner')) {
@@ -146,14 +146,14 @@ $matchingRules = New-Object System.Collections.ArrayList
 foreach ($rule in $policy.Rules) {
   if (-not $rule.Enabled -or $rule.Direction -ne 1 -or $rule.Action -ne 1) { continue }
   $protocol = if ($rule.Protocol -eq 6) { 'TCP' } elseif ($rule.Protocol -eq 256) { 'Any' } else { [string]$rule.Protocol }
-  if (($protocol -ne 'TCP' -and $protocol -ne 'Any') -or -not (Test-OpenClawPortMatch $rule.LocalPorts)) { continue }
+  if (($protocol -ne 'TCP' -and $protocol -ne 'Any') -or -not (Test-OperatorPortMatch $rule.LocalPorts)) { continue }
   [void]$matchingRules.Add([pscustomobject]@{
     DisplayName = [string]$rule.Name
     Name = [string]$rule.Name
     Profile = [string]$rule.Profiles
     PolicyStoreSource = 'PersistentStore'
     PolicyStoreSourceType = 'Local'
-    Program = (Resolve-OpenClawProgramScope $rule)
+    Program = (Resolve-OperatorProgramScope $rule)
     LocalAddress = [string]$rule.LocalAddresses
     RemoteAddress = [string]$rule.RemoteAddresses
   })
@@ -170,7 +170,7 @@ function buildWindowsQuickFirewallCommand(port: number): string {
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 $targetPort = ${port}
-function Test-OpenClawPortMatch($value) {
+function Test-OperatorPortMatch($value) {
   foreach ($entry in @($value)) {
     $text = ([string]$entry).Trim()
     if ($text -eq '' -or $text -eq '*' -or $text -eq 'Any') { return $true }
@@ -186,7 +186,7 @@ function Test-OpenClawPortMatch($value) {
   }
   return $false
 }
-function Resolve-OpenClawProgramScope($rule) {
+function Resolve-OperatorProgramScope($rule) {
   $program = ([string]$rule.ApplicationName).Trim()
   if ($program) { return $program }
   foreach ($field in @('serviceName', 'LocalAppPackageId', 'LocalUserOwner')) {
@@ -197,7 +197,7 @@ function Resolve-OpenClawProgramScope($rule) {
   if ($ports -ne '' -and $ports -ne '*') { return 'Any' }
   return 'Any'
 }
-function Get-OpenClawManagedRules {
+function Get-OperatorManagedRules {
   try {
     $getRule = Get-Command Get-NetFirewallRule -ErrorAction Stop
     $sourceTypeParameter = $getRule.Parameters['PolicyStoreSourceType']
@@ -217,7 +217,7 @@ function Get-OpenClawManagedRules {
     foreach ($rule in $rules) {
       foreach ($portFilter in @($rule | Get-NetFirewallPortFilter)) {
         $protocol = $portFilter.Protocol.ToString()
-        if (($protocol -eq 'Any' -or $protocol -eq 'TCP') -and (Test-OpenClawPortMatch $portFilter.LocalPort)) {
+        if (($protocol -eq 'Any' -or $protocol -eq 'TCP') -and (Test-OperatorPortMatch $portFilter.LocalPort)) {
           $appFilter = $rule | Get-NetFirewallApplicationFilter
           $addressFilter = $rule | Get-NetFirewallAddressFilter
           [void]$matchingRules.Add([pscustomobject]@{
@@ -241,20 +241,20 @@ function Get-OpenClawManagedRules {
 $connections = Get-NetConnectionProfile | Select-Object InterfaceAlias, @{Name='NetworkCategory';Expression={$_.NetworkCategory.ToString()}}
 $activeProfiles = Get-NetFirewallProfile -PolicyStore ActiveStore | Select-Object Name, @{Name='Enabled';Expression={$_.Enabled.ToString()}}, @{Name='DefaultInboundAction';Expression={$_.DefaultInboundAction.ToString()}}, @{Name='AllowInboundRules';Expression={$_.AllowInboundRules.ToString()}}, @{Name='AllowLocalFirewallRules';Expression={$_.AllowLocalFirewallRules.ToString()}}
 $localProfiles = Get-NetFirewallProfile -PolicyStore localhost | Select-Object Name, @{Name='Enabled';Expression={$_.Enabled.ToString()}}, @{Name='DefaultInboundAction';Expression={$_.DefaultInboundAction.ToString()}}, @{Name='AllowInboundRules';Expression={$_.AllowInboundRules.ToString()}}, @{Name='AllowLocalFirewallRules';Expression={$_.AllowLocalFirewallRules.ToString()}}
-$managedMatchingRules = @(Get-OpenClawManagedRules)
+$managedMatchingRules = @(Get-OperatorManagedRules)
 $policy = New-Object -ComObject HNetCfg.FwPolicy2
 $matchingRules = New-Object System.Collections.ArrayList
 foreach ($rule in $policy.Rules) {
   if (-not $rule.Enabled -or $rule.Direction -ne 1 -or $rule.Action -ne 1) { continue }
   $protocol = if ($rule.Protocol -eq 6) { 'TCP' } elseif ($rule.Protocol -eq 256) { 'Any' } else { [string]$rule.Protocol }
-  if (($protocol -ne 'TCP' -and $protocol -ne 'Any') -or -not (Test-OpenClawPortMatch $rule.LocalPorts)) { continue }
+  if (($protocol -ne 'TCP' -and $protocol -ne 'Any') -or -not (Test-OperatorPortMatch $rule.LocalPorts)) { continue }
   [void]$matchingRules.Add([pscustomobject]@{
     DisplayName = [string]$rule.Name
     Name = [string]$rule.Name
     Profile = [string]$rule.Profiles
     PolicyStoreSource = 'PersistentStore'
     PolicyStoreSourceType = 'Local'
-    Program = (Resolve-OpenClawProgramScope $rule)
+    Program = (Resolve-OperatorProgramScope $rule)
     LocalAddress = [string]$rule.LocalAddresses
     RemoteAddress = [string]$rule.RemoteAddresses
   })
@@ -844,7 +844,7 @@ export async function inspectWindowsGatewayFirewall(
         applies: true,
         severity: "warning",
         code: "windows_firewall_inspection_failed",
-        message: "OpenClaw could not quickly inspect Windows Firewall LAN Gateway policy.",
+        message: "Operator could not quickly inspect Windows Firewall LAN Gateway policy.",
         details: [
           "Run `operator gateway status --deep` again, or verify the advertised LAN URL from another device.",
         ],
@@ -856,7 +856,7 @@ export async function inspectWindowsGatewayFirewall(
         applies: true,
         severity: "warning",
         code: "windows_firewall_inspection_failed",
-        message: "OpenClaw could not parse Windows Firewall LAN Gateway policy.",
+        message: "Operator could not parse Windows Firewall LAN Gateway policy.",
         details: [
           "Run `operator gateway status --deep` again, or verify the advertised LAN URL from another device.",
         ],
@@ -877,7 +877,7 @@ export async function inspectWindowsGatewayFirewall(
         applies: true,
         severity: "warning",
         code: "windows_firewall_inspection_failed",
-        message: "OpenClaw could not parse Windows Firewall LAN Gateway policy.",
+        message: "Operator could not parse Windows Firewall LAN Gateway policy.",
         details: [
           "Run `operator gateway status --deep` again, or verify the advertised LAN URL from another device.",
         ],
@@ -894,7 +894,7 @@ export async function inspectWindowsGatewayFirewall(
           applies: true,
           severity: "warning",
           code: "windows_firewall_inspection_failed",
-          message: "OpenClaw could not parse Windows Firewall LAN Gateway policy.",
+          message: "Operator could not parse Windows Firewall LAN Gateway policy.",
           details: [
             "Run `operator gateway status --deep` again, or verify the advertised LAN URL from another device.",
           ],
@@ -923,7 +923,7 @@ export async function inspectWindowsGatewayFirewall(
       applies: true,
       severity: "warning",
       code: "windows_firewall_inspection_failed",
-      message: "OpenClaw could not inspect Windows Firewall policy for LAN Gateway reachability.",
+      message: "Operator could not inspect Windows Firewall policy for LAN Gateway reachability.",
       details: [
         "Run `operator gateway status --deep` from a normal PowerShell session and verify the advertised LAN URL from another device.",
       ],
@@ -944,7 +944,7 @@ export async function inspectWindowsGatewayFirewall(
       applies: true,
       severity: "warning",
       code: "windows_firewall_inspection_failed",
-      message: "OpenClaw could not parse Windows Firewall policy for LAN Gateway reachability.",
+      message: "Operator could not parse Windows Firewall policy for LAN Gateway reachability.",
       details: [
         "Run `operator gateway status --deep` from a normal PowerShell session and verify the advertised LAN URL from another device.",
       ],
@@ -957,7 +957,7 @@ export async function inspectWindowsGatewayFirewall(
       applies: true,
       severity: "warning",
       code: "windows_firewall_inspection_failed",
-      message: "OpenClaw could not parse Windows Firewall policy for LAN Gateway reachability.",
+      message: "Operator could not parse Windows Firewall policy for LAN Gateway reachability.",
       details: [
         "Run `operator gateway status --deep` from a normal PowerShell session and verify the advertised LAN URL from another device.",
       ],
@@ -979,7 +979,7 @@ export async function inspectWindowsGatewayFirewall(
           applies: true,
           severity: "warning",
           code: "windows_firewall_inspection_failed",
-          message: "OpenClaw could not parse Windows Firewall policy for LAN Gateway reachability.",
+          message: "Operator could not parse Windows Firewall policy for LAN Gateway reachability.",
           details: [
             "Run `operator gateway status --deep` from a normal PowerShell session and verify the advertised LAN URL from another device.",
           ],
@@ -991,7 +991,7 @@ export async function inspectWindowsGatewayFirewall(
         severity: "warning",
         code: "windows_firewall_inspection_failed",
         message:
-          "OpenClaw could not inspect managed Windows Firewall rules for LAN Gateway reachability.",
+          "Operator could not inspect managed Windows Firewall rules for LAN Gateway reachability.",
         details: [
           "Run `operator gateway status --deep` from a normal PowerShell session and verify Group Policy or administrator-managed allow rules for the Gateway port.",
         ],

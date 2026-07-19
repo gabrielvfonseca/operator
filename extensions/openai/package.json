@@ -2,7 +2,7 @@
   "name": "@operator/openai-provider",
   "version": "2026.7.2",
   "private": true,
-  "description": "OpenClaw OpenAI provider plugins",
+  "description": "Operator OpenAI provider plugins",
   "type": "module",
   "dependencies": {
     "ws": "8.21.0"

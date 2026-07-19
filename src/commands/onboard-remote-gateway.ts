@@ -6,7 +6,7 @@ import type {
   SystemAgentSetupDetectResult,
   SystemAgentSetupVerifyResult,
 } from "../../packages/gateway-protocol/src/index.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { CallGatewayCliOptions } from "../gateway/call.js";
 import { defaultRuntime, type RuntimeEnv } from "../runtime.js";
 import type {
@@ -27,7 +27,7 @@ const GATEWAY_SYSTEM_AGENT_CHAT_TIMEOUT_MS = 190_000;
 type CallGateway = <T>(options: CallGatewayCliOptions) => Promise<T>;
 
 type RemoteGatewayInferenceTarget = {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   gatewayUrl: string;
   token?: string;
   password?: string;
@@ -124,7 +124,7 @@ function activationTimeoutMs(kind: ActivateSetupInferenceParams["kind"]): number
     : GATEWAY_SETUP_ACTIVATE_TIMEOUT_MS;
 }
 
-function bindGatewayConfig(target: RemoteGatewayInferenceTarget): OpenClawConfig {
+function bindGatewayConfig(target: RemoteGatewayInferenceTarget): OperatorConfig {
   return {
     ...target.config,
     gateway: {
@@ -163,7 +163,7 @@ function assertVerifiedActivation(params: {
 
 /**
  * Configure missing inference on the selected remote Gateway, then let that
- * Gateway's OpenClaw finish setup before handing off to its normal TUI.
+ * Gateway's Operator finish setup before handing off to its normal TUI.
  * The local config is routing input only; every setup mutation runs through
  * Gateway RPC.
  */
@@ -250,7 +250,7 @@ export async function runRemoteGatewayInferenceOnboarding(
         import("../wizard/clack-prompter.js").then(({ createClackPrompter }) =>
           createClackPrompter(),
         ));
-      await prompter.intro("OpenClaw");
+      await prompter.intro("Operator");
       const sessionId = randomUUID();
       let reply = await request<SystemAgentChatResult>({
         method: "operator.chat",
@@ -260,9 +260,9 @@ export async function runRemoteGatewayInferenceOnboarding(
 
       try {
         for (;;) {
-          await prompter.note(reply.reply, "OpenClaw");
+          await prompter.note(reply.reply, "Operator");
           if (reply.action === "exit") {
-            await prompter.outro("OpenClaw setup finished.");
+            await prompter.outro("Operator setup finished.");
             return;
           }
           if (reply.action === "open-agent") {
@@ -270,7 +270,7 @@ export async function runRemoteGatewayInferenceOnboarding(
             break;
           }
           const message = await prompter.text({
-            message: "Reply to OpenClaw",
+            message: "Reply to Operator",
             ...(reply.sensitive ? { sensitive: true } : {}),
             validate: (value) => (value.trim() ? undefined : "Required"),
           });
@@ -282,7 +282,7 @@ export async function runRemoteGatewayInferenceOnboarding(
         }
       } catch (error) {
         if (error instanceof WizardCancelledError) {
-          await prompter.outro("OpenClaw setup paused.");
+          await prompter.outro("Operator setup paused.");
           return;
         }
         throw error;

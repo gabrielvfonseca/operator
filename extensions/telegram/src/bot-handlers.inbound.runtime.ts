@@ -3,7 +3,7 @@ import type { Message } from "grammy/types";
 import { isAbortRequestText } from "openclaw/plugin-sdk/command-primitives-runtime";
 import type {
   DmPolicy,
-  OpenClawConfig,
+  OperatorConfig,
   TelegramGroupConfig,
   TelegramTopicConfig,
 } from "openclaw/plugin-sdk/config-contracts";
@@ -86,7 +86,7 @@ export function createTelegramHandlerInboundRuntime(
     messageRuntime,
   );
   const processInboundMessage = async (params: {
-    authorizationCfg: OpenClawConfig;
+    authorizationCfg: OperatorConfig;
     ctx: TelegramContext;
     msg: Message;
     chatId: number;

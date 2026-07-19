@@ -11,7 +11,7 @@ import {
   getMcpAppViewLease,
   type McpAppViewLease,
 } from "../../agents/mcp-ui-resource.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { formatErrorMessage } from "../../infra/errors.js";
 import { logWarn } from "../../logger.js";
 import { restoreMcpAppView } from "../mcp-app-reconstruction.js";
@@ -54,7 +54,7 @@ function isAllowedByView(view: McpAppViewLease, toolName: string): boolean {
 
 async function requireActiveView(
   params: Record<string, unknown>,
-  cfg?: OpenClawConfig,
+  cfg?: OperatorConfig,
 ): Promise<{
   runtime: SessionMcpRuntime;
   view: McpAppViewLease;
@@ -87,7 +87,7 @@ async function withActiveView<T>(
   params: Record<string, unknown>,
   kind: "read" | "tool",
   operation: (active: { runtime: SessionMcpRuntime; view: McpAppViewLease }) => Promise<T> | T,
-  cfg?: OpenClawConfig,
+  cfg?: OperatorConfig,
 ): Promise<T> {
   const active = await requireActiveView(params, cfg);
   const release = acquireMcpAppViewRequest(active.view, kind);

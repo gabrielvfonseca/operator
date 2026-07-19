@@ -139,8 +139,8 @@ const maybeRunCliInContainerMock = vi.hoisted(() =>
   >((argv: string[]) => ({ handled: false, argv })),
 );
 const serviceEnvSnapshot = captureEnv([
-  "OPENCLAW_SERVICE_MARKER",
-  "OPENCLAW_SERVICE_KIND",
+  "OPERATOR_SERVICE_MARKER",
+  "OPERATOR_SERVICE_KIND",
   GATEWAY_SERVICE_RUNTIME_PID_ENV,
 ]);
 
@@ -242,7 +242,7 @@ vi.mock("../utils.js", async (importOriginal) => ({
 }));
 
 vi.mock("../infra/path-env.js", () => ({
-  ensureOpenClawCliOnPath: ensurePathMock,
+  ensureOperatorCliOnPath: ensurePathMock,
 }));
 
 vi.mock("../infra/runtime-guard.js", () => ({
@@ -401,13 +401,13 @@ describe("runCli exit behavior", () => {
   });
 
   beforeEach(() => {
-    delete process.env.OPENCLAW_SERVICE_MARKER;
-    delete process.env.OPENCLAW_SERVICE_KIND;
+    delete process.env.OPERATOR_SERVICE_MARKER;
+    delete process.env.OPERATOR_SERVICE_KIND;
     // Sibling CLI suites run `gateway run --token/--password`, which exports
     // credentials into process.env; leaked values change gateway preflight
     // auth in shared vitest workers.
-    delete process.env.OPENCLAW_GATEWAY_TOKEN;
-    delete process.env.OPENCLAW_GATEWAY_PASSWORD;
+    delete process.env.OPERATOR_GATEWAY_TOKEN;
+    delete process.env.OPERATOR_GATEWAY_PASSWORD;
     delete process.env[GATEWAY_SERVICE_RUNTIME_PID_ENV];
     vi.clearAllMocks();
     readConfigFileSnapshotMock.mockResolvedValue({
@@ -446,8 +446,8 @@ describe("runCli exit behavior", () => {
     resolveManifestCommandAliasOwnerMock.mockReturnValue(undefined);
     resolveManifestToolOwnerMock.mockReturnValue(undefined);
     resolveManifestCliCommandSurfaceOwnerMock.mockReturnValue(undefined);
-    delete process.env.OPENCLAW_DISABLE_CLI_STARTUP_HELP_FAST_PATH;
-    delete process.env.OPENCLAW_HIDE_BANNER;
+    delete process.env.OPERATOR_DISABLE_CLI_STARTUP_HELP_FAST_PATH;
+    delete process.env.OPERATOR_HIDE_BANNER;
     loggingState.forceConsoleToStderr = false;
   });
 
@@ -515,7 +515,7 @@ describe("runCli exit behavior", () => {
     await runCli(["node", "openclaw", "config"]);
 
     expect(createCliProgressMock).toHaveBeenCalledWith({
-      label: "Loading OpenClaw CLI…",
+      label: "Loading Operator CLI…",
       indeterminate: true,
       delayMs: 0,
     });
@@ -533,7 +533,7 @@ describe("runCli exit behavior", () => {
     await runCli(["node", "openclaw", "sessions", "--json", "--limit", "all"]);
 
     expect(createCliProgressMock).toHaveBeenCalledWith({
-      label: "Loading OpenClaw CLI…",
+      label: "Loading Operator CLI…",
       indeterminate: true,
       delayMs: 0,
       enabled: false,
@@ -702,8 +702,8 @@ describe("runCli exit behavior", () => {
     try {
       await withEnvAsync(
         {
-          OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS: "1",
-          OPENCLAW_SERVICE_MARKER: undefined,
+          OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS: "1",
+          OPERATOR_SERVICE_MARKER: undefined,
         },
         async () => {
           await expect(
@@ -714,7 +714,7 @@ describe("runCli exit behavior", () => {
               raw: "{}",
               valid: true,
               sourceConfig: {
-                env: { vars: { OPENCLAW_SERVICE_MARKER: "gateway" } },
+                env: { vars: { OPERATOR_SERVICE_MARKER: "gateway" } },
                 meta: { lastTouchedVersion: "9999.1.1" },
               },
             }),
@@ -722,7 +722,7 @@ describe("runCli exit behavior", () => {
           expect(errorSpy).toHaveBeenCalledWith(
             expect.stringContaining("start the gateway service"),
           );
-          expect(process.env.OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS).toBeUndefined();
+          expect(process.env.OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS).toBeUndefined();
           expect(exitSpy).not.toHaveBeenCalled();
         },
       );
@@ -779,17 +779,17 @@ describe("runCli exit behavior", () => {
       valid: true,
       sourceConfig: { meta: { lastTouchedVersion: "9999.1.1" } },
     });
-    const previousMarker = process.env.OPENCLAW_SERVICE_MARKER;
-    const previousOverride = process.env.OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS;
+    const previousMarker = process.env.OPERATOR_SERVICE_MARKER;
+    const previousOverride = process.env.OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS;
     if (params.marker) {
-      process.env.OPENCLAW_SERVICE_MARKER = params.marker;
+      process.env.OPERATOR_SERVICE_MARKER = params.marker;
     } else {
-      delete process.env.OPENCLAW_SERVICE_MARKER;
+      delete process.env.OPERATOR_SERVICE_MARKER;
     }
     if (params.override) {
-      process.env.OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS = params.override;
+      process.env.OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS = params.override;
     } else {
-      delete process.env.OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS;
+      delete process.env.OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS;
     }
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     const exitSpy = vi.spyOn(process, "exit").mockImplementation(((code?: number) => {
@@ -805,20 +805,20 @@ describe("runCli exit behavior", () => {
         [{ isolateEnv: true, observe: false }],
       ]);
       if (params.marker) {
-        expect(process.env.OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS).toBeUndefined();
+        expect(process.env.OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS).toBeUndefined();
       }
     } finally {
       exitSpy.mockRestore();
       errorSpy.mockRestore();
       if (previousMarker === undefined) {
-        delete process.env.OPENCLAW_SERVICE_MARKER;
+        delete process.env.OPERATOR_SERVICE_MARKER;
       } else {
-        process.env.OPENCLAW_SERVICE_MARKER = previousMarker;
+        process.env.OPERATOR_SERVICE_MARKER = previousMarker;
       }
       if (previousOverride === undefined) {
-        delete process.env.OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS;
+        delete process.env.OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS;
       } else {
-        process.env.OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS = previousOverride;
+        process.env.OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS = previousOverride;
       }
     }
   });
@@ -828,7 +828,7 @@ describe("runCli exit behavior", () => {
       exists: true,
       valid: true,
       sourceConfig: {
-        env: { vars: { OPENCLAW_SERVICE_MARKER: "gateway" } },
+        env: { vars: { OPERATOR_SERVICE_MARKER: "gateway" } },
         meta: { lastTouchedVersion: "9999.1.1" },
       },
     });
@@ -839,13 +839,13 @@ describe("runCli exit behavior", () => {
     try {
       await withEnvAsync(
         {
-          OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS: "1",
-          OPENCLAW_SERVICE_MARKER: undefined,
+          OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS: "1",
+          OPERATOR_SERVICE_MARKER: undefined,
         },
         async () => {
           await expect(runCli(["node", "openclaw", "gateway"])).rejects.toThrow("exit:78");
-          expect(process.env.OPENCLAW_SERVICE_MARKER).toBeUndefined();
-          expect(process.env.OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS).toBeUndefined();
+          expect(process.env.OPERATOR_SERVICE_MARKER).toBeUndefined();
+          expect(process.env.OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS).toBeUndefined();
           expect(ensureCliExecutionBootstrapMock).not.toHaveBeenCalled();
         },
       );
@@ -860,21 +860,21 @@ describe("runCli exit behavior", () => {
       exists: true,
       valid: false,
       sourceConfig: {
-        env: { vars: { OPENCLAW_SERVICE_MARKER: "gateway" } },
+        env: { vars: { OPERATOR_SERVICE_MARKER: "gateway" } },
         meta: { lastTouchedVersion: "9999.1.1" },
       },
     });
 
     await withEnvAsync(
       {
-        OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS: "1",
-        OPENCLAW_SERVICE_MARKER: undefined,
+        OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS: "1",
+        OPERATOR_SERVICE_MARKER: undefined,
       },
       async () => {
         await runCli(["node", "openclaw", "gateway"]);
 
-        expect(process.env.OPENCLAW_SERVICE_MARKER).toBeUndefined();
-        expect(process.env.OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS).toBe("1");
+        expect(process.env.OPERATOR_SERVICE_MARKER).toBeUndefined();
+        expect(process.env.OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS).toBe("1");
       },
     );
   });
@@ -887,8 +887,8 @@ describe("runCli exit behavior", () => {
     await fs.writeFile(
       path.join(stateDir, ".env"),
       [
-        `OPENCLAW_CONFIG_PATH=${selectedConfigPath}`,
-        "OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS=1",
+        `OPERATOR_CONFIG_PATH=${selectedConfigPath}`,
+        "OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS=1",
         "",
       ].join("\n"),
     );
@@ -896,14 +896,14 @@ describe("runCli exit behavior", () => {
       await withEnvAsync(
         {
           HOME: homeDir,
-          OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS: undefined,
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_HOME: homeDir,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_HOME: homeDir,
+          OPERATOR_STATE_DIR: undefined,
         },
         async () => {
           readConfigFileSnapshotMock.mockImplementation(async () =>
-            process.env.OPENCLAW_CONFIG_PATH === selectedConfigPath
+            process.env.OPERATOR_CONFIG_PATH === selectedConfigPath
               ? {
                   exists: true,
                   valid: true,
@@ -918,8 +918,8 @@ describe("runCli exit behavior", () => {
 
           await runCli(["node", "openclaw", "gateway"]);
 
-          expect(process.env.OPENCLAW_CONFIG_PATH).toBe(selectedConfigPath);
-          expect(process.env.OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS).toBeUndefined();
+          expect(process.env.OPERATOR_CONFIG_PATH).toBe(selectedConfigPath);
+          expect(process.env.OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS).toBeUndefined();
           expect(readConfigFileSnapshotMock).toHaveBeenCalledOnce();
         },
       );
@@ -935,12 +935,12 @@ describe("runCli exit behavior", () => {
     const configPath = path.join(configDir, "openclaw.json");
     await fs.mkdir(stateDir, { recursive: true });
     await fs.mkdir(configDir, { recursive: true });
-    await fs.writeFile(path.join(stateDir, ".env"), "OPENCLAW_GATEWAY_TOKEN=state-token\n");
+    await fs.writeFile(path.join(stateDir, ".env"), "OPERATOR_GATEWAY_TOKEN=state-token\n");
     await fs.writeFile(
       path.join(configDir, ".env"),
       [
-        "OPENCLAW_GATEWAY_PASSWORD=config-root-password",
-        "OPENCLAW_GATEWAY_TOKEN=config-root-token",
+        "OPERATOR_GATEWAY_PASSWORD=config-root-password",
+        "OPERATOR_GATEWAY_TOKEN=config-root-token",
         "",
       ].join("\n"),
     );
@@ -948,17 +948,17 @@ describe("runCli exit behavior", () => {
       await withEnvAsync(
         {
           HOME: homeDir,
-          OPENCLAW_CONFIG_PATH: configPath,
-          OPENCLAW_GATEWAY_PASSWORD: undefined,
-          OPENCLAW_GATEWAY_TOKEN: undefined,
-          OPENCLAW_HOME: homeDir,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_CONFIG_PATH: configPath,
+          OPERATOR_GATEWAY_PASSWORD: undefined,
+          OPERATOR_GATEWAY_TOKEN: undefined,
+          OPERATOR_HOME: homeDir,
+          OPERATOR_STATE_DIR: undefined,
         },
         async () => {
           await runCli(["node", "openclaw", "gateway"]);
 
-          expect(process.env.OPENCLAW_GATEWAY_TOKEN).toBe("state-token");
-          expect(process.env.OPENCLAW_GATEWAY_PASSWORD).toBe("config-root-password");
+          expect(process.env.OPERATOR_GATEWAY_TOKEN).toBe("state-token");
+          expect(process.env.OPERATOR_GATEWAY_PASSWORD).toBe("config-root-password");
         },
       );
     } finally {
@@ -971,16 +971,16 @@ describe("runCli exit behavior", () => {
     const legacyStateDir = path.join(homeDir, ".clawdbot");
     const newStateDir = path.join(homeDir, ".openclaw");
     await fs.mkdir(legacyStateDir, { recursive: true });
-    await fs.writeFile(path.join(legacyStateDir, ".env"), "OPENCLAW_GATEWAY_TOKEN=legacy-token\n");
+    await fs.writeFile(path.join(legacyStateDir, ".env"), "OPERATOR_GATEWAY_TOKEN=legacy-token\n");
     try {
       await withEnvAsync(
         {
           HOME: homeDir,
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_GATEWAY_TOKEN: undefined,
-          OPENCLAW_HOME: homeDir,
-          OPENCLAW_STATE_DIR: undefined,
-          OPENCLAW_TEST_FAST: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_GATEWAY_TOKEN: undefined,
+          OPERATOR_HOME: homeDir,
+          OPERATOR_STATE_DIR: undefined,
+          OPERATOR_TEST_FAST: undefined,
         },
         async () => {
           ensureCliExecutionBootstrapMock.mockImplementationOnce(async () => {
@@ -992,7 +992,7 @@ describe("runCli exit behavior", () => {
             | undefined;
           await hooks?.beforeRun?.({});
 
-          expect(process.env.OPENCLAW_GATEWAY_TOKEN).toBe("legacy-token");
+          expect(process.env.OPERATOR_GATEWAY_TOKEN).toBe("legacy-token");
           await expect(fs.access(path.join(newStateDir, ".env"))).resolves.toBeUndefined();
           const bootstrapOrder = ensureCliExecutionBootstrapMock.mock.invocationCallOrder[0] ?? 0;
           const finalPinOrder = pinRuntimePathsMock.mock.invocationCallOrder.at(-1) ?? 0;
@@ -1090,7 +1090,7 @@ describe("runCli exit behavior", () => {
       if (options?.recoverSuspicious) {
         await options.allowSuspiciousRecovery?.(
           {
-            env: { vars: { OPENCLAW_SERVICE_MARKER: "gateway" } },
+            env: { vars: { OPERATOR_SERVICE_MARKER: "gateway" } },
             gateway: { mode: "local" },
             meta: { lastTouchedVersion: "9999.1.1" },
           },
@@ -1106,8 +1106,8 @@ describe("runCli exit behavior", () => {
     try {
       await withEnvAsync(
         {
-          OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS: "1",
-          OPENCLAW_SERVICE_MARKER: undefined,
+          OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS: "1",
+          OPERATOR_SERVICE_MARKER: undefined,
         },
         async () => {
           await runCli(["node", "openclaw", "gateway"]);
@@ -1131,25 +1131,25 @@ describe("runCli exit behavior", () => {
       await withEnvAsync(
         {
           HOME: homeDir,
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_HOME: homeDir,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_HOME: homeDir,
+          OPERATOR_STATE_DIR: undefined,
         },
         async () => {
           readConfigFileSnapshotMock.mockImplementation(async () => {
-            if (process.env.OPENCLAW_CONFIG_PATH === "/tmp/openclaw-chain-c.json") {
+            if (process.env.OPERATOR_CONFIG_PATH === "/tmp/openclaw-chain-c.json") {
               return {
                 exists: true,
                 valid: true,
                 sourceConfig: { meta: { lastTouchedVersion: "9999.1.1" } },
               };
             }
-            if (process.env.OPENCLAW_STATE_DIR === "/tmp/openclaw-chain-b") {
+            if (process.env.OPERATOR_STATE_DIR === "/tmp/openclaw-chain-b") {
               return {
                 exists: true,
                 valid: true,
                 sourceConfig: {
-                  env: { vars: { OPENCLAW_CONFIG_PATH: "/tmp/openclaw-chain-c.json" } },
+                  env: { vars: { OPERATOR_CONFIG_PATH: "/tmp/openclaw-chain-c.json" } },
                   gateway: { mode: "local" },
                 },
               };
@@ -1158,7 +1158,7 @@ describe("runCli exit behavior", () => {
               exists: true,
               valid: true,
               sourceConfig: {
-                env: { vars: { OPENCLAW_STATE_DIR: "/tmp/openclaw-chain-b" } },
+                env: { vars: { OPERATOR_STATE_DIR: "/tmp/openclaw-chain-b" } },
                 gateway: { mode: "local" },
               },
             };
@@ -1229,18 +1229,18 @@ describe("runCli exit behavior", () => {
   it("drops credentials from configs superseded during state selection", async () => {
     await withEnvAsync(
       {
-        OPENCLAW_GATEWAY_TOKEN: undefined,
-        OPENCLAW_HOME: undefined,
-        OPENCLAW_STATE_DIR: undefined,
+        OPERATOR_GATEWAY_TOKEN: undefined,
+        OPERATOR_HOME: undefined,
+        OPERATOR_STATE_DIR: undefined,
       },
       async () => {
         readConfigFileSnapshotMock.mockImplementation(async () =>
-          process.env.OPENCLAW_STATE_DIR === "/tmp/openclaw-selected-state"
+          process.env.OPERATOR_STATE_DIR === "/tmp/openclaw-selected-state"
             ? {
                 exists: true,
                 valid: true,
                 sourceConfig: {
-                  env: { vars: { OPENCLAW_GATEWAY_TOKEN: "selected-token" } },
+                  env: { vars: { OPERATOR_GATEWAY_TOKEN: "selected-token" } },
                   gateway: { mode: "local" },
                 },
               }
@@ -1250,8 +1250,8 @@ describe("runCli exit behavior", () => {
                 sourceConfig: {
                   env: {
                     vars: {
-                      OPENCLAW_GATEWAY_TOKEN: "superseded-token",
-                      OPENCLAW_STATE_DIR: "/tmp/openclaw-selected-state",
+                      OPERATOR_GATEWAY_TOKEN: "superseded-token",
+                      OPERATOR_STATE_DIR: "/tmp/openclaw-selected-state",
                     },
                   },
                   gateway: { mode: "local" },
@@ -1265,8 +1265,8 @@ describe("runCli exit behavior", () => {
           | undefined;
         await hooks?.beforeRun?.({});
 
-        expect(process.env.OPENCLAW_STATE_DIR).toBe("/tmp/openclaw-selected-state");
-        expect(process.env.OPENCLAW_GATEWAY_TOKEN).toBe("selected-token");
+        expect(process.env.OPERATOR_STATE_DIR).toBe("/tmp/openclaw-selected-state");
+        expect(process.env.OPERATOR_GATEWAY_TOKEN).toBe("selected-token");
         expect(ensureCliExecutionBootstrapMock).toHaveBeenCalledOnce();
       },
     );
@@ -1278,22 +1278,22 @@ describe("runCli exit behavior", () => {
     await fs.writeFile(
       path.join(stateDir, ".env"),
       [
-        `OPENCLAW_CONFIG_PATH=${futureConfigPath}`,
-        "OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS=1",
+        `OPERATOR_CONFIG_PATH=${futureConfigPath}`,
+        "OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS=1",
         "",
       ].join("\n"),
     );
     try {
       await withEnvAsync(
         {
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_HOME: undefined,
-          OPENCLAW_STATE_DIR: undefined,
-          OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_HOME: undefined,
+          OPERATOR_STATE_DIR: undefined,
+          OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS: undefined,
         },
         async () => {
           readConfigFileSnapshotMock.mockImplementation(async () => {
-            if (process.env.OPENCLAW_CONFIG_PATH === futureConfigPath) {
+            if (process.env.OPERATOR_CONFIG_PATH === futureConfigPath) {
               return {
                 exists: true,
                 valid: true,
@@ -1304,7 +1304,7 @@ describe("runCli exit behavior", () => {
               exists: true,
               valid: true,
               sourceConfig: {
-                env: { vars: { OPENCLAW_STATE_DIR: stateDir } },
+                env: { vars: { OPERATOR_STATE_DIR: stateDir } },
                 gateway: { mode: "local" },
               },
             };
@@ -1320,7 +1320,7 @@ describe("runCli exit behavior", () => {
             );
             expect(ensureCliExecutionBootstrapMock).not.toHaveBeenCalled();
             expect(readConfigFileSnapshotMock).toHaveBeenCalledTimes(2);
-            expect(process.env.OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS).toBeUndefined();
+            expect(process.env.OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS).toBeUndefined();
           } finally {
             exitSpy.mockRestore();
             errorSpy.mockRestore();
@@ -1333,7 +1333,7 @@ describe("runCli exit behavior", () => {
   });
 
   it("re-inspects recovery after recovery changes config selection", async () => {
-    await withEnvAsync({ OPENCLAW_CONFIG_PATH: undefined }, async () => {
+    await withEnvAsync({ OPERATOR_CONFIG_PATH: undefined }, async () => {
       const selectedConfigPath = "/tmp/openclaw-recovered-selection.json";
       const currentSnapshot = {
         exists: true,
@@ -1351,7 +1351,7 @@ describe("runCli exit behavior", () => {
             exists: true,
             valid: true,
             sourceConfig: {
-              env: { vars: { OPENCLAW_CONFIG_PATH: selectedConfigPath } },
+              env: { vars: { OPERATOR_CONFIG_PATH: selectedConfigPath } },
               gateway: { mode: "local" },
             },
           };
@@ -1394,13 +1394,13 @@ describe("runCli exit behavior", () => {
 
   it("discards env from a config replaced by suspicious recovery", async () => {
     await withEnvAsync(
-      { OPENCLAW_GATEWAY_TOKEN: undefined, OPENCLAW_PROXY_ACTIVE: undefined },
+      { OPERATOR_GATEWAY_TOKEN: undefined, OPERATOR_PROXY_ACTIVE: undefined },
       async () => {
         const clobberedSnapshot = {
           exists: true,
           valid: true,
           sourceConfig: {
-            env: { vars: { OPENCLAW_GATEWAY_TOKEN: "discarded-token" } },
+            env: { vars: { OPERATOR_GATEWAY_TOKEN: "discarded-token" } },
             gateway: { mode: "local" },
           },
           hash: "clobbered",
@@ -1436,26 +1436,26 @@ describe("runCli exit behavior", () => {
         await runCli(["node", "openclaw", "gateway"]);
 
         currentSnapshot = clobberedSnapshot;
-        process.env.OPENCLAW_PROXY_ACTIVE = "1";
+        process.env.OPERATOR_PROXY_ACTIVE = "1";
         const hooks = addGatewayRunCommandMock.mock.calls[0]?.[1] as
           | { beforeRun?: (opts: { force?: boolean }) => Promise<void> }
           | undefined;
         await hooks?.beforeRun?.({});
 
-        expect(process.env.OPENCLAW_GATEWAY_TOKEN).toBeUndefined();
-        expect(process.env.OPENCLAW_PROXY_ACTIVE).toBe("1");
+        expect(process.env.OPERATOR_GATEWAY_TOKEN).toBeUndefined();
+        expect(process.env.OPERATOR_PROXY_ACTIVE).toBe("1");
         expect(ensureCliExecutionBootstrapMock).toHaveBeenCalledOnce();
       },
     );
   });
 
   it("does not apply environment variables from invalid config snapshots", async () => {
-    await withEnvAsync({ OPENCLAW_INCLUDE_ROOTS: undefined }, async () => {
+    await withEnvAsync({ OPERATOR_INCLUDE_ROOTS: undefined }, async () => {
       readConfigFileSnapshotMock.mockResolvedValue({
         exists: true,
         valid: false,
         sourceConfig: {
-          env: { vars: { OPENCLAW_INCLUDE_ROOTS: "/tmp/openclaw-includes" } },
+          env: { vars: { OPERATOR_INCLUDE_ROOTS: "/tmp/openclaw-includes" } },
           gateway: { mode: "local" },
         },
       });
@@ -1466,7 +1466,7 @@ describe("runCli exit behavior", () => {
         | undefined;
       await hooks?.beforeRun?.({});
 
-      expect(process.env.OPENCLAW_INCLUDE_ROOTS).toBeUndefined();
+      expect(process.env.OPERATOR_INCLUDE_ROOTS).toBeUndefined();
       expect(readConfigFileSnapshotMock.mock.calls).toEqual([
         [{ isolateEnv: true, observe: false }],
         [{ isolateEnv: true, observe: false }],
@@ -1479,15 +1479,15 @@ describe("runCli exit behavior", () => {
     const homeDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-gateway-selected-env-"));
     const stateDir = path.join(homeDir, "state");
     await fs.mkdir(stateDir, { recursive: true });
-    await fs.writeFile(path.join(stateDir, ".env"), "OPENCLAW_GATEWAY_TOKEN=state-token\n");
+    await fs.writeFile(path.join(stateDir, ".env"), "OPERATOR_GATEWAY_TOKEN=state-token\n");
     try {
       await withEnvAsync(
         {
           HOME: homeDir,
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_GATEWAY_TOKEN: undefined,
-          OPENCLAW_HOME: homeDir,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_GATEWAY_TOKEN: undefined,
+          OPERATOR_HOME: homeDir,
+          OPERATOR_STATE_DIR: undefined,
         },
         async () => {
           readConfigFileSnapshotMock.mockResolvedValue({
@@ -1496,8 +1496,8 @@ describe("runCli exit behavior", () => {
             sourceConfig: {
               env: {
                 vars: {
-                  OPENCLAW_GATEWAY_TOKEN: "config-token",
-                  OPENCLAW_STATE_DIR: stateDir,
+                  OPERATOR_GATEWAY_TOKEN: "config-token",
+                  OPERATOR_STATE_DIR: stateDir,
                 },
               },
               gateway: { mode: "local" },
@@ -1505,12 +1505,12 @@ describe("runCli exit behavior", () => {
           });
           let tokenAtNormalize: string | undefined;
           normalizeEnvMock.mockImplementation(() => {
-            tokenAtNormalize = process.env.OPENCLAW_GATEWAY_TOKEN;
+            tokenAtNormalize = process.env.OPERATOR_GATEWAY_TOKEN;
           });
 
           await runCli(["node", "openclaw", "gateway"]);
 
-          expect(process.env.OPENCLAW_GATEWAY_TOKEN).toBe("state-token");
+          expect(process.env.OPERATOR_GATEWAY_TOKEN).toBe("state-token");
           expect(tokenAtNormalize).toBe("state-token");
         },
       );
@@ -1528,28 +1528,28 @@ describe("runCli exit behavior", () => {
     await fs.writeFile(
       path.join(defaultStateDir, ".env"),
       [
-        `OPENCLAW_STATE_DIR=${selectedStateDir}`,
-        "OPENCLAW_GATEWAY_TOKEN=superseded-token",
+        `OPERATOR_STATE_DIR=${selectedStateDir}`,
+        "OPERATOR_GATEWAY_TOKEN=superseded-token",
         "",
       ].join("\n"),
     );
     await fs.writeFile(
       path.join(selectedStateDir, ".env"),
-      "OPENCLAW_GATEWAY_TOKEN=selected-token\n",
+      "OPERATOR_GATEWAY_TOKEN=selected-token\n",
     );
     try {
       await withEnvAsync(
         {
           HOME: homeDir,
-          OPENCLAW_GATEWAY_TOKEN: undefined,
-          OPENCLAW_HOME: homeDir,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_GATEWAY_TOKEN: undefined,
+          OPERATOR_HOME: homeDir,
+          OPERATOR_STATE_DIR: undefined,
         },
         async () => {
           await runCli(["node", "openclaw", "gateway"]);
 
-          expect(process.env.OPENCLAW_STATE_DIR).toBe(selectedStateDir);
-          expect(process.env.OPENCLAW_GATEWAY_TOKEN).toBe("selected-token");
+          expect(process.env.OPERATOR_STATE_DIR).toBe(selectedStateDir);
+          expect(process.env.OPERATOR_GATEWAY_TOKEN).toBe("selected-token");
         },
       );
     } finally {
@@ -1567,21 +1567,21 @@ describe("runCli exit behavior", () => {
     await fs.mkdir(gatewayEnvDir, { recursive: true });
     await fs.writeFile(
       path.join(defaultStateDir, ".env"),
-      `OPENCLAW_STATE_DIR=${selectedStateDir}\n`,
+      `OPERATOR_STATE_DIR=${selectedStateDir}\n`,
     );
     await fs.writeFile(
       path.join(gatewayEnvDir, "gateway.env"),
       [
-        "OPENCLAW_CONFIG_PATH=/tmp/wrong-openclaw.json",
-        "OPENCLAW_GATEWAY_TOKEN=fallback-token",
+        "OPERATOR_CONFIG_PATH=/tmp/wrong-openclaw.json",
+        "OPERATOR_GATEWAY_TOKEN=fallback-token",
         "",
       ].join("\n"),
     );
     await fs.writeFile(
       path.join(selectedStateDir, ".env"),
       [
-        "OPENCLAW_GATEWAY_TOKEN=selected-token",
-        "OPENCLAW_INCLUDE_ROOTS=/tmp/untrusted-include-root",
+        "OPERATOR_GATEWAY_TOKEN=selected-token",
+        "OPERATOR_INCLUDE_ROOTS=/tmp/untrusted-include-root",
         "NODE_OPTIONS=--require /tmp/untrusted.js",
         "",
       ].join("\n"),
@@ -1590,18 +1590,18 @@ describe("runCli exit behavior", () => {
       await withEnvAsync(
         {
           HOME: homeDir,
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_GATEWAY_TOKEN: undefined,
-          OPENCLAW_HOME: homeDir,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_GATEWAY_TOKEN: undefined,
+          OPERATOR_HOME: homeDir,
+          OPERATOR_STATE_DIR: undefined,
           NODE_OPTIONS: undefined,
         },
         async () => {
           await runCli(["node", "openclaw", "gateway"]);
 
-          expect(process.env.OPENCLAW_STATE_DIR).toBe(selectedStateDir);
-          expect(process.env.OPENCLAW_CONFIG_PATH).toBeUndefined();
-          expect(process.env.OPENCLAW_GATEWAY_TOKEN).toBe("selected-token");
+          expect(process.env.OPERATOR_STATE_DIR).toBe(selectedStateDir);
+          expect(process.env.OPERATOR_CONFIG_PATH).toBeUndefined();
+          expect(process.env.OPERATOR_GATEWAY_TOKEN).toBe("selected-token");
         },
       );
     } finally {
@@ -1617,30 +1617,30 @@ describe("runCli exit behavior", () => {
     await fs.mkdir(gatewayEnvDir, { recursive: true });
     await fs.writeFile(
       path.join(gatewayEnvDir, "gateway.env"),
-      [`OPENCLAW_STATE_DIR=${selectedStateDir}`, "OPENCLAW_GATEWAY_TOKEN=fallback-token", ""].join(
+      [`OPERATOR_STATE_DIR=${selectedStateDir}`, "OPERATOR_GATEWAY_TOKEN=fallback-token", ""].join(
         "\n",
       ),
     );
     await fs.writeFile(
       path.join(selectedStateDir, ".env"),
-      "OPENCLAW_GATEWAY_TOKEN=selected-token\n",
+      "OPERATOR_GATEWAY_TOKEN=selected-token\n",
     );
     try {
       await withEnvAsync(
         {
           HOME: homeDir,
-          OPENCLAW_GATEWAY_TOKEN: undefined,
-          OPENCLAW_HOME: homeDir,
-          OPENCLAW_INCLUDE_ROOTS: undefined,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_GATEWAY_TOKEN: undefined,
+          OPERATOR_HOME: homeDir,
+          OPERATOR_INCLUDE_ROOTS: undefined,
+          OPERATOR_STATE_DIR: undefined,
           NODE_OPTIONS: undefined,
         },
         async () => {
           await runCli(["node", "openclaw", "gateway"]);
 
-          expect(process.env.OPENCLAW_STATE_DIR).toBe(selectedStateDir);
-          expect(process.env.OPENCLAW_GATEWAY_TOKEN).toBe("selected-token");
-          expect(process.env.OPENCLAW_INCLUDE_ROOTS).toBeUndefined();
+          expect(process.env.OPERATOR_STATE_DIR).toBe(selectedStateDir);
+          expect(process.env.OPERATOR_GATEWAY_TOKEN).toBe("selected-token");
+          expect(process.env.OPERATOR_INCLUDE_ROOTS).toBeUndefined();
           expect(process.env.NODE_OPTIONS).toBeUndefined();
         },
       );
@@ -1657,37 +1657,37 @@ describe("runCli exit behavior", () => {
     await fs.mkdir(selectedStateDir, { recursive: true });
     await fs.writeFile(
       path.join(defaultStateDir, ".env"),
-      "OPENCLAW_GATEWAY_TOKEN=superseded-token\n",
+      "OPERATOR_GATEWAY_TOKEN=superseded-token\n",
     );
     await fs.writeFile(
       path.join(selectedStateDir, ".env"),
-      "OPENCLAW_GATEWAY_TOKEN=selected-token\n",
+      "OPERATOR_GATEWAY_TOKEN=selected-token\n",
     );
     try {
       await withEnvAsync(
         {
           HOME: homeDir,
-          OPENCLAW_GATEWAY_TOKEN: undefined,
-          OPENCLAW_HOME: homeDir,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_GATEWAY_TOKEN: undefined,
+          OPERATOR_HOME: homeDir,
+          OPERATOR_STATE_DIR: undefined,
         },
         async () => {
           readConfigFileSnapshotMock.mockImplementation(async () => ({
             exists: true,
             valid: true,
             sourceConfig:
-              process.env.OPENCLAW_STATE_DIR === selectedStateDir
+              process.env.OPERATOR_STATE_DIR === selectedStateDir
                 ? { gateway: { mode: "local" } }
                 : {
-                    env: { vars: { OPENCLAW_STATE_DIR: selectedStateDir } },
+                    env: { vars: { OPERATOR_STATE_DIR: selectedStateDir } },
                     gateway: { mode: "local" },
                   },
           }));
 
           await runCli(["node", "openclaw", "gateway"]);
 
-          expect(process.env.OPENCLAW_STATE_DIR).toBe(selectedStateDir);
-          expect(process.env.OPENCLAW_GATEWAY_TOKEN).toBe("selected-token");
+          expect(process.env.OPERATOR_STATE_DIR).toBe(selectedStateDir);
+          expect(process.env.OPERATOR_GATEWAY_TOKEN).toBe("selected-token");
         },
       );
     } finally {
@@ -1701,18 +1701,18 @@ describe("runCli exit behavior", () => {
     const selectedStateDir = path.join(homeDir, "selected-state");
     await fs.mkdir(defaultStateDir, { recursive: true });
     await fs.mkdir(selectedStateDir, { recursive: true });
-    await fs.writeFile(path.join(defaultStateDir, ".env"), "OPENCLAW_GATEWAY_TOKEN=early-token\n");
+    await fs.writeFile(path.join(defaultStateDir, ".env"), "OPERATOR_GATEWAY_TOKEN=early-token\n");
     await fs.writeFile(
       path.join(selectedStateDir, ".env"),
-      "OPENCLAW_GATEWAY_TOKEN=selected-token\n",
+      "OPERATOR_GATEWAY_TOKEN=selected-token\n",
     );
     try {
       await withEnvAsync(
         {
           HOME: homeDir,
-          OPENCLAW_GATEWAY_TOKEN: undefined,
-          OPENCLAW_HOME: homeDir,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_GATEWAY_TOKEN: undefined,
+          OPERATOR_HOME: homeDir,
+          OPERATOR_STATE_DIR: undefined,
         },
         async () => {
           let selectLateState = false;
@@ -1720,16 +1720,16 @@ describe("runCli exit behavior", () => {
             exists: true,
             valid: true,
             sourceConfig:
-              selectLateState && process.env.OPENCLAW_STATE_DIR !== selectedStateDir
+              selectLateState && process.env.OPERATOR_STATE_DIR !== selectedStateDir
                 ? {
-                    env: { vars: { OPENCLAW_STATE_DIR: selectedStateDir } },
+                    env: { vars: { OPERATOR_STATE_DIR: selectedStateDir } },
                     gateway: { mode: "local" },
                   }
                 : { gateway: { mode: "local" } },
           }));
 
           await runCli(["node", "openclaw", "gateway"]);
-          expect(process.env.OPENCLAW_GATEWAY_TOKEN).toBe("early-token");
+          expect(process.env.OPERATOR_GATEWAY_TOKEN).toBe("early-token");
 
           selectLateState = true;
           const hooks = addGatewayRunCommandMock.mock.calls[0]?.[1] as
@@ -1737,8 +1737,8 @@ describe("runCli exit behavior", () => {
             | undefined;
           await hooks?.beforeRun?.({});
 
-          expect(process.env.OPENCLAW_STATE_DIR).toBe(selectedStateDir);
-          expect(process.env.OPENCLAW_GATEWAY_TOKEN).toBe("selected-token");
+          expect(process.env.OPERATOR_STATE_DIR).toBe(selectedStateDir);
+          expect(process.env.OPERATOR_GATEWAY_TOKEN).toBe("selected-token");
           expect(ensureCliExecutionBootstrapMock).toHaveBeenCalledOnce();
         },
       );
@@ -1789,20 +1789,20 @@ describe("runCli exit behavior", () => {
     await fs.mkdir(gatewayEnvDir, { recursive: true });
     await fs.writeFile(
       path.join(gatewayEnvDir, "gateway.env"),
-      "OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS=1\n",
+      "OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS=1\n",
     );
     try {
       await withEnvAsync(
         {
           HOME: homeDir,
-          OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS: undefined,
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_HOME: homeDir,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_HOME: homeDir,
+          OPERATOR_STATE_DIR: undefined,
         },
         async () => {
           readConfigFileSnapshotMock.mockImplementation(async () =>
-            process.env.OPENCLAW_CONFIG_PATH === futureConfigPath
+            process.env.OPERATOR_CONFIG_PATH === futureConfigPath
               ? {
                   exists: true,
                   valid: true,
@@ -1812,7 +1812,7 @@ describe("runCli exit behavior", () => {
                   exists: true,
                   valid: true,
                   sourceConfig: {
-                    env: { vars: { OPENCLAW_CONFIG_PATH: futureConfigPath } },
+                    env: { vars: { OPERATOR_CONFIG_PATH: futureConfigPath } },
                     gateway: { mode: "local" },
                   },
                 },
@@ -1826,7 +1826,7 @@ describe("runCli exit behavior", () => {
             expect(errorSpy).toHaveBeenCalledWith(
               expect.stringContaining("run automatic gateway startup migrations"),
             );
-            expect(process.env.OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS).toBeUndefined();
+            expect(process.env.OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS).toBeUndefined();
           } finally {
             exitSpy.mockRestore();
             errorSpy.mockRestore();
@@ -1869,14 +1869,14 @@ describe("runCli exit behavior", () => {
   it("retains selected config paths and invocation reset targets", async () => {
     await withEnvAsync(
       {
-        OPENCLAW_CONFIG_PATH: "/tmp/openclaw-invocation/openclaw.json",
-        OPENCLAW_GATEWAY_TOKEN: undefined,
-        OPENCLAW_HOME: "/tmp/openclaw-invocation-home",
-        OPENCLAW_INCLUDE_ROOTS: undefined,
-        OPENCLAW_PROFILE: undefined,
-        OPENCLAW_STATE_DIR: "/tmp/openclaw-invocation-state",
-        OPENCLAW_TEST_FAST: "1",
-        OPENCLAW_WORKSPACE_DIR: "/tmp/openclaw-invocation-workspace",
+        OPERATOR_CONFIG_PATH: "/tmp/openclaw-invocation/openclaw.json",
+        OPERATOR_GATEWAY_TOKEN: undefined,
+        OPERATOR_HOME: "/tmp/openclaw-invocation-home",
+        OPERATOR_INCLUDE_ROOTS: undefined,
+        OPERATOR_PROFILE: undefined,
+        OPERATOR_STATE_DIR: "/tmp/openclaw-invocation-state",
+        OPERATOR_TEST_FAST: "1",
+        OPERATOR_WORKSPACE_DIR: "/tmp/openclaw-invocation-workspace",
       },
       async () => {
         readConfigFileSnapshotMock.mockResolvedValue({
@@ -1885,14 +1885,14 @@ describe("runCli exit behavior", () => {
           sourceConfig: {
             env: {
               vars: {
-                OPENCLAW_CONFIG_PATH: "/tmp/openclaw-reset/openclaw.json",
-                OPENCLAW_GATEWAY_TOKEN: "old-token",
-                OPENCLAW_HOME: "/tmp/openclaw-reset-home",
-                OPENCLAW_INCLUDE_ROOTS: "/tmp/openclaw-reset-includes",
-                OPENCLAW_PROFILE: "config-dev",
-                OPENCLAW_STATE_DIR: "/tmp/openclaw-reset",
-                OPENCLAW_TEST_FAST: "0",
-                OPENCLAW_WORKSPACE_DIR: "/tmp/openclaw-reset-workspace",
+                OPERATOR_CONFIG_PATH: "/tmp/openclaw-reset/openclaw.json",
+                OPERATOR_GATEWAY_TOKEN: "old-token",
+                OPERATOR_HOME: "/tmp/openclaw-reset-home",
+                OPERATOR_INCLUDE_ROOTS: "/tmp/openclaw-reset-includes",
+                OPERATOR_PROFILE: "config-dev",
+                OPERATOR_STATE_DIR: "/tmp/openclaw-reset",
+                OPERATOR_TEST_FAST: "0",
+                OPERATOR_WORKSPACE_DIR: "/tmp/openclaw-reset-workspace",
               },
             },
             gateway: { mode: "local" },
@@ -1905,14 +1905,14 @@ describe("runCli exit behavior", () => {
           | undefined;
         await hooks?.beforeRun?.({ reset: true });
 
-        expect(process.env.OPENCLAW_CONFIG_PATH).toBe("/tmp/openclaw-invocation/openclaw.json");
-        expect(process.env.OPENCLAW_HOME).toBe("/tmp/openclaw-invocation-home");
-        expect(process.env.OPENCLAW_PROFILE).toBeUndefined();
-        expect(process.env.OPENCLAW_STATE_DIR).toBe("/tmp/openclaw-invocation-state");
-        expect(process.env.OPENCLAW_TEST_FAST).toBe("1");
-        expect(process.env.OPENCLAW_WORKSPACE_DIR).toBe("/tmp/openclaw-invocation-workspace");
-        expect(process.env.OPENCLAW_GATEWAY_TOKEN).toBeUndefined();
-        expect(process.env.OPENCLAW_INCLUDE_ROOTS).toBeUndefined();
+        expect(process.env.OPERATOR_CONFIG_PATH).toBe("/tmp/openclaw-invocation/openclaw.json");
+        expect(process.env.OPERATOR_HOME).toBe("/tmp/openclaw-invocation-home");
+        expect(process.env.OPERATOR_PROFILE).toBeUndefined();
+        expect(process.env.OPERATOR_STATE_DIR).toBe("/tmp/openclaw-invocation-state");
+        expect(process.env.OPERATOR_TEST_FAST).toBe("1");
+        expect(process.env.OPERATOR_WORKSPACE_DIR).toBe("/tmp/openclaw-invocation-workspace");
+        expect(process.env.OPERATOR_GATEWAY_TOKEN).toBeUndefined();
+        expect(process.env.OPERATOR_INCLUDE_ROOTS).toBeUndefined();
         expect(ensureCliExecutionBootstrapMock).not.toHaveBeenCalled();
       },
     );
@@ -1920,7 +1920,7 @@ describe("runCli exit behavior", () => {
 
   it("does not let config env authorize or retarget an explicit reset", async () => {
     await withEnvAsync(
-      { OPENCLAW_PROFILE: undefined, OPENCLAW_WORKSPACE_DIR: undefined },
+      { OPERATOR_PROFILE: undefined, OPERATOR_WORKSPACE_DIR: undefined },
       async () => {
         readConfigFileSnapshotMock.mockResolvedValue({
           exists: true,
@@ -1928,8 +1928,8 @@ describe("runCli exit behavior", () => {
           sourceConfig: {
             env: {
               vars: {
-                OPENCLAW_PROFILE: "dev",
-                OPENCLAW_WORKSPACE_DIR: "/tmp/openclaw-config-workspace",
+                OPERATOR_PROFILE: "dev",
+                OPERATOR_WORKSPACE_DIR: "/tmp/openclaw-config-workspace",
               },
             },
             gateway: { mode: "local" },
@@ -1938,14 +1938,14 @@ describe("runCli exit behavior", () => {
 
         await runCli(["node", "openclaw", "gateway", "--reset"]);
 
-        expect(process.env.OPENCLAW_PROFILE).toBeUndefined();
-        expect(process.env.OPENCLAW_WORKSPACE_DIR).toBeUndefined();
+        expect(process.env.OPERATOR_PROFILE).toBeUndefined();
+        expect(process.env.OPERATOR_WORKSPACE_DIR).toBeUndefined();
       },
     );
   });
 
   it("honors banner suppression on the gateway foreground fast path", async () => {
-    process.env.OPENCLAW_HIDE_BANNER = "1";
+    process.env.OPERATOR_HIDE_BANNER = "1";
 
     await runCli(["node", "openclaw", "gateway"]);
 
@@ -2217,17 +2217,17 @@ describe("runCli exit behavior", () => {
   });
 
   it("selects gateway config env before starting its managed proxy", async () => {
-    await withEnvAsync({ OPENCLAW_TEST_PROXY_SELECTION: undefined }, async () => {
+    await withEnvAsync({ OPERATOR_TEST_PROXY_SELECTION: undefined }, async () => {
       readConfigFileSnapshotMock.mockResolvedValue({
         exists: true,
         valid: true,
         sourceConfig: {
-          env: { vars: { OPENCLAW_TEST_PROXY_SELECTION: "selected" } },
+          env: { vars: { OPERATOR_TEST_PROXY_SELECTION: "selected" } },
           gateway: { mode: "local" },
         },
       });
       loadConfigMock.mockImplementationOnce(() => ({
-        proxy: { selected: process.env.OPENCLAW_TEST_PROXY_SELECTION },
+        proxy: { selected: process.env.OPERATOR_TEST_PROXY_SELECTION },
       }));
 
       await runCli(["node", "openclaw", "gateway", "run"]);
@@ -2784,14 +2784,14 @@ describe("runCli exit behavior", () => {
             password: {
               source: "env",
               provider: "default",
-              id: "OPENCLAW_GATEWAY_PASSWORD",
+              id: "OPERATOR_GATEWAY_PASSWORD",
             },
           },
         },
       },
     });
 
-    await withEnvAsync({ OPENCLAW_GATEWAY_PASSWORD: "gateway-ref-password" }, async () => {
+    await withEnvAsync({ OPERATOR_GATEWAY_PASSWORD: "gateway-ref-password" }, async () => {
       await withInteractiveTty(async () => {
         await runCli(["node", "openclaw"]);
       });
@@ -2957,7 +2957,7 @@ describe("runCli exit behavior", () => {
     });
     readActiveGatewayLockPortMock.mockResolvedValueOnce(48789);
 
-    await withEnvAsync({ OPENCLAW_GATEWAY_PORT: "19001" }, async () => {
+    await withEnvAsync({ OPERATOR_GATEWAY_PORT: "19001" }, async () => {
       await withInteractiveTty(async () => {
         await runCli(["node", "openclaw"]);
       });
@@ -3017,7 +3017,7 @@ describe("runCli exit behavior", () => {
       },
     });
 
-    await withEnvAsync({ OPENCLAW_GATEWAY_TOKEN: "env-token" }, async () => {
+    await withEnvAsync({ OPERATOR_GATEWAY_TOKEN: "env-token" }, async () => {
       await withInteractiveTty(async () => {
         await runCli(["node", "openclaw"]);
       });
@@ -3367,7 +3367,7 @@ describe("runCli exit behavior", () => {
       },
     });
 
-    await withEnvAsync({ OPENCLAW_ALLOW_INSECURE_PRIVATE_WS: undefined }, async () => {
+    await withEnvAsync({ OPERATOR_ALLOW_INSECURE_PRIVATE_WS: undefined }, async () => {
       await withInteractiveTty(async () => {
         await runCli(["node", "openclaw"]);
       });
@@ -3394,7 +3394,7 @@ describe("runCli exit behavior", () => {
       },
     });
 
-    await withEnvAsync({ OPENCLAW_ALLOW_INSECURE_PRIVATE_WS: undefined }, async () => {
+    await withEnvAsync({ OPERATOR_ALLOW_INSECURE_PRIVATE_WS: undefined }, async () => {
       await withInteractiveTty(async () => {
         await runCli(["node", "openclaw"]);
       });
@@ -3427,7 +3427,7 @@ describe("runCli exit behavior", () => {
       },
     });
 
-    await withEnvAsync({ OPENCLAW_GATEWAY_PASSWORD: "stale-env-password" }, async () => {
+    await withEnvAsync({ OPERATOR_GATEWAY_PASSWORD: "stale-env-password" }, async () => {
       await withInteractiveTty(async () => {
         await runCli(["node", "openclaw"]);
       });
@@ -3472,8 +3472,8 @@ describe("runCli exit behavior", () => {
       {
         MISSING_REMOTE_GATEWAY_TOKEN: undefined,
         MISSING_REMOTE_GATEWAY_PASSWORD: undefined,
-        OPENCLAW_GATEWAY_TOKEN: "env-remote-token",
-        OPENCLAW_GATEWAY_PASSWORD: "env-remote-password",
+        OPERATOR_GATEWAY_TOKEN: "env-remote-token",
+        OPERATOR_GATEWAY_PASSWORD: "env-remote-password",
       },
       async () => {
         await withInteractiveTty(async () => {
@@ -3507,7 +3507,7 @@ describe("runCli exit behavior", () => {
       },
     });
 
-    await withEnvAsync({ OPENCLAW_ALLOW_INSECURE_PRIVATE_WS: "1" }, async () => {
+    await withEnvAsync({ OPERATOR_ALLOW_INSECURE_PRIVATE_WS: "1" }, async () => {
       await withInteractiveTty(async () => {
         await runCli(["node", "openclaw"]);
       });
@@ -3570,7 +3570,7 @@ describe("runCli exit behavior", () => {
       },
     });
 
-    await withEnvAsync({ OPENCLAW_ALLOW_INSECURE_PRIVATE_WS: undefined }, async () => {
+    await withEnvAsync({ OPERATOR_ALLOW_INSECURE_PRIVATE_WS: undefined }, async () => {
       await withInteractiveTty(async () => {
         await runCli(["node", "openclaw"]);
       });
@@ -3595,7 +3595,7 @@ describe("runCli exit behavior", () => {
 
       expect(process.exitCode).toBe(1);
       expect(errorSpy).toHaveBeenCalledWith(
-        "OpenClaw TUI needs an interactive TTY. Use `openclaw agent --local ...` for automation.",
+        "Operator TUI needs an interactive TTY. Use `openclaw agent --local ...` for automation.",
       );
       expect(launchTuiCliMock).not.toHaveBeenCalled();
     } finally {
@@ -3648,7 +3648,7 @@ describe("runCli exit behavior", () => {
 
       expect(process.exitCode).toBe(1);
       expect(errorSpy).toHaveBeenCalledWith(
-        "OpenClaw config is invalid. Run `openclaw doctor --fix` before onboarding.",
+        "Operator config is invalid. Run `openclaw doctor --fix` before onboarding.",
       );
       expect(setupWizardCommandMock).not.toHaveBeenCalled();
     } finally {
@@ -3814,7 +3814,7 @@ describe("runCli exit behavior", () => {
     try {
       expect(() => handler(new Error("boom"))).toThrow("process.exit(1)");
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        "[openclaw] OpenClaw hit an unexpected runtime error.",
+        "[openclaw] Operator hit an unexpected runtime error.",
       );
       expect(consoleErrorSpy).toHaveBeenCalledWith("[openclaw] Reason: boom");
       expect(restoreTerminalStateMock).toHaveBeenCalledWith("uncaught exception", {

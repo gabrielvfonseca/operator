@@ -9,13 +9,13 @@ import plugin from "./index.js";
 
 const LIVE = isLiveTestEnabled();
 const VYDRA_API_KEY = process.env.VYDRA_API_KEY?.trim() ?? "";
-const ENABLE_VYDRA_VIDEO_LIVE = process.env.OPENCLAW_LIVE_VYDRA_VIDEO === "1";
-const LIVE_IMAGE_MODEL = process.env.OPENCLAW_LIVE_VYDRA_IMAGE_MODEL?.trim() || "grok-imagine";
-const LIVE_VIDEO_MODEL = process.env.OPENCLAW_LIVE_VYDRA_VIDEO_MODEL?.trim() || "veo3";
+const ENABLE_VYDRA_VIDEO_LIVE = process.env.OPERATOR_LIVE_VYDRA_VIDEO === "1";
+const LIVE_IMAGE_MODEL = process.env.OPERATOR_LIVE_VYDRA_IMAGE_MODEL?.trim() || "grok-imagine";
+const LIVE_VIDEO_MODEL = process.env.OPERATOR_LIVE_VYDRA_VIDEO_MODEL?.trim() || "veo3";
 const DEFAULT_LIVE_KLING_IMAGE_URL =
   "https://raw.githubusercontent.com/openclaw/openclaw/main/docs/assets/showcase/roof-camera-sky.jpg";
 const LIVE_KLING_IMAGE_URL =
-  process.env.OPENCLAW_LIVE_VYDRA_KLING_IMAGE_URL?.trim() || DEFAULT_LIVE_KLING_IMAGE_URL;
+  process.env.OPERATOR_LIVE_VYDRA_KLING_IMAGE_URL?.trim() || DEFAULT_LIVE_KLING_IMAGE_URL;
 const VYDRA_KLING_TIMEOUT_MS = 12 * 60_000;
 
 const registerVydraPlugin = () =>
@@ -64,7 +64,7 @@ describe.skipIf(!LIVE || !VYDRA_API_KEY)("vydra live", () => {
     expect(voices?.some((voice) => voice.id === "21m00Tcm4TlvDq8ikWAM")).toBe(true);
 
     const result = await provider.synthesize({
-      text: "OpenClaw integration test OK.",
+      text: "Operator integration test OK.",
       cfg: { plugins: { enabled: true } } as never,
       providerConfig: { apiKey: VYDRA_API_KEY },
       target: "audio-file",

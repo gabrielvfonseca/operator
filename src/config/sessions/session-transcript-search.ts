@@ -4,10 +4,10 @@
 // doctor-migrated transcripts and rebuilds branch-rewound sessions.
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../../infra/kysely-sync.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
-import type { DB as OpenClawAgentKyselyDatabase } from "../../state/operator-agent-db.generated.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../../state/operator-agent-db.generated.js";
 import {
-  openOpenClawAgentDatabase,
-  runOpenClawAgentWriteTransaction,
+  openOperatorAgentDatabase,
+  runOperatorAgentWriteTransaction,
 } from "../../state/operator-agent-db.js";
 import { truncateUtf16Safe } from "../../utils.js";
 import {
@@ -48,20 +48,20 @@ async function reconcileSessionTranscriptIndex(params: {
   agentId: string;
   env?: NodeJS.ProcessEnv;
 }): Promise<void> {
-  const database = openOpenClawAgentDatabase({
+  const database = openOperatorAgentDatabase({
     agentId: params.agentId,
     ...(params.env ? { env: params.env } : {}),
   });
   const sessionIds = listSessionsNeedingTranscriptIndexReconcile(database.db);
   for (const sessionId of sessionIds) {
-    runOpenClawAgentWriteTransaction(
+    runOperatorAgentWriteTransaction(
       (agentDatabase) => {
         // Rows are reread inside the transaction: a live append that landed
         // after the dirty scan is either included here or re-flagged by its
         // own in-transaction hook, so the rebuild can never go stale.
         const rows = executeSqliteQuerySync(
           agentDatabase.db,
-          getNodeSqliteKysely<Pick<OpenClawAgentKyselyDatabase, "transcript_events">>(
+          getNodeSqliteKysely<Pick<OperatorAgentKyselyDatabase, "transcript_events">>(
             agentDatabase.db,
           )
             .selectFrom("transcript_events")
@@ -83,7 +83,7 @@ async function reconcileSessionTranscriptIndex(params: {
       setImmediate(resolve);
     });
   }
-  runOpenClawAgentWriteTransaction(
+  runOperatorAgentWriteTransaction(
     (agentDatabase) => {
       deleteOrphanedTranscriptIndexRowsInTransaction(agentDatabase.db);
     },
@@ -132,7 +132,7 @@ export function searchSessionTranscripts(params: {
   if (query.length > SEARCH_QUERY_MAX_CHARS) {
     throw new Error(`query must not exceed ${SEARCH_QUERY_MAX_CHARS} characters`);
   }
-  const database = openOpenClawAgentDatabase({
+  const database = openOperatorAgentDatabase({
     agentId: params.agentId,
     ...(params.env ? { env: params.env } : {}),
   });

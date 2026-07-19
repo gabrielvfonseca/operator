@@ -10,7 +10,7 @@ import {
 } from "../agents/models-config.providers.secrets.js";
 import { resolveProviderCatalogPluginIdsForFilter } from "../commands/models/list.provider-catalog.js";
 import type { ModelDefinitionConfig, ModelProviderConfig } from "../config/types.models.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import {
@@ -43,7 +43,7 @@ function hasLiveProviderCatalog(provider: ProviderPlugin): boolean {
 }
 
 async function resolvePreferredProviderLiveCatalogProviders(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   env: NodeJS.ProcessEnv;
   onlyPluginIds: string[];
   providerFilter: string;
@@ -136,7 +136,7 @@ function modelFromProviderCatalog(params: {
 
 /** Loads live catalog models for the user's preferred provider, ordered by discovery priority. */
 export async function loadPreferredProviderPickerCatalog(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   preferredProvider: string;
   agentDir?: string;
   workspaceDir?: string;

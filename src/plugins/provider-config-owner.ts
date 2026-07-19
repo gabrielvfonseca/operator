@@ -1,6 +1,6 @@
 // Resolves provider config ownership between core and plugins.
 import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 
 /** Core built-in model API ids that do not imply plugin ownership of a provider config. */
 export const CORE_BUILT_IN_MODEL_APIS = new Set([
@@ -17,7 +17,7 @@ export const CORE_BUILT_IN_MODEL_APIS = new Set([
 /** Returns the plugin API id that owns a provider config when it is not core built-in. */
 export function resolveProviderConfigApiOwnerHint(params: {
   provider: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }): string | undefined {
   const providers = params.config?.models?.providers;
   if (!providers) {

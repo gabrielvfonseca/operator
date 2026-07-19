@@ -12,7 +12,7 @@ describe("restart log conventions", () => {
   it("resolves profile-aware gateway logs and restart attempts together", () => {
     const env = {
       HOME: "/Users/test",
-      OPENCLAW_PROFILE: "work",
+      OPERATOR_PROFILE: "work",
     };
 
     expect(resolveGatewayLogPaths(env)).toEqual({
@@ -25,10 +25,10 @@ describe("restart log conventions", () => {
     );
   });
 
-  it("honors OPENCLAW_STATE_DIR for restart attempts", () => {
+  it("honors OPERATOR_STATE_DIR for restart attempts", () => {
     const env = {
       HOME: "/Users/test",
-      OPENCLAW_STATE_DIR: "/tmp/openclaw-state",
+      OPERATOR_STATE_DIR: "/tmp/openclaw-state",
     };
 
     expect(resolveGatewayRestartLogPath(env)).toBe("/tmp/openclaw-state/logs/gateway-restart.log");
@@ -37,7 +37,7 @@ describe("restart log conventions", () => {
   it("keeps macOS LaunchAgent stdout outside the state directory", () => {
     const env = {
       HOME: "/Users/test",
-      OPENCLAW_STATE_DIR: "/Volumes/External/openclaw",
+      OPERATOR_STATE_DIR: "/Volumes/External/openclaw",
     };
 
     expect(resolveGatewaySupervisorLogPaths(env, { platform: "darwin" })).toEqual({
@@ -53,7 +53,7 @@ describe("restart log conventions", () => {
   it("keeps macOS LaunchAgent logs profile-aware in the shared user log directory", () => {
     const env = {
       HOME: "/Users/test",
-      OPENCLAW_PROFILE: "work",
+      OPERATOR_PROFILE: "work",
     };
 
     expect(resolveGatewaySupervisorLogPaths(env, { platform: "darwin" })).toEqual({

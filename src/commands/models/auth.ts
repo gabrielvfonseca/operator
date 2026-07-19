@@ -39,7 +39,7 @@ import { formatCliCommand } from "../../cli/command-format.js";
 import { parseDurationMs } from "../../cli/parse-duration.js";
 import { logConfigUpdated } from "../../config/logging.js";
 import { normalizeAgentModelRefForConfig } from "../../config/model-input.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { callGateway } from "../../gateway/call.js";
 import { isRemoteEnvironment } from "../../infra/remote-env.js";
 import {
@@ -210,7 +210,7 @@ function validateOpenAICodexApiKeyInput(value: string): string | undefined {
 }
 
 type ResolvedModelsAuthContext = {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   agentDir: string;
   workspaceDir: string;
   providers: ProviderPlugin[];
@@ -252,7 +252,7 @@ function mergeSetupProviders(
 
 function preferSetupAuthProviders(params: {
   providers: readonly ProviderPlugin[];
-  config: OpenClawConfig;
+  config: OperatorConfig;
   workspaceDir: string;
   requestedProvider?: string;
 }): ProviderPlugin[] {
@@ -278,7 +278,7 @@ function preferSetupAuthProviders(params: {
 async function resolveModelsAuthContext(params?: {
   requestedProvider?: string;
   rawAgentId?: string | null;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }): Promise<ResolvedModelsAuthContext> {
   const config = params?.config ?? (await loadValidConfigOrThrow());
   const agentId =
@@ -427,7 +427,7 @@ async function pickProviderTokenMethod(params: {
 async function persistProviderAuthResult(params: {
   result: ProviderAuthResult;
   profiles?: ProviderAuthResult["profiles"];
-  config: OpenClawConfig;
+  config: OperatorConfig;
   agentDir: string;
   runtime: RuntimeEnv;
   prompter: WizardPrompter;
@@ -518,7 +518,7 @@ async function persistProviderAuthResult(params: {
 }
 
 function resolveConfiguredAuthSelectionForProvider(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   provider: string,
 ): { createIfMissing: boolean; order?: string[] } {
   const providerAuthKey = resolveProviderIdForAuth(provider, { config: cfg });
@@ -542,7 +542,7 @@ function resolveConfiguredAuthSelectionForProvider(
 }
 
 async function runProviderAuthMethod(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   agentDir: string;
   workspaceDir: string;
   provider: ProviderPlugin;
@@ -725,9 +725,9 @@ export async function modelsAuthPasteTokenCommand(
   logConfigUpdated(runtime);
   runtime.log(`Auth profile: ${profileId} (${provider}/token)`);
   if (provider === "anthropic") {
-    runtime.log("Anthropic setup-token auth is supported in OpenClaw.");
-    runtime.log("OpenClaw prefers Claude CLI reuse when it is available on the host.");
-    runtime.log("Anthropic staff told us this OpenClaw path is allowed again.");
+    runtime.log("Anthropic setup-token auth is supported in Operator.");
+    runtime.log("Operator prefers Claude CLI reuse when it is available on the host.");
+    runtime.log("Anthropic staff told us this Operator path is allowed again.");
   }
 }
 
@@ -927,7 +927,7 @@ export type ModelsAuthLoginFlowResult = {
 };
 
 export type ModelsAuthLoginFlowOptions = LoginOptions & {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   runtime: RuntimeEnv;
   prompter: WizardPrompter;
   env?: NodeJS.ProcessEnv;

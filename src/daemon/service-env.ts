@@ -60,7 +60,7 @@ export const SERVICE_PROXY_ENV_KEYS = [
 function readServiceProxyEnvironment(
   env: Record<string, string | undefined>,
 ): Record<string, string | undefined> {
-  // Service env intentionally preserves only the canonical OpenClaw proxy knob;
+  // Service env intentionally preserves only the canonical Operator proxy knob;
   // generic shell proxy vars are audited but not frozen into services.
   const proxyUrl = normalizeOptionalString(env.OPERATOR_PROXY_URL);
   return proxyUrl ? { OPERATOR_PROXY_URL: proxyUrl } : {};

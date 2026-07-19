@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import type { SessionEntry } from "../config/sessions.js";
 import { replaceSessionEntry } from "../config/sessions/session-accessor.js";
 import {
@@ -66,7 +66,7 @@ const baseRequest: ExecApprovalRequest = {
 async function writeStoreFile(
   storePath: string,
   entries: Record<string, Partial<SessionEntry>>,
-): Promise<OpenClawConfig> {
+): Promise<OperatorConfig> {
   fs.mkdirSync(path.dirname(storePath), { recursive: true });
   await Promise.all(
     Object.entries(entries).map(([sessionKey, entry]) =>
@@ -85,11 +85,11 @@ async function writeStoreFile(
   );
   return {
     session: { store: storePath },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 function expectResolvedSessionTarget(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   request: ExecApprovalRequest,
 ): ReturnType<typeof resolveExecApprovalSessionTarget> {
   return resolveExecApprovalSessionTarget({ cfg, request });
@@ -123,7 +123,7 @@ function buildPluginRequest(
   };
 }
 
-function resolveSlackPluginOriginTarget(params: { cfg: OpenClawConfig; turnSourceTo: string }) {
+function resolveSlackPluginOriginTarget(params: { cfg: OperatorConfig; turnSourceTo: string }) {
   return resolveApprovalRequestOriginTarget({
     cfg: params.cfg,
     request: buildPluginRequest({
@@ -321,7 +321,7 @@ describe("exec approval session target", () => {
   });
 
   it("prefers explicit turn-source account bindings when session store is missing", () => {
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
     const request = buildRequest({
       turnSourceChannel: "slack",
       turnSourceAccountId: "Work",
@@ -348,7 +348,7 @@ describe("exec approval session target", () => {
   });
 
   it("rejects mismatched channel bindings before account checks", () => {
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
     const request = buildRequest({
       turnSourceChannel: "discord",
       turnSourceAccountId: "work",
@@ -495,7 +495,7 @@ describe("exec approval session target", () => {
 
   it("falls back to a legacy origin target when no turn-source or session target exists", () => {
     const target = resolveApprovalRequestOriginTarget({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       request: buildPluginRequest({ sessionKey: "agent:main:missing" }),
       channel: "discord",
       accountId: "default",

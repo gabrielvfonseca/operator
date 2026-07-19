@@ -1,5 +1,5 @@
 // Imessage tests cover monitor.gating plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { beforeEach, describe, expect, it } from "vitest";
 import { parseIMessageNotification } from "./monitor/parse-notification.js";
 import type { IMessagePayload } from "./monitor/types.js";
@@ -15,7 +15,7 @@ beforeEach(async () => {
     await import("./monitor/inbound-processing.js"));
 });
 
-function baseCfg(): OpenClawConfig {
+function baseCfg(): OperatorConfig {
   return {
     channels: {
       imessage: {
@@ -29,11 +29,11 @@ function baseCfg(): OpenClawConfig {
     messages: {
       groupChat: { mentionPatterns: ["@openclaw"] },
     },
-  } as unknown as OpenClawConfig;
+  } as unknown as OperatorConfig;
 }
 
 async function resolve(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   message: IMessagePayload;
   storeAllowFrom?: string[];
 }) {
@@ -57,7 +57,7 @@ async function resolve(params: {
 }
 
 async function resolveDispatchDecision(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   message: IMessagePayload;
   groupHistories?: Parameters<
     InboundProcessingModule["resolveIMessageInboundDecision"]
@@ -93,7 +93,7 @@ async function resolveDispatchDecision(params: {
 }
 
 async function buildDispatchContextPayload(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   message: IMessagePayload;
 }) {
   const { cfg, message } = params;

@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { withEnv } from "openclaw/plugin-sdk/test-env";
 import { describe, expect, it } from "vitest";
 import { inspectTelegramAccount } from "./account-inspect.js";
@@ -10,7 +10,7 @@ import { inspectTelegramAccount } from "./account-inspect.js";
 describe("inspectTelegramAccount SecretRef resolution", () => {
   it("resolves default env SecretRef templates in read-only status paths", () => {
     withEnv({ TG_STATUS_TOKEN: "123:token" }, () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         channels: {
           telegram: {
             botToken: "${TG_STATUS_TOKEN}",
@@ -27,7 +27,7 @@ describe("inspectTelegramAccount SecretRef resolution", () => {
 
   it("respects env provider allowlists in read-only status paths", () => {
     withEnv({ TG_NOT_ALLOWED: "123:token" }, () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         secrets: {
           defaults: {
             env: "secure-env",
@@ -55,7 +55,7 @@ describe("inspectTelegramAccount SecretRef resolution", () => {
 
   it("does not read env values for non-env providers", () => {
     withEnv({ TG_EXEC_PROVIDER: "123:token" }, () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         secrets: {
           defaults: {
             env: "exec-provider",
@@ -82,7 +82,7 @@ describe("inspectTelegramAccount SecretRef resolution", () => {
   });
 
   it("matches runtime token lookup for account keys that need full normalization", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       channels: {
         telegram: {
           accounts: {
@@ -109,7 +109,7 @@ describe("inspectTelegramAccount SecretRef resolution", () => {
 
   it("routes omitted-account inspection through the configured defaultAccount (#61012)", () => {
     withEnv({ TELEGRAM_BOT_TOKEN: "123:env" }, () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         channels: {
           telegram: {
             botToken: "123:channel",
@@ -129,7 +129,7 @@ describe("inspectTelegramAccount SecretRef resolution", () => {
   });
 
   it("blocks channel-token fallback for unknown scoped accounts in multi-account config", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       channels: {
         telegram: {
           botToken: "123:channel",
@@ -157,7 +157,7 @@ describe("inspectTelegramAccount SecretRef resolution", () => {
       fs.writeFileSync(tokenFile, "123:token\n", "utf8");
       fs.symlinkSync(tokenFile, tokenLink);
 
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         channels: {
           telegram: {
             tokenFile: tokenLink,

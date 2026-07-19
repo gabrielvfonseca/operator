@@ -1,5 +1,5 @@
 /** Resolves whether the metadata-only audit ledger records new events. */
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 
 export type AuditMessageMode = "off" | "direct" | "all";
 
@@ -8,11 +8,11 @@ export type AuditMessageMode = "off" | "direct" | "all";
  * cannot explain the incident. `audit.enabled: false` stops new event inserts after
  * restart; audit queries still serve retained rows until they expire.
  */
-export function isAuditLedgerEnabled(cfg: OpenClawConfig | undefined): boolean {
+export function isAuditLedgerEnabled(cfg: OperatorConfig | undefined): boolean {
   return cfg?.audit?.enabled !== false;
 }
 
 /** Message metadata remains an explicit opt-in inside the default-on ledger. */
-export function resolveAuditMessageMode(cfg: OpenClawConfig | undefined): AuditMessageMode {
+export function resolveAuditMessageMode(cfg: OperatorConfig | undefined): AuditMessageMode {
   return cfg?.audit?.messages ?? "off";
 }

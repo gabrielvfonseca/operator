@@ -1,5 +1,5 @@
 import type { ReplyPayload } from "../auto-reply/reply-payload.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { OperatorScope } from "../gateway/operator-scopes.js";
 import type {
   PluginConversationBinding,
@@ -16,10 +16,10 @@ type ChannelId = import("../channels/plugins/types.core.js").ChannelId;
 export type PluginCommandDiagnosticsSession = {
   /** Stable host session key when available. */
   sessionKey?: string;
-  /** Ephemeral OpenClaw session id when available. */
+  /** Ephemeral Operator session id when available. */
   sessionId?: string;
   /**
-   * Deprecated transcript locator for this OpenClaw session when available.
+   * Deprecated transcript locator for this Operator session when available.
    *
    * SQLite-backed sessions use a `sqlite:<agentId>:<sessionId>:<storePath>`
    * marker, not a filesystem path. Use session id/key plus transcript-runtime
@@ -65,7 +65,7 @@ export type PluginCommandContext = {
   /** Ephemeral host session id for the active conversation when available. */
   sessionId?: string;
   /**
-   * Deprecated transcript locator for the active OpenClaw session when available.
+   * Deprecated transcript locator for the active Operator session when available.
    *
    * SQLite-backed sessions use a `sqlite:<agentId>:<sessionId>:<storePath>`
    * marker, not a filesystem path. Use session id/key plus transcript-runtime
@@ -78,8 +78,8 @@ export type PluginCommandContext = {
   args?: string;
   /** The full normalized command body */
   commandBody: string;
-  /** Current OpenClaw configuration */
-  config: OpenClawConfig;
+  /** Current Operator configuration */
+  config: OperatorConfig;
   /** Raw "From" value (channel-scoped id) */
   from?: string;
   /** Raw "To" value (channel-scoped id) */
@@ -148,7 +148,7 @@ export type AgentPromptGuidanceEntry = {
 
 export type AgentPromptGuidance = string | AgentPromptGuidanceEntry;
 
-export type OpenClawPluginCommandDefinition = {
+export type OperatorPluginCommandDefinition = {
   /** Command name without leading slash (e.g., "tts") */
   name: string;
   /**

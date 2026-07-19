@@ -1,5 +1,5 @@
 // Signal tests cover ordered control delivery around active inbound work.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type { MsgContext } from "openclaw/plugin-sdk/reply-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -74,7 +74,7 @@ function createHandler(debounceMs: number) {
       cfg: {
         messages: { inbound: { debounceMs } },
         channels: { signal: { dmPolicy, allowFrom } },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       dmPolicy,
       allowFrom,
       historyLimit: 0,

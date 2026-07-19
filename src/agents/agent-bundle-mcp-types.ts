@@ -5,7 +5,7 @@ import type {
   ListToolsResult,
 } from "@modelcontextprotocol/sdk/types.js";
 import type { TSchema } from "typebox";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginManifestRegistry } from "../plugins/manifest-registry.js";
 import type { AnyAgentTool } from "./tools/common.js";
 
@@ -128,7 +128,7 @@ export type SessionMcpRuntimeManager = {
     sessionKey?: string;
     workspaceDir: string;
     agentDir?: string;
-    cfg?: OpenClawConfig;
+    cfg?: OperatorConfig;
     manifestRegistry?: Pick<PluginManifestRegistry, "plugins">;
     /** Trusted sender id; required to materialize requester-scoped MCP servers. */
     requesterSenderId?: string | null;
@@ -144,7 +144,7 @@ export type SessionMcpRuntimeManager = {
     sessionKey?: string;
     workspaceDir: string;
     agentDir?: string;
-    cfg?: OpenClawConfig;
+    cfg?: OperatorConfig;
     manifestRegistry?: Pick<PluginManifestRegistry, "plugins">;
     requesterSenderId?: string | null;
     agentAccountId?: string | null;

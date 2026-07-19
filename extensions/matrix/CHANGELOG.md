@@ -4,109 +4,109 @@
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.6.11
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.6.10
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.6.9
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.6.8
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.6.3
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.6.2
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.6.1
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.31
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.28
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.27
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.26
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.24
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.22
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.21
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.20
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.19
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.17
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ### Fixes
 
@@ -116,55 +116,55 @@
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.14
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.12
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.10
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.8
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.6
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.4
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.3
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.5.2
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## Unreleased
 
@@ -181,19 +181,19 @@
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.4.20
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 ## 2026.4.19-beta.1
 
 ### Changes
 
-- Version alignment with core OpenClaw release numbers.
+- Version alignment with core Operator release numbers.
 
 This file tracks Matrix-related release notes for the local `@operator/matrix`
 plugin since the `matrix-js-sdk` migration. Source release notes live in
@@ -231,7 +231,7 @@ collapsed here.
 
 ### Fixes
 
-- Matrix/mentions: keep room mention gating strict while accepting visible `@displayName` Matrix URI labels, so `requireMention` works for non-OpenClaw Matrix clients again. (#64796) Thanks @hclsys.
+- Matrix/mentions: keep room mention gating strict while accepting visible `@displayName` Matrix URI labels, so `requireMention` works for non-Operator Matrix clients again. (#64796) Thanks @hclsys.
 - Channels/replay dedupe: standardize replay claims, retryable-failure release, and post-success commit behavior across Telegram, Discord, Slack, Mattermost, WhatsApp, Matrix, LINE, Feishu, Zalo, Nextcloud Talk, TLON, Nostr, Voice Call, and shared plugin interactive callbacks so duplicate deliveries stay reply-once after success but retry cleanly after pre-delivery failures. Thanks @vincentkoc.
 
 ## 2026.4.10

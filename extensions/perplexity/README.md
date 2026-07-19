@@ -1,8 +1,8 @@
-# OpenClaw Perplexity Plugin
+# Operator Perplexity Plugin
 
-Official OpenClaw plugin for Perplexity.
+Official Operator plugin for Perplexity.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/perplexity-plugin

@@ -33,7 +33,7 @@ import {
 } from "../../../sessions/user-turn-transcript.js";
 import { persistUserTurnTranscript } from "../../../sessions/user-turn-transcript.test-support.js";
 import {
-  OPENCLAW_RUNTIME_CONTEXT_CUSTOM_TYPE,
+  OPERATOR_RUNTIME_CONTEXT_CUSTOM_TYPE,
   relocateCurrentRuntimeContextCarrierToTail,
 } from "../../internal-runtime-context.js";
 import { normalizeMessagesForLlmBoundary } from "./attempt.llm-boundary.js";
@@ -462,7 +462,7 @@ describe("append-only late media (issue #99495)", () => {
 function runtimeCarrier(content: string, timestamp: number): AgentMsg {
   return {
     role: "custom",
-    customType: OPENCLAW_RUNTIME_CONTEXT_CUSTOM_TYPE,
+    customType: OPERATOR_RUNTIME_CONTEXT_CUSTOM_TYPE,
     content,
     display: false,
     details: { source: "openclaw-runtime-context", runtimeContextCarrier: true },
@@ -474,7 +474,7 @@ function isCarrier(message: unknown): boolean {
   return Boolean(
     message &&
     typeof message === "object" &&
-    (message as { customType?: unknown }).customType === OPENCLAW_RUNTIME_CONTEXT_CUSTOM_TYPE,
+    (message as { customType?: unknown }).customType === OPERATOR_RUNTIME_CONTEXT_CUSTOM_TYPE,
   );
 }
 
@@ -568,7 +568,7 @@ describe("prompt-cache tail carrier for current-turn metadata (issue #100271)", 
     // (Conversation info / Reply target / …), which room events never carry. So
     // the inline form is byte-identical active vs historical.
     const roomText = [
-      "[OpenClaw room event]",
+      "[Operator room event]",
       "inbound_event_kind: room_event",
       "Room context:\n#1 Alice: hi",
     ].join("\n\n");

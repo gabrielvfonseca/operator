@@ -3,7 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/types.js";
+import type { OperatorConfig } from "../config/types.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import { resolveStatusTtsSnapshot } from "./status-config.js";
 
@@ -27,8 +27,8 @@ async function withStatusTempHome(run: (home: string) => Promise<void>): Promise
     {
       HOME: home,
       USERPROFILE: home,
-      OPENCLAW_HOME: undefined,
-      OPENCLAW_STATE_DIR: path.join(home, ".openclaw"),
+      OPERATOR_HOME: undefined,
+      OPERATOR_STATE_DIR: path.join(home, ".openclaw"),
     },
     async () => await run(home),
   );
@@ -59,7 +59,7 @@ describe("resolveStatusTtsSnapshot", () => {
                 prefsPath,
               },
             },
-          } as OpenClawConfig,
+          } as OperatorConfig,
         }),
       ).toEqual({
         autoMode: "always",
@@ -80,7 +80,7 @@ describe("resolveStatusTtsSnapshot", () => {
                 auto: "always",
               },
             },
-          } as OpenClawConfig,
+          } as OperatorConfig,
         }),
       ).toEqual({
         autoMode: "always",
@@ -113,7 +113,7 @@ describe("resolveStatusTtsSnapshot", () => {
                 },
               ],
             },
-          } as OpenClawConfig,
+          } as OperatorConfig,
           agentId: "reader",
         }),
       ).toEqual({
@@ -150,7 +150,7 @@ describe("resolveStatusTtsSnapshot", () => {
                 },
               ],
             },
-          } as OpenClawConfig,
+          } as OperatorConfig,
           agentId: "reader",
         }),
       ).toEqual({
@@ -182,7 +182,7 @@ describe("resolveStatusTtsSnapshot", () => {
                 },
               },
             },
-          } as OpenClawConfig,
+          } as OperatorConfig,
         }),
       ).toEqual({
         autoMode: "always",
@@ -218,7 +218,7 @@ describe("resolveStatusTtsSnapshot", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
       });
 
       expect(snapshot?.displayName).toBe(`${"d".repeat(92)}...`);
@@ -245,7 +245,7 @@ describe("resolveStatusTtsSnapshot", () => {
                 },
               },
             },
-          } as OpenClawConfig,
+          } as OperatorConfig,
         }),
       ).toEqual({
         autoMode: "always",
@@ -274,7 +274,7 @@ describe("resolveStatusTtsSnapshot", () => {
                 },
               },
             },
-          } as OpenClawConfig,
+          } as OperatorConfig,
         }),
       ).toEqual({
         autoMode: "always",
@@ -318,7 +318,7 @@ describe("resolveStatusTtsSnapshot", () => {
                 },
               ],
             },
-          } as OpenClawConfig,
+          } as OperatorConfig,
           agentId: "reader",
         }),
       ).toEqual({
@@ -364,7 +364,7 @@ describe("resolveStatusTtsSnapshot", () => {
                 },
               },
             },
-          } as OpenClawConfig,
+          } as OperatorConfig,
         }),
       ).toEqual({
         autoMode: "always",
@@ -376,7 +376,7 @@ describe("resolveStatusTtsSnapshot", () => {
     });
   });
 
-  it("derives the default prefs path from OPENCLAW_CONFIG_PATH when set", async () => {
+  it("derives the default prefs path from OPERATOR_CONFIG_PATH when set", async () => {
     await withStatusTempHome(async (home) => {
       const stateDir = path.join(home, ".openclaw-dev");
       const prefsPath = path.join(stateDir, "settings", "tts.json");
@@ -393,8 +393,8 @@ describe("resolveStatusTtsSnapshot", () => {
 
       await withEnvAsync(
         {
-          OPENCLAW_STATE_DIR: undefined,
-          OPENCLAW_CONFIG_PATH: path.join(stateDir, "openclaw.json"),
+          OPERATOR_STATE_DIR: undefined,
+          OPERATOR_CONFIG_PATH: path.join(stateDir, "openclaw.json"),
         },
         async () => {
           expect(
@@ -403,7 +403,7 @@ describe("resolveStatusTtsSnapshot", () => {
                 messages: {
                   tts: {},
                 },
-              } as OpenClawConfig,
+              } as OperatorConfig,
             }),
           ).toEqual({
             autoMode: "always",

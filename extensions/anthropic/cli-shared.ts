@@ -18,9 +18,9 @@ export {
 
 // Claude Code honors provider-routing, auth, and config-root env before
 // consulting its local login state, so inherited shell overrides must not
-// steer OpenClaw-managed Claude CLI runs toward a different provider,
+// steer Operator-managed Claude CLI runs toward a different provider,
 // endpoint, token source, plugin/config tree, or telemetry bootstrap mode.
-/** Environment variables removed before launching OpenClaw-managed Claude CLI runs. */
+/** Environment variables removed before launching Operator-managed Claude CLI runs. */
 export const CLAUDE_CLI_CLEAR_ENV = [
   "ANTHROPIC_API_KEY",
   "ANTHROPIC_API_KEY_OLD",
@@ -31,7 +31,7 @@ export const CLAUDE_CLI_CLEAR_ENV = [
   "ANTHROPIC_OAUTH_TOKEN",
   "ANTHROPIC_UNIX_SOCKET",
   "CLAUDE_CONFIG_DIR",
-  // Re-injected per run from OpenClaw's canonical context budget.
+  // Re-injected per run from Operator's canonical context budget.
   "CLAUDE_CODE_AUTO_COMPACT_WINDOW",
   "CLAUDE_CODE_API_KEY_FILE_DESCRIPTOR",
   "CLAUDE_CODE_ENTRYPOINT",
@@ -114,7 +114,7 @@ export function isClaudeCliProvider(providerId: string): boolean {
   return normalizeOptionalLowercaseString(providerId) === CLAUDE_CLI_BACKEND_ID;
 }
 
-/** Map OpenClaw's effective context budget to Claude Code's native compactor. */
+/** Map Operator's effective context budget to Claude Code's native compactor. */
 export function resolveClaudeCliAutoCompactEnv(
   contextTokenBudget: number | undefined,
 ): Record<string, string> | undefined {
@@ -130,7 +130,7 @@ export function resolveClaudeCliAutoCompactEnv(
   };
 }
 
-function isOpenClawRequestedYolo(context?: CliBackendNormalizeConfigContext): boolean {
+function isOperatorRequestedYolo(context?: CliBackendNormalizeConfigContext): boolean {
   const agentExec = context?.agentId
     ? context.config?.agents?.list?.find((agent) => agent.id === context.agentId)?.tools?.exec
     : undefined;
@@ -140,12 +140,12 @@ function isOpenClawRequestedYolo(context?: CliBackendNormalizeConfigContext): bo
   return security === "full" && ask === "off";
 }
 
-/** Resolve Claude permission mode from OpenClaw exec security settings. */
+/** Resolve Claude permission mode from Operator exec security settings. */
 function resolveClaudePermissionMode(context?: CliBackendNormalizeConfigContext): {
   mode?: string;
   overrideExisting: boolean;
 } {
-  return isOpenClawRequestedYolo(context)
+  return isOperatorRequestedYolo(context)
     ? { mode: CLAUDE_BYPASS_PERMISSION_MODE, overrideExisting: false }
     : { overrideExisting: false };
 }

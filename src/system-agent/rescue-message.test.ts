@@ -1,10 +1,10 @@
-// OpenClaw rescue message tests cover generated rescue message content.
+// Operator rescue message tests cover generated rescue message content.
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { CommandContext } from "../auto-reply/reply/commands-types.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import {
   createCorePluginStateSyncKeyedStore,
   resetPluginStateStoreForTests,
@@ -135,7 +135,7 @@ async function withRescueStateDir(
   const stateDir = await makeStateDir(prefix);
   resetPluginStateStoreForTests();
   try {
-    await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, async () => await run(stateDir));
+    await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => await run(stateDir));
   } finally {
     resetPluginStateStoreForTests();
   }
@@ -178,7 +178,7 @@ function requireFirstMockCall<T>(mock: { mock: { calls: T[][] } }, label: string
 
 async function runRescue(
   commandBody: string,
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   ctx = commandContext(),
   deps?: Parameters<typeof runSystemAgentRescueMessage>[0]["deps"],
 ) {
@@ -191,7 +191,7 @@ async function runRescue(
   });
 }
 
-describe("OpenClaw rescue message", () => {
+describe("Operator rescue message", () => {
   beforeAll(async () => {
     tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "system-agent-rescue-"));
   });
@@ -211,7 +211,7 @@ describe("OpenClaw rescue message", () => {
     resetPluginStateStoreForTests();
   });
 
-  it("recognizes the OpenClaw rescue command", () => {
+  it("recognizes the Operator rescue command", () => {
     expect(extractSystemAgentRescueMessage("/openclaw status")).toBe("status");
     expect(extractSystemAgentRescueMessage("/openclaw")).toBe("");
     expect(extractSystemAgentRescueMessage("/status")).toBeNull();
@@ -227,7 +227,7 @@ describe("OpenClaw rescue message", () => {
   });
 
   it("refuses TUI handoff from remote rescue", async () => {
-    const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+    const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
     const deps = {
       runTui: vi.fn(async () => {
         throw new Error("remote rescue must not open the TUI");
@@ -244,7 +244,7 @@ describe("OpenClaw rescue message", () => {
   });
 
   it("rejects natural language instead of guessing an operation", async () => {
-    const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+    const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
     const deps = {
       runGatewayStop: vi.fn(async () => {}),
       runGatewayRestart: vi.fn(async () => {}),
@@ -263,14 +263,14 @@ describe("OpenClaw rescue message", () => {
   });
 
   it("refuses channel setup from remote rescue with a local pointer", async () => {
-    const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+    const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
     await expect(runRescue("/openclaw connect telegram", cfg)).resolves.toContain(
       "cannot host the interactive channel setup",
     );
   });
 
   it("refuses model provider setup from remote rescue with a local pointer", async () => {
-    const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+    const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
     const reply = await runRescue("/openclaw configure model provider", cfg);
     expect(reply).toContain("cannot host model-provider credential setup");
     expect(reply).toContain("openclaw onboard");
@@ -278,7 +278,7 @@ describe("OpenClaw rescue message", () => {
 
   it("refuses doctor repairs without creating a pending approval", async () => {
     await withRescueStateDir("doctor-fix-refused-", async () => {
-      const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+      const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       const deps = {
         runDoctor: vi.fn(async () => {
           throw new Error("remote rescue must not run doctor repair");
@@ -289,7 +289,7 @@ describe("OpenClaw rescue message", () => {
         runRescue("/openclaw doctor fix", cfg, commandContext(), deps),
       ).resolves.toContain("run `openclaw doctor --fix` in a terminal");
       await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toBe(
-        "No pending OpenClaw rescue change is waiting for approval.",
+        "No pending Operator rescue change is waiting for approval.",
       );
       expect(deps.runDoctor).not.toHaveBeenCalled();
     });
@@ -297,17 +297,17 @@ describe("OpenClaw rescue message", () => {
 
   it("drops a pending rescue change on decline", async () => {
     await withRescueStateDir("decline-", async () => {
-      const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+      const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       const deps = { runGatewayRestart: vi.fn(async () => {}) };
 
       await expect(
         runRescue("/openclaw restart gateway", cfg, commandContext(), deps),
       ).resolves.toContain("Reply /openclaw yes to apply");
       await expect(runRescue("/openclaw no", cfg, commandContext(), deps)).resolves.toContain(
-        "Dropped the pending OpenClaw rescue change",
+        "Dropped the pending Operator rescue change",
       );
       await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toBe(
-        "No pending OpenClaw rescue change is waiting for approval.",
+        "No pending Operator rescue change is waiting for approval.",
       );
       expect(deps.runGatewayRestart).not.toHaveBeenCalled();
     });
@@ -315,7 +315,7 @@ describe("OpenClaw rescue message", () => {
 
   it("revokes a pending write when a fresh read-only command arrives", async () => {
     await withRescueStateDir("read-revokes-", async () => {
-      const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+      const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       const deps = {
         runGatewayRestart: vi.fn(async () => {}),
         runPluginsList: vi.fn(async (runtime: RuntimeEnv) => runtime.log("plugin rows")),
@@ -328,7 +328,7 @@ describe("OpenClaw rescue message", () => {
         "plugin rows",
       );
       await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toBe(
-        "No pending OpenClaw rescue change is waiting for approval.",
+        "No pending Operator rescue change is waiting for approval.",
       );
       expect(deps.runGatewayRestart).not.toHaveBeenCalled();
     });
@@ -336,7 +336,7 @@ describe("OpenClaw rescue message", () => {
 
   it("consumes a pending approval at most once under concurrent approvals", async () => {
     await withRescueStateDir("concurrent-approve-", async () => {
-      const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+      const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       const deps = { runGatewayRestart: vi.fn(async () => {}) };
 
       await runRescue("/openclaw restart gateway", cfg, commandContext(), deps);
@@ -346,7 +346,7 @@ describe("OpenClaw rescue message", () => {
       ]);
 
       expect(deps.runGatewayRestart).toHaveBeenCalledTimes(1);
-      expect(replies).toContain("No pending OpenClaw rescue change is waiting for approval.");
+      expect(replies).toContain("No pending Operator rescue change is waiting for approval.");
       expect(replies.some((reply) => reply?.includes("[openclaw] done: gateway.restart"))).toBe(
         true,
       );
@@ -355,7 +355,7 @@ describe("OpenClaw rescue message", () => {
 
   it("keeps failed execution consumed", async () => {
     await withRescueStateDir("failed-consumed-", async () => {
-      const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+      const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       const deps = {
         runGatewayRestart: vi.fn(async () => {
           throw new Error("restart failed");
@@ -367,7 +367,7 @@ describe("OpenClaw rescue message", () => {
         "restart failed",
       );
       await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toBe(
-        "No pending OpenClaw rescue change is waiting for approval.",
+        "No pending Operator rescue change is waiting for approval.",
       );
       expect(deps.runGatewayRestart).toHaveBeenCalledTimes(1);
     });
@@ -375,7 +375,7 @@ describe("OpenClaw rescue message", () => {
 
   it("preserves a new plan created while the consumed plan executes", async () => {
     await withRescueStateDir("replacement-during-execute-", async () => {
-      const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+      const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       let releaseRestart: (() => void) | undefined;
       let noteRestartEntered: (() => void) | undefined;
       const restartEntered = new Promise<void>((resolve) => {
@@ -408,7 +408,7 @@ describe("OpenClaw rescue message", () => {
 
   it("publishes concurrently invoked persistent plans in call order", async () => {
     await withRescueStateDir("latest-plan-", async () => {
-      const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+      const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       const deps = {
         runGatewayRestart: vi.fn(async () => {}),
         runGatewayStart: vi.fn(async () => {}),
@@ -428,7 +428,7 @@ describe("OpenClaw rescue message", () => {
 
   it("persists a pending approval only in SQLite across store reopen", async () => {
     await withRescueStateDir("sqlite-reopen-", async (stateDir) => {
-      const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+      const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       const deps = { runGatewayRestart: vi.fn(async () => {}) };
 
       await runRescue("/openclaw restart gateway", cfg, commandContext(), deps);
@@ -446,7 +446,7 @@ describe("OpenClaw rescue message", () => {
 
   it("isolates pending approvals by account, channel, and sender", async () => {
     await withRescueStateDir("route-isolation-", async () => {
-      const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+      const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       const deps = { runGatewayRestart: vi.fn(async () => {}) };
       const original = commandContext();
 
@@ -457,7 +457,7 @@ describe("OpenClaw rescue message", () => {
         commandContext({ from: "user:other", senderId: "user:other" }),
       ]) {
         await expect(runRescue("/openclaw yes", cfg, isolated, deps)).resolves.toBe(
-          "No pending OpenClaw rescue change is waiting for approval.",
+          "No pending Operator rescue change is waiting for approval.",
         );
       }
       await expect(runRescue("/openclaw yes", cfg, original, deps)).resolves.toContain(
@@ -469,7 +469,7 @@ describe("OpenClaw rescue message", () => {
 
   it("falls back to the channel destination when account id is absent", async () => {
     await withRescueStateDir("route-account-fallback-", async () => {
-      const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+      const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       const deps = { runGatewayRestart: vi.fn(async () => {}) };
       const original = commandContext({ accountId: undefined, to: "bot:primary" });
 
@@ -481,7 +481,7 @@ describe("OpenClaw rescue message", () => {
           commandContext({ accountId: undefined, to: "bot:secondary" }),
           deps,
         ),
-      ).resolves.toBe("No pending OpenClaw rescue change is waiting for approval.");
+      ).resolves.toBe("No pending Operator rescue change is waiting for approval.");
       await expect(runRescue("/openclaw yes", cfg, original, deps)).resolves.toContain(
         "[openclaw] done: gateway.restart",
       );
@@ -490,7 +490,7 @@ describe("OpenClaw rescue message", () => {
   });
 
   it("refuses plugin install from remote rescue", async () => {
-    const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+    const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
     const deps = {
       runPluginInstall: vi.fn(async () => {
         throw new Error("remote rescue must not install plugins");
@@ -504,7 +504,7 @@ describe("OpenClaw rescue message", () => {
   });
 
   it("allows plugin list and search from remote rescue", async () => {
-    const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+    const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
     const deps = {
       runPluginsList: vi.fn(async (runtime: RuntimeEnv) => {
         runtime.log("plugin rows");
@@ -532,7 +532,7 @@ describe("OpenClaw rescue message", () => {
 
   it("queues and applies persistent writes through conversational approval", async () => {
     await withRescueStateDir("models-", async (tempDir) => {
-      const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+      const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       const deps = {
         verifyInferenceConfig: vi.fn(async () => ({
           ok: true as const,
@@ -565,7 +565,7 @@ describe("OpenClaw rescue message", () => {
 
   it("queues and applies gateway restart through conversational approval", async () => {
     await withRescueStateDir("gateway-", async (tempDir) => {
-      const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+      const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       const deps = { runGatewayRestart: vi.fn(async () => {}) };
 
       await expect(
@@ -593,7 +593,7 @@ describe("OpenClaw rescue message", () => {
       vi.useFakeTimers();
       vi.setSystemTime(new Date(8_640_000_000_000_000));
       try {
-        const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+        const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
 
         await expect(
           runRescue("/openclaw restart gateway", cfg, commandContext()),
@@ -612,7 +612,7 @@ describe("OpenClaw rescue message", () => {
     await withRescueStateDir("expired-", async () => {
       vi.useFakeTimers();
       vi.setSystemTime(new Date("2026-01-01T00:00:00.000Z"));
-      const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+      const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       const deps = { runGatewayRestart: vi.fn(async () => {}) };
 
       await runRescue(
@@ -624,7 +624,7 @@ describe("OpenClaw rescue message", () => {
       vi.advanceTimersByTime(60_001);
 
       await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toBe(
-        "No pending OpenClaw rescue change is waiting for approval.",
+        "No pending Operator rescue change is waiting for approval.",
       );
       expect(deps.runGatewayRestart).not.toHaveBeenCalled();
     });
@@ -632,7 +632,7 @@ describe("OpenClaw rescue message", () => {
 
   it("consumes malformed pending rows without executing them", async () => {
     await withRescueStateDir("malformed-", async () => {
-      const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+      const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       const deps = { runGatewayRestart: vi.fn(async () => {}) };
 
       await runRescue("/openclaw restart gateway", cfg, commandContext(), deps);
@@ -648,10 +648,10 @@ describe("OpenClaw rescue message", () => {
       );
 
       await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toBe(
-        "No pending OpenClaw rescue change is waiting for approval.",
+        "No pending Operator rescue change is waiting for approval.",
       );
       await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toBe(
-        "No pending OpenClaw rescue change is waiting for approval.",
+        "No pending Operator rescue change is waiting for approval.",
       );
       expect(deps.runGatewayRestart).not.toHaveBeenCalled();
     });
@@ -659,7 +659,7 @@ describe("OpenClaw rescue message", () => {
 
   it("queues and applies agent creation through conversational approval", async () => {
     await withRescueStateDir("agent-", async (tempDir) => {
-      const cfg: OpenClawConfig = { systemAgent: { rescue: { enabled: true } } };
+      const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       const deps = { runAgentsAdd: vi.fn(async () => {}) };
 
       await expect(

@@ -1,5 +1,5 @@
 // Ollama helper module supports config compat behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { OLLAMA_CLOUD_BASE_URL, OLLAMA_CLOUD_PROVIDER_ID } from "./defaults.js";
 
 type LegacyConfigRule = {
@@ -48,8 +48,8 @@ export const legacyConfigRules: LegacyConfigRule[] = [
   },
 ];
 
-function migrateOllamaCloudRetiredBaseUrl(config: OpenClawConfig): {
-  config: OpenClawConfig;
+function migrateOllamaCloudRetiredBaseUrl(config: OperatorConfig): {
+  config: OperatorConfig;
   changes: string[];
 } | null {
   const provider = config.models?.providers?.[OLLAMA_CLOUD_PROVIDER_ID];
@@ -60,7 +60,7 @@ function migrateOllamaCloudRetiredBaseUrl(config: OpenClawConfig): {
 
   const nextConfig = structuredClone(config);
   const nextModels = asRecord(nextConfig.models) ?? {};
-  nextConfig.models = nextModels as OpenClawConfig["models"];
+  nextConfig.models = nextModels as OperatorConfig["models"];
   const nextProviders = asRecord(nextModels.providers) ?? {};
   nextModels.providers = nextProviders;
   const nextProvider = asRecord(nextProviders[OLLAMA_CLOUD_PROVIDER_ID]) ?? {};
@@ -95,8 +95,8 @@ function migrateOllamaCloudRetiredBaseUrl(config: OpenClawConfig): {
   };
 }
 
-export function normalizeCompatibilityConfig({ cfg }: { cfg: OpenClawConfig }): {
-  config: OpenClawConfig;
+export function normalizeCompatibilityConfig({ cfg }: { cfg: OperatorConfig }): {
+  config: OperatorConfig;
   changes: string[];
 } {
   return migrateOllamaCloudRetiredBaseUrl(cfg) ?? { config: cfg, changes: [] };

@@ -1,24 +1,24 @@
 // Telegram Mini App /dashboard command.
 import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "openclaw/plugin-sdk/account-id";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type {
-  OpenClawPluginApi,
-  OpenClawPluginCommandDefinition,
+  OperatorPluginApi,
+  OperatorPluginCommandDefinition,
   PluginCommandContext,
 } from "openclaw/plugin-sdk/plugin-entry";
 import { isTelegramMiniAppOwner } from "./owner.js";
 import { resolveTelegramMiniAppUrls, TELEGRAM_MINIAPP_URL_ERROR } from "./url.js";
 
-export function registerTelegramMiniAppCommand(api: OpenClawPluginApi): void {
+export function registerTelegramMiniAppCommand(api: OperatorPluginApi): void {
   api.registerCommand(createTelegramMiniAppDashboardCommand(api));
 }
 
 function createTelegramMiniAppDashboardCommand(
-  api: OpenClawPluginApi,
-): OpenClawPluginCommandDefinition {
+  api: OperatorPluginApi,
+): OperatorPluginCommandDefinition {
   return {
     name: "dashboard",
-    description: "Open the OpenClaw dashboard",
+    description: "Open the Operator dashboard",
     channels: ["telegram"],
     requireAuth: true,
     exposeSenderIsOwner: true,
@@ -40,7 +40,7 @@ function createTelegramMiniAppDashboardCommand(
       }
       pageUrl.searchParams.set("accountId", accountId);
       return {
-        text: "Open OpenClaw dashboard.",
+        text: "Open Operator dashboard.",
         presentation: {
           blocks: [
             {
@@ -54,12 +54,12 @@ function createTelegramMiniAppDashboardCommand(
   };
 }
 
-function currentConfig(api: OpenClawPluginApi): OpenClawConfig {
-  return (api.runtime.config?.current?.() ?? api.config) as OpenClawConfig;
+function currentConfig(api: OperatorPluginApi): OperatorConfig {
+  return (api.runtime.config?.current?.() ?? api.config) as OperatorConfig;
 }
 
 function isTelegramDirectCommand(ctx: PluginCommandContext): boolean {
-  // Parses OpenClaw's canonical telegram:<id> / telegram:group:<id> from/sessionKey encoding.
+  // Parses Operator's canonical telegram:<id> / telegram:group:<id> from/sessionKey encoding.
   // DM-only because Telegram permits web_app inline buttons only in private chats.
   const from = ctx.from?.trim() ?? "";
   const sessionKey = ctx.sessionKey?.trim() ?? "";

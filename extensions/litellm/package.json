@@ -2,7 +2,7 @@
   "name": "@operator/litellm-provider",
   "version": "2026.7.2",
   "private": true,
-  "description": "OpenClaw LiteLLM provider plugin",
+  "description": "Operator LiteLLM provider plugin",
   "type": "module",
   "devDependencies": {
     "@operator/plugin-sdk": "workspace:*"

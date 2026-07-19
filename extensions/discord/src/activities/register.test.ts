@@ -1,4 +1,4 @@
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/channel-plugin-common";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/channel-plugin-common";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { registerDiscordActivities } from "./register.js";
 import { getDiscordActivitiesRuntime, setDiscordActivitiesRuntime } from "./runtime.js";
@@ -24,7 +24,7 @@ function createApi(config: Record<string, unknown>) {
     registerHttpRoute: vi.fn((route) => routes.push(route)),
     registerTool: vi.fn((tool) => tools.push(tool)),
     resolvePath,
-  } as unknown as OpenClawPluginApi;
+  } as unknown as OperatorPluginApi;
   return { api, routes, tools, warn, resolvePath };
 }
 

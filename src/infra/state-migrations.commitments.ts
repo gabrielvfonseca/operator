@@ -16,8 +16,8 @@ import {
 } from "../commitments/store-record.js";
 import type { CommitmentRecord } from "../commitments/types.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
 } from "../state/operator-state-db.js";
 import {
   executeSqliteQuerySync,
@@ -237,7 +237,7 @@ export function migrateLegacyCommitments(params: {
   let activeDuplicateCount = 0;
   try {
     assertLegacySourceUnchanged(params.detected.sourcePath, snapshot);
-    runOpenClawStateWriteTransaction(
+    runOperatorStateWriteTransaction(
       ({ db }) => {
         const commitmentsDb = getNodeSqliteKysely<CommitmentsDatabase>(db);
         for (const legacyRecord of legacyRecords) {
@@ -296,7 +296,7 @@ export function migrateLegacyCommitments(params: {
 
   try {
     params.beforeVerify?.();
-    const database = openOpenClawStateDatabase({
+    const database = openOperatorStateDatabase({
       env: { ...process.env, OPERATOR_STATE_DIR: params.stateDir },
     });
     const commitmentsDb = getNodeSqliteKysely<CommitmentsDatabase>(database.db);

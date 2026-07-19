@@ -30,15 +30,15 @@ import { resolveManagedUnsetPathsForWrite } from "./io.write-prepare.js";
 import { materializeRuntimeConfig } from "./materialize.js";
 import { ConfigMutationConflictError } from "./mutation-conflict.js";
 import { stripShippedPluginInstallConfigRecords } from "./plugin-install-config-migration.js";
-import type { ConfigFileSnapshot, LegacyConfigIssue, OpenClawConfig } from "./types.js";
+import type { ConfigFileSnapshot, LegacyConfigIssue, OperatorConfig } from "./types.js";
 import { validateConfigObjectWithPlugins } from "./validation.js";
 
 type InternalReadOptions = {
   recoverSuspicious?: boolean;
   skipSuspiciousRecovery?: boolean;
   allowSuspiciousRecovery?: (
-    candidate: OpenClawConfig,
-    current: OpenClawConfig,
+    candidate: OperatorConfig,
+    current: OperatorConfig,
   ) => boolean | Promise<boolean>;
 };
 
@@ -71,7 +71,7 @@ export async function readConfigFileSnapshotInternal(
 
   let fallbackRaw: string | null = null;
   let fallbackParsed: unknown = {};
-  let fallbackSourceConfig: OpenClawConfig = {};
+  let fallbackSourceConfig: OperatorConfig = {};
   let fallbackHash = hashConfigRaw(null);
   let fallbackEnvSnapshotForRestore: Record<string, string | undefined> | undefined;
   const includeFileHashesForWrite: Record<string, string> = {};
@@ -212,7 +212,7 @@ export async function readConfigFileSnapshotInternal(
       !containsConfigIncludeDirective(effectiveParsed)
     ) {
       const allowSuspiciousRecovery = options.allowSuspiciousRecovery;
-      let recoveryCandidate: OpenClawConfig | null = null;
+      let recoveryCandidate: OperatorConfig | null = null;
       const recovery = await deps.measure("config.snapshot.read.recover-suspicious", () =>
         maybeRecoverSuspiciousConfigRead({
           deps,
@@ -397,7 +397,7 @@ export async function readBestEffortConfigSnapshotFromContext(
 
 export async function readSourceConfigBestEffortFromContext(
   context: ConfigIoContext,
-): Promise<OpenClawConfig> {
+): Promise<OperatorConfig> {
   const { deps, configPath } = context;
   maybeLoadDotEnvForConfig(deps.env);
   if (!deps.fs.existsSync(configPath)) {

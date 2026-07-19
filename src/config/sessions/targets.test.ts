@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { withTempHome } from "openclaw/plugin-sdk/test-env";
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config.js";
+import type { OperatorConfig } from "../config.js";
 import { resolveStorePath } from "./paths.js";
 import { replaceSessionEntry } from "./session-accessor.js";
 import {
@@ -35,7 +35,7 @@ async function createAgentSessionStores(
   return storePaths;
 }
 
-function createCustomRootCfg(customRoot: string, defaultAgentId = "ops"): OpenClawConfig {
+function createCustomRootCfg(customRoot: string, defaultAgentId = "ops"): OperatorConfig {
   return {
     session: {
       store: path.join(customRoot, "agents", "{agentId}", "sessions", "sessions.json"),
@@ -78,7 +78,7 @@ function expectTargetsToContainStores(
 describe("resolveSessionStoreTargets", () => {
   it("resolves all configured agent stores", async () => {
     await withTempHome(async () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         session: {
           store: "~/.openclaw/agents/{agentId}/sessions/sessions.json",
         },
@@ -104,7 +104,7 @@ describe("resolveSessionStoreTargets", () => {
 
   it("includes configured ACP harness stores for all-agent session views", async () => {
     await withTempHome(async () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         session: {
           store: "~/.openclaw/agents/{agentId}/sessions/sessions.json",
         },
@@ -148,7 +148,7 @@ describe("resolveSessionStoreTargets", () => {
   });
 
   it("keeps shared store paths distinct by SQLite owner for --all-agents", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       session: {
         store: "/tmp/shared-sessions.json",
       },
@@ -167,7 +167,7 @@ describe("resolveSessionStoreTargets", () => {
     await withTempHome(async (home) => {
       const stateDir = path.join(home, ".openclaw");
       const storePaths = await createAgentSessionStores(stateDir, ["codex-proof"]);
-      const env = { ...process.env, OPENCLAW_STATE_DIR: stateDir };
+      const env = { ...process.env, OPERATOR_STATE_DIR: stateDir };
 
       expect(resolveSessionStoreTargets({}, { store: storePaths["codex-proof"] }, { env })).toEqual(
         [
@@ -194,7 +194,7 @@ describe("resolveSessionStoreTargets", () => {
   });
 
   it("rejects unknown agent ids", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       agents: {
         list: [{ id: "main", default: true }, { id: "work" }],
       },
@@ -253,7 +253,7 @@ describe("resolveAllAgentSessionStoreTargetsSync", () => {
       const stateDir = path.join(home, ".openclaw");
       const storePaths = await createAgentSessionStores(stateDir, ["ops", "retired"]);
 
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           list: [{ id: "ops", default: true }],
         },
@@ -280,7 +280,7 @@ describe("resolveAllAgentSessionStoreTargetsSync", () => {
 
       const targets = resolveAllAgentSessionStoreTargetsSync(
         { agents: { list: [{ id: "legacy", default: true }] } },
-        { env: { ...process.env, OPENCLAW_STATE_DIR: stateDir } },
+        { env: { ...process.env, OPERATOR_STATE_DIR: stateDir } },
       );
 
       expect(targets).toContainEqual({ agentId: "legacy", storePath });
@@ -330,9 +330,9 @@ describe("resolveAllAgentSessionStoreTargetsSync", () => {
 
       const env = {
         ...process.env,
-        OPENCLAW_STATE_DIR: envStateDir,
+        OPERATOR_STATE_DIR: envStateDir,
       };
-      const cfg: OpenClawConfig = {};
+      const cfg: OperatorConfig = {};
       const mainStorePath = await resolveRealStorePath(mainSessionsDir);
       const retiredStorePath = await resolveRealStorePath(retiredSessionsDir);
 
@@ -360,7 +360,7 @@ describe("resolveAllAgentSessionStoreTargetsSync", () => {
       const cfg = createCustomRootCfg(customRoot, "main");
       const env = {
         ...process.env,
-        OPENCLAW_STATE_DIR: envStateDir,
+        OPERATOR_STATE_DIR: envStateDir,
       };
 
       const targets = resolveAllAgentSessionStoreTargetsSync(cfg, { env });
@@ -418,7 +418,7 @@ describe("resolveAllAgentSessionStoreTargetsSync", () => {
         { sessionId: "sid-junk", updatedAt: Date.now() },
       );
 
-      const cfg: OpenClawConfig = {};
+      const cfg: OperatorConfig = {};
       const mainStorePath = await resolveRealStorePath(mainSessionsDir);
       const targets = resolveAllAgentSessionStoreTargetsSync(cfg, { env: process.env });
 
@@ -439,7 +439,7 @@ describe("resolveAllAgentSessionStoreCandidateTargetsSync", () => {
   it("includes configured targets before either state file exists", async () => {
     await withTempHome(async (home) => {
       const stateDir = path.join(home, ".openclaw");
-      const env = { ...process.env, OPENCLAW_STATE_DIR: stateDir };
+      const env = { ...process.env, OPERATOR_STATE_DIR: stateDir };
       const storePath = resolveStorePath(undefined, { agentId: "main", env });
 
       expect(
@@ -456,7 +456,7 @@ describe("resolveAllAgentSessionStoreCandidateTargetsSync", () => {
       const stateDir = path.join(home, ".openclaw");
       const retiredAgentDir = path.join(stateDir, "agents", "retired");
       await fs.mkdir(retiredAgentDir, { recursive: true });
-      const env = { ...process.env, OPENCLAW_STATE_DIR: stateDir };
+      const env = { ...process.env, OPERATOR_STATE_DIR: stateDir };
 
       expect(resolveAllAgentSessionStoreCandidateTargetsSync({}, { env })).toContainEqual({
         agentId: "retired",
@@ -476,7 +476,7 @@ describe("resolveAllAgentSessionStoreCandidateTargetsSync", () => {
       await fs.mkdir(agentDir, { recursive: true });
       await fs.mkdir(outsideSessionsDir, { recursive: true });
       await fs.symlink(outsideSessionsDir, path.join(agentDir, "sessions"));
-      const env = { ...process.env, OPENCLAW_STATE_DIR: stateDir };
+      const env = { ...process.env, OPERATOR_STATE_DIR: stateDir };
 
       expect(resolveAllAgentSessionStoreCandidateTargetsSync({}, { env })).not.toContainEqual({
         agentId: "retired",

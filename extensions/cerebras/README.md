@@ -1,8 +1,8 @@
-# OpenClaw Cerebras Provider
+# Operator Cerebras Provider
 
-Official OpenClaw provider plugin for Cerebras.
+Official Operator provider plugin for Cerebras.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/cerebras-provider

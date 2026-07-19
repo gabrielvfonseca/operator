@@ -3,7 +3,7 @@ import { resolveIsNixMode } from "./paths.js";
 
 /** Agent-first Nix install docs shown when runtime config writes are blocked. */
 const NIX_OPERATOR_AGENT_FIRST_URL = "https://github.com/operator/nix-operator#quick-start";
-/** Public OpenClaw Nix overview shown with immutable-config errors. */
+/** Public Operator Nix overview shown with immutable-config errors. */
 const OPERATOR_NIX_OVERVIEW_URL = "https://docs.operator.ai/install/nix";
 
 /** Error thrown when a mutating config path is attempted while Nix owns config state. */
@@ -19,17 +19,17 @@ export class NixModeConfigMutationError extends Error {
 /** Build the operator-facing immutable-config message for Nix-managed installs. */
 function formatNixModeConfigMutationMessage(params: { configPath?: string } = {}): string {
   return [
-    "Config is managed by Nix (`OPERATOR_NIX_MODE=1`), so OpenClaw treats operator.json as immutable.",
+    "Config is managed by Nix (`OPERATOR_NIX_MODE=1`), so Operator treats operator.json as immutable.",
     "This usually means nix-operator, the first-party Nix distribution, or another Nix-managed package set this mode.",
     ...(params.configPath ? [`Config path: ${params.configPath}`] : []),
     "Do not run setup, onboarding, operator update, plugin install/update/uninstall/enable, doctor repair/token-generation, or config set against this file.",
     "Edit the Nix source for this install instead. For nix-operator, edit `programs.operator.config` or `instances.<name>.config`, then rebuild with Home Manager or NixOS.",
     `Agent-first Nix setup: ${NIX_OPERATOR_AGENT_FIRST_URL}`,
-    `OpenClaw Nix overview: ${OPERATOR_NIX_OVERVIEW_URL}`,
+    `Operator Nix overview: ${OPERATOR_NIX_OVERVIEW_URL}`,
   ].join("\n");
 }
 
-/** Throw when the current environment marks OpenClaw config as Nix-managed and immutable. */
+/** Throw when the current environment marks Operator config as Nix-managed and immutable. */
 export function assertConfigWriteAllowedInCurrentMode(
   params: {
     configPath?: string;

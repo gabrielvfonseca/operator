@@ -36,7 +36,7 @@ import {
   runBeforeToolCallHook,
   wrapToolWithBeforeToolCallHook,
 } from "./agent-tools.before-tool-call.js";
-import { createOpenClawCodingTools } from "./agent-tools.js";
+import { createOperatorCodingTools } from "./agent-tools.js";
 import type { AnyAgentTool } from "./tools/common.js";
 import { callGatewayTool } from "./tools/gateway.js";
 
@@ -2569,7 +2569,7 @@ describe("before_tool_call requireApproval handling", () => {
       decision: "allow-once",
     });
 
-    const tools = createOpenClawCodingTools({
+    const tools = createOperatorCodingTools({
       workspaceDir: tempDir,
       messageProvider: "discord-voice",
       messageChannel: "discord",
@@ -2667,7 +2667,7 @@ describe("before_tool_call tool content private-data capture", () => {
           captureContent: { enabled: true, ...fields },
         },
       },
-    } as unknown as import("../config/types.openclaw.js").OpenClawConfig;
+    } as unknown as import("../config/types.openclaw.js").OperatorConfig;
   }
 
   it("attaches tool input/output to private data when opted in", async () => {

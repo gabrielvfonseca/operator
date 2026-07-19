@@ -1,6 +1,6 @@
 // Resolves effective exec approval policy from config and policy files.
 import { sortUniqueStrings } from "@operator/normalization-core/string-normalization";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { DEFAULT_AGENT_ID } from "../routing/session-key.js";
 import {
   DEFAULT_EXEC_APPROVAL_ASK_FALLBACK,
@@ -101,13 +101,13 @@ function formatRequestedSource(params: {
   defaultValue: ExecSecurity | ExecAsk;
 }): string {
   return params.sourcePath === "__default__"
-    ? `OpenClaw default (${params.defaultValue})`
+    ? `Operator default (${params.defaultValue})`
     : `${params.sourcePath}.${params.field}`;
 }
 
 function formatModeSource(params: { sourcePath: string; configPath: string }): string {
   if (params.sourcePath === "__default__") {
-    return "derived from OpenClaw defaults";
+    return "derived from Operator defaults";
   }
   return `${params.sourcePath === "scope" ? params.configPath : params.sourcePath}.mode`;
 }
@@ -279,7 +279,7 @@ function formatHostFieldSource(params: {
     return params.hostDefaultSource;
   }
   if (params.field === "askFallback") {
-    return `OpenClaw default (${DEFAULT_EXEC_APPROVAL_ASK_FALLBACK})`;
+    return `Operator default (${DEFAULT_EXEC_APPROVAL_ASK_FALLBACK})`;
   }
   return "inherits requested tool policy";
 }
@@ -296,7 +296,7 @@ function resolveAskNote(params: {
 }
 
 export function collectExecPolicyScopeSnapshots(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   approvals: ExecApprovalsFile;
   hostPath?: string;
   hostDefaults?: ExecPolicyHostDefaults;
@@ -390,7 +390,7 @@ export function resolveExecPolicyScopeSnapshot(params: {
       requested: requestedHost.value,
       requestedSource:
         requestedHost.sourcePath === "__default__"
-          ? "OpenClaw default (auto)"
+          ? "Operator default (auto)"
           : `${requestedHost.sourcePath === "scope" ? params.configPath : requestedHost.sourcePath}.host`,
     },
     mode: {

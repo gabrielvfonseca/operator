@@ -9,7 +9,7 @@ import {
   resolveAgentModelPrimaryValue,
 } from "../config/model-input.js";
 import type { AgentModelConfig } from "../config/types.agents-shared.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginMetadataSnapshot } from "../plugins/plugin-metadata-snapshot.types.js";
 import { listProfilesForProvider } from "./auth-profiles/profile-list.js";
 import type { AuthProfileStore } from "./auth-profiles/types.js";
@@ -52,11 +52,11 @@ function hasExplicitToolModelConfig(modelConfig: AgentModelConfig | undefined): 
   return hasToolModelConfig(coerceFactoryToolModelConfig(modelConfig));
 }
 
-function hasExplicitImageModelConfig(config: OpenClawConfig | undefined): boolean {
+function hasExplicitImageModelConfig(config: OperatorConfig | undefined): boolean {
   return hasExplicitToolModelConfig(config?.agents?.defaults?.imageModel);
 }
 
-function hasExplicitPdfModelConfig(config: OpenClawConfig | undefined): boolean {
+function hasExplicitPdfModelConfig(config: OperatorConfig | undefined): boolean {
   return (
     hasExplicitToolModelConfig(config?.agents?.defaults?.pdfModel) ||
     hasExplicitImageModelConfig(config)
@@ -111,7 +111,7 @@ function mergeBuiltInFactoryAllowlist(...lists: Array<string[] | undefined>): st
 
 /** Returns whether the image understanding tool can be constructed for this agent context. */
 export function resolveImageToolFactoryAvailable(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentDir?: string;
   workspaceDir?: string;
   modelHasVision?: boolean;
@@ -143,7 +143,7 @@ export function resolveImageToolFactoryAvailable(params: {
 }
 
 function hasConfiguredVisionModelAuthSignal(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   snapshot: Pick<PluginMetadataSnapshot, "index" | "plugins">;
   authStore?: AuthProfileStore;
 }): boolean {
@@ -177,7 +177,7 @@ function hasConfiguredVisionModelAuthSignal(params: {
 
 /** Resolves which optional media tools should be created for the current tool factory call. */
 export function resolveOptionalMediaToolFactoryPlan(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   workspaceDir?: string;
   authStore?: AuthProfileStore;
   toolAllowlist?: string[];

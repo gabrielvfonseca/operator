@@ -1,6 +1,6 @@
 import { resolveClaudeSonnet5ModelIdentity } from "@operator/llm-core";
 import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   lookupCachedContextTokens,
   lookupCachedContextWindow,
@@ -20,8 +20,8 @@ export type ModelsConfig = {
 };
 
 export type ContextTokenResolutionParams = {
-  cfg?: OpenClawConfig;
-  sourceCfg?: OpenClawConfig | null;
+  cfg?: OperatorConfig;
+  sourceCfg?: OperatorConfig | null;
   provider?: string;
   modelProvider?: string;
   model?: string;
@@ -77,7 +77,7 @@ function resolveProviderModelRef(params: {
 }
 
 function resolveConfiguredProviderContextTokens(
-  cfg: OpenClawConfig | null | undefined,
+  cfg: OperatorConfig | null | undefined,
   provider: string,
   model: string,
 ): ConfiguredContextTokens | undefined {
@@ -153,7 +153,7 @@ function resolveProviderQualifiedModel(provider: string, model: string): string 
 }
 
 function resolveConfiguredRuntimeContextTokens(
-  cfg: OpenClawConfig | null | undefined,
+  cfg: OperatorConfig | null | undefined,
   provider: string,
   modelProvider: string | undefined,
   model: string,

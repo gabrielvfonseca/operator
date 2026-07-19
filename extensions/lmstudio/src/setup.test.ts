@@ -1,6 +1,6 @@
 // Lmstudio tests cover setup plugin behavior.
 import { CUSTOM_LOCAL_AUTH_MARKER } from "openclaw/plugin-sdk/provider-auth";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/provider-auth";
+import type { OperatorConfig } from "openclaw/plugin-sdk/provider-auth";
 import type { ModelDefinitionConfig } from "openclaw/plugin-sdk/provider-model-shared";
 import { resolveAgentModelPrimaryValue } from "openclaw/plugin-sdk/provider-onboard";
 import {
@@ -71,7 +71,7 @@ function createModel(id: string, name = id): ModelDefinitionConfig {
   };
 }
 
-function buildConfig(): OpenClawConfig {
+function buildConfig(): OperatorConfig {
   return {
     models: {
       providers: {
@@ -87,13 +87,13 @@ function buildConfig(): OpenClawConfig {
 }
 
 function buildDiscoveryContext(params?: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   apiKey?: string;
   discoveryApiKey?: string;
   env?: NodeJS.ProcessEnv;
 }): ProviderCatalogContext {
   return {
-    config: params?.config ?? ({} as OpenClawConfig),
+    config: params?.config ?? ({} as OperatorConfig),
     env: params?.env ?? {},
     resolveProviderApiKey: () => ({
       apiKey: params?.apiKey,
@@ -109,7 +109,7 @@ function buildDiscoveryContext(params?: {
 }
 
 function buildNonInteractiveContext(params?: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   customBaseUrl?: string;
   customApiKey?: string;
   lmstudioApiKey?: string;
@@ -470,7 +470,7 @@ describe("lmstudio setup", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       customBaseUrl: "http://localhost:1234/api/v1/",
       customModelId: "qwen3-8b-instruct",
     });
@@ -585,7 +585,7 @@ describe("lmstudio setup", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       customBaseUrl: "http://localhost:1234/api/v1/",
       customApiKey: "",
       customModelId: "qwen3-8b-instruct",
@@ -656,7 +656,7 @@ describe("lmstudio setup", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       customBaseUrl: "http://localhost:1234/api/v1/",
       customApiKey: "",
       customModelId: "qwen3-8b-instruct",
@@ -716,7 +716,7 @@ describe("lmstudio setup", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       customBaseUrl: "http://localhost:1234/api/v1/",
       customApiKey: "",
       customModelId: "qwen3-8b-instruct",
@@ -790,7 +790,7 @@ describe("lmstudio setup", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       customBaseUrl: "http://localhost:1234/api/v1/",
       customModelId: "qwen3-8b-instruct",
       lmstudioApiKey: "fresh-cli-key",
@@ -812,7 +812,7 @@ describe("lmstudio setup", () => {
       customModelId: "missing-model",
     });
     const dockerSetup = ["1", "true", "yes", "on"].includes(
-      process.env.OPENCLAW_DOCKER_SETUP?.trim().toLowerCase() ?? "",
+      process.env.OPERATOR_DOCKER_SETUP?.trim().toLowerCase() ?? "",
     );
     const expectedBaseUrl = dockerSetup
       ? LMSTUDIO_DOCKER_HOST_INFERENCE_BASE_URL
@@ -979,7 +979,7 @@ describe("lmstudio setup", () => {
   });
 
   it("interactive Docker setup defaults to the host LM Studio endpoint", async () => {
-    vi.stubEnv("OPENCLAW_DOCKER_SETUP", "1");
+    vi.stubEnv("OPERATOR_DOCKER_SETUP", "1");
     const { prompter, text } = createQueuedWizardPrompterHarness([
       "http://host.docker.internal:1234",
       "",
@@ -1029,7 +1029,7 @@ describe("lmstudio setup", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const { prompter } = createQueuedWizardPrompterHarness([
       "http://localhost:1234/api/v1/",
       "",
@@ -1112,7 +1112,7 @@ describe("lmstudio setup", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const promptText = vi
       .fn()
       .mockResolvedValueOnce("http://localhost:1234/api/v1/")
@@ -1151,7 +1151,7 @@ describe("lmstudio setup", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const promptText = vi
       .fn()
       .mockResolvedValueOnce("http://localhost:1234/api/v1/")
@@ -1196,7 +1196,7 @@ describe("lmstudio setup", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const promptText = vi
       .fn()
       .mockResolvedValueOnce("http://localhost:1234/api/v1/")
@@ -1329,7 +1329,7 @@ describe("lmstudio setup", () => {
                 },
               },
             },
-          } as OpenClawConfig,
+          } as OperatorConfig,
         }),
       );
 
@@ -1374,7 +1374,7 @@ describe("lmstudio setup", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         env: {
           LMSTUDIO_DISCOVERY_TOKEN: "secretref-lmstudio-key",
           LMSTUDIO_PROXY_TOKEN: "proxy-token-from-env",
@@ -1413,7 +1413,7 @@ describe("lmstudio setup", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         env: {},
       }),
     );
@@ -1440,7 +1440,7 @@ describe("lmstudio setup", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         env: {},
       }),
     );
@@ -1467,7 +1467,7 @@ describe("lmstudio setup", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
       }),
     );
 
@@ -1498,7 +1498,7 @@ describe("lmstudio setup", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
       }),
     );
 
@@ -1529,7 +1529,7 @@ describe("lmstudio setup", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         env: {},
       }),
     );
@@ -1564,7 +1564,7 @@ describe("lmstudio setup", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
       }),
     );
 
@@ -1591,7 +1591,7 @@ describe("lmstudio setup", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
       }),
     );
 
@@ -1624,7 +1624,7 @@ describe("lmstudio setup", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
       }),
     );
 
@@ -1672,7 +1672,7 @@ describe("lmstudio setup", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       customBaseUrl: "http://localhost:1234/api/v1/",
       customModelId: "qwen3-8b-instruct",
     });

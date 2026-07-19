@@ -7,7 +7,7 @@ import {
   requireApiKey,
 } from "../agents/model-auth.js";
 import { normalizeModelRef } from "../agents/model-selection.js";
-import { ensureOpenClawModelsJson } from "../agents/models-config.js";
+import { ensureOperatorModelsJson } from "../agents/models-config.js";
 import { resolveProviderModelMaterializationAuthMode } from "../agents/provider-model-route-auth.js";
 import { protectPreparedProviderRuntimeAuth } from "../agents/provider-secret-egress.js";
 import { providerUsesCredentialScopedModelMetadata } from "../agents/runtime-plan/credential-scoped-model.js";
@@ -192,7 +192,7 @@ export async function resolveImageRuntime(
   }
 
   const modelsOptions = params.workspaceDir ? { workspaceDir: params.workspaceDir } : undefined;
-  await ensureOpenClawModelsJson(params.cfg, params.agentDir, modelsOptions);
+  await ensureOperatorModelsJson(params.cfg, params.agentDir, modelsOptions);
   const resolved = await resolveModelAsync(
     resolvedRef.provider,
     resolvedRef.model,

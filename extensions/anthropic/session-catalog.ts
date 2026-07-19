@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { resolveDefaultAgentId } from "openclaw/plugin-sdk/agent-runtime";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
 import type {
   SessionCatalogHost,
@@ -1090,7 +1090,7 @@ async function resolveNodeClaudeRecord(params: {
 }
 
 async function continueClaudeSession(
-  api: OpenClawPluginApi,
+  api: OperatorPluginApi,
   hostId: string,
   threadId: string,
 ): Promise<{ sessionKey: string }> {
@@ -1284,7 +1284,7 @@ function toGenericClaudeHost(
   };
 }
 
-export function registerClaudeSessionCatalog(api: OpenClawPluginApi): void {
+export function registerClaudeSessionCatalog(api: OperatorPluginApi): void {
   const provider: SessionCatalogProvider = {
     id: "claude",
     label: "Claude Code",

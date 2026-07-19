@@ -1,5 +1,5 @@
 /** Pure helpers for doctor skill readiness repairs. */
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { SkillStatusEntry, SkillStatusReport } from "../skills/discovery/status.js";
 
 /** Returns allowed skills that are unusable in the current runtime environment. */
@@ -39,9 +39,9 @@ export function formatMissingSkillSummary(skill: SkillStatusEntry): string {
 
 /** Disables unavailable skills in config while preserving existing skill entries. */
 export function disableUnavailableSkillsInConfig(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   skills: readonly SkillStatusEntry[],
-): OpenClawConfig {
+): OperatorConfig {
   if (skills.length === 0) {
     return config;
   }

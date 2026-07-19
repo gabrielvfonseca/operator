@@ -43,13 +43,13 @@ describe("scheduled task runtime derivation", () => {
     );
     return await readScheduledTaskRuntime({
       USERPROFILE: "C:\\Users\\test",
-      OPENCLAW_PROFILE: "default",
+      OPERATOR_PROFILE: "default",
     });
   }
 
   function taskQueryOutput(lines: string[]): string {
     return [
-      "TaskName: \\OpenClaw Gateway",
+      "TaskName: \\Operator Gateway",
       "Last Run Time: 1/8/2026 1:23:45 AM",
       ...lines,
       "",
@@ -59,7 +59,7 @@ describe("scheduled task runtime derivation", () => {
   it.each(["Ready", "Running"])("parses %s status metadata", async (status) => {
     const runtime = await readRuntimeFromQueryOutput(
       [
-        "TaskName: \\OpenClaw Gateway",
+        "TaskName: \\Operator Gateway",
         `Status: ${status}`,
         "Last Run Time: 1/8/2026 1:23:45 AM",
         "Last Run Result: 0x0",
@@ -75,7 +75,7 @@ describe("scheduled task runtime derivation", () => {
   it("parses 'Last Result' key variant (without 'Run') (#47726)", async () => {
     const runtime = await readRuntimeFromQueryOutput(
       [
-        "TaskName: \\OpenClaw Gateway",
+        "TaskName: \\Operator Gateway",
         "Status: Running",
         "Last Run Time: 2026/3/16 8:34:15",
         "Last Result: 267009",
@@ -157,34 +157,34 @@ describe("scheduled task runtime derivation", () => {
 describe("resolveTaskScriptPath", () => {
   it.each([
     {
-      name: "uses default path when OPENCLAW_PROFILE is unset",
+      name: "uses default path when OPERATOR_PROFILE is unset",
       env: { USERPROFILE: "C:\\Users\\test" },
       expected: path.join("C:\\Users\\test", ".openclaw", "gateway.cmd"),
     },
     {
-      name: "uses profile-specific path when OPENCLAW_PROFILE is set to a custom value",
-      env: { USERPROFILE: "C:\\Users\\test", OPENCLAW_PROFILE: "jbphoenix" },
+      name: "uses profile-specific path when OPERATOR_PROFILE is set to a custom value",
+      env: { USERPROFILE: "C:\\Users\\test", OPERATOR_PROFILE: "jbphoenix" },
       expected: path.join("C:\\Users\\test", ".openclaw-jbphoenix", "gateway.cmd"),
     },
     {
-      name: "prefers OPENCLAW_STATE_DIR over profile-derived defaults",
+      name: "prefers OPERATOR_STATE_DIR over profile-derived defaults",
       env: {
         USERPROFILE: "C:\\Users\\test",
-        OPENCLAW_PROFILE: "rescue",
-        OPENCLAW_STATE_DIR: "C:\\State\\openclaw",
+        OPERATOR_PROFILE: "rescue",
+        OPERATOR_STATE_DIR: "C:\\State\\openclaw",
       },
       expected: path.join("C:\\State\\openclaw", "gateway.cmd"),
     },
     {
       name: "falls back to HOME when USERPROFILE is not set",
-      env: { HOME: "/home/test", OPENCLAW_PROFILE: "default" },
+      env: { HOME: "/home/test", OPERATOR_PROFILE: "default" },
       expected: path.join("/home/test", ".openclaw", "gateway.cmd"),
     },
     {
       name: "uses a custom task script file name inside the state directory",
       env: {
         USERPROFILE: "C:\\Users\\test",
-        OPENCLAW_TASK_SCRIPT_NAME: "gateway-node.cmd",
+        OPERATOR_TASK_SCRIPT_NAME: "gateway-node.cmd",
       },
       expected: path.join("C:\\Users\\test", ".openclaw", "gateway-node.cmd"),
     },
@@ -202,9 +202,9 @@ describe("resolveTaskScriptPath", () => {
     expect(() =>
       resolveTaskScriptPath({
         USERPROFILE: "C:\\Users\\test",
-        OPENCLAW_TASK_SCRIPT_NAME: scriptName,
+        OPERATOR_TASK_SCRIPT_NAME: scriptName,
       }),
-    ).toThrow("OPENCLAW_TASK_SCRIPT_NAME must be a file name only");
+    ).toThrow("OPERATOR_TASK_SCRIPT_NAME must be a file name only");
   });
 });
 
@@ -224,7 +224,7 @@ describe("readScheduledTaskCommand", () => {
       const extraEnv = typeof options.env === "function" ? options.env(tmpDir) : options.env;
       const env = {
         USERPROFILE: tmpDir,
-        OPENCLAW_PROFILE: "default",
+        OPERATOR_PROFILE: "default",
         ...extraEnv,
       };
       if (options.scriptLines) {
@@ -335,10 +335,10 @@ describe("readScheduledTaskCommand", () => {
       {
         scriptLines: [
           "@echo off",
-          "rem OpenClaw Gateway",
+          "rem Operator Gateway",
           "cd /d C:\\Projects\\openclaw",
           "set NODE_ENV=production",
-          "set OPENCLAW_PORT=18789",
+          "set OPERATOR_PORT=18789",
           "node gateway.js --verbose",
         ],
       },
@@ -349,11 +349,11 @@ describe("readScheduledTaskCommand", () => {
           workingDirectory: "C:\\Projects\\openclaw",
           environment: {
             NODE_ENV: "production",
-            OPENCLAW_PORT: "18789",
+            OPERATOR_PORT: "18789",
           },
           environmentValueSources: {
             NODE_ENV: "inline",
-            OPENCLAW_PORT: "inline",
+            OPERATOR_PORT: "inline",
           },
           sourcePath: resolveTaskScriptPath(env),
         });
@@ -390,15 +390,15 @@ describe("readScheduledTaskCommand", () => {
       {
         scriptLines: [
           "@echo off",
-          '"\\\\fileserver\\OpenClaw Share\\node.exe" "\\\\fileserver\\OpenClaw Share\\dist\\index.js" gateway --port 18789',
+          '"\\\\fileserver\\Operator Share\\node.exe" "\\\\fileserver\\Operator Share\\dist\\index.js" gateway --port 18789',
         ],
       },
       async (env) => {
         const result = await readScheduledTaskCommand(env);
         expect(result).toEqual({
           programArguments: [
-            "\\\\fileserver\\OpenClaw Share\\node.exe",
-            "\\\\fileserver\\OpenClaw Share\\dist\\index.js",
+            "\\\\fileserver\\Operator Share\\node.exe",
+            "\\\\fileserver\\Operator Share\\dist\\index.js",
             "gateway",
             "--port",
             "18789",
@@ -409,10 +409,10 @@ describe("readScheduledTaskCommand", () => {
     );
   });
 
-  it("reads script from OPENCLAW_STATE_DIR override", async () => {
+  it("reads script from OPERATOR_STATE_DIR override", async () => {
     await withScheduledTaskScript(
       {
-        env: (tmpDir) => ({ OPENCLAW_STATE_DIR: path.join(tmpDir, "custom-state") }),
+        env: (tmpDir) => ({ OPERATOR_STATE_DIR: path.join(tmpDir, "custom-state") }),
         scriptLines: ["@echo off", "node gateway.js --from-state-dir"],
       },
       async (env) => {

@@ -4,7 +4,7 @@ import path from "node:path";
 import { expectDefined } from "@operator/normalization-core";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { TranscriptNotContinuableError } from "../../packages/agent-core/src/errors.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import {
   onTrustedInternalDiagnosticEvent,
   resetDiagnosticEventsForTest,
@@ -260,7 +260,7 @@ async function runModelFallbackCase(name: string, run: () => Promise<void>): Pro
   }
 }
 
-function makeFallbacksOnlyCfg(): OpenClawConfig {
+function makeFallbacksOnlyCfg(): OperatorConfig {
   return {
     agents: {
       defaults: {
@@ -269,10 +269,10 @@ function makeFallbacksOnlyCfg(): OpenClawConfig {
         },
       },
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
-function makeProviderFallbackCfg(provider: string): OpenClawConfig {
+function makeProviderFallbackCfg(provider: string): OperatorConfig {
   return makeCfg({
     agents: {
       defaults: {
@@ -287,7 +287,7 @@ function makeProviderFallbackCfg(provider: string): OpenClawConfig {
 
 function makeProviderOrderFallbackCfg(
   entries: Array<[provider: string, model: string]>,
-): OpenClawConfig {
+): OperatorConfig {
   return {
     agents: {
       defaults: {
@@ -307,7 +307,7 @@ function makeProviderOrderFallbackCfg(
         ]),
       ),
     },
-  } as unknown as OpenClawConfig;
+  } as unknown as OperatorConfig;
 }
 
 async function withTempAuthStore<T>(
@@ -325,7 +325,7 @@ async function makeAuthTempDir(): Promise<string> {
 }
 
 async function runWithStoredAuth(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   store: AuthProfileStore;
   provider: string;
   run: (provider: string, model: string) => Promise<string>;
@@ -530,7 +530,7 @@ function captureModelFailoverDiagnostics(): {
   return { events, stop };
 }
 
-function makeDiagnosticFallbackConfig(fallbacks: string[]): OpenClawConfig {
+function makeDiagnosticFallbackConfig(fallbacks: string[]): OperatorConfig {
   return makeCfg({
     agents: { defaults: { model: { primary: "openai/gpt-5.5", fallbacks } } },
   });
@@ -710,8 +710,8 @@ describe("runWithModelFallback", () => {
   });
 
   it("uses the opt-in auth skip cache on the second turn for the same session", async () => {
-    const previous = process.env.OPENCLAW_FALLBACK_SKIP_TTL_MS;
-    process.env.OPENCLAW_FALLBACK_SKIP_TTL_MS = "60000";
+    const previous = process.env.OPERATOR_FALLBACK_SKIP_TTL_MS;
+    process.env.OPERATOR_FALLBACK_SKIP_TTL_MS = "60000";
     try {
       const cfg = makeCfg({
         agents: {
@@ -771,9 +771,9 @@ describe("runWithModelFallback", () => {
       );
     } finally {
       if (previous === undefined) {
-        delete process.env.OPENCLAW_FALLBACK_SKIP_TTL_MS;
+        delete process.env.OPERATOR_FALLBACK_SKIP_TTL_MS;
       } else {
-        process.env.OPENCLAW_FALLBACK_SKIP_TTL_MS = previous;
+        process.env.OPERATOR_FALLBACK_SKIP_TTL_MS = previous;
       }
     }
   });
@@ -869,7 +869,7 @@ describe("runWithModelFallback", () => {
       },
     ] satisfies Array<{
       name: string;
-      cfg: OpenClawConfig;
+      cfg: OperatorConfig;
       provider: string;
       model: string;
       expected: [string, string];
@@ -922,7 +922,7 @@ describe("runWithModelFallback", () => {
       },
     });
     const missingToolResultError = new Error(
-      "OpenClaw recorded a native Codex tool.call without a matching tool.result before the turn completed.",
+      "Operator recorded a native Codex tool.call without a matching tool.result before the turn completed.",
     );
     const run = vi.fn().mockRejectedValue(missingToolResultError);
 
@@ -993,7 +993,7 @@ describe("runWithModelFallback", () => {
     );
   });
 
-  it("does not prepare agent harness plugins for forced OpenClaw candidates", async () => {
+  it("does not prepare agent harness plugins for forced Operator candidates", async () => {
     const cfg = makeCfg({
       models: {
         providers: {
@@ -1006,7 +1006,7 @@ describe("runWithModelFallback", () => {
       },
     });
     const prepareAgentHarnessRuntime = vi.fn(() => {
-      throw new Error("OpenClaw candidates should not prepare plugin harnesses");
+      throw new Error("Operator candidates should not prepare plugin harnesses");
     });
     const run = vi.fn().mockResolvedValueOnce("ok");
 
@@ -1023,7 +1023,7 @@ describe("runWithModelFallback", () => {
     expect(run).toHaveBeenCalledTimes(1);
   });
 
-  it("does not prepare agent harness plugins for forced OpenClaw runtime candidates", async () => {
+  it("does not prepare agent harness plugins for forced Operator runtime candidates", async () => {
     const cfg = makeCfg({
       models: {
         providers: {
@@ -1036,7 +1036,7 @@ describe("runWithModelFallback", () => {
       },
     });
     const prepareAgentHarnessRuntime = vi.fn(() => {
-      throw new Error("OpenClaw candidates should not prepare plugin harnesses");
+      throw new Error("Operator candidates should not prepare plugin harnesses");
     });
     const run = vi.fn().mockResolvedValueOnce("ok");
 
@@ -3474,7 +3474,7 @@ describe("runWithModelFallback", () => {
         },
       ] satisfies Array<{
         name: string;
-        cfg: OpenClawConfig;
+        cfg: OperatorConfig;
         provider: string;
         model: string;
         calls: Array<[string, string]>;
@@ -4286,7 +4286,7 @@ describe("runWithImageModelFallback", () => {
       },
     ] satisfies Array<{
       name: string;
-      cfg: OpenClawConfig;
+      cfg: OperatorConfig;
       modelOverride: string;
       expected: Array<[string, string]>;
     }>;

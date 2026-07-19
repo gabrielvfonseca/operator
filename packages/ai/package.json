@@ -1,7 +1,7 @@
 {
   "name": "@operator/ai",
   "version": "2026.7.2",
-  "description": "Reusable model provider adapters and streaming runtime from OpenClaw",
+  "description": "Reusable model provider adapters and streaming runtime from Operator",
   "keywords": [
     "ai",
     "anthropic",

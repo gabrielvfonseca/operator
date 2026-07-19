@@ -1,5 +1,5 @@
 import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-// Memory Core plugin entrypoint registers its OpenClaw integration.
+// Memory Core plugin entrypoint registers its Operator integration.
 import {
   jsonResult,
   resolveMemorySearchConfig,
@@ -11,7 +11,7 @@ import { resolveMemoryBackendConfig } from "openclaw/plugin-sdk/memory-core-host
 import {
   definePluginEntry,
   type AnyAgentTool,
-  type OpenClawPluginToolContext,
+  type OperatorPluginToolContext,
 } from "openclaw/plugin-sdk/plugin-entry";
 import type { OpenKeyedStoreOptions } from "openclaw/plugin-sdk/plugin-state-runtime";
 import type { TSchema } from "typebox";
@@ -142,7 +142,7 @@ function createLazyMemoryGetTool(options: MemoryToolOptions): AnyAgentTool | nul
 }
 
 function resolveMemoryToolOptions(
-  ctx: OpenClawPluginToolContext,
+  ctx: OperatorPluginToolContext,
   acquireLocalService?: MemoryCoreAcquireLocalService,
 ): MemoryToolOptions {
   const getConfig = () => ctx.getRuntimeConfig?.() ?? ctx.runtimeConfig ?? ctx.config;

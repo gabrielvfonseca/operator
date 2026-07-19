@@ -15,16 +15,16 @@ import {
 import { approveNodePairing, requestNodePairing } from "../../infra/node-pairing.js";
 import { resetRemoteNodeSkillsForTests } from "../../skills/runtime/remote-skills.test-support.js";
 import {
-  createOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  type OperatorTestState,
 } from "../../test-utils/operator-test-state.js";
 import { nodeHandlers } from "./nodes.js";
 import type { GatewayRequestHandlerOptions } from "./types.js";
 
-const createdStates: OpenClawTestState[] = [];
+const createdStates: OperatorTestState[] = [];
 
-async function createState(label: string): Promise<OpenClawTestState> {
-  const state = await createOpenClawTestState({ label, layout: "state-only" });
+async function createState(label: string): Promise<OperatorTestState> {
+  const state = await createOperatorTestState({ label, layout: "state-only" });
   createdStates.push(state);
   return state;
 }

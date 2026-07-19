@@ -1,10 +1,10 @@
 // Imessage tests cover doctor contract api plugin behavior.
 import { expectDefined } from "@operator/normalization-core";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import { legacyConfigRules, normalizeCompatibilityConfig } from "./doctor-contract-api.js";
 
-function imessageConfig(entry: Record<string, unknown>): OpenClawConfig {
+function imessageConfig(entry: Record<string, unknown>): OperatorConfig {
   return { channels: { imessage: entry } } as never;
 }
 

@@ -1,9 +1,9 @@
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginMetadataSnapshot } from "../plugins/plugin-metadata-snapshot.js";
 import "./models-config.providers.implicit.js";
 
 type ResolveProviderDiscoveryFilterParams = {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   workspaceDir?: string;
   env: NodeJS.ProcessEnv;
   resolveOwners?: (provider: string) => readonly string[] | undefined;

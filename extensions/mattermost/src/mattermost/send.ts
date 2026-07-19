@@ -33,7 +33,7 @@ import {
   resolveInteractionCallbackUrl,
   setInteractionSecret,
 } from "./interactions.js";
-import { loadOutboundMediaFromUrl, type OpenClawConfig } from "./runtime-api.js";
+import { loadOutboundMediaFromUrl, type OperatorConfig } from "./runtime-api.js";
 import {
   parseMattermostTarget,
   resolveMattermostOpaqueTarget,
@@ -41,7 +41,7 @@ import {
 } from "./target-resolution.js";
 
 type MattermostSendOpts = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   botToken?: string;
   baseUrl?: string;
   accountId?: string;
@@ -307,7 +307,7 @@ async function resolveTargetChannelId(params: ResolveTargetChannelIdParams): Pro
 }
 
 type MattermostSendContext = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId: string;
   token: string;
   baseUrl: string;

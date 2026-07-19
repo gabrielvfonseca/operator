@@ -1,7 +1,7 @@
-// Xiaomi plugin entrypoint registers its OpenClaw integration.
+// Xiaomi plugin entrypoint registers its Operator integration.
 import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
 import type {
-  OpenClawConfig,
+  OperatorConfig,
   ProviderAuthContext,
   ProviderAuthMethod,
   ProviderAuthMethodNonInteractiveContext,
@@ -177,7 +177,7 @@ async function runXiaomiApiKeyAuth(
     promptMessage: string;
     expectedKind: "payg" | "token-plan";
     defaultModel: string;
-    applyConfig: (cfg: OpenClawConfig) => OpenClawConfig;
+    applyConfig: (cfg: OperatorConfig) => OperatorConfig;
   },
 ): Promise<ProviderAuthResult> {
   let capturedSecretInput: SecretInput | undefined;
@@ -243,7 +243,7 @@ async function runXiaomiApiKeyAuthNonInteractive(
     flagName: `--${string}`;
     envVar: string;
     expectedKind: "payg" | "token-plan";
-    applyConfig: (cfg: OpenClawConfig) => OpenClawConfig;
+    applyConfig: (cfg: OperatorConfig) => OperatorConfig;
   },
 ) {
   const resolved = await ctx.resolveApiKey({

@@ -1,5 +1,5 @@
 // GitHub Copilot credential exchange and cache policy.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   asDateTimestampMs,
   parseStrictNonNegativeInteger,
@@ -93,7 +93,7 @@ export async function resolveCopilotApiToken(params: {
   saveJsonFileImpl?: (path: string, value: CachedCopilotToken) => void;
   openCacheStore?: () => PluginStateSyncKeyedStore<CachedCopilotToken>;
   githubDomain?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }): Promise<{
   token: string;
   expiresAt: number;

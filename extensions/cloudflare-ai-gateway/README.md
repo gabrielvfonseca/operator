@@ -1,8 +1,8 @@
-# OpenClaw Cloudflare AI Gateway Provider
+# Operator Cloudflare AI Gateway Provider
 
-Official OpenClaw provider plugin for Cloudflare AI Gateway.
+Official Operator provider plugin for Cloudflare AI Gateway.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/cloudflare-ai-gateway-provider

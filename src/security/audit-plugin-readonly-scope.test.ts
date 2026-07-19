@@ -1,7 +1,7 @@
 // Verifies plugin readonly-scope audit findings.
 import { expectDefined } from "@operator/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 
 const applyPluginAutoEnableMock = vi.hoisted(() => vi.fn());
 const getActivePluginRegistryMock = vi.hoisted(() => vi.fn());
@@ -33,7 +33,7 @@ vi.mock("../plugins/runtime/metadata-registry-loader.js", () => ({
 const { runSecurityAudit } = await import("./audit.js");
 
 function createAuditOptions(params: {
-  sourceConfig: OpenClawConfig;
+  sourceConfig: OperatorConfig;
   plugins: Parameters<typeof runSecurityAudit>[0]["plugins"];
 }): Parameters<typeof runSecurityAudit>[0] {
   return {

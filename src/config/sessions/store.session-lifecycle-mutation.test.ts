@@ -9,9 +9,9 @@ import {
   getNodeSqliteKysely,
 } from "../../infra/kysely-sync.js";
 import { onInternalSessionTranscriptUpdate } from "../../sessions/transcript-events.js";
-import type { DB as OpenClawAgentKyselyDatabase } from "../../state/openclaw-agent-db.generated.js";
-import { openOpenClawAgentDatabase } from "../../state/openclaw-agent-db.js";
-import { closeOpenClawAgentDatabasesForTest } from "../../state/openclaw-agent-db.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../../state/openclaw-agent-db.generated.js";
+import { openOperatorAgentDatabase } from "../../state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../state/openclaw-agent-db.js";
 import { readSessionArchiveContentSync } from "./archive-compression.js";
 import {
   applySessionEntryLifecycleMutation,
@@ -38,7 +38,7 @@ describe("session store lifecycle mutations", () => {
   });
 
   afterEach(() => {
-    closeOpenClawAgentDatabasesForTest();
+    closeOperatorAgentDatabasesForTest();
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
 
@@ -283,7 +283,7 @@ describe("session store lifecycle mutations", () => {
       ],
     );
     const database = openLifecycleTestDatabase(storePath);
-    const db = getNodeSqliteKysely<OpenClawAgentKyselyDatabase>(database.db);
+    const db = getNodeSqliteKysely<OperatorAgentKyselyDatabase>(database.db);
     const readSearchState = () => ({
       fts: executeSqliteQuerySync(
         database.db,
@@ -678,7 +678,7 @@ describe("session store lifecycle mutations", () => {
       [createTranscriptEvent(sessionId, "cleanup-marker shared transcript")],
     );
     const database = openLifecycleTestDatabase(storePath);
-    const db = getNodeSqliteKysely<OpenClawAgentKyselyDatabase>(database.db);
+    const db = getNodeSqliteKysely<OperatorAgentKyselyDatabase>(database.db);
     executeSqliteQuerySync(
       database.db,
       db
@@ -780,7 +780,7 @@ function openLifecycleTestDatabase(storePath: string) {
   if (!target.path) {
     throw new Error(`Could not resolve SQLite database path for ${storePath}`);
   }
-  return openOpenClawAgentDatabase({
+  return openOperatorAgentDatabase({
     agentId: target.agentId ?? "main",
     path: target.path,
   });

@@ -1,7 +1,7 @@
 /**
- * operator built-in tool: ring-zero setup/repair actions for the OpenClaw
+ * operator built-in tool: ring-zero setup/repair actions for the Operator
  * agent. Never exposed to normal agents — construction is bound to a host-owned
- * per-run scope, and every action funnels through OpenClaw's typed operation
+ * per-run scope, and every action funnels through Operator's typed operation
  * union with approval assertions and the audit log.
  */
 import { createHash } from "node:crypto";
@@ -200,7 +200,7 @@ const SystemAgentToolSchema = Type.Object({
   target: Type.Optional(
     stringEnum(["guided", "classic", "channels"], {
       description:
-        "Setup target for open_setup. channels runs in this chat; guided/classic require exiting OpenClaw and running operator onboard.",
+        "Setup target for open_setup. channels runs in this chat; guided/classic require exiting Operator and running operator onboard.",
     }),
   ),
   query: Type.Optional(Type.String({ description: "Search query for plugin_search" })),
@@ -353,7 +353,7 @@ function operationForAction(params: Record<string, unknown>): SystemAgentOperati
 export function createSystemAgentTool(options: SystemAgentToolOptions): AnyAgentTool {
   return {
     name: "operator",
-    label: "OpenClaw",
+    label: "Operator",
     // Setup authority is never discoverable through tool catalogs: the host
     // scopes it to this run and the model must receive it directly.
     catalogMode: "direct-only",
@@ -382,12 +382,12 @@ export function createSystemAgentTool(options: SystemAgentToolOptions): AnyAgent
           directive.kind === "channel-setup"
             ? `${SYSTEM_AGENT_DIRECTIVE_PREFIX} the host chat now starts the guided ${directive.channel} setup with the user. Tell the user the setup questions come next; do not describe steps yourself.`
             : directive.kind === "model-setup"
-              ? `${SYSTEM_AGENT_DIRECTIVE_PREFIX} the active inference route cannot be changed inside OpenClaw. Tell the user to exit OpenClaw and run \`operator onboard\`; do not ask for provider credentials here.`
+              ? `${SYSTEM_AGENT_DIRECTIVE_PREFIX} the active inference route cannot be changed inside Operator. Tell the user to exit Operator and run \`operator onboard\`; do not ask for provider credentials here.`
               : directive.kind === "open-tui"
                 ? `${SYSTEM_AGENT_DIRECTIVE_PREFIX} the host now hands the user over to their normal agent. Say goodbye briefly.`
                 : directive.target === "channels"
                   ? `${SYSTEM_AGENT_DIRECTIVE_PREFIX} the host now opens channel setup${directive.channel ? ` for ${directive.channel}` : ""}. Tell the user the channel setup questions come next.`
-                  : `${SYSTEM_AGENT_DIRECTIVE_PREFIX} ${directive.target} setup cannot run inside OpenClaw because it may change the active inference route. Tell the user to exit OpenClaw and run \`operator onboard\`.`,
+                  : `${SYSTEM_AGENT_DIRECTIVE_PREFIX} ${directive.target} setup cannot run inside Operator because it may change the active inference route. Tell the user to exit Operator and run \`operator onboard\`.`,
           {},
         );
       }

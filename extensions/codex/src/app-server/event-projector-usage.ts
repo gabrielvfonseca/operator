@@ -3,7 +3,7 @@ import { readNumber } from "./event-projector-values.js";
 import type { JsonObject } from "./protocol.js";
 
 export function normalizeCodexTokenUsage(record: JsonObject): ReturnType<typeof normalizeUsage> {
-  // v2 TokenUsageBreakdown. inputTokens includes cached input; OpenClaw usage
+  // v2 TokenUsageBreakdown. inputTokens includes cached input; Operator usage
   // tracks uncached input and cache reads separately.
   const inputTokens = readNumber(record, "inputTokens");
   const cacheRead = readNumber(record, "cachedInputTokens");

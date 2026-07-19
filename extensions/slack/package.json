@@ -1,7 +1,7 @@
 {
   "name": "@operator/slack",
   "version": "2026.7.2",
-  "description": "OpenClaw Slack channel plugin for channels, DMs, commands, and app events.",
+  "description": "Operator Slack channel plugin for channels, DMs, commands, and app events.",
   "repository": {
     "type": "git",
     "url": "https://github.com/openclaw/openclaw"

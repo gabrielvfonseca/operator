@@ -3,7 +3,7 @@ import type {
   WhatsAppQaDriverObservedMessage,
   WhatsAppQaDriverSession,
 } from "@operator/whatsapp/api.js";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import type { startQaGatewayChild } from "../../gateway-child.js";
 
@@ -265,7 +265,7 @@ export type WhatsAppQaConfigOverrides = {
     | boolean
     | {
         removeAckAfterReply?: boolean;
-        timing?: NonNullable<NonNullable<OpenClawConfig["messages"]>["statusReactions"]>["timing"];
+        timing?: NonNullable<NonNullable<OperatorConfig["messages"]>["statusReactions"]>["timing"];
       };
 };
 

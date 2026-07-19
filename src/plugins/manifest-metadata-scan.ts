@@ -5,7 +5,7 @@ import { isRecord } from "@operator/normalization-core/record-coerce";
 import { normalizeOptionalString as normalizeTrimmedString } from "@operator/normalization-core/string-coerce";
 import { resolveStateDir } from "../config/paths.js";
 import { resolveHomeRelativePath } from "../infra/home-dir.js";
-import { resolveOpenClawPackageRootSync } from "../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
 import { parseJsonWithJson5Fallback } from "../utils/parse-json-compat.js";
 import { resolveBundledPluginsDir } from "./bundled-dir.js";
 import { readPersistedInstalledPluginIndexSync } from "./installed-plugin-index-store.js";
@@ -108,13 +108,13 @@ function isSourceCheckoutRoot(packageRoot: string): boolean {
   );
 }
 
-function resolvePackageRootsForSourceManifestMetadata(): string[] {
+function resolveOperatorPackageRootsForSourceManifestMetadata(): string[] {
   const roots: string[] = [];
   for (const params of [
     { argv1: process.argv[1] },
     { moduleUrl: import.meta.url },
   ] satisfies Array<{ argv1?: string; moduleUrl?: string }>) {
-    const root = resolveOpenClawPackageRootSync(params);
+    const root = resolveOperatorPackageRootSync(params);
     if (root && !roots.includes(root)) {
       roots.push(root);
     }
@@ -125,7 +125,7 @@ function resolvePackageRootsForSourceManifestMetadata(): string[] {
 function listSourceCheckoutPluginDirs(startOrder: number): CandidateDir[] {
   const dirs: CandidateDir[] = [];
   let order = startOrder;
-  for (const packageRoot of resolvePackageRootsForSourceManifestMetadata()) {
+  for (const packageRoot of resolveOperatorPackageRootsForSourceManifestMetadata()) {
     if (!isSourceCheckoutRoot(packageRoot)) {
       continue;
     }
@@ -158,7 +158,7 @@ function uniqueCandidateDirs(candidates: CandidateDir[]): CandidateDir[] {
 }
 
 /** Lists plugin manifest metadata from installed, bundled, and global plugin roots. */
-export function listOpenClawPluginManifestMetadata(
+export function listOperatorPluginManifestMetadata(
   env: NodeJS.ProcessEnv = process.env,
 ): PluginManifestMetadataRecord[] {
   const candidates: CandidateDir[] = [];

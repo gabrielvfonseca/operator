@@ -1,5 +1,5 @@
 // Test provider implementation for chat-style runtime interactions.
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 
 /** Test-only speech provider identity used by talk config assertions. */
 export const TALK_TEST_PROVIDER_ID = "acme-speech";
@@ -12,7 +12,7 @@ export const TALK_TEST_PROVIDER_API_KEY_PATH_SEGMENTS = [
   "apiKey",
 ] as const;
 
-export function buildTalkTestProviderConfig(apiKey: unknown): OpenClawConfig {
+export function buildTalkTestProviderConfig(apiKey: unknown): OperatorConfig {
   return {
     talk: {
       providers: {
@@ -21,9 +21,9 @@ export function buildTalkTestProviderConfig(apiKey: unknown): OpenClawConfig {
         },
       },
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
-export function readTalkTestProviderApiKey(config: OpenClawConfig): unknown {
+export function readTalkTestProviderApiKey(config: OperatorConfig): unknown {
   return config.talk?.providers?.[TALK_TEST_PROVIDER_ID]?.apiKey;
 }

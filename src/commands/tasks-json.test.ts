@@ -11,7 +11,7 @@ import {
   resetTaskRegistryDeliveryRuntimeForTests,
   resetTaskRegistryForTests,
 } from "../tasks/task-runtime.test-helpers.js";
-import { withOpenClawTestState } from "../test-utils/operator-test-state.js";
+import { withOperatorTestState } from "../test-utils/operator-test-state.js";
 import { tasksAuditJsonCommand, tasksListJsonCommand } from "./tasks-json.js";
 
 function createRuntime(): RuntimeEnv {
@@ -54,7 +54,7 @@ function jsonRoundTrip<T>(value: T): T {
 }
 
 async function withTaskJsonStateDir(run: () => Promise<void>): Promise<void> {
-  await withOpenClawTestState(
+  await withOperatorTestState(
     { layout: "state-only", prefix: "openclaw-tasks-json-command-" },
     async () => {
       resetTaskRegistryDeliveryRuntimeForTests();

@@ -2,7 +2,7 @@
   "name": "@operator/video-generation-core",
   "version": "2026.7.2",
   "private": true,
-  "description": "OpenClaw video generation runtime package",
+  "description": "Operator video generation runtime package",
   "type": "module",
   "devDependencies": {
     "@operator/plugin-sdk": "workspace:*"

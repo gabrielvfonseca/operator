@@ -22,7 +22,7 @@ import {
   readPositiveIntegerParam,
   readReactionParams,
   readStringParam,
-  type OpenClawConfig,
+  type OperatorConfig,
   withNormalizedTimestamp,
 } from "./runtime-api.js";
 import { parseSlackTarget, resolveSlackChannelId, slackContextTargetsMatch } from "./targets.js";
@@ -76,14 +76,14 @@ export const slackActionRuntime = {
   removeSlackReaction: createLazySlackAction("removeSlackReaction"),
   resolveSlackConversationName: createLazySlackAction("resolveSlackConversationName"),
   resolveSlackConversationInfo: async (params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     accountId?: string | null;
     channelId: string;
     operation?: "read" | "write";
     requireFreshName?: boolean;
   }) => (await loadSlackChannelTypeRuntime()).resolveSlackConversationInfo(params),
   resolveSlackChannelType: async (params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     accountId?: string | null;
     channelId: string;
   }) => (await loadSlackChannelTypeRuntime()).resolveSlackChannelType(params),
@@ -208,7 +208,7 @@ function normalizeConfiguredSlackDmUserId(value: unknown): string | undefined {
 
 async function isSlackDmTargetConfigured(params: {
   account: ResolvedSlackAccount;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   channelId: string;
   userId?: string;
 }): Promise<boolean> {
@@ -275,7 +275,7 @@ function assertSlackMemberInfoAllowed(params: {
 
 function resolveSlackChannelReadPolicy(params: {
   account: ResolvedSlackAccount;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   channelId: string;
   channelName?: string;
   conversationReadOrigin?: ConversationReadInvocationOrigin;
@@ -346,7 +346,7 @@ function resolveSlackChannelReadPolicy(params: {
 
 async function assertSlackReadTargetAllowed(params: {
   account: ResolvedSlackAccount;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   channelId: string;
   conversationReadOrigin?: ConversationReadInvocationOrigin;
   context?: SlackActionContext;
@@ -470,7 +470,7 @@ function isSlackGroupDmTargetConfigured(account: ResolvedSlackAccount, channelId
 
 export async function handleSlackAction(
   params: Record<string, unknown>,
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   context?: SlackActionContext,
 ): Promise<AgentToolResult<unknown>> {
   const resolveChannelId = () =>

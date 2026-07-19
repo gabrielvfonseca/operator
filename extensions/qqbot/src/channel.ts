@@ -7,7 +7,7 @@ import {
   type ChannelMessageSendResult,
   type MessageReceiptPartKind,
 } from "openclaw/plugin-sdk/channel-outbound";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type { ChannelPlugin } from "openclaw/plugin-sdk/core";
 import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
 // Register the PlatformAdapter before any core/ module is used.
@@ -21,7 +21,7 @@ import {
   resolveQQBotAccount,
 } from "./bridge/config.js";
 import type { GatewayContext } from "./bridge/gateway.js";
-import { toGatewayAccount, writeOpenClawConfigThroughRuntime } from "./bridge/narrowing.js";
+import { toGatewayAccount, writeOperatorConfigThroughRuntime } from "./bridge/narrowing.js";
 import { getQQBotRuntime } from "./bridge/runtime.js";
 import { qqbotSetupWizard } from "./bridge/setup/surface.js";
 import { qqbotChannelConfigSchema } from "./config-schema.js";
@@ -65,7 +65,7 @@ function createQQBotSendReceipt(params: {
 }
 
 function resolveQQBotOutboundSessionRoute(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
   accountId?: string | null;
   target: string;
@@ -88,7 +88,7 @@ function resolveQQBotOutboundSessionRoute(params: {
 
 async function sendQQBotText(
   params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     to: string;
     text: string;
     accountId?: string | null;
@@ -124,7 +124,7 @@ async function sendQQBotText(
 
 async function sendQQBotMedia(
   params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     to: string;
     text?: string | null;
     mediaUrl?: string | null;
@@ -227,7 +227,7 @@ function persistAccountCredentialSnapshot(account: ResolvedQQBotAccount): void {
 }
 
 function shouldSuppressLocalQQBotApprovalPrompt(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
   payload: { text?: string; channelData?: unknown };
   hint?: { kind: "approval-pending" | "approval-resolved"; approvalKind: "exec" | "plugin" };
@@ -351,7 +351,7 @@ export const qqbotPlugin: ChannelPlugin<ResolvedQQBotAccount> = {
               appId: backup.appId,
               clientSecret: backup.clientSecret,
             });
-            await writeOpenClawConfigThroughRuntime(getQQBotRuntime(), nextCfg);
+            await writeOperatorConfigThroughRuntime(getQQBotRuntime(), nextCfg);
             cfg = nextCfg;
             account = resolveQQBotAccount(nextCfg, account.accountId);
             log?.info(
@@ -433,10 +433,10 @@ export const qqbotPlugin: ChannelPlugin<ResolvedQQBotAccount> = {
       );
 
       if (changed) {
-        await writeOpenClawConfigThroughRuntime(getQQBotRuntime(), nextCfg as OpenClawConfig);
+        await writeOperatorConfigThroughRuntime(getQQBotRuntime(), nextCfg as OperatorConfig);
       }
 
-      const resolved = resolveQQBotAccount((changed ? nextCfg : cfg) as OpenClawConfig, accountId);
+      const resolved = resolveQQBotAccount((changed ? nextCfg : cfg) as OperatorConfig, accountId);
       const loggedOut = resolved.secretSource === "none";
       const envToken = Boolean(process.env.QQBOT_CLIENT_SECRET);
 

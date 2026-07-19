@@ -99,7 +99,7 @@ describe("config io audit helpers", () => {
       {
         HOME: "undefined",
         USERPROFILE: "null",
-        OPENCLAW_HOME: "undefined",
+        OPERATOR_HOME: "undefined",
       } as NodeJS.ProcessEnv,
       () => home,
     );
@@ -124,9 +124,9 @@ describe("config io audit helpers", () => {
     const base = createConfigWriteAuditRecordBase({
       configPath: "/tmp/openclaw.json",
       env: {
-        OPENCLAW_WATCH_MODE: "1",
-        OPENCLAW_WATCH_SESSION: "watch-session-1",
-        OPENCLAW_WATCH_COMMAND: "gateway --force",
+        OPERATOR_WATCH_MODE: "1",
+        OPERATOR_WATCH_SESSION: "watch-session-1",
+        OPERATOR_WATCH_COMMAND: "gateway --force",
       } as NodeJS.ProcessEnv,
       existsBefore: true,
       previousHash: "prev-hash",

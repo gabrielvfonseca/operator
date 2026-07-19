@@ -5,7 +5,7 @@ import { setPluginToolMeta } from "../plugins/tools.js";
 
 const mocks = vi.hoisted(() => ({
   createBundleMcpToolRuntime: vi.fn(),
-  createOpenClawCodingTools: vi.fn(),
+  createOperatorCodingTools: vi.fn(),
   disposeBundleRuntime: vi.fn(),
   loadModelCatalog: vi.fn(async (): Promise<Array<Record<string, unknown>>> => []),
   normalizeProviderToolSchemasWithPlugin: vi.fn(),
@@ -36,7 +36,7 @@ vi.mock("../agents/agent-bundle-mcp-tools.js", () => ({
 }));
 
 vi.mock("../agents/agent-tools.js", () => ({
-  createOpenClawCodingTools: mocks.createOpenClawCodingTools,
+  createOperatorCodingTools: mocks.createOperatorCodingTools,
 }));
 
 vi.mock("../gateway/call.js", () => ({
@@ -90,7 +90,7 @@ function bundleMcpTool(name: string, parameters: unknown): AnyAgentTool {
 
 describe("doctor runtime tool schema checks", () => {
   beforeEach(() => {
-    mocks.createOpenClawCodingTools.mockReset().mockReturnValue([]);
+    mocks.createOperatorCodingTools.mockReset().mockReturnValue([]);
     mocks.createBundleMcpToolRuntime.mockReset().mockReturnValue({
       tools: [],
       dispose: mocks.disposeBundleRuntime,
@@ -165,7 +165,7 @@ describe("doctor runtime tool schema checks", () => {
         compat: { supportsTools: true },
       },
     ]);
-    mocks.createOpenClawCodingTools.mockReturnValueOnce([
+    mocks.createOperatorCodingTools.mockReturnValueOnce([
       tool("healthy", { type: "object", properties: {} }),
     ]);
 
@@ -195,7 +195,7 @@ describe("doctor runtime tool schema checks", () => {
         compat: { supportsTools: true },
       },
     ]);
-    mocks.createOpenClawCodingTools.mockReturnValueOnce([
+    mocks.createOperatorCodingTools.mockReturnValueOnce([
       tool("healthy", { type: "object", properties: {} }),
     ]);
 
@@ -343,7 +343,7 @@ describe("doctor runtime tool schema checks", () => {
   });
 
   it("reports unsupported schemas exposed only to a non-default configured agent", async () => {
-    mocks.createOpenClawCodingTools.mockImplementation((options) =>
+    mocks.createOperatorCodingTools.mockImplementation((options) =>
       options?.agentId === "worker"
         ? [tool("fuzzplugin_move_angles", { type: "array", items: { type: "number" } })]
         : [tool("healthy", { type: "object", properties: {} })],
@@ -369,10 +369,10 @@ describe("doctor runtime tool schema checks", () => {
       fixHint:
         "Disable or update the offending plugin/tool so its parameters are a JSON object schema, then rerun doctor.",
     });
-    expect(mocks.createOpenClawCodingTools).toHaveBeenCalledWith(
+    expect(mocks.createOperatorCodingTools).toHaveBeenCalledWith(
       expect.objectContaining({ agentId: "main", toolPolicyAuditLogLevel: "debug" }),
     );
-    expect(mocks.createOpenClawCodingTools).toHaveBeenCalledWith(
+    expect(mocks.createOperatorCodingTools).toHaveBeenCalledWith(
       expect.objectContaining({ agentId: "worker", toolPolicyAuditLogLevel: "debug" }),
     );
     expect(mocks.createBundleMcpToolRuntime).toHaveBeenCalledTimes(1);
@@ -380,7 +380,7 @@ describe("doctor runtime tool schema checks", () => {
   });
 
   it("skips ACP-only agents because they do not use embedded tool projection", async () => {
-    mocks.createOpenClawCodingTools.mockImplementation((options) =>
+    mocks.createOperatorCodingTools.mockImplementation((options) =>
       options?.agentId === "acp-worker"
         ? [tool("fuzzplugin_move_angles", { type: "array", items: { type: "number" } })]
         : [tool("healthy", { type: "object", properties: {} })],
@@ -408,8 +408,8 @@ describe("doctor runtime tool schema checks", () => {
         },
       }),
     ).resolves.toEqual([]);
-    expect(mocks.createOpenClawCodingTools).toHaveBeenCalledTimes(1);
-    expect(mocks.createOpenClawCodingTools).toHaveBeenCalledWith(
+    expect(mocks.createOperatorCodingTools).toHaveBeenCalledTimes(1);
+    expect(mocks.createOperatorCodingTools).toHaveBeenCalledWith(
       expect.objectContaining({ agentId: "main" }),
     );
     expect(mocks.createBundleMcpToolRuntime).toHaveBeenCalledTimes(1);
@@ -419,7 +419,7 @@ describe("doctor runtime tool schema checks", () => {
   });
 
   it("loads bundled MCP runtime once per distinct agent workspace", async () => {
-    mocks.createOpenClawCodingTools.mockReturnValue([]);
+    mocks.createOperatorCodingTools.mockReturnValue([]);
     mocks.createBundleMcpToolRuntime.mockImplementation(
       async (options: { workspaceDir: string }) => ({
         tools: options.workspaceDir.includes("worker")

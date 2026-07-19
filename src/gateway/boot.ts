@@ -19,7 +19,7 @@ import {
 } from "../config/sessions/main-session.js";
 import { resolveStorePath } from "../config/sessions/paths.js";
 import { preserveTemporarySessionMapping } from "../config/sessions/session-accessor.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { type RuntimeEnv, defaultRuntime } from "../runtime.js";
@@ -93,7 +93,7 @@ async function loadBootFile(
 }
 
 export async function runBootOnce(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   deps: CliDeps;
   workspaceDir: string;
   agentId?: string;

@@ -10,7 +10,7 @@ import {
 } from "../config/io.js";
 import { formatConfigIssueLines } from "../config/issue-format.js";
 import type { ConfigFileSnapshot, LegacyConfigIssue } from "../config/types.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import type { StartupMigrationLease } from "../infra/startup-migration-checkpoint.js";
 import { createLazyRuntimeModule } from "../shared/lazy-runtime.js";
@@ -90,7 +90,7 @@ async function maybeMigrateLegacyConfig(): Promise<string[]> {
 
 export type DoctorConfigPreflightResult = {
   snapshot: Awaited<ReturnType<typeof readConfigFileSnapshot>>;
-  baseConfig: OpenClawConfig;
+  baseConfig: OperatorConfig;
   cronCodexRuntimePolicyTargets?: CronCodexRuntimePolicyTarget[];
 };
 
@@ -140,7 +140,7 @@ function noteStateMigrationResult(result: {
 }
 
 async function runStartupUpgradeConvergence(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   env: NodeJS.ProcessEnv;
 }): Promise<string[]> {
   const { planStartupPluginConvergence } = await measureStartupPreflightStep(
@@ -192,7 +192,7 @@ function formatStartupMigrationFailure(params: { warnings: string[]; blockers: s
     ...params.blockers.map((blocker) => `- ${blocker}`),
   ];
   return [
-    "OpenClaw startup migrations did not complete cleanly; refusing to report the gateway ready.",
+    "Operator startup migrations did not complete cleanly; refusing to report the gateway ready.",
     ...details,
     'Run "operator doctor --fix" against the mounted state/config, then restart the container.',
   ].join("\n");
@@ -200,7 +200,7 @@ function formatStartupMigrationFailure(params: { warnings: string[]; blockers: s
 
 function throwStartupMigrationGuardRejected(): never {
   throw new Error(
-    "OpenClaw startup migrations were skipped because the selected config changed during startup; refusing to report the gateway ready. Retry startup so the new config can be validated.",
+    "Operator startup migrations were skipped because the selected config changed during startup; refusing to report the gateway ready. Retry startup so the new config can be validated.",
   );
 }
 
@@ -451,14 +451,14 @@ export async function runDoctorConfigPreflight(
       if (startupMigrationHeartbeatError) {
         throw startupMigrationHeartbeatError instanceof Error
           ? startupMigrationHeartbeatError
-          : new Error("OpenClaw startup migration lease heartbeat failed.");
+          : new Error("Operator startup migration lease heartbeat failed.");
       }
       const blockers =
         startupMigrationWarnings.length > 0
           ? []
           : snapshot.valid
             ? await runStartupUpgradeConvergence({ cfg: baseConfig, env: process.env })
-            : ['OpenClaw config is invalid; run "operator doctor --fix" before startup.'];
+            : ['Operator config is invalid; run "operator doctor --fix" before startup.'];
       if (startupMigrationWarnings.length > 0 || blockers.length > 0) {
         throw new Error(
           formatStartupMigrationFailure({

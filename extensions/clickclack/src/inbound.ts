@@ -1,9 +1,9 @@
 import { deriveDurableFinalDeliveryRequirements } from "openclaw/plugin-sdk/channel-outbound";
 /**
- * Converts authorized ClickClack messages into OpenClaw agent/model replies and
+ * Converts authorized ClickClack messages into Operator agent/model replies and
  * routes resulting outbound text back to ClickClack.
  */
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { normalizeAgentId } from "openclaw/plugin-sdk/routing";
 import { resolveClickClackInboundAccess, type ClickClackInboundAccess } from "./access.js";
 import { createClickClackActivityPublisher, type ClickClackActivityPublisher } from "./activity.js";
@@ -36,7 +36,7 @@ function resolveClickClackAgentRunId(messageId: string): string | undefined {
 }
 
 function resolveAccountAgentRoute(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   account: ResolvedClickClackAccount;
   target: string;
   isDirect: boolean;
@@ -90,7 +90,7 @@ function resolveAccountAgentRoute(params: {
 
 async function dispatchModelReply(params: {
   account: ResolvedClickClackAccount;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   message: ClickClackMessage;
   route: { agentId: string };
   target: string;
@@ -157,7 +157,7 @@ export async function handleClickClackInbound(params: {
       : { chatType: "group", kind: "channel", id: message.channel_id ?? "" },
   );
   const route = resolveAccountAgentRoute({
-    cfg: params.config as OpenClawConfig,
+    cfg: params.config as OperatorConfig,
     account: params.account,
     target,
     isDirect,
@@ -165,7 +165,7 @@ export async function handleClickClackInbound(params: {
   if (params.account.replyMode === "model") {
     await dispatchModelReply({
       account: params.account,
-      cfg: params.config as OpenClawConfig,
+      cfg: params.config as OperatorConfig,
       message,
       route,
       target,
@@ -213,7 +213,7 @@ export async function handleClickClackInbound(params: {
     from: senderName,
     timestamp: new Date(message.created_at),
     previousTimestamp,
-    envelope: runtime.channel.reply.resolveEnvelopeFormatOptions(params.config as OpenClawConfig),
+    envelope: runtime.channel.reply.resolveEnvelopeFormatOptions(params.config as OperatorConfig),
     body: message.body,
   });
   const storePath = runtime.channel.session.resolveStorePath(params.config.session?.store, {
@@ -267,7 +267,7 @@ export async function handleClickClackInbound(params: {
       }
     : undefined;
   const dispatchPromise = runtime.channel.inbound.dispatchReply({
-    cfg: params.config as OpenClawConfig,
+    cfg: params.config as OperatorConfig,
     channel: CHANNEL_ID,
     accountId: params.account.accountId,
     agentId: route.agentId,

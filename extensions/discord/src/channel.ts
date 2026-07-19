@@ -40,7 +40,7 @@ import {
   projectCredentialSnapshotFields,
   resolveConfiguredFromCredentialStatuses,
   type ChannelPlugin,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "./channel-api.js";
 import {
   buildDiscordCrossContextPresentation,
@@ -225,7 +225,7 @@ const discordMessageActions = {
   },
 };
 
-function resolveDiscordStartupAccountIds(cfg: OpenClawConfig): string[] {
+function resolveDiscordStartupAccountIds(cfg: OperatorConfig): string[] {
   const startupAccountIds = listEnabledDiscordAccounts(cfg)
     .filter(
       (candidate) =>
@@ -245,7 +245,7 @@ function resolveDiscordStartupAccountIds(cfg: OpenClawConfig): string[] {
   ];
 }
 
-function resolveDiscordStartupDelayMs(cfg: OpenClawConfig, accountId: string): number {
+function resolveDiscordStartupDelayMs(cfg: OperatorConfig, accountId: string): number {
   const startupAccountIds = resolveDiscordStartupAccountIds(cfg);
   const startupIndex = startupAccountIds.findIndex((candidateId) => candidateId === accountId);
   return startupIndex <= 0 ? 0 : startupIndex * DISCORD_ACCOUNT_STARTUP_STAGGER_MS;
@@ -327,7 +327,7 @@ export const discordPlugin: ChannelPlugin<ResolvedDiscordAccount, DiscordProbe> 
         messageToolHints: () => [
           "- Discord mentions: use canonical outbound syntax: users `<@USER_ID>`, channels `<#CHANNEL_ID>`, and roles `<@&ROLE_ID>`. Plain `@name` text only pings when a configured `mentionAliases` entry rewrites it; do not use the legacy `<@!USER_ID>` nickname form.",
           "- Discord components: set `components` when sending messages to include buttons, selects, or v2 containers.",
-          "- Forms: add `components.modal` (title, fields). OpenClaw adds a trigger button and routes submissions as new messages.",
+          "- Forms: add `components.modal` (title, fields). Operator adds a trigger button and routes submissions as new messages.",
         ],
       },
       messaging: {
@@ -595,7 +595,7 @@ export const discordPlugin: ChannelPlugin<ResolvedDiscordAccount, DiscordProbe> 
               ],
             };
           }
-          const statusCfg: OpenClawConfig = {
+          const statusCfg: OperatorConfig = {
             channels: {
               discord: {
                 accounts: {

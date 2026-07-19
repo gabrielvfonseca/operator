@@ -19,10 +19,10 @@ export type {
   AcpSessionUpdateTag,
 } from "@operator/acp-core/runtime/types";
 export type {
-  OpenClawPluginApi,
-  OpenClawPluginConfigSchema,
-  OpenClawPluginService,
-  OpenClawPluginServiceContext,
+  OperatorPluginApi,
+  OperatorPluginConfigSchema,
+  OperatorPluginService,
+  OperatorPluginServiceContext,
   PluginLogger,
 } from "../plugins/types.js";
 export type {

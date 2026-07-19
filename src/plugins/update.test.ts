@@ -5,7 +5,7 @@ import path from "node:path";
 import { expectDefined } from "@operator/normalization-core";
 import { bundledPluginRootAt } from "openclaw/plugin-sdk/test-fixtures";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { withEnvAsync } from "../test-utils/env.js";
 
 const APP_ROOT = "/app";
@@ -204,7 +204,7 @@ function createMarketplaceInstallConfig(params: {
   marketplaceSource: string;
   marketplacePlugin: string;
   marketplaceName?: string;
-}): OpenClawConfig {
+}): OperatorConfig {
   return {
     plugins: {
       installs: {
@@ -228,7 +228,7 @@ function createClawHubInstallConfig(params: {
   clawhubFamily: "bundle-plugin" | "code-plugin";
   clawhubChannel: "community" | "official" | "private";
   spec?: string;
-}): OpenClawConfig {
+}): OperatorConfig {
   return {
     plugins: {
       installs: {
@@ -246,7 +246,7 @@ function createClawHubInstallConfig(params: {
   };
 }
 
-function createEnabledDemoClawHubInstallConfig(): OpenClawConfig {
+function createEnabledDemoClawHubInstallConfig(): OperatorConfig {
   const installPath = createInstalledPackageDir({
     name: "demo",
     version: "1.2.3",
@@ -280,7 +280,7 @@ function createGitInstallConfig(params: {
   spec: string;
   installPath: string;
   commit?: string;
-}): OpenClawConfig {
+}): OperatorConfig {
   return {
     plugins: {
       installs: {
@@ -300,7 +300,7 @@ function createBundledPathInstallConfig(params: {
   installPath: string;
   sourcePath?: string;
   spec?: string;
-}): OpenClawConfig {
+}): OperatorConfig {
   return {
     plugins: {
       load: { paths: params.loadPaths },
@@ -363,7 +363,7 @@ function createInstalledPackageDir(params: {
   return dir;
 }
 
-function createOpenClawPeerLinkFixtures(plugins: Array<{ pluginId: string; packageName: string }>) {
+function createOperatorPeerLinkFixtures(plugins: Array<{ pluginId: string; packageName: string }>) {
   const peerTarget = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-peer-target-"));
   tempDirs.push(peerTarget);
   const installPaths = Object.fromEntries(
@@ -593,7 +593,7 @@ describe("updateNpmInstalledPlugins", () => {
   });
 
   it("does not treat inherited prototype names as install records", async () => {
-    const config: OpenClawConfig = { plugins: { installs: {} } };
+    const config: OperatorConfig = { plugins: { installs: {} } };
 
     const result = await updateNpmInstalledPlugins({
       config,
@@ -1347,7 +1347,7 @@ describe("updateNpmInstalledPlugins", () => {
       shasum: "same",
     });
     installPluginFromNpmSpecMock.mockRejectedValue(new Error("installer should not run"));
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       plugins: {
         installs: {
           "lossless-claw": {
@@ -1398,7 +1398,7 @@ describe("updateNpmInstalledPlugins", () => {
   });
 
   it("does not skip unchanged npm plugins when package metadata requires a newer plugin API", async () => {
-    vi.stubEnv("OPENCLAW_COMPATIBILITY_HOST_VERSION", "2026.5.28-beta.3");
+    vi.stubEnv("OPERATOR_COMPATIBILITY_HOST_VERSION", "2026.5.28-beta.3");
     const installPath = createInstalledPackageDir({
       name: "@operator/msteams",
       version: "2026.5.28-beta.4",
@@ -1463,7 +1463,7 @@ describe("updateNpmInstalledPlugins", () => {
   });
 
   it("does not skip unchanged npm plugins when package metadata requires a newer host", async () => {
-    vi.stubEnv("OPENCLAW_COMPATIBILITY_HOST_VERSION", "2026.5.28-beta.3");
+    vi.stubEnv("OPERATOR_COMPATIBILITY_HOST_VERSION", "2026.5.28-beta.3");
     const installPath = createInstalledPackageDir({
       name: "@operator/msteams",
       version: "2026.5.28-beta.4",
@@ -1541,7 +1541,7 @@ describe("updateNpmInstalledPlugins", () => {
         },
       }),
     );
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       plugins: {
         installs: {
           codex: {
@@ -1632,7 +1632,7 @@ describe("updateNpmInstalledPlugins", () => {
       { pluginId: "codex", packageName: "@operator/codex" },
       { pluginId: "discord", packageName: "@operator/discord" },
     ];
-    const { installPaths, peerLinkPath, linkPeer } = createOpenClawPeerLinkFixtures(plugins);
+    const { installPaths, peerLinkPath, linkPeer } = createOperatorPeerLinkFixtures(plugins);
     for (const { packageName } of plugins) {
       mockNpmViewMetadata({
         name: packageName,
@@ -1708,7 +1708,7 @@ describe("updateNpmInstalledPlugins", () => {
       { pluginId: "codex", packageName: "@operator/codex" },
       { pluginId: "discord", packageName: "@operator/discord" },
     ];
-    const { installPaths, peerLinkPath, linkPeer } = createOpenClawPeerLinkFixtures(plugins);
+    const { installPaths, peerLinkPath, linkPeer } = createOperatorPeerLinkFixtures(plugins);
     linkPeer("brave");
     linkPeer("discord");
     mockNpmViewMetadata({
@@ -1770,7 +1770,7 @@ describe("updateNpmInstalledPlugins", () => {
       { pluginId: "brave", packageName: "@operator/brave-plugin" },
       { pluginId: "codex", packageName: "@operator/codex" },
     ];
-    const { installPaths, peerLinkPath, linkPeer } = createOpenClawPeerLinkFixtures(plugins);
+    const { installPaths, peerLinkPath, linkPeer } = createOperatorPeerLinkFixtures(plugins);
     const brokenInstallPath = createInstalledPackageDir({
       name: "@operator/broken-plugin",
       version: "2026.5.4",
@@ -2199,7 +2199,7 @@ describe("updateNpmInstalledPlugins", () => {
     });
 
     const message =
-      'Disabled "lossless-claw" after plugin update failure; OpenClaw will continue without it. Failed to check lossless-claw: npm view failed: registry timeout';
+      'Disabled "lossless-claw" after plugin update failure; Operator will continue without it. Failed to check lossless-claw: npm view failed: registry timeout';
     expect(warn).toHaveBeenCalledWith(message);
     expect(result.changed).toBe(true);
     expect(result.config.plugins?.entries?.["lossless-claw"]).toEqual({
@@ -2291,7 +2291,7 @@ describe("updateNpmInstalledPlugins", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await updateNpmInstalledPlugins({
       config,
@@ -2301,7 +2301,7 @@ describe("updateNpmInstalledPlugins", () => {
     });
 
     const message =
-      'Disabled "demo" after plugin update failure; OpenClaw will continue without it. Failed to update demo: npm view failed: registry timeout';
+      'Disabled "demo" after plugin update failure; Operator will continue without it. Failed to update demo: npm view failed: registry timeout';
     expect(warn).toHaveBeenCalledWith(message);
     expect(result.changed).toBe(true);
     expect(result.config.plugins?.entries?.demo).toEqual({
@@ -2340,7 +2340,7 @@ describe("updateNpmInstalledPlugins", () => {
             },
           },
         },
-      } satisfies OpenClawConfig,
+      } satisfies OperatorConfig,
     },
     {
       source: "ClawHub",
@@ -2364,7 +2364,7 @@ describe("updateNpmInstalledPlugins", () => {
             },
           },
         },
-      } satisfies OpenClawConfig,
+      } satisfies OperatorConfig,
     },
     {
       source: "marketplace",
@@ -2385,7 +2385,7 @@ describe("updateNpmInstalledPlugins", () => {
             },
           },
         },
-      } satisfies OpenClawConfig,
+      } satisfies OperatorConfig,
     },
   ])("skips disabled $source installs before update network calls", async ({ config }) => {
     installPluginFromNpmSpecMock.mockRejectedValue(new Error("npm installer should not run"));
@@ -2873,7 +2873,7 @@ describe("updateNpmInstalledPlugins", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await updateNpmInstalledPlugins({
       config,
@@ -2923,7 +2923,7 @@ describe("updateNpmInstalledPlugins", () => {
           contextEngine: "demo",
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await updateNpmInstalledPlugins({
       config,
@@ -2935,7 +2935,7 @@ describe("updateNpmInstalledPlugins", () => {
     expect(npmInstallCall()?.spec).toBe("@acme/demo");
     expect(npmInstallCall()?.expectedPluginId).toBe("demo");
     const message =
-      'Disabled "demo" after plugin update failure; OpenClaw will continue without it. Failed to update demo: registry timeout';
+      'Disabled "demo" after plugin update failure; Operator will continue without it. Failed to update demo: registry timeout';
     expect(warn).toHaveBeenCalledWith(message);
     expect(result.changed).toBe(true);
     expect(result.config.plugins?.entries?.demo).toEqual({
@@ -3068,7 +3068,7 @@ describe("updateNpmInstalledPlugins", () => {
 
     expect(clawHubInstallCall()?.spec).toBe("clawhub:demo");
     const message =
-      'Disabled "demo" after plugin update failure; OpenClaw will continue without it. Failed to update demo: Update cancelled; rerun with --acknowledge-clawhub-risk to continue after reviewing the warning. (ClawHub clawhub:demo).';
+      'Disabled "demo" after plugin update failure; Operator will continue without it. Failed to update demo: Update cancelled; rerun with --acknowledge-clawhub-risk to continue after reviewing the warning. (ClawHub clawhub:demo).';
     expect(result.changed).toBe(true);
     expect(result.config.plugins?.entries?.demo).toEqual({
       enabled: false,
@@ -3228,7 +3228,7 @@ describe("updateNpmInstalledPlugins", () => {
       memory: "memory-core",
     });
     const message =
-      'Disabled "demo" after plugin update failure; OpenClaw will continue without it. Failed to update demo: ClawHub blocked this release; update was not started. (ClawHub clawhub:demo).';
+      'Disabled "demo" after plugin update failure; Operator will continue without it. Failed to update demo: ClawHub blocked this release; update was not started. (ClawHub clawhub:demo).';
     expect(warn).toHaveBeenCalledWith(message);
     expect(result.outcomes).toEqual([
       {
@@ -4599,7 +4599,7 @@ describe("updateNpmInstalledPlugins", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       pluginIds: ["context-engine"],
     });
 
@@ -4898,7 +4898,7 @@ describe("syncPluginsForUpdateChannel", () => {
 
   it("forwards an explicit env to bundled plugin source resolution", async () => {
     resolveBundledPluginSourcesMock.mockReturnValue(new Map());
-    const env = { OPENCLAW_HOME: "/srv/openclaw-home" } as NodeJS.ProcessEnv;
+    const env = { OPERATOR_HOME: "/srv/openclaw-home" } as NodeJS.ProcessEnv;
 
     await syncPluginsForUpdateChannel({
       channel: "beta",
@@ -4926,7 +4926,7 @@ describe("syncPluginsForUpdateChannel", () => {
         channel: "beta",
         env: {
           ...process.env,
-          OPENCLAW_HOME: bundledHome,
+          OPERATOR_HOME: bundledHome,
           HOME: "/tmp/ignored-home",
         },
         config: {
@@ -5258,14 +5258,14 @@ describe("syncPluginsForUpdateChannel", () => {
     });
   });
 
-  it("does not fall back from ClawHub to non-OpenClaw npm packages", async () => {
+  it("does not fall back from ClawHub to non-Operator npm packages", async () => {
     resolveBundledPluginSourcesMock.mockReturnValue(new Map());
     installPluginFromClawHubMock.mockResolvedValue({
       ok: false,
       code: "package_not_found",
       error: "Package not found on ClawHub.",
     });
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       channels: {
         "legacy-chat": {
           enabled: true,
@@ -5418,7 +5418,7 @@ describe("syncPluginsForUpdateChannel", () => {
       error: "ClawHub ClawPack integrity mismatch.",
       warning: "WARNING\nSecurity scan: suspicious",
     });
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       channels: {
         "legacy-chat": {
           enabled: true,
@@ -5539,7 +5539,7 @@ describe("syncPluginsForUpdateChannel", () => {
       ok: false,
       error: "package unavailable",
     });
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       channels: {
         "legacy-chat": {
           enabled: true,

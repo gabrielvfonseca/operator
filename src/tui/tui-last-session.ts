@@ -6,15 +6,15 @@ import {
   getNodeSqliteKysely,
 } from "../infra/kysely-sync.js";
 import { normalizeAgentId, parseAgentSessionKey } from "../routing/session-key.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
 } from "../state/operator-state-db.js";
 import type { TuiSessionList } from "./tui-backend.js";
 import type { SessionScope } from "./tui-types.js";
 
-type TuiLastSessionDatabase = Pick<OpenClawStateKyselyDatabase, "tui_last_sessions">;
+type TuiLastSessionDatabase = Pick<OperatorStateKyselyDatabase, "tui_last_sessions">;
 
 function stateDatabaseOptions(stateDir?: string) {
   return stateDir
@@ -66,7 +66,7 @@ export async function readTuiLastSessionKey(params: {
   scopeKey: string;
   stateDir?: string;
 }): Promise<string | null> {
-  const database = openOpenClawStateDatabase(stateDatabaseOptions(params.stateDir));
+  const database = openOperatorStateDatabase(stateDatabaseOptions(params.stateDir));
   const row = executeSqliteQueryTakeFirstSync(
     database.db,
     getNodeSqliteKysely<TuiLastSessionDatabase>(database.db)
@@ -89,7 +89,7 @@ export async function writeTuiLastSessionKey(params: {
     return;
   }
   const updatedAt = Date.now();
-  runOpenClawStateWriteTransaction(({ db }) => {
+  runOperatorStateWriteTransaction(({ db }) => {
     const tuiDb = getNodeSqliteKysely<TuiLastSessionDatabase>(db);
     executeSqliteQuerySync(
       db,
@@ -118,7 +118,7 @@ export function clearTuiLastSessionPointers(params: {
   if (params.sessionKeys.size === 0) {
     return 0;
   }
-  return runOpenClawStateWriteTransaction(({ db }) => {
+  return runOperatorStateWriteTransaction(({ db }) => {
     const result = executeSqliteQuerySync(
       db,
       getNodeSqliteKysely<TuiLastSessionDatabase>(db)

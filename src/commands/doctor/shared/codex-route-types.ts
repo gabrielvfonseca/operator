@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../../config/types.operator.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 
 export type MutableRecord = Record<string, unknown>;
 
@@ -46,7 +46,7 @@ export type DisabledCodexPluginRouteIssue = {
 export type SharedDefaultCompactionOverrideConsumers = Record<CompactionOverrideKey, boolean>;
 
 export type ConfigRouteRepairResult = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   changes: CodexRouteHit[];
   runtimePinChanges: string[];
   runtimePolicyChanges: string[];

@@ -1,6 +1,6 @@
 /**
  * Token usage normalization helpers.
- * Converts provider-specific usage shapes into OpenClaw's normalized input,
+ * Converts provider-specific usage shapes into Operator's normalized input,
  * output, cache, reasoning, and total token accounting fields.
  */
 import { asFiniteNumber } from "@operator/normalization-core/number-coercion";
@@ -125,7 +125,7 @@ const normalizeTokenCount = (value: unknown): number | undefined => {
   return Math.min(Math.trunc(numeric), Number.MAX_SAFE_INTEGER);
 };
 
-/** Normalize provider-specific token usage fields into OpenClaw usage buckets. */
+/** Normalize provider-specific token usage fields into Operator usage buckets. */
 export function normalizeUsage(raw?: UsageLike | null): NormalizedUsage | undefined {
   if (!raw) {
     return undefined;

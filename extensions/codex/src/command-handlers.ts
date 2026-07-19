@@ -895,7 +895,7 @@ async function resumeThread(
     return MODEL_SELECTION_LOCKED_MESSAGE;
   }
   if (!ctx.sessionId) {
-    return "Cannot attach a Codex thread because this command did not include an OpenClaw session id.";
+    return "Cannot attach a Codex thread because this command did not include an Operator session id.";
   }
   const scope = resolveCodexConversationControlScope(ctx);
   const identity = sessionBindingIdentity({
@@ -969,7 +969,7 @@ async function resumeThread(
     if (!committed) {
       throw new Error("Codex thread binding changed while attaching the resumed thread.");
     }
-    return `Attached this OpenClaw session to Codex thread ${formatCodexDisplayText(
+    return `Attached this Operator session to Codex thread ${formatCodexDisplayText(
       effectiveThreadId,
     )}.`;
   });
@@ -1300,7 +1300,7 @@ async function requestCodexDiagnosticsFeedbackApproval(
   if (targets.length === 0) {
     return {
       text: [
-        "No Codex thread is attached to this OpenClaw session yet.",
+        "No Codex thread is attached to this Operator session yet.",
         "Use /codex threads to find a thread, then /codex resume <thread-id> before sending diagnostics.",
       ].join("\n"),
     };
@@ -1377,7 +1377,7 @@ async function previewCodexDiagnosticsFeedbackApproval(
   const targets = await resolveCodexDiagnosticsTargets(deps, ctx);
   if (targets.length === 0) {
     return [
-      "No Codex thread is attached to this OpenClaw session yet.",
+      "No Codex thread is attached to this Operator session yet.",
       "Use /codex threads to find a thread, then /codex resume <thread-id> before sending diagnostics.",
     ].join("\n");
   }
@@ -1392,7 +1392,7 @@ async function previewCodexDiagnosticsFeedbackApproval(
   return [
     targets.length === 1 ? "Codex runtime thread detected." : "Codex runtime threads detected.",
     `Approving diagnostics will also send ${targets.length === 1 ? "this thread's feedback bundle" : "these threads' feedback bundles"} to OpenAI servers.`,
-    "The completed diagnostics reply will list the OpenClaw session ids and Codex thread ids that were sent.",
+    "The completed diagnostics reply will list the Operator session ids and Codex thread ids that were sent.",
     ...(displayReason ? [`Note: ${displayReason}`] : []),
     "Included: Codex logs and spawned Codex subthreads when available.",
   ].join("\n");
@@ -1479,7 +1479,7 @@ async function sendCodexDiagnosticsFeedbackForContext(
   const targets = await resolveCodexDiagnosticsTargets(deps, ctx);
   if (targets.length === 0) {
     return [
-      "No Codex thread is attached to this OpenClaw session yet.",
+      "No Codex thread is attached to this Operator session yet.",
       "Use /codex threads to find a thread, then /codex resume <thread-id> before sending diagnostics.",
     ].join("\n");
   }
@@ -1496,7 +1496,7 @@ async function sendCodexDiagnosticsFeedbackForTargets(
 ): Promise<string> {
   if (targets.length === 0) {
     return [
-      "No Codex thread is attached to this OpenClaw session yet.",
+      "No Codex thread is attached to this Operator session yet.",
       "Use /codex threads to find a thread, then /codex resume <thread-id> before sending diagnostics.",
     ].join("\n");
   }
@@ -1760,10 +1760,10 @@ function formatCodexDiagnosticsTargetBlock(
     lines.push(`Channel: ${formatCodexValueForDisplay(target.channel)}`);
   }
   if (target.sessionKey) {
-    lines.push(`OpenClaw session key: ${formatCodexCopyableValueForDisplay(target.sessionKey)}`);
+    lines.push(`Operator session key: ${formatCodexCopyableValueForDisplay(target.sessionKey)}`);
   }
   if (target.sessionId) {
-    lines.push(`OpenClaw session id: ${formatCodexCopyableValueForDisplay(target.sessionId)}`);
+    lines.push(`Operator session id: ${formatCodexCopyableValueForDisplay(target.sessionId)}`);
   }
   lines.push(`Codex thread id: ${formatCodexCopyableValueForDisplay(target.threadId)}`);
   lines.push(`Inspect locally: ${formatCodexResumeCommandForDisplay(target.threadId)}`);
@@ -1777,7 +1777,7 @@ function formatCodexDiagnosticsTargetLine(target: CodexDiagnosticsTarget): strin
   }
   const sessionLabel = target.sessionId || target.sessionKey;
   if (sessionLabel) {
-    parts.push(`OpenClaw session ${formatCodexValueForDisplay(sessionLabel)}`);
+    parts.push(`Operator session ${formatCodexValueForDisplay(sessionLabel)}`);
   }
   parts.push(`Codex thread ${formatCodexThreadIdForDisplay(target.threadId)}`);
   return `- ${parts.join(", ")}`;
@@ -2226,7 +2226,7 @@ async function startThreadAction(
   }
   const binding = await deps.bindingStore.read(target.identity);
   if (!binding?.threadId) {
-    return `No Codex thread is attached to this OpenClaw session yet.`;
+    return `No Codex thread is attached to this Operator session yet.`;
   }
   const connection = resolveCodexBindingAppServerConnection({
     binding,

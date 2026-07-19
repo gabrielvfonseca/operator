@@ -4,7 +4,7 @@
 import { finiteSecondsToTimerSafeMilliseconds } from "@operator/normalization-core/number-coercion";
 import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
 import type { ModelCompatConfig, ModelMediaInputConfig } from "../../config/types.models.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { ModelRegistry as CoreModelRegistry } from "../../llm/model-registry.js";
 import type { Api, Model } from "../../llm/types.js";
 import type { ProviderRuntimeModel } from "../../plugins/provider-runtime-model.types.js";
@@ -156,7 +156,7 @@ function resolveRuntimeHooks(params?: {
 
 function discoverCachedAgentStoresForAgent(
   resolvedAgentDir: string,
-  cfg: OpenClawConfig | undefined,
+  cfg: OperatorConfig | undefined,
   workspaceDir: string | undefined,
 ): {
   authStorage: AuthStorage;
@@ -187,7 +187,7 @@ function canonicalizeLegacyResolvedModel(params: { provider: string; model: Mode
 
 function applyResolvedTransportFallback(params: {
   provider: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   workspaceDir?: string;
   runtimeHooks: ProviderRuntimeHooks;
   model: Model;
@@ -224,7 +224,7 @@ function applyResolvedTransportFallback(params: {
 function normalizeResolvedModel(params: {
   provider: string;
   model: Model;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   agentDir?: string;
   workspaceDir?: string;
   runtimeHooks?: ProviderRuntimeHooks;
@@ -323,7 +323,7 @@ function resolveProviderTransport(params: {
   modelId?: string;
   api?: Api | null;
   baseUrl?: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   workspaceDir?: string;
   runtimeHooks?: ProviderRuntimeHooks;
 }): {
@@ -355,7 +355,7 @@ function resolveProviderTransport(params: {
 function resolveConfiguredProviderDefaultApi(params: {
   provider: string;
   providerConfig: InlineProviderConfig | undefined;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   workspaceDir?: string;
   runtimeHooks?: ProviderRuntimeHooks;
 }): Api | undefined {
@@ -460,7 +460,7 @@ function findInlineModelMatch(params: {
 }
 
 function resolveConfiguredProviderConfig(
-  cfg: OpenClawConfig | undefined,
+  cfg: OperatorConfig | undefined,
   provider: string,
 ): InlineProviderConfig | undefined {
   const configuredProviders = cfg?.models?.providers;
@@ -553,7 +553,7 @@ function mergeModelParams(
 }
 
 function findConfiguredAgentModelParams(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   provider: string;
   modelId: string;
 }): Record<string, unknown> | undefined {
@@ -595,7 +595,7 @@ function findConfiguredAgentModelParams(params: {
 }
 
 function mergeConfiguredRuntimeModelParams(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   provider: string;
   modelId: string;
   discoveredParams?: unknown;
@@ -619,7 +619,7 @@ function applyConfiguredProviderOverrides(params: {
   discoveredModel: ProviderRuntimeModel;
   providerConfig?: InlineProviderConfig;
   modelId: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   runtimeHooks?: ProviderRuntimeHooks;
   preferDiscoveredModelMetadata?: boolean;
   preferDiscoveredTransport?: boolean;
@@ -862,7 +862,7 @@ type ExplicitModelResolution =
 function shouldSuppressInlineConfiguredModel(params: {
   provider: string;
   modelId: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   workspaceDir?: string;
   baseUrl?: string;
 }): boolean {
@@ -895,7 +895,7 @@ function resolveExplicitModelWithRegistry(params: {
   provider: string;
   modelId: string;
   modelRegistry: CoreModelRegistry;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   agentDir?: string;
   workspaceDir?: string;
   runtimeHooks?: ProviderRuntimeHooks;
@@ -1073,7 +1073,7 @@ function resolveExplicitModelWithRegistry(params: {
 function resolveDynamicModelAuthProfile(params: {
   provider: string;
   modelId: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   agentDir?: string;
   authProfileId?: string;
   authProfileMode?: AuthProfileCredential["type"] | "aws-sdk";
@@ -1133,7 +1133,7 @@ function resolvePluginDynamicModelWithRegistry(params: {
   provider: string;
   modelId: string;
   modelRegistry: CoreModelRegistry;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   agentDir?: string;
   agentRuntimeId?: string;
   workspaceDir?: string;
@@ -1212,7 +1212,7 @@ function resolveRuntimePreferredSuppressedModel(params: {
   provider: string;
   modelId: string;
   modelRegistry: CoreModelRegistry;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   agentDir?: string;
   agentRuntimeId?: string;
   workspaceDir?: string;
@@ -1252,7 +1252,7 @@ function shouldDropRuntimePreferredExplicitMiss(params: {
 function resolveConfiguredFallbackModel(params: {
   provider: string;
   modelId: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   agentDir?: string;
   workspaceDir?: string;
   runtimeHooks?: ProviderRuntimeHooks;
@@ -1413,7 +1413,7 @@ function resolveConfiguredFallbackModel(params: {
 function shouldCompareProviderRuntimeResolvedModel(params: {
   provider: string;
   modelId: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   agentDir?: string;
   workspaceDir?: string;
   runtimeHooks: ProviderRuntimeHooks;
@@ -1507,7 +1507,7 @@ function mergeModelCompat(
 function normalizeProviderModelRef(params: {
   provider: string;
   modelId: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   workspaceDir?: string;
 }): { provider: string; model: string } {
   const provider = canonicalizeManifestModelCatalogProviderAlias({
@@ -1525,7 +1525,7 @@ export function resolveModelWithRegistry(params: {
   provider: string;
   modelId: string;
   modelRegistry: CoreModelRegistry;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   agentDir?: string;
   agentRuntimeId?: string;
   workspaceDir?: string;
@@ -1587,7 +1587,7 @@ export function resolveModel(
   provider: string,
   modelId: string,
   agentDir?: string,
-  cfg?: OpenClawConfig,
+  cfg?: OperatorConfig,
   options?: {
     authStorage?: AuthStorage;
     modelRegistry?: ModelRegistry;
@@ -1655,7 +1655,7 @@ export async function resolveModelAsync(
   provider: string,
   modelId: string,
   agentDir?: string,
-  cfg?: OpenClawConfig,
+  cfg?: OperatorConfig,
   options?: {
     authStorage?: AuthStorage;
     modelRegistry?: ModelRegistry;
@@ -1903,7 +1903,7 @@ export async function resolveModelAsync(
 function buildUnknownModelError(params: {
   provider: string;
   modelId: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   agentDir?: string;
   workspaceDir?: string;
   runtimeHooks?: ProviderRuntimeHooks;
@@ -1947,7 +1947,7 @@ function buildUnknownModelError(params: {
 function buildMissingProviderModelRegistrationHint(params: {
   provider: string;
   modelId: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
 }): string | undefined {
   // Legacy openai-codex refs can come from model selections, provider config,
   // or persisted routes. All of them should be repaired by doctor rather than

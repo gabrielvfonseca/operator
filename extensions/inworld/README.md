@@ -1,8 +1,8 @@
-# OpenClaw Inworld Plugin
+# Operator Inworld Plugin
 
-Official OpenClaw plugin for Inworld.
+Official Operator plugin for Inworld.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/inworld-speech

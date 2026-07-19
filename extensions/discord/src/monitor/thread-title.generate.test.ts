@@ -1,5 +1,5 @@
 // Discord tests cover thread title.generate plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   completeWithPreparedSimpleCompletionModel,
   extractAssistantText,
@@ -136,7 +136,7 @@ describe("generateThreadTitle", () => {
           model: "openrouter/anthropic/claude-sonnet-4-5@work",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     await generateThreadTitle({
       cfg,

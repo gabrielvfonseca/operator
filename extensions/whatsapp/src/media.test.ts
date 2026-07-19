@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { resolveStateDir } from "openclaw/plugin-sdk/state-paths";
-import { resolvePreferredOpenClawTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
 import { captureEnv } from "openclaw/plugin-sdk/test-env";
 import { mockPinnedHostnameResolution } from "openclaw/plugin-sdk/test-env";
 import {
@@ -60,7 +60,7 @@ async function expectLocalMediaAccessCode(promise: Promise<unknown>, code: strin
 
 beforeAll(async () => {
   fixtureRoot = await fs.mkdtemp(
-    path.join(resolvePreferredOpenClawTmpDir(), "openclaw-media-test-"),
+    path.join(resolvePreferredOperatorTmpDir(), "openclaw-media-test-"),
   );
   largeJpegBuffer = await fs.readFile("docs/assets/showcase/roof-camera-sky.jpg");
   largeJpegFile = await writeTempFile(largeJpegBuffer, ".jpg");
@@ -95,10 +95,10 @@ afterEach(() => {
 
 describe("web media loading", () => {
   beforeAll(() => {
-    // Ensure state dir is stable and not influenced by other tests that stub OPENCLAW_STATE_DIR.
-    // Also keep it outside the OpenClaw temp root so default localRoots doesn't accidentally make all state readable.
-    stateDirSnapshot = captureEnv(["OPENCLAW_STATE_DIR"]);
-    process.env.OPENCLAW_STATE_DIR = path.join(
+    // Ensure state dir is stable and not influenced by other tests that stub OPERATOR_STATE_DIR.
+    // Also keep it outside the Operator temp root so default localRoots doesn't accidentally make all state readable.
+    stateDirSnapshot = captureEnv(["OPERATOR_STATE_DIR"]);
+    process.env.OPERATOR_STATE_DIR = path.join(
       path.parse(os.tmpdir()).root,
       "var",
       "lib",
@@ -314,7 +314,7 @@ describe("local media root guard", () => {
 
   it("allows local paths under an explicit root", async () => {
     const result = await loadWebMedia(tinyPngFile, 1024 * 1024, {
-      localRoots: [resolvePreferredOpenClawTmpDir()],
+      localRoots: [resolvePreferredOperatorTmpDir()],
     });
     expect(result.kind).toBe("image");
   });
@@ -325,7 +325,7 @@ describe("local media root guard", () => {
     try {
       await expectLocalMediaAccessCode(
         loadWebMedia("file://attacker/share/evil.png", 1024 * 1024, {
-          localRoots: [resolvePreferredOpenClawTmpDir()],
+          localRoots: [resolvePreferredOperatorTmpDir()],
         }),
         "invalid-file-url",
       );
@@ -342,7 +342,7 @@ describe("local media root guard", () => {
     // Resolve before mocking platform: under `win32` the helper returns the
     // os.tmpdir() fallback rather than the POSIX `/tmp/openclaw` root that
     // actually holds `tinyPngFile` on this Linux test runner (#60713).
-    const realTmpRoot = resolvePreferredOpenClawTmpDir();
+    const realTmpRoot = resolvePreferredOperatorTmpDir();
 
     await withMockedWindowsPlatform(async () => {
       const lstatSpy = vi
@@ -361,7 +361,7 @@ describe("local media root guard", () => {
   });
 
   it("rejects Windows network paths before filesystem checks", async () => {
-    const realTmpRoot = resolvePreferredOpenClawTmpDir();
+    const realTmpRoot = resolvePreferredOperatorTmpDir();
 
     await withMockedWindowsPlatform(async () => {
       const realpathSpy = vi.spyOn(fs, "realpath");
@@ -406,7 +406,7 @@ describe("local media root guard", () => {
     );
   });
 
-  it("allows default OpenClaw state workspace and sandbox roots", async () => {
+  it("allows default Operator state workspace and sandbox roots", async () => {
     const stateDir = resolveStateDir();
     const readFile = vi.fn(async () => Buffer.from("generated-media"));
 
@@ -429,7 +429,7 @@ describe("local media root guard", () => {
     expect(sandboxResult.kind).toBeUndefined();
   });
 
-  it("rejects default OpenClaw state per-agent workspace-* roots without explicit local roots", async () => {
+  it("rejects default Operator state per-agent workspace-* roots without explicit local roots", async () => {
     const stateDir = resolveStateDir();
     const readFile = vi.fn(async () => Buffer.from("generated-media"));
 

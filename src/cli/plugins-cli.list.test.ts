@@ -1,6 +1,6 @@
 // Plugins CLI list tests cover plugin listing output and installed-state formatting.
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { createPluginRecord } from "../plugins/status.test-fixtures.js";
 import {
   buildPluginDiagnosticsReport,
@@ -631,7 +631,7 @@ describe("plugins cli list", () => {
   });
 
   it("explains a policy-hidden built-in Skill Workshop at the legacy inspect surface", async () => {
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       tools: { profile: "messaging" },
     };
     loadConfig.mockReturnValue(config);
@@ -653,7 +653,7 @@ describe("plugins cli list", () => {
     );
 
     expect(runtimeErrors.at(-1)).toContain(
-      "Skill Workshop is built into OpenClaw, not a plugin; configure it under skills.workshop.",
+      "Skill Workshop is built into Operator, not a plugin; configure it under skills.workshop.",
     );
     expect(workshopMocks.detectToolPolicyDiagnostic).toHaveBeenCalledWith({
       config,

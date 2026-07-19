@@ -1,6 +1,6 @@
-// OpenClaw TUI backend tests cover rescue status integration with the TUI backend.
+// Operator TUI backend tests cover rescue status integration with the TUI backend.
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { SystemAgentInferenceUnavailableError } from "./inference-error.js";
 import type { SystemAgentCommandDeps, SystemAgentOperation } from "./operations.js";
@@ -49,9 +49,9 @@ const verifiedConfig = {
       },
     },
   },
-} satisfies OpenClawConfig;
+} satisfies OperatorConfig;
 
-function configSnapshot(config: OpenClawConfig) {
+function configSnapshot(config: OperatorConfig) {
   return {
     exists: true,
     valid: true,
@@ -66,7 +66,7 @@ function configSnapshot(config: OpenClawConfig) {
 
 async function createVerifiedTuiOptions(
   deps: SystemAgentCommandDeps = {},
-  config: OpenClawConfig = verifiedConfig,
+  config: OperatorConfig = verifiedConfig,
 ) {
   const fixture = await createSystemAgentVerifiedInferenceTestFixture(config);
   return {
@@ -115,7 +115,7 @@ describe("runSystemAgentTui", () => {
     expect(runChannelsAdd).not.toHaveBeenCalled();
   });
 
-  it("runs OpenClaw inside the shared TUI shell", async () => {
+  it("runs Operator inside the shared TUI shell", async () => {
     let runTuiCalls = 0;
     let runTuiOptions: unknown;
     const verified = await createVerifiedTuiOptions({ loadOverview: async () => overview });
@@ -160,7 +160,7 @@ describe("runSystemAgentTui", () => {
           thinkingDefault: "high",
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const profileQualifiedOverview = {
       ...overview,
       defaultModel: "openai/gpt-5.5@openai:setup-test",
@@ -206,7 +206,7 @@ describe("runSystemAgentTui", () => {
     const config = {
       ...verifiedConfig,
       agents: { defaults: { model: "openai/gpt-5.6-sol" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const verified = await createVerifiedTuiOptions(
       {
         loadOverview: async () => ({

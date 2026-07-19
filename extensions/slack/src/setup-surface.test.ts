@@ -1,5 +1,5 @@
 // Slack tests cover setup surface plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   createTestWizardPrompter,
   runSetupWizardPrepare,
@@ -28,7 +28,7 @@ const baseCfg = {
       appToken: "xapp-test",
     },
   },
-} as OpenClawConfig;
+} as OperatorConfig;
 
 function requireFirstStringArg(mock: ReturnType<typeof vi.fn>, label: string): string {
   const [call] = mock.mock.calls;
@@ -101,7 +101,7 @@ describe("slackSetupWizard.prepare", () => {
 
     await runSetupWizardPrepare({
       prepare: slackSetupWizard.prepare,
-      cfg: { channels: { slack: {} } } as OpenClawConfig,
+      cfg: { channels: { slack: {} } } as OperatorConfig,
       prompter: createTestWizardPrompter({
         plain,
         note,
@@ -113,12 +113,12 @@ describe("slackSetupWizard.prepare", () => {
     const manifest = requireFirstStringArg(plain, "Slack manifest plain text");
     expect(JSON.parse(manifest)).toEqual({
       display_information: {
-        name: "OpenClaw",
-        description: "OpenClaw connector for OpenClaw",
+        name: "Operator",
+        description: "Operator connector for Operator",
       },
       features: {
         bot_user: {
-          display_name: "OpenClaw",
+          display_name: "Operator",
           always_online: true,
         },
         app_home: {
@@ -127,7 +127,7 @@ describe("slackSetupWizard.prepare", () => {
           messages_tab_read_only_enabled: false,
         },
         assistant_view: {
-          assistant_description: "OpenClaw connects Slack assistant threads to OpenClaw agents.",
+          assistant_description: "Operator connects Slack assistant threads to Operator agents.",
           suggested_prompts: [
             {
               title: "What can you do?",
@@ -146,7 +146,7 @@ describe("slackSetupWizard.prepare", () => {
         slash_commands: [
           {
             command: "/openclaw",
-            description: "Send a message to OpenClaw",
+            description: "Send a message to Operator",
             should_escape: false,
           },
         ],
@@ -237,7 +237,7 @@ describe("slackSetupWizard.dmPolicy", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         "alerts",
       ),
     ).toBe("allowlist");
@@ -264,7 +264,7 @@ describe("slackSetupWizard.dmPolicy", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       "open",
       "alerts",
     );
@@ -296,7 +296,7 @@ describe("slackSetupWizard.status", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     });
 
     expect(configured).toBe(false);

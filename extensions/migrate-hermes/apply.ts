@@ -18,7 +18,7 @@ import type {
   MigrationPlan,
   MigrationProviderContext,
 } from "openclaw/plugin-sdk/plugin-entry";
-import { resolvePreferredOpenClawTmpDir, withTempWorkspace } from "openclaw/plugin-sdk/temp-path";
+import { resolvePreferredOperatorTmpDir, withTempWorkspace } from "openclaw/plugin-sdk/temp-path";
 import { applyAuthItem } from "./auth.js";
 import { applyConfigItem, applyManualItem } from "./config.js";
 import { appendItem } from "./helpers.js";
@@ -54,7 +54,7 @@ async function archiveHermesItem(item: MigrationItem, reportDir: string): Promis
     // A raw state.db copy can omit committed rows that still live in state.db-wal.
     // Snapshot the live database into one self-contained archive artifact.
     return await withTempWorkspace(
-      { rootDir: resolvePreferredOpenClawTmpDir(), prefix: HERMES_SQLITE_SNAPSHOT_PREFIX },
+      { rootDir: resolvePreferredOperatorTmpDir(), prefix: HERMES_SQLITE_SNAPSHOT_PREFIX },
       async ({ dir: tempDir }) => {
         const snapshotPath = path.join(tempDir, path.basename(sourcePath));
         const { DatabaseSync } = await import("node:sqlite");
@@ -75,7 +75,7 @@ async function archiveHermesItem(item: MigrationItem, reportDir: string): Promis
     let recoveryArchive: MigrationItem;
     try {
       recoveryArchive = await withTempWorkspace(
-        { rootDir: resolvePreferredOpenClawTmpDir(), prefix: HERMES_SQLITE_SNAPSHOT_PREFIX },
+        { rootDir: resolvePreferredOperatorTmpDir(), prefix: HERMES_SQLITE_SNAPSHOT_PREFIX },
         async ({ dir: tempDir }) => {
           const recoveryDir = path.join(tempDir, `${path.basename(sourcePath)}-recovery`);
           await fs.mkdir(recoveryDir, { recursive: true });

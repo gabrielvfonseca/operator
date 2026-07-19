@@ -7,7 +7,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { Worker } from "node:worker_threads";
 import { hashRuntimeConfigValue } from "../config/runtime-snapshot.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { toErrorObject } from "../infra/errors.js";
 import {
   listAgentIds,
@@ -73,7 +73,7 @@ type ProviderAuthWarmRuntimeAuthLookup = {
 };
 
 type ProviderAuthWarmWorkerRunner = (params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   runtimeAuthStores?: ProviderAuthWarmRuntimeAuthStore[];
   runtimeAuthLookups?: ProviderAuthWarmRuntimeAuthLookup[];
   omitFalseProviderAuth?: boolean;
@@ -85,13 +85,13 @@ type ProviderAuthWarmWorkerRunner = (params: {
 const PROVIDER_AUTH_WARM_WORKER_TIMEOUT_MS = 120_000;
 const PROVIDER_AUTH_WARM_CANCEL_POLL_MS = 25;
 
-const configFingerprintCache = new WeakMap<OpenClawConfig, string>();
+const configFingerprintCache = new WeakMap<OperatorConfig, string>();
 /** Clears process-current warmed provider auth state. */
 export { clearCurrentProviderAuthState };
 
 function resolvePreparedStateForCaller(params: {
   states: ReadonlyMap<string, PreparedProviderAuthState> | null;
-  cfg: OpenClawConfig | undefined;
+  cfg: OperatorConfig | undefined;
   callerAgentId: string | undefined;
 }): PreparedProviderAuthState | null {
   if (!params.states) {
@@ -107,7 +107,7 @@ function resolvePreparedStateForCaller(params: {
   return params.states.get(resolveDefaultAgentId(params.cfg)) ?? null;
 }
 
-function resolveProviderAuthConfigFingerprint(cfg: OpenClawConfig | undefined): string | null {
+function resolveProviderAuthConfigFingerprint(cfg: OperatorConfig | undefined): string | null {
   if (!cfg) {
     return null;
   }
@@ -124,7 +124,7 @@ function resolveProviderAuthConfigFingerprint(cfg: OpenClawConfig | undefined): 
 export async function hasAuthForModelProvider(params: {
   provider: string;
   modelApi?: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   workspaceDir?: string;
   agentDir?: string;
   agentId?: string;
@@ -236,7 +236,7 @@ export type ProviderModelAuthChecker = ((
 
 /** Creates a cached provider-auth evaluator bound to one agent/runtime context. */
 export function createProviderAuthChecker(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   workspaceDir?: string;
   agentDir?: string;
   agentId?: string;
@@ -292,7 +292,7 @@ export function createProviderAuthChecker(params: {
       ref.baseUrl !== undefined ||
       ref.observedRoutes !== undefined;
     const cacheKey = hasRouteFacts
-      ? `${key}\0${hashRuntimeConfigValue(ref as unknown as OpenClawConfig)}`
+      ? `${key}\0${hashRuntimeConfigValue(ref as unknown as OperatorConfig)}`
       : key;
     const cached = authCache.get(cacheKey);
     if (cached) {
@@ -357,7 +357,7 @@ function serializeProviderAuthStates(
 }
 
 function resolveProviderConfigApi(
-  cfg: OpenClawConfig | undefined,
+  cfg: OperatorConfig | undefined,
   provider: string,
 ): string | undefined {
   const providers = cfg?.models?.providers ?? {};
@@ -373,7 +373,7 @@ function resolveProviderConfigApi(
 }
 
 function shouldOmitFalsePreparedAuthForProcessSyntheticProvider(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   provider: string;
   runtimeAuthLookup: RuntimeProviderAuthLookup;
 }): boolean {
@@ -390,7 +390,7 @@ function shouldOmitFalsePreparedAuthForProcessSyntheticProvider(params: {
 
 /** Builds a provider auth snapshot for every configured agent. */
 export async function buildCurrentProviderAuthStateSnapshot(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   options: {
     isCancelled?: () => boolean;
     readOnlyAuthStore?: boolean;
@@ -538,7 +538,7 @@ function createProviderAuthWarmPresenceStore(store: AuthProfileStore): AuthProfi
 }
 
 function collectProviderAuthWarmRuntimeAuthStores(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
 ): ProviderAuthWarmRuntimeAuthStore[] {
   const entries: ProviderAuthWarmRuntimeAuthStore[] = [];
   const seen = new Set<string | undefined>();
@@ -564,7 +564,7 @@ function collectProviderAuthWarmRuntimeAuthStores(
   return entries;
 }
 
-function collectProviderAuthWarmRuntimeAuthLookups(cfg: OpenClawConfig): {
+function collectProviderAuthWarmRuntimeAuthLookups(cfg: OperatorConfig): {
   entries: ProviderAuthWarmRuntimeAuthLookup[];
   omitFalseProviderAuth: boolean;
 } {
@@ -584,7 +584,7 @@ function collectProviderAuthWarmRuntimeAuthLookups(cfg: OpenClawConfig): {
 }
 
 function runProviderAuthWarmWorker(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   runtimeAuthStores?: ProviderAuthWarmRuntimeAuthStore[];
   runtimeAuthLookups?: ProviderAuthWarmRuntimeAuthLookup[];
   omitFalseProviderAuth?: boolean;
@@ -688,7 +688,7 @@ function runProviderAuthWarmWorker(params: {
 
 /** Warms process-current provider auth state in a worker thread. */
 export async function warmCurrentProviderAuthStateOffMainThread(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   options: {
     isCancelled?: () => boolean;
     timeoutMs?: number;

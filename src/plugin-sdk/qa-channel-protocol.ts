@@ -166,7 +166,7 @@ export type QaBusInboundMessageInput = {
   toolCalls?: QaBusToolCall[];
 };
 
-/** Input for recording an outbound message sent by an OpenClaw runtime. */
+/** Input for recording an outbound message sent by an Operator runtime. */
 export type QaBusOutboundMessageInput = {
   accountId?: string;
   to: string;

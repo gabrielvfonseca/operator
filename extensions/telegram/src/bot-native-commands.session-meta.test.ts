@@ -1,5 +1,5 @@
 // Telegram tests cover bot native commands.session meta plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { getAgentScopedMediaLocalRoots } from "openclaw/plugin-sdk/media-runtime";
 import { resolveChunkMode } from "openclaw/plugin-sdk/reply-dispatch-runtime";
 import { resolveThreadSessionKeys } from "openclaw/plugin-sdk/routing";
@@ -136,7 +136,7 @@ vi.mock("openclaw/plugin-sdk/conversation-runtime", async () => {
     ensureConfiguredBindingRouteReady: persistentBindingMocks.ensureConfiguredBindingRouteReady,
     recordInboundSessionMetaSafe: vi.fn(
       async (params: {
-        cfg: OpenClawConfig;
+        cfg: OperatorConfig;
         agentId: string;
         sessionKey: string;
         ctx: unknown;
@@ -214,7 +214,7 @@ vi.mock("./bot-native-commands.runtime.js", () => {
     matchPluginCommand: pluginRuntimeMocks.matchPluginCommand,
     recordInboundSessionMetaSafe: vi.fn(
       async (params: {
-        cfg: OpenClawConfig;
+        cfg: OperatorConfig;
         agentId: string;
         sessionKey: string;
         ctx: unknown;
@@ -266,8 +266,8 @@ type TelegramPluginCommandSpecs = ReturnType<
 type TelegramLoginFlow = NonNullable<TelegramNativeCommandDeps["runModelsAuthLoginFlow"]>;
 
 function registerAndResolveStatusHandler(params: {
-  cfg: OpenClawConfig;
-  runtimeCfg?: OpenClawConfig;
+  cfg: OperatorConfig;
+  runtimeCfg?: OperatorConfig;
   allowFrom?: string[];
   groupAllowFrom?: string[];
   storeAllowFrom?: string[];
@@ -301,8 +301,8 @@ function registerAndResolveStatusHandler(params: {
 
 function registerAndResolveCommandHandlerBase(params: {
   commandName: string;
-  cfg: OpenClawConfig;
-  runtimeCfg?: OpenClawConfig;
+  cfg: OperatorConfig;
+  runtimeCfg?: OperatorConfig;
   allowFrom: string[];
   groupAllowFrom: string[];
   storeAllowFrom?: string[];
@@ -376,7 +376,7 @@ function registerAndResolveCommandHandlerBase(params: {
 
 function registerAndResolveCommandHandler(params: {
   commandName: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   allowFrom?: string[];
   groupAllowFrom?: string[];
   storeAllowFrom?: string[];
@@ -673,7 +673,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
   beforeEach(resetSessionMetaMocks);
 
   it("calls recordSessionMetaFromInbound after a native slash command", async () => {
-    const cfg: OpenClawConfig = {};
+    const cfg: OperatorConfig = {};
     const { handler } = registerAndResolveStatusHandler({ cfg });
     await handler(createTelegramPrivateCommandContext());
 
@@ -694,8 +694,8 @@ describe("registerTelegramNativeCommands — session metadata", () => {
   });
 
   it("keeps one live config snapshot through native command execution", async () => {
-    const startupCfg: OpenClawConfig = { session: { store: "/tmp/startup-sessions.json" } };
-    const runtimeCfg: OpenClawConfig = { session: { store: "/tmp/runtime-sessions.json" } };
+    const startupCfg: OperatorConfig = { session: { store: "/tmp/startup-sessions.json" } };
+    const runtimeCfg: OperatorConfig = { session: { store: "/tmp/runtime-sessions.json" } };
     const { handler } = registerAndResolveStatusHandler({ cfg: startupCfg, runtimeCfg });
 
     await handler(createTelegramPrivateCommandContext());
@@ -722,7 +722,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
             streaming: { block: { enabled: blockStreamingEnabled } },
           },
         },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       const { handler } = registerAndResolveStatusHandler({ cfg });
 
       await handler(createTelegramPrivateCommandContext());
@@ -752,7 +752,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     sessionMocks.loadSessionStore.mockReturnValue({
       "agent:main:main": {
         providerOverride: "anthropic",
@@ -806,7 +806,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
       sessionMocks.loadSessionStore.mockReturnValue({
         "agent:main:main": {
           providerOverride: "openai",
@@ -842,7 +842,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
   it("resolves /think menu choices against the runtime catalog for live-discovered models", async () => {
     const cfg = {
       agents: { defaults: { models: { "ollama/*": {} } } },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     sessionMocks.loadSessionStore.mockReturnValue({
       "agent:main:main": {
         providerOverride: "ollama",
@@ -878,7 +878,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
   it("loads the runtime catalog for /think when no session model override is set", async () => {
     const cfg = {
       agents: { defaults: { model: "ollama/glm-5.2:cloud", models: { "ollama/*": {} } } },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     sessionMocks.loadSessionStore.mockReturnValue({});
     const runtimeCatalog = [
       { provider: "ollama", id: "glm-5.2:cloud", name: "glm-5.2:cloud", reasoning: true },
@@ -902,7 +902,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
   });
 
   it("inherits the parent session model when building DM thread native argument menus", async () => {
-    const cfg: OpenClawConfig = {};
+    const cfg: OperatorConfig = {};
     sessionMocks.loadSessionStore.mockReturnValue({
       "agent:main:main": {
         providerOverride: "anthropic",
@@ -945,7 +945,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
           thinkingDefault: "medium",
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     sessionMocks.loadSessionStore.mockReturnValue({
       "agent:main:main": {
         providerOverride: "anthropic",
@@ -994,7 +994,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     sessionMocks.loadSessionStore.mockReturnValue({
       "agent:main:main": {
         modelProvider: "openai-codex",
@@ -1047,7 +1047,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
           model: { primary: "anthropic/claude-opus-4-8" },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     sessionMocks.loadSessionStore.mockReturnValue({});
     agentRuntimeMocks.loadModelCatalog.mockImplementation(async (params) => {
       if (!params?.readOnly) {
@@ -1096,7 +1096,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     sessionMocks.loadSessionStore.mockReturnValue({
       "agent:main:main": {
         providerOverride: "anthropic",
@@ -1142,7 +1142,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     sessionMocks.loadSessionStore.mockReturnValue({});
 
     const { handler, sendMessage } = registerAndResolveCommandHandler({
@@ -1179,7 +1179,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
     const deferred = createDeferred<void>();
     sessionMocks.recordSessionMetaFromInbound.mockReturnValue(deferred.promise);
 
-    const cfg: OpenClawConfig = {};
+    const cfg: OperatorConfig = {};
     const { handler } = registerAndResolveStatusHandler({ cfg });
     const runPromise = handler(createTelegramPrivateCommandContext());
 
@@ -1618,7 +1618,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
 
     const { handler } = registerAndResolveCommandHandler({
       commandName: "codex",
-      cfg: { commands: { allowFrom: { telegram: ["200"] } } } as OpenClawConfig,
+      cfg: { commands: { allowFrom: { telegram: ["200"] } } } as OperatorConfig,
       groupAllowFrom: ["-1001234567890"],
       useAccessGroups: false,
       pluginCommandSpecs: [
@@ -1683,7 +1683,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
       commandName: "login",
       cfg: {
         commands: { native: true, ownerAllowFrom: ["200"] },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       allowFrom: ["200"],
       runModelsAuthLoginFlow,
     });
@@ -1742,7 +1742,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
       commandName: "login",
       cfg: {
         commands: { native: true, ownerAllowFrom: ["200"] },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       allowFrom: ["200"],
       runModelsAuthLoginFlow,
     });
@@ -1796,7 +1796,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
       commandName: "login",
       cfg: {
         commands: { native: true, ownerAllowFrom: ["200"] },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       allowFrom: ["200"],
       runModelsAuthLoginFlow,
     });
@@ -1825,7 +1825,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
       commandName: "login",
       cfg: {
         commands: { native: true, ownerAllowFrom: ["200"] },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       allowFrom: ["200"],
       runModelsAuthLoginFlow,
     });
@@ -1872,7 +1872,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
       commandName: "login",
       cfg: {
         commands: { native: true, ownerAllowFrom: ["200"] },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       allowFrom: ["200"],
       runModelsAuthLoginFlow,
     });
@@ -1900,7 +1900,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
 
     const { handler } = registerAndResolveCommandHandler({
       commandName: "codex",
-      cfg: { commands: { allowFrom: { telegram: ["200"] } } } as OpenClawConfig,
+      cfg: { commands: { allowFrom: { telegram: ["200"] } } } as OperatorConfig,
       useAccessGroups: false,
       pluginCommandSpecs: [
         {
@@ -1947,7 +1947,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
 
     const { handler } = registerAndResolveCommandHandler({
       commandName: "codex",
-      cfg: { commands: { allowFrom: { telegram: ["200"] } } } as OpenClawConfig,
+      cfg: { commands: { allowFrom: { telegram: ["200"] } } } as OperatorConfig,
       useAccessGroups: false,
       pluginCommandSpecs: [
         {
@@ -1994,7 +1994,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
 
     const { handler } = registerAndResolveCommandHandler({
       commandName: "codex",
-      cfg: { commands: { allowFrom: { telegram: ["200"] } } } as OpenClawConfig,
+      cfg: { commands: { allowFrom: { telegram: ["200"] } } } as OperatorConfig,
       useAccessGroups: false,
       pluginCommandSpecs: [
         {
@@ -2034,7 +2034,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
 
     const { handler } = registerAndResolveCommandHandler({
       commandName: "codex",
-      cfg: { commands: { allowFrom: { telegram: ["200"] } } } as OpenClawConfig,
+      cfg: { commands: { allowFrom: { telegram: ["200"] } } } as OperatorConfig,
       useAccessGroups: false,
       pluginCommandSpecs: [
         {

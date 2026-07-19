@@ -1,5 +1,5 @@
 /** Session MCP runtime manager install path: static get-or-create + requester resolve/install. */
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginManifestRegistry } from "../plugins/manifest-registry.js";
 import type { SessionMcpRuntimeManagerLifecycle } from "./agent-bundle-mcp-manager-lifecycle.js";
 import { loadSessionMcpConfig } from "./agent-bundle-mcp-runtime-config.js";
@@ -17,7 +17,7 @@ type RuntimeEntryParams = {
   sessionKey?: string;
   workspaceDir: string;
   agentDir?: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   manifestRegistry?: Pick<PluginManifestRegistry, "plugins">;
   idleTtlMs: number;
   includeServerNames?: ReadonlySet<string>;
@@ -37,7 +37,7 @@ type SessionMcpRuntimeManagerInstall = {
     sessionKey?: string;
     workspaceDir: string;
     agentDir?: string;
-    cfg?: OpenClawConfig;
+    cfg?: OperatorConfig;
     manifestRegistry?: Pick<PluginManifestRegistry, "plugins">;
     idleTtlMs: number;
     requesterScopedServerNames: readonly string[];
@@ -168,7 +168,7 @@ export function createSessionMcpRuntimeManagerInstall(
     sessionKey?: string;
     workspaceDir: string;
     agentDir?: string;
-    cfg?: OpenClawConfig;
+    cfg?: OperatorConfig;
     manifestRegistry?: Pick<PluginManifestRegistry, "plugins">;
     idleTtlMs: number;
     safeServerNamesByServer: ReadonlyMap<string, string>;
@@ -252,7 +252,7 @@ export function createSessionMcpRuntimeManagerInstall(
     sessionKey?: string;
     workspaceDir: string;
     agentDir?: string;
-    cfg?: OpenClawConfig;
+    cfg?: OperatorConfig;
     manifestRegistry?: Pick<PluginManifestRegistry, "plugins">;
     idleTtlMs: number;
     requesterScopedServerNames: readonly string[];

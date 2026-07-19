@@ -1,6 +1,6 @@
 // Memory Core tests cover index plugin behavior.
 import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { OpenClawPluginApi, OpenClawPluginCommandDefinition } from "openclaw/plugin-sdk/core";
+import type { OperatorPluginApi, OperatorPluginCommandDefinition } from "openclaw/plugin-sdk/core";
 import type { MemoryPluginRuntime } from "openclaw/plugin-sdk/memory-core-host-runtime-core";
 import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -32,7 +32,7 @@ const hostRuntime = {
   llm: {
     acquireLocalService: async () => undefined,
   },
-} as unknown as OpenClawPluginApi["runtime"];
+} as unknown as OperatorPluginApi["runtime"];
 
 function registerMemoryCoreRuntime(): MemoryPluginRuntime {
   let runtime: MemoryPluginRuntime | undefined;
@@ -101,7 +101,7 @@ describe("memory-core plugin runtime registration", () => {
   });
 
   it("registers the dreaming runtime slash command", () => {
-    let command: OpenClawPluginCommandDefinition | undefined;
+    let command: OperatorPluginCommandDefinition | undefined;
     plugin.register(
       createTestPluginApi({
         runtime: hostRuntime,

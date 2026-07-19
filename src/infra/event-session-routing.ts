@@ -2,7 +2,7 @@
 import { isRecord } from "@operator/normalization-core/record-coerce";
 import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
 import type { SessionScope } from "../config/types.base.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveAgentRoute } from "../routing/resolve-route.js";
 import {
   buildAgentMainSessionKey,
@@ -94,7 +94,7 @@ function parseDirectAgentSessionTarget(
 
 /** Resolve the configured DM allowlist that applies to an event session. */
 function resolveEventSessionAllowFrom(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   sessionKey?: string | null;
   channel?: string | null;
   accountId?: string | null;
@@ -127,7 +127,7 @@ function resolveEventSessionAllowFrom(params: {
 }
 
 function shouldPreserveDirectSessionKeyFromRoute(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   sessionKey: string;
   target: DirectSessionTarget | null;
 }): boolean {
@@ -158,7 +158,7 @@ function shouldPreserveDirectSessionKeyFromRoute(params: {
 
 /** Build the routing policy used by event wakeups and scoped heartbeat options. */
 export function resolveEventSessionRoutingPolicy(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   sessionKey?: string | null;
   channel?: string | null;
   accountId?: string | null;
@@ -196,7 +196,7 @@ export function resolveEventSessionRoutingPolicy(params: {
 
 /** Resolve a direct DM event session to the configured main session when allowed. */
 export function resolveMainScopedEventSessionKey(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   sessionKey: string;
   agentId?: string | null;
   policy?: EventSessionRoutingPolicy;

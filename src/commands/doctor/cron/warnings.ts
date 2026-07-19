@@ -5,7 +5,7 @@ import { normalizeChatChannelId } from "../../../channels/ids.js";
 import { listReadOnlyChannelPluginsForConfig } from "../../../channels/plugins/read-only.js";
 import { formatCliCommand } from "../../../cli/command-format.js";
 import { resolveAgentModelPrimaryValue } from "../../../config/model-input.js";
-import type { OpenClawConfig } from "../../../config/types.operator.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import { resolveCronDeliveryPlan } from "../../../cron/delivery-plan.js";
 import type { CronJob } from "../../../cron/types.js";
 import { runExec } from "../../../process/exec.js";
@@ -67,7 +67,7 @@ function formatSortedCounts(counts: Map<string, number>): string {
 
 /** Emit a note when cron jobs pin models instead of inheriting the default model. */
 export function noteCronModelOverrides(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   jobs: Array<Record<string, unknown>>;
   storePath: string;
 }) {
@@ -215,7 +215,7 @@ function collectCronDeliveryTargetAdvisory(params: {
 
 /** Emit a note when cron jobs announce to a concrete channel whose plugin is not active. */
 export function noteCronDeliveryTargetAdvisory(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   jobs: Array<Record<string, unknown>>;
   storePath: string;
 }): void {
@@ -295,7 +295,7 @@ export async function collectLegacyWhatsAppCrontabHealthWarning(
 
   return [
     "Legacy WhatsApp crontab health check detected.",
-    "`~/.operator/bin/ensure-whatsapp.sh` is not maintained by current OpenClaw and can misreport `Gateway inactive` from cron when the systemd user bus environment is missing.",
+    "`~/.operator/bin/ensure-whatsapp.sh` is not maintained by current Operator and can misreport `Gateway inactive` from cron when the systemd user bus environment is missing.",
     `Remove the stale crontab entry with ${formatCliCommand("crontab -e")}; use ${formatCliCommand("operator channels status --probe")}, ${formatCliCommand("operator doctor")}, and ${formatCliCommand("operator gateway status")} for current health checks.`,
     `Matched ${pluralize(legacyLines.length, "entry")}.`,
   ].join("\n");

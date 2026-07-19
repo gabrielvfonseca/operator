@@ -4,7 +4,7 @@
  * moves toward provider plugin ownership.
  */
 import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { ProviderSystemPromptContribution } from "./system-prompt-contribution.js";
 
 const GPT5_MODEL_ID_PATTERN = /(?:^|[/:])gpt-5(?:[.-]|$)/i;
@@ -84,7 +84,7 @@ export function normalizeGpt5PromptOverlayMode(value: unknown): Gpt5PromptOverla
 
 /** @deprecated OpenAI/Codex provider-owned prompt overlay helper; do not use from third-party plugins. */
 export function resolveGpt5PromptOverlayMode(
-  config?: OpenClawConfig,
+  config?: OperatorConfig,
   legacyPluginConfig?: Record<string, unknown>,
   params?: { providerId?: string },
 ): Gpt5PromptOverlayMode {
@@ -109,7 +109,7 @@ export function isGpt5ModelId(modelId?: string): boolean {
 
 /** @deprecated OpenAI/Codex provider-owned prompt overlay helper; do not use from third-party plugins. */
 export function resolveGpt5SystemPromptContribution(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   providerId?: string;
   modelId?: string;
   legacyPluginConfig?: Record<string, unknown>;
@@ -136,7 +136,7 @@ export function resolveGpt5SystemPromptContribution(params: {
 
 /** @deprecated OpenAI/Codex provider-owned prompt overlay helper; do not use from third-party plugins. */
 export function renderGpt5PromptOverlay(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   providerId?: string;
   modelId?: string;
   legacyPluginConfig?: Record<string, unknown>;

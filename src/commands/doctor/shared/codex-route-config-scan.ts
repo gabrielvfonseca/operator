@@ -1,7 +1,7 @@
 import { AGENT_MODEL_CONFIG_KEYS } from "@operator/model-catalog-core/configured-model-refs";
 import { asOptionalRecord as asMutableRecord } from "@operator/normalization-core/record-coerce";
 import { normalizeOptionalLowercaseString as normalizeString } from "@operator/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../../../config/types.operator.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import { normalizeAgentId } from "../../../routing/session-key.js";
 import {
   asAgentRuntimePolicyConfig,
@@ -119,7 +119,7 @@ function collectAgentModelRefs(params: {
 }
 
 export function collectConfigModelRefs(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   blockedModelIdentities?: ReadonlySet<LegacyCodexModelIdentity>,
 ): CodexRouteHit[] {
   const hits: CodexRouteHit[] = [];
@@ -199,7 +199,7 @@ export function collectConfigModelRefs(
 }
 
 export function collectDisabledCodexPluginRouteHits(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   env?: NodeJS.ProcessEnv,
 ): DisabledCodexPluginRouteHit[] {
   if (!isCodexPluginUnavailableByConfig(cfg)) {
@@ -303,7 +303,7 @@ export function collectDisabledCodexPluginRouteHits(
 
 /** Find Codex-routed model refs that require the Codex plugin while it is disabled. */
 export function collectDisabledCodexPluginRouteIssues(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   env?: NodeJS.ProcessEnv,
 ): DisabledCodexPluginRouteIssue[] {
   const blockedOutsideEntry = codexPluginIsBlockedOutsideEntry(cfg);
@@ -316,9 +316,9 @@ export function collectDisabledCodexPluginRouteIssues(
 }
 
 export function enableCodexPluginForRequiredRoutes(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   routeHits: DisabledCodexPluginRouteHit[];
-}): { cfg: OpenClawConfig; changes: string[] } {
+}): { cfg: OperatorConfig; changes: string[] } {
   if (params.routeHits.length === 0 || codexPluginIsBlockedOutsideEntry(params.cfg)) {
     return { cfg: params.cfg, changes: [] };
   }
@@ -352,11 +352,11 @@ export function enableCodexPluginForRequiredRoutes(params: {
   return { cfg, changes };
 }
 
-export function codexPluginIsBlockedOutsideEntry(cfg: OpenClawConfig): boolean {
+export function codexPluginIsBlockedOutsideEntry(cfg: OperatorConfig): boolean {
   return cfg.plugins?.enabled === false || pluginIdListIncludes(cfg.plugins?.deny, "codex");
 }
 
-function isCodexPluginUnavailableByConfig(cfg: OpenClawConfig): boolean {
+function isCodexPluginUnavailableByConfig(cfg: OperatorConfig): boolean {
   if (codexPluginIsBlockedOutsideEntry(cfg)) {
     return true;
   }
@@ -412,7 +412,7 @@ function hasAgentPrimaryModelConfig(agent: unknown): boolean {
 }
 
 function collectChannelAgentRuntimeModelRefs(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
 ): Array<{ path: string; modelRef: string }> {
   const refs: Array<{ path: string; modelRef: string }> = [];
   const channelsModelByChannel = asMutableRecord(cfg.channels?.modelByChannel);

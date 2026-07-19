@@ -9,10 +9,10 @@ import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { resolveOAuthDir } from "../../config/paths.js";
 import {
-  closeOpenClawAgentDatabasesForTest,
-  openOpenClawAgentDatabase,
+  closeOperatorAgentDatabasesForTest,
+  openOperatorAgentDatabase,
 } from "../../state/openclaw-agent-db.js";
-import { closeOpenClawStateDatabaseForTest } from "../../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../state/openclaw-state-db.js";
 import { withEnvAsync } from "../../test-utils/env.js";
 import { AUTH_STORE_VERSION } from "./constants.js";
 import { testing as externalAuthTesting } from "./external-auth.test-support.js";
@@ -77,8 +77,8 @@ async function withAuthProfileTestState<T>(
   try {
     return await withEnvAsync(
       {
-        OPENCLAW_STATE_DIR: stateDir,
-        ...(options.clearOAuthDir ? { OPENCLAW_OAUTH_DIR: undefined } : {}),
+        OPERATOR_STATE_DIR: stateDir,
+        ...(options.clearOAuthDir ? { OPERATOR_OAUTH_DIR: undefined } : {}),
       },
       async () =>
         await run({
@@ -88,8 +88,8 @@ async function withAuthProfileTestState<T>(
         }),
     );
   } finally {
-    closeOpenClawAgentDatabasesForTest();
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorAgentDatabasesForTest();
+    closeOperatorStateDatabaseForTest();
     fs.rmSync(stateDir, { recursive: true, force: true });
   }
 }
@@ -483,7 +483,7 @@ describe("promoteAuthProfileInOrder", () => {
       const credentialRevision =
         getRuntimeAuthProfileStoreCredentialMutationToken(agentDir).revision;
       const stateRevision = getRuntimeAuthProfileStoreStateMutationToken(agentDir).revision;
-      const database = openOpenClawAgentDatabase({
+      const database = openOperatorAgentDatabase({
         agentId: "main",
         path: resolveAuthProfileDatabasePath(agentDir),
       });

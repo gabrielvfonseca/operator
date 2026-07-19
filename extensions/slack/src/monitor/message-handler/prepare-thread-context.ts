@@ -1,7 +1,7 @@
 // Slack plugin module implements prepare thread context behavior.
 import { formatInboundEnvelope } from "openclaw/plugin-sdk/channel-inbound";
 import { runTasksWithConcurrency } from "openclaw/plugin-sdk/concurrency-runtime";
-import type { ContextVisibilityMode, OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { ContextVisibilityMode, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
 import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
 import {
@@ -48,7 +48,7 @@ type SlackSessionFreshnessRuntime = {
     resolveEntryResetFreshness?: (params: {
       storePath?: string;
       sessionKey: string;
-      sessionCfg?: OpenClawConfig["session"];
+      sessionCfg?: OperatorConfig["session"];
       resetType: "thread";
       resetOverride?: ReturnType<typeof resolveChannelResetConfig>;
     }) => SlackSessionResetFreshness;

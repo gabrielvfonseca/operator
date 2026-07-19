@@ -1,7 +1,7 @@
 // Verifies marketplace feed and source profile config parsing.
 import { expectDefined } from "@operator/normalization-core";
 import { describe, expect, it } from "vitest";
-import { OpenClawSchema } from "./zod-schema.js";
+import { OperatorSchema } from "./zod-schema.js";
 
 const ACME_ROOT_PUBLIC_KEY = "lHseHhZT8bJYRcI-1M9n7BBeC6trLjN1ccXKufO8WpY";
 const ACME_BACKUP_PUBLIC_KEY = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
@@ -12,14 +12,14 @@ const ACME_ROOT_PUBLIC_KEY_PEM = [
 ].join("\n");
 
 function expectMarketplacesConfig(value: unknown) {
-  const result = OpenClawSchema.safeParse(value);
+  const result = OperatorSchema.safeParse(value);
   if (!result.success) {
     throw new Error(JSON.stringify(result.error.issues, null, 2));
   }
   return result.data.marketplaces;
 }
 
-describe("OpenClawSchema marketplaces config", () => {
+describe("OperatorSchema marketplaces config", () => {
   it("accepts hosted feed and local source profiles", () => {
     const marketplaces = expectMarketplacesConfig({
       marketplaces: {
@@ -89,13 +89,13 @@ describe("OpenClawSchema marketplaces config", () => {
     "not a url",
   ])("rejects invalid or auth-bearing hosted feed URL %s without throwing", (url) => {
     expect(() =>
-      OpenClawSchema.safeParse({
+      OperatorSchema.safeParse({
         marketplaces: {
           feeds: { acme: { url } },
         },
       }),
     ).not.toThrow();
-    const result = OpenClawSchema.safeParse({
+    const result = OperatorSchema.safeParse({
       marketplaces: {
         feeds: { acme: { url } },
       },
@@ -111,7 +111,7 @@ describe("OpenClawSchema marketplaces config", () => {
 
   it("rejects refresh and auth until loader enforcement exists", () => {
     expect(
-      OpenClawSchema.safeParse({
+      OperatorSchema.safeParse({
         marketplaces: {
           feeds: {
             acme: {
@@ -123,7 +123,7 @@ describe("OpenClawSchema marketplaces config", () => {
       }).success,
     ).toBe(false);
     expect(
-      OpenClawSchema.safeParse({
+      OperatorSchema.safeParse({
         marketplaces: {
           feeds: {
             acme: {
@@ -166,7 +166,7 @@ describe("OpenClawSchema marketplaces config", () => {
       },
     ]) {
       expect(
-        OpenClawSchema.safeParse({
+        OperatorSchema.safeParse({
           marketplaces: {
             feeds: {
               acme: {
@@ -207,7 +207,7 @@ describe("OpenClawSchema marketplaces config", () => {
         threshold: 2,
       },
     ]) {
-      const result = OpenClawSchema.safeParse({
+      const result = OperatorSchema.safeParse({
         marketplaces: {
           feeds: {
             acme: {
@@ -223,7 +223,7 @@ describe("OpenClawSchema marketplaces config", () => {
   });
 
   it("rejects unknown source profile types", () => {
-    const result = OpenClawSchema.safeParse({
+    const result = OperatorSchema.safeParse({
       marketplaces: {
         sources: { acme: { type: "container" } },
       },
@@ -233,7 +233,7 @@ describe("OpenClawSchema marketplaces config", () => {
   });
 
   it("rejects source endpoints until installer resolution can enforce them", () => {
-    const result = OpenClawSchema.safeParse({
+    const result = OperatorSchema.safeParse({
       marketplaces: {
         sources: {
           "acme-npm": { type: "npm", registry: "https://packages.acme.example/npm/" },

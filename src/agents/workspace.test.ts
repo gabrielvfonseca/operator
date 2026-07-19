@@ -8,8 +8,8 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { makeTempWorkspace, writeWorkspaceFile } from "../test-helpers/workspace.js";
 import {
-  createOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  type OperatorTestState,
 } from "../test-utils/operator-test-state.js";
 import {
   DEFAULT_AGENTS_FILENAME,
@@ -31,10 +31,10 @@ import {
   type WorkspaceBootstrapFile,
 } from "./workspace.js";
 
-let testState: OpenClawTestState | undefined;
+let testState: OperatorTestState | undefined;
 
 beforeEach(async () => {
-  testState = await createOpenClawTestState({
+  testState = await createOperatorTestState({
     layout: "state-only",
     prefix: "openclaw-workspace-state-",
   });
@@ -46,19 +46,19 @@ afterEach(async () => {
 });
 
 describe("resolveDefaultAgentWorkspaceDir", () => {
-  it("uses OPENCLAW_HOME for default workspace resolution", () => {
+  it("uses OPERATOR_HOME for default workspace resolution", () => {
     const dir = resolveDefaultAgentWorkspaceDir({
-      OPENCLAW_HOME: "/srv/openclaw-home",
+      OPERATOR_HOME: "/srv/openclaw-home",
       HOME: "/home/other",
     } as NodeJS.ProcessEnv);
 
     expect(dir).toBe(path.join(path.resolve("/srv/openclaw-home"), ".openclaw", "workspace"));
   });
 
-  it("prefers OPENCLAW_WORKSPACE_DIR for default workspace resolution", () => {
+  it("prefers OPERATOR_WORKSPACE_DIR for default workspace resolution", () => {
     const dir = resolveDefaultAgentWorkspaceDir({
-      OPENCLAW_WORKSPACE_DIR: "/srv/openclaw-workspace",
-      OPENCLAW_HOME: "/srv/openclaw-home",
+      OPERATOR_WORKSPACE_DIR: "/srv/openclaw-workspace",
+      OPERATOR_HOME: "/srv/openclaw-home",
       HOME: "/home/other",
     } as NodeJS.ProcessEnv);
 
@@ -382,7 +382,7 @@ describe("ensureAgentWorkspace", () => {
     await expectBootstrapSeeded(tempDir);
   });
 
-  it("does not overwrite a sibling file that is not an OpenClaw attestation marker", async () => {
+  it("does not overwrite a sibling file that is not an Operator attestation marker", async () => {
     const tempDir = await makeTempWorkspace("openclaw-workspace-");
     const attestationPath = `${tempDir}.attested`;
     const siblingContent = "external attestation data\n";

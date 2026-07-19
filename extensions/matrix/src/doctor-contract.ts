@@ -3,7 +3,7 @@ import type {
   ChannelDoctorConfigMutation,
   ChannelDoctorLegacyConfigRule,
 } from "openclaw/plugin-sdk/channel-contract";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { defineChannelAliasMigration } from "openclaw/plugin-sdk/runtime-doctor";
 import {
   hasLegacyFlatAllowPrivateNetworkAlias,
@@ -53,7 +53,7 @@ const streamingAliasMigration = defineChannelAliasMigration<MatrixStreamingMode>
 // Runs before the alias migration: leaving `streamMode` in place would make
 // the generic migration materialize a streaming.mode from a key Matrix never
 // honored, silently changing the effective (inherited) mode.
-function stripMatrixJunkStreamMode(cfg: OpenClawConfig, changes: string[]): OpenClawConfig {
+function stripMatrixJunkStreamMode(cfg: OperatorConfig, changes: string[]): OperatorConfig {
   const channels = isRecord(cfg.channels) ? cfg.channels : null;
   const matrix = isRecord(channels?.matrix) ? channels.matrix : null;
   if (!matrix) {
@@ -94,7 +94,7 @@ function stripMatrixJunkStreamMode(cfg: OpenClawConfig, changes: string[]): Open
   return {
     ...cfg,
     channels: { ...channels, matrix: updated },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 function hasLegacyMatrixRoomAllowAlias(value: unknown): boolean {
@@ -255,7 +255,7 @@ export const legacyConfigRules: ChannelDoctorLegacyConfigRule[] = [
 export function normalizeCompatibilityConfig({
   cfg,
 }: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
 }): ChannelDoctorConfigMutation {
   const changes: string[] = [];
   const withoutJunkStreamMode = stripMatrixJunkStreamMode(cfg, changes);
@@ -373,7 +373,7 @@ export function normalizeCompatibilityConfig({
       ...aliases.config,
       channels: {
         ...aliases.config.channels,
-        matrix: updatedMatrix as NonNullable<OpenClawConfig["channels"]>["matrix"],
+        matrix: updatedMatrix as NonNullable<OperatorConfig["channels"]>["matrix"],
       },
     },
     changes,

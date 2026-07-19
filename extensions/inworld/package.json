@@ -1,7 +1,7 @@
 {
   "name": "@operator/inworld-speech",
   "version": "2026.7.2",
-  "description": "OpenClaw Inworld speech plugin.",
+  "description": "Operator Inworld speech plugin.",
   "repository": {
     "type": "git",
     "url": "https://github.com/openclaw/openclaw"

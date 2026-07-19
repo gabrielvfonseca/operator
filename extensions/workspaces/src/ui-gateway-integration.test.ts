@@ -22,7 +22,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import { describe, expect, it } from "vitest";
 import {
   getWorkspaceState,
@@ -37,8 +37,8 @@ import { registerWorkspaceGatewayMethods } from "./gateway.js";
 import type { WorkspaceWidget, WorkspaceDoc } from "./schema.js";
 import { WorkspaceStore } from "./store.js";
 
-type Handler = Parameters<OpenClawPluginApi["registerGatewayMethod"]>[1];
-type MethodOpts = Parameters<OpenClawPluginApi["registerGatewayMethod"]>[2];
+type Handler = Parameters<OperatorPluginApi["registerGatewayMethod"]>[1];
+type MethodOpts = Parameters<OperatorPluginApi["registerGatewayMethod"]>[2];
 type RegisteredMethods = Map<string, { handler: Handler; opts: MethodOpts }>;
 // The GatewayBrowserClient shape the UI client fns require, derived from a real
 // signature so we never mock its type — we build a real-routing stand-in for it.
@@ -87,7 +87,7 @@ function registerHandlers(store: WorkspaceStore, stateDir: string): RegisteredMe
     registerGatewayMethod: (method: string, handler: Handler, opts: MethodOpts) => {
       methods.set(method, { handler, opts });
     },
-  } as unknown as OpenClawPluginApi;
+  } as unknown as OperatorPluginApi;
   registerWorkspaceGatewayMethods({ api, store, dataRead: { stateDir } });
   return methods;
 }

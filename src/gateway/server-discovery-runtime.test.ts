@@ -16,7 +16,7 @@ const mocks = vi.hoisted(() => ({
     changed: true,
     zonePath: "/tmp/openclaw.internal.db",
   })),
-  formatBonjourInstanceName: vi.fn((name: string) => `${name} (OpenClaw)`),
+  formatBonjourInstanceName: vi.fn((name: string) => `${name} (Operator)`),
   resolveBonjourCliPath: vi.fn(() => "/usr/local/bin/openclaw"),
   resolveTailnetDnsHint: vi.fn(async () => "gateway.tailnet.example.ts.net"),
 }));
@@ -75,7 +75,7 @@ function useDevelopmentDiscoveryEnv() {
 
 async function expectSshPortOmitted(rawPort: string) {
   useDevelopmentDiscoveryEnv();
-  process.env.OPENCLAW_SSH_PORT = rawPort;
+  process.env.OPERATOR_SSH_PORT = rawPort;
 
   const service = makeDiscoveryService({ id: "bonjour" });
 
@@ -97,7 +97,7 @@ async function expectSshPortOmitted(rawPort: string) {
 function startStuckDiscovery(timeoutMs: string) {
   vi.useFakeTimers();
   useDevelopmentDiscoveryEnv();
-  process.env.OPENCLAW_GATEWAY_DISCOVERY_ADVERTISE_TIMEOUT_MS = timeoutMs;
+  process.env.OPERATOR_GATEWAY_DISCOVERY_ADVERTISE_TIMEOUT_MS = timeoutMs;
 
   const service = makeDiscoveryService({
     id: "stuck-discovery",
@@ -130,7 +130,7 @@ describe("startGatewayDiscovery", () => {
   it("starts registered local discovery services with gateway advertisement context", async () => {
     process.env.NODE_ENV = "development";
     delete process.env.VITEST;
-    process.env.OPENCLAW_SSH_PORT = "2222";
+    process.env.OPERATOR_SSH_PORT = "2222";
 
     const stopped: string[] = [];
     const bonjour = makeDiscoveryService({
@@ -243,10 +243,10 @@ describe("startGatewayDiscovery", () => {
     expect(result.bonjourStop).toBeNull();
   });
 
-  it("skips local discovery services for truthy OPENCLAW_DISABLE_BONJOUR values", async () => {
+  it("skips local discovery services for truthy OPERATOR_DISABLE_BONJOUR values", async () => {
     process.env.NODE_ENV = "development";
     delete process.env.VITEST;
-    process.env.OPENCLAW_DISABLE_BONJOUR = "yes";
+    process.env.OPERATOR_DISABLE_BONJOUR = "yes";
 
     const service = makeDiscoveryService({ id: "bonjour" });
     const result = await startGatewayDiscovery({
@@ -289,7 +289,7 @@ describe("startGatewayDiscovery", () => {
     expect(zoneParams.domain).toBe("openclaw.internal.");
     expect(zoneParams.gatewayPort).toBe(18789);
     expect(zoneParams.gatewayDirectReachable).toBe(true);
-    expect(zoneParams.displayName).toBe("Lab Mac (OpenClaw)");
+    expect(zoneParams.displayName).toBe("Lab Mac (Operator)");
     expect(zoneParams.tailnetIPv4).toBe("100.64.0.10");
     expect(zoneParams.tailnetDns).toBe("gateway.tailnet.example.ts.net");
     expect(logs.info.mock.calls).toEqual([

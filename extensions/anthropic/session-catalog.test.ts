@@ -1,8 +1,8 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
 import type { SessionCatalogProvider } from "openclaw/plugin-sdk/session-catalog";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -35,7 +35,7 @@ function captureCatalogProvider(runtime: PluginRuntime): SessionCatalogProvider 
     registerSessionCatalog: (candidate: SessionCatalogProvider) => {
       provider = candidate;
     },
-  } as unknown as OpenClawPluginApi);
+  } as unknown as OperatorPluginApi);
   if (!provider) {
     throw new Error("expected Anthropic session catalog registration");
   }
@@ -241,7 +241,7 @@ describe("Claude session catalog", () => {
           },
         },
       },
-    } as unknown as OpenClawPluginApi;
+    } as unknown as OperatorPluginApi;
 
     expect(listBoundClaudeSessions(api)).toEqual(
       new Map([
@@ -299,7 +299,7 @@ describe("Claude session catalog", () => {
       registerSessionCatalog: (candidate: SessionCatalogProvider) => {
         provider = candidate;
       },
-    } as unknown as OpenClawPluginApi;
+    } as unknown as OperatorPluginApi;
     registerClaudeSessionCatalog(api);
 
     expect(provider?.resolveCreateSession?.({})).toEqual({
@@ -340,7 +340,7 @@ describe("Claude session catalog", () => {
   });
 
   it("does not advertise creation without a configured Claude CLI route", () => {
-    let config: OpenClawConfig = {};
+    let config: OperatorConfig = {};
     let provider: SessionCatalogProvider | undefined;
     const api = {
       id: "anthropic",
@@ -351,7 +351,7 @@ describe("Claude session catalog", () => {
       registerSessionCatalog: (candidate: SessionCatalogProvider) => {
         provider = candidate;
       },
-    } as unknown as OpenClawPluginApi;
+    } as unknown as OperatorPluginApi;
 
     registerClaudeSessionCatalog(api);
 
@@ -393,7 +393,7 @@ describe("Claude session catalog", () => {
           },
         ],
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     let provider: SessionCatalogProvider | undefined;
     const api = {
       id: "anthropic",
@@ -402,7 +402,7 @@ describe("Claude session catalog", () => {
       registerSessionCatalog: (candidate: SessionCatalogProvider) => {
         provider = candidate;
       },
-    } as unknown as OpenClawPluginApi;
+    } as unknown as OperatorPluginApi;
 
     registerClaudeSessionCatalog(api);
 
@@ -430,7 +430,7 @@ describe("Claude session catalog", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     let provider: SessionCatalogProvider | undefined;
     const api = {
       id: "anthropic",
@@ -439,7 +439,7 @@ describe("Claude session catalog", () => {
       registerSessionCatalog: (candidate: SessionCatalogProvider) => {
         provider = candidate;
       },
-    } as unknown as OpenClawPluginApi;
+    } as unknown as OperatorPluginApi;
 
     registerClaudeSessionCatalog(api);
 
@@ -462,7 +462,7 @@ describe("Claude session catalog", () => {
         pluginExtensions: { anthropic: { sessionCatalog: { sourceThreadId: sessionId } } },
       }),
     },
-  ])("links a catalog row to an existing OpenClaw session via $label", async ({ entry }) => {
+  ])("links a catalog row to an existing Operator session via $label", async ({ entry }) => {
     const home = await createHome();
     process.env.HOME = home;
     const sessionId = "claude-bound-session";
@@ -498,7 +498,7 @@ describe("Claude session catalog", () => {
       registerSessionCatalog: (candidate: SessionCatalogProvider) => {
         provider = candidate;
       },
-    } as unknown as OpenClawPluginApi;
+    } as unknown as OperatorPluginApi;
     registerClaudeSessionCatalog(api);
 
     const hosts = await provider?.list({});
@@ -550,7 +550,7 @@ describe("Claude session catalog", () => {
       registerSessionCatalog: (candidate: SessionCatalogProvider) => {
         provider = candidate;
       },
-    } as unknown as OpenClawPluginApi;
+    } as unknown as OperatorPluginApi;
     registerClaudeSessionCatalog(api);
 
     const hosts = await provider?.list({});
@@ -648,7 +648,7 @@ describe("Claude session catalog", () => {
       registerSessionCatalog: (candidate: SessionCatalogProvider) => {
         provider = candidate;
       },
-    } as unknown as OpenClawPluginApi;
+    } as unknown as OperatorPluginApi;
     registerClaudeSessionCatalog(api);
 
     const hosts = await provider?.list({ hostIds: ["node:node-a"] });
@@ -761,7 +761,7 @@ describe("Claude session catalog", () => {
       registerSessionCatalog: (candidate: SessionCatalogProvider) => {
         provider = candidate;
       },
-    } as unknown as OpenClawPluginApi;
+    } as unknown as OperatorPluginApi;
     registerClaudeSessionCatalog(api);
 
     const hosts = await provider?.list({ hostIds: ["node:node-view"] });
@@ -1043,7 +1043,7 @@ describe("Claude session catalog", () => {
     const api = {
       runtime: {},
       registerSessionCatalog,
-    } as unknown as OpenClawPluginApi;
+    } as unknown as OperatorPluginApi;
     registerClaudeSessionCatalog(api);
     expect(registerSessionCatalog).toHaveBeenCalledWith(
       expect.objectContaining({ id: "claude", label: "Claude Code" }),
@@ -1169,7 +1169,7 @@ describe("Claude session catalog", () => {
       registerSessionCatalog: (candidate: SessionCatalogProvider) => {
         provider = candidate;
       },
-    } as unknown as OpenClawPluginApi);
+    } as unknown as OperatorPluginApi);
 
     await writeBrokenClaudeNpmShim(shellBinDir);
     nodeHostMocks.userShellPaths.set("claude", shellBinDir);

@@ -2,7 +2,7 @@
 import { resolveCliBackendConfig } from "../../agents/cli-backends.js";
 import { resolveConversationCapabilityProfile } from "../../agents/conversation-capability-profile.js";
 import {
-  agentHarnessExposesOpenClawTools,
+  agentHarnessExposesOperatorTools,
   selectAgentHarness,
 } from "../../agents/harness/selection.js";
 import {
@@ -124,7 +124,7 @@ function workshopIsAvailable(params: HandleCommandsParams): boolean {
         agentId: params.agentId,
         sessionKey: policySessionKey,
       });
-      if (!agentHarnessExposesOpenClawTools(harness.id)) {
+      if (!agentHarnessExposesOperatorTools(harness.id)) {
         return false;
       }
     }

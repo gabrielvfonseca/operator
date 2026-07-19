@@ -7,7 +7,7 @@ import {
   resolveLegacyStateDirs,
   resolveStateDir,
 } from "../../../config/paths.js";
-import type { OpenClawConfig } from "../../../config/types.operator.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import { resolveEffectiveHomeDir } from "../../../infra/home-dir.js";
 import { tryReadJsonSync } from "../../../infra/json-files.js";
 import { inspectBundledPluginStartupMetadata } from "../../../plugins/bundled-plugin-startup-metadata.js";
@@ -126,7 +126,7 @@ function configIsPristineStateSafe(
     return false;
   }
   return !configMayRequireStartupPluginConvergence({
-    config: config as OpenClawConfig,
+    config: config as OperatorConfig,
     env,
   });
 }

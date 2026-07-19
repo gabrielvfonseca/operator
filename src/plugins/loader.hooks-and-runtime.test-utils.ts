@@ -4,7 +4,7 @@ import path from "node:path";
 import { afterAll, afterEach, describe, expect, it } from "vitest";
 import { withEnv } from "../test-utils/env.js";
 import { createHookRunner } from "./hooks.js";
-import { loadOpenClawPlugins } from "./loader.js";
+import { loadOperatorPlugins } from "./loader.js";
 import {
   EMPTY_PLUGIN_SCHEMA,
   makeTempDir,
@@ -25,7 +25,7 @@ import { loadPluginManifestRegistry } from "./manifest-registry.js";
 afterEach(globalAfterEach0);
 afterAll(globalAfterAll1);
 
-describe("loadOpenClawPlugins", () => {
+describe("loadOperatorPlugins", () => {
   it("setup-loads a trusted global channel plugin when the caller scopes to it", () => {
     useNoBundledPlugins();
     const marker = path.join(makeTempDir(), "trusted-global-channel-imported.txt");
@@ -90,7 +90,7 @@ describe("loadOpenClawPlugins", () => {
         "utf-8",
       );
 
-      const scopedSetupRegistry = loadOpenClawPlugins({
+      const scopedSetupRegistry = loadOperatorPlugins({
         cache: false,
         config: {
           plugins: {
@@ -159,7 +159,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
 
-    const scopedSetupRegistry = loadOpenClawPlugins({
+    const scopedSetupRegistry = loadOperatorPlugins({
       cache: false,
       config: {
         channels: {
@@ -196,7 +196,7 @@ describe("loadOpenClawPlugins", () => {
         configured: false,
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadOpenClawPlugins({
+        loadOperatorPlugins({
           cache: false,
           config: {
             plugins: {
@@ -227,7 +227,7 @@ describe("loadOpenClawPlugins", () => {
         useBundledSetupEntryContract: true,
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadOpenClawPlugins({
+        loadOperatorPlugins({
           cache: false,
           config: {
             plugins: {
@@ -257,7 +257,7 @@ describe("loadOpenClawPlugins", () => {
         configured: false,
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadOpenClawPlugins({
+        loadOperatorPlugins({
           cache: false,
           config: {
             plugins: {
@@ -282,7 +282,7 @@ describe("loadOpenClawPlugins", () => {
         useBundledSetupEntryContract: true,
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadOpenClawPlugins({
+        loadOperatorPlugins({
           cache: false,
           config: {
             plugins: {
@@ -308,7 +308,7 @@ describe("loadOpenClawPlugins", () => {
         splitBundledSetupSecrets: true,
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadOpenClawPlugins({
+        loadOperatorPlugins({
           cache: false,
           config: {
             plugins: {
@@ -335,7 +335,7 @@ describe("loadOpenClawPlugins", () => {
         bundledSetupRuntimeMarker: path.join(makeTempDir(), "setup-runtime-applied.txt"),
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadOpenClawPlugins({
+        loadOperatorPlugins({
           cache: false,
           config: {
             plugins: {
@@ -363,7 +363,7 @@ describe("loadOpenClawPlugins", () => {
         bundledSetupRuntimeRoutePath: "/setup-runtime-route",
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadOpenClawPlugins({
+        loadOperatorPlugins({
           cache: false,
           preferSetupRuntimeForChannelPlugins: true,
           config: {
@@ -398,7 +398,7 @@ describe("loadOpenClawPlugins", () => {
         bundledFullRuntimeMarker: path.join(makeTempDir(), "bundled-runtime-applied.txt"),
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadOpenClawPlugins({
+        loadOperatorPlugins({
           cache: false,
           config: {
             plugins: {
@@ -425,7 +425,7 @@ describe("loadOpenClawPlugins", () => {
         bundledSetupRuntimeMarker: path.join(makeTempDir(), "external-setup-runtime-applied.txt"),
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadOpenClawPlugins({
+        loadOperatorPlugins({
           cache: false,
           preferSetupRuntimeForChannelPlugins: true,
           config: {
@@ -457,7 +457,7 @@ describe("loadOpenClawPlugins", () => {
         configured: true,
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadOpenClawPlugins({
+        loadOperatorPlugins({
           cache: false,
           preferSetupRuntimeForChannelPlugins: true,
           config: {
@@ -546,7 +546,7 @@ describe("loadOpenClawPlugins", () => {
       requireBundledFullRuntimeBeforeLoad: true,
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       config: {
         plugins: {
@@ -579,7 +579,7 @@ describe("loadOpenClawPlugins", () => {
       body: `module.exports = { id: "setup-runtime-helper-test", register() {} };`,
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       config: {
         plugins: {
@@ -619,7 +619,7 @@ describe("loadOpenClawPlugins", () => {
       body: `module.exports = { id: "setup-runtime-route-helper-test", register() {} };`,
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       preferSetupRuntimeForChannelPlugins: true,
       config: {
@@ -664,7 +664,7 @@ describe("loadOpenClawPlugins", () => {
       bundledSetupRuntimeLateRoutePath: "/setup-runtime-late-route",
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       preferSetupRuntimeForChannelPlugins: true,
       config: {
@@ -706,7 +706,7 @@ describe("loadOpenClawPlugins", () => {
       bundledFullRuntimeMarker: runtimeMarker,
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       config: {
         plugins: {
@@ -741,7 +741,7 @@ describe("loadOpenClawPlugins", () => {
       bundledFullRuntimeMarker: runtimeMarker,
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       config: {
         plugins: {
@@ -811,7 +811,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       config: {
         plugins: {
@@ -901,7 +901,7 @@ describe("loadOpenClawPlugins", () => {
   } };`,
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       config: {
         plugins: {
@@ -1022,7 +1022,7 @@ describe("loadOpenClawPlugins", () => {
   } };`,
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       config: {
         plugins: {
@@ -1089,7 +1089,7 @@ describe("loadOpenClawPlugins", () => {
         OPERATOR_DISABLE_BUNDLED_PLUGINS: undefined,
       },
       () =>
-        loadOpenClawPlugins({
+        loadOperatorPlugins({
           cache: false,
           preferBuiltPluginArtifacts: true,
           onlyPluginIds: ["startup-artifact-test"],
@@ -1160,7 +1160,7 @@ describe("loadOpenClawPlugins", () => {
         OPERATOR_DISABLE_BUNDLED_PLUGINS: undefined,
       },
       () =>
-        loadOpenClawPlugins({
+        loadOperatorPlugins({
           cache: false,
           preferBuiltPluginArtifacts: true,
           onlyPluginIds: ["startup-package-artifact-test"],
@@ -1263,7 +1263,7 @@ describe("loadOpenClawPlugins", () => {
       },
       () => {
         const manifestRegistry = loadPluginManifestRegistry({ config });
-        return loadOpenClawPlugins({
+        return loadOperatorPlugins({
           cache: false,
           preferBuiltPluginArtifacts: true,
           onlyPluginIds: ["source-only-artifact-test"],
@@ -1320,7 +1320,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       preferBuiltPluginArtifacts: true,
       config: {
@@ -1383,7 +1383,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       preferBuiltPluginArtifacts: true,
       config: {
@@ -1445,7 +1445,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       preferBuiltPluginArtifacts: true,
       config: {
@@ -1512,7 +1512,7 @@ describe("loadOpenClawPlugins", () => {
       return;
     }
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       preferBuiltPluginArtifacts: true,
       config: {

@@ -28,7 +28,7 @@ import {
   uiProtocolFreshnessIssueToRepairEffects,
 } from "../commands/doctor-ui.js";
 import { collectDisabledCodexPluginRouteIssues } from "../commands/doctor/shared/codex-route-warnings.js";
-import type { ConfigValidationIssue, OpenClawConfig } from "../config/types.operator.js";
+import type { ConfigValidationIssue, OperatorConfig } from "../config/types.operator.js";
 import { resolveSecretInputRef, type SecretRef } from "../config/types.secrets.js";
 import { hasAmbiguousGatewayAuthModeConfig } from "../gateway/auth-mode-policy.js";
 import { resolveGatewayAuthToken } from "../gateway/auth-token-resolution.js";
@@ -68,8 +68,8 @@ const loadDoctorCoreChecksRuntimeModule = async () =>
 const loadDoctorWorkspaceModule = async () => await import("../commands/doctor-workspace.js");
 
 export type CoreHealthCheckDeps = {
-  readonly detectUnavailableSkills: (cfg: OpenClawConfig) => Promise<readonly SkillStatusEntry[]>;
-  readonly collectSecurityWarnings: (cfg: OpenClawConfig) => Promise<readonly string[]>;
+  readonly detectUnavailableSkills: (cfg: OperatorConfig) => Promise<readonly SkillStatusEntry[]>;
+  readonly collectSecurityWarnings: (cfg: OperatorConfig) => Promise<readonly string[]>;
   readonly collectWorkspaceSuggestionNotes: (workspaceDir: string) => Promise<readonly string[]>;
   readonly collectRuntimeToolSchemaFindings: (
     ctx: HealthCheckContext,
@@ -87,13 +87,13 @@ export type CoreHealthCheckDeps = {
 };
 
 async function detectUnavailableSkillsWithRuntime(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
 ): Promise<readonly SkillStatusEntry[]> {
   const runtime = await loadDoctorCoreChecksRuntimeModule();
   return runtime.detectUnavailableSkills(cfg);
 }
 
-async function collectSecurityWarningsWithRuntime(cfg: OpenClawConfig): Promise<readonly string[]> {
+async function collectSecurityWarningsWithRuntime(cfg: OperatorConfig): Promise<readonly string[]> {
   const { collectSecurityWarnings } = await import("../commands/doctor-security.js");
   return collectSecurityWarnings(cfg);
 }
@@ -255,12 +255,12 @@ const skillWorkshopToolPolicyCheck: HealthCheck = {
   },
 };
 
-function resolveDoctorMode(cfg: OpenClawConfig): "local" | "remote" {
+function resolveDoctorMode(cfg: OperatorConfig): "local" | "remote" {
   return cfg.gateway?.mode === "remote" ? "remote" : "local";
 }
 
 export function buildGatewayTokenSecretRefUnavailableMessage(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   ref: SecretRef;
   unresolvedRefReason?: string;
 }): string {
@@ -760,11 +760,11 @@ const codexSessionRoutesCheck: HealthCheck = {
         fixHint: issue.blockedOutsideEntry
           ? [
               "Enable plugin loading and remove codex from plugins.deny,",
-              "or set the affected OpenAI models to an OpenClaw runtime policy.",
+              "or set the affected OpenAI models to an Operator runtime policy.",
             ].join(" ")
           : [
               "Run `operator doctor --fix`: it enables plugins.entries.codex,",
-              "or set the affected OpenAI models to an OpenClaw runtime policy.",
+              "or set the affected OpenAI models to an Operator runtime policy.",
             ].join(" "),
       }),
     );
@@ -982,7 +982,7 @@ const browserClawdProfileResidueCheck: HealthCheck = {
   id: BROWSER_CLAWD_PROFILE_RESIDUE_CHECK_ID,
   kind: "core",
   description:
-    "Legacy clawd managed browser profile residue has been archived after the OpenClaw rename.",
+    "Legacy clawd managed browser profile residue has been archived after the Operator rename.",
   source: "doctor",
   async detect(ctx, scope) {
     const residue = await detectLegacyClawdBrowserProfileResidue(ctx.cfg, browserResidueDeps(ctx));

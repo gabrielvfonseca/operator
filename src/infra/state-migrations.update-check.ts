@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
-import { runOpenClawStateWriteTransaction } from "../state/operator-state-db.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import { runOperatorStateWriteTransaction } from "../state/operator-state-db.js";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
@@ -11,7 +11,7 @@ import { fileExists } from "./state-migrations.fs.js";
 import { archiveLegacyImportSource } from "./state-migrations.storage.js";
 import type { LegacyStateDetection, MigrationMessages } from "./state-migrations.types.js";
 
-type LegacyUpdateCheckImportDatabase = Pick<OpenClawStateKyselyDatabase, "update_check_state">;
+type LegacyUpdateCheckImportDatabase = Pick<OperatorStateKyselyDatabase, "update_check_state">;
 
 type LegacyUpdateCheckState = {
   lastCheckedAt?: string;
@@ -119,7 +119,7 @@ export function migrateLegacyUpdateCheckState(params: {
   let imported = false;
   let shouldArchive = false;
   try {
-    runOpenClawStateWriteTransaction(
+    runOperatorStateWriteTransaction(
       ({ db }) => {
         const stateDb = getNodeSqliteKysely<LegacyUpdateCheckImportDatabase>(db);
         const existing = executeSqliteQueryTakeFirstSync(

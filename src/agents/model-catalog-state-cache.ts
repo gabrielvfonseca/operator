@@ -1,20 +1,20 @@
 import { createHash } from "node:crypto";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
   getNodeSqliteKysely,
 } from "../infra/kysely-sync.js";
 import type { PluginMetadataSnapshot } from "../plugins/plugin-metadata-snapshot.types.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
 } from "../state/operator-state-db.js";
 const AGENT_MODEL_CATALOG_CACHE_VERSION = 1;
 const AGENT_MODEL_CATALOG_CACHE_TTL_MS = 30 * 60 * 1000;
 
-type AgentModelCatalogDatabase = Pick<OpenClawStateKyselyDatabase, "agent_model_catalogs">;
+type AgentModelCatalogDatabase = Pick<OperatorStateKyselyDatabase, "agent_model_catalogs">;
 
 type CachedAgentModelCatalogPayload = {
   version: typeof AGENT_MODEL_CATALOG_CACHE_VERSION;
@@ -30,7 +30,7 @@ type CachedAgentModelCatalogSnapshot = {
 type AgentModelCatalogCacheKeyInput = {
   agentDir: string;
   cacheScope?: unknown;
-  config: OpenClawConfig;
+  config: OperatorConfig;
   metadataSnapshot?: PluginMetadataSnapshot;
   workspaceDir?: string;
 };
@@ -112,7 +112,7 @@ function readCachedAgentModelCatalogPayload(
   params: ReadCachedAgentModelCatalogParams,
 ): CachedAgentModelCatalogPayload | undefined {
   try {
-    const database = openOpenClawStateDatabase();
+    const database = openOperatorStateDatabase();
     const db = getNodeSqliteKysely<AgentModelCatalogDatabase>(database.db);
     const row = executeSqliteQueryTakeFirstSync(
       database.db,
@@ -158,7 +158,7 @@ export function writeCachedAgentModelCatalog(params: WriteCachedAgentModelCatalo
       entries: params.entries,
       ...(params.routeVariants ? { routeVariants: params.routeVariants } : {}),
     } satisfies CachedAgentModelCatalogPayload);
-    runOpenClawStateWriteTransaction((database) => {
+    runOperatorStateWriteTransaction((database) => {
       const db = getNodeSqliteKysely<AgentModelCatalogDatabase>(database.db);
       executeSqliteQuerySync(
         database.db,

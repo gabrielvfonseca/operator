@@ -1,5 +1,5 @@
 /**
- * Hosts the local OpenClaw sandbox exec-server that Codex app-server native
+ * Hosts the local Operator sandbox exec-server that Codex app-server native
  * execution can register as an external environment.
  */
 import { createHash, randomUUID } from "node:crypto";
@@ -38,7 +38,7 @@ import {
 import type {
   JsonRpcRequest,
   ManagedProcess,
-  OpenClawExecServer,
+  OperatorExecServer,
 } from "./sandbox-exec-server/types.js";
 
 /** Codex environment metadata registered for one sandbox exec-server lease. */
@@ -62,10 +62,10 @@ export async function ensureCodexSandboxExecServerEnvironment(params: {
   }
   if (!canExposeLocalExecServerToAppServer(params.appServerStartOptions)) {
     throw new Error(
-      "OpenClaw Codex exec-server uses a local loopback URL and cannot be registered with a remote Codex app-server.",
+      "Operator Codex exec-server uses a local loopback URL and cannot be registered with a remote Codex app-server.",
     );
   }
-  const execServer = await acquireOpenClawExecServer(params.sandbox);
+  const execServer = await acquireOperatorExecServer(params.sandbox);
   try {
     await params.client.request(
       "environment/add",
@@ -76,7 +76,7 @@ export async function ensureCodexSandboxExecServerEnvironment(params: {
       { timeoutMs: params.timeoutMs, signal: params.signal },
     );
   } catch (error) {
-    await releaseOpenClawExecServer(execServer);
+    await releaseOperatorExecServer(execServer);
     if (isEnvironmentAddUnsupported(error)) {
       embeddedAgentLog.warn("codex app-server does not support remote environments yet", {
         environmentId: execServer.environmentId,
@@ -102,7 +102,7 @@ export async function releaseCodexSandboxExecServerEnvironment(
     .get(sandbox.runtimeId)
     ?.catch(() => undefined);
   if (server) {
-    await releaseOpenClawExecServer(server);
+    await releaseOperatorExecServer(server);
   }
 }
 
@@ -137,11 +137,11 @@ function canExposeLocalExecServerToAppServer(
   }
 }
 
-async function acquireOpenClawExecServer(sandbox: SandboxContext): Promise<OpenClawExecServer> {
+async function acquireOperatorExecServer(sandbox: SandboxContext): Promise<OperatorExecServer> {
   const key = sandbox.runtimeId;
   while (true) {
     const existing = sandboxExecServerRegistry.servers.get(key);
-    const promise = existing ?? startAndRememberOpenClawExecServer(sandbox);
+    const promise = existing ?? startAndRememberOperatorExecServer(sandbox);
     const server = await promise;
     if (!server.closed && sandboxExecServerRegistry.servers.get(key) === promise) {
       server.refCount += 1;
@@ -150,8 +150,8 @@ async function acquireOpenClawExecServer(sandbox: SandboxContext): Promise<OpenC
   }
 }
 
-function startAndRememberOpenClawExecServer(sandbox: SandboxContext): Promise<OpenClawExecServer> {
-  const created = startOpenClawExecServer(sandbox);
+function startAndRememberOperatorExecServer(sandbox: SandboxContext): Promise<OperatorExecServer> {
+  const created = startOperatorExecServer(sandbox);
   const key = sandbox.runtimeId;
   sandboxExecServerRegistry.servers.set(key, created);
   void created.catch(() => {
@@ -162,7 +162,7 @@ function startAndRememberOpenClawExecServer(sandbox: SandboxContext): Promise<Op
   return created;
 }
 
-async function startOpenClawExecServer(sandbox: SandboxContext): Promise<OpenClawExecServer> {
+async function startOperatorExecServer(sandbox: SandboxContext): Promise<OperatorExecServer> {
   const server = new WebSocketServer({
     host: "127.0.0.1",
     port: 0,
@@ -173,12 +173,12 @@ async function startOpenClawExecServer(sandbox: SandboxContext): Promise<OpenCla
   await once(server, "listening");
   const address = server.address();
   if (!address || typeof address === "string") {
-    throw new Error("OpenClaw Codex exec-server did not bind to a TCP port.");
+    throw new Error("Operator Codex exec-server did not bind to a TCP port.");
   }
   const environmentId = buildEnvironmentId(sandbox);
   const authPath = `/openclaw-${randomUUID()}`;
   const url = `ws://127.0.0.1:${(address as AddressInfo).port}${authPath}`;
-  const execServer: OpenClawExecServer = {
+  const execServer: OperatorExecServer = {
     authPath,
     closed: false,
     environmentId,
@@ -204,7 +204,7 @@ async function startOpenClawExecServer(sandbox: SandboxContext): Promise<OpenCla
   return execServer;
 }
 
-async function releaseOpenClawExecServer(execServer: OpenClawExecServer): Promise<void> {
+async function releaseOperatorExecServer(execServer: OperatorExecServer): Promise<void> {
   if (execServer.closed) {
     return;
   }
@@ -221,10 +221,10 @@ async function releaseOpenClawExecServer(execServer: OpenClawExecServer): Promis
   if (current === execServer) {
     sandboxExecServerRegistry.servers.delete(execServer.sandbox.runtimeId);
   }
-  await closeOpenClawExecServer(execServer);
+  await closeOperatorExecServer(execServer);
 }
 
-async function closeOpenClawExecServer(execServer: OpenClawExecServer): Promise<void> {
+async function closeOperatorExecServer(execServer: OperatorExecServer): Promise<void> {
   if (execServer.closed) {
     return;
   }
@@ -243,14 +243,14 @@ function buildEnvironmentId(sandbox: SandboxContext): string {
 }
 
 function isAuthorizedExecServerRequest(
-  execServer: OpenClawExecServer,
+  execServer: OperatorExecServer,
   request: IncomingMessage,
 ): boolean {
   const url = new URL(request.url ?? "", "ws://127.0.0.1");
   return url.pathname === execServer.authPath;
 }
 
-function handleConnection(execServer: OpenClawExecServer, socket: WebSocket): void {
+function handleConnection(execServer: OperatorExecServer, socket: WebSocket): void {
   const processes = new Map<string, ManagedProcess>();
   socket.on("message", (data) => {
     void handleMessage(execServer, processes, socket, data).catch((error: unknown) => {
@@ -269,7 +269,7 @@ function handleExecServerSocketError(error: unknown): void {
 }
 
 async function handleMessage(
-  execServer: OpenClawExecServer,
+  execServer: OperatorExecServer,
   processes: Map<string, ManagedProcess>,
   socket: WebSocket,
   data: RawData,
@@ -300,7 +300,7 @@ async function handleMessage(
 }
 
 async function dispatchRequest(
-  execServer: OpenClawExecServer,
+  execServer: OperatorExecServer,
   processes: Map<string, ManagedProcess>,
   socket: WebSocket,
   request: Required<Pick<JsonRpcRequest, "method">> & Pick<JsonRpcRequest, "id" | "params">,
@@ -340,6 +340,6 @@ async function dispatchRequest(
     case "http/request":
       return await httpRequest(execServer, socket, request.params);
     default:
-      throw new Error(`Unsupported OpenClaw sandbox exec-server method: ${request.method}`);
+      throw new Error(`Unsupported Operator sandbox exec-server method: ${request.method}`);
   }
 }

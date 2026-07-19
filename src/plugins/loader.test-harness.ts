@@ -13,7 +13,7 @@ import {
   listRegisteredEmbeddingProviders,
 } from "./embedding-providers.js";
 import { getGlobalHookRunner } from "./hook-runner-global.js";
-import { loadOpenClawPlugins, type PluginLoadOptions } from "./loader.js";
+import { loadOperatorPlugins, type PluginLoadOptions } from "./loader.js";
 import {
   cleanupPluginLoaderFixturesForTest,
   EMPTY_PLUGIN_SCHEMA,
@@ -204,7 +204,7 @@ export function writeBundledPlugin(params: {
   return { bundledDir, plugin };
 }
 
-export function makeOpenClawDevSourceRoot() {
+export function makeOperatorDevSourceRoot() {
   const root = makeTempDir();
   fs.writeFileSync(path.join(root, "package.json"), JSON.stringify({ name: "operator" }), "utf-8");
   mkdirSafe(path.join(root, "src"));
@@ -242,7 +242,7 @@ export function loadBundledMemoryPluginRegistry(options?: {
 }) {
   if (!options && cachedBundledMemoryDir) {
     process.env.OPERATOR_BUNDLED_PLUGINS_DIR = cachedBundledMemoryDir;
-    return loadOpenClawPlugins({
+    return loadOperatorPlugins({
       cache: false,
       workspaceDir: cachedBundledMemoryDir,
       config: {
@@ -292,7 +292,7 @@ export function loadBundledMemoryPluginRegistry(options?: {
   }
   process.env.OPERATOR_BUNDLED_PLUGINS_DIR = bundledDir;
 
-  return loadOpenClawPlugins({
+  return loadOperatorPlugins({
     cache: false,
     workspaceDir: bundledDir,
     config: {
@@ -318,7 +318,7 @@ export function setupBundledTelegramPlugin() {
   process.env.OPERATOR_BUNDLED_PLUGINS_DIR = cachedBundledTelegramDir;
 }
 
-export function expectTelegramLoaded(registry: ReturnType<typeof loadOpenClawPlugins>) {
+export function expectTelegramLoaded(registry: ReturnType<typeof loadOperatorPlugins>) {
   const telegram = registry.plugins.find((entry) => entry.id === "telegram");
   expect(telegram?.status).toBe("loaded");
   expect(registry.channels.map((entry) => entry.plugin.id)).toContain("telegram");
@@ -328,10 +328,10 @@ export function loadRegistryFromSinglePlugin(params: {
   plugin: TempPlugin;
   pluginConfig?: Record<string, unknown>;
   includeWorkspaceDir?: boolean;
-  options?: Omit<Parameters<typeof loadOpenClawPlugins>[0], "cache" | "workspaceDir" | "config">;
+  options?: Omit<Parameters<typeof loadOperatorPlugins>[0], "cache" | "workspaceDir" | "config">;
 }) {
   const pluginConfig = params.pluginConfig ?? {};
-  return loadOpenClawPlugins({
+  return loadOperatorPlugins({
     cache: false,
     ...(params.includeWorkspaceDir === false ? {} : { workspaceDir: params.plugin.dir }),
     ...params.options,
@@ -346,9 +346,9 @@ export function loadRegistryFromSinglePlugin(params: {
 
 export function loadRegistryFromAllowedPlugins(
   plugins: TempPlugin[],
-  options?: Omit<Parameters<typeof loadOpenClawPlugins>[0], "cache" | "config">,
+  options?: Omit<Parameters<typeof loadOperatorPlugins>[0], "cache" | "config">,
 ) {
-  return loadOpenClawPlugins({
+  return loadOperatorPlugins({
     cache: false,
     ...options,
     config: {
@@ -619,7 +619,7 @@ function createEscapingEntryFixture(params: { id: string; sourceBody: string }) 
 }
 
 function resolveLoadedPluginSource(
-  registry: ReturnType<typeof loadOpenClawPlugins>,
+  registry: ReturnType<typeof loadOperatorPlugins>,
   pluginId: string,
 ) {
   return fs.realpathSync(registry.plugins.find((entry) => entry.id === pluginId)?.source ?? "");
@@ -627,8 +627,8 @@ function resolveLoadedPluginSource(
 
 export function expectCachePartitionByPluginSource(params: {
   pluginId: string;
-  loadFirst: () => ReturnType<typeof loadOpenClawPlugins>;
-  loadSecond: () => ReturnType<typeof loadOpenClawPlugins>;
+  loadFirst: () => ReturnType<typeof loadOperatorPlugins>;
+  loadSecond: () => ReturnType<typeof loadOperatorPlugins>;
   expectedFirstSource: string;
   expectedSecondSource: string;
 }) {
@@ -645,8 +645,8 @@ export function expectCachePartitionByPluginSource(params: {
 }
 
 export function expectCacheMissThenHit(params: {
-  loadFirst: () => ReturnType<typeof loadOpenClawPlugins>;
-  loadVariant: () => ReturnType<typeof loadOpenClawPlugins>;
+  loadFirst: () => ReturnType<typeof loadOperatorPlugins>;
+  loadVariant: () => ReturnType<typeof loadOperatorPlugins>;
 }) {
   const first = params.loadFirst();
   const second = params.loadVariant();
@@ -944,7 +944,7 @@ export function expectEscapingEntryRejected(params: {
     throw err;
   }
 
-  const registry = loadOpenClawPlugins({
+  const registry = loadOperatorPlugins({
     cache: false,
     config: {
       plugins: {

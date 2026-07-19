@@ -259,7 +259,7 @@ export async function agentsAddCommand(
 
   const prompter = createClackPrompter();
   try {
-    await prompter.intro("Add OpenClaw agent");
+    await prompter.intro("Add Operator agent");
     const name =
       nameInput ??
       (await prompter.text({

@@ -5,7 +5,7 @@ import {
   verifyChannelMessageAdapterCapabilityProofs,
   verifyDurableFinalCapabilityProofs,
 } from "openclaw/plugin-sdk/channel-outbound";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   listImportedBundledPluginFacadeIds,
   resetFacadeRuntimeStateForTest,
@@ -161,7 +161,7 @@ describe("createIMessageTestPlugin", () => {
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         accountId: "default",
         payload: {
           text: "Approval required.",
@@ -191,7 +191,7 @@ describe("createIMessageTestPlugin", () => {
     }
     const cfg = {
       channels: { imessage: { enabled: true } },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const payload = buildTypedExecApprovalPendingReplyPayload({
       approvalId: "exec-shared-hook",
       approvalSlug: "shared-hook",

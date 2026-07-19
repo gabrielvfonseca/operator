@@ -6,7 +6,7 @@ import { withEnv } from "../test-utils/env.js";
 import {
   clearActivatedPluginRuntimeState,
   clearPluginRegistryLoadCache,
-  loadOpenClawPlugins,
+  loadOperatorPlugins,
 } from "./loader.js";
 import { resetPluginLoaderTestStateForTest } from "./loader.test-fixtures.js";
 import {
@@ -175,19 +175,19 @@ describe("resolvePluginRuntimeArtifact", () => {
 
     const [first, second] = withEnv(
       {
-        OPENCLAW_BUNDLED_PLUGINS_DIR: path.dirname(fixture.rootDir),
-        OPENCLAW_TEST_TRUST_BUNDLED_PLUGINS_DIR: "1",
-        OPENCLAW_DISABLE_BUNDLED_PLUGINS: undefined,
+        OPERATOR_BUNDLED_PLUGINS_DIR: path.dirname(fixture.rootDir),
+        OPERATOR_TEST_TRUST_BUNDLED_PLUGINS_DIR: "1",
+        OPERATOR_DISABLE_BUNDLED_PLUGINS: undefined,
       },
       () => {
-        const sourceRegistry = loadOpenClawPlugins({
+        const sourceRegistry = loadOperatorPlugins({
           cache: false,
           config,
           onlyPluginIds: ["fixture"],
           preferBuiltPluginArtifacts: false,
         });
         pinActivePluginChannelRegistry(sourceRegistry);
-        const builtPreferredRegistry = loadOpenClawPlugins({
+        const builtPreferredRegistry = loadOperatorPlugins({
           cache: false,
           config,
           onlyPluginIds: ["fixture"],

@@ -59,10 +59,10 @@ const DIST_RUNTIME_EXTENSION_INDEX = "dist-runtime/extensions/demo/index.js";
 const DIST_RUNTIME_EXTENSION_MANIFEST = "dist-runtime/extensions/demo/openclaw.plugin.json";
 const DIST_RUNTIME_EXTENSION_PACKAGE = "dist-runtime/extensions/demo/package.json";
 const DIST_RUNTIME_EXTENSION_SKILL = "dist-runtime/extensions/demo/skills/SKILL.md";
-const DIST_OPENCLAW_ALIAS_PACKAGE = "dist/extensions/node_modules/openclaw/package.json";
-const DIST_OPENCLAW_ALIAS_PLUGIN_SDK_INDEX =
+const DIST_OPERATOR_ALIAS_PACKAGE = "dist/extensions/node_modules/openclaw/package.json";
+const DIST_OPERATOR_ALIAS_PLUGIN_SDK_INDEX =
   "dist/extensions/node_modules/openclaw/plugin-sdk/index.js";
-const DIST_OPENCLAW_ALIAS_PLUGIN_SDK_STRING_COERCE =
+const DIST_OPERATOR_ALIAS_PLUGIN_SDK_STRING_COERCE =
   "dist/extensions/node_modules/openclaw/plugin-sdk/string-coerce-runtime.js";
 const DIFFS_PACKAGE = "extensions/diffs/package.json";
 const DIFFS_VIEWER_RUNTIME_SOURCE = "extensions/diffs/assets/viewer-runtime.js";
@@ -153,7 +153,7 @@ async function writeRuntimePostBuildScaffold(tmp: string): Promise<void> {
     [DIST_CHANNEL_CATALOG]: '{"entries":[]}\n',
     [DIST_LEGACY_CLI_EXIT_COMPAT]: "export function hasMemoryRuntime() { return false; }\n",
     [DIST_LEGACY_CLI_EXIT_COMPAT_ALT]: "export function hasMemoryRuntime() { return false; }\n",
-    [DIST_OPENCLAW_ALIAS_PACKAGE]:
+    [DIST_OPERATOR_ALIAS_PACKAGE]:
       '{"name":"openclaw","type":"module","exports":{"./plugin-sdk":"./plugin-sdk/index.js"}}\n',
   });
   await touchProjectFiles(
@@ -163,7 +163,7 @@ async function writeRuntimePostBuildScaffold(tmp: string): Promise<void> {
       DIST_CHANNEL_CATALOG,
       DIST_LEGACY_CLI_EXIT_COMPAT,
       DIST_LEGACY_CLI_EXIT_COMPAT_ALT,
-      DIST_OPENCLAW_ALIAS_PACKAGE,
+      DIST_OPERATOR_ALIAS_PACKAGE,
     ],
     BUILD_TIME,
   );
@@ -307,7 +307,7 @@ async function runStatusCommand(params: {
     args: ["status"],
     env: {
       ...process.env,
-      OPENCLAW_RUNNER_LOG: "0",
+      OPERATOR_RUNNER_LOG: "0",
       ...params.env,
     },
     spawn: params.spawn,
@@ -334,7 +334,7 @@ async function runGatewayClientCommand(params: {
     args: params.args,
     env: {
       ...process.env,
-      OPENCLAW_RUNNER_LOG: "0",
+      OPERATOR_RUNNER_LOG: "0",
       ...params.env,
     },
     spawn: params.spawn,
@@ -360,7 +360,7 @@ async function runQaCommand(params: {
     args: ["qa", "suite", "--transport", "qa-channel", "--provider-mode", "mock-openai"],
     env: {
       ...process.env,
-      OPENCLAW_RUNNER_LOG: "0",
+      OPERATOR_RUNNER_LOG: "0",
       ...params.env,
     },
     spawn: params.spawn,
@@ -409,8 +409,8 @@ describe("run-node script", () => {
           args: ["--version"],
           env: {
             ...process.env,
-            OPENCLAW_FORCE_BUILD: "1",
-            OPENCLAW_RUNNER_LOG: "0",
+            OPERATOR_FORCE_BUILD: "1",
+            OPERATOR_RUNNER_LOG: "0",
           },
           spawn,
           runRuntimePostBuild: skipRuntimePostBuild,
@@ -459,7 +459,7 @@ describe("run-node script", () => {
       const exitCode = await runStatusCommand({
         tmp,
         spawn,
-        env: { OPENCLAW_FORCE_BUILD: "1" },
+        env: { OPERATOR_FORCE_BUILD: "1" },
         runRuntimePostBuild: syncBundledPluginMetadata,
       });
 
@@ -503,8 +503,8 @@ describe("run-node script", () => {
         args: ["status"],
         env: {
           ...process.env,
-          OPENCLAW_FORCE_BUILD: "1",
-          OPENCLAW_RUNNER_LOG: "0",
+          OPERATOR_FORCE_BUILD: "1",
+          OPERATOR_RUNNER_LOG: "0",
         },
         spawn,
         runRuntimePostBuild: skipRuntimePostBuild,
@@ -521,9 +521,9 @@ describe("run-node script", () => {
       ]);
       expect(spawnCalls[1]?.args).toEqual(["scripts/tsdown-build.mjs", "--no-clean"]);
       expect(spawnCalls[2]?.args).toEqual(["openclaw.mjs", "status"]);
-      expect(spawnCalls[0]?.env.OPENCLAW_RUN_NODE_SKIP_DTS_BUILD).toBeUndefined();
-      expect(spawnCalls[1]?.env.OPENCLAW_RUN_NODE_SKIP_DTS_BUILD).toBe("1");
-      expect(spawnCalls[2]?.env.OPENCLAW_RUN_NODE_SKIP_DTS_BUILD).toBeUndefined();
+      expect(spawnCalls[0]?.env.OPERATOR_RUN_NODE_SKIP_DTS_BUILD).toBeUndefined();
+      expect(spawnCalls[1]?.env.OPERATOR_RUN_NODE_SKIP_DTS_BUILD).toBe("1");
+      expect(spawnCalls[2]?.env.OPERATOR_RUN_NODE_SKIP_DTS_BUILD).toBeUndefined();
     });
   });
 
@@ -557,9 +557,9 @@ describe("run-node script", () => {
         args: ["status"],
         env: {
           ...process.env,
-          OPENCLAW_FORCE_BUILD: "1",
-          OPENCLAW_RUNNER_LOG: "1",
-          OPENCLAW_RUN_NODE_OUTPUT_LOG: outputPath,
+          OPERATOR_FORCE_BUILD: "1",
+          OPERATOR_RUNNER_LOG: "1",
+          OPERATOR_RUN_NODE_OUTPUT_LOG: outputPath,
         },
         spawn,
         stderr: mutedStream,
@@ -574,7 +574,7 @@ describe("run-node script", () => {
       await expect(fs.readFile(outputPath, "utf-8")).resolves.toContain("child stderr\n");
       await expect(fs.readFile(outputPath, "utf-8")).resolves.toContain("[openclaw]");
       expect(spawnCalls.at(-1)?.args).toEqual(["openclaw.mjs", "status"]);
-      expect(spawnCalls.at(-1)?.env.OPENCLAW_RUN_NODE_OUTPUT_LOG).toBe(outputPath);
+      expect(spawnCalls.at(-1)?.env.OPERATOR_RUN_NODE_OUTPUT_LOG).toBe(outputPath);
       expect(spawnCalls.at(-1)?.stdio).toEqual(["inherit", "pipe", "pipe"]);
     });
   });
@@ -618,9 +618,9 @@ describe("run-node script", () => {
         args: ["plugins", "list", "--json"],
         env: {
           ...process.env,
-          OPENCLAW_FORCE_BUILD: "1",
-          OPENCLAW_RUNNER_LOG: "0",
-          OPENCLAW_RUN_NODE_OUTPUT_LOG: outputPath,
+          OPERATOR_FORCE_BUILD: "1",
+          OPERATOR_RUNNER_LOG: "0",
+          OPERATOR_RUN_NODE_OUTPUT_LOG: outputPath,
         },
         spawn,
         stdout,
@@ -674,9 +674,9 @@ describe("run-node script", () => {
         args: ["status"],
         env: {
           ...process.env,
-          OPENCLAW_RUNNER_LOG: "0",
-          OPENCLAW_RUN_NODE_FILTER_SYNC_IO_STDERR: "1",
-          OPENCLAW_RUN_NODE_OUTPUT_LOG: outputPath,
+          OPERATOR_RUNNER_LOG: "0",
+          OPERATOR_RUN_NODE_FILTER_SYNC_IO_STDERR: "1",
+          OPERATOR_RUN_NODE_OUTPUT_LOG: outputPath,
         },
         spawn,
         stderr,
@@ -696,7 +696,7 @@ describe("run-node script", () => {
     });
   });
 
-  it("adds Node CPU profiling flags to the launched OpenClaw child when requested", async () => {
+  it("adds Node CPU profiling flags to the launched Operator child when requested", async () => {
     await withTempDir({ prefix: "openclaw-run-node-" }, async (tmp) => {
       await setupTrackedProject(tmp, {
         files: {
@@ -734,8 +734,8 @@ describe("run-node script", () => {
         args: ["status"],
         env: {
           ...process.env,
-          OPENCLAW_RUNNER_LOG: "0",
-          OPENCLAW_RUN_NODE_CPU_PROF_DIR: ".artifacts/profiles",
+          OPERATOR_RUNNER_LOG: "0",
+          OPERATOR_RUN_NODE_CPU_PROF_DIR: ".artifacts/profiles",
         },
         spawn,
         spawnSync,
@@ -753,7 +753,7 @@ describe("run-node script", () => {
         /^--cpu-prof-name=openclaw-status-4242-\d{4}-\d{2}-\d{2}T.*\.cpuprofile$/,
       );
       expect(childArgs.slice(3)).toEqual(["openclaw.mjs", "status"]);
-      expect(spawnCalls.at(-1)?.env.OPENCLAW_RUN_NODE_CPU_PROF_DIR).toBe(profileDir);
+      expect(spawnCalls.at(-1)?.env.OPERATOR_RUN_NODE_CPU_PROF_DIR).toBe(profileDir);
       expect(fsSync.existsSync(profileDir)).toBe(true);
     });
   });
@@ -793,9 +793,9 @@ describe("run-node script", () => {
         args: ["status"],
         env: {
           ...process.env,
-          OPENCLAW_RUNNER_LOG: "0",
-          OPENCLAW_RUN_NODE_CPU_PROF_DIR: ".artifacts/profiles",
-          OPENCLAW_RUN_NODE_CPU_PROF_MAX_FILES: "2",
+          OPERATOR_RUNNER_LOG: "0",
+          OPERATOR_RUN_NODE_CPU_PROF_DIR: ".artifacts/profiles",
+          OPERATOR_RUN_NODE_CPU_PROF_MAX_FILES: "2",
         },
         spawn,
         spawnSync,
@@ -825,7 +825,7 @@ describe("run-node script", () => {
     });
   });
 
-  it("adds Node sync I/O tracing flag to the launched OpenClaw child when requested", async () => {
+  it("adds Node sync I/O tracing flag to the launched Operator child when requested", async () => {
     await withTempDir({ prefix: "openclaw-run-node-" }, async (tmp) => {
       await setupTrackedProject(tmp, {
         files: {
@@ -849,8 +849,8 @@ describe("run-node script", () => {
         args: ["gateway", "--force"],
         env: {
           ...process.env,
-          OPENCLAW_RUNNER_LOG: "0",
-          OPENCLAW_TRACE_SYNC_IO: "1",
+          OPERATOR_RUNNER_LOG: "0",
+          OPERATOR_TRACE_SYNC_IO: "1",
         },
         spawn,
         spawnSync,
@@ -883,8 +883,8 @@ describe("run-node script", () => {
         args: ["status"],
         env: {
           ...process.env,
-          OPENCLAW_RUNNER_LOG: "0",
-          OPENCLAW_RUN_NODE_OUTPUT_LOG: outputPath,
+          OPERATOR_RUNNER_LOG: "0",
+          OPERATOR_RUN_NODE_OUTPUT_LOG: outputPath,
         },
         spawn,
         stderr: mutedStream,
@@ -917,7 +917,7 @@ describe("run-node script", () => {
         args: ["qa", "matrix"],
         env: {
           ...process.env,
-          OPENCLAW_RUNNER_LOG: "0",
+          OPERATOR_RUNNER_LOG: "0",
         },
         spawn,
         stderr: mutedStream,
@@ -930,7 +930,7 @@ describe("run-node script", () => {
       expect(exitCode).toBe(0);
       const childArgs = spawnCalls.at(-1)?.args ?? [];
       expect(childArgs).toEqual(["openclaw.mjs", "qa", "matrix"]);
-      expect(spawnCalls.at(-1)?.env.OPENCLAW_RUN_NODE_OUTPUT_LOG).toBeUndefined();
+      expect(spawnCalls.at(-1)?.env.OPERATOR_RUN_NODE_OUTPUT_LOG).toBeUndefined();
     });
   });
 
@@ -1069,9 +1069,9 @@ describe("run-node script", () => {
         | { cwd?: string; env?: Record<string, string | undefined> }
         | undefined;
       expect(postBuildParams?.cwd).toBe(tmp);
-      expect(postBuildParams?.env?.OPENCLAW_BUILD_PRIVATE_QA).toBe("1");
-      expect(postBuildParams?.env?.OPENCLAW_ENABLE_PRIVATE_QA_CLI).toBe("1");
-      expect(postBuildParams?.env?.OPENCLAW_DISABLE_BUNDLED_PLUGINS).toBe("0");
+      expect(postBuildParams?.env?.OPERATOR_BUILD_PRIVATE_QA).toBe("1");
+      expect(postBuildParams?.env?.OPERATOR_ENABLE_PRIVATE_QA_CLI).toBe("1");
+      expect(postBuildParams?.env?.OPERATOR_DISABLE_BUNDLED_PLUGINS).toBe("0");
     });
   });
 
@@ -1096,14 +1096,14 @@ describe("run-node script", () => {
         spawn,
         spawnSync,
         runRuntimePostBuild,
-        env: { OPENCLAW_DISABLE_BUNDLED_PLUGINS: "1" },
+        env: { OPERATOR_DISABLE_BUNDLED_PLUGINS: "1" },
       });
 
       expect(exitCode).toBe(0);
       const postBuildParams = firstMockCall(runRuntimePostBuild)?.[0] as
         | { cwd?: string; env?: Record<string, string | undefined> }
         | undefined;
-      expect(postBuildParams?.env?.OPENCLAW_DISABLE_BUNDLED_PLUGINS).toBe("1");
+      expect(postBuildParams?.env?.OPERATOR_DISABLE_BUNDLED_PLUGINS).toBe("1");
     });
   });
 
@@ -1120,7 +1120,7 @@ describe("run-node script", () => {
 
       const requirement = resolveBuildRequirement(
         createBuildRequirementDeps(tmp, {
-          env: { OPENCLAW_BUILD_PRIVATE_QA: "1" },
+          env: { OPERATOR_BUILD_PRIVATE_QA: "1" },
           gitHead: "abc123\n",
           gitStatus: "",
         }),
@@ -1152,7 +1152,7 @@ describe("run-node script", () => {
         tmp,
         spawn,
         spawnSync,
-        env: { OPENCLAW_WATCH_MODE: "1" },
+        env: { OPERATOR_WATCH_MODE: "1" },
         runRuntimePostBuild,
       });
 
@@ -1181,7 +1181,7 @@ describe("run-node script", () => {
           BUILD_STAMP,
         ],
       });
-      await fs.rm(resolvePath(tmp, DIST_OPENCLAW_ALIAS_PACKAGE));
+      await fs.rm(resolvePath(tmp, DIST_OPERATOR_ALIAS_PACKAGE));
 
       const runRuntimePostBuild = vi.fn();
       const { spawnCalls, spawn, spawnSync } = createSpawnRecorder({
@@ -1192,7 +1192,7 @@ describe("run-node script", () => {
         tmp,
         spawn,
         spawnSync,
-        env: { OPENCLAW_WATCH_MODE: "1" },
+        env: { OPERATOR_WATCH_MODE: "1" },
         runRuntimePostBuild,
       });
 
@@ -1230,7 +1230,7 @@ describe("run-node script", () => {
         tmp,
         spawn,
         spawnSync,
-        env: { OPENCLAW_WATCH_MODE: "1" },
+        env: { OPERATOR_WATCH_MODE: "1" },
         runRuntimePostBuild,
       });
 
@@ -1267,7 +1267,7 @@ describe("run-node script", () => {
         ],
         env: {
           ...process.env,
-          OPENCLAW_RUNNER_LOG: "0",
+          OPERATOR_RUNNER_LOG: "0",
         },
         spawn,
         execPath: process.execPath,
@@ -1317,7 +1317,7 @@ describe("run-node script", () => {
         ],
         env: {
           ...process.env,
-          OPENCLAW_RUNNER_LOG: "0",
+          OPERATOR_RUNNER_LOG: "0",
         },
         spawn,
         execPath: process.execPath,
@@ -1448,7 +1448,7 @@ describe("run-node script", () => {
           spawn,
           spawnSync,
           env: {
-            OPENCLAW_RUN_NODE_BUILD_LOCK_POLL_MS: "1",
+            OPERATOR_RUN_NODE_BUILD_LOCK_POLL_MS: "1",
           },
           runRuntimePostBuild,
         }),
@@ -1457,7 +1457,7 @@ describe("run-node script", () => {
           spawn,
           spawnSync,
           env: {
-            OPENCLAW_RUN_NODE_BUILD_LOCK_POLL_MS: "1",
+            OPERATOR_RUN_NODE_BUILD_LOCK_POLL_MS: "1",
           },
           runRuntimePostBuild,
         }),
@@ -1487,8 +1487,8 @@ describe("run-node script", () => {
         args: ["status"],
         env: {
           ...process.env,
-          OPENCLAW_FORCE_BUILD: "1",
-          OPENCLAW_RUNNER_LOG: "0",
+          OPERATOR_FORCE_BUILD: "1",
+          OPERATOR_RUNNER_LOG: "0",
         },
         spawn,
         execPath: process.execPath,
@@ -1520,8 +1520,8 @@ describe("run-node script", () => {
         args: ["status"],
         env: {
           ...process.env,
-          OPENCLAW_FORCE_BUILD: "1",
-          OPENCLAW_RUNNER_LOG: "0",
+          OPERATOR_FORCE_BUILD: "1",
+          OPERATOR_RUNNER_LOG: "0",
         },
         spawn,
         execPath: process.execPath,
@@ -1578,7 +1578,7 @@ describe("run-node script", () => {
         args: ["status"],
         env: {
           ...process.env,
-          OPENCLAW_RUNNER_LOG: "0",
+          OPERATOR_RUNNER_LOG: "0",
         },
         process: fakeProcess,
         spawn,
@@ -1653,7 +1653,7 @@ describe("run-node script", () => {
           args: ["status"],
           env: {
             ...process.env,
-            OPENCLAW_RUNNER_LOG: "0",
+            OPERATOR_RUNNER_LOG: "0",
           },
           platform: "darwin",
           process: fakeProcess,
@@ -1744,7 +1744,7 @@ describe("run-node script", () => {
         env: {
           ...process.env,
           CI: "false",
-          OPENCLAW_FORCE_BUILD: "1",
+          OPERATOR_FORCE_BUILD: "1",
         },
         spawn,
         spawnSync,
@@ -1989,7 +1989,7 @@ describe("run-node script", () => {
       const releaseLock = await acquireRunNodeBuildLock({
         cwd: tmp,
         args: ["gateway"],
-        env: { OPENCLAW_RUNNER_LOG: "0" },
+        env: { OPERATOR_RUNNER_LOG: "0" },
         fs: fsSync,
         process: lockProcess,
         stderr: { write: () => true } as unknown as NodeJS.WriteStream,
@@ -2016,8 +2016,8 @@ describe("run-node script", () => {
         args: ["dashboard", "--no-open", "--yes"],
         env: {
           ...process.env,
-          OPENCLAW_RUNNER_LOG: "1",
-          OPENCLAW_RUN_NODE_BUILD_LOCK_POLL_MS: "1",
+          OPERATOR_RUNNER_LOG: "1",
+          OPERATOR_RUN_NODE_BUILD_LOCK_POLL_MS: "1",
         },
         spawn,
         spawnSync,
@@ -2319,7 +2319,7 @@ describe("run-node script", () => {
     });
   });
 
-  it("does not require OpenClaw SDK alias outputs when dist extensions are absent", async () => {
+  it("does not require Operator SDK alias outputs when dist extensions are absent", async () => {
     await withTempDir({ prefix: "openclaw-run-node-" }, async (tmp) => {
       await setupTrackedProject(tmp, {
         files: {
@@ -2360,15 +2360,15 @@ describe("run-node script", () => {
     });
   });
 
-  it("reports missing OpenClaw SDK alias outputs when runtime stamps match HEAD", async () => {
+  it("reports missing Operator SDK alias outputs when runtime stamps match HEAD", async () => {
     await withTempDir({ prefix: "openclaw-run-node-" }, async (tmp) => {
       await setupTrackedProject(tmp, {
         files: {
           [ROOT_SRC]: "export const value = 1;\n",
           [DIST_PLUGIN_SDK_INDEX]: "export * from './core.js';\n",
-          [DIST_OPENCLAW_ALIAS_PACKAGE]:
+          [DIST_OPERATOR_ALIAS_PACKAGE]:
             '{"name":"openclaw","type":"module","exports":{"./plugin-sdk":"./plugin-sdk/index.js"}}\n',
-          [DIST_OPENCLAW_ALIAS_PLUGIN_SDK_INDEX]:
+          [DIST_OPERATOR_ALIAS_PLUGIN_SDK_INDEX]:
             "export * from '../../../../plugin-sdk/index.js';\n",
           [RUNTIME_POSTBUILD_STAMP]: '{"head":"abc123"}\n',
         },
@@ -2376,13 +2376,13 @@ describe("run-node script", () => {
           ROOT_SRC,
           DIST_ENTRY,
           DIST_PLUGIN_SDK_INDEX,
-          DIST_OPENCLAW_ALIAS_PACKAGE,
-          DIST_OPENCLAW_ALIAS_PLUGIN_SDK_INDEX,
+          DIST_OPERATOR_ALIAS_PACKAGE,
+          DIST_OPERATOR_ALIAS_PLUGIN_SDK_INDEX,
           BUILD_STAMP,
           RUNTIME_POSTBUILD_STAMP,
         ],
       });
-      await fs.rm(resolvePath(tmp, DIST_OPENCLAW_ALIAS_PLUGIN_SDK_INDEX));
+      await fs.rm(resolvePath(tmp, DIST_OPERATOR_ALIAS_PLUGIN_SDK_INDEX));
 
       const requirement = resolveRuntimePostBuildRequirement(
         createBuildRequirementDeps(tmp, {
@@ -2398,7 +2398,7 @@ describe("run-node script", () => {
     });
   });
 
-  it("does not require private OpenClaw SDK dist files that package exports omit", async () => {
+  it("does not require private Operator SDK dist files that package exports omit", async () => {
     await withTempDir({ prefix: "openclaw-run-node-" }, async (tmp) => {
       await setupTrackedProject(tmp, {
         files: {
@@ -2417,11 +2417,11 @@ describe("run-node script", () => {
           [DIST_PLUGIN_SDK_INDEX]: "export * from './core.js';\n",
           "dist/plugin-sdk/string-coerce-runtime.js": "export const publicRuntime = true;\n",
           "dist/plugin-sdk/ssrf-runtime-internal.js": "export const internal = true;\n",
-          [DIST_OPENCLAW_ALIAS_PACKAGE]:
+          [DIST_OPERATOR_ALIAS_PACKAGE]:
             '{"name":"openclaw","type":"module","exports":{"./plugin-sdk":"./plugin-sdk/index.js","./plugin-sdk/string-coerce-runtime":"./plugin-sdk/string-coerce-runtime.js"}}\n',
-          [DIST_OPENCLAW_ALIAS_PLUGIN_SDK_INDEX]:
+          [DIST_OPERATOR_ALIAS_PLUGIN_SDK_INDEX]:
             "export * from '../../../../plugin-sdk/index.js';\n",
-          [DIST_OPENCLAW_ALIAS_PLUGIN_SDK_STRING_COERCE]:
+          [DIST_OPERATOR_ALIAS_PLUGIN_SDK_STRING_COERCE]:
             "export * from '../../../../plugin-sdk/string-coerce-runtime.js';\n",
           [RUNTIME_POSTBUILD_STAMP]: '{"head":"abc123"}\n',
         },
@@ -2432,9 +2432,9 @@ describe("run-node script", () => {
           DIST_PLUGIN_SDK_INDEX,
           "dist/plugin-sdk/string-coerce-runtime.js",
           "dist/plugin-sdk/ssrf-runtime-internal.js",
-          DIST_OPENCLAW_ALIAS_PACKAGE,
-          DIST_OPENCLAW_ALIAS_PLUGIN_SDK_INDEX,
-          DIST_OPENCLAW_ALIAS_PLUGIN_SDK_STRING_COERCE,
+          DIST_OPERATOR_ALIAS_PACKAGE,
+          DIST_OPERATOR_ALIAS_PLUGIN_SDK_INDEX,
+          DIST_OPERATOR_ALIAS_PLUGIN_SDK_STRING_COERCE,
           BUILD_STAMP,
           RUNTIME_POSTBUILD_STAMP,
         ],
@@ -2556,7 +2556,7 @@ describe("run-node script", () => {
 
       const requirement = resolveRuntimePostBuildRequirement(
         createBuildRequirementDeps(tmp, {
-          env: { OPENCLAW_RUNTIME_POSTBUILD_STATIC_ASSETS: "0" },
+          env: { OPERATOR_RUNTIME_POSTBUILD_STATIC_ASSETS: "0" },
           gitHead: "abc123\n",
           gitStatus: "",
         }),
@@ -2965,7 +2965,7 @@ describe("run-node script", () => {
     const lockDeps = (tmp: string, fakeProcess: NodeJS.Process) => ({
       cwd: tmp,
       args: ["status"],
-      env: { OPENCLAW_RUNNER_LOG: "0" },
+      env: { OPERATOR_RUNNER_LOG: "0" },
       fs: fsSync,
       process: fakeProcess,
       stderr: { write: () => true } as unknown as NodeJS.WriteStream,

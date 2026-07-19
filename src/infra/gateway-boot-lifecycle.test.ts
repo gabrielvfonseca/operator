@@ -3,10 +3,10 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
 } from "../state/openclaw-state-db.js";
 import {
   GATEWAY_CRASH_LOOP_BREAKER_REASON,
@@ -17,7 +17,7 @@ import {
 } from "./gateway-boot-lifecycle.js";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "./kysely-sync.js";
 
-type GatewayBootLifecycleTestDatabase = Pick<OpenClawStateKyselyDatabase, "gateway_boot_lifecycle">;
+type GatewayBootLifecycleTestDatabase = Pick<OperatorStateKyselyDatabase, "gateway_boot_lifecycle">;
 type GatewayBootLifecycleOutcome = Parameters<typeof completeGatewayBootLifecycle>[1]["outcome"];
 
 const GATEWAY_BOOT_LOOP_UNCLEAN_THRESHOLD = 3;
@@ -25,13 +25,13 @@ const GATEWAY_BOOT_LOOP_WINDOW_MS = 5 * 60_000;
 const GATEWAY_BOOT_LIFECYCLE_RETENTION_MS = 24 * 60 * 60_000;
 
 afterEach(() => {
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorStateDatabaseForTest();
 });
 
 function createLifecycleDb() {
   const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-gateway-boot-"));
-  const env = { OPENCLAW_STATE_DIR: stateDir } as NodeJS.ProcessEnv;
-  const { db } = openOpenClawStateDatabase({ env });
+  const env = { OPERATOR_STATE_DIR: stateDir } as NodeJS.ProcessEnv;
+  const { db } = openOperatorStateDatabase({ env });
   const kysely = getNodeSqliteKysely<GatewayBootLifecycleTestDatabase>(db);
   return { env, db, kysely };
 }

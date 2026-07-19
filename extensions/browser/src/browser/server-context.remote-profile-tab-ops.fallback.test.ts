@@ -24,7 +24,7 @@ describe("browser remote profile fallback and attachOnly behavior", () => {
     const reachableMock = vi
       .mocked(deps.chromeModule.isChromeReachable)
       .mockResolvedValueOnce(false);
-    const launchMock = vi.mocked(deps.chromeModule.launchOpenClawChrome);
+    const launchMock = vi.mocked(deps.chromeModule.launchOperatorChrome);
     const ctx = deps.createBrowserRouteContext({ getState: () => state });
 
     await expect(ctx.forProfile("openclaw").ensureBrowserAvailable()).rejects.toThrow(
@@ -49,7 +49,7 @@ describe("browser remote profile fallback and attachOnly behavior", () => {
     const wsReachableMock = vi
       .mocked(deps.chromeModule.isChromeCdpReady)
       .mockResolvedValueOnce(false);
-    const launchMock = vi.mocked(deps.chromeModule.launchOpenClawChrome);
+    const launchMock = vi.mocked(deps.chromeModule.launchOperatorChrome);
     const ctx = deps.createBrowserRouteContext({ getState: () => state });
 
     await expect(ctx.forProfile("openclaw").ensureBrowserAvailable()).rejects.toThrow(

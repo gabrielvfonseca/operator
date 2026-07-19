@@ -298,7 +298,7 @@ describe("Codex Computer Use setup", () => {
       "thread/start",
       {
         input: [],
-        developerInstructions: "OpenClaw Computer Use readiness probe",
+        developerInstructions: "Operator Computer Use readiness probe",
         sandbox: "danger-full-access",
         approvalPolicy: "never",
         ephemeral: true,

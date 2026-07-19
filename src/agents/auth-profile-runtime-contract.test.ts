@@ -13,7 +13,7 @@ import {
 } from "openclaw/plugin-sdk/agent-runtime-test-contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { SessionEntry } from "../config/sessions.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import type * as ManifestRegistryModule from "../plugins/manifest-registry.js";
 import { runAgentAttempt as runAgentAttemptImpl } from "./command/attempt-execution.js";
 import type { RunEmbeddedAgentParams } from "./embedded-agent-runner/run/params.js";
@@ -161,7 +161,7 @@ function makeEmbeddedResult(text: string): EmbeddedAgentRunResult {
   };
 }
 
-function providerRuntimeConfig(provider: string, runtime: string): OpenClawConfig {
+function providerRuntimeConfig(provider: string, runtime: string): OperatorConfig {
   return {
     models: {
       providers: {
@@ -172,7 +172,7 @@ function providerRuntimeConfig(provider: string, runtime: string): OpenClawConfi
         },
       },
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 async function runAuthContractAttempt(params: {
@@ -181,10 +181,10 @@ async function runAuthContractAttempt(params: {
   providerOverride: string;
   authProfileProvider: string;
   authProfileOverride: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   sessionHasHistory?: boolean;
 }) {
-  const cfg = params.cfg ?? ({} as OpenClawConfig);
+  const cfg = params.cfg ?? ({} as OperatorConfig);
   const sessionEntry: SessionEntry = {
     sessionId: AUTH_PROFILE_RUNTIME_CONTRACT.sessionId,
     updatedAt: Date.now(),
@@ -234,7 +234,7 @@ async function runAuthContractAttempt(params: {
   };
 }
 
-describe("Auth profile runtime contract - embedded OpenClaw and CLI adapter", () => {
+describe("Auth profile runtime contract - embedded Operator and CLI adapter", () => {
   let tmpDir: string;
   let storePath: string;
 
@@ -268,7 +268,7 @@ describe("Auth profile runtime contract - embedded OpenClaw and CLI adapter", ()
     (provider, expectedAuthProvider) => {
       expect(
         resolveProviderIdForAuth(provider, {
-          config: {} as OpenClawConfig,
+          config: {} as OperatorConfig,
           workspaceDir: tmpDir,
         }),
       ).toBe(expectedAuthProvider);
@@ -361,13 +361,13 @@ describe("Auth profile runtime contract - embedded OpenClaw and CLI adapter", ()
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     });
 
     expect(capturedCliRunParams().authProfileId).toBeUndefined();
   });
 
-  it("forwards a legacy OpenAI Codex auth profile through the embedded OpenClaw path", async () => {
+  it("forwards a legacy OpenAI Codex auth profile through the embedded Operator path", async () => {
     await runAuthContractAttempt({
       tmpDir,
       storePath,
@@ -400,7 +400,7 @@ describe("Auth profile runtime contract - embedded OpenClaw and CLI adapter", ()
     );
   });
 
-  it("forwards an OpenAI auth profile through the explicit embedded OpenAI OpenClaw path", async () => {
+  it("forwards an OpenAI auth profile through the explicit embedded OpenAI Operator path", async () => {
     await runAuthContractAttempt({
       tmpDir,
       storePath,
@@ -429,7 +429,7 @@ describe("Auth profile runtime contract - embedded OpenClaw and CLI adapter", ()
     );
   });
 
-  it("routes explicit OpenAI OpenClaw runs with legacy Codex OAuth through OpenAI transport", async () => {
+  it("routes explicit OpenAI Operator runs with legacy Codex OAuth through OpenAI transport", async () => {
     await runAuthContractAttempt({
       tmpDir,
       storePath,

@@ -141,8 +141,8 @@ async function createCodexFixture(): Promise<{
   const stateDir = path.join(root, "state");
   const workspaceDir = path.join(root, "workspace");
   vi.stubEnv("HOME", homeDir);
-  vi.stubEnv("OPENCLAW_STATE_DIR", stateDir);
-  vi.stubEnv("OPENCLAW_AGENT_DIR", "");
+  vi.stubEnv("OPERATOR_STATE_DIR", stateDir);
+  vi.stubEnv("OPERATOR_AGENT_DIR", "");
   await writeFile(path.join(codexHome, "skills", "tweet-helper", "SKILL.md"), "# Tweet helper\n");
   await writeFile(path.join(codexHome, "skills", ".system", "system-skill", "SKILL.md"));
   await writeFile(path.join(homeDir, ".agents", "skills", "personal-style", "SKILL.md"));
@@ -1109,7 +1109,7 @@ describe("buildCodexMigrationProvider", () => {
       },
     ]);
     expect(plan.warnings).toEqual([
-      "Codex app-backed plugin migration requires the Codex app-server source account to be logged in with a ChatGPT subscription account. Log in to the Codex app with subscription auth; OpenClaw auth or API-key auth does not satisfy Codex app connector access.",
+      "Codex app-backed plugin migration requires the Codex app-server source account to be logged in with a ChatGPT subscription account. Log in to the Codex app with subscription auth; Operator auth or API-key auth does not satisfy Codex app connector access.",
     ]);
     expect(appServerRequest.mock.calls.filter(([arg]) => arg.method === "app/list")).toHaveLength(
       0,
@@ -1654,7 +1654,7 @@ describe("buildCodexMigrationProvider", () => {
   });
 
   it("leaves selected Codex plugins as warnings when target curated plugins never load", async () => {
-    vi.stubEnv("OPENCLAW_CODEX_MIGRATION_PLUGIN_LIST_TIMEOUT_MS", "1");
+    vi.stubEnv("OPERATOR_CODEX_MIGRATION_PLUGIN_LIST_TIMEOUT_MS", "1");
     const fixture = await createCodexFixture();
     const configState: MigrationProviderContext["config"] = {
       agents: { defaults: { workspace: fixture.workspaceDir } },

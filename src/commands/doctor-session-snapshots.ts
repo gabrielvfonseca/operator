@@ -8,11 +8,11 @@ import { hydrateSessionStoreSkillPromptRefs } from "../config/sessions/skill-pro
 import { updateSessionStore } from "../config/sessions/store.js";
 import { resolveAllAgentSessionStoreTargetsSync } from "../config/sessions/targets.js";
 import type { SessionEntry } from "../config/sessions/types.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { HealthFinding, HealthRepairEffect } from "../flows/health-checks.js";
 import { expandHomePrefix } from "../infra/home-dir.js";
 import { writeTextAtomic } from "../infra/json-files.js";
-import { resolveOpenClawPackageRootSync } from "../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
 import { resolveBundledSkillsDir } from "../skills/loading/bundled-dir.js";
 import { resolveConfigDir, shortenHomePath } from "../utils.js";
 
@@ -59,7 +59,7 @@ function resolveSessionSnapshotBundledSkillsDir(params?: {
   if (resolved) {
     return resolved;
   }
-  const packageRoot = resolveOpenClawPackageRootSync({
+  const packageRoot = resolveOperatorPackageRootSync({
     argv1: params?.argv1 ?? process.argv[1],
     moduleUrl: params?.moduleUrl ?? import.meta.url,
     cwd: params?.cwd ?? process.cwd(),
@@ -161,7 +161,7 @@ function isWindowsAbsolutePath(value: string): boolean {
     (/^[a-z]:/i.test(value) && ["/", "\\"].includes(value.slice(2, 3))) || value.startsWith("\\\\")
   );
 }
-function isTempBackedOpenClawRoot(segments: readonly string[]): boolean {
+function isTempBackedOperatorRoot(segments: readonly string[]): boolean {
   const lower = segments.map((segment) => segment.toLowerCase());
   const operatorIndex = lower.lastIndexOf("operator");
   if (operatorIndex < 1) {
@@ -177,7 +177,7 @@ function isBundledRuntimeSkillsPath(cachedPath: string, skillRootIndex: number):
     lower.some(
       (segment) =>
         segment === "dist-runtime" || segment === "node_modules" || segment.startsWith("operator@"),
-    ) || isTempBackedOpenClawRoot(beforeSkillRoot)
+    ) || isTempBackedOperatorRoot(beforeSkillRoot)
   );
 }
 function extractBundledSkillRelativeSegments(cachedPath: string): string[] | undefined {
@@ -320,7 +320,7 @@ async function listSessionStorePaths(stateDir: string): Promise<string[]> {
 }
 
 function resolveSessionStorePaths(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   env?: NodeJS.ProcessEnv;
 }): string[] | undefined {
   if (!params.cfg) {
@@ -345,7 +345,7 @@ function loadSessionStoreForSnapshotScan(storePath: string): Record<string, Sess
 export async function detectSessionSnapshotHealthIssues(params?: {
   storePaths?: string[];
   bundledSkillsDir?: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   env?: NodeJS.ProcessEnv;
 }): Promise<SessionSnapshotHealthIssue[]> {
   const bundledSkillsDir = resolveSessionSnapshotBundledSkillsDir({
@@ -509,7 +509,7 @@ function repairFreshSessionSnapshotPaths(params: {
 export async function noteSessionSnapshotHealth(params?: {
   storePaths?: string[];
   bundledSkillsDir?: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   env?: NodeJS.ProcessEnv;
   shouldRepair?: boolean;
 }) {

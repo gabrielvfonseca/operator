@@ -9,7 +9,7 @@ import type {
   CommandArgsParsing,
 } from "openclaw/plugin-sdk/command-auth-native";
 import type { ModelsProviderData } from "openclaw/plugin-sdk/command-auth-native";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import * as runtimeConfigSnapshotModule from "openclaw/plugin-sdk/runtime-config-snapshot";
 import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
 import {
@@ -77,7 +77,7 @@ function createModelPickerContext(): ModelPickerContext {
         },
       },
     },
-  } as unknown as OpenClawConfig;
+  } as unknown as OperatorConfig;
 
   return {
     cfg,
@@ -363,7 +363,7 @@ describe("Discord model picker interactions", () => {
 
   it("uses the hot-reloaded runtime config when old components reset to default", async () => {
     const context = createModelPickerContext();
-    (context.cfg as { agents?: OpenClawConfig["agents"] }).agents = {
+    (context.cfg as { agents?: OperatorConfig["agents"] }).agents = {
       defaults: {
         model: { primary: "openai/gpt-5.5" },
         models: {
@@ -382,7 +382,7 @@ describe("Discord model picker interactions", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     vi.spyOn(runtimeConfigSnapshotModule, "getRuntimeConfigSnapshot").mockReturnValue(runtimeCfg);
     vi.spyOn(runtimeConfigSnapshotModule, "getRuntimeConfigSourceSnapshot").mockReturnValue(
       runtimeCfg,
@@ -429,7 +429,7 @@ describe("Discord model picker interactions", () => {
 
   it("keeps a pending model stable when hot reload reorders the catalog", async () => {
     const context = createModelPickerContext();
-    const runtimeCfg = { ...context.cfg } as OpenClawConfig;
+    const runtimeCfg = { ...context.cfg } as OperatorConfig;
     vi.spyOn(runtimeConfigSnapshotModule, "getRuntimeConfigSnapshot").mockReturnValue(runtimeCfg);
     vi.spyOn(runtimeConfigSnapshotModule, "getRuntimeConfigSourceSnapshot").mockReturnValue(
       runtimeCfg,
@@ -544,7 +544,7 @@ describe("Discord model picker interactions", () => {
         "openai",
         [
           { id: "codex", label: "Codex", description: "Use Codex." },
-          { id: "openclaw", label: "OpenClaw Default", description: "Use OpenClaw." },
+          { id: "openclaw", label: "Operator Default", description: "Use Operator." },
         ],
       ],
     ]);
@@ -589,7 +589,7 @@ describe("Discord model picker interactions", () => {
         "openai",
         [
           { id: "codex", label: "Codex", description: "Use Codex." },
-          { id: "openclaw", label: "OpenClaw Default", description: "Use OpenClaw." },
+          { id: "openclaw", label: "Operator Default", description: "Use Operator." },
         ],
       ],
     ]);
@@ -631,7 +631,7 @@ describe("Discord model picker interactions", () => {
       [
         "anthropic",
         [
-          { id: "openclaw", label: "OpenClaw Default", description: "Use OpenClaw." },
+          { id: "openclaw", label: "Operator Default", description: "Use Operator." },
           { id: "claude-cli", label: "Claude CLI", description: "Use Claude CLI." },
         ],
       ],
@@ -829,7 +829,7 @@ describe("Discord model picker interactions", () => {
 
   it("keeps a recent model stable when hot reload shifts its slot", async () => {
     const context = createModelPickerContext();
-    const runtimeCfg = { ...context.cfg } as OpenClawConfig;
+    const runtimeCfg = { ...context.cfg } as OperatorConfig;
     vi.spyOn(runtimeConfigSnapshotModule, "getRuntimeConfigSnapshot").mockReturnValue(runtimeCfg);
     vi.spyOn(runtimeConfigSnapshotModule, "getRuntimeConfigSourceSnapshot").mockReturnValue(
       runtimeCfg,
@@ -1080,7 +1080,7 @@ describe("Discord model picker interactions", () => {
         "openai",
         [
           { id: "codex", label: "Codex", description: "Use Codex." },
-          { id: "openclaw", label: "OpenClaw Default", description: "Use OpenClaw." },
+          { id: "openclaw", label: "Operator Default", description: "Use Operator." },
         ],
       ],
     ]);
@@ -1188,7 +1188,7 @@ describe("Discord model picker interactions", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     await replyWithDiscordModelPickerProviders({
       interaction: interaction as never,

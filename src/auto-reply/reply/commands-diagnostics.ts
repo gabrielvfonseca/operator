@@ -13,8 +13,8 @@ import type { PluginCommandDiagnosticsSession, PluginCommandResult } from "../..
 import type { ReplyPayload } from "../types.js";
 import { rejectNonOwnerCommand } from "./command-gates.js";
 import {
-  buildCurrentOpenClawCliCommand,
-  buildCurrentOpenClawCliExecEnv,
+  buildCurrentOperatorCliCommand,
+  buildCurrentOperatorCliExecEnv,
 } from "./commands-operator-cli.js";
 import {
   deliverPrivateCommandReply,
@@ -251,7 +251,7 @@ function buildDiagnosticsApprovalRequest(params: HandleCommandsParams): ExecAppr
 }
 
 function buildGatewayDiagnosticsExportJsonCommand(): string {
-  return buildCurrentOpenClawCliCommand(["gateway", "diagnostics", "export", "--json"]);
+  return buildCurrentOperatorCliCommand(["gateway", "diagnostics", "export", "--json"]);
 }
 
 async function deliverPrivateDiagnosticsReply(params: {
@@ -302,7 +302,7 @@ async function requestGatewayDiagnosticsExportApproval(
     });
     const result = await execTool.execute("chat-diagnostics-gateway-export", {
       command,
-      env: buildCurrentOpenClawCliExecEnv(),
+      env: buildCurrentOperatorCliExecEnv(),
       security: "allowlist",
       ask: "always",
       background: true,
@@ -403,9 +403,9 @@ function hasCodexHarnessMetadata(params: HandleCommandsParams): boolean {
 
 function isCodexDiagnosticsUnavailableText(text: string | undefined): boolean {
   return (
-    text?.startsWith("No Codex thread is attached to this OpenClaw session yet.") === true ||
+    text?.startsWith("No Codex thread is attached to this Operator session yet.") === true ||
     text?.startsWith(
-      "Cannot send Codex diagnostics because this command did not include an OpenClaw session file.",
+      "Cannot send Codex diagnostics because this command did not include an Operator session file.",
     ) === true
   );
 }

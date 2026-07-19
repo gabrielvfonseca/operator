@@ -18,7 +18,7 @@ import {
   resolveStorePath,
   type SessionEntry,
 } from "../../config/sessions.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { triggerSessionPatchHook } from "../../gateway/session-patch-hooks.js";
 import { loadManifestMetadataSnapshot } from "../../plugins/manifest-contract-eligibility.js";
 import {
@@ -316,7 +316,7 @@ function formatSessionTaskLine(params: {
 }
 
 async function resolveModelOverride(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   raw: string;
   sessionEntry?: SessionEntry;
   agentId: string;
@@ -399,7 +399,7 @@ export function createSessionStatusTool(opts?: {
    * "current"})` to resolve to the live run session instead of the stale sandbox key.
    */
   runSessionKey?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   sandboxed?: boolean;
   activeModelProvider?: string;
   activeModelId?: string;

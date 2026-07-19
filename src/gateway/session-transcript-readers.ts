@@ -22,7 +22,7 @@ import type {
   SessionTranscriptUsageSnapshot,
 } from "./session-utils.fs.js";
 import {
-  attachOpenClawTranscriptMeta,
+  attachOperatorTranscriptMeta,
   buildSessionPreviewItems,
   readLatestSessionUsageFromTranscriptAsync as readLatestSessionUsageFromTranscriptAsyncFile,
   readRecentSessionMessagesAsync as readRecentSessionMessagesAsyncFile,
@@ -41,7 +41,7 @@ import {
 import type { SessionPreviewItem } from "./session-utils.types.js";
 
 export type { ReadSessionMessagesAsyncOptions };
-export { attachOpenClawTranscriptMeta, capArrayByJsonBytes } from "./session-utils.fs.js";
+export { attachOperatorTranscriptMeta, capArrayByJsonBytes } from "./session-utils.fs.js";
 
 export type { SessionTranscriptReadScope };
 
@@ -247,7 +247,7 @@ export function sqliteRecordMessageWithSeq(record: {
   recordTimestampMs?: number;
   seq: number;
 }): unknown {
-  return attachOpenClawTranscriptMeta(record.message, {
+  return attachOperatorTranscriptMeta(record.message, {
     ...(record.id ? { id: record.id } : {}),
     ...(record.recordTimestampMs !== undefined
       ? { recordTimestampMs: record.recordTimestampMs }

@@ -1,13 +1,13 @@
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../../infra/kysely-sync.js";
-import type { DB as OpenClawAgentKyselyDatabase } from "../../state/operator-agent-db.generated.js";
-import type { OpenClawAgentDatabase } from "../../state/operator-agent-db.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../../state/operator-agent-db.generated.js";
+import type { OperatorAgentDatabase } from "../../state/operator-agent-db.js";
 import type {
   SessionEntryStatus,
   SessionEntrySummary,
 } from "./session-accessor.sqlite-contract.js";
 import type { SessionEntry } from "./types.js";
 
-type SessionStatusDatabase = Pick<OpenClawAgentKyselyDatabase, "session_entries">;
+type SessionStatusDatabase = Pick<OperatorAgentKyselyDatabase, "session_entries">;
 
 export function normalizeSqliteStatus(value: unknown): SessionEntryStatus | null {
   return value === "running" ||
@@ -31,7 +31,7 @@ export function parseSqliteSessionEntryJson(row: { entry_json: string }): Sessio
 }
 
 export function readSqliteSessionEntriesByStatus(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   statuses: readonly SessionEntryStatus[],
   sessionKeys?: readonly string[],
 ): SessionEntrySummary[] {

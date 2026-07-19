@@ -3,12 +3,12 @@
  *
  * Shared builders for agent/session tests that need configured session scope.
  */
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 
 /** Builds a per-sender session config with optional targeted overrides. */
 export function createPerSenderSessionConfig(
-  overrides: Partial<NonNullable<OpenClawConfig["session"]>> = {},
-): NonNullable<OpenClawConfig["session"]> {
+  overrides: Partial<NonNullable<OperatorConfig["session"]>> = {},
+): NonNullable<OperatorConfig["session"]> {
   return {
     mainKey: "main",
     scope: "per-sender",

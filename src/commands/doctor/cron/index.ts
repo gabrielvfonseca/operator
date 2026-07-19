@@ -1,7 +1,7 @@
 // Doctor cron repair orchestration for legacy stores, run logs, payloads, and warnings.
 import { note } from "../../../../packages/terminal-core/src/note.js";
 import { formatCliCommand } from "../../../cli/command-format.js";
-import type { OpenClawConfig } from "../../../config/types.operator.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import { loadCronQuarantineFile, resolveCronJobsStorePath } from "../../../cron/store.js";
 import type { HealthFinding } from "../../../flows/health-checks.js";
 import { shortenHomePath } from "../../../utils.js";
@@ -103,7 +103,7 @@ function legacyCronStoreFinding(params: {
 }
 
 export async function collectLegacyCronStoreHealthFindings(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
 }): Promise<readonly HealthFinding[]> {
   let state: LegacyCronRepairState | null;
   try {
@@ -244,7 +244,7 @@ function noteLegacyCronRepairResult(result: LegacyCronRepairResult): void {
 
 /** Inspect cron storage and optionally repair legacy JSON/SQLite/payload shapes. */
 export async function maybeRepairLegacyCronStore(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   options: DoctorOptions;
   prompter: Pick<DoctorPrompter, "confirm">;
 }) {

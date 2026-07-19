@@ -1,6 +1,6 @@
 ---
 name: canvas
-description: "Present HTML on connected OpenClaw node canvases, navigate/eval/snapshot, and debug canvas host URLs."
+description: "Present HTML on connected Operator node canvases, navigate/eval/snapshot, and debug canvas host URLs."
 metadata: { "openclaw": { "emoji": "🖼️" } }
 ---
 
@@ -20,7 +20,7 @@ Use canvas to show HTML on connected Mac/iOS/Android nodes.
 
 ## Config
 
-Active config: `$OPENCLAW_CONFIG_PATH` or `~/.openclaw/openclaw.json`.
+Active config: `$OPERATOR_CONFIG_PATH` or `~/.openclaw/openclaw.json`.
 
 ```json
 {

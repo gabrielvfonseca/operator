@@ -4,9 +4,9 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
-  type OpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
+  type OperatorStateDatabase,
 } from "../../state/openclaw-state-db.js";
 import type { WorkerSessionPlacementIdentity } from "./placement-record.js";
 import {
@@ -22,19 +22,19 @@ const SESSION: WorkerSessionPlacementIdentity = {
 
 describe("worker session placement store", () => {
   let root: string;
-  let database: OpenClawStateDatabase;
+  let database: OperatorStateDatabase;
   let store: WorkerSessionPlacementStore;
   let nowMs: number;
 
   beforeEach(async () => {
     root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "openclaw-placement-"));
-    database = openOpenClawStateDatabase({ env: { OPENCLAW_STATE_DIR: root } });
+    database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: root } });
     nowMs = 1_000;
     store = createWorkerSessionPlacementStore({ database, now: () => nowMs });
   });
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await fs.rm(root, { recursive: true, force: true });
   });
 
@@ -503,8 +503,8 @@ describe("worker session placement store", () => {
       runId: "worker-restart-run",
     });
 
-    closeOpenClawStateDatabaseForTest();
-    database = openOpenClawStateDatabase({ env: { OPENCLAW_STATE_DIR: root } });
+    closeOperatorStateDatabaseForTest();
+    database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: root } });
     store = createWorkerSessionPlacementStore({ database, now: () => nowMs });
 
     expect(store.clearLocalTurnClaimsAfterRestart()).toBe(1);
@@ -966,8 +966,8 @@ describe("worker session placement store", () => {
       basePack,
     });
 
-    closeOpenClawStateDatabaseForTest();
-    database = openOpenClawStateDatabase({ env: { OPENCLAW_STATE_DIR: root } });
+    closeOperatorStateDatabaseForTest();
+    database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: root } });
     store = createWorkerSessionPlacementStore({ database, now: () => nowMs });
     expect(store.listWorkspaceReconciliationOwners()).toEqual([owner]);
     const loaded = store.loadWorkspaceReconciliation(owner);

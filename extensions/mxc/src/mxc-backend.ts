@@ -3,7 +3,7 @@ import { mkdtempSync, realpathSync, rmSync, statSync, writeFileSync } from "node
 import path from "node:path";
 import type { ContainerConfig } from "@microsoft/mxc-sdk";
 import { runCommandBuffered } from "openclaw/plugin-sdk/process-runtime";
-import { resolvePreferredOpenClawTmpDir } from "openclaw/plugin-sdk/sandbox";
+import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/sandbox";
 import type {
   SandboxBackendHandle,
   SandboxBackendExecSpec,
@@ -56,7 +56,7 @@ function createLauncherPayloadFile(
   payloadJson: string,
 ): MxcExecFinalizeToken & { payloadFile: string } {
   const payloadDir = mkdtempSync(
-    path.join(resolvePreferredOpenClawTmpDir(), "openclaw-mxc-payload-"),
+    path.join(resolvePreferredOperatorTmpDir(), "openclaw-mxc-payload-"),
   );
   const payloadFile = path.join(payloadDir, "payload.json");
   try {

@@ -81,8 +81,8 @@ describe("cleanupLegacyPluginDependencyState", () => {
     await fs.mkdir(path.join(stateDirectory, "plugin-runtime-deps"), { recursive: true });
 
     const env = {
-      OPENCLAW_STATE_DIR: stateDir,
-      OPENCLAW_PLUGIN_STAGE_DIR: explicitStageDir,
+      OPERATOR_STATE_DIR: stateDir,
+      OPERATOR_PLUGIN_STAGE_DIR: explicitStageDir,
       STATE_DIRECTORY: stateDirectory,
     };
     const targets = await collectLegacyPluginDependencyTargets(env, { packageRoot });
@@ -125,7 +125,7 @@ describe("cleanupLegacyPluginDependencyState", () => {
     await expectPathMissing(path.join(stateDirectory, "plugin-runtime-deps"));
   });
 
-  it("removes configured plugin stage roots outside OpenClaw roots", async () => {
+  it("removes configured plugin stage roots outside Operator roots", async () => {
     const stateDir = path.join(tempDir, "state");
     const packageRoot = path.join(tempDir, "package");
     const stageRoot = path.join(tempDir, "stage");
@@ -140,8 +140,8 @@ describe("cleanupLegacyPluginDependencyState", () => {
 
     const result = await cleanupLegacyPluginDependencyState({
       env: {
-        OPENCLAW_STATE_DIR: stateDir,
-        OPENCLAW_PLUGIN_STAGE_DIR: stageRoot,
+        OPERATOR_STATE_DIR: stateDir,
+        OPERATOR_PLUGIN_STAGE_DIR: stageRoot,
       },
       packageRoot,
     });
@@ -160,7 +160,7 @@ describe("cleanupLegacyPluginDependencyState", () => {
     await fs.mkdir(packageRoot, { recursive: true });
 
     const [issue] = await detectLegacyPluginDependencyStateIssues({
-      env: { OPENCLAW_STATE_DIR: stateDir },
+      env: { OPERATOR_STATE_DIR: stateDir },
       packageRoot,
     });
 
@@ -182,7 +182,7 @@ describe("cleanupLegacyPluginDependencyState", () => {
     await expectDirectoryPresent(legacyRuntimeRoot);
   });
 
-  it("refuses arbitrary explicit plugin stage roots outside OpenClaw roots", async () => {
+  it("refuses arbitrary explicit plugin stage roots outside Operator roots", async () => {
     const stateDir = path.join(tempDir, "state");
     const packageRoot = path.join(tempDir, "package");
     const stageRoot = path.join(tempDir, "stage-without-marker");
@@ -193,8 +193,8 @@ describe("cleanupLegacyPluginDependencyState", () => {
 
     const result = await cleanupLegacyPluginDependencyState({
       env: {
-        OPENCLAW_STATE_DIR: stateDir,
-        OPENCLAW_PLUGIN_STAGE_DIR: stageRoot,
+        OPERATOR_STATE_DIR: stateDir,
+        OPERATOR_PLUGIN_STAGE_DIR: stageRoot,
       },
       packageRoot,
     });
@@ -218,8 +218,8 @@ describe("cleanupLegacyPluginDependencyState", () => {
 
     const result = await cleanupLegacyPluginDependencyState({
       env: {
-        OPENCLAW_STATE_DIR: stateDir,
-        OPENCLAW_PLUGIN_STAGE_DIR: dotDotStage,
+        OPERATOR_STATE_DIR: stateDir,
+        OPERATOR_PLUGIN_STAGE_DIR: dotDotStage,
       },
       packageRoot,
     });
@@ -231,7 +231,7 @@ describe("cleanupLegacyPluginDependencyState", () => {
     await expectDirectoryPresent(resolvedDotDotStage);
   });
 
-  it("does not follow symlinked extension roots outside OpenClaw roots", async () => {
+  it("does not follow symlinked extension roots outside Operator roots", async () => {
     const stateDir = path.join(tempDir, "state");
     const packageRoot = path.join(tempDir, "package");
     const extensionsRoot = path.join(packageRoot, "extensions");
@@ -246,13 +246,13 @@ describe("cleanupLegacyPluginDependencyState", () => {
     await fs.symlink(externalPlugin, linkedPlugin, "dir");
 
     const targets = await collectLegacyPluginDependencyTargets(
-      { OPENCLAW_STATE_DIR: stateDir },
+      { OPERATOR_STATE_DIR: stateDir },
       { packageRoot },
     );
     expect(targets).not.toContain(path.join(linkedPlugin, "node_modules"));
 
     const result = await cleanupLegacyPluginDependencyState({
-      env: { OPENCLAW_STATE_DIR: stateDir },
+      env: { OPERATOR_STATE_DIR: stateDir },
       packageRoot,
     });
 
@@ -260,7 +260,7 @@ describe("cleanupLegacyPluginDependencyState", () => {
     await expectDirectoryPresent(externalNodeModules);
   });
 
-  it("refuses legacy roots that resolve outside OpenClaw roots", async () => {
+  it("refuses legacy roots that resolve outside Operator roots", async () => {
     const stateDir = path.join(tempDir, "state");
     const packageRoot = path.join(tempDir, "package");
     const legacyRuntimeRoot = path.join(stateDir, "plugin-runtime-deps");
@@ -272,13 +272,13 @@ describe("cleanupLegacyPluginDependencyState", () => {
     await fs.symlink(externalRuntimeRoot, legacyRuntimeRoot, "dir");
 
     const result = await cleanupLegacyPluginDependencyState({
-      env: { OPENCLAW_STATE_DIR: stateDir },
+      env: { OPERATOR_STATE_DIR: stateDir },
       packageRoot,
     });
 
     expect(result.changes).toStrictEqual([]);
     expect(result.warnings).toContain(
-      `Skipped legacy plugin dependency state ${legacyRuntimeRoot}: resolved outside OpenClaw cleanup roots`,
+      `Skipped legacy plugin dependency state ${legacyRuntimeRoot}: resolved outside Operator cleanup roots`,
     );
     expect((await fs.lstat(legacyRuntimeRoot)).isSymbolicLink()).toBe(true);
     await expectDirectoryPresent(externalRuntimeRoot);
@@ -311,13 +311,13 @@ describe("cleanupLegacyPluginDependencyState", () => {
     await fs.symlink(unsafeRuntimeTarget, leftPadLink, "dir");
 
     const result = await cleanupLegacyPluginDependencyState({
-      env: { OPENCLAW_STATE_DIR: stateDir },
+      env: { OPERATOR_STATE_DIR: stateDir },
       packageRoot,
     });
 
     expect(result.changes).toStrictEqual([]);
     expect(result.warnings).toContain(
-      `Skipped legacy plugin dependency state ${legacyRuntimeRoot}: resolved outside OpenClaw cleanup roots`,
+      `Skipped legacy plugin dependency state ${legacyRuntimeRoot}: resolved outside Operator cleanup roots`,
     );
     expect((await fs.lstat(leftPadLink)).isSymbolicLink()).toBe(true);
     expect((await fs.lstat(legacyRuntimeRoot)).isSymbolicLink()).toBe(true);
@@ -351,7 +351,7 @@ describe("cleanupLegacyPluginDependencyState", () => {
     await fs.symlink(liveTarget, liveLink, "dir");
 
     const result = await cleanupLegacyPluginDependencyState({
-      env: { OPENCLAW_STATE_DIR: stateDir },
+      env: { OPERATOR_STATE_DIR: stateDir },
       packageRoot,
     });
 

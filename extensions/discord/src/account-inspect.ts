@@ -8,7 +8,7 @@ import {
   resolveDefaultDiscordAccountId,
   resolveDiscordAccountConfig,
 } from "./accounts.js";
-import type { DiscordAccountConfig, OpenClawConfig } from "./runtime-api.js";
+import type { DiscordAccountConfig, OperatorConfig } from "./runtime-api.js";
 import type { DiscordCredentialStatus } from "./token.js";
 
 export type InspectedDiscordAccount = {
@@ -23,7 +23,7 @@ export type InspectedDiscordAccount = {
 };
 
 export function inspectDiscordAccount(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
   envToken?: string | null;
 }): InspectedDiscordAccount {

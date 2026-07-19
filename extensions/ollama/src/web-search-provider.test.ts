@@ -1,5 +1,5 @@
 // Ollama tests cover web search provider plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createStreamingResponse } from "../../test-support/streaming-error-response.js";
 import { createOllamaWebSearchProvider as createContractOllamaWebSearchProvider } from "../web-search-contract-api.js";
@@ -19,11 +19,11 @@ type OllamaProviderConfigOverride = Partial<{
   baseUrl: string;
   baseURL: string;
   models: NonNullable<
-    NonNullable<NonNullable<OpenClawConfig["models"]>["providers"]>[string]
+    NonNullable<NonNullable<OperatorConfig["models"]>["providers"]>[string]
   >["models"];
 }>;
 
-function createOllamaConfig(provider: OllamaProviderConfigOverride = {}): OpenClawConfig {
+function createOllamaConfig(provider: OllamaProviderConfigOverride = {}): OperatorConfig {
   return {
     models: {
       providers: {
@@ -38,7 +38,7 @@ function createOllamaConfig(provider: OllamaProviderConfigOverride = {}): OpenCl
   };
 }
 
-function createOllamaConfigWithWebSearchBaseUrl(baseUrl: string): OpenClawConfig {
+function createOllamaConfigWithWebSearchBaseUrl(baseUrl: string): OperatorConfig {
   return {
     ...createOllamaConfig(),
     plugins: {
@@ -77,7 +77,7 @@ function mockSuccessfulSearchResponse() {
   });
 }
 
-async function runOllamaWebSearchSetup(config: OpenClawConfig) {
+async function runOllamaWebSearchSetup(config: OperatorConfig) {
   const provider = createOllamaWebSearchProvider();
   if (!provider.runSetup) {
     throw new Error("Expected Ollama web search setup");
@@ -88,7 +88,7 @@ async function runOllamaWebSearchSetup(config: OpenClawConfig) {
 }
 
 async function runOllamaWebSearch(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   query: string;
   count?: number;
 }): Promise<Record<string, unknown>> {
@@ -245,7 +245,7 @@ describe("ollama web search provider", () => {
         JSON.stringify({
           results: [
             {
-              title: "OpenClaw",
+              title: "Operator",
               url: "https://openclaw.ai/docs",
               content: "Gateway docs and setup details",
             },

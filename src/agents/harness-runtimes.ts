@@ -2,14 +2,14 @@
  * Collects configured native harness runtime ids from model provider config.
  */
 import { parseModelCatalogRef } from "@operator/model-catalog-core/model-catalog-refs";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { isRecord } from "../utils.js";
 import { OPERATOR_AGENT_RUNTIME_ID, isDefaultAgentRuntimeId } from "./agent-runtime-id.js";
 import { normalizeOptionalAgentRuntimeId } from "./agent-runtime-id.js";
 import { resolveAgentHarnessPolicy } from "./harness/policy.js";
 
 // Harness runtime discovery feeds plugin preloading/setup. Only plugin runtimes
-// are selectable here; built-in OpenClaw/default runtime ids are excluded.
+// are selectable here; built-in Operator/default runtime ids are excluded.
 function normalizeConfiguredRuntimeId(value: unknown): string | undefined {
   return normalizeOptionalAgentRuntimeId(value);
 }
@@ -63,7 +63,7 @@ function parseConfiguredModelRef(
 }
 
 function resolveConfiguredModelHarnessRuntime(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   includeImplicitRuntimePreferences: boolean;
   modelRef: string;
   agentId?: string;
@@ -85,7 +85,7 @@ function resolveConfiguredModelHarnessRuntime(params: {
   return isSelectablePluginRuntime(runtime) ? runtime : undefined;
 }
 
-function pushConfiguredModelRuntimeIds(config: OpenClawConfig, runtimes: Set<string>): void {
+function pushConfiguredModelRuntimeIds(config: OperatorConfig, runtimes: Set<string>): void {
   for (const providerConfig of Object.values(config.models?.providers ?? {})) {
     const providerRuntime = normalizeConfiguredRuntimeId(providerConfig?.agentRuntime?.id);
     if (isSelectablePluginRuntime(providerRuntime)) {
@@ -122,7 +122,7 @@ function pushConfiguredModelRuntimeIds(config: OpenClawConfig, runtimes: Set<str
 }
 
 function pushConfiguredAgentModelRuntimeIds(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   runtimes: Set<string>,
   includeImplicitRuntimePreferences: boolean,
 ): void {
@@ -174,7 +174,7 @@ export type ConfiguredAgentHarnessRuntimeOptions = {
 
 /** Lists configured plugin harness runtime ids referenced by agent/model config. */
 export function collectConfiguredAgentHarnessRuntimes(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   options: ConfiguredAgentHarnessRuntimeOptions = {},
 ): string[] {
   const runtimes = new Set<string>();

@@ -1,11 +1,11 @@
 // Provider-index normalization tests cover preview catalogs, install metadata, auth choices, and malformed input.
 import { describe, expect, it } from "vitest";
-import { loadOpenClawProviderIndex } from "./index.js";
-import { normalizeOpenClawProviderIndex } from "./normalize.js";
+import { loadOperatorProviderIndex } from "./index.js";
+import { normalizeOperatorProviderIndex } from "./normalize.js";
 
-describe("OpenClaw provider index", () => {
+describe("Operator provider index", () => {
   it("normalizes provider preview catalog rows through model catalog validation", () => {
-    const index = normalizeOpenClawProviderIndex({
+    const index = normalizeOperatorProviderIndex({
       version: 1,
       providers: {
         Moonshot: {
@@ -105,7 +105,7 @@ describe("OpenClaw provider index", () => {
   });
 
   it("drops unsafe providers and malformed preview catalog rows", () => {
-    const index = normalizeOpenClawProviderIndex({
+    const index = normalizeOperatorProviderIndex({
       version: 1,
       providers: {
         ["__proto__"]: {
@@ -142,7 +142,7 @@ describe("OpenClaw provider index", () => {
   });
 
   it("loads the bundled provider index without runtime plugin loading", () => {
-    const index = loadOpenClawProviderIndex();
+    const index = loadOperatorProviderIndex();
 
     expect(index.providers.moonshot?.previewCatalog).not.toHaveProperty("api");
     expect(index.providers.moonshot?.previewCatalog).not.toHaveProperty("baseUrl");

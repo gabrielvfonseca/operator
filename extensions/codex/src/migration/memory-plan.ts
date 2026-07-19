@@ -27,7 +27,7 @@ async function assertSafeMemoryDestination(params: {
     isPathInside(canonicalSource, canonicalTarget) ||
     isPathInside(canonicalTarget, canonicalSource)
   ) {
-    throw new Error("Codex memory source and OpenClaw import destination must be separate paths.");
+    throw new Error("Codex memory source and Operator import destination must be separate paths.");
   }
 }
 
@@ -60,7 +60,7 @@ export async function buildCodexMemoryItems(params: {
         target,
         status: targetExists && !params.overwrite ? "conflict" : "planned",
         reason: targetExists && !params.overwrite ? MIGRATION_REASON_TARGET_EXISTS : undefined,
-        message: "Copy consolidated Codex memory into the OpenClaw memory index.",
+        message: "Copy consolidated Codex memory into the Operator memory index.",
         details: {
           sourceType: "codex-memory",
           sourceLabel: memory.label,

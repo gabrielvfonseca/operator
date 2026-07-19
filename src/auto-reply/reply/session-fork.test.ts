@@ -9,7 +9,7 @@ import {
   replaceSessionEntry,
 } from "../../config/sessions/session-accessor.js";
 import { replaceSqliteTranscriptEvents } from "../../config/sessions/session-accessor.sqlite.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import {
   forkSessionEntryFromParent,
   forkSessionFromParent,
@@ -167,7 +167,7 @@ describe("forkSessionEntryFromParent", () => {
 
     const result = await forkSessionEntryFromParent({
       agentId: "main",
-      config: { session: { store: configStorePath } } as OpenClawConfig,
+      config: { session: { store: configStorePath } } as OperatorConfig,
       fallbackEntry: { sessionId: "", updatedAt: 2 },
       parentSessionKey,
       parentStoreKeys: [parentSessionKey],

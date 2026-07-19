@@ -85,7 +85,7 @@ import {
   type MediaKind,
   normalizePollInput,
   probeVideoDimensions,
-  type OpenClawConfig,
+  type OperatorConfig,
   type PollInput,
   requireRuntimeConfig,
   resolveMarkdownTableMode,
@@ -121,7 +121,7 @@ const MAX_TELEGRAM_PHOTO_DIMENSION_SUM = 10_000;
 const MAX_TELEGRAM_PHOTO_ASPECT_RATIO = 20;
 
 type TelegramSendOpts = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   token?: string;
   accountId?: string;
   verbose?: boolean;
@@ -200,7 +200,7 @@ type TelegramOutboundSuccessLogParams = {
 };
 
 type TelegramReactionOpts = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   token?: string;
   accountId?: string;
   api?: TelegramApiOverride;
@@ -211,7 +211,7 @@ type TelegramReactionOpts = {
 };
 
 type TelegramTypingOpts = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   token?: string;
   accountId?: string;
   verbose?: boolean;
@@ -353,7 +353,7 @@ export function resetTelegramClientOptionsCacheForTests(): void {
   telegramClientOptionsCache.clear();
 }
 
-function createTelegramHttpLogger(cfg: OpenClawConfig) {
+function createTelegramHttpLogger(cfg: OperatorConfig) {
   const enabled = isDiagnosticFlagEnabled("telegram.http", cfg);
   if (!enabled) {
     return () => {};
@@ -546,7 +546,7 @@ async function resolveChatId(
 }
 
 async function resolveAndPersistChatId(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   api: TelegramApiOverride;
   lookupTarget: string;
   persistTarget: string;
@@ -656,7 +656,7 @@ async function withTelegramNativeQuoteFallback<T>(params: {
 }
 
 type TelegramApiContext = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   account: ResolvedTelegramAccount;
   api: TelegramApi;
   clientOptionsLease?: TelegramClientOptionsLease | undefined;
@@ -666,7 +666,7 @@ function resolveTelegramApiContext(opts: {
   token?: string;
   accountId?: string;
   api?: TelegramApiOverride;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
 }): TelegramApiContext {
   const cfg = requireRuntimeConfig(opts.cfg, "Telegram API context");
   const account = resolveTelegramAccount({
@@ -709,7 +709,7 @@ type TelegramRequestWithDiag = <T>(
 ) => Promise<T>;
 
 function createTelegramRequestWithDiag(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   account: ResolvedTelegramAccount;
   retry?: RetryConfig;
   verbose?: boolean;
@@ -793,7 +793,7 @@ function createRequestWithChatNotFound(params: {
 }
 
 function createTelegramNonIdempotentRequestWithDiag(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   account: ResolvedTelegramAccount;
   retry?: RetryConfig;
   verbose?: boolean;
@@ -1828,7 +1828,7 @@ async function reactMessageTelegramWithContext(
 }
 
 type TelegramDeleteOpts = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   token?: string;
   accountId?: string;
   notify?: boolean;
@@ -2108,7 +2108,7 @@ type TelegramEditOpts = {
   /** Use Telegram's media-caption edit endpoint, or fall back to it when text edits target media. */
   editMode?: "text" | "caption" | "auto";
   /** Resolved runtime config from the command or gateway boundary. */
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
 };
 
 type TelegramEditReplyMarkupOpts = {
@@ -2121,7 +2121,7 @@ type TelegramEditReplyMarkupOpts = {
   /** Inline keyboard buttons (reply markup). Pass empty array to remove buttons. */
   buttons?: TelegramInlineButtons;
   /** Resolved runtime config from the command or gateway boundary. */
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
 };
 
 export async function editMessageReplyMarkupTelegram(
@@ -2400,7 +2400,7 @@ function inferFilename(kind: MediaKind) {
 }
 
 type TelegramStickerOpts = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   token?: string;
   accountId?: string;
   verbose?: boolean;
@@ -2495,7 +2495,7 @@ async function sendStickerTelegramWithContext(
 }
 
 type TelegramPollOpts = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   token?: string;
   accountId?: string;
   verbose?: boolean;
@@ -2615,7 +2615,7 @@ async function sendPollTelegramWithContext(
 // ---------------------------------------------------------------------------
 
 type TelegramCreateForumTopicOpts = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   token?: string;
   accountId?: string;
   api?: TelegramApiOverride;

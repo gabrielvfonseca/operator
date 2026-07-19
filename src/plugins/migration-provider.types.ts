@@ -1,10 +1,10 @@
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginLogger } from "./logger-types.js";
 import type { PluginRuntime } from "./runtime/types.js";
 
-export type PluginConfigMigration = (config: OpenClawConfig) =>
+export type PluginConfigMigration = (config: OperatorConfig) =>
   | {
-      config: OpenClawConfig;
+      config: OperatorConfig;
       changes: string[];
     }
   | null
@@ -86,7 +86,7 @@ type MigrationProviderPreparation = {
 };
 
 export type MigrationProviderContext = {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   runtime?: PluginRuntime;
   logger: PluginLogger;
   stateDir: string;
@@ -122,7 +122,7 @@ export type MigrationProviderPlugin = {
 };
 
 type PluginSetupAutoEnableContext = {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   env: NodeJS.ProcessEnv;
 };
 

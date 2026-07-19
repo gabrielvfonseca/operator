@@ -1,7 +1,7 @@
 {
   "name": "@operator/cloudflare-ai-gateway-provider",
   "version": "2026.7.2",
-  "description": "OpenClaw Cloudflare AI Gateway provider plugin.",
+  "description": "Operator Cloudflare AI Gateway provider plugin.",
   "repository": {
     "type": "git",
     "url": "https://github.com/openclaw/openclaw"

@@ -2,7 +2,7 @@
 // background task handling, input media, and saved video output.
 import { MAX_VIDEO_BYTES } from "@operator/media-core/constants";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import * as mediaStore from "../../media/store.js";
 import * as webMedia from "../../media/web-media.js";
 import {
@@ -104,8 +104,8 @@ const GENERATION_PROVIDER_ENV_VARS = [
   "XAI_API_KEY",
 ];
 
-function asConfig(value: unknown): OpenClawConfig {
-  return value as OpenClawConfig;
+function asConfig(value: unknown): OperatorConfig {
+  return value as OperatorConfig;
 }
 
 function expectVideoGenerateTool(
@@ -135,7 +135,7 @@ function createAuthStore(providers: string[]): AuthProfileStore {
 }
 
 function createVideoProviderSnapshot(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   id: string;
   origin: PluginManifestRecord["origin"];
   referenceAudioInputs?: boolean;

@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   createPluginStateKeyedStoreForTests,
   createPluginStateSyncKeyedStoreForTests,
@@ -17,7 +17,7 @@ import type { TelegramRuntime } from "./runtime.types.js";
 
 const cfg = {
   session: { store: "/tmp/openclaw-telegram-outbound-context-test.json" },
-} satisfies OpenClawConfig;
+} satisfies OperatorConfig;
 
 function installTelegramStateRuntimeForTest(): void {
   setTelegramRuntime({
@@ -202,7 +202,7 @@ describe("recordOutboundMessageForPromptContext", () => {
       messageId: 1498,
       text: "Channel announcement",
     });
-    expect(initial).toMatchObject({ sender: "OpenClaw (you)", senderId: "0" });
+    expect(initial).toMatchObject({ sender: "Operator (you)", senderId: "0" });
 
     const cache = createPromptContextCache();
     await cache.record({
@@ -224,10 +224,10 @@ describe("recordOutboundMessageForPromptContext", () => {
       messageId: "1498",
     });
     expect(merged).toMatchObject({
-      sender: "OpenClaw (you)",
+      sender: "Operator (you)",
       senderId: "0",
       sourceMessage: {
-        from: { id: 0, is_bot: true, first_name: "OpenClaw (you)" },
+        from: { id: 0, is_bot: true, first_name: "Operator (you)" },
         sender_chat: { id: -1001, type: "channel", title: "Announcements" },
       },
     });

@@ -8,7 +8,7 @@ import type { WebSocket } from "ws";
 import type { JsonObject, JsonValue } from "../protocol.js";
 import { requireObject, requireString, requireStringArray } from "./json-rpc.js";
 import { resolveExecServerPath } from "./path-uri.js";
-import type { ManagedProcess, OpenClawExecServer, ProcessChunk } from "./types.js";
+import type { ManagedProcess, OperatorExecServer, ProcessChunk } from "./types.js";
 
 const ENV_KEY_RE = /^[A-Za-z_][A-Za-z0-9_]*$/;
 const RETAINED_PROCESS_OUTPUT_BYTES = 1024 * 1024;
@@ -16,7 +16,7 @@ const CLOSED_PROCESS_EVICTION_MS = 60_000;
 
 /** Starts a sandbox-backed process and registers it in the connection-local process table. */
 export async function startProcess(
-  execServer: OpenClawExecServer,
+  execServer: OperatorExecServer,
   processes: Map<string, ManagedProcess>,
   socket: WebSocket,
   params: JsonValue | undefined,
@@ -80,13 +80,13 @@ export async function startProcess(
 }
 
 async function runProcess(
-  execServer: OpenClawExecServer,
+  execServer: OperatorExecServer,
   managed: ManagedProcess,
   params: { argv: string[]; cwd: string; env: Record<string, string> },
 ): Promise<void> {
   const backend = execServer.sandbox.backend;
   if (!backend) {
-    throw new Error("OpenClaw sandbox backend is unavailable.");
+    throw new Error("Operator sandbox backend is unavailable.");
   }
   throwIfProcessStartCancelled(managed);
   const execSpec = await backend.buildExecSpec({
@@ -107,7 +107,7 @@ async function runProcess(
     }
     const [command, ...args] = execSpec.argv;
     if (!command) {
-      throw new Error("OpenClaw sandbox exec spec did not provide a command.");
+      throw new Error("Operator sandbox exec spec did not provide a command.");
     }
     child = spawn(command, args, {
       env: execSpec.env,

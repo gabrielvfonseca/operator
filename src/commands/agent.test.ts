@@ -26,7 +26,7 @@ import {
 import { parseSqliteSessionFileMarker } from "../config/sessions/sqlite-marker.js";
 import { clearSessionStoreCacheForTest } from "../config/sessions/store.js";
 import type { SessionEntry } from "../config/sessions/types.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { emitAgentEvent, onAgentEvent, resetAgentEventsForTest } from "../infra/agent-events.js";
 import type { PluginProviderRegistration } from "../plugins/registry.test-fixtures.js";
 import { resetPluginRuntimeStateForTest, setActivePluginRegistry } from "../plugins/runtime.js";
@@ -178,7 +178,7 @@ vi.mock("../agents/command/delivery.runtime.js", () => {
   return {
     deliverAgentCommandResult: vi.fn(
       async (params: {
-        cfg: OpenClawConfig;
+        cfg: OperatorConfig;
         deps: {
           sendMessageTelegram?: (
             to: string,
@@ -265,9 +265,9 @@ async function withTempHome<T>(fn: (home: string) => Promise<T>): Promise<T> {
 function mockConfig(
   home: string,
   storePath: string,
-  agentOverrides?: Partial<NonNullable<NonNullable<OpenClawConfig["agents"]>["defaults"]>>,
-  telegramOverrides?: Partial<NonNullable<NonNullable<OpenClawConfig["channels"]>["telegram"]>>,
-  agentsList?: NonNullable<NonNullable<OpenClawConfig["agents"]>["list"]>,
+  agentOverrides?: Partial<NonNullable<NonNullable<OperatorConfig["agents"]>["defaults"]>>,
+  telegramOverrides?: Partial<NonNullable<NonNullable<OperatorConfig["channels"]>["telegram"]>>,
+  agentsList?: NonNullable<NonNullable<OperatorConfig["agents"]>["list"]>,
 ) {
   const cfg = {
     agents: {
@@ -283,7 +283,7 @@ function mockConfig(
     channels: {
       telegram: telegramOverrides ? { ...telegramOverrides } : undefined,
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
   configIoMocks.loadConfig.mockReturnValue(cfg);
   return cfg;
 }
@@ -391,7 +391,7 @@ beforeEach(() => {
   vi.mocked(loadModelCatalog).mockResolvedValue([]);
   vi.mocked(modelSelectionModule.isCliProvider).mockImplementation(() => false);
   configIoMocks.readConfigFileSnapshotForWrite.mockResolvedValue({
-    snapshot: { valid: false, resolved: {} as OpenClawConfig },
+    snapshot: { valid: false, resolved: {} as OperatorConfig },
     writeOptions: {},
   });
 });
@@ -1004,7 +1004,7 @@ describe("agentCommand", () => {
 
       await agentCommand(
         {
-          message: "Reply with exactly OPENCLAW-MODEL-OK",
+          message: "Reply with exactly OPERATOR-MODEL-OK",
           agentId: "main",
           model: "openrouter/auto",
           modelRun: true,
@@ -1052,7 +1052,7 @@ describe("agentCommand", () => {
 
       await agentCommand(
         {
-          message: "Reply with exactly OPENCLAW-MODEL-OK",
+          message: "Reply with exactly OPERATOR-MODEL-OK",
           sessionKey,
           model: "openrouter/auto",
           modelRun: true,
@@ -1065,7 +1065,7 @@ describe("agentCommand", () => {
       const callArgs = getLastEmbeddedCall();
       expect(callArgs?.provider).toBe("openrouter");
       expect(callArgs?.model).toBe("openrouter/auto");
-      expect(callArgs?.prompt).toBe("Reply with exactly OPENCLAW-MODEL-OK");
+      expect(callArgs?.prompt).toBe("Reply with exactly OPERATOR-MODEL-OK");
       expect(callArgs?.modelRun).toBe(true);
       expect(callArgs?.promptMode).toBe("none");
       expect(callArgs?.disableTools).toBe(true);

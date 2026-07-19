@@ -1,6 +1,6 @@
 // Discord plugin module implements send.webhook behavior.
 import { recordChannelActivity } from "openclaw/plugin-sdk/channel-activity-runtime";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   readProviderJsonResponse,
   readResponseTextLimited,
@@ -22,7 +22,7 @@ import type { DiscordSendResult } from "./send.types.js";
 const DISCORD_WEBHOOK_ERROR_BODY_LIMIT_BYTES = 8 * 1024;
 
 type DiscordWebhookSendOpts = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   webhookId: string;
   webhookToken: string;
   accountId?: string;

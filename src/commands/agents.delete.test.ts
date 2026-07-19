@@ -7,7 +7,7 @@ import { resolveWorkspaceAttestationPaths } from "../agents/workspace.js";
 import { resolveStorePath } from "../config/sessions.js";
 import type { SessionEntry } from "../config/sessions.js";
 import { listSessionEntries, replaceSessionEntry } from "../config/sessions/session-accessor.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { withStateDirEnv } from "../test-helpers/state-dir-env.js";
 import { baseConfigSnapshot, createTestRuntime } from "./test-runtime-config-helpers.js";
 
@@ -62,7 +62,7 @@ import { agentsDeleteCommand } from "./agents.commands.delete.js";
 
 const runtime = createTestRuntime();
 
-function resolveFixtureStoreAgentId(cfg: OpenClawConfig, deletedAgentId: string): string {
+function resolveFixtureStoreAgentId(cfg: OperatorConfig, deletedAgentId: string): string {
   const storeConfig = cfg.session?.store;
   if (typeof storeConfig === "string" && !storeConfig.includes("{agentId}")) {
     return resolveDefaultAgentId(cfg);
@@ -72,7 +72,7 @@ function resolveFixtureStoreAgentId(cfg: OpenClawConfig, deletedAgentId: string)
 
 async function arrangeAgentsDeleteTest(params: {
   stateDir: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   deletedAgentId?: string;
   sessions: Record<string, { sessionId: string; updatedAt: number }>;
 }) {
@@ -152,14 +152,14 @@ describe("agents delete command", () => {
   it("routes deletion through the Gateway when reachable", async () => {
     await withStateDirEnv("openclaw-agents-delete-gateway-", async ({ stateDir }) => {
       const now = Date.now();
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           list: [
             { id: "main", workspace: path.join(stateDir, "workspace-main") },
             { id: "ops", workspace: path.join(stateDir, "workspace-ops") },
           ],
         },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       const sessions = {
         "agent:ops:main": { sessionId: "sess-ops-main", updatedAt: now + 1 },
         "agent:main:main": { sessionId: "sess-main", updatedAt: now + 2 },
@@ -195,14 +195,14 @@ describe("agents delete command", () => {
   it("falls back to local deletion when the optional Gateway probe needs credentials", async () => {
     await withStateDirEnv("openclaw-agents-delete-gateway-auth-", async ({ stateDir }) => {
       const now = Date.now();
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           list: [
             { id: "main", workspace: path.join(stateDir, "workspace-shared") },
             { id: "ops", workspace: path.join(stateDir, "workspace-shared") },
           ],
         },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       await arrangeAgentsDeleteTest({
         stateDir,
         cfg,
@@ -239,14 +239,14 @@ describe("agents delete command", () => {
   it("purges deleted agent entries from the session store", async () => {
     await withStateDirEnv("openclaw-agents-delete-", async ({ stateDir }) => {
       const now = Date.now();
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           list: [
             { id: "main", workspace: path.join(stateDir, "workspace-main") },
             { id: "ops", workspace: path.join(stateDir, "workspace-ops") },
           ],
         },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       const storePath = await arrangeAgentsDeleteTest({
         stateDir,
         cfg,
@@ -262,7 +262,7 @@ describe("agents delete command", () => {
       expect(runtime.exit).not.toHaveBeenCalled();
       expect(configMocks.replaceConfigFile).toHaveBeenCalledOnce();
       const replaceConfigFileCalls = configMocks.replaceConfigFile.mock.calls as unknown as Array<
-        [{ nextConfig: OpenClawConfig }]
+        [{ nextConfig: OperatorConfig }]
       >;
       expect(replaceConfigFileCalls[0]?.[0].nextConfig).toEqual({
         agents: { list: [{ id: "main", workspace: path.join(stateDir, "workspace-main") }] },
@@ -275,14 +275,14 @@ describe("agents delete command", () => {
 
   it("trashes workspace attestations during local deletion", async () => {
     await withStateDirEnv("openclaw-agents-delete-attestation-", async ({ stateDir }) => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           list: [
             { id: "main", workspace: path.join(stateDir, "workspace-main") },
             { id: "ops", workspace: path.join(stateDir, "workspace-ops") },
           ],
         },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       await arrangeAgentsDeleteTest({
         stateDir,
         cfg,
@@ -312,7 +312,7 @@ describe("agents delete command", () => {
   it("purges legacy main-alias entries owned by the deleted default agent", async () => {
     await withStateDirEnv("openclaw-agents-delete-main-alias-", async ({ stateDir }) => {
       const now = Date.now();
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           list: [{ id: "ops", default: true, workspace: path.join(stateDir, "workspace-ops") }],
         },
@@ -347,7 +347,7 @@ describe("agents delete command", () => {
   it("preserves shared-store legacy default keys when deleting another agent", async () => {
     await withStateDirEnv("openclaw-agents-delete-shared-store-", async ({ stateDir }) => {
       const now = Date.now();
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         session: { store: path.join(stateDir, "sessions.json") },
         agents: {
           list: [
@@ -393,14 +393,14 @@ describe("agents delete command", () => {
       );
 
       const now = Date.now();
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           list: [
             { id: "main", workspace: sharedWorkspace },
             { id: "ops", workspace: sharedWorkspace },
           ],
         },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       await arrangeAgentsDeleteTest({
         stateDir,
         cfg,
@@ -436,14 +436,14 @@ describe("agents delete command", () => {
       await fs.mkdir(childWorkspace, { recursive: true });
 
       const now = Date.now();
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           list: [
             { id: "main", workspace: sharedWorkspace },
             { id: "ops", workspace: childWorkspace },
           ],
         },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       await arrangeAgentsDeleteTest({
         stateDir,
         cfg,
@@ -471,14 +471,14 @@ describe("agents delete command", () => {
       await fs.mkdir(childWorkspace, { recursive: true });
 
       const now = Date.now();
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           list: [
             { id: "main", workspace: childWorkspace },
             { id: "ops", workspace: sharedWorkspace },
           ],
         },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       await arrangeAgentsDeleteTest({
         stateDir,
         cfg,
@@ -509,14 +509,14 @@ describe("agents delete command", () => {
         await fs.symlink(realWorkspace, aliasWorkspace, "dir");
 
         const now = Date.now();
-        const cfg: OpenClawConfig = {
+        const cfg: OperatorConfig = {
           agents: {
             list: [
               { id: "main", workspace: realWorkspace },
               { id: "ops", workspace: aliasWorkspace },
             ],
           },
-        } satisfies OpenClawConfig;
+        } satisfies OperatorConfig;
         await arrangeAgentsDeleteTest({
           stateDir,
           cfg,
@@ -548,14 +548,14 @@ describe("agents delete command", () => {
       await fs.mkdir(mainWorkspace, { recursive: true });
 
       const now = Date.now();
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           list: [
             { id: "main", workspace: mainWorkspace },
             { id: "ops", workspace: opsWorkspace },
           ],
         },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       await arrangeAgentsDeleteTest({
         stateDir,
         cfg,

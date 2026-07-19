@@ -18,7 +18,7 @@ const mocks = vi.hoisted(() => {
     }) satisfies AnyAgentTool;
 
   return {
-    createOpenClawToolsOptions: vi.fn(),
+    createOperatorToolsOptions: vi.fn(),
     stubTool,
   };
 });
@@ -26,8 +26,8 @@ const mocks = vi.hoisted(() => {
 vi.mock("./openclaw-tools.js", async (importOriginal) => {
   const actual = await importOriginal<typeof import("./openclaw-tools.js")>();
   return {
-    createOpenClawTools: (options: unknown) => {
-      mocks.createOpenClawToolsOptions(options);
+    createOperatorTools: (options: unknown) => {
+      mocks.createOperatorToolsOptions(options);
       return [mocks.stubTool("cron")];
     },
     filterToolsByClientCaps: actual.filterToolsByClientCaps,
@@ -36,35 +36,35 @@ vi.mock("./openclaw-tools.js", async (importOriginal) => {
 
 import "./test-helpers/fast-bash-tools.js";
 import "./test-helpers/fast-coding-tools.js";
-import { createOpenClawCodingTools } from "./agent-tools.js";
+import { createOperatorCodingTools } from "./agent-tools.js";
 
-function firstOpenClawToolsOptions(): { cronSelfRemoveOnlyJobId?: string } | undefined {
-  return mocks.createOpenClawToolsOptions.mock.calls[0]?.[0] as
+function firstOperatorToolsOptions(): { cronSelfRemoveOnlyJobId?: string } | undefined {
+  return mocks.createOperatorToolsOptions.mock.calls[0]?.[0] as
     | { cronSelfRemoveOnlyJobId?: string }
     | undefined;
 }
 
-describe("createOpenClawCodingTools cron scope", () => {
+describe("createOperatorCodingTools cron scope", () => {
   beforeEach(() => {
-    mocks.createOpenClawToolsOptions.mockClear();
+    mocks.createOperatorToolsOptions.mockClear();
   });
 
   it("scopes cron-triggered jobs to self-removal", () => {
-    const tools = createOpenClawCodingTools({
+    const tools = createOperatorCodingTools({
       trigger: "cron",
       jobId: "job-current",
     });
 
     expect(tools.map((tool) => tool.name)).toContain("cron");
-    expect(firstOpenClawToolsOptions()?.cronSelfRemoveOnlyJobId).toBe("job-current");
+    expect(firstOperatorToolsOptions()?.cronSelfRemoveOnlyJobId).toBe("job-current");
   });
 
   it("does not scope non-cron sessions", () => {
-    createOpenClawCodingTools({
+    createOperatorCodingTools({
       trigger: "user",
       jobId: "job-current",
     });
 
-    expect(firstOpenClawToolsOptions()?.cronSelfRemoveOnlyJobId).toBeUndefined();
+    expect(firstOperatorToolsOptions()?.cronSelfRemoveOnlyJobId).toBeUndefined();
   });
 });

@@ -3,9 +3,9 @@
  * Protects runtime-generated prompt blocks from user text and removes old
  * context formats before replaying or comparing messages.
  */
-/** Opening delimiter for protected OpenClaw runtime context blocks. */
+/** Opening delimiter for protected Operator runtime context blocks. */
 export const INTERNAL_RUNTIME_CONTEXT_BEGIN = "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>";
-/** Closing delimiter for protected OpenClaw runtime context blocks. */
+/** Closing delimiter for protected Operator runtime context blocks. */
 export const INTERNAL_RUNTIME_CONTEXT_END = "<<<END_OPERATOR_INTERNAL_CONTEXT>>>";
 
 const ESCAPED_INTERNAL_RUNTIME_CONTEXT_BEGIN = "[[OPERATOR_INTERNAL_CONTEXT_BEGIN]]";
@@ -16,14 +16,14 @@ export const OPERATOR_RUNTIME_CONTEXT_NOTICE =
   "This context is runtime-generated, not user-authored. Keep internal details private.";
 /** Header for context attached to the immediately preceding user message. */
 export const OPERATOR_NEXT_TURN_RUNTIME_CONTEXT_HEADER =
-  "OpenClaw runtime context for the immediately preceding user message.";
+  "Operator runtime context for the immediately preceding user message.";
 /** Header for runtime events passed as prompt context. */
-export const OPERATOR_RUNTIME_EVENT_HEADER = "OpenClaw runtime event.";
+export const OPERATOR_RUNTIME_EVENT_HEADER = "Operator runtime event.";
 /** Custom message type used for structured runtime-context messages. */
 export const OPERATOR_RUNTIME_CONTEXT_CUSTOM_TYPE = "operator.runtime-context";
 
 const LEGACY_INTERNAL_CONTEXT_HEADER =
-  ["OpenClaw runtime context (internal):", OPERATOR_RUNTIME_CONTEXT_NOTICE, ""].join("\n") + "\n";
+  ["Operator runtime context (internal):", OPERATOR_RUNTIME_CONTEXT_NOTICE, ""].join("\n") + "\n";
 
 const LEGACY_INTERNAL_EVENT_MARKER = "[Internal task completion event]";
 const LEGACY_INTERNAL_EVENT_SEPARATOR = "\n\n---\n\n";
@@ -262,7 +262,7 @@ export function hasInternalRuntimeContext(text: string): boolean {
   );
 }
 
-function isOpenClawRuntimeContextCustomMessage(message: unknown): boolean {
+function isOperatorRuntimeContextCustomMessage(message: unknown): boolean {
   if (!message || typeof message !== "object") {
     return false;
   }
@@ -274,10 +274,10 @@ function isOpenClawRuntimeContextCustomMessage(message: unknown): boolean {
 
 /** Remove all structured runtime-context custom messages. */
 export function stripRuntimeContextCustomMessages<T>(messages: T[]): T[] {
-  if (!messages.some(isOpenClawRuntimeContextCustomMessage)) {
+  if (!messages.some(isOperatorRuntimeContextCustomMessage)) {
     return messages;
   }
-  return messages.filter((message) => !isOpenClawRuntimeContextCustomMessage(message));
+  return messages.filter((message) => !isOperatorRuntimeContextCustomMessage(message));
 }
 
 function isUserMessage(message: unknown): boolean {
@@ -288,22 +288,22 @@ function isUserMessage(message: unknown): boolean {
 
 /** Keeps only current-turn runtime context positioned immediately before the active user. */
 export function stripHistoricalRuntimeContextCustomMessages<T>(messages: T[]): T[] {
-  if (!messages.some(isOpenClawRuntimeContextCustomMessage)) {
+  if (!messages.some(isOperatorRuntimeContextCustomMessage)) {
     return messages;
   }
   const lastUserIndex = messages.findLastIndex(isUserMessage);
   if (lastUserIndex === -1) {
-    return messages.filter((message) => !isOpenClawRuntimeContextCustomMessage(message));
+    return messages.filter((message) => !isOperatorRuntimeContextCustomMessage(message));
   }
   const currentRuntimeContextIndexes = new Set<number>();
   for (let index = lastUserIndex - 1; index >= 0; index -= 1) {
-    if (!isOpenClawRuntimeContextCustomMessage(messages[index])) {
+    if (!isOperatorRuntimeContextCustomMessage(messages[index])) {
       break;
     }
     currentRuntimeContextIndexes.add(index);
   }
   return messages.filter((message, index) => {
-    if (!isOpenClawRuntimeContextCustomMessage(message)) {
+    if (!isOperatorRuntimeContextCustomMessage(message)) {
       return true;
     }
     return currentRuntimeContextIndexes.has(index);
@@ -328,7 +328,7 @@ export function stripHistoricalRuntimeContextCustomMessages<T>(messages: T[]): T
  */
 export function relocateCurrentRuntimeContextCarrierToTail<T>(messages: T[]): T[] {
   const lastIndex = messages.length - 1;
-  if (lastIndex < 0 || !messages.some(isOpenClawRuntimeContextCustomMessage)) {
+  if (lastIndex < 0 || !messages.some(isOperatorRuntimeContextCustomMessage)) {
     return messages;
   }
   // Already tail-placed (a contiguous carrier run ends the array): no-op so the
@@ -336,11 +336,11 @@ export function relocateCurrentRuntimeContextCarrierToTail<T>(messages: T[]): T[
   let firstNonCarrierFromEnd = lastIndex;
   while (
     firstNonCarrierFromEnd >= 0 &&
-    isOpenClawRuntimeContextCustomMessage(messages[firstNonCarrierFromEnd])
+    isOperatorRuntimeContextCustomMessage(messages[firstNonCarrierFromEnd])
   ) {
     firstNonCarrierFromEnd -= 1;
   }
-  const rest = messages.filter((message) => !isOpenClawRuntimeContextCustomMessage(message));
+  const rest = messages.filter((message) => !isOperatorRuntimeContextCustomMessage(message));
   // No active user turn to anchor after — leave placement to the strip pass.
   if (!rest.some(isUserMessage)) {
     return messages;
@@ -348,6 +348,6 @@ export function relocateCurrentRuntimeContextCarrierToTail<T>(messages: T[]): T[
   if (firstNonCarrierFromEnd === rest.length - 1) {
     return messages;
   }
-  const carriers = messages.filter(isOpenClawRuntimeContextCustomMessage);
+  const carriers = messages.filter(isOperatorRuntimeContextCustomMessage);
   return [...rest, ...carriers];
 }

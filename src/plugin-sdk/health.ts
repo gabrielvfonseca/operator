@@ -3,7 +3,7 @@
  */
 export { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../agents/agent-scope.js";
 export { readConfigFileSnapshot } from "../config/config.js";
-export type { OpenClawConfig } from "../config/types.operator.js";
+export type { OperatorConfig } from "../config/types.operator.js";
 export {
   configValidationIssuesToHealthFindings,
   registerCoreHealthChecks,

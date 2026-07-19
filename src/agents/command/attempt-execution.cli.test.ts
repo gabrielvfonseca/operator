@@ -16,10 +16,10 @@ import {
   parseSqliteSessionFileMarker,
 } from "../../config/sessions/sqlite-marker.js";
 import { clearSessionStoreCacheForTest } from "../../config/sessions/store.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import { createUserTurnTranscriptRecorder } from "../../sessions/user-turn-transcript.js";
 import { createTestUserTurnTranscriptTarget } from "../../sessions/user-turn-transcript.test-support.js";
-import { closeOpenClawAgentDatabasesForTest } from "../../state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../state/openclaw-agent-db.js";
 import { registerGeneratedMediaTaskActivity } from "../../tasks/generated-media-task-activity.js";
 import { resetGeneratedMediaTaskActivityForTests } from "../../tasks/task-runtime.test-helpers.js";
 import { captureEnv, setTestEnvValue } from "../../test-utils/env.js";
@@ -78,7 +78,7 @@ vi.mock("../cli-runner/claude-live-session.js", () => ({
 }));
 
 vi.mock("../model-selection.js", () => ({
-  isCliProvider: (provider: string, cfg?: OpenClawConfig) => {
+  isCliProvider: (provider: string, cfg?: OperatorConfig) => {
     const normalized = provider.trim().toLowerCase();
     return (
       normalized === "claude-cli" ||
@@ -109,7 +109,7 @@ vi.mock("../model-runtime-aliases.js", async () => {
       modelId,
     }: {
       provider?: string;
-      cfg?: OpenClawConfig;
+      cfg?: OperatorConfig;
       modelId?: string;
     }) => {
       const key = provider && modelId ? `${provider}/${modelId}` : undefined;
@@ -242,7 +242,7 @@ function firstRunCliAgentArg(callIndex = 0) {
 }
 
 function firstEmbeddedAgentArg(callIndex = 0) {
-  return requireMockArg(runEmbeddedAgentMock, callIndex, "embedded OpenClaw agent argument");
+  return requireMockArg(runEmbeddedAgentMock, callIndex, "embedded Operator agent argument");
 }
 
 describe("CLI attempt execution", () => {
@@ -250,7 +250,7 @@ describe("CLI attempt execution", () => {
   let storePath: string;
   let homeEnvSnapshot: ReturnType<typeof captureEnv> | undefined;
 
-  async function runOpenClawEmbeddedAttemptForTest(overrides?: {
+  async function runOperatorEmbeddedAttemptForTest(overrides?: {
     opts?: Partial<RunAgentAttemptParams["opts"]>;
     runId?: string;
     body?: string;
@@ -282,7 +282,7 @@ describe("CLI attempt execution", () => {
       originalProvider: "openai",
       modelOverride: overrides?.modelOverride ?? "gpt-5.4",
       configuredAuthProfileId: overrides?.configuredAuthProfileId,
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -318,7 +318,7 @@ describe("CLI attempt execution", () => {
   }
 
   beforeEach(async () => {
-    homeEnvSnapshot = captureEnv(["HOME", "OPENCLAW_STATE_DIR"]);
+    homeEnvSnapshot = captureEnv(["HOME", "OPERATOR_STATE_DIR"]);
     tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-cli-attempt-"));
     storePath = path.join(tmpDir, "sessions.json");
     runCliAgentMock.mockReset();
@@ -334,7 +334,7 @@ describe("CLI attempt execution", () => {
     for (const [sessionKey, entry] of Object.entries(sessionStore)) {
       await replaceSessionEntry({ sessionKey, storePath }, entry);
     }
-    closeOpenClawAgentDatabasesForTest();
+    closeOperatorAgentDatabasesForTest();
   }
 
   function readSessionStore(): Record<string, SessionEntry> {
@@ -347,7 +347,7 @@ describe("CLI attempt execution", () => {
     vi.useRealTimers();
     homeEnvSnapshot?.restore();
     homeEnvSnapshot = undefined;
-    closeOpenClawAgentDatabasesForTest();
+    closeOperatorAgentDatabasesForTest();
     await fs.rm(tmpDir, { recursive: true, force: true });
   });
 
@@ -363,7 +363,7 @@ describe("CLI attempt execution", () => {
       providerOverride: "claude-cli",
       originalProvider: "claude-cli",
       modelOverride: "opus",
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionEntry: params.sessionEntry,
       sessionId: params.sessionEntry.sessionId,
       sessionKey: params.sessionKey,
@@ -480,7 +480,7 @@ describe("CLI attempt execution", () => {
       providerOverride: "claude-cli",
       originalProvider: "claude-cli",
       modelOverride: "opus",
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -638,7 +638,7 @@ describe("CLI attempt execution", () => {
       providerOverride: "claude-cli",
       originalProvider: "claude-cli",
       modelOverride: "opus",
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -916,7 +916,7 @@ describe("CLI attempt execution", () => {
       providerOverride: "codex-cli",
       originalProvider: "codex-cli",
       modelOverride: "gpt-5.4",
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -953,7 +953,7 @@ describe("CLI attempt execution", () => {
       updatedAt: Date.now(),
     };
     const sessionStore: Record<string, SessionEntry> = { [sessionKey]: sessionEntry };
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       agents: {
         defaults: {
           agentRuntime: { id: "codex" },
@@ -1043,7 +1043,7 @@ describe("CLI attempt execution", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -1113,7 +1113,7 @@ describe("CLI attempt execution", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -1182,7 +1182,7 @@ describe("CLI attempt execution", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         sessionEntry,
         sessionId: sessionEntry.sessionId,
         sessionKey,
@@ -1263,7 +1263,7 @@ describe("CLI attempt execution", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -1336,7 +1336,7 @@ describe("CLI attempt execution", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -1374,7 +1374,7 @@ describe("CLI attempt execution", () => {
       const sessionId = `internal-${visibleSessionId}`;
       const sessionKey = `agent:main:internal-session-effects:${visibleSessionId}`;
       setTestEnvValue("HOME", tmpDir);
-      setTestEnvValue("OPENCLAW_STATE_DIR", path.join(tmpDir, "state"));
+      setTestEnvValue("OPERATOR_STATE_DIR", path.join(tmpDir, "state"));
       const internalStorePath = path.join(tmpDir, "sessions.json");
       const internalSessionFile = formatSqliteSessionFileMarker({
         agentId: "main",
@@ -1861,9 +1861,9 @@ describe("CLI attempt execution", () => {
 
     const updatedEntry = await persistCliTranscriptEntry({
       body: [
-        "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+        "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
         "secret runtime context",
-        "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+        "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
         "",
         "visible ask",
       ].join("\n"),
@@ -1900,7 +1900,7 @@ describe("CLI attempt execution", () => {
       providerOverride: "claude-cli",
       originalProvider: "claude-cli",
       modelOverride: "opus",
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -1965,7 +1965,7 @@ describe("CLI attempt execution", () => {
       providerOverride: "claude-cli",
       originalProvider: "claude-cli",
       modelOverride: "opus",
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -2019,7 +2019,7 @@ describe("CLI attempt execution", () => {
             "claude-cli": ["claude-cli:work"],
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -2089,7 +2089,7 @@ describe("CLI attempt execution", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -2163,7 +2163,7 @@ describe("CLI attempt execution", () => {
       providerOverride: "claude-cli",
       originalProvider: "claude-cli",
       modelOverride: "opus",
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -2223,7 +2223,7 @@ describe("CLI attempt execution", () => {
       providerOverride: "claude-cli",
       originalProvider: "claude-cli",
       modelOverride: "opus",
-      cfg: { agents: { defaults: { userTimezone: "UTC" } } } as OpenClawConfig,
+      cfg: { agents: { defaults: { userTimezone: "UTC" } } } as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -2285,7 +2285,7 @@ describe("CLI attempt execution", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -2322,7 +2322,7 @@ describe("CLI attempt execution", () => {
     });
     expect(fallbackRuntimeState.originRuntime).toBe("cli");
 
-    const fallbackArg = await runOpenClawEmbeddedAttemptForTest({
+    const fallbackArg = await runOperatorEmbeddedAttemptForTest({
       runId: "run-canonical-claude-cli-fallback",
       isFallbackRetry: true,
       fallbackRuntimeState,
@@ -2353,7 +2353,7 @@ describe("CLI attempt execution", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -2415,7 +2415,7 @@ describe("CLI attempt execution", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -2462,7 +2462,7 @@ describe("CLI attempt execution", () => {
   });
 
   it("keeps live stream output for visible subagent lane runs", async () => {
-    const embeddedArg = await runOpenClawEmbeddedAttemptForTest({
+    const embeddedArg = await runOperatorEmbeddedAttemptForTest({
       opts: { lane: "subagent" },
       runId: "visible-subagent-stream",
     });
@@ -2471,7 +2471,7 @@ describe("CLI attempt execution", () => {
   });
 
   it("forwards Gateway plugin runtime binding to embedded runs", async () => {
-    const embeddedArg = await runOpenClawEmbeddedAttemptForTest({
+    const embeddedArg = await runOperatorEmbeddedAttemptForTest({
       opts: { allowGatewaySubagentBinding: true },
       runId: "gateway-plugin-runtime-binding",
     });
@@ -2480,7 +2480,7 @@ describe("CLI attempt execution", () => {
   });
 
   it("suppresses live stream output for hidden internal runs", async () => {
-    const embeddedArg = await runOpenClawEmbeddedAttemptForTest({
+    const embeddedArg = await runOperatorEmbeddedAttemptForTest({
       opts: { lane: "subagent", sessionEffects: "internal" },
       runId: "internal-subagent-stream",
     });
@@ -2499,7 +2499,7 @@ describe("CLI attempt execution", () => {
       }),
     });
     const images = [{ type: "image" as const, data: "aGVsbG8=", mimeType: "image/png" }];
-    const embeddedArg = await runOpenClawEmbeddedAttemptForTest({
+    const embeddedArg = await runOperatorEmbeddedAttemptForTest({
       runId: "embedded-image-turn",
       body: "runtime image prompt",
       transcriptBody: "canonical image caption",
@@ -2525,7 +2525,7 @@ describe("CLI attempt execution", () => {
     async ({ originRuntime, retry, expectedImages }) => {
       const images = [{ type: "image" as const, data: "aGVsbG8=", mimeType: "image/png" }];
       const imageOrder = ["inline" as const];
-      const embeddedArg = await runOpenClawEmbeddedAttemptForTest({
+      const embeddedArg = await runOperatorEmbeddedAttemptForTest({
         runId: `embedded-image-fallback-${originRuntime ?? "unset"}-${retry}`,
         isFallbackRetry: retry,
         fallbackRuntimeState: originRuntime === undefined ? undefined : { originRuntime },
@@ -2541,7 +2541,7 @@ describe("CLI attempt execution", () => {
     const images = [{ type: "image" as const, data: "aGVsbG8=", mimeType: "image/png" }];
     const fallbackRuntimeState: NonNullable<RunAgentAttemptParams["fallbackRuntimeState"]> = {};
 
-    const firstArg = await runOpenClawEmbeddedAttemptForTest({
+    const firstArg = await runOperatorEmbeddedAttemptForTest({
       runId: "raw-cli-shaped-origin",
       providerOverride: "claude-cli",
       modelOverride: "claude-opus-4-7",
@@ -2551,7 +2551,7 @@ describe("CLI attempt execution", () => {
     expect(fallbackRuntimeState.originRuntime).toBe("embedded");
     expect(firstArg.images).toEqual(images);
 
-    const retryArg = await runOpenClawEmbeddedAttemptForTest({
+    const retryArg = await runOperatorEmbeddedAttemptForTest({
       runId: "raw-cli-shaped-origin-retry",
       providerOverride: "claude-cli",
       modelOverride: "claude-opus-4-7",
@@ -2595,7 +2595,7 @@ describe("CLI attempt execution", () => {
       providerOverride: "fixture",
       originalProvider: "fixture",
       modelOverride: "fixture-model",
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -2679,7 +2679,7 @@ describe("CLI attempt execution", () => {
         providerOverride: "openai",
         originalProvider: "openai",
         modelOverride: "gpt-5.4",
-        cfg: {} as OpenClawConfig,
+        cfg: {} as OperatorConfig,
         sessionEntry,
         sessionId: sessionEntry.sessionId,
         sessionKey,
@@ -2738,7 +2738,7 @@ describe("CLI attempt execution", () => {
             agentRuntime: { id: "claude-cli" },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -2809,7 +2809,7 @@ describe("CLI attempt execution", () => {
       providerOverride: "openai",
       originalProvider: "openai",
       modelOverride: "gpt-5.4",
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -2858,7 +2858,7 @@ describe("CLI attempt execution", () => {
       providerOverride: "claude-cli",
       originalProvider: "claude-cli",
       modelOverride: "claude-opus-4-7",
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey,
@@ -2895,7 +2895,7 @@ describe("CLI attempt execution", () => {
   });
 
   it("replaces a stale automatic session profile with the configured model profile", async () => {
-    const embeddedArg = await runOpenClawEmbeddedAttemptForTest({
+    const embeddedArg = await runOperatorEmbeddedAttemptForTest({
       runId: "configured-auth-replaces-auto",
       configuredAuthProfileId: "openai:verified",
       sessionEntry: {
@@ -2911,7 +2911,7 @@ describe("CLI attempt execution", () => {
   });
 
   it("preserves an explicit session profile over the configured model profile", async () => {
-    const embeddedArg = await runOpenClawEmbeddedAttemptForTest({
+    const embeddedArg = await runOperatorEmbeddedAttemptForTest({
       runId: "session-auth-over-configured",
       configuredAuthProfileId: "openai:verified",
       sessionEntry: {
@@ -2953,7 +2953,7 @@ describe("embedded attempt harness pinning", () => {
       providerOverride: "openai",
       originalProvider: "openai",
       modelOverride: "gpt-5.4",
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey: "agent:main:main",
@@ -3012,7 +3012,7 @@ describe("embedded attempt harness pinning", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       sessionEntry,
       agentHarnessRuntimeOverride: "codex",
       sessionId: sessionEntry.sessionId,
@@ -3061,7 +3061,7 @@ describe("embedded attempt harness pinning", () => {
       providerOverride: "minimax",
       originalProvider: "minimax",
       modelOverride: "minimax-m2.7",
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey: "agent:main:main",
@@ -3108,7 +3108,7 @@ describe("embedded attempt harness pinning", () => {
             cliBackends: { "claude-cli": { command: "claude" } },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey: "agent:main:main",
@@ -3154,7 +3154,7 @@ describe("embedded attempt harness pinning", () => {
       providerOverride: "openai",
       originalProvider: "openai",
       modelOverride: "gpt-5.4",
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey: "agent:main:main",
@@ -3206,7 +3206,7 @@ describe("embedded attempt harness pinning", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey: "agent:main:main",
@@ -3271,7 +3271,7 @@ describe("embedded attempt harness pinning", () => {
         providerOverride: "openai",
         originalProvider: "openai",
         modelOverride: "gpt-5.4",
-        cfg: {} as OpenClawConfig,
+        cfg: {} as OperatorConfig,
         sessionEntry,
         sessionId: sessionEntry.sessionId,
         sessionKey: "agent:main:main",
@@ -3318,7 +3318,7 @@ describe("embedded attempt harness pinning", () => {
       providerOverride: "openai",
       originalProvider: "openai",
       modelOverride: "gpt-5.4",
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey: "agent:main:main",
@@ -3345,7 +3345,7 @@ describe("embedded attempt harness pinning", () => {
     expectMockArgFields(runEmbeddedAgentMock, { agentHarnessId: undefined });
   });
 
-  it("honors a resolved persisted OpenClaw harness", async () => {
+  it("honors a resolved persisted Operator harness", async () => {
     const sessionEntry: SessionEntry = {
       sessionId: "stale-agent-session",
       updatedAt: Date.now(),
@@ -3359,7 +3359,7 @@ describe("embedded attempt harness pinning", () => {
       providerOverride: "openai",
       originalProvider: "openai",
       modelOverride: "gpt-5.4",
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionEntry,
       agentHarnessRuntimeOverride: "openclaw",
       sessionId: sessionEntry.sessionId,
@@ -3391,7 +3391,7 @@ describe("embedded attempt harness pinning", () => {
     });
   });
 
-  it("honors an explicit OpenClaw session runtime override", async () => {
+  it("honors an explicit Operator session runtime override", async () => {
     const sessionEntry: SessionEntry = {
       sessionId: "explicit-openclaw-session",
       updatedAt: Date.now(),
@@ -3406,7 +3406,7 @@ describe("embedded attempt harness pinning", () => {
       providerOverride: "openai",
       originalProvider: "openai",
       modelOverride: "gpt-5.6-luna",
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionEntry,
       agentHarnessRuntimeOverride: "openclaw",
       sessionId: sessionEntry.sessionId,
@@ -3440,7 +3440,7 @@ describe("embedded attempt harness pinning", () => {
     });
   });
 
-  it("routes explicit OpenAI native runs with legacy Codex OAuth through OpenClaw", async () => {
+  it("routes explicit OpenAI native runs with legacy Codex OAuth through Operator", async () => {
     const sessionEntry: SessionEntry = {
       sessionId: "explicit-agent-codex-oauth-session",
       updatedAt: Date.now(),
@@ -3465,7 +3465,7 @@ describe("embedded attempt harness pinning", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey: "agent:main:main",
@@ -3518,7 +3518,7 @@ describe("embedded attempt harness pinning", () => {
             agentRuntime: { id: "claude-cli" },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       sessionEntry,
       sessionId: sessionEntry.sessionId,
       sessionKey: "agent:main:main",

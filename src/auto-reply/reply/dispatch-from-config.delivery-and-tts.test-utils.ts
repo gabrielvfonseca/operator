@@ -1,6 +1,6 @@
 // Imported by dispatch-from-config.test.ts to keep its mocked suite in one Vitest module graph.
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import {
   createDiagnosticTraceContext,
   getActiveDiagnosticTraceContext,
@@ -240,7 +240,7 @@ describe("dispatchReplyFromConfig", () => {
     expect(replyResolver).not.toHaveBeenCalled();
   });
 
-  it("falls back to OpenClaw once per startup when a bound plugin is missing", async () => {
+  it("falls back to Operator once per startup when a bound plugin is missing", async () => {
     setNoAbort();
     hookMocks.runner.hasHooks.mockImplementation(
       ((hookName?: string) =>
@@ -325,7 +325,7 @@ describe("dispatchReplyFromConfig", () => {
     expect(hookMocks.runner.runInboundClaim).not.toHaveBeenCalled();
   });
 
-  it("falls back to OpenClaw when the bound plugin is loaded but has no inbound_claim handler", async () => {
+  it("falls back to Operator when the bound plugin is loaded but has no inbound_claim handler", async () => {
     setNoAbort();
     hookMocks.runner.hasHooks.mockImplementation(
       ((hookName?: string) =>
@@ -489,7 +489,7 @@ describe("dispatchReplyFromConfig", () => {
         RawBody: "hello",
         Body: "hello",
       }),
-      cfg: { diagnostics: { enabled: true } } as OpenClawConfig,
+      cfg: { diagnostics: { enabled: true } } as OperatorConfig,
       dispatcher,
       replyResolver,
     });
@@ -519,7 +519,7 @@ describe("dispatchReplyFromConfig", () => {
 
   it("marks diagnostics skipped for duplicate inbound messages", async () => {
     setNoAbort();
-    const cfg = { diagnostics: { enabled: true } } as OpenClawConfig;
+    const cfg = { diagnostics: { enabled: true } } as OperatorConfig;
     const ctx = buildTestCtx({
       Provider: "whatsapp",
       OriginatingChannel: "whatsapp",
@@ -560,7 +560,7 @@ describe("dispatchReplyFromConfig", () => {
 
   it("keeps duplicate skip diagnostics inside the active inbound trace", async () => {
     setNoAbort();
-    const cfg = { diagnostics: { enabled: true } } as OpenClawConfig;
+    const cfg = { diagnostics: { enabled: true } } as OperatorConfig;
     const ctx = buildTestCtx({
       Provider: "whatsapp",
       OriginatingChannel: "whatsapp",
@@ -608,7 +608,7 @@ describe("dispatchReplyFromConfig", () => {
 
   it("releases inbound dedupe when dispatch fails before completion", async () => {
     setNoAbort();
-    const cfg = { diagnostics: { enabled: true } } as OpenClawConfig;
+    const cfg = { diagnostics: { enabled: true } } as OperatorConfig;
     const ctx = buildTestCtx({
       Provider: "whatsapp",
       OriginatingChannel: "whatsapp",
@@ -623,7 +623,7 @@ describe("dispatchReplyFromConfig", () => {
     });
     const replyResolver = vi
       .fn<
-        (_ctx: MsgContext, _opts?: GetReplyOptions, _cfg?: OpenClawConfig) => Promise<ReplyPayload>
+        (_ctx: MsgContext, _opts?: GetReplyOptions, _cfg?: OperatorConfig) => Promise<ReplyPayload>
       >()
       .mockRejectedValueOnce(new Error("dispatch failed"))
       .mockResolvedValueOnce({ text: "retry succeeds" });
@@ -763,13 +763,13 @@ describe("dispatchReplyFromConfig", () => {
 
     const overrideCfg = {
       agents: { defaults: { userTimezone: "America/New_York" } },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
-    let receivedCfg: OpenClawConfig | undefined;
+    let receivedCfg: OperatorConfig | undefined;
     const replyResolver = async (
       _ctx: MsgContext,
       _opts?: GetReplyOptions,
-      cfgArg?: OpenClawConfig,
+      cfgArg?: OperatorConfig,
     ) => {
       receivedCfg = cfgArg;
       return { text: "hi" } satisfies ReplyPayload;
@@ -790,15 +790,15 @@ describe("dispatchReplyFromConfig", () => {
 
   it("passes the already loaded config to replyResolver when configOverride is not provided", async () => {
     setNoAbort();
-    const cfg = { agents: { defaults: { userTimezone: "UTC" } } } as OpenClawConfig;
+    const cfg = { agents: { defaults: { userTimezone: "UTC" } } } as OperatorConfig;
     const dispatcher = createDispatcher();
     const ctx = buildTestCtx({ Provider: "telegram", Surface: "telegram" });
 
-    let receivedCfg: OpenClawConfig | undefined;
+    let receivedCfg: OperatorConfig | undefined;
     const replyResolver = async (
       _ctx: MsgContext,
       _opts?: GetReplyOptions,
-      cfgArg?: OpenClawConfig,
+      cfgArg?: OperatorConfig,
     ) => {
       receivedCfg = cfgArg;
       return { text: "hi" } satisfies ReplyPayload;
@@ -1274,7 +1274,7 @@ describe("dispatchReplyFromConfig", () => {
     setNoAbort();
     const cfg = {
       agents: { defaults: { verboseDefault: "on" } },
-    } as const satisfies OpenClawConfig;
+    } as const satisfies OperatorConfig;
     const ctx = buildTestCtx({ Provider: "whatsapp" });
     const delivered: ReplyPayload[] = [];
     let releaseDelivery: (() => void) | undefined;
@@ -1356,7 +1356,7 @@ describe("dispatchReplyFromConfig", () => {
     setNoAbort();
     const cfg = {
       agents: { defaults: { verboseDefault: "on" } },
-    } as const satisfies OpenClawConfig;
+    } as const satisfies OperatorConfig;
     const ctx = buildTestCtx({ Provider: "whatsapp" });
     const delivered: ReplyPayload[] = [];
     let releaseDelivery: (() => void) | undefined;

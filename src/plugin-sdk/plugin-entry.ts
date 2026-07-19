@@ -1,5 +1,5 @@
 // Plugin entry contracts define the manifest-facing hooks implemented by plugin packages.
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { emptyPluginConfigSchema } from "../plugins/config-schema.js";
 import type {
   AgentHarness as _AgentHarness,
@@ -16,25 +16,25 @@ import type {
   MigrationProviderPlugin as _MigrationProviderPlugin,
   ProviderPlugin as _ProviderPlugin,
   MigrationSummary as _MigrationSummary,
-  OpenClawGatewayDiscoveryAdvertiseContext as _OpenClawGatewayDiscoveryAdvertiseContext,
-  OpenClawGatewayDiscoveryService as _OpenClawGatewayDiscoveryService,
-  OpenClawPluginApi as _OpenClawPluginApi,
-  OpenClawPluginCommandDefinition as _OpenClawPluginCommandDefinition,
-  OpenClawPluginConfigSchema as _OpenClawPluginConfigSchema,
-  OpenClawPluginDefinition as _OpenClawPluginDefinition,
-  OpenClawPluginHttpRouteHandler as _OpenClawPluginHttpRouteHandler,
-  OpenClawPluginNodeHostCommand as _OpenClawPluginNodeHostCommand,
-  OpenClawPluginNodeHostCommandAvailabilityContext as _OpenClawPluginNodeHostCommandAvailabilityContext,
-  OpenClawPluginNodeInvokePolicy as _OpenClawPluginNodeInvokePolicy,
-  OpenClawPluginNodeInvokePolicyContext as _OpenClawPluginNodeInvokePolicyContext,
-  OpenClawPluginNodeInvokePolicyResult as _OpenClawPluginNodeInvokePolicyResult,
-  OpenClawPluginReloadRegistration as _OpenClawPluginReloadRegistration,
-  OpenClawPluginSecurityAuditCollector as _OpenClawPluginSecurityAuditCollector,
-  OpenClawPluginSecurityAuditContext as _OpenClawPluginSecurityAuditContext,
-  OpenClawPluginService as _OpenClawPluginService,
-  OpenClawPluginServiceContext as _OpenClawPluginServiceContext,
-  OpenClawPluginToolContext as _OpenClawPluginToolContext,
-  OpenClawPluginToolFactory as _OpenClawPluginToolFactory,
+  OperatorGatewayDiscoveryAdvertiseContext as _OperatorGatewayDiscoveryAdvertiseContext,
+  OperatorGatewayDiscoveryService as _OperatorGatewayDiscoveryService,
+  OperatorPluginApi as _OperatorPluginApi,
+  OperatorPluginCommandDefinition as _OperatorPluginCommandDefinition,
+  OperatorPluginConfigSchema as _OperatorPluginConfigSchema,
+  OperatorPluginDefinition as _OperatorPluginDefinition,
+  OperatorPluginHttpRouteHandler as _OperatorPluginHttpRouteHandler,
+  OperatorPluginNodeHostCommand as _OperatorPluginNodeHostCommand,
+  OperatorPluginNodeHostCommandAvailabilityContext as _OperatorPluginNodeHostCommandAvailabilityContext,
+  OperatorPluginNodeInvokePolicy as _OperatorPluginNodeInvokePolicy,
+  OperatorPluginNodeInvokePolicyContext as _OperatorPluginNodeInvokePolicyContext,
+  OperatorPluginNodeInvokePolicyResult as _OperatorPluginNodeInvokePolicyResult,
+  OperatorPluginReloadRegistration as _OperatorPluginReloadRegistration,
+  OperatorPluginSecurityAuditCollector as _OperatorPluginSecurityAuditCollector,
+  OperatorPluginSecurityAuditContext as _OperatorPluginSecurityAuditContext,
+  OperatorPluginService as _OperatorPluginService,
+  OperatorPluginServiceContext as _OperatorPluginServiceContext,
+  OperatorPluginToolContext as _OperatorPluginToolContext,
+  OperatorPluginToolFactory as _OperatorPluginToolFactory,
   PluginAgentEventEmitParams as _PluginAgentEventEmitParams,
   PluginAgentEventEmitResult as _PluginAgentEventEmitResult,
   PluginAgentEventSubscriptionRegistration as _PluginAgentEventSubscriptionRegistration,
@@ -152,26 +152,26 @@ export type MigrationProviderPlugin = _MigrationProviderPlugin;
 // The plugin-authoring scaffold generates code importing ProviderPlugin from this entrypoint.
 export type ProviderPlugin = _ProviderPlugin;
 export type MigrationSummary = _MigrationSummary;
-export type OpenClawGatewayDiscoveryAdvertiseContext = _OpenClawGatewayDiscoveryAdvertiseContext;
-export type OpenClawGatewayDiscoveryService = _OpenClawGatewayDiscoveryService;
-export type OpenClawPluginApi = _OpenClawPluginApi;
-export type OpenClawPluginCommandDefinition = _OpenClawPluginCommandDefinition;
-export type OpenClawPluginConfigSchema = _OpenClawPluginConfigSchema;
-export type OpenClawPluginDefinition = _OpenClawPluginDefinition;
-export type OpenClawPluginHttpRouteHandler = _OpenClawPluginHttpRouteHandler;
-export type OpenClawPluginNodeHostCommand = _OpenClawPluginNodeHostCommand;
-export type OpenClawPluginNodeHostCommandAvailabilityContext =
-  _OpenClawPluginNodeHostCommandAvailabilityContext;
-export type OpenClawPluginNodeInvokePolicy = _OpenClawPluginNodeInvokePolicy;
-export type OpenClawPluginNodeInvokePolicyContext = _OpenClawPluginNodeInvokePolicyContext;
-export type OpenClawPluginNodeInvokePolicyResult = _OpenClawPluginNodeInvokePolicyResult;
-export type OpenClawPluginReloadRegistration = _OpenClawPluginReloadRegistration;
-export type OpenClawPluginSecurityAuditCollector = _OpenClawPluginSecurityAuditCollector;
-export type OpenClawPluginSecurityAuditContext = _OpenClawPluginSecurityAuditContext;
-export type OpenClawPluginService = _OpenClawPluginService;
-export type OpenClawPluginServiceContext = _OpenClawPluginServiceContext;
-export type OpenClawPluginToolContext = _OpenClawPluginToolContext;
-export type OpenClawPluginToolFactory = _OpenClawPluginToolFactory;
+export type OperatorGatewayDiscoveryAdvertiseContext = _OperatorGatewayDiscoveryAdvertiseContext;
+export type OperatorGatewayDiscoveryService = _OperatorGatewayDiscoveryService;
+export type OperatorPluginApi = _OperatorPluginApi;
+export type OperatorPluginCommandDefinition = _OperatorPluginCommandDefinition;
+export type OperatorPluginConfigSchema = _OperatorPluginConfigSchema;
+export type OperatorPluginDefinition = _OperatorPluginDefinition;
+export type OperatorPluginHttpRouteHandler = _OperatorPluginHttpRouteHandler;
+export type OperatorPluginNodeHostCommand = _OperatorPluginNodeHostCommand;
+export type OperatorPluginNodeHostCommandAvailabilityContext =
+  _OperatorPluginNodeHostCommandAvailabilityContext;
+export type OperatorPluginNodeInvokePolicy = _OperatorPluginNodeInvokePolicy;
+export type OperatorPluginNodeInvokePolicyContext = _OperatorPluginNodeInvokePolicyContext;
+export type OperatorPluginNodeInvokePolicyResult = _OperatorPluginNodeInvokePolicyResult;
+export type OperatorPluginReloadRegistration = _OperatorPluginReloadRegistration;
+export type OperatorPluginSecurityAuditCollector = _OperatorPluginSecurityAuditCollector;
+export type OperatorPluginSecurityAuditContext = _OperatorPluginSecurityAuditContext;
+export type OperatorPluginService = _OperatorPluginService;
+export type OperatorPluginServiceContext = _OperatorPluginServiceContext;
+export type OperatorPluginToolContext = _OperatorPluginToolContext;
+export type OperatorPluginToolFactory = _OperatorPluginToolFactory;
 export type PluginAgentEventEmitParams = _PluginAgentEventEmitParams;
 export type PluginAgentEventEmitResult = _PluginAgentEventEmitResult;
 export type PluginAgentEventSubscriptionRegistration = _PluginAgentEventSubscriptionRegistration;
@@ -271,10 +271,10 @@ export type WorkerSshEndpoint = _WorkerSshEndpoint;
 export type WorkerSshIdentity = _WorkerSshIdentity;
 export type WorkerSshIdentityRequest = _WorkerSshIdentityRequest;
 
-export type OpenClawPluginGatewayEventScope =
-  import("../plugins/gateway-events.js").OpenClawPluginGatewayEventScope;
-export type OpenClawPluginGatewayEvents =
-  import("../plugins/gateway-events.js").OpenClawPluginGatewayEvents;
+export type OperatorPluginGatewayEventScope =
+  import("../plugins/gateway-events.js").OperatorPluginGatewayEventScope;
+export type OperatorPluginGatewayEvents =
+  import("../plugins/gateway-events.js").OperatorPluginGatewayEvents;
 export { WorkerProviderError } from "../plugins/types.js";
 
 export type {
@@ -294,7 +294,7 @@ export type {
   UnifiedModelCatalogKind,
   UnifiedModelCatalogSource,
 } from "@operator/model-catalog-core/model-catalog-types";
-export type { OpenClawConfig };
+export type { OperatorConfig };
 
 export {
   buildJsonPluginConfigSchema,
@@ -312,23 +312,23 @@ type DefinePluginEntryOptions = {
    * manifest `kind`. Runtime-entry `kind` remains only as a compatibility
    * fallback for older plugins.
    */
-  kind?: OpenClawPluginDefinition["kind"];
-  configSchema?: OpenClawPluginConfigSchema | (() => OpenClawPluginConfigSchema);
-  reload?: OpenClawPluginDefinition["reload"];
-  nodeHostCommands?: OpenClawPluginDefinition["nodeHostCommands"];
-  securityAuditCollectors?: OpenClawPluginDefinition["securityAuditCollectors"];
-  register: (api: OpenClawPluginApi) => void;
+  kind?: OperatorPluginDefinition["kind"];
+  configSchema?: OperatorPluginConfigSchema | (() => OperatorPluginConfigSchema);
+  reload?: OperatorPluginDefinition["reload"];
+  nodeHostCommands?: OperatorPluginDefinition["nodeHostCommands"];
+  securityAuditCollectors?: OperatorPluginDefinition["securityAuditCollectors"];
+  register: (api: OperatorPluginApi) => void;
 };
 
-/** Normalized object shape that OpenClaw loads from a plugin entry module. */
+/** Normalized object shape that Operator loads from a plugin entry module. */
 type DefinedPluginEntry = {
   id: string;
   name: string;
   description: string;
-  configSchema: OpenClawPluginConfigSchema;
-  register: NonNullable<OpenClawPluginDefinition["register"]>;
+  configSchema: OperatorPluginConfigSchema;
+  register: NonNullable<OperatorPluginDefinition["register"]>;
 } & Pick<
-  OpenClawPluginDefinition,
+  OperatorPluginDefinition,
   "kind" | "reload" | "nodeHostCommands" | "securityAuditCollectors"
 >;
 

@@ -13,10 +13,10 @@ import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-syn
 import type { ConversationRef } from "../infra/outbound/session-binding-service.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { resolveGlobalMap, resolveGlobalSingleton } from "../shared/global-singleton.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
 } from "../state/operator-state-db.js";
 import {
   buildPluginBindingSessionKey,
@@ -55,7 +55,7 @@ type PluginBindingApprovalEntry = {
 };
 
 type PluginBindingApprovalsState = { approvals: PluginBindingApprovalEntry[] };
-type PluginBindingApprovalsDatabase = Pick<OpenClawStateKyselyDatabase, "plugin_binding_approvals">;
+type PluginBindingApprovalsDatabase = Pick<OperatorStateKyselyDatabase, "plugin_binding_approvals">;
 
 type PluginBindingConversation = {
   channel: string;
@@ -312,7 +312,7 @@ function createApprovalRequestId(): string {
 }
 
 function openApprovalsDatabase() {
-  return openOpenClawStateDatabase();
+  return openOperatorStateDatabase();
 }
 
 function loadApprovalsFromDatabase(): PluginBindingApprovalsState {
@@ -357,7 +357,7 @@ async function persistApprovalEntry(entry: PluginBindingApprovalEntry): Promise<
   const writeApprovals = state.approvalsSaveChain
     .catch(() => undefined)
     .then(() => {
-      runOpenClawStateWriteTransaction(({ db }) => {
+      runOperatorStateWriteTransaction(({ db }) => {
         const approvalsDb = getNodeSqliteKysely<PluginBindingApprovalsDatabase>(db);
         executeSqliteQuerySync(
           db,
@@ -651,7 +651,7 @@ function buildDetachHintSuffix(detachHint?: string): string {
 }
 
 export function buildPluginBindingUnavailableText(binding: PluginConversationBinding): string {
-  return `The bound plugin ${resolvePluginBindingDisplayName(binding)} is not currently loaded. Routing this message to OpenClaw instead. If this started after an update, run "operator doctor --fix"; otherwise reinstall or enable the plugin.${buildDetachHintSuffix(binding.detachHint)}`;
+  return `The bound plugin ${resolvePluginBindingDisplayName(binding)} is not currently loaded. Routing this message to Operator instead. If this started after an update, run "operator doctor --fix"; otherwise reinstall or enable the plugin.${buildDetachHintSuffix(binding.detachHint)}`;
 }
 
 export function buildPluginBindingDeclinedText(binding: PluginConversationBinding): string {

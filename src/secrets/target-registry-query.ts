@@ -1,5 +1,5 @@
 /** Query helpers for discovering secret target registry entries. */
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { loadChannelSecretContractApi } from "./channel-contract-api.js";
 import { getPath } from "./path-utils.js";
 import { getCoreSecretTargetRegistry, getSecretTargetRegistry } from "./target-registry-data.js";
@@ -27,7 +27,7 @@ let compiledSecretTargetRegistryState: {
   targetsByType: Map<string, CompiledTargetRegistryEntry[]>;
 } | null = null;
 
-let compiledCoreOpenClawTargetState: {
+let compiledCoreOperatorTargetState: {
   knownTargetIds: Set<string>;
   openClawCompiledSecretTargets: CompiledTargetRegistryEntry[];
   openClawTargetsById: Map<string, CompiledTargetRegistryEntry[]>;
@@ -40,7 +40,7 @@ let compiledCoreAuthProfileTargetState: {
 } | null = null;
 
 // Channel contract entries are process-stable; plugin install/reload is the owner of freshness.
-const compiledChannelOpenClawTargets = new Map<string, CompiledTargetRegistryEntry[] | null>();
+const compiledChannelOperatorTargets = new Map<string, CompiledTargetRegistryEntry[] | null>();
 
 function buildTargetTypeIndex(
   compiledSecretTargetRegistry: CompiledTargetRegistryEntry[],
@@ -101,21 +101,21 @@ function getCompiledSecretTargetRegistryState() {
   return compiledSecretTargetRegistryState;
 }
 
-function getCompiledCoreOpenClawTargetState() {
-  if (compiledCoreOpenClawTargetState) {
-    return compiledCoreOpenClawTargetState;
+function getCompiledCoreOperatorTargetState() {
+  if (compiledCoreOperatorTargetState) {
+    return compiledCoreOperatorTargetState;
   }
   const compiledCoreSecretTargets = getCoreSecretTargetRegistry().map(compileTargetRegistryEntry);
   const openClawCompiledSecretTargets = compiledCoreSecretTargets.filter(
     (entry) => entry.configFile === "operator.json",
   );
-  compiledCoreOpenClawTargetState = {
+  compiledCoreOperatorTargetState = {
     knownTargetIds: new Set(compiledCoreSecretTargets.map((entry) => entry.id)),
     openClawCompiledSecretTargets,
     openClawTargetsById: buildConfigTargetIdIndex(openClawCompiledSecretTargets),
     planTargetsByType: buildTargetTypeIndex(compiledCoreSecretTargets),
   };
-  return compiledCoreOpenClawTargetState;
+  return compiledCoreOperatorTargetState;
 }
 
 function getCompiledCoreAuthProfileTargetState() {
@@ -132,7 +132,7 @@ function getCompiledCoreAuthProfileTargetState() {
   return compiledCoreAuthProfileTargetState;
 }
 
-function getCompiledChannelOpenClawTargets(
+function getCompiledChannelOperatorTargets(
   channelId: string,
 ): CompiledTargetRegistryEntry[] | null {
   const normalizedChannelId = channelId.trim();
@@ -144,18 +144,18 @@ function getCompiledChannelOpenClawTargets(
   ) {
     return null;
   }
-  if (compiledChannelOpenClawTargets.has(normalizedChannelId)) {
-    return compiledChannelOpenClawTargets.get(normalizedChannelId) ?? null;
+  if (compiledChannelOperatorTargets.has(normalizedChannelId)) {
+    return compiledChannelOperatorTargets.get(normalizedChannelId) ?? null;
   }
   const compiledEntries =
     loadChannelSecretContractApi({
       channelId: normalizedChannelId,
-      config: {} as OpenClawConfig,
+      config: {} as OperatorConfig,
       env: process.env,
     })
       ?.secretTargetRegistryEntries?.filter((entry) => entry.configFile === "operator.json")
       .map(compileTargetRegistryEntry) ?? null;
-  compiledChannelOpenClawTargets.set(normalizedChannelId, compiledEntries);
+  compiledChannelOperatorTargets.set(normalizedChannelId, compiledEntries);
   return compiledEntries;
 }
 
@@ -170,15 +170,15 @@ function normalizeAllowedTargetIds(targetIds?: Iterable<string>): Set<string> | 
   );
 }
 
-function configHasPluginEntries(config: OpenClawConfig): boolean {
+function configHasPluginEntries(config: OperatorConfig): boolean {
   return Boolean(config.plugins?.entries && Object.keys(config.plugins.entries).length > 0);
 }
 
-function getConfiguredChannelOpenClawTargets(
-  config: OpenClawConfig,
+function getConfiguredChannelOperatorTargets(
+  config: OperatorConfig,
 ): CompiledTargetRegistryEntry[] {
   return Object.keys(config.channels ?? {}).flatMap(
-    (channelId) => getCompiledChannelOpenClawTargets(channelId) ?? [],
+    (channelId) => getCompiledChannelOperatorTargets(channelId) ?? [],
   );
 }
 
@@ -308,7 +308,7 @@ export function isKnownSecretTargetId(value: unknown): value is string {
 /** Checks the static core registry without materializing plugin/channel contracts. */
 export function isKnownCoreSecretTargetId(value: unknown): value is string {
   return (
-    typeof value === "string" && getCompiledCoreOpenClawTargetState().knownTargetIds.has(value)
+    typeof value === "string" && getCompiledCoreOperatorTargetState().knownTargetIds.has(value)
   );
 }
 
@@ -321,7 +321,7 @@ export function resolvePlanTargetAgainstRegistry(candidate: {
   providerId?: string;
   accountId?: string;
 }): ResolvedPlanTarget | null {
-  const coreEntries = getCompiledCoreOpenClawTargetState().planTargetsByType.get(candidate.type);
+  const coreEntries = getCompiledCoreOperatorTargetState().planTargetsByType.get(candidate.type);
   if (coreEntries) {
     return resolvePlanTargetAgainstEntries(candidate, coreEntries);
   }
@@ -331,7 +331,7 @@ export function resolvePlanTargetAgainstRegistry(candidate: {
     if (/[\\/:]/.test(explicitChannelId)) {
       return null;
     }
-    const channelEntries = getCompiledChannelOpenClawTargets(explicitChannelId) ?? [];
+    const channelEntries = getCompiledChannelOperatorTargets(explicitChannelId) ?? [];
     const channelTypeEntries = buildTargetTypeIndex(channelEntries).get(candidate.type);
     if (channelTypeEntries) {
       return resolvePlanTargetAgainstEntries(candidate, channelTypeEntries);
@@ -411,7 +411,7 @@ export function resolveSecretPlanTargetByPath(params: {
  * Resolves an operator.json config path to the matching plan-capable secrets target.
  */
 export function resolveConfigSecretTargetByPath(pathSegments: string[]): ResolvedPlanTarget | null {
-  for (const entry of getCompiledCoreOpenClawTargetState().openClawCompiledSecretTargets) {
+  for (const entry of getCompiledCoreOperatorTargetState().openClawCompiledSecretTargets) {
     if (!entry.includeInPlan) {
       continue;
     }
@@ -428,7 +428,7 @@ export function resolveConfigSecretTargetByPath(pathSegments: string[]): Resolve
 
   const explicitChannelId = pathSegments[0] === "channels" ? (pathSegments[1]?.trim() ?? "") : "";
   const explicitChannelEntries = explicitChannelId
-    ? getCompiledChannelOpenClawTargets(explicitChannelId)
+    ? getCompiledChannelOperatorTargets(explicitChannelId)
     : null;
   // Channel-owned contracts get first chance for explicit channel paths before bundled defaults.
   for (const entry of explicitChannelEntries ?? []) {
@@ -467,7 +467,7 @@ export function resolveConfigSecretTargetByPath(pathSegments: string[]): Resolve
  * Discovers configured secret-bearing values in operator.json using the full registry.
  */
 export function discoverConfigSecretTargets(
-  config: OpenClawConfig,
+  config: OperatorConfig,
 ): DiscoveredConfigSecretTarget[] {
   return discoverConfigSecretTargetsByIds(config);
 }
@@ -476,18 +476,18 @@ export function discoverConfigSecretTargets(
  * Discovers configured operator.json targets, optionally limited to selected registry ids.
  */
 export function discoverConfigSecretTargetsByIds(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   targetIds?: Iterable<string>,
 ): DiscoveredConfigSecretTarget[] {
   const allowedTargetIds = normalizeAllowedTargetIds(targetIds);
-  const coreState = getCompiledCoreOpenClawTargetState();
+  const coreState = getCompiledCoreOperatorTargetState();
   const hasOnlyCoreTargetIds =
     allowedTargetIds !== null &&
     Array.from(allowedTargetIds).every((targetId) => coreState.knownTargetIds.has(targetId));
   const configuredEntries = hasOnlyCoreTargetIds
     ? coreState.openClawCompiledSecretTargets
     : allowedTargetIds !== null && !configHasPluginEntries(config)
-      ? [...coreState.openClawCompiledSecretTargets, ...getConfiguredChannelOpenClawTargets(config)]
+      ? [...coreState.openClawCompiledSecretTargets, ...getConfiguredChannelOperatorTargets(config)]
       : null;
   const configuredEntriesById = configuredEntries
     ? buildConfigTargetIdIndex(configuredEntries)

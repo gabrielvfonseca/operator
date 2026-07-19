@@ -37,7 +37,7 @@ function resolveLegacyImportRunRecordPath(vaultRoot: string, runId: string): str
 }
 
 function migrationParams(params: { stateDir: string; vaultRoot: string; agentIds?: string[] }) {
-  const env = { ...process.env, HOME: params.stateDir, OPENCLAW_STATE_DIR: params.stateDir };
+  const env = { ...process.env, HOME: params.stateDir, OPERATOR_STATE_DIR: params.stateDir };
   return {
     config: {
       ...(params.agentIds ? { agents: { list: params.agentIds.map((id) => ({ id })) } } : {}),

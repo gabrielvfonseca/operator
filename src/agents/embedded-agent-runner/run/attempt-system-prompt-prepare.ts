@@ -21,7 +21,7 @@ import {
   resolveChannelMessageToolHints,
   resolveChannelReactionGuidance,
 } from "../../channel-tools.js";
-import { resolveOpenClawReferencePaths } from "../../docs-path.js";
+import { resolveOperatorReferencePaths } from "../../docs-path.js";
 import { resolveHeartbeatPromptForSystemPrompt } from "../../heartbeat-system-prompt.js";
 import { resolveDefaultModelForAgent } from "../../model-selection.js";
 import { resolveAgentPromptSurfaceForSessionKey } from "../../prompt-surface.js";
@@ -179,7 +179,7 @@ export async function prepareEmbeddedAttemptSystemPrompt(params: {
   const promptSurface = resolveAgentPromptSurfaceForSessionKey(attempt.sessionKey);
   const effectivePromptMode = attempt.toolsAllow?.length ? ("minimal" as const) : promptMode;
   const effectiveSkillsPrompt = attempt.toolsAllow?.length ? undefined : params.skillsPrompt;
-  const openClawReferences = await resolveOpenClawReferencePaths({
+  const openClawReferences = await resolveOperatorReferencePaths({
     workspaceDir: params.effectiveWorkspace,
     argv1: process.argv[1],
     cwd: params.effectiveCwd,

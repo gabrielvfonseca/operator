@@ -5,12 +5,12 @@ import type { DatabaseSync } from "node:sqlite";
 import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import { resolveAllAgentSessionStoreTargetsSync } from "../config/sessions.js";
 import { applySessionEntryReplacements } from "../config/sessions/session-accessor.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-sync.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
 } from "../state/operator-state-db.js";
 
 // Write transactions must run on the same env-scoped handle as their
@@ -19,10 +19,10 @@ import {
 
 type SessionGroupRecord = { name: string; position: number };
 
-type SessionGroupsDatabase = Pick<OpenClawStateKyselyDatabase, "session_groups">;
+type SessionGroupsDatabase = Pick<OperatorStateKyselyDatabase, "session_groups">;
 
 function dbFor(env: NodeJS.ProcessEnv): DatabaseSync {
-  return openOpenClawStateDatabase({ env }).db;
+  return openOperatorStateDatabase({ env }).db;
 }
 
 function kyselyFor(db: DatabaseSync) {
@@ -63,7 +63,7 @@ export function putSessionGroups(
 ): SessionGroupRecord[] {
   const normalized = normalizeGroupNames(names);
   const now = Date.now();
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     ({ db }) => {
       const kysely = kyselyFor(db);
       const existing = new Map(
@@ -101,7 +101,7 @@ export function ensureSessionGroupRegistered(
   if (!normalized) {
     return;
   }
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     ({ db }) => {
       const kysely = kyselyFor(db);
       const existing = executeSqliteQuerySync(
@@ -129,7 +129,7 @@ export function ensureSessionGroupRegistered(
 }
 
 function renameCatalogEntry(from: string, to: string, env: NodeJS.ProcessEnv): void {
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     ({ db }) => {
       const kysely = kyselyFor(db);
       const source = executeSqliteQuerySync(
@@ -163,7 +163,7 @@ function renameCatalogEntry(from: string, to: string, env: NodeJS.ProcessEnv): v
  * bumping updatedAt: group maintenance must not reshuffle recency ordering.
  */
 async function updateMemberCategories(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   from: string,
   to: string | undefined,
   env: NodeJS.ProcessEnv,
@@ -193,7 +193,7 @@ async function updateMemberCategories(
 }
 
 export async function renameSessionGroup(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   name: string;
   to: string;
   env?: NodeJS.ProcessEnv;
@@ -212,7 +212,7 @@ export async function renameSessionGroup(params: {
 }
 
 export async function deleteSessionGroup(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   name: string;
   env?: NodeJS.ProcessEnv;
 }): Promise<{ groups: SessionGroupRecord[]; updatedSessions: number }> {
@@ -221,7 +221,7 @@ export async function deleteSessionGroup(params: {
   if (!name) {
     throw new Error("group delete requires a non-empty name");
   }
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     ({ db }) => {
       executeSqliteQuerySync(
         db,

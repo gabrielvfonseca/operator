@@ -1,9 +1,9 @@
 /** Provider-index-backed model catalog rows for bundled model-list output. */
 import { normalizeModelCatalogProviderId } from "@operator/model-catalog-core/model-catalog-refs";
 import type { NormalizedModelCatalogRow } from "@operator/model-catalog-core/model-catalog-types";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
-  loadOpenClawProviderIndex,
+  loadOperatorProviderIndex,
   planProviderIndexModelCatalogRows,
 } from "../../model-catalog/index.js";
 import { normalizePluginsConfig, resolveEffectiveEnableState } from "../../plugins/config-state.js";
@@ -11,12 +11,12 @@ import { normalizePluginsConfig, resolveEffectiveEnableState } from "../../plugi
 /** Loads enabled bundled provider-index catalog rows, optionally scoped by provider. */
 export function loadProviderIndexCatalogRowsForList(params: {
   providerFilter?: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
 }): readonly NormalizedModelCatalogRow[] {
   const providerFilter = params.providerFilter
     ? normalizeModelCatalogProviderId(params.providerFilter)
     : undefined;
-  const index = loadOpenClawProviderIndex();
+  const index = loadOperatorProviderIndex();
   return planProviderIndexModelCatalogRows({
     index,
     ...(providerFilter ? { providerFilter } : {}),

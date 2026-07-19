@@ -10,7 +10,7 @@ import {
   ensureApiKeyFromOptionEnvOrPrompt,
   normalizeApiKeyInput,
   normalizeOptionalSecretInput,
-  type OpenClawConfig,
+  type OperatorConfig,
   type SecretInput,
   upsertAuthProfileWithLock,
   validateApiKeyInput,
@@ -29,7 +29,7 @@ const PROFILE_ID = `${PIXVERSE_PROVIDER_ID}:default`;
 
 type PixVerseAuthResult = {
   profiles: Array<{ profileId: string; credential: ReturnType<typeof buildApiKeyCredential> }>;
-  configPatch: OpenClawConfig;
+  configPatch: OperatorConfig;
   notes: string[];
 };
 
@@ -67,10 +67,10 @@ function pixVerseRegionNote(region: PixVerseApiRegion): string {
 }
 
 function applyPixVerseProviderConfig(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   region: PixVerseApiRegion,
   options?: { resetBaseUrl?: boolean },
-): OpenClawConfig {
+): OperatorConfig {
   const existingProvider: Partial<ModelProviderConfig> =
     cfg.models?.providers?.[PIXVERSE_PROVIDER_ID] ?? {};
   const selectedBaseUrl = PIXVERSE_BASE_URL_BY_REGION[region];
@@ -95,10 +95,10 @@ function applyPixVerseProviderConfig(
 }
 
 function applyPixVerseConfig(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   region: PixVerseApiRegion,
   options?: { resetBaseUrl?: boolean },
-): OpenClawConfig {
+): OperatorConfig {
   const next = applyPixVerseProviderConfig(cfg, region, options);
   if (next.agents?.defaults?.videoGenerationModel) {
     return next;

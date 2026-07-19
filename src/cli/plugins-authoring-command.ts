@@ -463,7 +463,7 @@ function writeToolPluginScaffold(params: { rootDir: string; id: string; name: st
   };
   const idLiteral = jsStringLiteral(params.id);
   const nameLiteral = jsStringLiteral(params.name);
-  const description = `Add ${params.name} tools to OpenClaw.`;
+  const description = `Add ${params.name} tools to Operator.`;
   const descriptionLiteral = jsStringLiteral(description);
   const indexSource = `import { Type } from "typebox";
 import { defineToolPlugin } from "operator/plugin-sdk/tool-plugin";
@@ -496,7 +496,7 @@ describe(${idLiteral}, () => {
 `;
   const readmeSource = `# ${params.name}
 
-Simple OpenClaw tool plugin.
+Simple Operator tool plugin.
 
 ## Build
 
@@ -530,11 +530,11 @@ function writeProviderPluginScaffold(params: { rootDir: string; id: string; name
   const flagName = `--${params.id}-api-key`;
   const defaultModelId = "example-chat";
   const defaultModelRef = `${params.id}/${defaultModelId}`;
-  const description = `Add ${params.name} models to OpenClaw.`;
+  const description = `Add ${params.name} models to Operator.`;
   const packageManifest = {
     name: packageName,
     version: "0.1.0",
-    description: `OpenClaw provider plugin for ${params.name}.`,
+    description: `Operator provider plugin for ${params.name}.`,
     type: "module",
     scripts: {
       build: "tsc -p tsconfig.json",
@@ -673,7 +673,7 @@ export default definePluginEntry({
 });
 `;
   const testSource = `import { describe, expect, it } from "vitest";
-import type { OpenClawPluginApi, ProviderPlugin } from "operator/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi, ProviderPlugin } from "operator/plugin-sdk/plugin-entry";
 import entry from "./index.js";
 
 describe(${idLiteral}, () => {
@@ -683,9 +683,9 @@ describe(${idLiteral}, () => {
       registerProvider(provider: ProviderPlugin) {
         providers.push(provider);
       },
-    } as Partial<OpenClawPluginApi>;
+    } as Partial<OperatorPluginApi>;
 
-    entry.register(api as OpenClawPluginApi);
+    entry.register(api as OperatorPluginApi);
 
     expect(providers.map((provider) => provider.id)).toEqual([${idLiteral}]);
     expect(providers[0]?.label).toBe(${nameLiteral});
@@ -695,7 +695,7 @@ describe(${idLiteral}, () => {
 `;
   const readmeSource = `# ${params.name}
 
-OpenClaw provider plugin for ${params.name}.
+Operator provider plugin for ${params.name}.
 
 ## Commands
 

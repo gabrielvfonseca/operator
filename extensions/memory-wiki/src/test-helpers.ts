@@ -5,7 +5,7 @@ import type { PluginStateEntry } from "openclaw/plugin-sdk/plugin-state-runtime"
 import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
 import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
 import { afterEach, vi } from "vitest";
-import type { OpenClawPluginApi } from "../api.js";
+import type { OperatorPluginApi } from "../api.js";
 import {
   resolveMemoryWikiConfig,
   type MemoryWikiPluginConfig,
@@ -21,7 +21,7 @@ type MemoryWikiTestVault = {
 };
 
 type MemoryWikiPluginApiHarness = {
-  api: OpenClawPluginApi;
+  api: OperatorPluginApi;
   registerCli: ReturnType<typeof vi.fn>;
   registerGatewayMethod: ReturnType<typeof vi.fn>;
   registerMemoryCorpusSupplement: ReturnType<typeof vi.fn>;
@@ -125,7 +125,7 @@ export function createMemoryWikiTestHarness() {
         state: {
           openKeyedStore: vi.fn(<T>() => createMemoryKeyedStore<T>()),
         },
-      } as unknown as OpenClawPluginApi["runtime"],
+      } as unknown as OperatorPluginApi["runtime"],
       registerCli,
       registerGatewayMethod,
       registerMemoryCorpusSupplement,

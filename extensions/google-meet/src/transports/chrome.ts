@@ -1,5 +1,5 @@
 // Google Meet plugin module implements chrome behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { callGatewayFromCli } from "openclaw/plugin-sdk/gateway-runtime";
 import { addTimerTimeoutGraceMs } from "openclaw/plugin-sdk/number-runtime";
 import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
@@ -86,7 +86,7 @@ export async function assertBlackHole2chAvailable(params: {
     throw new Error(
       [
         "BlackHole 2ch audio device not found.",
-        "Install BlackHole 2ch and route Chrome input/output through the OpenClaw audio bridge.",
+        "Install BlackHole 2ch and route Chrome input/output through the Operator audio bridge.",
         hint,
       ]
         .filter(Boolean)
@@ -98,7 +98,7 @@ export async function assertBlackHole2chAvailable(params: {
 export async function launchChromeMeet(params: {
   runtime: PluginRuntime;
   config: GoogleMeetConfig;
-  fullConfig: OpenClawConfig;
+  fullConfig: OperatorConfig;
   meetingSessionId: string;
   requesterSessionKey?: string;
   mode: GoogleMeetMode;
@@ -145,7 +145,7 @@ export async function launchChromeMeet(params: {
     if (params.config.chrome.audioBridgeCommand) {
       if (params.mode === "agent") {
         throw new Error(
-          "Chrome agent mode requires chrome.audioInputCommand and chrome.audioOutputCommand so OpenClaw can run STT and regular TTS directly.",
+          "Chrome agent mode requires chrome.audioInputCommand and chrome.audioOutputCommand so Operator can run STT and regular TTS directly.",
         );
       }
       const bridge = await params.runtime.system.runCommandWithTimeout(
@@ -539,7 +539,7 @@ function meetStatusScript(params: {
     if (!captureCaptions) return undefined;
     const w = window;
     if (!inCall && !w.__openclawMeetCaptions) return undefined;
-    // A reused tab starts a fresh logical transcript for each OpenClaw session.
+    // A reused tab starts a fresh logical transcript for each Operator session.
     // Status refreshes omit the id, so they preserve the active page-owned buffer.
     if (!w.__openclawMeetCaptions || (captionSessionId && w.__openclawMeetCaptions.sessionId !== captionSessionId)) {
       if (w.__openclawMeetCaptions?.settleTimer !== undefined) {
@@ -708,23 +708,23 @@ function meetStatusScript(params: {
   let manualActionMessage;
   if (!inCall && (host === "accounts.google.com" || /use your google account|to continue to google meet|choose an account|sign in to (join|continue)/i.test(pageText))) {
     manualActionReason = "google-login-required";
-    manualActionMessage = "Sign in to Google in the OpenClaw browser profile, then retry the Meet join.";
+    manualActionMessage = "Sign in to Google in the Operator browser profile, then retry the Meet join.";
   } else if (!inCall && joinElsewhere) {
     manualActionReason = "meet-session-conflict";
     manualActionMessage = "Meet is already active in another tab or device. Leave that session or reuse an English-pinned tab before retrying.";
   } else if (!inCall && /asking to be let in|you.?ll join when someone lets you in|waiting to be let in|ask to join/i.test(pageText)) {
     manualActionReason = "meet-admission-required";
-    manualActionMessage = "Admit the OpenClaw browser participant in Google Meet, then retry speech.";
+    manualActionMessage = "Admit the Operator browser participant in Google Meet, then retry speech.";
   } else if (permissionNeeded) {
     manualActionReason = "meet-permission-required";
     manualActionMessage = allowMicrophone
-      ? "Allow microphone/camera/speaker permissions for Meet in the OpenClaw browser profile, then retry."
-      : "Join without microphone/camera permissions in the OpenClaw browser profile, then retry.";
+      ? "Allow microphone/camera/speaker permissions for Meet in the Operator browser profile, then retry."
+      : "Join without microphone/camera permissions in the Operator browser profile, then retry.";
   } else if (!inCall && (allowMicrophone ? !microphoneChoice : !noMicrophoneChoice) && /do you want people to hear you in the meeting/i.test(pageText)) {
     manualActionReason = "meet-audio-choice-required";
     manualActionMessage = allowMicrophone
-      ? "Meet is showing the microphone choice. Click Use microphone in the OpenClaw browser profile, then retry."
-      : "Meet is showing the microphone choice. Choose the no-microphone option in the OpenClaw browser profile, then retry.";
+      ? "Meet is showing the microphone choice. Click Use microphone in the Operator browser profile, then retry."
+      : "Meet is showing the microphone choice. Choose the no-microphone option in the Operator browser profile, then retry.";
   }
   return JSON.stringify({
     clickedJoin: Boolean(join),
@@ -883,7 +883,7 @@ async function readMeetTranscriptWithBrowserRequest(params: {
     throw new Error("The tracked Meet tab no longer shows this session's meeting URL.");
   }
   if (snapshot.sessionMatched === false) {
-    throw new Error("The tracked Meet tab now belongs to another OpenClaw meeting session.");
+    throw new Error("The tracked Meet tab now belongs to another Operator meeting session.");
   }
   return {
     droppedLines: snapshot.droppedLines,
@@ -1355,7 +1355,7 @@ async function openMeetWithBrowserRequest(params: {
         manualActionRequired: true,
         manualActionReason: "browser-control-unavailable",
         manualActionMessage:
-          "Open the OpenClaw browser profile, finish Google Meet login, admission, or permission prompts, then retry.",
+          "Open the Operator browser profile, finish Google Meet login, admission, or permission prompts, then retry.",
         notes: [
           ...permissionNotes,
           `Browser control could not inspect or auto-join Meet: ${
@@ -1600,7 +1600,7 @@ export async function recoverCurrentMeetTabOnNode(params: {
 export async function launchChromeMeetOnNode(params: {
   runtime: PluginRuntime;
   config: GoogleMeetConfig;
-  fullConfig: OpenClawConfig;
+  fullConfig: OperatorConfig;
   meetingSessionId: string;
   requesterSessionKey?: string;
   mode: GoogleMeetMode;

@@ -4,7 +4,7 @@
  * to provider plugin doctor copy.
  */
 import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { isSupportedGithubCopilotDomain } from "../../plugin-sdk/github-copilot-domain.js";
 import { buildProviderAuthDoctorHintWithPlugin } from "../../plugins/provider-runtime.runtime.js";
 import type { AuthProfileStore } from "./types.js";
@@ -36,7 +36,7 @@ function hasLegacyQwenPortalOAuthProfile(store: AuthProfileStore, profileId?: st
 }
 
 type FormatAuthDoctorHintParams = {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   store: AuthProfileStore;
   provider: string;
   profileId?: string;

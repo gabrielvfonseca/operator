@@ -1,7 +1,7 @@
 import type {
-  OpenClawPluginApi,
-  OpenClawPluginService,
-  OpenClawPluginServiceContext,
+  OperatorPluginApi,
+  OperatorPluginService,
+  OperatorPluginServiceContext,
 } from "openclaw/plugin-sdk/plugin-entry";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
@@ -55,7 +55,7 @@ import { registerMxcPlugin } from "../src/plugin.js";
 const originalPlatform = Object.getOwnPropertyDescriptor(process, "platform");
 
 type MxcPluginApiForTest = Pick<
-  OpenClawPluginApi,
+  OperatorPluginApi,
   "pluginConfig" | "registerService" | "registrationMode"
 >;
 
@@ -65,7 +65,7 @@ const nonFullRegistrationModes = [
   "setup-only",
   "setup-runtime",
   "cli-metadata",
-] as const satisfies readonly OpenClawPluginApi["registrationMode"][];
+] as const satisfies readonly OperatorPluginApi["registrationMode"][];
 
 function setProcessPlatformForTest(platform: NodeJS.Platform): void {
   Object.defineProperty(process, "platform", {
@@ -83,14 +83,14 @@ function restoreProcessPlatformForTest(): void {
 
 function createApi(
   pluginConfig: Record<string, unknown> | undefined = {},
-  registrationMode: OpenClawPluginApi["registrationMode"] = "full",
+  registrationMode: OperatorPluginApi["registrationMode"] = "full",
 ): {
-  api: OpenClawPluginApi;
+  api: OperatorPluginApi;
   registerService: ReturnType<typeof vi.fn>;
-  services: OpenClawPluginService[];
+  services: OperatorPluginService[];
 } {
-  const services: OpenClawPluginService[] = [];
-  const registerService = vi.fn((service: OpenClawPluginService): void => {
+  const services: OperatorPluginService[] = [];
+  const registerService = vi.fn((service: OperatorPluginService): void => {
     services.push(service);
   });
   const api = {
@@ -100,7 +100,7 @@ function createApi(
   } satisfies MxcPluginApiForTest;
 
   return {
-    api: api as unknown as OpenClawPluginApi,
+    api: api as unknown as OperatorPluginApi,
     registerService,
     services,
   };
@@ -177,7 +177,7 @@ describe("registerMxcPlugin", () => {
     });
     expect(services).toHaveLength(1);
 
-    void services[0]?.stop?.({} as OpenClawPluginServiceContext);
+    void services[0]?.stop?.({} as OperatorPluginServiceContext);
     expect(unregisterMock).toHaveBeenCalledTimes(1);
   });
 

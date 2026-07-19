@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { PluginInstallRecord } from "../../config/types.plugins.js";
-import { resolveOpenClawPackageRootSync } from "../../infra/openclaw-root.js";
+import { resolveOperatorPackageRootSync } from "../../infra/openclaw-root.js";
 import { runPluginPayloadSmokeCheck } from "./plugin-payload-validation.js";
 
 type BundleFormat = "codex" | "claude" | "cursor";
@@ -77,7 +77,7 @@ describe("runPluginPayloadSmokeCheck", () => {
   }
 
   function resolveTestHostRoot(): string {
-    const hostRoot = resolveOpenClawPackageRootSync({
+    const hostRoot = resolveOperatorPackageRootSync({
       argv1: process.argv[1],
       moduleUrl: import.meta.url,
       cwd: process.cwd(),
@@ -86,7 +86,7 @@ describe("runPluginPayloadSmokeCheck", () => {
     return hostRoot!;
   }
 
-  async function linkOpenClawPeerToHost(dir: string): Promise<void> {
+  async function linkOperatorPeerToHost(dir: string): Promise<void> {
     await fs.mkdir(path.join(dir, "node_modules"), { recursive: true });
     await fs.symlink(resolveTestHostRoot(), path.join(dir, "node_modules", "openclaw"), "junction");
   }
@@ -289,7 +289,7 @@ describe("runPluginPayloadSmokeCheck", () => {
     ]);
   });
 
-  it("accepts a manifest with no main field (OpenClaw plugins commonly use `exports` or `openclaw.extensions`)", async () => {
+  it("accepts a manifest with no main field (Operator plugins commonly use `exports` or `openclaw.extensions`)", async () => {
     const dir = path.join(tmpRoot, "matrix");
     await writePackage(dir, { name: "@operator/plugin-matrix" });
     const result = await runPluginPayloadSmokeCheck({
@@ -519,7 +519,7 @@ describe("runPluginPayloadSmokeCheck", () => {
       },
       "export default {};\n",
     );
-    await linkOpenClawPeerToHost(dir);
+    await linkOperatorPeerToHost(dir);
 
     const result = await runPluginPayloadSmokeCheck({
       records: { codex: { source: "npm", installPath: dir } },

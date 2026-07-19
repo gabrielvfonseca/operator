@@ -1,8 +1,8 @@
-# OpenClaw Groq Provider
+# Operator Groq Provider
 
-Official OpenClaw provider plugin for Groq.
+Official Operator provider plugin for Groq.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/groq-provider

@@ -484,7 +484,7 @@ describe("qa scenario catalog", () => {
     expect(gatewayRestartContract).toContain("interruptedMatches.length === 1");
     expect(gatewayRestartContract).toContain("restartNotices.length === 0");
     expect(gatewayRestartContract).toContain("dispatching restart-safe recovery");
-    expect(gatewayRestartContract).toContain("[OpenClaw heartbeat poll]");
+    expect(gatewayRestartContract).toContain("[Operator heartbeat poll]");
     expect(gatewayRestartContract).toContain("liveTurnTimeoutMs(env, 180000)");
     expect(gatewayRestartContract).toContain("dmScope: 'per-channel-peer'");
     const liveMultiRestart = readQaScenarioById("gateway-restart-multi-live");
@@ -554,7 +554,7 @@ describe("qa scenario catalog", () => {
     expect(scenario.coverage?.primary).toContain("runtime.update-run");
     expect(scenario.coverage?.secondary).toContain("runtime.package-update");
     expect(config?.requiredProviderMode).toBe("live-frontier");
-    expect(config?.allowEnv).toBe("OPENCLAW_QA_ALLOW_UPDATE_RUN_SELF");
+    expect(config?.allowEnv).toBe("OPERATOR_QA_ALLOW_UPDATE_RUN_SELF");
     expect(config?.sourceVersion).toBe("2026.4.26");
     expect(config?.targetTag).toBe("latest");
     expect(scenario.execution.flow?.steps.map((step) => step.name)).toEqual([

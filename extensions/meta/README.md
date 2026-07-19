@@ -1,6 +1,6 @@
 # Meta provider
 
-Bundled OpenClaw provider plugin for the **Meta API** — an OpenAI-compatible
+Bundled Operator provider plugin for the **Meta API** — an OpenAI-compatible
 **Responses API** endpoint (`POST /v1/responses`).
 
 - **Base URL:** `https://api.meta.ai/v1`

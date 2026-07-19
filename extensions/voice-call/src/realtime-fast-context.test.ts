@@ -1,5 +1,5 @@
 // Voice Call tests cover realtime fast context plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
@@ -12,7 +12,7 @@ vi.mock("openclaw/plugin-sdk/realtime-voice", () => ({
 
 import { resolveRealtimeFastContextConsult } from "./realtime-fast-context.js";
 
-const cfg = {} as OpenClawConfig;
+const cfg = {} as OperatorConfig;
 type VoiceCallRealtimeFastContextConfig = Parameters<
   typeof resolveRealtimeFastContextConsult
 >[0]["config"];
@@ -70,7 +70,7 @@ describe("resolveRealtimeFastContextConsult", () => {
       logger,
       labels: {
         audienceLabel: "caller",
-        contextName: "OpenClaw memory or session context",
+        contextName: "Operator memory or session context",
       },
     });
   });

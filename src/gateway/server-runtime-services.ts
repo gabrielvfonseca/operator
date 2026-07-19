@@ -1,7 +1,7 @@
 // Gateway post-ready runtime services.
 // Starts delayed maintenance, cron, heartbeat, recovery, and pricing refresh work.
 import { getRuntimeConfig } from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { isVitestRuntimeEnv } from "../infra/env.js";
 import { startHeartbeatRunner, type HeartbeatRunner } from "../infra/heartbeat-runner.js";
 import {
@@ -41,7 +41,7 @@ export function startGatewayCronWithLogging(params: {
   cronState: GatewayCronState;
   cronReconciliation: GatewayCronReconciliation;
   reason: "startup" | "reload";
-  config: OpenClawConfig;
+  config: OperatorConfig;
   afterStart?: () => Promise<void>;
   onStartError?: (error: unknown) => void;
   logCron: { error: (message: string) => void };
@@ -89,7 +89,7 @@ export async function runGatewayPostReadyMaintenance(params: {
   markCronStartHandled: () => void;
   cronState: GatewayCronState;
   cronReconciliation: GatewayCronReconciliation;
-  cronConfig: OpenClawConfig;
+  cronConfig: OperatorConfig;
   logCron: { error: (message: string) => void };
   log: GatewayPostReadyLogger;
   recordPostReadyMemory: () => void;
@@ -126,7 +126,7 @@ export function scheduleGatewayPostReadyMaintenance(params: {
   markCronStartHandled: () => void;
   cronState: GatewayCronState;
   cronReconciliation: GatewayCronReconciliation;
-  cronConfig: OpenClawConfig;
+  cronConfig: OperatorConfig;
   logCron: { error: (message: string) => void };
   log: GatewayPostReadyLogger;
   recordPostReadyMemory: () => void;
@@ -232,7 +232,7 @@ export function scheduleGatewayIdleTask(params: {
 }
 
 function recoverPendingOutboundDeliveries(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   log: GatewayRuntimeServiceLogger;
 }): void {
   // Recovery is best-effort background work; startup must continue even if outbound modules fail
@@ -301,7 +301,7 @@ function startPendingSessionDeliveryRuntime(params: {
 }
 
 function startGatewayModelPricingRefreshOnDemand(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   pluginLookUpTable?: PluginMetadataRegistryView;
   log: GatewayRuntimeServiceLogger;
 }): () => void {
@@ -338,7 +338,7 @@ function startGatewayModelPricingRefreshOnDemand(params: {
 /** Activates background gateway services after core runtime startup is ready. */
 export function activateGatewayScheduledServices(params: {
   minimalTestGateway: boolean;
-  cfgAtStart: OpenClawConfig;
+  cfgAtStart: OperatorConfig;
   deps: import("../cli/deps.types.js").CliDeps;
   sessionDeliveryRecoveryMaxEnqueuedAt: number;
   cronState: GatewayCronState;

@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { Command } from "commander";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { registerWorkspaceCli } from "./cli.js";
 import { registerWorkspaceGatewayMethods } from "./gateway.js";
@@ -23,7 +23,7 @@ vi.mock("openclaw/plugin-sdk/gateway-runtime", async () => {
 });
 
 type RegisteredMethod = {
-  handler: Parameters<OpenClawPluginApi["registerGatewayMethod"]>[1];
+  handler: Parameters<OperatorPluginApi["registerGatewayMethod"]>[1];
 };
 
 async function withTempStateDir<T>(run: (stateDir: string) => Promise<T>): Promise<T> {
@@ -65,7 +65,7 @@ function installGatewayMock(store: WorkspaceStore) {
     registerGatewayMethod: vi.fn((method: string, handler: RegisteredMethod["handler"]) => {
       methods.set(method, { handler });
     }),
-  } as unknown as OpenClawPluginApi;
+  } as unknown as OperatorPluginApi;
   registerWorkspaceGatewayMethods({ api, store });
   const broadcast = vi.fn();
   gatewayRuntime.callGatewayFromCli.mockImplementation(

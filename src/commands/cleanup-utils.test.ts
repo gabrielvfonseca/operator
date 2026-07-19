@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { expectDefined } from "@operator/normalization-core";
 import { describe, expect, it, test, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import {
@@ -27,7 +27,7 @@ describe("buildCleanupPlan", () => {
       },
     };
     const plan = buildCleanupPlan({
-      cfg: cfg as unknown as OpenClawConfig,
+      cfg: cfg as unknown as OperatorConfig,
       stateDir: path.join(tmpRoot, "openclaw-state"),
       configPath: path.join(tmpRoot, "openclaw-state", "openclaw.json"),
       oauthDir: path.join(tmpRoot, "openclaw-oauth"),
@@ -51,12 +51,12 @@ describe("buildCleanupPlan", () => {
     return withEnvAsync(
       {
         HOME: home,
-        OPENCLAW_STATE_DIR: stateDir,
-        OPENCLAW_WORKSPACE_DIR: undefined,
+        OPERATOR_STATE_DIR: stateDir,
+        OPERATOR_WORKSPACE_DIR: undefined,
       },
       async () => {
         const plan = buildCleanupPlan({
-          cfg: cfg as unknown as OpenClawConfig,
+          cfg: cfg as unknown as OperatorConfig,
           stateDir,
           configPath: path.join(stateDir, "openclaw.json"),
           oauthDir: path.join(stateDir, "credentials"),

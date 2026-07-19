@@ -191,9 +191,9 @@ async function runHooksRelay(params: { event: "post_tool_use" | "pre_tool_use"; 
     env: {
       LINGER_MARKER: fixture.markerPath,
       NODE_OPTIONS: `--import=${pathToFileURL(fixture.preloadPath).href}`,
-      OPENCLAW_DISABLE_BUNDLED_PLUGINS: "1",
-      OPENCLAW_NO_RESPAWN: "1",
-      OPENCLAW_STATE_DIR: fixture.stateDir,
+      OPERATOR_DISABLE_BUNDLED_PLUGINS: "1",
+      OPERATOR_NO_RESPAWN: "1",
+      OPERATOR_STATE_DIR: fixture.stateDir,
     },
     stdin: params.stdin,
   });
@@ -212,9 +212,9 @@ describe("hooks CLI process lifecycle", () => {
       label: "hooks list",
       env: {
         LINGER_MARKER: fixture.markerPath,
-        OPENCLAW_CONFIG_PATH: fixture.configPath,
-        OPENCLAW_DISABLE_BUNDLED_PLUGINS: "1",
-        OPENCLAW_STATE_DIR: fixture.stateDir,
+        OPERATOR_CONFIG_PATH: fixture.configPath,
+        OPERATOR_DISABLE_BUNDLED_PLUGINS: "1",
+        OPERATOR_STATE_DIR: fixture.stateDir,
       },
     });
     const relayResult = await runHooksRelay({ event: "pre_tool_use", stdin: "{}" });

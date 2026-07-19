@@ -20,7 +20,7 @@ export type {
   ChannelStatusIssue,
 } from "openclaw/plugin-sdk/channel-contract";
 export type {
-  OpenClawConfig,
+  OperatorConfig,
   GroupToolPolicyConfig,
   MarkdownTableMode,
 } from "openclaw/plugin-sdk/config-contracts";
@@ -28,7 +28,7 @@ export type {
   PluginRuntime,
   AnyAgentTool,
   ChannelPlugin,
-  OpenClawPluginToolContext,
+  OperatorPluginToolContext,
 } from "openclaw/plugin-sdk/core";
 export type { RuntimeEnv } from "openclaw/plugin-sdk/runtime";
 export {
@@ -60,4 +60,4 @@ export {
   sendPayloadWithChunkedTextAndMedia,
   type OutboundReplyPayload,
 } from "openclaw/plugin-sdk/reply-payload";
-export { resolvePreferredOpenClawTmpDir } from "openclaw/plugin-sdk/temp-path";
+export { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";

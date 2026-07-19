@@ -47,8 +47,8 @@ describe("MCP OAuth provider", () => {
         prefix: "openclaw-mcp-oauth-fresh-token-",
         skipSessionCleanup: true,
         env: {
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_STATE_DIR: undefined,
         },
       },
     );
@@ -94,8 +94,8 @@ describe("MCP OAuth provider", () => {
         prefix: "openclaw-mcp-oauth-expired-token-",
         skipSessionCleanup: true,
         env: {
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_STATE_DIR: undefined,
         },
       },
     );
@@ -156,8 +156,8 @@ describe("MCP OAuth provider", () => {
         prefix: "openclaw-mcp-oauth-concurrent-refresh-",
         skipSessionCleanup: true,
         env: {
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_STATE_DIR: undefined,
         },
       },
     );
@@ -207,8 +207,8 @@ describe("MCP OAuth provider", () => {
         prefix: "openclaw-mcp-oauth-legacy-token-",
         skipSessionCleanup: true,
         env: {
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_STATE_DIR: undefined,
         },
       },
     );
@@ -229,14 +229,14 @@ describe("MCP OAuth provider", () => {
         prefix: "openclaw-mcp-oauth-missing-token-",
         skipSessionCleanup: true,
         env: {
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_STATE_DIR: undefined,
         },
       },
     );
   });
 
-  it("stores token state under the OpenClaw state directory with restricted permissions", async () => {
+  it("stores token state under the Operator state directory with restricted permissions", async () => {
     await withTempHome(
       async (home) => {
         const provider = createMcpOAuthClientProvider({
@@ -264,8 +264,8 @@ describe("MCP OAuth provider", () => {
         prefix: "openclaw-mcp-oauth-",
         skipSessionCleanup: true,
         env: {
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_STATE_DIR: undefined,
         },
       },
     );
@@ -290,8 +290,8 @@ describe("MCP OAuth provider", () => {
         prefix: "openclaw-mcp-oauth-url-",
         skipSessionCleanup: true,
         env: {
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_STATE_DIR: undefined,
         },
       },
     );
@@ -362,8 +362,8 @@ describe("MCP OAuth provider", () => {
         prefix: "openclaw-mcp-oauth-localhost-failure-",
         skipSessionCleanup: true,
         env: {
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_STATE_DIR: undefined,
         },
       },
     );
@@ -412,8 +412,8 @@ describe("MCP OAuth provider", () => {
         prefix: "openclaw-mcp-oauth-localhost-persist-",
         skipSessionCleanup: true,
         env: {
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_STATE_DIR: undefined,
         },
       },
     );
@@ -441,8 +441,8 @@ describe("MCP OAuth provider", () => {
         prefix: "openclaw-mcp-oauth-noninteractive-",
         skipSessionCleanup: true,
         env: {
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_STATE_DIR: undefined,
         },
       },
     );
@@ -468,8 +468,8 @@ describe("MCP OAuth provider", () => {
         prefix: "openclaw-mcp-oauth-clear-",
         skipSessionCleanup: true,
         env: {
-          OPENCLAW_CONFIG_PATH: undefined,
-          OPENCLAW_STATE_DIR: undefined,
+          OPERATOR_CONFIG_PATH: undefined,
+          OPERATOR_STATE_DIR: undefined,
         },
       },
     );

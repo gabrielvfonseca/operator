@@ -2,7 +2,7 @@
 import type { Message } from "grammy/types";
 import type {
   DmPolicy,
-  OpenClawConfig,
+  OperatorConfig,
   TelegramAccountConfig,
 } from "openclaw/plugin-sdk/config-contracts";
 import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
@@ -43,7 +43,7 @@ export function createTelegramHandlerAuthorizationRuntime({
 
   type TelegramGroupAllowContext = Awaited<ReturnType<typeof resolveTelegramGroupAllowFromContext>>;
   type TelegramEventAuthorizationContextValue = TelegramGroupAllowContext & {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     telegramCfg: TelegramAccountConfig;
     allowFrom: ReturnType<typeof resolveTelegramMessageTurnSettings>["allowFrom"];
     dmPolicy: DmPolicy;
@@ -82,7 +82,7 @@ export function createTelegramHandlerAuthorizationRuntime({
   // Authorization owns one ingress snapshot. The agent turn intentionally
   // captures again after batching so reloads during debounce apply to execution.
   const resolveTelegramEventAuthorizationContext = async (params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     chatId: number;
     isGroup: boolean;
     isForum: boolean;

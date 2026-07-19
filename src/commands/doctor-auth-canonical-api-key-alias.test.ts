@@ -4,13 +4,13 @@ import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { clearRuntimeAuthProfileStoreSnapshots } from "../agents/auth-profiles/store.js";
 import {
-  createOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  type OperatorTestState,
 } from "../test-utils/operator-test-state.js";
 import { maybeRepairCanonicalApiKeyFieldAlias } from "./doctor-auth-flat-profiles.js";
 import type { DoctorPrompter } from "./doctor-prompter.js";
 
-const states: OpenClawTestState[] = [];
+const states: OperatorTestState[] = [];
 
 function makePrompter(shouldRepair: boolean): DoctorPrompter {
   return {
@@ -31,12 +31,12 @@ function makePrompter(shouldRepair: boolean): DoctorPrompter {
   };
 }
 
-async function makeTestState(): Promise<OpenClawTestState> {
-  const state = await createOpenClawTestState({
+async function makeTestState(): Promise<OperatorTestState> {
+  const state = await createOperatorTestState({
     layout: "state-only",
     prefix: "openclaw-doctor-canonical-api-key-",
     env: {
-      OPENCLAW_AGENT_DIR: undefined,
+      OPERATOR_AGENT_DIR: undefined,
     },
   });
   states.push(state);
@@ -44,7 +44,7 @@ async function makeTestState(): Promise<OpenClawTestState> {
 }
 
 async function writeLegacyAuthProfilesJson(
-  state: OpenClawTestState,
+  state: OperatorTestState,
   value: unknown,
 ): Promise<string> {
   return await state.writeText(
@@ -149,7 +149,7 @@ describe("maybeRepairCanonicalApiKeyFieldAlias", () => {
     );
   });
 
-  it("repairs auth profiles from OPENCLAW_AGENT_DIR", async () => {
+  it("repairs auth profiles from OPERATOR_AGENT_DIR", async () => {
     const state = await makeTestState();
     const agentDir = state.path("external-agent");
     const authPath = path.join(agentDir, "auth-profiles.json");
@@ -172,7 +172,7 @@ describe("maybeRepairCanonicalApiKeyFieldAlias", () => {
       now: () => 123,
       env: {
         ...state.env,
-        OPENCLAW_AGENT_DIR: agentDir,
+        OPERATOR_AGENT_DIR: agentDir,
       },
     });
 
@@ -216,7 +216,7 @@ describe("maybeRepairCanonicalApiKeyFieldAlias", () => {
       now: () => 123,
       env: {
         ...state.env,
-        OPENCLAW_AGENT_DIR: undefined,
+        OPERATOR_AGENT_DIR: undefined,
         PI_CODING_AGENT_DIR: agentDir,
       },
     });

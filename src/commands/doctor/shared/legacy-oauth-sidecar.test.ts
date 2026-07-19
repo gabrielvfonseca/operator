@@ -3,8 +3,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { resetLogger, setLoggerOverride } from "../../../logging/logger.js";
 import { loggingState } from "../../../logging/state.js";
 import {
-  createOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  type OperatorTestState,
 } from "../../../test-utils/operator-test-state.js";
 import {
   legacyOAuthSidecarTestUtils,
@@ -12,7 +12,7 @@ import {
 } from "./legacy-oauth-sidecar.js";
 import { legacyOAuthSidecarInternalTestUtils } from "./legacy-oauth-sidecar.test-support.js";
 
-const states: OpenClawTestState[] = [];
+const states: OperatorTestState[] = [];
 
 function setPlatform(value: NodeJS.Platform): () => void {
   const descriptor = Object.getOwnPropertyDescriptor(process, "platform");
@@ -25,16 +25,16 @@ function setPlatform(value: NodeJS.Platform): () => void {
 }
 
 async function writeLegacySidecarThatNeedsKeychain(): Promise<{
-  state: OpenClawTestState;
+  state: OperatorTestState;
   ref: { source: "openclaw-credentials"; provider: "openai-codex"; id: string };
   profileId: string;
 }> {
-  const state = await createOpenClawTestState({
+  const state = await createOperatorTestState({
     layout: "state-only",
     prefix: "openclaw-legacy-oauth-keychain-warn-",
     env: {
-      OPENCLAW_AGENT_DIR: undefined,
-      OPENCLAW_AUTH_PROFILE_SECRET_KEY: undefined,
+      OPERATOR_AGENT_DIR: undefined,
+      OPERATOR_AUTH_PROFILE_SECRET_KEY: undefined,
     },
   });
   states.push(state);
@@ -89,7 +89,7 @@ describe("loadLegacyOAuthSidecarMaterial keychain-only headless warning", () => 
     resetLogger();
   });
 
-  function envWithoutVitestSignals(state: OpenClawTestState): NodeJS.ProcessEnv {
+  function envWithoutVitestSignals(state: OperatorTestState): NodeJS.ProcessEnv {
     const env: NodeJS.ProcessEnv = { ...state.env };
     delete env.VITEST;
     delete env.VITEST_WORKER_ID;

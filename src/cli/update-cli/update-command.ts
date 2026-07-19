@@ -16,9 +16,9 @@ import {
   readConfigFileSnapshot,
 } from "../../config/config.js";
 import { formatConfigIssueLines } from "../../config/issue-format.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { resolveGatewayInstallEntrypoint } from "../../daemon/gateway-entrypoint.js";
-import { disableCurrentOpenClawUpdateLaunchdJob } from "../../daemon/launchd.js";
+import { disableCurrentOperatorUpdateLaunchdJob } from "../../daemon/launchd.js";
 import { readGatewayServiceState, resolveGatewayService } from "../../daemon/service.js";
 import { createLowDiskSpaceWarning } from "../../infra/disk-space.js";
 import {
@@ -548,7 +548,7 @@ async function updateCommandInternal(
     try {
       assertConfigWriteAllowedInCurrentMode();
     } catch (err) {
-      await disableCurrentOpenClawUpdateLaunchdJob().catch(() => undefined);
+      await disableCurrentOperatorUpdateLaunchdJob().catch(() => undefined);
       throw err;
     }
   }
@@ -751,7 +751,7 @@ async function updateCommandInternal(
         );
         defaultRuntime.log(
           theme.warn(
-            `Shell OpenClaw root differs from the managed gateway service root: ${managedServiceRootRedirect.previousRoot}`,
+            `Shell Operator root differs from the managed gateway service root: ${managedServiceRootRedirect.previousRoot}`,
           ),
         );
         defaultRuntime.log(
@@ -1022,11 +1022,11 @@ async function updateCommandInternal(
     }
   }
 
-  await disableCurrentOpenClawUpdateLaunchdJob().catch(() => undefined);
+  await disableCurrentOperatorUpdateLaunchdJob().catch(() => undefined);
 
   const showProgress = !opts.json && process.stdout.isTTY;
   if (!opts.json) {
-    defaultRuntime.log(theme.heading("Updating OpenClaw..."));
+    defaultRuntime.log(theme.heading("Updating Operator..."));
     defaultRuntime.log("");
   }
 
@@ -1090,7 +1090,7 @@ async function updateCommandInternal(
       defaultRuntime.error(
         [
           `${updateLabel} cannot run from inside the gateway service process.`,
-          "That path replaces the active OpenClaw dist tree while the live gateway may still lazy-load old chunks.",
+          "That path replaces the active Operator dist tree while the live gateway may still lazy-load old chunks.",
           `Run \`${replaceCliName(formatCliCommand("operator update"), CLI_NAME)}\` from a shell outside the gateway service, or stop the gateway service first and then update.`,
         ].join("\n"),
       );
@@ -1240,7 +1240,7 @@ async function updateCommandInternal(
     if (result.reason === "not-git-install") {
       defaultRuntime.log(
         theme.warn(
-          `Skipped: this OpenClaw install isn't a git checkout, and the package manager couldn't be detected. Update via your package manager, then run \`${replaceCliName(formatCliCommand("operator doctor"), CLI_NAME)}\` and \`${replaceCliName(formatCliCommand("operator gateway restart"), CLI_NAME)}\`.`,
+          `Skipped: this Operator install isn't a git checkout, and the package manager couldn't be detected. Update via your package manager, then run \`${replaceCliName(formatCliCommand("operator doctor"), CLI_NAME)}\` and \`${replaceCliName(formatCliCommand("operator gateway restart"), CLI_NAME)}\`.`,
         ),
       );
       defaultRuntime.log(
@@ -1306,7 +1306,7 @@ async function updateCommandInternal(
         ? {
             sourceConfig: configSnapshot.sourceConfig,
             authoredConfig: isRecord(configSnapshot.parsed)
-              ? (configSnapshot.parsed as OpenClawConfig)
+              ? (configSnapshot.parsed as OperatorConfig)
               : configSnapshot.sourceConfig,
           }
         : undefined,
@@ -1335,7 +1335,7 @@ async function updateCommandInternal(
         ? {
             sourceConfig: configSnapshot.sourceConfig,
             authoredConfig: isRecord(configSnapshot.parsed)
-              ? (configSnapshot.parsed as OpenClawConfig)
+              ? (configSnapshot.parsed as OperatorConfig)
               : configSnapshot.sourceConfig,
           }
         : undefined,

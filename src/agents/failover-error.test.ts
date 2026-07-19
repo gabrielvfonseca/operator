@@ -1352,7 +1352,7 @@ describe("failover-error", () => {
 
     it("returns true for Codex missing tool-result local execution failures", () => {
       const missingToolResultMessage =
-        "OpenClaw recorded a native Codex tool.call without a matching tool.result before the turn completed.";
+        "Operator recorded a native Codex tool.call without a matching tool.result before the turn completed.";
       expect(isNonProviderRuntimeCoordinationError(new Error(missingToolResultMessage))).toBe(true);
       expect(isNonProviderRuntimeCoordinationError({ reason: "missing_tool_result" })).toBe(true);
       expect(
@@ -1498,10 +1498,10 @@ describe("buildFailoverRemediationHint", () => {
   });
 
   it("wraps rendered provider commands in the standard CLI formatter", () => {
-    expect(buildProviderReauthCommand("anthropic", { OPENCLAW_PROFILE: "work" })).toBe(
+    expect(buildProviderReauthCommand("anthropic", { OPERATOR_PROFILE: "work" })).toBe(
       "openclaw --profile work models auth login --provider 'anthropic' --force",
     );
-    expect(buildProviderReauthCommand("anthropic", { OPENCLAW_CONTAINER_HINT: "dev" })).toBe(
+    expect(buildProviderReauthCommand("anthropic", { OPERATOR_CONTAINER_HINT: "dev" })).toBe(
       "openclaw --container dev models auth login --provider 'anthropic' --force",
     );
   });

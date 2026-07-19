@@ -4,7 +4,7 @@ import path from "node:path";
 import { sortUniqueStrings } from "@operator/normalization-core/string-normalization";
 import { note } from "../../../../packages/terminal-core/src/note.js";
 import type { HealthFinding } from "../../../flows/health-checks.js";
-import { resolveOpenClawPackageRootSync } from "../../../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../../../infra/operator-root.js";
 import { shortenHomePath } from "../../../utils.js";
 
 const PLUGIN_RUNTIME_DEPS_MARKER = "plugin-runtime-deps";
@@ -118,7 +118,7 @@ export async function collectStalePluginRuntimeSymlinkHealthFindings(
 ): Promise<HealthFinding[]> {
   const packageRoot =
     params.packageRoot ??
-    resolveOpenClawPackageRootSync({
+    resolveOperatorPackageRootSync({
       argv1: process.argv[1],
       moduleUrl: import.meta.url,
       cwd: process.cwd(),
@@ -144,7 +144,7 @@ export async function noteStalePluginRuntimeSymlinks(
   const shortenPath = options.shortenPath ?? shortenHomePath;
   const lines = [
     "- Plugin-runtime symlinks under the global Node prefix point at pruned",
-    `  ${PLUGIN_RUNTIME_DEPS_MARKER} directories from a previous OpenClaw install.`,
+    `  ${PLUGIN_RUNTIME_DEPS_MARKER} directories from a previous Operator install.`,
     "- Bundled plugin ESM imports can fail with ERR_MODULE_NOT_FOUND until repaired.",
   ];
   for (const item of stale.slice(0, MAX_REPORTED)) {

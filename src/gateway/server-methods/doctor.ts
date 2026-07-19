@@ -5,7 +5,7 @@ import path from "node:path";
 import { expectDefined } from "@operator/normalization-core";
 import { asOptionalRecord } from "@operator/normalization-core/record-coerce";
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../../agents/agent-scope.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   resolveMemoryDeepDreamingConfig,
   resolveMemoryLightDreamingConfig,
@@ -288,7 +288,7 @@ async function listWorkspaceDailyFiles(memoryDir: string): Promise<string[]> {
 }
 
 function resolveDreamingConfig(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
 ): Omit<
   DoctorMemoryDreamingPayload,
   | "shortTermCount"
@@ -711,7 +711,7 @@ function resolveDoctorMemoryTarget(
   context: GatewayRequestContext,
   params: unknown,
 ): {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
   workspaceDir: string;
 } {

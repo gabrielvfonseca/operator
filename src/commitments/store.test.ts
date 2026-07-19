@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import { captureEnv, setTestEnvValue } from "../test-utils/env.js";
 import {
   listCommitments,
@@ -24,7 +24,7 @@ describe("commitment SQLite store", () => {
   const sessionKey = "agent:main:telegram:user-155462274";
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     vi.unstubAllEnvs();
     stateDirEnvSnapshot?.restore();
     stateDirEnvSnapshot = undefined;
@@ -35,8 +35,8 @@ describe("commitment SQLite store", () => {
   async function useTempStateDir(): Promise<string> {
     const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-commitments-store-"));
     tmpDirs.push(tmpDir);
-    stateDirEnvSnapshot ??= captureEnv(["OPENCLAW_STATE_DIR"]);
-    setTestEnvValue("OPENCLAW_STATE_DIR", tmpDir);
+    stateDirEnvSnapshot ??= captureEnv(["OPERATOR_STATE_DIR"]);
+    setTestEnvValue("OPERATOR_STATE_DIR", tmpDir);
     return tmpDir;
   }
 

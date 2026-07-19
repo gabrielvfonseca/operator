@@ -7,7 +7,7 @@ import { tryReadJsonSync } from "../infra/json-files.js";
 import { isPrereleaseResolutionAllowed, parseRegistryNpmSpec } from "../infra/npm-registry-spec.js";
 import { isNotFoundPathError, normalizeWindowsPathForComparison } from "../infra/path-guards.js";
 import { compareValidSemver } from "../infra/semver.js";
-import { withOpenClawStateDatabaseReadOnly } from "../state/operator-state-db-readonly.js";
+import { withOperatorStateDatabaseReadOnly } from "../state/operator-state-db-readonly.js";
 import {
   resolveDefaultPluginNpmDir,
   resolvePluginNpmProjectsDir,
@@ -349,7 +349,7 @@ function readPersistedInstalledPluginIndexForRecords(
     return tryReadJsonSync(options.filePath);
   }
   try {
-    return withOpenClawStateDatabaseReadOnly(({ db }) => {
+    return withOperatorStateDatabaseReadOnly(({ db }) => {
       const row = db
         .prepare(
           `

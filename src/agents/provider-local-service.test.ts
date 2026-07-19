@@ -9,7 +9,7 @@ import { MAX_TIMER_TIMEOUT_MS } from "@operator/normalization-core/number-coerci
 import type { Model } from "openclaw/plugin-sdk/llm";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { useAutoCleanupTempDirTracker } from "../../test/helpers/temp-dir.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { mintSecretSentinel } from "../secrets/sentinel.js";
 import { killPidIfAlive, readPidFile, waitForPidToExit } from "../test-utils/process-tree.js";
 import {
@@ -144,7 +144,7 @@ describe("provider local service", () => {
               },
             },
           },
-        }) as OpenClawConfig,
+        }) as OperatorConfig,
     );
 
     const lease = await acquire({
@@ -505,7 +505,7 @@ describe("provider local service", () => {
     }
   });
 
-  it("restarts an OpenClaw-managed local service when its health endpoint is down", async () => {
+  it("restarts an Operator-managed local service when its health endpoint is down", async () => {
     const port = await freePort();
     const healthUrl = `http://127.0.0.1:${port}/v1/models`;
     const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-local-service-restart-"));

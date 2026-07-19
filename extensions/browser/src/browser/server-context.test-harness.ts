@@ -76,13 +76,13 @@ export function makeBrowserServerState(params?: {
   };
 }
 
-/** Mocks a launched OpenClaw Chrome process with the supplied pid. */
+/** Mocks a launched Operator Chrome process with the supplied pid. */
 export function mockLaunchedChrome(
-  launchOpenClawChrome: { mockResolvedValue: (value: RunningChrome) => unknown },
+  launchOperatorChrome: { mockResolvedValue: (value: RunningChrome) => unknown },
   pid: number,
 ) {
   const proc = new EventEmitter() as unknown as ChildProcessWithoutNullStreams;
-  launchOpenClawChrome.mockResolvedValue({
+  launchOperatorChrome.mockResolvedValue({
     pid,
     exe: { kind: "chromium", path: "/usr/bin/chromium" },
     userDataDir: "/tmp/openclaw-test",

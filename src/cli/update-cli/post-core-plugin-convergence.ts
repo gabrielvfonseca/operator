@@ -1,7 +1,7 @@
 // Reconciles configured plugin installs after the core package update has completed.
 import { repairMissingConfiguredPluginInstalls } from "../../commands/doctor/shared/missing-configured-plugin-install.js";
 import { UPDATE_POST_CORE_CONVERGENCE_ENV } from "../../commands/doctor/shared/update-phase.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { PluginInstallRecord } from "../../config/types.plugins.js";
 import type { ClawHubRiskAcknowledgementRequest } from "../../infra/clawhub-install-trust.js";
 import { normalizePluginsConfig, resolveEffectiveEnableState } from "../../plugins/config-state.js";
@@ -11,7 +11,7 @@ import {
   resolveTrustedSourceLinkedOfficialClawHubSpec,
   resolveTrustedSourceLinkedOfficialNpmSpec,
 } from "../../plugins/official-external-install-records.js";
-import { relinkOpenClawPeerDependenciesInManagedNpmRoot } from "../../plugins/plugin-peer-link.js";
+import { relinkOperatorPeerDependenciesInManagedNpmRoot } from "../../plugins/plugin-peer-link.js";
 import { pruneStaleLocalBundledPluginInstallRecords } from "../../plugins/stale-local-bundled-plugin-install-records.js";
 import { VERSION } from "../../version.js";
 import {
@@ -49,14 +49,14 @@ const REPAIR_GUIDANCE = "Run `operator update repair` to retry plugin repair.";
 const inspectGuidance = (pluginId: string) =>
   `Run \`operator plugins inspect ${pluginId} --runtime --json\` for details.`;
 
-async function repairManagedNpmOpenClawPeerLinks(params: {
+async function repairManagedNpmOperatorPeerLinks(params: {
   env: NodeJS.ProcessEnv;
 }): Promise<{ changes: string[]; warnings: PostCoreConvergenceWarning[] }> {
   try {
     const npmRoots = await listManagedPluginNpmRoots(resolveDefaultPluginNpmDir(params.env));
     const results = await Promise.all(
       npmRoots.map((npmRoot) =>
-        relinkOpenClawPeerDependenciesInManagedNpmRoot({
+        relinkOperatorPeerDependenciesInManagedNpmRoot({
           npmRoot,
           logger: {},
         }),
@@ -66,12 +66,12 @@ async function repairManagedNpmOpenClawPeerLinks(params: {
     return {
       changes:
         repaired > 0
-          ? [`Repaired OpenClaw host peer link(s) for ${repaired} managed npm plugin package(s).`]
+          ? [`Repaired Operator host peer link(s) for ${repaired} managed npm plugin package(s).`]
           : [],
       warnings: [],
     };
   } catch (err) {
-    const message = `Failed to repair managed npm OpenClaw host peer links: ${err instanceof Error ? err.message : String(err)}`;
+    const message = `Failed to repair managed npm Operator host peer links: ${err instanceof Error ? err.message : String(err)}`;
     return {
       changes: [],
       warnings: [
@@ -94,7 +94,7 @@ async function repairManagedNpmOpenClawPeerLinks(params: {
  * never restart with an installed active plugin whose payload is unloadable.
  */
 export async function runPostCorePluginConvergence(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   env: NodeJS.ProcessEnv;
   /**
    * Optional in-memory install records from earlier post-core steps (e.g.
@@ -133,7 +133,7 @@ export async function runPostCorePluginConvergence(params: {
     message,
     guidance: [REPAIR_GUIDANCE],
   }));
-  const peerLinkRepair = await repairManagedNpmOpenClawPeerLinks({ env });
+  const peerLinkRepair = await repairManagedNpmOperatorPeerLinks({ env });
   warnings.push(...peerLinkRepair.warnings);
   const notices: PostCoreConvergenceWarning[] = (repair.notices ?? []).map((message) => ({
     reason: message,
@@ -189,7 +189,7 @@ export async function runPostCorePluginConvergence(params: {
  * enable state is the right precision boundary.
  */
 export function filterRecordsToActive(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   records: Record<string, PluginInstallRecord>;
 }): Record<string, PluginInstallRecord> {
   const normalizedPluginConfig = normalizePluginsConfig(params.cfg.plugins);

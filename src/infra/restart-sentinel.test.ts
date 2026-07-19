@@ -17,23 +17,23 @@ vi.mock("../state/openclaw-state-db.js", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../state/openclaw-state-db.js")>();
   return {
     ...actual,
-    openOpenClawStateDatabase: (...args: Parameters<typeof actual.openOpenClawStateDatabase>) => {
+    openOperatorStateDatabase: (...args: Parameters<typeof actual.openOperatorStateDatabase>) => {
       mockThrowOpen();
-      return actual.openOpenClawStateDatabase(...args);
+      return actual.openOperatorStateDatabase(...args);
     },
-    runOpenClawStateWriteTransaction: (
-      ...args: Parameters<typeof actual.runOpenClawStateWriteTransaction>
+    runOperatorStateWriteTransaction: (
+      ...args: Parameters<typeof actual.runOperatorStateWriteTransaction>
     ) => {
       mockThrowWrite();
-      return actual.runOpenClawStateWriteTransaction(...args);
+      return actual.runOperatorStateWriteTransaction(...args);
     },
   };
 });
 
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
 } from "../state/openclaw-state-db.js";
 import { withTempDir } from "../test-helpers/temp-dir.js";
 import { withEnvAsync } from "../test-utils/env.js";
@@ -71,17 +71,17 @@ beforeEach(() => {
 async function withRestartSentinelStateDir(run: () => Promise<void>): Promise<void> {
   await withTempDir({ prefix: "openclaw-sentinel-" }, async (tempDir) => {
     try {
-      await withEnvAsync({ OPENCLAW_STATE_DIR: tempDir }, run);
+      await withEnvAsync({ OPERATOR_STATE_DIR: tempDir }, run);
     } finally {
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorStateDatabaseForTest();
     }
   });
 }
 
-type GatewayRestartSentinelDatabase = Pick<OpenClawStateKyselyDatabase, "gateway_restart_sentinel">;
+type GatewayRestartSentinelDatabase = Pick<OperatorStateKyselyDatabase, "gateway_restart_sentinel">;
 
 function readSentinelRow() {
-  const { db } = openOpenClawStateDatabase();
+  const { db } = openOperatorStateDatabase();
   const stateDb = getNodeSqliteKysely<GatewayRestartSentinelDatabase>(db);
   return executeSqliteQueryTakeFirstSync(
     db,
@@ -93,7 +93,7 @@ function readSentinelRow() {
 }
 
 function insertSentinelRow(values: { version?: number; payloadJson: string }) {
-  const { db } = openOpenClawStateDatabase();
+  const { db } = openOperatorStateDatabase();
   const stateDb = getNodeSqliteKysely<GatewayRestartSentinelDatabase>(db);
   executeSqliteQuerySync(
     db,
@@ -160,7 +160,7 @@ describe("restart sentinel", () => {
           reason: "restart-health-pending",
         },
       };
-      const legacyPath = path.join(process.env.OPENCLAW_STATE_DIR ?? "", "restart-sentinel.json");
+      const legacyPath = path.join(process.env.OPERATOR_STATE_DIR ?? "", "restart-sentinel.json");
       await fs.writeFile(legacyPath, `${JSON.stringify({ version: 1, payload })}\n`, "utf-8");
 
       await expect(hasRestartSentinel()).resolves.toBe(true);
@@ -178,7 +178,7 @@ describe("restart sentinel", () => {
 
   it("does not replay a legacy file superseded by a sqlite sentinel", async () => {
     await withRestartSentinelStateDir(async () => {
-      const legacyPath = path.join(process.env.OPENCLAW_STATE_DIR ?? "", "restart-sentinel.json");
+      const legacyPath = path.join(process.env.OPERATOR_STATE_DIR ?? "", "restart-sentinel.json");
       await fs.writeFile(
         legacyPath,
         `${JSON.stringify({
@@ -230,7 +230,7 @@ describe("restart sentinel", () => {
 
   it("keeps old config restart sentinels readable without restart-required stats", async () => {
     await withRestartSentinelStateDir(async () => {
-      const filePath = path.join(process.env.OPENCLAW_STATE_DIR ?? "", "restart-sentinel.json");
+      const filePath = path.join(process.env.OPERATOR_STATE_DIR ?? "", "restart-sentinel.json");
       const payload = {
         kind: "config-patch" as const,
         status: "ok" as const,
@@ -544,7 +544,7 @@ describe("restart sentinel error visibility", () => {
 
   it("logs a warning when the legacy sentinel path cannot be removed", async () => {
     await withRestartSentinelStateDir(async () => {
-      const legacyPath = path.join(process.env.OPENCLAW_STATE_DIR ?? "", "restart-sentinel.json");
+      const legacyPath = path.join(process.env.OPERATOR_STATE_DIR ?? "", "restart-sentinel.json");
       await fs.mkdir(legacyPath);
 
       await expect(clearRestartSentinel()).resolves.toBeUndefined();
@@ -653,18 +653,18 @@ describe("restart sentinel message dedup", () => {
 
   it("formats the non-interactive doctor command as actionability guidance", () => {
     expect(formatDoctorNonInteractiveHint({ PATH: "/usr/bin:/bin" })).toBe(
-      "Recommended follow-up: run openclaw doctor --non-interactive in a terminal or approvals-capable OpenClaw surface.",
+      "Recommended follow-up: run openclaw doctor --non-interactive in a terminal or approvals-capable Operator surface.",
     );
   });
 
   it("keeps profile-aware doctor guidance actionable outside constrained delivery surfaces", () => {
     expect(
       formatDoctorNonInteractiveHint({
-        OPENCLAW_PROFILE: "isolated",
+        OPERATOR_PROFILE: "isolated",
         PATH: "/usr/bin:/bin",
       }),
     ).toBe(
-      "Recommended follow-up: run openclaw --profile isolated doctor --non-interactive in a terminal or approvals-capable OpenClaw surface.",
+      "Recommended follow-up: run openclaw --profile isolated doctor --non-interactive in a terminal or approvals-capable Operator surface.",
     );
   });
 });

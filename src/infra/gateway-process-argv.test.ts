@@ -1,6 +1,6 @@
 // Tests gateway process argv parsing for diagnostics.
 import { describe, expect, it } from "vitest";
-import { isGatewayArgv, isOpenClawCommandArgv, parseProcCmdline } from "./gateway-process-argv.js";
+import { isGatewayArgv, isOperatorCommandArgv, parseProcCmdline } from "./gateway-process-argv.js";
 
 describe("parseProcCmdline", () => {
   it("splits null-delimited argv and trims empty entries", () => {
@@ -24,7 +24,7 @@ describe("isGatewayArgv", () => {
   });
 
   it("matches known entrypoints across slash and case variants", () => {
-    expect(isGatewayArgv(["NODE", "C:\\OpenClaw\\DIST\\ENTRY.JS", "gateway"])).toBe(true);
+    expect(isGatewayArgv(["NODE", "C:\\Operator\\DIST\\ENTRY.JS", "gateway"])).toBe(true);
     expect(isGatewayArgv(["bun", "/srv/openclaw/scripts/run-node.mjs", "gateway"])).toBe(true);
     expect(isGatewayArgv(["node", "/srv/openclaw/openclaw.mjs", "gateway"])).toBe(true);
     expect(isGatewayArgv(["tsx", "/srv/openclaw/src/entry.ts", "gateway"])).toBe(true);
@@ -54,21 +54,21 @@ describe("isGatewayArgv", () => {
   });
 });
 
-describe("isOpenClawCommandArgv", () => {
+describe("isOperatorCommandArgv", () => {
   it("matches doctor across source, built, and installed entrypoints", () => {
-    expect(isOpenClawCommandArgv(["node", "/srv/openclaw/openclaw.mjs", "doctor"], "doctor")).toBe(
+    expect(isOperatorCommandArgv(["node", "/srv/openclaw/openclaw.mjs", "doctor"], "doctor")).toBe(
       true,
     );
     expect(
-      isOpenClawCommandArgv(["NODE", "C:\\OpenClaw\\DIST\\ENTRY.JS", "DOCTOR"], "doctor"),
+      isOperatorCommandArgv(["NODE", "C:\\Operator\\DIST\\ENTRY.JS", "DOCTOR"], "doctor"),
     ).toBe(true);
-    expect(isOpenClawCommandArgv(["C:\\bin\\openclaw.cmd", "doctor", "--fix"], "doctor")).toBe(
+    expect(isOperatorCommandArgv(["C:\\bin\\openclaw.cmd", "doctor", "--fix"], "doctor")).toBe(
       true,
     );
   });
 
-  it("rejects other OpenClaw commands and unrelated doctor processes", () => {
-    expect(isOpenClawCommandArgv(["openclaw", "gateway"], "doctor")).toBe(false);
-    expect(isOpenClawCommandArgv(["python", "doctor", "worker.py"], "doctor")).toBe(false);
+  it("rejects other Operator commands and unrelated doctor processes", () => {
+    expect(isOperatorCommandArgv(["openclaw", "gateway"], "doctor")).toBe(false);
+    expect(isOperatorCommandArgv(["python", "doctor", "worker.py"], "doctor")).toBe(false);
   });
 });

@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import {
   clearAgentHarnesses,
   listRegisteredAgentHarnesses,
@@ -9,7 +9,7 @@ import {
 import type { AgentHarness } from "./harness/types.js";
 import { resolveCandidateThinkingLevel, resolveEffectiveAgentRuntime } from "./thinking-runtime.js";
 
-function openAIConfig(runtime: string): OpenClawConfig {
+function openAIConfig(runtime: string): OperatorConfig {
   return {
     agents: {
       defaults: {
@@ -46,7 +46,7 @@ describe("resolveEffectiveAgentRuntime", () => {
     ).toBe("codex");
   });
 
-  it("resolves residual auto to OpenClaw when no plugin harness is registered", () => {
+  it("resolves residual auto to Operator when no plugin harness is registered", () => {
     expect(
       resolveEffectiveAgentRuntime({
         cfg: {
@@ -65,7 +65,7 @@ describe("resolveEffectiveAgentRuntime", () => {
     ).toBe("openclaw");
   });
 
-  it("keeps an authored custom route on OpenClaw before registered harness selection", () => {
+  it("keeps an authored custom route on Operator before registered harness selection", () => {
     const supports = vi.fn<AgentHarness["supports"]>(({ provider }) =>
       provider === "openai" ? { supported: true, priority: 100 } : { supported: false },
     );
@@ -125,7 +125,7 @@ describe("resolveEffectiveAgentRuntime", () => {
     ).toBe("openclaw");
   });
 
-  it("lets an explicit OpenClaw override replace configured Codex policy", () => {
+  it("lets an explicit Operator override replace configured Codex policy", () => {
     expect(
       resolveEffectiveAgentRuntime({
         cfg: openAIConfig("codex"),
@@ -162,7 +162,7 @@ describe("resolveEffectiveAgentRuntime", () => {
   });
 
   it("re-evaluates every candidate from the immutable request so later support can upgrade", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       agents: {
         defaults: {
           models: {

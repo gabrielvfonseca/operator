@@ -235,13 +235,13 @@ describe("pairing setup code", () => {
 
   beforeEach(() => {
     gatewayEnvSnapshot = captureEnv([
-      "OPENCLAW_GATEWAY_TOKEN",
-      "OPENCLAW_GATEWAY_PASSWORD",
-      "OPENCLAW_GATEWAY_PORT",
+      "OPERATOR_GATEWAY_TOKEN",
+      "OPERATOR_GATEWAY_PASSWORD",
+      "OPERATOR_GATEWAY_PORT",
     ]);
-    process.env.OPENCLAW_GATEWAY_TOKEN = "";
-    process.env.OPENCLAW_GATEWAY_PASSWORD = "";
-    process.env.OPENCLAW_GATEWAY_PORT = "";
+    process.env.OPERATOR_GATEWAY_TOKEN = "";
+    process.env.OPERATOR_GATEWAY_PASSWORD = "";
+    process.env.OPERATOR_GATEWAY_PORT = "";
   });
 
   beforeEach(() => {
@@ -365,13 +365,13 @@ describe("pairing setup code", () => {
       expectedAuthLabel: "password",
     },
     {
-      name: "uses OPENCLAW_GATEWAY_PASSWORD without resolving configured password SecretRef",
+      name: "uses OPERATOR_GATEWAY_PASSWORD without resolving configured password SecretRef",
       auth: {
         mode: "password",
         password: { source: "env", provider: "default", id: "MISSING_GW_PASSWORD" },
       } as const,
       env: {
-        OPENCLAW_GATEWAY_PASSWORD: "password-from-env", // pragma: allowlist secret
+        OPERATOR_GATEWAY_PASSWORD: "password-from-env", // pragma: allowlist secret
       },
       expectedAuthLabel: "password",
     },
@@ -434,7 +434,7 @@ describe("pairing setup code", () => {
       },
       {
         env: {
-          OPENCLAW_GATEWAY_PASSWORD: "password-from-env", // pragma: allowlist secret
+          OPERATOR_GATEWAY_PASSWORD: "password-from-env", // pragma: allowlist secret
         },
       },
     );
@@ -521,7 +521,7 @@ describe("pairing setup code", () => {
       } satisfies ResolveSetupConfig,
       options: {
         env: {
-          OPENCLAW_GATEWAY_TOKEN: "new-token",
+          OPERATOR_GATEWAY_TOKEN: "new-token",
         },
       } satisfies ResolveSetupOptions,
       expected: {

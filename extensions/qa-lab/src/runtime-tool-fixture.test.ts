@@ -42,7 +42,7 @@ async function writeQaSessionTranscript(
   const sessionId = sessionKey.replace(/[^a-z0-9]+/giu, "-");
   const sessionEnv = {
     ...process.env,
-    OPENCLAW_STATE_DIR: path.join(env.gateway.tempRoot, "state"),
+    OPERATOR_STATE_DIR: path.join(env.gateway.tempRoot, "state"),
   };
   await upsertSessionEntry({
     agentId: "qa",
@@ -511,14 +511,14 @@ describe("runtime tool fixture", () => {
     ).rejects.toThrow("expected live happy-path successful tool output for read");
   });
 
-  it("does not fail Codex-native fixtures solely because OpenClaw dynamic exposure is absent", async () => {
+  it("does not fail Codex-native fixtures solely because Operator dynamic exposure is absent", async () => {
     const env = await makeEnv({
       mock: { baseUrl: "http://127.0.0.1:9999" },
       gateway: {
         baseUrl: "http://127.0.0.1:1",
         tempRoot: "",
         workspaceDir: "",
-        runtimeEnv: { OPENCLAW_QA_FORCE_RUNTIME: "codex" },
+        runtimeEnv: { OPERATOR_QA_FORCE_RUNTIME: "codex" },
         call: vi.fn(),
       },
     });
@@ -558,7 +558,7 @@ describe("runtime tool fixture", () => {
     );
 
     expect(details).toContain("codex-native-workspace read");
-    expect(details).toContain("OpenClaw dynamic exposure is intentionally omitted");
+    expect(details).toContain("Operator dynamic exposure is intentionally omitted");
     expect(details).toContain("mock provider happy planned args (diagnostic only)");
   });
 
@@ -569,7 +569,7 @@ describe("runtime tool fixture", () => {
         baseUrl: "http://127.0.0.1:1",
         tempRoot: "",
         workspaceDir: "",
-        runtimeEnv: { OPENCLAW_QA_FORCE_RUNTIME: "codex" },
+        runtimeEnv: { OPERATOR_QA_FORCE_RUNTIME: "codex" },
         call: vi.fn(),
       },
     });
@@ -1152,7 +1152,7 @@ describe("runtime tool fixture", () => {
     {
       name: "unavailable-provider",
       toolName: "web_search",
-      happyArgs: { query: "OpenClaw runtime parity fixed query" },
+      happyArgs: { query: "Operator runtime parity fixed query" },
       happyOutput: "result",
       failureOutput: "web_search is disabled or no provider is available.",
     },
@@ -1177,7 +1177,7 @@ describe("runtime tool fixture", () => {
     {
       name: "unavailable-provider happy output",
       toolName: "web_search",
-      happyArgs: { query: "OpenClaw runtime parity fixed query" },
+      happyArgs: { query: "Operator runtime parity fixed query" },
       happyOutput: "web_search is disabled or no provider is available.",
       failureOutput: "web_search is disabled or no provider is available.",
       expectedError: "expected mock happy-path successful tool output for web_search",
@@ -1356,7 +1356,7 @@ describe("runtime tool fixture", () => {
     ).rejects.toThrow("expected mock happy-path tool output for read");
   });
 
-  it("still fails required OpenClaw dynamic fixtures when the tool is absent", async () => {
+  it("still fails required Operator dynamic fixtures when the tool is absent", async () => {
     const env = await makeEnv();
 
     await expect(

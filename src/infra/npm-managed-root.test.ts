@@ -10,10 +10,10 @@ import { createSuiteTempRootTracker } from "../test-helpers/temp-dir.js";
 import { captureEnv } from "../test-utils/env.js";
 import {
   listMissingRequiredPlatformPackages,
-  repairManagedNpmRootOpenClawPeer,
+  repairManagedNpmRootOperatorPeer,
   removeManagedNpmRootDependency,
   readManagedNpmRootInstalledDependency,
-  readOpenClawManagedNpmRootOverrides,
+  readOperatorManagedNpmRootOverrides,
   resolveManagedNpmRootDependencySpec,
   restoreManagedNpmRootPeerDependencySnapshot,
   syncManagedNpmRootPeerDependencies,
@@ -201,7 +201,7 @@ describe("managed npm root", () => {
     });
   });
 
-  it("syncs OpenClaw-owned overrides without dropping unrelated local overrides", async () => {
+  it("syncs Operator-owned overrides without dropping unrelated local overrides", async () => {
     const npmRoot = await makeTempRoot();
     await fs.writeFile(
       path.join(npmRoot, "package.json"),
@@ -540,7 +540,7 @@ describe("managed npm root", () => {
       axios: "1.16.0",
       "node-domexception": "npm:@nolyfill/domexception@1.0.28",
     });
-    await expect(readOpenClawManagedNpmRootOverrides()).resolves.toEqual(expectedOverrides);
+    await expect(readOperatorManagedNpmRootOverrides()).resolves.toEqual(expectedOverrides);
   });
 
   it("resolves workspace pnpm overrides from packaged dist chunks", async () => {
@@ -562,7 +562,7 @@ describe("managed npm root", () => {
     );
 
     await expect(
-      readOpenClawManagedNpmRootOverrides({
+      readOperatorManagedNpmRootOverrides({
         moduleUrl: pathToFileURL(path.join(packageRoot, "dist", "install-AbCdEf.js")).toString(),
         cwd: path.join(packageRoot, "dist"),
       }),
@@ -604,7 +604,7 @@ describe("managed npm root", () => {
       ].join("\n"),
     );
 
-    await expect(readOpenClawManagedNpmRootOverrides({ packageRoot })).resolves.toEqual({
+    await expect(readOperatorManagedNpmRootOverrides({ packageRoot })).resolves.toEqual({
       "managed-runtime": "3.1024.0",
       nested: {
         "optional-runtime": "2.0.0",
@@ -1354,7 +1354,7 @@ describe("managed npm root", () => {
     );
 
     const runCommand = vi.fn().mockResolvedValue(successfulSpawn);
-    await expect(repairManagedNpmRootOpenClawPeer({ npmRoot, runCommand })).resolves.toBe(true);
+    await expect(repairManagedNpmRootOperatorPeer({ npmRoot, runCommand })).resolves.toBe(true);
     expect(runCommand).toHaveBeenCalledTimes(1);
     const [repairArgs, rawRepairOptions] = requireFirstMockCall(runCommand, "repair command");
     const repairOptions = requireCommandOptions(rawRepairOptions, "repair");
@@ -1397,7 +1397,7 @@ describe("managed npm root", () => {
     await expectPathMissing(path.join(npmRoot, "node_modules", ".package-lock.json"));
   });
 
-  it("does not repair the active OpenClaw host package in a root-managed install", async () => {
+  it("does not repair the active Operator host package in a root-managed install", async () => {
     const npmRoot = await makeTempRoot();
     const hostPackageRoot = path.join(npmRoot, "node_modules", "openclaw");
     await fs.mkdir(path.join(hostPackageRoot, "dist"), { recursive: true });
@@ -1443,7 +1443,7 @@ describe("managed npm root", () => {
 
     const runCommand = vi.fn().mockResolvedValue(successfulSpawn);
     await expect(
-      repairManagedNpmRootOpenClawPeer({
+      repairManagedNpmRootOperatorPeer({
         npmRoot,
         packageRoot: hostPackageRoot,
         runCommand,
@@ -1538,7 +1538,7 @@ describe("managed npm root", () => {
 
     const runCommand = vi.fn().mockResolvedValue(successfulSpawn);
     await expect(
-      repairManagedNpmRootOpenClawPeer({
+      repairManagedNpmRootOperatorPeer({
         npmRoot,
         packageRoot: hostPackageRoot,
         runCommand,

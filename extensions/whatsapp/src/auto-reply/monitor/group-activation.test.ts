@@ -7,7 +7,7 @@ import {
   upsertSessionEntry,
   type SessionEntry,
 } from "openclaw/plugin-sdk/session-store-runtime";
-import { closeOpenClawAgentDatabasesForTest } from "openclaw/plugin-sdk/sqlite-runtime-testing";
+import { closeOperatorAgentDatabasesForTest } from "openclaw/plugin-sdk/sqlite-runtime-testing";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { resolveGroupActivationFor } from "./group-activation.js";
 
@@ -95,7 +95,7 @@ describe("resolveGroupActivationFor", () => {
   const cleanups: Array<() => Promise<void>> = [];
 
   afterEach(async () => {
-    closeOpenClawAgentDatabasesForTest();
+    closeOperatorAgentDatabasesForTest();
     while (cleanups.length > 0) {
       await cleanups.pop()?.();
     }

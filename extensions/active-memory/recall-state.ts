@@ -4,7 +4,7 @@ import {
   asDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
 } from "openclaw/plugin-sdk/number-runtime";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
 import { resolveActiveMemoryCleanupConfig } from "./config.js";
 import {
@@ -52,7 +52,7 @@ function resetCircuitBreaker(key: string): void {
 }
 
 function scheduleMemorySearchCleanupAfterTimeout(
-  api: OpenClawPluginApi,
+  api: OperatorPluginApi,
   logPrefix: string,
   agentId: string,
 ): void {

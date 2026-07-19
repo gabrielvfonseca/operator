@@ -14,7 +14,7 @@ import {
 import { formatSqliteSessionFileMarker } from "../../config/sessions/sqlite-marker.js";
 import { withOwnedSessionTranscriptWrites } from "../../config/sessions/transcript-write-context.js";
 import * as Logger from "../../logger.js";
-import { isTranscriptOnlyOpenClawAssistantMessage } from "../../shared/transcript-only-openclaw-assistant.js";
+import { isTranscriptOnlyOperatorAssistantMessage } from "../../shared/transcript-only-openclaw-assistant.js";
 import { prepareSessionManagerForRun } from "../embedded-agent-runner/session-manager-init.js";
 import { repairSessionFileIfNeeded } from "../session-file-repair.js";
 import { loadSqliteMarkedSessionFile } from "./session-manager-file.js";
@@ -2199,7 +2199,7 @@ describe("SessionManager.open", () => {
           entry.type === "custom" ||
           entry.type === "label" ||
           entry.type === "session_info" ||
-          (entry.type === "message" && isTranscriptOnlyOpenClawAssistantMessage(entry.message)),
+          (entry.type === "message" && isTranscriptOnlyOperatorAssistantMessage(entry.message)),
       }),
     ).toBe(1);
     expect(sessionManager.getLeafId()).toBe(baseAnswerId);

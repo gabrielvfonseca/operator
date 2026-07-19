@@ -31,7 +31,7 @@ Verified against Telegram Bot API 10.2, July 14 2026.
   frees. Run health after that is owned by run lifecycle / main-session
   restart recovery — not by the ingress spool. Pre-adoption timeout
   (`ISOLATED_INGRESS_ADOPTION_STALL_MS`, default 5 minutes, overridable via
-  `OPENCLAW_TELEGRAM_SPOOLED_HANDLER_TIMEOUT_MS`) is the only ingress
+  `OPERATOR_TELEGRAM_SPOOLED_HANDLER_TIMEOUT_MS`) is the only ingress
   guillotine; it dead-letters with `handler-timeout` when claim→adoption
   stalls. Healthy long turns must not be killed by the spool watchdog.
 - Reply fence abort authority is pre-adoption only. At turn adoption the fence
@@ -67,7 +67,7 @@ Verified against Telegram Bot API 10.2, July 14 2026.
 
 - Do not reintroduce `sendMessageDraft` for answer streaming. Telegram drafts
   are ephemeral 30-second previews in private chats; final delivery still
-  requires a separate `sendMessage`. OpenClaw uses `sendMessage` plus
+  requires a separate `sendMessage`. Operator uses `sendMessage` plus
   `editMessageText`, then finalizes in place so the user sees one persistent
   answer.
 - Streaming owns one visible preview message. Edit it forward. Do not send an
@@ -91,7 +91,7 @@ Verified against Telegram Bot API 10.2, July 14 2026.
 
 ## Context And Authorization
 
-- Reply context comes from OpenClaw-observed messages. Bot API updates expose
+- Reply context comes from Operator-observed messages. Bot API updates expose
   `reply_to_message`, but there is no arbitrary `getMessage(chat, id)`
   hydration path later.
 - Current local chat context must outrank stale reply ancestry in the prompt.

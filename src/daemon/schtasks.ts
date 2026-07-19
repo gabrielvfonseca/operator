@@ -658,7 +658,7 @@ async function resolveScheduledTaskProcess(
   if (!snapshot) {
     return null;
   }
-  // Match the full persisted argv so another OpenClaw process on the same port
+  // Match the full persisted argv so another Operator process on the same port
   // cannot be mistaken for this task while its listener is still starting.
   const pid = findInstalledProcessPid(snapshot, port, installedArguments, matchesProcess);
   if (!pid) {
@@ -1362,7 +1362,7 @@ async function updateExistingScheduledTask(params: {
   // upgraders keep the prior buggy defaults rather than losing the task.
   const upgradeXmlPath = await writeTaskXmlTempFile(
     buildScheduledTaskXml({
-      taskDescription: params.description ?? "OpenClaw Gateway",
+      taskDescription: params.description ?? "Operator Gateway",
       taskUser: resolveTaskUser(params.env),
       launchPath: params.taskLaunchPath,
     }),
@@ -1547,7 +1547,7 @@ async function activateScheduledTask(params: {
   taskLaunchPath: string;
   description?: string;
 }): Promise<ScheduledTaskActivation | "startup-fallback"> {
-  const taskDescription = params.description ?? "OpenClaw Gateway";
+  const taskDescription = params.description ?? "Operator Gateway";
 
   const taskName = resolveTaskName(params.env);
   const quotedLaunchPath = quoteSchtasksArg(params.taskLaunchPath);

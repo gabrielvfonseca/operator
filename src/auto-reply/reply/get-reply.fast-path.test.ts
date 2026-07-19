@@ -5,7 +5,7 @@ import path from "node:path";
 import { expectDefined } from "@operator/normalization-core";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { testing as cliBackendsTesting } from "../../agents/cli-backends.test-support.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import type { SessionEntry } from "../../config/sessions.js";
 import { loadSessionEntry, replaceSessionEntry } from "../../config/sessions/session-accessor.js";
 import { formatSqliteSessionFileMarker } from "../../config/sessions/sqlite-marker.js";
@@ -136,7 +136,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   beforeEach(() => {
-    vi.stubEnv("OPENCLAW_TEST_FAST", "1");
+    vi.stubEnv("OPERATOR_TEST_FAST", "1");
     cliBackendsTesting.setDepsForTest({
       resolvePluginSetupRegistry: () => ({
         providers: [],
@@ -150,7 +150,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
     mocks.buildStatusReply.mockReset();
     mocks.buildStatusReply.mockImplementation(async (params: unknown) => {
       const status = params as {
-        cfg: OpenClawConfig;
+        cfg: OperatorConfig;
         resolvedThinkLevel?: string;
         resolveDefaultThinkingLevel: () => Promise<string | undefined>;
         sessionKey?: string;
@@ -164,7 +164,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         agentThinkingDefault ??
         status.cfg.agents?.defaults?.thinkingDefault ??
         (await status.resolveDefaultThinkingLevel());
-      return { text: `OpenClaw\nThink: ${thinkLevel ?? "off"}` };
+      return { text: `Operator\nThink: ${thinkLevel ?? "off"}` };
     });
     mocks.ensureAgentWorkspace.mockReset();
     mocks.handleCommands.mockReset();
@@ -211,7 +211,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
 
   it("fails fast on unmarked config overrides in strict fast-test mode", async () => {
     await expect(
-      getReplyFromConfig(buildGetReplyCtx(), undefined, {} as OpenClawConfig),
+      getReplyFromConfig(buildGetReplyCtx(), undefined, {} as OperatorConfig),
     ).rejects.toThrow(/withFastReplyConfig\(\)\/markCompleteReplyConfig\(\)/);
     expect(vi.mocked(loadConfigMock)).not.toHaveBeenCalled();
   });
@@ -227,7 +227,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
       },
       channels: { telegram: { allowFrom: ["*"] } },
       session: { store: path.join(home, "sessions.json") },
-    } as OpenClawConfig);
+    } as OperatorConfig);
 
     await expect(getReplyFromConfig(buildGetReplyCtx(), undefined, cfg)).resolves.toEqual({
       text: "ok",
@@ -242,14 +242,14 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   it("still merges partial config overrides against getRuntimeConfig()", async () => {
-    vi.stubEnv("OPENCLAW_ALLOW_SLOW_REPLY_TESTS", "1");
+    vi.stubEnv("OPERATOR_ALLOW_SLOW_REPLY_TESTS", "1");
     vi.mocked(loadConfigMock).mockReturnValue({
       channels: {
         telegram: {
           botToken: "resolved-telegram-token",
         },
       },
-    } satisfies OpenClawConfig);
+    } satisfies OperatorConfig);
 
     await getReplyFromConfig(buildGetReplyCtx(), undefined, {
       agents: {
@@ -257,7 +257,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
           userTimezone: "America/New_York",
         },
       },
-    } as OpenClawConfig);
+    } as OperatorConfig);
 
     expect(vi.mocked(loadConfigMock)).toHaveBeenCalledOnce();
     expect(mocks.initSessionState).toHaveBeenCalledOnce();
@@ -265,7 +265,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   it("reports the prepared session binding after session bootstrap", async () => {
-    vi.stubEnv("OPENCLAW_ALLOW_SLOW_REPLY_TESTS", "1");
+    vi.stubEnv("OPERATOR_ALLOW_SLOW_REPLY_TESTS", "1");
     mocks.initSessionState.mockResolvedValue(
       createGetReplySessionState({
         sessionKey: "agent:main:slack:channel:C123",
@@ -282,7 +282,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         SessionKey: "agent:main:slack:channel:C123",
       }),
       { onSessionPrepared } as never,
-      {} as OpenClawConfig,
+      {} as OperatorConfig,
     );
 
     expect(onSessionPrepared).toHaveBeenCalledWith({
@@ -293,7 +293,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   it("returns a clean rejection when session bootstrap rejects a locked reset", async () => {
-    vi.stubEnv("OPENCLAW_ALLOW_SLOW_REPLY_TESTS", "1");
+    vi.stubEnv("OPERATOR_ALLOW_SLOW_REPLY_TESTS", "1");
     const sessionKey = "agent:main:telegram:123";
     mocks.initSessionState.mockRejectedValueOnce(
       new ModelSelectionLockedError(MODEL_SELECTION_LOCKED_RESET_MESSAGE),
@@ -308,7 +308,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         SessionKey: sessionKey,
       }),
       undefined,
-      {} as OpenClawConfig,
+      {} as OperatorConfig,
     );
 
     expect(result).toEqual({ text: MODEL_SELECTION_LOCKED_RESET_MESSAGE });
@@ -317,7 +317,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   it("marks configs through withFastReplyConfig()", async () => {
-    const cfg = withFastReplyConfig({ session: { store: "/tmp/sessions.json" } } as OpenClawConfig);
+    const cfg = withFastReplyConfig({ session: { store: "/tmp/sessions.json" } } as OperatorConfig);
 
     await expect(getReplyFromConfig(buildGetReplyCtx(), undefined, cfg)).resolves.toEqual({
       text: "ok",
@@ -351,7 +351,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         },
       },
       session: { store: storePath },
-    } as OpenClawConfig);
+    } as OperatorConfig);
 
     await expect(
       getReplyFromConfig(buildGetReplyCtx(), { isHeartbeat: true }, cfg),
@@ -384,7 +384,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         },
       },
       session: { store: storePath },
-    } as OpenClawConfig);
+    } as OperatorConfig);
 
     await expect(
       getReplyFromConfig(buildGetReplyCtx(), { isHeartbeat: true }, cfg),
@@ -418,7 +418,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         },
       },
       session: { store: storePath },
-    } as OpenClawConfig);
+    } as OperatorConfig);
 
     await expect(
       getReplyFromConfig(buildGetReplyCtx(), { isHeartbeat: true }, cfg),
@@ -443,7 +443,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         },
       },
       session: { store: path.join(home, "sessions.json") },
-    } as OpenClawConfig);
+    } as OperatorConfig);
     vi.mocked(resolveDefaultModelMock).mockReturnValueOnce({
       defaultProvider: "openai",
       defaultModel: "gpt-5.5",
@@ -468,7 +468,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
     if (!reply || Array.isArray(reply) || typeof reply.text !== "string") {
       throw new Error("expected status reply text");
     }
-    expect(reply.text.includes("OpenClaw")).toBe(true);
+    expect(reply.text.includes("Operator")).toBe(true);
     expect(reply.text.includes("Think: medium")).toBe(true);
     expect(mocks.loadModelCatalog).toHaveBeenCalledWith({ config: cfg });
     expect(mocks.ensureAgentWorkspace).not.toHaveBeenCalled();
@@ -495,7 +495,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         ],
       },
       session: { store: path.join(home, "sessions.json") },
-    } as OpenClawConfig);
+    } as OperatorConfig);
     vi.mocked(resolveDefaultModelMock).mockReturnValueOnce({
       defaultProvider: "openai",
       defaultModel: "gpt-5.5",
@@ -548,7 +548,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         },
       },
       session: { store: storePath },
-    } as OpenClawConfig);
+    } as OperatorConfig);
     vi.mocked(resolveDefaultModelMock).mockReturnValueOnce({
       defaultProvider: "openai",
       defaultModel: "gpt-5.5",
@@ -594,7 +594,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         },
       },
       session: { store: path.join(home, "sessions.json") },
-    } as OpenClawConfig);
+    } as OperatorConfig);
     mocks.resolveReplyDirectives.mockResolvedValueOnce({
       kind: "reply",
       reply: { text: "model status" },
@@ -643,7 +643,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         },
       },
       session: { store: storePath },
-    } as OpenClawConfig);
+    } as OperatorConfig);
     const continuationPrompt = `Pursue this goal exactly as written from this JSON string: "\\/status"`;
     const continueDirectives = async (params: unknown) =>
       createGetReplyContinueDirectivesResult({
@@ -724,7 +724,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         CommandSource: "native",
         CommandTargetSessionKey: "agent:main:main",
       }),
-      cfg: { session: { store: storePath } } as OpenClawConfig,
+      cfg: { session: { store: storePath } } as OperatorConfig,
       agentId: "main",
       commandAuthorized: true,
       workspaceDir: "/tmp/workspace",
@@ -760,7 +760,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         CommandBody: "/reset",
         SessionKey: sessionKey,
       }),
-      cfg: { session: { store: storePath } } as OpenClawConfig,
+      cfg: { session: { store: storePath } } as OperatorConfig,
       agentId: "main",
       commandAuthorized: true,
       workspaceDir: home,
@@ -791,7 +791,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
           CommandBody: "/reset",
           SessionKey: sessionKey,
         }),
-        cfg: { session: { store: storePath } } as OpenClawConfig,
+        cfg: { session: { store: storePath } } as OperatorConfig,
         agentId: "main",
         commandAuthorized: true,
         workspaceDir: home,
@@ -823,7 +823,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         CommandBody: "hello",
         SessionKey: sessionKey,
       }),
-      cfg: { session: { store: storePath } } as OpenClawConfig,
+      cfg: { session: { store: storePath } } as OperatorConfig,
       agentId: "main",
       commandAuthorized: true,
       workspaceDir: home,
@@ -844,7 +844,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         To: undefined,
         SenderId: "gateway-client",
       }),
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionKey: "main",
       isGroup: false,
       triggerBodyNormalized: "/codex bind",
@@ -865,7 +865,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         RawBody: body,
         CommandBody: body,
       }),
-      cfg: {} as OpenClawConfig,
+      cfg: {} as OperatorConfig,
       sessionKey: "main",
       isGroup: false,
       triggerBodyNormalized: body,
@@ -893,7 +893,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         CommandBody: "/reset \nsoft",
         SessionKey: sessionKey,
       }),
-      cfg: { session: { store: storePath } } as OpenClawConfig,
+      cfg: { session: { store: storePath } } as OperatorConfig,
       agentId: "main",
       commandAuthorized: true,
       workspaceDir: home,
@@ -922,7 +922,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         CommandBody: "/reset: soft",
         SessionKey: sessionKey,
       }),
-      cfg: { session: { store: storePath } } as OpenClawConfig,
+      cfg: { session: { store: storePath } } as OperatorConfig,
       agentId: "main",
       commandAuthorized: true,
       workspaceDir: home,

@@ -1,7 +1,7 @@
 /** Applies agent compaction settings and small-context overflow guards. */
 import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
 import type { AgentCompactionMode } from "../config/types.agent-defaults.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { ContextEngineInfo } from "../context-engine/types.js";
 import { MIN_PROMPT_BUDGET_RATIO, MIN_PROMPT_BUDGET_TOKENS } from "./agent-compaction-constants.js";
 import { resolveProviderEndpoint } from "./provider-attribution.js";
@@ -21,7 +21,7 @@ type AgentSettingsManagerLike = {
 };
 
 /** Resolves the configured reserve-token floor for agent compaction. */
-function resolveCompactionReserveTokensFloor(cfg?: OpenClawConfig): number {
+function resolveCompactionReserveTokensFloor(cfg?: OperatorConfig): number {
   const raw = cfg?.agents?.defaults?.compaction?.reserveTokensFloor;
   if (typeof raw === "number" && Number.isFinite(raw) && raw >= 0) {
     return Math.floor(raw);
@@ -46,7 +46,7 @@ function toPositiveInt(value: unknown): number | undefined {
 /** Applies configured compaction reserve/keep-recent settings to an agent settings manager. */
 export function applyAgentCompactionSettingsFromConfig(params: {
   settingsManager: AgentSettingsManagerLike;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   /** When known, the resolved context window budget for the current model. */
   contextTokenBudget?: number;
 }): {
@@ -111,7 +111,7 @@ export function applyAgentCompactionSettingsFromConfig(params: {
 }
 
 /** Resolve the compaction mode after provider-backed safeguard promotion. */
-export function resolveEffectiveCompactionMode(cfg?: OpenClawConfig): AgentCompactionMode {
+export function resolveEffectiveCompactionMode(cfg?: OperatorConfig): AgentCompactionMode {
   const compaction = cfg?.agents?.defaults?.compaction;
   if (compaction?.provider) {
     return "safeguard";
@@ -121,7 +121,7 @@ export function resolveEffectiveCompactionMode(cfg?: OpenClawConfig): AgentCompa
 
 /**
  * Detect providers whose shared model runtime `isContextOverflow` Case 2 (silent overflow)
- * fires on a successful turn and triggers OpenClaw runtime's `_runAutoCompaction` from
+ * fires on a successful turn and triggers Operator runtime's `_runAutoCompaction` from
  * inside `Session.prompt()`, collapsing `agent.state.messages` before the
  * provider call (operator#75799).
  *
@@ -163,12 +163,12 @@ export function isSilentOverflowProneModel(model: {
 }
 
 /**
- * Disable OpenClaw runtime's `_checkCompaction → _runAutoCompaction` (which would otherwise
+ * Disable Operator runtime's `_checkCompaction → _runAutoCompaction` (which would otherwise
  * fire from inside `Session.prompt()` and reassign `agent.state.messages`
- * before the provider call) when OpenClaw or a plugin owns compaction:
+ * before the provider call) when Operator or a plugin owns compaction:
  * `contextEngineInfo.ownsCompaction === true`, effective safeguard compaction,
  * or an active model that is silent-overflow-prone (operator#75799).
- * Default-mode runs against ordinary providers keep OpenClaw runtime's auto-compaction as
+ * Default-mode runs against ordinary providers keep Operator runtime's auto-compaction as
  * the existing baseline.
  */
 function shouldDisableAgentAutoCompaction(params: {
@@ -186,7 +186,7 @@ function shouldDisableAgentAutoCompaction(params: {
 /**
  * Apply the auto-compaction guard. Callers that reload a `DefaultResourceLoader`
  * MUST call this AGAIN after each `reload()` — `settingsManager.reload()`
- * rehydrates `compaction.enabled` from disk and silently restores OpenClaw runtime's
+ * rehydrates `compaction.enabled` from disk and silently restores Operator runtime's
  * default-on behavior, undoing the guard. Mirrors the existing
  * `applyAgentCompactionSettingsFromConfig` re-call pattern at the same sites.
  */

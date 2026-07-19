@@ -8,7 +8,7 @@ import {
   archiveLegacyCronStoreForMigration,
   loadLegacyCronStoreForMigration,
 } from "../commands/doctor/cron/legacy-store-migration.js";
-import { openOpenClawStateDatabase } from "../state/openclaw-state-db.js";
+import { openOperatorStateDatabase } from "../state/openclaw-state-db.js";
 import { captureEnv, setTestEnvValue } from "../test-utils/env.js";
 import {
   loadCronJobsStoreWithConfigJobs,
@@ -82,14 +82,14 @@ function requireRecord(value: unknown, label: string): Record<string, unknown> {
 }
 
 describe("resolveCronStorePath", () => {
-  const envSnapshot = captureEnv(["OPENCLAW_HOME", "HOME"]);
+  const envSnapshot = captureEnv(["OPERATOR_HOME", "HOME"]);
 
   afterEach(() => {
     envSnapshot.restore();
   });
 
-  it("uses OPENCLAW_HOME for tilde expansion", () => {
-    setTestEnvValue("OPENCLAW_HOME", "/srv/openclaw-home");
+  it("uses OPERATOR_HOME for tilde expansion", () => {
+    setTestEnvValue("OPERATOR_HOME", "/srv/openclaw-home");
     setTestEnvValue("HOME", "/home/other");
 
     const result = resolveCronStorePath("~/cron/jobs.json");
@@ -764,7 +764,7 @@ describe("cron store", () => {
     };
 
     await saveCronStore(storePath, { version: 1, jobs: [job] });
-    openOpenClawStateDatabase()
+    openOperatorStateDatabase()
       .db.prepare("UPDATE cron_jobs SET delivery_thread_id = NULL WHERE job_id = ?")
       .run(job.id);
 
@@ -786,7 +786,7 @@ describe("cron store", () => {
     };
 
     await saveCronStore(storePath, { version: 1, jobs: [job] });
-    openOpenClawStateDatabase()
+    openOperatorStateDatabase()
       .db.prepare("UPDATE cron_jobs SET delivery_thread_id = ? WHERE job_id = ?")
       .run("replacement", job.id);
 

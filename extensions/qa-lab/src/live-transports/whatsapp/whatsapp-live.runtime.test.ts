@@ -1946,7 +1946,7 @@ describe("WhatsApp QA live runtime", () => {
     if (scenarioRun.kind === "approval") {
       throw new Error("whatsapp-group-audio-gating unexpectedly built an approval scenario run");
     }
-    const triggerSentinel = Buffer.from("OPENCLAW_QA_GROUP_AUDIO_TRIGGER", "utf8");
+    const triggerSentinel = Buffer.from("OPERATOR_QA_GROUP_AUDIO_TRIGGER", "utf8");
 
     expect(scenarioRun.input).toBe("");
     expect(scenarioRun.matchText).toBe("WHATSAPP_QA_GROUP_AUDIO_TRANSCRIPT_OK");

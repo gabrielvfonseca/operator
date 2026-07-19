@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import type { SkillUsagePath } from "../skills/types.js";
 import { registerSandboxBackend } from "./sandbox/backend.js";
 import { ensureSandboxWorkspaceForSession, resolveSandboxContext } from "./sandbox/context.js";
@@ -70,7 +70,7 @@ afterAll(async () => {
 
 describe("resolveSandboxContext", () => {
   it("does not sandbox the agent main session in non-main mode", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       agents: {
         defaults: {
           sandbox: { mode: "non-main", scope: "session" },
@@ -89,7 +89,7 @@ describe("resolveSandboxContext", () => {
   }, 15_000);
 
   it("does not create a sandbox workspace for the agent main session in non-main mode", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       agents: {
         defaults: {
           sandbox: { mode: "non-main", scope: "session" },
@@ -127,7 +127,7 @@ describe("resolveSandboxContext", () => {
     }));
     const restore = registerSandboxBackend("test-off-backend", backendFactory);
     try {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           defaults: {
             sandbox: {
@@ -161,7 +161,7 @@ describe("resolveSandboxContext", () => {
   }, 15_000);
 
   it("treats main session aliases as main in non-main mode", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       session: { mainKey: "work" },
       agents: {
         defaults: {
@@ -226,7 +226,7 @@ describe("resolveSandboxContext", () => {
       resolveWorkdir: () => "/runtime/workspace",
     });
     try {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           defaults: {
             sandbox: {
@@ -288,7 +288,7 @@ describe("resolveSandboxContext", () => {
       }),
     }));
     try {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         browser: {
           ssrfPolicy: { dangerouslyAllowPrivateNetwork: true },
         },
@@ -336,7 +336,7 @@ describe("resolveSandboxContext", () => {
     ];
     syncSkillsToWorkspaceMock.mockResolvedValueOnce(skillUsagePaths);
 
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       agents: {
         defaults: {
           sandbox: {
@@ -364,7 +364,7 @@ describe("resolveSandboxContext", () => {
         {
           sourceWorkspaceDir?: string;
           targetWorkspaceDir?: string;
-          config?: OpenClawConfig;
+          config?: OperatorConfig;
           agentId?: string;
           eligibility?: unknown;
         },
@@ -395,7 +395,7 @@ describe("resolveSandboxContext", () => {
     await fs.mkdir(userOwnedSandboxSkillsDir, { recursive: true });
     await fs.writeFile(path.join(userOwnedSandboxSkillsDir, "SKILL.md"), "# User owned\n");
 
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       agents: {
         defaults: {
           sandbox: {
@@ -420,7 +420,7 @@ describe("resolveSandboxContext", () => {
         {
           sourceWorkspaceDir?: string;
           targetWorkspaceDir?: string;
-          config?: OpenClawConfig;
+          config?: OperatorConfig;
           agentId?: string;
           eligibility?: unknown;
         },
@@ -460,7 +460,7 @@ describe("resolveSandboxContext", () => {
   it("uses the SSH backend remote workspace for sandbox workspace info", async () => {
     syncSkillsToWorkspaceMock.mockClear();
     const workspaceDir = await createSandboxFixtureDir("ssh-workspace");
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       agents: {
         defaults: {
           sandbox: {
@@ -506,7 +506,7 @@ describe("resolveSandboxContext", () => {
     await fs.mkdir(userOwnedSandboxSkillsDir, { recursive: true });
     await fs.writeFile(path.join(userOwnedSandboxSkillsDir, "SKILL.md"), "# User owned\n");
 
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       agents: {
         defaults: {
           sandbox: {

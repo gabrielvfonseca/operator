@@ -4,7 +4,7 @@
  * history sanitization, tool IDs, thinking blocks, and turn validation align.
  */
 import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { resolvePluginControlPlaneFingerprint } from "../plugins/plugin-control-plane-context.js";
 import type { ProviderRuntimePluginHandle } from "../plugins/provider-hook-runtime.js";
 import { resolveProviderRuntimePlugin } from "../plugins/provider-hook-runtime.js";
@@ -262,12 +262,12 @@ function mergeTranscriptPolicy(
   };
 }
 
-const transcriptPolicyCache = new WeakMap<OpenClawConfig, Map<string, TranscriptPolicy>>();
+const transcriptPolicyCache = new WeakMap<OperatorConfig, Map<string, TranscriptPolicy>>();
 
 function canCacheTranscriptPolicy(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   env?: NodeJS.ProcessEnv;
-}): params is { config: OpenClawConfig; env?: NodeJS.ProcessEnv } {
+}): params is { config: OperatorConfig; env?: NodeJS.ProcessEnv } {
   if (!params.config) {
     return false;
   }
@@ -279,7 +279,7 @@ function resolveTranscriptPolicyCacheKey(params: {
   provider: string;
   modelId?: string | null;
   model?: ProviderRuntimeModel;
-  config: OpenClawConfig;
+  config: OperatorConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 }): string {
@@ -303,7 +303,7 @@ export function resolveTranscriptPolicy(params: {
   modelApi?: string | null;
   provider?: string | null;
   modelId?: string | null;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   model?: ProviderRuntimeModel;

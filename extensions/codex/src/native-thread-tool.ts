@@ -11,7 +11,7 @@ import {
   isModelSelectionLocked,
   ModelSelectionLockedError,
 } from "openclaw/plugin-sdk/model-session-runtime";
-import type { OpenClawPluginToolContext } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginToolContext } from "openclaw/plugin-sdk/plugin-entry";
 import { Type } from "typebox";
 import { resolveCodexBindingAppServerConnection } from "./app-server/binding-connection.js";
 import { CODEX_CONTROL_METHODS } from "./app-server/capabilities.js";
@@ -59,7 +59,7 @@ const ForkParamsSchema = Type.Object(
     attach: Type.Optional(
       Type.Boolean({
         default: true,
-        description: "Attach the fork to this OpenClaw session for its next turn.",
+        description: "Attach the fork to this Operator session for its next turn.",
       }),
     ),
   },
@@ -105,7 +105,7 @@ const CodexThreadsParamsSchema = Type.Union([
 
 type CodexThreadsToolOptions = {
   bindingStore: CodexAppServerBindingStore;
-  context: OpenClawPluginToolContext;
+  context: OperatorPluginToolContext;
   runtime: PluginRuntime;
   getPluginConfig: () => unknown;
   request?: typeof codexControlRequest;
@@ -128,7 +128,7 @@ function readLimit(value: unknown): number | undefined {
 }
 
 function resolveToolSession(
-  context: OpenClawPluginToolContext,
+  context: OperatorPluginToolContext,
   runtime: PluginRuntime,
 ): { sessionId: string; modelSelectionLocked: boolean } | undefined {
   const sessionKey = context.sessionKey?.trim();
@@ -387,7 +387,7 @@ export function createCodexThreadsTool(options: CodexThreadsToolOptions): AnyAge
           assertThreadMayBeArchived(current, threadId);
           if (await options.bindingStore.hasOtherThreadOwner(threadId, identity)) {
             throw new Error(
-              "cannot archive a native Codex thread owned by another OpenClaw session",
+              "cannot archive a native Codex thread owned by another Operator session",
             );
           }
           await assertCodexArchiveDescendantsUnowned({
@@ -431,7 +431,7 @@ export function createCodexThreadsTool(options: CodexThreadsToolOptions): AnyAge
 
       const attach = readBoolean(params.attach, true);
       if (attach && !session) {
-        throw new Error("cannot attach a Codex fork without an active OpenClaw session");
+        throw new Error("cannot attach a Codex fork without an active Operator session");
       }
       if (attach && session?.modelSelectionLocked) {
         throw new ModelSelectionLockedError();

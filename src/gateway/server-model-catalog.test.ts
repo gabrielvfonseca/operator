@@ -2,7 +2,7 @@
  * Gateway server model catalog tests.
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { createDeferred } from "../test-utils/deferred.js";
 import type { GatewayModelChoice } from "./server-model-catalog.js";
 import {
@@ -12,7 +12,7 @@ import {
 } from "./server-model-catalog.js";
 
 type LoadModelCatalogForTest = (params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   readOnly?: boolean;
 }) => Promise<GatewayModelChoice[]>;
 
@@ -20,7 +20,7 @@ function model(id: string): GatewayModelChoice {
   return { id, name: id, provider: "openai" } as GatewayModelChoice;
 }
 
-const getConfig = () => ({}) as OpenClawConfig;
+const getConfig = () => ({}) as OperatorConfig;
 
 const toSnapshotLoader =
   (loadModelCatalog: LoadModelCatalogForTest) =>

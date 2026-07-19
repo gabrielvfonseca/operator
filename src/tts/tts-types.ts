@@ -1,5 +1,5 @@
 // TTS shared types describe speech requests, responses, and runtime config.
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type {
   ResolvedTtsPersona,
   TtsAutoMode,
@@ -28,5 +28,5 @@ export type ResolvedTtsConfig = {
   timeoutMs: number;
   timeoutMsSource?: "config" | "default";
   rawConfig?: TtsConfig;
-  sourceConfig?: OpenClawConfig;
+  sourceConfig?: OperatorConfig;
 };

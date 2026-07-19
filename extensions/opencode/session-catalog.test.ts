@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 const nodeHostMocks = vi.hoisted(() => ({
@@ -48,21 +48,21 @@ const originalPath = process.env.PATH;
 const originalUnrelatedEnv = process.env.CATALOG_UNRELATED_ENV;
 
 function captureOpenCodeSessionRegistrations(pluginConfig: unknown = {}) {
-  const catalogs: Array<Parameters<OpenClawPluginApi["registerSessionCatalog"]>[0]> = [];
-  const commands: Array<Parameters<OpenClawPluginApi["registerNodeHostCommand"]>[0]> = [];
-  const policies: Array<Parameters<OpenClawPluginApi["registerNodeInvokePolicy"]>[0]> = [];
+  const catalogs: Array<Parameters<OperatorPluginApi["registerSessionCatalog"]>[0]> = [];
+  const commands: Array<Parameters<OperatorPluginApi["registerNodeHostCommand"]>[0]> = [];
+  const policies: Array<Parameters<OperatorPluginApi["registerNodeInvokePolicy"]>[0]> = [];
   registerOpenCodeSessionCatalog({
     pluginConfig,
     runtime: { nodes: { list: vi.fn().mockResolvedValue({ nodes: [] }) } },
-    registerSessionCatalog: (catalog: Parameters<OpenClawPluginApi["registerSessionCatalog"]>[0]) =>
+    registerSessionCatalog: (catalog: Parameters<OperatorPluginApi["registerSessionCatalog"]>[0]) =>
       catalogs.push(catalog),
     registerNodeHostCommand: (
-      command: Parameters<OpenClawPluginApi["registerNodeHostCommand"]>[0],
+      command: Parameters<OperatorPluginApi["registerNodeHostCommand"]>[0],
     ) => commands.push(command),
     registerNodeInvokePolicy: (
-      policy: Parameters<OpenClawPluginApi["registerNodeInvokePolicy"]>[0],
+      policy: Parameters<OperatorPluginApi["registerNodeInvokePolicy"]>[0],
     ) => policies.push(policy),
-  } as unknown as OpenClawPluginApi);
+  } as unknown as OperatorPluginApi);
   return { catalogs, commands, policies };
 }
 
@@ -200,7 +200,7 @@ describe("OpenCode session catalog", () => {
         "threadId is invalid",
       );
 
-      let provider: Parameters<OpenClawPluginApi["registerSessionCatalog"]>[0] | undefined;
+      let provider: Parameters<OperatorPluginApi["registerSessionCatalog"]>[0] | undefined;
       registerOpenCodeSessionCatalog({
         pluginConfig: {},
         runtime: { nodes: { list: vi.fn().mockResolvedValue({ nodes: [] }) } },
@@ -209,7 +209,7 @@ describe("OpenCode session catalog", () => {
         },
         registerNodeHostCommand: vi.fn(),
         registerNodeInvokePolicy: vi.fn(),
-      } as unknown as OpenClawPluginApi);
+      } as unknown as OperatorPluginApi);
       await expect(
         provider!.read({ hostId: "gateway", threadId: "ses_test", limit: 2 }),
       ).resolves.toMatchObject({ threadId: "ses_test", items: expect.any(Array) });
@@ -275,7 +275,7 @@ describe("OpenCode session catalog", () => {
     "opens validated local sessions with the upstream terminal resume contract",
     async () => {
       await installFakeOpenCode();
-      let provider: Parameters<OpenClawPluginApi["registerSessionCatalog"]>[0] | undefined;
+      let provider: Parameters<OperatorPluginApi["registerSessionCatalog"]>[0] | undefined;
       registerOpenCodeSessionCatalog({
         pluginConfig: {},
         runtime: { nodes: { list: vi.fn().mockResolvedValue({ nodes: [] }) } },
@@ -284,7 +284,7 @@ describe("OpenCode session catalog", () => {
         },
         registerNodeHostCommand: vi.fn(),
         registerNodeInvokePolicy: vi.fn(),
-      } as unknown as OpenClawPluginApi);
+      } as unknown as OperatorPluginApi);
 
       await expect(provider!.list({ hostIds: ["gateway"] })).resolves.toEqual([
         expect.objectContaining({
@@ -353,7 +353,7 @@ describe("OpenCode session catalog", () => {
   );
 
   it("marks paired-node sessions terminal-capable only when the resume command is advertised", async () => {
-    let provider: Parameters<OpenClawPluginApi["registerSessionCatalog"]>[0] | undefined;
+    let provider: Parameters<OperatorPluginApi["registerSessionCatalog"]>[0] | undefined;
     const page = {
       payloadJSON: JSON.stringify({
         sessions: [
@@ -390,7 +390,7 @@ describe("OpenCode session catalog", () => {
       },
       registerNodeHostCommand: vi.fn(),
       registerNodeInvokePolicy: vi.fn(),
-    } as unknown as OpenClawPluginApi);
+    } as unknown as OperatorPluginApi);
 
     await expect(provider!.list({ hostIds: ["node:node-1"], search: "remote" })).resolves.toEqual([
       expect.objectContaining({
@@ -431,7 +431,7 @@ describe("OpenCode session catalog", () => {
   });
 
   it("bridges paired-node list and read requests without undefined transport fields", async () => {
-    let provider: Parameters<OpenClawPluginApi["registerSessionCatalog"]>[0] | undefined;
+    let provider: Parameters<OperatorPluginApi["registerSessionCatalog"]>[0] | undefined;
     const invoke = vi
       .fn()
       .mockResolvedValueOnce({
@@ -476,7 +476,7 @@ describe("OpenCode session catalog", () => {
       },
       registerNodeHostCommand: vi.fn(),
       registerNodeInvokePolicy: vi.fn(),
-    } as unknown as OpenClawPluginApi;
+    } as unknown as OperatorPluginApi;
 
     registerOpenCodeSessionCatalog(api);
     const catalog = provider;
@@ -549,7 +549,7 @@ describe("OpenCode session catalog", () => {
   });
 
   it("fans out paired-node listing instead of blocking later hosts", async () => {
-    let provider: Parameters<OpenClawPluginApi["registerSessionCatalog"]>[0] | undefined;
+    let provider: Parameters<OperatorPluginApi["registerSessionCatalog"]>[0] | undefined;
     let releaseSlow: ((value: unknown) => void) | undefined;
     const slow = new Promise<unknown>((resolve) => {
       releaseSlow = resolve;
@@ -589,7 +589,7 @@ describe("OpenCode session catalog", () => {
       },
       registerNodeHostCommand: vi.fn(),
       registerNodeInvokePolicy: vi.fn(),
-    } as unknown as OpenClawPluginApi;
+    } as unknown as OperatorPluginApi;
     registerOpenCodeSessionCatalog(api);
 
     const listing = provider!.list({ hostIds: ["node:node-a", "node:node-b"] });

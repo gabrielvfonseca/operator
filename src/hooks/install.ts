@@ -231,7 +231,7 @@ export function resolveHookInstallDir(hookId: string, hooksDir?: string): string
   return targetDirResult.path;
 }
 
-function resolveOpenClawHooks(
+function resolveOperatorHooks(
   manifest: HookPackageManifest,
 ): { ok: true; entries: string[] } | { ok: false; error: string; code: HookInstallErrorCode } {
   const hooks = manifest[MANIFEST_KEY]?.hooks;
@@ -408,7 +408,7 @@ async function installHookPackageFromDir(
     return { ok: false, error: `invalid package.json: ${String(err)}` };
   }
 
-  const hookManifest = resolveOpenClawHooks(manifest);
+  const hookManifest = resolveOperatorHooks(manifest);
   if (!hookManifest.ok) {
     return hookManifest;
   }

@@ -1,15 +1,15 @@
-// Resolves the configured default agent route shared by OpenClaw inference calls.
+// Resolves the configured default agent route shared by Operator inference calls.
 import { isDeepStrictEqual } from "node:util";
 import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
 import {
   cliBackendAcceptsAuthProfileForwarding,
   resolveCliExecutionAuthProfileId,
 } from "../agents/cli-execution-auth.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 
 export type SystemAgentConfiguredRoute = {
-  runConfig: OpenClawConfig;
+  runConfig: OperatorConfig;
   modelLabel: string;
   provider: string;
   model: string;
@@ -38,18 +38,18 @@ export type DefaultInferenceRouteProjection = {
   defaults: unknown;
   agent?: unknown;
   executionAgent?: unknown;
-  env: OpenClawConfig["env"];
-  secrets: OpenClawConfig["secrets"];
-  plugins: OpenClawConfig["plugins"];
-  tools: OpenClawConfig["tools"];
+  env: OperatorConfig["env"];
+  secrets: OperatorConfig["secrets"];
+  plugins: OperatorConfig["plugins"];
+  tools: OperatorConfig["tools"];
 };
 
 const SYSTEM_AGENT_EXECUTION_AGENT_ID = "operator";
 
 function projectSystemAgentExecutionConfig(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   routeAgentId: string,
-): OpenClawConfig {
+): OperatorConfig {
   const agents = config.agents?.list;
   if (!agents) {
     return config;
@@ -90,7 +90,7 @@ function projectSystemAgentExecutionConfig(
 }
 
 export async function resolveSystemAgentConfiguredRouteFromConfig(
-  runConfig: OpenClawConfig,
+  runConfig: OperatorConfig,
   requestedAgentId?: string,
 ): Promise<SystemAgentConfiguredRoute | null> {
   const [agentScope, modelSelection, modelRuntimeAliases, simpleCompletion, harnessPolicy] =
@@ -195,14 +195,14 @@ function projectRelevantModelMap(params: {
 
 /** Project every config input that can change the configured default-agent route. */
 export async function projectDefaultInferenceRoute(
-  config: OpenClawConfig,
+  config: OperatorConfig,
 ): Promise<DefaultInferenceRouteProjection> {
   return await projectInferenceRoute(config);
 }
 
 /** Project every config input that can change one configured agent route. */
 export async function projectInferenceRoute(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   requestedAgentId?: string,
 ): Promise<DefaultInferenceRouteProjection> {
   const [{ resolveDefaultAgentId }, { resolveProviderIdForAuth }] = await Promise.all([

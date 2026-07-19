@@ -1,4 +1,4 @@
 /**
- * Preferred OpenClaw temp directory helper for Browser outputs.
+ * Preferred Operator temp directory helper for Browser outputs.
  */
-export { resolvePreferredOpenClawTmpDir } from "openclaw/plugin-sdk/temp-path";
+export { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";

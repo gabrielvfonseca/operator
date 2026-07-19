@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { reconcileNodePairingOnConnect } from "../gateway/node-connect-reconcile.js";
 import { resetPluginLoaderTestStateForTest } from "../plugins/loader.test-fixtures.js";
 import { testing as runtimeRegistryLoaderTesting } from "../plugins/runtime/runtime-registry-loader.js";
@@ -45,11 +45,11 @@ describe("linux-node node-host integration", () => {
       return originalAccessSync(candidate, mode);
     });
     vi.stubEnv("PATH", `${fakeBinDir}${path.delimiter}${process.env.PATH ?? ""}`);
-    vi.stubEnv("OPENCLAW_BUNDLED_PLUGINS_DIR", path.resolve("extensions"));
-    vi.stubEnv("OPENCLAW_TEST_TRUST_BUNDLED_PLUGINS_DIR", "1");
-    vi.stubEnv("OPENCLAW_DISABLE_BUNDLED_PLUGINS", undefined);
+    vi.stubEnv("OPERATOR_BUNDLED_PLUGINS_DIR", path.resolve("extensions"));
+    vi.stubEnv("OPERATOR_TEST_TRUST_BUNDLED_PLUGINS_DIR", "1");
+    vi.stubEnv("OPERATOR_DISABLE_BUNDLED_PLUGINS", undefined);
 
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       gateway: {
         nodes: {
           allowCommands: ["camera.snap", "camera.clip"],

@@ -37,11 +37,11 @@ import {
 } from "../config/sessions/sqlite-marker.js";
 import { selectVisibleTranscriptEvents } from "../config/sessions/transcript-visible-events.js";
 import type { SessionEntry } from "../config/sessions/types.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 import { stripEnvelope, stripMessageIdHints } from "../shared/chat-envelope.js";
-import { resolveOpenClawAgentSqlitePath } from "../state/operator-agent-db.js";
+import { resolveOperatorAgentSqlitePath } from "../state/operator-agent-db.js";
 import { runTasksWithConcurrency } from "../utils/run-with-concurrency.js";
 import { countToolResults, extractToolCallNames } from "../utils/transcript-tools.js";
 import {
@@ -115,7 +115,7 @@ const logger = createSubsystemLogger("usage-cost-cache");
 
 type UsageCostRefreshState = {
   agentId?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   databasePath: string;
   fullRefreshRequested: boolean;
   pendingSessionFiles: Set<string>;
@@ -129,7 +129,7 @@ type UsageCostRefreshResult = "refreshed" | "busy";
 const usageCostRefreshes = new Map<string, UsageCostRefreshState>();
 
 function resolveUsageCostCacheDatabasePath(agentId?: string): string {
-  return resolveOpenClawAgentSqlitePath({ agentId: normalizeAgentId(agentId) });
+  return resolveOperatorAgentSqlitePath({ agentId: normalizeAgentId(agentId) });
 }
 
 type UsageCostCachedUsageEntry = CostUsageTotals & {
@@ -177,7 +177,7 @@ type UsageCostTranscriptFile = {
   sessionId?: string;
 };
 
-function resolveUsageCostPricingFingerprint(config?: OpenClawConfig): string {
+function resolveUsageCostPricingFingerprint(config?: OperatorConfig): string {
   return resolveModelCostConfigFingerprint(config);
 }
 
@@ -1210,7 +1210,7 @@ type UsageCostResolver = (params: {
   model?: string;
 }) => ReturnType<typeof resolveModelCostConfig>;
 
-function createUsageCostResolver(config?: OpenClawConfig): UsageCostResolver {
+function createUsageCostResolver(config?: OperatorConfig): UsageCostResolver {
   const cache = new Map<string, ReturnType<typeof resolveModelCostConfig>>();
   return ({ provider, model }) => {
     const key = `${provider ?? ""}\0${model ?? ""}`;
@@ -1329,7 +1329,7 @@ async function* readTranscriptRecordsBestEffort(
 
 async function scanTranscriptFile(params: {
   filePath: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   resolveCost?: UsageCostResolver;
   startOffset?: number;
   endOffset?: number;
@@ -1399,7 +1399,7 @@ async function scanTranscriptFile(params: {
 
 async function scanUsageFile(params: {
   filePath: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   resolveCost?: UsageCostResolver;
   startOffset?: number;
   endOffset?: number;
@@ -1503,7 +1503,7 @@ export async function loadCostUsageSummary(params?: {
   startMs?: number;
   endMs?: number;
   dayBucket?: UsageDailyBucket;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
 }): Promise<CostUsageSummary> {
   const now = new Date();
@@ -1579,7 +1579,7 @@ export async function loadCostUsageSummary(params?: {
 
 async function scanUsageFileForCache(params: {
   file: UsageCostTranscriptFile;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   resolveCost?: UsageCostResolver;
   previous?: UsageCostCacheFileEntry;
   includeSessionSummary?: boolean;
@@ -1734,7 +1734,7 @@ async function scanUsageFileForCache(params: {
 }
 
 async function refreshCostUsageCacheForAgent(params?: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
   databasePath?: string;
   maxFiles?: number;
@@ -1744,7 +1744,7 @@ async function refreshCostUsageCacheForAgent(params?: {
 }): Promise<UsageCostRefreshResult> {
   const databasePath =
     params?.databasePath ??
-    resolveOpenClawAgentSqlitePath({ agentId: normalizeAgentId(params?.agentId) });
+    resolveOperatorAgentSqlitePath({ agentId: normalizeAgentId(params?.agentId) });
   const lock = acquireSessionCostUsageRefreshLock(params?.agentId, databasePath);
   if (!lock.acquired) {
     return "busy";
@@ -1832,7 +1832,7 @@ async function refreshCostUsageCacheForAgent(params?: {
 }
 
 async function refreshCostUsageCache(params?: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
   maxFiles?: number;
   sessionFiles?: string[];
@@ -1845,7 +1845,7 @@ export async function loadCostUsageSummaryFromCache(params: {
   startMs: number;
   endMs: number;
   dayBucket?: UsageDailyBucket;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
   requestRefresh?: boolean;
   refreshMode?: "background" | "sync-when-empty";
@@ -1898,7 +1898,7 @@ export async function loadCostUsageSummaryFromCache(params: {
 
 export async function loadSessionCostSummariesFromCache(params: {
   sessions: Array<{ sessionId?: string; sessionFile: string }>;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
   startMs?: number;
   endMs?: number;
@@ -2000,7 +2000,7 @@ export async function loadSessionCostSummariesFromCache(params: {
 }
 
 function requestCostUsageCacheRefresh(params?: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
   sessionFiles?: string[];
 }): void {
@@ -2029,7 +2029,7 @@ function requestCostUsageCacheRefresh(params?: {
 function mergeUsageCostRefreshRequest(
   state: UsageCostRefreshState,
   params?: {
-    config?: OpenClawConfig;
+    config?: OperatorConfig;
     agentId?: string;
     sessionFiles?: string[];
   },
@@ -2208,7 +2208,7 @@ export async function loadSessionCostSummary(params: {
   sessionId?: string;
   sessionEntry?: SessionEntry;
   sessionFile?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
   startMs?: number;
   endMs?: number;
@@ -2529,7 +2529,7 @@ export async function loadSessionUsageTimeSeries(params: {
   sessionId?: string;
   sessionEntry?: SessionEntry;
   sessionFile?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
   maxPoints?: number;
 }): Promise<SessionUsageTimeSeries | null> {
@@ -2641,7 +2641,7 @@ export async function loadSessionLogs(params: {
   sessionId?: string;
   sessionEntry?: SessionEntry;
   sessionFile?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
   limit?: number;
 }): Promise<SessionLogEntry[] | null> {

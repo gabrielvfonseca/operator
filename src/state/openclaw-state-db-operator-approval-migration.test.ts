@@ -5,17 +5,17 @@ import {
   assertCanonicalOperatorApprovalKinds,
   repairOperatorApprovalSchema,
 } from "./openclaw-state-db-operator-approval-migration.js";
-import { OPENCLAW_STATE_SCHEMA_SQL } from "./openclaw-state-schema.generated.js";
+import { OPERATOR_STATE_SCHEMA_SQL } from "./openclaw-state-schema.generated.js";
 
 function canonicalOperatorApprovalCreateSql(): string {
   const marker = "CREATE TABLE IF NOT EXISTS operator_approvals (";
   const tableTerminator = "\n) STRICT;";
-  const start = OPENCLAW_STATE_SCHEMA_SQL.indexOf(marker);
-  const end = OPENCLAW_STATE_SCHEMA_SQL.indexOf(
+  const start = OPERATOR_STATE_SCHEMA_SQL.indexOf(marker);
+  const end = OPERATOR_STATE_SCHEMA_SQL.indexOf(
     `${tableTerminator}\n\nCREATE INDEX IF NOT EXISTS idx_operator_approvals_status_expiry`,
     start,
   );
-  return OPENCLAW_STATE_SCHEMA_SQL.slice(start, end + tableTerminator.length);
+  return OPERATOR_STATE_SCHEMA_SQL.slice(start, end + tableTerminator.length);
 }
 
 function legacyTwoKindCreateSql(): string {
@@ -47,7 +47,7 @@ describe("repairOperatorApprovalKinds", () => {
     );
 
     expect(repairOperatorApprovalSchema(db)).toEqual([
-      "Migrated shared state operator approvals → OpenClaw system changes",
+      "Migrated shared state operator approvals → Operator system changes",
     ]);
 
     expect(() => assertCanonicalOperatorApprovalKinds(db, ":memory:")).not.toThrow();

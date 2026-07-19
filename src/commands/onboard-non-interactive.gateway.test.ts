@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import type { MigrationApplyResult, MigrationPlan } from "../plugins/types.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { makeTempWorkspace } from "../test-helpers/workspace.js";
@@ -11,7 +11,7 @@ import { createThrowingRuntime } from "./onboard-non-interactive.test-helpers.js
 import type { installGatewayDaemonNonInteractive } from "./onboard-non-interactive/local/daemon-install.js";
 
 const ensureWorkspaceAndSessionsMock = vi.fn(async (..._args: unknown[]) => {});
-const testConfigStore = new Map<string, OpenClawConfig>();
+const testConfigStore = new Map<string, OperatorConfig>();
 type InstallGatewayDaemonResult = Awaited<ReturnType<typeof installGatewayDaemonNonInteractive>>;
 const installGatewayDaemonNonInteractiveMock = vi.hoisted(() =>
   vi.fn(async (): Promise<InstallGatewayDaemonResult> => ({ installed: true })),
@@ -52,19 +52,19 @@ let waitForGatewayReachableMock:
   | undefined;
 
 function resolveTestConfigPath() {
-  const override = process.env.OPENCLAW_CONFIG_PATH?.trim();
+  const override = process.env.OPERATOR_CONFIG_PATH?.trim();
   if (override) {
     return override;
   }
-  const stateDir = process.env.OPENCLAW_STATE_DIR?.trim();
+  const stateDir = process.env.OPERATOR_STATE_DIR?.trim();
   if (!stateDir) {
-    throw new Error("OPENCLAW_STATE_DIR must be set before config IO in this test");
+    throw new Error("OPERATOR_STATE_DIR must be set before config IO in this test");
   }
   return path.join(stateDir, "openclaw.json");
 }
 
 // oxlint-disable-next-line typescript/no-unnecessary-type-parameters -- Test helper lets assertions ascribe stored config shape.
-function readTestConfig<T = OpenClawConfig>(): T {
+function readTestConfig<T = OperatorConfig>(): T {
   return (testConfigStore.get(resolveTestConfigPath()) ?? {}) as T;
 }
 
@@ -99,7 +99,7 @@ vi.mock("../config/io.js", () => ({
 }));
 
 const capturedReplaceConfigFileCalls: Array<{
-  nextConfig: OpenClawConfig;
+  nextConfig: OperatorConfig;
   writeOptions?: { allowConfigSizeDrop?: boolean; unsetPaths?: string[][] };
 }> = [];
 
@@ -108,13 +108,13 @@ vi.mock("../config/config.js", () => ({
     nextConfig,
     writeOptions,
   }: {
-    nextConfig: OpenClawConfig;
+    nextConfig: OperatorConfig;
     writeOptions?: { allowConfigSizeDrop?: boolean; unsetPaths?: string[][] };
   }) => {
     capturedReplaceConfigFileCalls.push({ nextConfig, ...(writeOptions ? { writeOptions } : {}) });
     testConfigStore.set(resolveTestConfigPath(), nextConfig);
   },
-  resolveGatewayPort: (cfg: OpenClawConfig) => cfg.gateway?.port ?? 18789,
+  resolveGatewayPort: (cfg: OperatorConfig) => cfg.gateway?.port ?? 18789,
 }));
 
 vi.mock("./onboard-helpers.js", () => {
@@ -249,7 +249,7 @@ type EnsureWorkspaceOptions = {
 };
 
 type MigrationPlanCall = {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   includeSecrets?: boolean;
   overwrite?: boolean;
   source?: string;
@@ -266,7 +266,7 @@ type GatewayHealthCall = {
 };
 
 type HealthCommandCall = GatewayHealthCall & {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 };
 
 async function expectLocalJsonSetupFailure(stateDir: string, runtimeWithCapture: RuntimeEnv) {
@@ -340,8 +340,8 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
       throw new Error("temp home not initialized");
     }
     const stateDir = await fs.mkdtemp(path.join(tempHome, prefix));
-    setTestEnvValue("OPENCLAW_STATE_DIR", stateDir);
-    deleteTestEnvValue("OPENCLAW_CONFIG_PATH");
+    setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
+    deleteTestEnvValue("OPERATOR_CONFIG_PATH");
     return stateDir;
   };
   const withStateDir = async (
@@ -358,23 +358,23 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
   beforeAll(async () => {
     envSnapshot = captureEnv([
       "HOME",
-      "OPENCLAW_STATE_DIR",
-      "OPENCLAW_CONFIG_PATH",
-      "OPENCLAW_SKIP_CHANNELS",
-      "OPENCLAW_SKIP_GMAIL_WATCHER",
-      "OPENCLAW_SKIP_CRON",
-      "OPENCLAW_SKIP_CANVAS_HOST",
-      "OPENCLAW_SKIP_BROWSER_CONTROL_SERVER",
-      "OPENCLAW_GATEWAY_TOKEN",
-      "OPENCLAW_GATEWAY_PASSWORD",
+      "OPERATOR_STATE_DIR",
+      "OPERATOR_CONFIG_PATH",
+      "OPERATOR_SKIP_CHANNELS",
+      "OPERATOR_SKIP_GMAIL_WATCHER",
+      "OPERATOR_SKIP_CRON",
+      "OPERATOR_SKIP_CANVAS_HOST",
+      "OPERATOR_SKIP_BROWSER_CONTROL_SERVER",
+      "OPERATOR_GATEWAY_TOKEN",
+      "OPERATOR_GATEWAY_PASSWORD",
     ]);
-    setTestEnvValue("OPENCLAW_SKIP_CHANNELS", "1");
-    setTestEnvValue("OPENCLAW_SKIP_GMAIL_WATCHER", "1");
-    setTestEnvValue("OPENCLAW_SKIP_CRON", "1");
-    setTestEnvValue("OPENCLAW_SKIP_CANVAS_HOST", "1");
-    setTestEnvValue("OPENCLAW_SKIP_BROWSER_CONTROL_SERVER", "1");
-    deleteTestEnvValue("OPENCLAW_GATEWAY_TOKEN");
-    deleteTestEnvValue("OPENCLAW_GATEWAY_PASSWORD");
+    setTestEnvValue("OPERATOR_SKIP_CHANNELS", "1");
+    setTestEnvValue("OPERATOR_SKIP_GMAIL_WATCHER", "1");
+    setTestEnvValue("OPERATOR_SKIP_CRON", "1");
+    setTestEnvValue("OPERATOR_SKIP_CANVAS_HOST", "1");
+    setTestEnvValue("OPERATOR_SKIP_BROWSER_CONTROL_SERVER", "1");
+    deleteTestEnvValue("OPERATOR_GATEWAY_TOKEN");
+    deleteTestEnvValue("OPERATOR_GATEWAY_PASSWORD");
 
     tempHome = await makeTempWorkspace("openclaw-onboard-");
     setTestEnvValue("HOME", tempHome);
@@ -433,7 +433,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
         agents: { list: seededAgents, defaults: { workspace } },
         bindings: seededBindings,
         gateway: { mode: "local", port: 18789, auth: { mode: "token", token: "seed_tok" } },
-      } as OpenClawConfig);
+      } as OperatorConfig);
 
       await runNonInteractiveSetup(
         {
@@ -472,7 +472,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
             },
           },
         },
-      } as OpenClawConfig);
+      } as OperatorConfig);
 
       await runNonInteractiveSetup(
         {
@@ -727,7 +727,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
           mode: "remote",
           remote: { url: `ws://127.0.0.1:${port}`, token },
         },
-      } as OpenClawConfig);
+      } as OperatorConfig);
 
       await runNonInteractiveSetup(
         {
@@ -767,7 +767,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
           mode: "remote",
           remote: { url: `ws://127.0.0.1:${port}`, token },
         },
-      } as OpenClawConfig);
+      } as OperatorConfig);
 
       await runNonInteractiveSetup(
         {
@@ -1001,8 +1001,8 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
       return;
     }
     await withStateDir("state-lan-", async (stateDir) => {
-      setTestEnvValue("OPENCLAW_STATE_DIR", stateDir);
-      setTestEnvValue("OPENCLAW_CONFIG_PATH", path.join(stateDir, "openclaw.json"));
+      setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
+      setTestEnvValue("OPERATOR_CONFIG_PATH", path.join(stateDir, "openclaw.json"));
 
       const port = getPseudoPort(40_000);
       const workspace = path.join(stateDir, "openclaw");

@@ -1,9 +1,9 @@
 // Stores voice wake trigger configuration.
 import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
 } from "../state/operator-state-db.js";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "./kysely-sync.js";
 
@@ -16,7 +16,7 @@ type VoiceWakeConfig = {
 const DEFAULT_TRIGGERS = ["operator", "claude", "computer"];
 const VOICEWAKE_CONFIG_KEY = "default";
 
-type VoiceWakeDatabase = Pick<OpenClawStateKyselyDatabase, "voicewake_triggers">;
+type VoiceWakeDatabase = Pick<OperatorStateKyselyDatabase, "voicewake_triggers">;
 
 function sanitizeTriggers(triggers: string[] | undefined | null): string[] {
   const cleaned = (triggers ?? [])
@@ -26,7 +26,7 @@ function sanitizeTriggers(triggers: string[] | undefined | null): string[] {
 }
 
 function openStateDatabase(stateDir?: string) {
-  return openOpenClawStateDatabase({
+  return openOperatorStateDatabase({
     env: stateDir ? { ...process.env, OPERATOR_STATE_DIR: stateDir } : process.env,
   });
 }
@@ -64,7 +64,7 @@ export async function setVoiceWakeTriggers(
 ): Promise<VoiceWakeConfig> {
   const sanitized = sanitizeTriggers(triggers);
   const updatedAtMs = Date.now();
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     ({ db }) => {
       const voicewakeDb = getNodeSqliteKysely<VoiceWakeDatabase>(db);
       executeSqliteQuerySync(

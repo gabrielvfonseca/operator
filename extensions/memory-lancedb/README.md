@@ -1,6 +1,6 @@
 # @operator/memory-lancedb
 
-Official LanceDB-backed long-term memory plugin for OpenClaw.
+Official LanceDB-backed long-term memory plugin for Operator.
 
 This plugin adds persistent memory tools backed by LanceDB, vector search, auto-recall, and auto-capture.
 
@@ -29,4 +29,4 @@ Use the memory plugin docs for embedding provider setup, storage paths, indexing
 
 - Plugin id: `memory-lancedb`
 - Package: `@operator/memory-lancedb`
-- Minimum OpenClaw host: `2026.4.10`
+- Minimum Operator host: `2026.4.10`

@@ -5,9 +5,9 @@ import {
   runNodePtyCommand,
 } from "openclaw/plugin-sdk/node-host";
 import type {
-  OpenClawPluginApi,
-  OpenClawPluginNodeHostCommand,
-  OpenClawPluginNodeInvokePolicy,
+  OperatorPluginApi,
+  OperatorPluginNodeHostCommand,
+  OperatorPluginNodeInvokePolicy,
 } from "openclaw/plugin-sdk/plugin-entry";
 import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
 import type {
@@ -128,7 +128,7 @@ function isPiSessionCatalogEnabled(pluginConfig: unknown): boolean {
   );
 }
 
-function createPiSessionNodeHostCommands(): OpenClawPluginNodeHostCommand[] {
+function createPiSessionNodeHostCommands(): OperatorPluginNodeHostCommand[] {
   const storeAvailable = ({ config, env }: { config: unknown; env: NodeJS.ProcessEnv }) =>
     fullConfigCatalogEnabled(config) && piSessionStoreAvailable(env);
   return [
@@ -193,7 +193,7 @@ function createPiSessionNodeHostCommands(): OpenClawPluginNodeHostCommand[] {
   ];
 }
 
-function createPiSessionNodeInvokePolicies(): OpenClawPluginNodeInvokePolicy[] {
+function createPiSessionNodeInvokePolicies(): OperatorPluginNodeInvokePolicy[] {
   return [
     {
       commands: [PI_SESSIONS_LIST_COMMAND, PI_SESSION_READ_COMMAND, PI_TERMINAL_RESUME_COMMAND],
@@ -495,7 +495,7 @@ async function readPiTranscript(
   };
 }
 
-export function registerPiSessionCatalog(api: OpenClawPluginApi): void {
+export function registerPiSessionCatalog(api: OperatorPluginApi): void {
   if (!isPiSessionCatalogEnabled(api.pluginConfig)) {
     return;
   }

@@ -1,5 +1,5 @@
 import type { WhatsAppQaDriverSession } from "@operator/whatsapp/api.js";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type { QaRunnerCliRegistration } from "openclaw/plugin-sdk/qa-runner-runtime";
 import { QaSuiteScenarioSkipError } from "../../errors.js";
 import {
@@ -81,7 +81,7 @@ export function createWhatsAppQaScenarioEnvironment(params: {
             ? "allowlist"
             : "pairing";
     const snapshot = await readLiveQaGatewayConfig(input.gateway);
-    const cfg = buildWhatsAppQaConfig(snapshot.config as OpenClawConfig, {
+    const cfg = buildWhatsAppQaConfig(snapshot.config as OperatorConfig, {
       allowFrom,
       authDir: params.sutAuthDir,
       dmPolicy,

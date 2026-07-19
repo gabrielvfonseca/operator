@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 import type { ModelCatalogEntry } from "../../agents/model-catalog.types.js";
 import type { createOpenAIModelRoutesResolver } from "../../agents/openai-model-routes.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import { withEnvAsync } from "../../test-utils/env.js";
-import { withOpenClawTestState } from "../../test-utils/operator-test-state.js";
+import { withOperatorTestState } from "../../test-utils/operator-test-state.js";
 import { buildModelsListResult } from "./models-list-result.js";
 import type { GatewayRequestContext } from "./types.js";
 
@@ -16,7 +16,7 @@ const WITHOUT_OPENAI_ENV_AUTH = {
   CHATGPT_OAUTH_TOKEN: undefined,
 } as const;
 const IMPLICIT_CODEX_RUNTIME = { id: "codex", source: "implicit" } as const;
-const IMPLICIT_OPENCLAW_RUNTIME = { id: "openclaw", source: "implicit" } as const;
+const IMPLICIT_OPERATOR_RUNTIME = { id: "openclaw", source: "implicit" } as const;
 
 function catalogEntry(id: string, api: ModelCatalogEntry["api"]): ModelCatalogEntry {
   return { id, name: id, provider: "openai", api };
@@ -24,12 +24,12 @@ function catalogEntry(id: string, api: ModelCatalogEntry["api"]): ModelCatalogEn
 
 async function listModels(params: {
   catalog: ModelCatalogEntry[];
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   routeResolverFactory?: typeof createOpenAIModelRoutesResolver;
   view?: "all" | "configured" | "provider-config" | "default";
 }) {
   const context = {
-    getRuntimeConfig: () => params.cfg ?? ({} as OpenClawConfig),
+    getRuntimeConfig: () => params.cfg ?? ({} as OperatorConfig),
     loadGatewayModelCatalog: vi.fn(() => Promise.resolve(params.catalog)),
     loadGatewayModelCatalogSnapshot: vi.fn(() =>
       Promise.resolve({ entries: params.catalog, routeVariants: params.catalog }),
@@ -67,7 +67,7 @@ describe("models.list OpenAI routes", () => {
   });
   it("keeps exhaustive Codex rows visible but unavailable when the route artifact is missing", async () => {
     await withEnvAsync(WITHOUT_OPENAI_ENV_AUTH, async () => {
-      await withOpenClawTestState(
+      await withOperatorTestState(
         {
           layout: "state-only",
           prefix: "openclaw-models-list-openai-null-artifact-oauth-",
@@ -154,7 +154,7 @@ describe("models.list OpenAI routes", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     const row = {
       ...catalogEntry("gpt-5.4-nano", "openai-completions"),
       baseUrl: "https://api.openai.com",
@@ -174,7 +174,7 @@ describe("models.list OpenAI routes", () => {
             id: "gpt-5.4-nano",
             name: "GPT-5.4 Nano",
             provider: "openai",
-            agentRuntime: IMPLICIT_OPENCLAW_RUNTIME,
+            agentRuntime: IMPLICIT_OPERATOR_RUNTIME,
             contextWindow: 1_000_000,
             reasoning: true,
             available: true,
@@ -195,7 +195,7 @@ describe("models.list OpenAI routes", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     const incompatibleRow = {
       ...catalogEntry("chat-latest", "openai-chatgpt-responses"),
@@ -213,14 +213,14 @@ describe("models.list OpenAI routes", () => {
           id: "chat-latest",
           name: "chat-latest",
           provider: "openai",
-          agentRuntime: IMPLICIT_OPENCLAW_RUNTIME,
+          agentRuntime: IMPLICIT_OPERATOR_RUNTIME,
           available: false,
         },
         {
           id: "gpt-5.6",
           name: "GPT-5.6",
           provider: "openai",
-          agentRuntime: IMPLICIT_OPENCLAW_RUNTIME,
+          agentRuntime: IMPLICIT_OPERATOR_RUNTIME,
           available: false,
         },
       ],
@@ -238,7 +238,7 @@ describe("models.list OpenAI routes", () => {
           id: "gpt-5.6",
           name: "GPT-5.6",
           provider: "openai",
-          agentRuntime: IMPLICIT_OPENCLAW_RUNTIME,
+          agentRuntime: IMPLICIT_OPERATOR_RUNTIME,
           available: false,
         },
       ],
@@ -246,7 +246,7 @@ describe("models.list OpenAI routes", () => {
   });
   it("uses auth.order to project one logical route and its capabilities", async () => {
     await withEnvAsync(WITHOUT_OPENAI_ENV_AUTH, async () => {
-      await withOpenClawTestState(
+      await withOperatorTestState(
         {
           layout: "state-only",
           prefix: "openclaw-models-list-openai-auth-order-",
@@ -272,7 +272,7 @@ describe("models.list OpenAI routes", () => {
           });
           const cfg = {
             auth: { order: { openai: ["openai:chatgpt", "openai:key"] } },
-          } as unknown as OpenClawConfig;
+          } as unknown as OperatorConfig;
           const row = {
             ...catalogEntry("gpt-5.5", "openai-responses"),
             baseUrl: "https://api.openai.com/v1",
@@ -330,7 +330,7 @@ describe("models.list OpenAI routes", () => {
                 },
               },
             },
-          } as unknown as OpenClawConfig;
+          } as unknown as OperatorConfig;
           await expect(
             listModels({
               catalog: [
@@ -361,7 +361,7 @@ describe("models.list OpenAI routes", () => {
 
           const apiKeyFirst = {
             auth: { order: { openai: ["openai:key", "openai:chatgpt"] } },
-          } as unknown as OpenClawConfig;
+          } as unknown as OperatorConfig;
           await expect(listModels({ catalog: [row], cfg: apiKeyFirst })).resolves.toEqual({
             models: [
               {
@@ -391,7 +391,7 @@ describe("models.list OpenAI routes", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       await expect(
         listModels({
@@ -405,7 +405,7 @@ describe("models.list OpenAI routes", () => {
             id: "gpt-5.6",
             name: "GPT-5.6",
             provider: "openai",
-            agentRuntime: IMPLICIT_OPENCLAW_RUNTIME,
+            agentRuntime: IMPLICIT_OPERATOR_RUNTIME,
             available: false,
           },
         ],
@@ -415,7 +415,7 @@ describe("models.list OpenAI routes", () => {
 
   it("keeps configured fallback rows visible when their route is unavailable", async () => {
     await withEnvAsync(WITHOUT_OPENAI_ENV_AUTH, async () => {
-      await withOpenClawTestState(
+      await withOperatorTestState(
         {
           layout: "state-only",
           prefix: "openclaw-models-list-openai-fallback-",
@@ -440,7 +440,7 @@ describe("models.list OpenAI routes", () => {
                 },
               },
             },
-          } as unknown as OpenClawConfig;
+          } as unknown as OperatorConfig;
           const result = await listModels({
             cfg,
             view: "configured",
@@ -451,7 +451,7 @@ describe("models.list OpenAI routes", () => {
             id: "chat-latest",
             name: "chat-latest",
             provider: "openai",
-            agentRuntime: IMPLICIT_OPENCLAW_RUNTIME,
+            agentRuntime: IMPLICIT_OPERATOR_RUNTIME,
             available: false,
           });
         },
@@ -482,7 +482,7 @@ describe("models.list OpenAI routes", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       await expect(
         listModels({
@@ -497,7 +497,7 @@ describe("models.list OpenAI routes", () => {
             name: "chat-latest",
             provider: "openai",
             alias: "fast",
-            agentRuntime: IMPLICIT_OPENCLAW_RUNTIME,
+            agentRuntime: IMPLICIT_OPERATOR_RUNTIME,
             available: false,
           },
         ],
@@ -516,7 +516,7 @@ describe("models.list OpenAI routes", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     await withEnvAsync(
       { ...WITHOUT_OPENAI_ENV_AUTH, OPENAI_API_KEY: "test-token-placeholder" },

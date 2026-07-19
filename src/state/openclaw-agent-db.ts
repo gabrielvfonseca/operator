@@ -1,4 +1,4 @@
-// OpenClaw agent database stores agent-scoped persisted runtime state.
+// Operator agent database stores agent-scoped persisted runtime state.
 import { chmodSync, existsSync, lstatSync, mkdirSync, statSync } from "node:fs";
 import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
@@ -49,26 +49,26 @@ import {
   backfillSessionEntryProvenance,
   backfillTranscriptMutationWatermarks,
 } from "./operator-agent-db-session-provenance.js";
-import type { DB as OpenClawAgentKyselyDatabase } from "./operator-agent-db.generated.js";
-import { resolveOpenClawAgentSqlitePath } from "./operator-agent-db.paths.js";
+import type { DB as OperatorAgentKyselyDatabase } from "./operator-agent-db.generated.js";
+import { resolveOperatorAgentSqlitePath } from "./operator-agent-db.paths.js";
 import { OPERATOR_AGENT_SCHEMA_SQL } from "./operator-agent-schema.generated.js";
-import type { DB as OpenClawStateKyselyDatabase } from "./operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "./operator-state-db.generated.js";
 import {
-  detectOpenClawStateDatabaseSchemaMigrations,
+  detectOperatorStateDatabaseSchemaMigrations,
   OPERATOR_STATE_SCHEMA_VERSION,
   OPERATOR_SQLITE_BUSY_TIMEOUT_MS,
-  runOpenClawStateWriteTransaction,
-  type OpenClawStateDatabaseOptions,
+  runOperatorStateWriteTransaction,
+  type OperatorStateDatabaseOptions,
 } from "./operator-state-db.js";
-import { resolveOpenClawStateSqlitePath } from "./operator-state-db.paths.js";
-export { resolveOpenClawAgentSqlitePath } from "./operator-agent-db.paths.js";
+import { resolveOperatorStateSqlitePath } from "./operator-state-db.paths.js";
+export { resolveOperatorAgentSqlitePath } from "./operator-agent-db.paths.js";
 
 /**
  * Per-agent SQLite database lifecycle and shared-state registration.
  *
  * Each opened agent database is schema-owned by one normalized agent id, cached
  * per pathname, protected with private file modes, and registered in the shared
- * OpenClaw state database for discovery and maintenance.
+ * Operator state database for discovery and maintenance.
  */
 // v9 = SQLite STRICT tables. v8 added per-transcript session provenance.
 // v7 added per-entry lifecycle status projection.
@@ -121,7 +121,7 @@ const OPERATOR_AGENT_MAINTENANCE_SCHEMA_COMPATIBILITY = {
 const agentDbLog = createSubsystemLogger("state/agent-db");
 
 /** Open per-agent SQLite database handle plus lifecycle maintenance. */
-export type OpenClawAgentDatabase = {
+export type OperatorAgentDatabase = {
   agentId: string;
   db: DatabaseSync;
   path: string;
@@ -129,12 +129,12 @@ export type OpenClawAgentDatabase = {
 };
 
 /** Options for resolving and opening one agent database. */
-export type OpenClawAgentDatabaseOptions = OpenClawStateDatabaseOptions & {
+export type OperatorAgentDatabaseOptions = OperatorStateDatabaseOptions & {
   agentId: string;
 };
 
 /** Shared-state registry row describing an agent database seen by this process. */
-export type OpenClawRegisteredAgentDatabase = {
+export type OperatorRegisteredAgentDatabase = {
   agentId: string;
   path: string;
   schemaVersion: number;
@@ -142,10 +142,10 @@ export type OpenClawRegisteredAgentDatabase = {
   sizeBytes: number | null;
 };
 
-type OpenClawAgentMetadataDatabase = Pick<OpenClawAgentKyselyDatabase, "schema_meta">;
-type OpenClawAgentRegistryDatabase = Pick<OpenClawStateKyselyDatabase, "agent_databases">;
+type OperatorAgentMetadataDatabase = Pick<OperatorAgentKyselyDatabase, "schema_meta">;
+type OperatorAgentRegistryDatabase = Pick<OperatorStateKyselyDatabase, "agent_databases">;
 
-const cachedDatabases = new Map<string, OpenClawAgentDatabase>();
+const cachedDatabases = new Map<string, OperatorAgentDatabase>();
 
 type ExistingSchemaMeta = {
   agentId: string | null;
@@ -163,7 +163,7 @@ function logSlowAgentDatabaseOpen(params: {
   if (params.elapsedMs < OPERATOR_AGENT_DB_SLOW_OPEN_MS) {
     return;
   }
-  agentDbLog.warn("slow OpenClaw agent database open", {
+  agentDbLog.warn("slow Operator agent database open", {
     agentId: params.agentId,
     elapsedMs: params.elapsedMs,
     path: params.path,
@@ -175,7 +175,7 @@ function assertSupportedAgentSchemaVersion(db: DatabaseSync, pathname: string): 
   const userVersion = readSqliteUserVersion(db);
   if (userVersion > OPERATOR_AGENT_SCHEMA_VERSION) {
     throw createNewerSqliteSchemaVersionError(
-      "OpenClaw agent database",
+      "Operator agent database",
       pathname,
       userVersion,
       OPERATOR_AGENT_SCHEMA_VERSION,
@@ -223,7 +223,7 @@ function dropLegacyMemoryIndexSchema(db: DatabaseSync): void {
   `);
 }
 
-function migrateOpenClawAgentSchema(db: DatabaseSync): void {
+function migrateOperatorAgentSchema(db: DatabaseSync): void {
   const userVersion = readSqliteUserVersion(db);
   if (userVersion >= OPERATOR_AGENT_SCHEMA_VERSION) {
     return;
@@ -457,7 +457,7 @@ function migratedEntryDisplayName(entry: MigratedSessionEntry): string | null {
   );
 }
 
-function backfillOpenClawAgentSchema(db: DatabaseSync, previousVersion: number): void {
+function backfillOperatorAgentSchema(db: DatabaseSync, previousVersion: number): void {
   if (previousVersion >= 2) {
     return;
   }
@@ -524,12 +524,12 @@ function backfillOpenClawAgentSchema(db: DatabaseSync, previousVersion: number):
   }
 }
 
-export function ensureOpenClawAgentDatabasePermissions(
+export function ensureOperatorAgentDatabasePermissions(
   pathname: string,
-  options: OpenClawAgentDatabaseOptions,
+  options: OperatorAgentDatabaseOptions,
 ): void {
   const dir = path.dirname(pathname);
-  const defaultPath = resolveOpenClawAgentSqlitePath({
+  const defaultPath = resolveOperatorAgentSqlitePath({
     agentId: options.agentId,
     env: options.env,
   });
@@ -578,21 +578,21 @@ function assertExistingSchemaOwner(
   // Agent DB files are not interchangeable; opening another role/id would corrupt ownership.
   if (existing.role !== "agent") {
     throw new Error(
-      `OpenClaw agent database ${pathname} has schema role ${existing.role ?? "unknown"}; expected agent.`,
+      `Operator agent database ${pathname} has schema role ${existing.role ?? "unknown"}; expected agent.`,
     );
   }
   if (!existing.agentId) {
-    throw new Error(`OpenClaw agent database ${pathname} has no agent owner.`);
+    throw new Error(`Operator agent database ${pathname} has no agent owner.`);
   }
   if (normalizeAgentId(existing.agentId) !== agentId) {
     throw new Error(
-      `OpenClaw agent database ${pathname} belongs to agent ${existing.agentId}; requested agent ${agentId}.`,
+      `Operator agent database ${pathname} belongs to agent ${existing.agentId}; requested agent ${agentId}.`,
     );
   }
 }
 
 /** Require the exact agent owner and schema before offline file maintenance. */
-export function assertOpenClawAgentDatabaseForMaintenance(
+export function assertOperatorAgentDatabaseForMaintenance(
   database: DatabaseSync,
   options: { agentId: string; pathname: string },
 ): void {
@@ -600,7 +600,7 @@ export function assertOpenClawAgentDatabaseForMaintenance(
   const metadata = readExistingSchemaMeta(database);
   if (!metadata) {
     throw new Error(
-      `OpenClaw agent database ${options.pathname} has no schema ownership metadata.`,
+      `Operator agent database ${options.pathname} has no schema ownership metadata.`,
     );
   }
   assertExistingSchemaOwner(metadata, agentId, options.pathname);
@@ -608,7 +608,7 @@ export function assertOpenClawAgentDatabaseForMaintenance(
   const userVersion = readSqliteUserVersion(database);
   if (userVersion > OPERATOR_AGENT_SCHEMA_VERSION) {
     throw createNewerSqliteSchemaVersionError(
-      "OpenClaw agent database",
+      "Operator agent database",
       options.pathname,
       userVersion,
       OPERATOR_AGENT_SCHEMA_VERSION,
@@ -616,12 +616,12 @@ export function assertOpenClawAgentDatabaseForMaintenance(
   }
   if (userVersion !== OPERATOR_AGENT_SCHEMA_VERSION) {
     throw new Error(
-      `OpenClaw agent database ${options.pathname} uses schema version ${userVersion}; run operator doctor --fix before compacting it.`,
+      `Operator agent database ${options.pathname} uses schema version ${userVersion}; run operator doctor --fix before compacting it.`,
     );
   }
   if (metadata.schemaVersion !== OPERATOR_AGENT_SCHEMA_VERSION) {
     throw new Error(
-      `OpenClaw agent database ${options.pathname} metadata schema version ${metadata.schemaVersion ?? "invalid"} does not match ${OPERATOR_AGENT_SCHEMA_VERSION}; run operator doctor --fix before compacting it.`,
+      `Operator agent database ${options.pathname} metadata schema version ${metadata.schemaVersion ?? "invalid"} does not match ${OPERATOR_AGENT_SCHEMA_VERSION}; run operator doctor --fix before compacting it.`,
     );
   }
   assertSqliteSchemaContains(
@@ -633,7 +633,7 @@ export function assertOpenClawAgentDatabaseForMaintenance(
 }
 
 /** Upgrade a supported older owned schema before strict offline maintenance. */
-export function migrateOpenClawAgentDatabaseForMaintenance(options: {
+export function migrateOperatorAgentDatabaseForMaintenance(options: {
   agentId: string;
   pathname: string;
 }): void {
@@ -660,7 +660,7 @@ export function migrateOpenClawAgentDatabaseForMaintenance(options: {
     if (!hasSupportedOlderVersion) {
       return;
     }
-    ensureOpenClawAgentDatabaseSchema(database, {
+    ensureOperatorAgentDatabaseSchema(database, {
       agentId,
       path: options.pathname,
     });
@@ -693,7 +693,7 @@ function ensureAgentSchema(db: DatabaseSync, agentId: string, pathname: string):
       dropLegacyMemoryIndexSchema(db);
       dropLegacySessionTranscriptSearchSchema(db);
       migrateMemoryIndexSourcesIdentity(db);
-      migrateOpenClawAgentSchema(db);
+      migrateOperatorAgentSchema(db);
       db.exec(OPERATOR_AGENT_SCHEMA_SQL);
       if (previousVersion < OPERATOR_AGENT_SCHEMA_VERSION) {
         migrateSqliteSchemaToStrictInTransaction(db, OPERATOR_AGENT_SCHEMA_SQL, {
@@ -701,9 +701,9 @@ function ensureAgentSchema(db: DatabaseSync, agentId: string, pathname: string):
         });
       }
       repairCanonicalSqliteUniqueIndexes(db, pathname, OPERATOR_AGENT_CANONICAL_UNIQUE_INDEXES);
-      backfillOpenClawAgentSchema(db, previousVersion);
+      backfillOperatorAgentSchema(db, previousVersion);
       backfillSessionEntryProvenance(db, previousVersion);
-      const kysely = getNodeSqliteKysely<OpenClawAgentMetadataDatabase>(db);
+      const kysely = getNodeSqliteKysely<OperatorAgentMetadataDatabase>(db);
       db.exec(`PRAGMA user_version = ${OPERATOR_AGENT_SCHEMA_VERSION};`);
       const now = Date.now();
       executeSqliteQuerySync(
@@ -736,20 +736,20 @@ function ensureAgentSchema(db: DatabaseSync, agentId: string, pathname: string):
 }
 
 /** Initialize agent schema/ownership metadata on an independently managed connection. */
-export function ensureOpenClawAgentDatabaseSchema(
+export function ensureOperatorAgentDatabaseSchema(
   db: DatabaseSync,
-  options: OpenClawAgentDatabaseOptions & { register?: boolean },
+  options: OperatorAgentDatabaseOptions & { register?: boolean },
 ): void {
   const agentId = normalizeAgentId(options.agentId);
   const databaseOptions = { ...options, agentId };
-  const pathname = resolveOpenClawAgentSqlitePath(databaseOptions);
-  ensureOpenClawAgentDatabasePermissions(pathname, databaseOptions);
+  const pathname = resolveOperatorAgentSqlitePath(databaseOptions);
+  ensureOperatorAgentDatabasePermissions(pathname, databaseOptions);
   assertAgentDatabaseIntegrityBeforeMutation(db, pathname);
   configureSqlitePreSchemaPragmas(db, {
     busyTimeoutMs: OPERATOR_SQLITE_BUSY_TIMEOUT_MS,
   });
   ensureAgentSchema(db, agentId, pathname);
-  ensureOpenClawAgentDatabasePermissions(pathname, databaseOptions);
+  ensureOperatorAgentDatabasePermissions(pathname, databaseOptions);
   if (options.register === true) {
     registerAgentDatabase({ agentId, path: pathname, env: options.env });
   }
@@ -767,9 +767,9 @@ function registerAgentDatabase(params: {
     sizeBytes = null;
   }
   const lastSeenAt = Date.now();
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     (database) => {
-      const db = getNodeSqliteKysely<OpenClawAgentRegistryDatabase>(database.db);
+      const db = getNodeSqliteKysely<OperatorAgentRegistryDatabase>(database.db);
       executeSqliteQuerySync(
         database.db,
         db
@@ -799,9 +799,9 @@ function unregisterAgentDatabase(params: {
   path: string;
   env?: NodeJS.ProcessEnv;
 }): void {
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     (database) => {
-      const db = getNodeSqliteKysely<OpenClawAgentRegistryDatabase>(database.db);
+      const db = getNodeSqliteKysely<OperatorAgentRegistryDatabase>(database.db);
       executeSqliteQuerySync(
         database.db,
         db
@@ -851,22 +851,22 @@ function hasUnavailableMissingSqlitePath(pathname: string): boolean {
   }
 }
 
-/** List agent databases recorded in the shared OpenClaw state registry. */
-export function listOpenClawRegisteredAgentDatabases(
-  options: OpenClawStateDatabaseOptions = {},
-): OpenClawRegisteredAgentDatabase[] {
+/** List agent databases recorded in the shared Operator state registry. */
+export function listOperatorRegisteredAgentDatabases(
+  options: OperatorStateDatabaseOptions = {},
+): OperatorRegisteredAgentDatabase[] {
   const pathname = path.resolve(
-    options.path ?? resolveOpenClawStateSqlitePath(options.env ?? process.env),
+    options.path ?? resolveOperatorStateSqlitePath(options.env ?? process.env),
   );
   if (!existsSync(pathname)) {
     if (hasUnavailableMissingSqlitePath(pathname)) {
-      throw new Error(`OpenClaw state database ${pathname} is unavailable.`);
+      throw new Error(`Operator state database ${pathname} is unavailable.`);
     }
     return [];
   }
-  if (detectOpenClawStateDatabaseSchemaMigrations(options).length > 0) {
+  if (detectOperatorStateDatabaseSchemaMigrations(options).length > 0) {
     throw new Error(
-      `OpenClaw state database ${pathname} has a legacy agent database registry schema; run operator doctor --fix to migrate it.`,
+      `Operator state database ${pathname} has a legacy agent database registry schema; run operator doctor --fix to migrate it.`,
     );
   }
 
@@ -876,7 +876,7 @@ export function listOpenClawRegisteredAgentDatabases(
     database.exec(`PRAGMA busy_timeout = ${OPERATOR_SQLITE_BUSY_TIMEOUT_MS};`);
     if (readSqliteUserVersion(database) > OPERATOR_STATE_SCHEMA_VERSION) {
       throw new Error(
-        `OpenClaw state database ${pathname} uses a newer schema than this OpenClaw build.`,
+        `Operator state database ${pathname} uses a newer schema than this Operator build.`,
       );
     }
     const registryTable = database
@@ -886,9 +886,9 @@ export function listOpenClawRegisteredAgentDatabases(
       return [];
     }
     if (registryTable.type !== "table") {
-      throw new Error(`OpenClaw state database ${pathname} has an invalid agent registry.`);
+      throw new Error(`Operator state database ${pathname} has an invalid agent registry.`);
     }
-    const db = getNodeSqliteKysely<OpenClawAgentRegistryDatabase>(database);
+    const db = getNodeSqliteKysely<OperatorAgentRegistryDatabase>(database);
     const rows = executeSqliteQuerySync(
       database,
       db
@@ -910,15 +910,15 @@ export function listOpenClawRegisteredAgentDatabases(
   }
 }
 
-export type OpenClawAgentDatabaseOwnerInspection =
+export type OperatorAgentDatabaseOwnerInspection =
   | { status: "owned"; agentId: string }
   | { status: "unowned" }
   | { status: "unreadable" };
 
 /** Read a database's durable role and agent owner without mutating it. */
-export function inspectOpenClawAgentDatabaseOwner(
+export function inspectOperatorAgentDatabaseOwner(
   pathname: string,
-): OpenClawAgentDatabaseOwnerInspection {
+): OperatorAgentDatabaseOwnerInspection {
   const sqlite = requireNodeSqlite();
   let db: DatabaseSync | undefined;
   try {
@@ -951,17 +951,17 @@ function assertAgentDatabaseIntegrityBeforeMutation(
 }
 
 /** Open or return a cached per-agent database after schema and owner validation. */
-export function openOpenClawAgentDatabase(
-  options: OpenClawAgentDatabaseOptions,
-): OpenClawAgentDatabase {
+export function openOperatorAgentDatabase(
+  options: OperatorAgentDatabaseOptions,
+): OperatorAgentDatabase {
   const agentId = normalizeAgentId(options.agentId);
   const databaseOptions = { ...options, agentId };
-  const pathname = resolveOpenClawAgentSqlitePath(databaseOptions);
+  const pathname = resolveOperatorAgentSqlitePath(databaseOptions);
   const cached = cachedDatabases.get(pathname);
   if (cached?.db.isOpen) {
     if (cached.agentId !== agentId) {
       throw new Error(
-        `OpenClaw agent database ${pathname} is already open for agent ${cached.agentId}; requested agent ${agentId}.`,
+        `Operator agent database ${pathname} is already open for agent ${cached.agentId}; requested agent ${agentId}.`,
       );
     }
     return cached;
@@ -974,7 +974,7 @@ export function openOpenClawAgentDatabase(
   }
 
   const openStartedAt = Date.now();
-  ensureOpenClawAgentDatabasePermissions(pathname, databaseOptions);
+  ensureOperatorAgentDatabasePermissions(pathname, databaseOptions);
   const sqlite = requireNodeSqlite();
   const db = new sqlite.DatabaseSync(pathname);
   const walMaintenance = (() => {
@@ -999,18 +999,18 @@ export function openOpenClawAgentDatabase(
       throw err;
     }
   })();
-  ensureOpenClawAgentDatabasePermissions(pathname, databaseOptions);
+  ensureOperatorAgentDatabasePermissions(pathname, databaseOptions);
   const database = { agentId, db, path: pathname, walMaintenance };
   try {
     registerAgentDatabase({ agentId, path: pathname, env: options.env });
   } catch (error) {
-    closeCachedOpenClawAgentDatabase(database);
+    closeCachedOperatorAgentDatabase(database);
     throw error;
   }
   cachedDatabases.set(pathname, database);
   // Safety net for processes that end without an orderly close: agent DBs have
   // no shutdown owner like the ACP/gateway state DB closes. Closing unregisters.
-  unregisterExitClose ??= registerSqliteCacheExitClose(closeOpenClawAgentDatabases);
+  unregisterExitClose ??= registerSqliteCacheExitClose(closeOperatorAgentDatabases);
   logSlowAgentDatabaseOpen({
     agentId,
     elapsedMs: Date.now() - openStartedAt,
@@ -1020,11 +1020,11 @@ export function openOpenClawAgentDatabase(
 }
 
 /** Run a synchronous immediate transaction against an agent database. */
-const postCommitPublications = new WeakMap<OpenClawAgentDatabase, Array<() => void>>();
+const postCommitPublications = new WeakMap<OperatorAgentDatabase, Array<() => void>>();
 
 /** Queue a non-throwing runtime publication on the outer database commit edge. */
-export function deferOpenClawAgentPostCommitPublication(
-  database: OpenClawAgentDatabase,
+export function deferOperatorAgentPostCommitPublication(
+  database: OperatorAgentDatabase,
   publish: () => void,
 ): boolean {
   const publications = postCommitPublications.get(database);
@@ -1035,15 +1035,15 @@ export function deferOpenClawAgentPostCommitPublication(
   return true;
 }
 
-export function runOpenClawAgentWriteTransaction<T>(
-  operation: (database: OpenClawAgentDatabase) => T,
-  options: OpenClawAgentDatabaseOptions,
+export function runOperatorAgentWriteTransaction<T>(
+  operation: (database: OperatorAgentDatabase) => T,
+  options: OperatorAgentDatabaseOptions,
   transactionOptions: Pick<
     SqliteTransactionOptions,
     "operationLabel" | "slowTransactionHoldMs"
   > = {},
 ): T {
-  const database = openOpenClawAgentDatabase(options);
+  const database = openOperatorAgentDatabase(options);
   const enteredNestedTransaction = database.db.isTransaction;
   const publications: Array<() => void> | undefined = enteredNestedTransaction
     ? postCommitPublications.get(database)
@@ -1061,7 +1061,7 @@ export function runOpenClawAgentWriteTransaction<T>(
         if (!enteredNestedTransaction) {
           // Permission failure must roll back with the write. Repairing after
           // COMMIT could make callers retry a transaction already durable in SQLite.
-          ensureOpenClawAgentDatabasePermissions(database.path, options);
+          ensureOperatorAgentDatabasePermissions(database.path, options);
         }
         return operationResult;
       },
@@ -1090,7 +1090,7 @@ export function runOpenClawAgentWriteTransaction<T>(
 
 let unregisterExitClose: (() => void) | null = null;
 
-function closeCachedOpenClawAgentDatabase(database: OpenClawAgentDatabase): void {
+function closeCachedOperatorAgentDatabase(database: OperatorAgentDatabase): void {
   database.walMaintenance.close();
   clearNodeSqliteKyselyCacheForDatabase(database.db);
   if (database.db.isOpen) {
@@ -1099,13 +1099,13 @@ function closeCachedOpenClawAgentDatabase(database: OpenClawAgentDatabase): void
 }
 
 /** Return whether the exact cached agent database pathname is still open. */
-export function isOpenClawAgentDatabaseOpen(pathname: string): boolean {
+export function isOperatorAgentDatabaseOpen(pathname: string): boolean {
   const database = cachedDatabases.get(path.resolve(pathname));
   return database?.db.isOpen === true;
 }
 
 /** Close one cached agent database identified by its exact resolved pathname. */
-export function closeOpenClawAgentDatabaseByPath(pathname: string): boolean {
+export function closeOperatorAgentDatabaseByPath(pathname: string): boolean {
   // Cache keys are lexical resolved paths. Do not realpath aliases here: a
   // symlink swap must never redirect cleanup onto a different cached database.
   const resolvedPath = path.resolve(pathname);
@@ -1113,7 +1113,7 @@ export function closeOpenClawAgentDatabaseByPath(pathname: string): boolean {
   if (!database) {
     return false;
   }
-  closeCachedOpenClawAgentDatabase(database);
+  closeCachedOperatorAgentDatabase(database);
   cachedDatabases.delete(resolvedPath);
   if (cachedDatabases.size === 0) {
     unregisterExitClose?.();
@@ -1123,7 +1123,7 @@ export function closeOpenClawAgentDatabaseByPath(pathname: string): boolean {
 }
 
 /** Close and unregister one transient agent database by exact cached pathname. */
-export function disposeOpenClawAgentDatabaseByPath(
+export function disposeOperatorAgentDatabaseByPath(
   pathname: string,
   options: { env?: NodeJS.ProcessEnv } = {},
 ): boolean {
@@ -1143,21 +1143,21 @@ export function disposeOpenClawAgentDatabaseByPath(
   } finally {
     // Secret-bearing transient DBs must close even when registry maintenance
     // fails; Windows otherwise cannot remove the file during caller cleanup.
-    closeOpenClawAgentDatabaseByPath(resolvedPath);
+    closeOperatorAgentDatabaseByPath(resolvedPath);
   }
   return true;
 }
 
 /** Close all cached agent database handles. */
-export function closeOpenClawAgentDatabases(): void {
+export function closeOperatorAgentDatabases(): void {
   unregisterExitClose?.();
   unregisterExitClose = null;
   for (const database of cachedDatabases.values()) {
-    closeCachedOpenClawAgentDatabase(database);
+    closeCachedOperatorAgentDatabase(database);
   }
   cachedDatabases.clear();
 }
 
 /** Test alias for closing cached agent database handles from teardown code. */
-export const closeOpenClawAgentDatabasesForTest = closeOpenClawAgentDatabases;
+export const closeOperatorAgentDatabasesForTest = closeOperatorAgentDatabases;
 /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

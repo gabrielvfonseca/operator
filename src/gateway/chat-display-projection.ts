@@ -24,7 +24,7 @@ import {
   parseAssistantTextSignature,
   resolveAssistantMessagePhase,
 } from "../shared/chat-message-content.js";
-import { isOpenClawDeliveryMirrorAssistantMessage } from "../shared/transcript-only-operator-assistant.js";
+import { isOperatorDeliveryMirrorAssistantMessage } from "../shared/transcript-only-operator-assistant.js";
 import { stripInlineDirectiveTagsForDisplay } from "../utils/directive-tags.js";
 import { stripEnvelopeFromMessages } from "./chat-sanitize.js";
 import { isSuppressedControlReplyText } from "./control-reply-text.js";
@@ -1088,7 +1088,7 @@ function readMessageToolDeliveryMirrorText(message: Record<string, unknown>): st
   // Delivery mirrors can arrive between a successful message-tool result and
   // the final NO_REPLY. The pending mirror is the display row; the raw mirror
   // would duplicate that same send.
-  if (!isOpenClawDeliveryMirrorAssistantMessage(message)) {
+  if (!isOperatorDeliveryMirrorAssistantMessage(message)) {
     return undefined;
   }
   return displayTextForDuplicateCheck(message);
@@ -1674,7 +1674,7 @@ function isDuplicateChannelFinalDeliveryMirror(
   current: Record<string, unknown>,
   previousVisible: Record<string, unknown> | undefined,
 ): boolean {
-  if (!previousVisible || !isOpenClawDeliveryMirrorAssistantMessage(current)) {
+  if (!previousVisible || !isOperatorDeliveryMirrorAssistantMessage(current)) {
     return false;
   }
   const deliveryMirror = readRecord(current.operatorDeliveryMirror);
@@ -1684,7 +1684,7 @@ function isDuplicateChannelFinalDeliveryMirror(
   if (asRoleContentMessage(previousVisible)?.role !== "assistant") {
     return false;
   }
-  if (isOpenClawDeliveryMirrorAssistantMessage(previousVisible)) {
+  if (isOperatorDeliveryMirrorAssistantMessage(previousVisible)) {
     return false;
   }
   if (isProjectedSessionsSendForwardedMessage(previousVisible)) {

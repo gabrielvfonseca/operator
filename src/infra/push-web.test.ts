@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import webPush from "web-push";
-import { closeOpenClawStateDatabase } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabase } from "../state/openclaw-state-db.js";
 import { captureEnv, setTestEnvValue } from "../test-utils/env.js";
 import {
   createWebPushVapidKeyPair,
@@ -45,7 +45,7 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
-  closeOpenClawStateDatabase();
+  closeOperatorStateDatabase();
   await fs.rm(tmpDir, { recursive: true, force: true });
 });
 
@@ -61,7 +61,7 @@ describe("resolveVapidKeys", () => {
     );
     expect(readPersistedVapidKeyPair(tmpDir)).toEqual(keys);
 
-    closeOpenClawStateDatabase();
+    closeOperatorStateDatabase();
     await expect(resolveVapidKeys(tmpDir)).resolves.toEqual(keys);
     expect(vi.mocked(webPush.generateVAPIDKeys)).toHaveBeenCalledTimes(1);
     await expect(fs.stat(path.join(tmpDir, "push", "vapid-keys.json"))).rejects.toMatchObject({
@@ -108,13 +108,13 @@ describe("resolveVapidKeys", () => {
       "mailto:env@test.com",
     );
     const envSnapshot = captureEnv([
-      "OPENCLAW_VAPID_PUBLIC_KEY",
-      "OPENCLAW_VAPID_PRIVATE_KEY",
-      "OPENCLAW_VAPID_SUBJECT",
+      "OPERATOR_VAPID_PUBLIC_KEY",
+      "OPERATOR_VAPID_PRIVATE_KEY",
+      "OPERATOR_VAPID_SUBJECT",
     ]);
-    setTestEnvValue("OPENCLAW_VAPID_PUBLIC_KEY", environmentKeys.publicKey);
-    setTestEnvValue("OPENCLAW_VAPID_PRIVATE_KEY", environmentKeys.privateKey);
-    setTestEnvValue("OPENCLAW_VAPID_SUBJECT", environmentKeys.subject);
+    setTestEnvValue("OPERATOR_VAPID_PUBLIC_KEY", environmentKeys.publicKey);
+    setTestEnvValue("OPERATOR_VAPID_PRIVATE_KEY", environmentKeys.privateKey);
+    setTestEnvValue("OPERATOR_VAPID_SUBJECT", environmentKeys.subject);
     try {
       await expect(resolveVapidKeys(tmpDir)).resolves.toEqual(environmentKeys);
       expect(readPersistedVapidKeyPair(tmpDir)).toBeNull();
@@ -126,7 +126,7 @@ describe("resolveVapidKeys", () => {
 
   it("applies the current subject to a persisted identity", async () => {
     const initial = await resolveVapidKeys(tmpDir);
-    process.env.OPENCLAW_VAPID_SUBJECT = "mailto:changed@test.com";
+    process.env.OPERATOR_VAPID_SUBJECT = "mailto:changed@test.com";
     try {
       await expect(resolveVapidKeys(tmpDir)).resolves.toEqual({
         ...initial,
@@ -134,7 +134,7 @@ describe("resolveVapidKeys", () => {
       });
       expect(readPersistedVapidKeyPair(tmpDir)?.subject).toBe("https://openclaw.ai");
     } finally {
-      delete process.env.OPENCLAW_VAPID_SUBJECT;
+      delete process.env.OPERATOR_VAPID_SUBJECT;
     }
   });
 });
@@ -157,7 +157,7 @@ describe("subscription CRUD", () => {
       keys: { p256dh: "new-p256dh", auth: "new-auth" },
     });
 
-    closeOpenClawStateDatabase();
+    closeOperatorStateDatabase();
     expect(listWebPushSubscriptions(tmpDir)).toEqual([updated]);
     await expect(fs.stat(path.join(tmpDir, "push"))).rejects.toMatchObject({ code: "ENOENT" });
   });
@@ -342,7 +342,7 @@ describe("sending", () => {
 
     const broadcast = broadcastWebPush({ title: "Expired" }, tmpDir);
     await vi.waitFor(() => expect(rejectSend).toBeTypeOf("function"));
-    closeOpenClawStateDatabase();
+    closeOperatorStateDatabase();
     const databasePath = path.join(tmpDir, "state", "openclaw.sqlite");
     await fs.rename(databasePath, `${databasePath}.backup`);
     await fs.mkdir(databasePath);

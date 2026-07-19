@@ -15,7 +15,7 @@ import { listAgentIds, resolveAgentWorkspaceDir } from "../../agents/agent-scope
 import { stableStringify } from "../../agents/stable-stringify.js";
 import { runMigrationApply } from "../../commands/migrate/apply.js";
 import { buildMigrationContext } from "../../commands/migrate/context.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { bindMemoryMigrationPlanSources } from "../../plugin-sdk/memory-migration-source.js";
 import { summarizeMigrationItems } from "../../plugin-sdk/migration.js";
 import {
@@ -96,7 +96,7 @@ function isCachedMemoryApply(value: unknown): value is CachedMemoryApply {
   return typeof candidate.requestFingerprint === "string" && candidate.result !== undefined;
 }
 
-function memoryProviders(config: OpenClawConfig) {
+function memoryProviders(config: OperatorConfig) {
   ensureStandaloneMigrationProviderRegistryLoaded({ cfg: config });
   return resolvePluginMigrationProviders({ cfg: config }).filter((provider) =>
     provider.supportedItemKinds?.includes(MEMORY_ITEM_KIND),
@@ -172,7 +172,7 @@ function fingerprintMemoryPlan(params: {
 
 function targetAgentOrRespond(
   rawAgentId: string,
-  config: OpenClawConfig,
+  config: OperatorConfig,
   respond: RespondFn,
 ): string | undefined {
   if (!isValidAgentId(rawAgentId)) {
@@ -189,7 +189,7 @@ function targetAgentOrRespond(
 
 async function planMemoryProvider(params: {
   provider: MigrationProviderPlugin;
-  config: OpenClawConfig;
+  config: OperatorConfig;
   agentId: string;
   overwrite?: boolean;
 }): Promise<MemoryMigrationProviderPlan> {

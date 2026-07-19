@@ -344,7 +344,7 @@ export async function runDashscopeVideoGenerationTask(params: {
 }
 
 // Downloads task result URLs into generated video assets. The byte limit comes
-// from OpenClaw media config so provider URLs cannot overfill memory.
+// from Operator media config so provider URLs cannot overfill memory.
 export async function downloadDashscopeGeneratedVideos(params: {
   providerLabel: string;
   urls: string[];

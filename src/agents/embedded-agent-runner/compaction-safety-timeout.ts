@@ -2,7 +2,7 @@
  * Wraps compaction calls with a safety timeout and abort cleanup.
  */
 import { finiteSecondsToTimerSafeMilliseconds } from "@operator/normalization-core/number-coercion";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { CompactResult, ContextEngine } from "../../context-engine/types.js";
 import { createAbortError } from "../../infra/abort-signal.js";
 import { withTimeout } from "../../node-host/with-timeout.js";
@@ -17,7 +17,7 @@ function abortErrorFromSignal(signal: AbortSignal): Error {
   return createAbortError("aborted", reason ? { cause: reason } : undefined);
 }
 
-export function resolveCompactionTimeoutMs(cfg?: OpenClawConfig): number {
+export function resolveCompactionTimeoutMs(cfg?: OperatorConfig): number {
   return (
     finiteSecondsToTimerSafeMilliseconds(cfg?.agents?.defaults?.compaction?.timeoutSeconds, {
       floorSeconds: true,

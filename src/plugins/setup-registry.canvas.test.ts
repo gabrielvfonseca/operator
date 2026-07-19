@@ -1,7 +1,7 @@
 // Covers canvas setup entries in the plugin setup registry.
 import path from "node:path";
 import { describe, expect, test } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { runPluginSetupConfigMigrations } from "./setup-registry.js";
 
 describe("Canvas setup config migration", () => {
@@ -9,7 +9,7 @@ describe("Canvas setup config migration", () => {
     const result = runPluginSetupConfigMigrations({
       env: {
         ...process.env,
-        OPENCLAW_BUNDLED_PLUGINS_DIR: path.resolve("extensions"),
+        OPERATOR_BUNDLED_PLUGINS_DIR: path.resolve("extensions"),
       },
       config: {
         canvasHost: {
@@ -17,7 +17,7 @@ describe("Canvas setup config migration", () => {
           root: "~/legacy-canvas",
           liveReload: false,
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     });
 
     expect(result.changes).toEqual(["migrated canvasHost to plugins.entries.canvas.config.host"]);

@@ -1,7 +1,7 @@
 /** Shared harness for sandbox media staging tests. */
 import { join } from "node:path";
 import { withTempHome as withTempHomeBase } from "operator/plugin-sdk/test-env";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { MsgContext, TemplateContext } from "./templating.js";
 
 export async function withSandboxMediaTempHome<T>(
@@ -28,7 +28,7 @@ export function createSandboxMediaContexts(mediaPath: string): {
   return { ctx, sessionCtx: { ...ctx } };
 }
 
-export function createSandboxMediaStageConfig(home: string): OpenClawConfig {
+export function createSandboxMediaStageConfig(home: string): OperatorConfig {
   return {
     agents: {
       defaults: {
@@ -42,5 +42,5 @@ export function createSandboxMediaStageConfig(home: string): OpenClawConfig {
     },
     channels: { whatsapp: { allowFrom: ["*"] } },
     session: { store: join(home, "sessions.json") },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }

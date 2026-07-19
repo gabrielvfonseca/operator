@@ -9,7 +9,7 @@ import {
 import { cleanupTempDirs, makeTempRepoRoot, writeJsonFile } from "../../test/helpers/temp-repo.js";
 
 const tempDirs: string[] = [];
-const excludeOptionalEnv = { OPENCLAW_INCLUDE_OPTIONAL_BUNDLED: "0" } as const;
+const excludeOptionalEnv = { OPERATOR_INCLUDE_OPTIONAL_BUNDLED: "0" } as const;
 const copyBundledPluginMetadataWithEnv = copyBundledPluginMetadata as (params?: {
   repoRoot?: string;
   env?: NodeJS.ProcessEnv;
@@ -29,7 +29,7 @@ function createPlugin(
     id: string;
     packageName: string;
     manifest?: Record<string, unknown>;
-    packageOpenClaw?: Record<string, unknown>;
+    packageOperator?: Record<string, unknown>;
   },
 ) {
   const pluginDir = path.join(repoRoot, "extensions", params.id);
@@ -41,7 +41,7 @@ function createPlugin(
   });
   writeJson(path.join(pluginDir, "package.json"), {
     name: params.packageName,
-    ...(params.packageOpenClaw ? { openclaw: params.packageOpenClaw } : {}),
+    ...(params.packageOperator ? { openclaw: params.packageOperator } : {}),
   });
   return pluginDir;
 }
@@ -78,7 +78,7 @@ function createTlonSkillPlugin(repoRoot: string, skillPath = "node_modules/@tlon
     id: "tlon",
     packageName: "@operator/tlon",
     manifest: { skills: [skillPath] },
-    packageOpenClaw: { extensions: ["./index.ts"] },
+    packageOperator: { extensions: ["./index.ts"] },
   });
 }
 
@@ -102,7 +102,7 @@ describe("copyBundledPluginMetadata", () => {
       id: "acpx",
       packageName: "@operator/acpx",
       manifest: { skills: ["./skills"] },
-      packageOpenClaw: { extensions: ["./index.ts"] },
+      packageOperator: { extensions: ["./index.ts"] },
     });
     fs.mkdirSync(path.join(pluginDir, "skills", "acp-router"), { recursive: true });
     fs.writeFileSync(
@@ -143,7 +143,7 @@ describe("copyBundledPluginMetadata", () => {
           },
         },
       },
-      packageOpenClaw: { extensions: ["./index.ts"] },
+      packageOperator: { extensions: ["./index.ts"] },
     });
     fs.mkdirSync(path.join(repoRoot, "src", "config"), { recursive: true });
     fs.writeFileSync(
@@ -289,7 +289,7 @@ describe("copyBundledPluginMetadata", () => {
       id: "diffs",
       packageName: "@operator/diffs",
       manifest: { skills: ["./skills"] },
-      packageOpenClaw: { extensions: ["./index.ts"] },
+      packageOperator: { extensions: ["./index.ts"] },
     });
     fs.mkdirSync(path.join(pluginDir, "skills", "diffs"), { recursive: true });
     fs.writeFileSync(path.join(pluginDir, "skills", "diffs", "SKILL.md"), "# Diffs\n", "utf8");
@@ -386,7 +386,7 @@ describe("copyBundledPluginMetadata", () => {
     createPlugin(repoRoot, {
       id: "qa-lab",
       packageName: "@operator/qa-lab",
-      packageOpenClaw: { extensions: ["./index.ts"] },
+      packageOperator: { extensions: ["./index.ts"] },
     });
     const staleDistDir = path.join(repoRoot, "dist", "extensions", "qa-lab");
     fs.mkdirSync(staleDistDir, { recursive: true });
@@ -398,7 +398,7 @@ describe("copyBundledPluginMetadata", () => {
 
     copyBundledPluginMetadataWithEnv({
       repoRoot,
-      env: { OPENCLAW_BUILD_PRIVATE_QA: "1" } as NodeJS.ProcessEnv,
+      env: { OPERATOR_BUILD_PRIVATE_QA: "1" } as NodeJS.ProcessEnv,
     });
 
     expect(fs.existsSync(path.join(staleDistDir, "openclaw.plugin.json"))).toBe(true);
@@ -410,7 +410,7 @@ describe("copyBundledPluginMetadata", () => {
       name: "skips metadata for optional bundled clusters only when explicitly disabled",
       pluginId: "acpx",
       packageName: "@operator/acpx-plugin",
-      packageOpenClaw: { extensions: ["./index.ts"] },
+      packageOperator: { extensions: ["./index.ts"] },
       env: excludeOptionalEnv,
       expectedExists: false,
     },
@@ -418,19 +418,19 @@ describe("copyBundledPluginMetadata", () => {
       name: "removes externalized optional plugin metadata from the core dist",
       pluginId: "whatsapp",
       packageName: "@operator/whatsapp",
-      packageOpenClaw: {
+      packageOperator: {
         extensions: ["./index.ts"],
         install: { npmSpec: "@operator/whatsapp" },
       },
       env: {},
       expectedExists: false,
     },
-  ] as const)("$name", ({ pluginId, packageName, packageOpenClaw, env, expectedExists }) => {
+  ] as const)("$name", ({ pluginId, packageName, packageOperator, env, expectedExists }) => {
     const repoRoot = makeRepoRoot(`openclaw-bundled-plugin-${pluginId}-`);
     createPlugin(repoRoot, {
       id: pluginId,
       packageName,
-      packageOpenClaw,
+      packageOperator,
     });
 
     copyBundledPluginMetadataWithEnv({ repoRoot, env });
@@ -443,7 +443,7 @@ describe("copyBundledPluginMetadata", () => {
     createPlugin(repoRoot, {
       id: "qqbot",
       packageName: "@operator/qqbot",
-      packageOpenClaw: {
+      packageOperator: {
         extensions: ["./index.ts"],
         setupEntry: "./setup-entry.ts",
       },

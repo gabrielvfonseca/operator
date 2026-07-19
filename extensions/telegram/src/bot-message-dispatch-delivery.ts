@@ -8,7 +8,7 @@ import {
   resolveTranscriptBackedChannelFinalText,
 } from "openclaw/plugin-sdk/channel-outbound";
 import type {
-  OpenClawConfig,
+  OperatorConfig,
   ReplyToMode,
   TelegramAccountConfig,
 } from "openclaw/plugin-sdk/config-contracts";
@@ -55,7 +55,7 @@ import { editMessageTelegram } from "./send.js";
 
 export function createTelegramDeliveryController(params: {
   bot: Bot;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   chunkMode: ReturnType<typeof import("./bot-message-dispatch.runtime.js").resolveChunkMode>;
   context: TelegramMessageContext;
   dispatchStartedAt: number;

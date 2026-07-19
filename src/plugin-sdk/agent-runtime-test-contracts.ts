@@ -9,9 +9,9 @@ export { DELIVERY_NO_REPLY_RUNTIME_CONTRACT } from "./test-helpers/agents/delive
 export {
   createTerminalPresentationContractTool,
   installCodexToolResultMiddleware,
-  installOpenClawOwnedToolHooks,
+  installOperatorOwnedToolHooks,
   mediaToolResult,
-  resetOpenClawOwnedToolHooks,
+  resetOperatorOwnedToolHooks,
   textToolResult,
 } from "./test-helpers/agents/operator-owned-tool-runtime-contract.js";
 export {

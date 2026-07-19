@@ -1,5 +1,5 @@
 // Slack tests cover slash plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   clearRuntimeConfigSnapshot,
   setRuntimeConfigSnapshot,
@@ -362,7 +362,7 @@ function createDeferred<T>() {
 }
 
 function createArgMenusHarness(
-  cfg: OpenClawConfig = { commands: { native: true, nativeSkills: false } },
+  cfg: OperatorConfig = { commands: { native: true, nativeSkills: false } },
 ) {
   const commands = new Map<string | RegExp, (args: unknown) => Promise<void>>();
   const actions = new Map<string | RegExp, (args: unknown) => Promise<void>>();
@@ -1521,12 +1521,12 @@ describe("slack slash command session metadata", () => {
       channelName: "directmessage",
       resolveChannelName: async () => ({ name: "directmessage", type: "im" }),
     });
-    const sourceCfg = (harness.ctx as { cfg: OpenClawConfig }).cfg;
+    const sourceCfg = (harness.ctx as { cfg: OperatorConfig }).cfg;
     const runtimeCfg = {
       ...sourceCfg,
       session: { dmScope: "per-channel-peer" },
-    } as OpenClawConfig;
-    resolveAgentRouteMock.mockImplementation((params: { cfg: OpenClawConfig }) => ({
+    } as OperatorConfig;
+    resolveAgentRouteMock.mockImplementation((params: { cfg: OperatorConfig }) => ({
       agentId: "main",
       accountId: "acct",
       sessionKey:

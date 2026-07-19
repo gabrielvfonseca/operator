@@ -2,7 +2,7 @@
 import { transcodeAudioBufferToOpus } from "openclaw/plugin-sdk/media-runtime";
 import {
   isProviderAuthProfileConfigured,
-  type OpenClawConfig,
+  type OperatorConfig,
   resolveProviderAuthProfileApiKey,
 } from "openclaw/plugin-sdk/provider-auth";
 import { normalizeResolvedSecretInputString } from "openclaw/plugin-sdk/secret-input";
@@ -51,7 +51,7 @@ type MinimaxTtsProviderOverrides = {
   pitch?: number;
 };
 
-function resolveConfiguredPortalTtsBaseUrl(cfg: OpenClawConfig | undefined): string | undefined {
+function resolveConfiguredPortalTtsBaseUrl(cfg: OperatorConfig | undefined): string | undefined {
   const providers = asObject(asObject(cfg?.models)?.providers);
   const portalProvider = asObject(providers?.[MINIMAX_PORTAL_PROVIDER_ID]);
   const portalBaseUrl = trimToUndefined(portalProvider?.baseUrl);
@@ -69,7 +69,7 @@ function resolveMinimaxTokenPlanEnvKey(): string | undefined {
 }
 
 async function resolveMinimaxPortalProfileToken(
-  cfg: OpenClawConfig | undefined,
+  cfg: OperatorConfig | undefined,
 ): Promise<string | undefined> {
   return await resolveProviderAuthProfileApiKey({
     cfg,
@@ -78,7 +78,7 @@ async function resolveMinimaxPortalProfileToken(
 }
 
 async function resolveMinimaxTtsApiKey(params: {
-  cfg: OpenClawConfig | undefined;
+  cfg: OperatorConfig | undefined;
   configApiKey?: string;
 }): Promise<string | undefined> {
   return (
@@ -91,7 +91,7 @@ async function resolveMinimaxTtsApiKey(params: {
 
 function normalizeMinimaxProviderConfig(
   rawConfig: Record<string, unknown>,
-  cfg?: OpenClawConfig,
+  cfg?: OperatorConfig,
 ): MinimaxTtsProviderConfig {
   const providers = asObject(rawConfig.providers);
   const raw = asObject(providers?.minimax) ?? asObject(rawConfig.minimax);
@@ -135,7 +135,7 @@ function normalizeMinimaxPitch(value: unknown): number | undefined {
 
 function readMinimaxProviderConfig(
   config: SpeechProviderConfig,
-  cfg?: OpenClawConfig,
+  cfg?: OperatorConfig,
 ): MinimaxTtsProviderConfig {
   const normalized = normalizeMinimaxProviderConfig({}, cfg);
   return {

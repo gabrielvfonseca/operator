@@ -87,8 +87,8 @@ describe("getBlockedBindReason", () => {
     });
   });
 
-  it("still blocks OS-home credential paths when OPENCLAW_HOME points elsewhere", () => {
-    withEnv({ HOME: "/home/tester", OPENCLAW_HOME: "/srv/openclaw-home" }, () => {
+  it("still blocks OS-home credential paths when OPERATOR_HOME points elsewhere", () => {
+    withEnv({ HOME: "/home/tester", OPERATOR_HOME: "/srv/openclaw-home" }, () => {
       const reason = expectBlockedTargetReason("/home/tester/.gnupg/secring.gpg:/mnt/gnupg:ro");
       expect(reason?.blockedPath).toBe("/home/tester/.gnupg");
     });
@@ -231,7 +231,7 @@ describe("validateBindMounts", () => {
 
   it("compares Windows allowed roots case-insensitively", () => {
     expect(
-      validateBindMounts(["d:/DATA/OpenClaw/src:/src:ro"], {
+      validateBindMounts(["d:/DATA/Operator/src:/src:ro"], {
         allowedSourceRoots: ["D:/data/openclaw"],
       }),
     ).toBeUndefined();

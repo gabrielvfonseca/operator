@@ -17,7 +17,7 @@ import {
 } from "../cli/completion-runtime.js";
 import type { HealthFinding, HealthRepairEffect } from "../flows/health-checks.js";
 import { isErrno } from "../infra/errors.js";
-import { resolveOpenClawPackageRoot } from "../infra/operator-root.js";
+import { resolveOperatorPackageRoot } from "../infra/operator-root.js";
 import type { RuntimeEnv } from "../runtime.js";
 import type { DoctorPrompter } from "./doctor-prompter.js";
 
@@ -81,7 +81,7 @@ async function installCompletionForDoctor(
 async function generateCompletionCache(
   options: CompletionCacheGenerationOptions,
 ): Promise<boolean> {
-  const root = await resolveOpenClawPackageRoot({
+  const root = await resolveOperatorPackageRoot({
     moduleUrl: import.meta.url,
     argv1: process.argv[1],
     cwd: process.cwd(),

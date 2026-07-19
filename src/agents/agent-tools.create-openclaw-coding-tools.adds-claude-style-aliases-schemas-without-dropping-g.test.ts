@@ -11,7 +11,7 @@ import { Type } from "typebox";
 import { describe, expect, it, vi } from "vitest";
 import * as windowsEncoding from "../infra/windows-encoding.js";
 import {
-  createOpenClawReadTool,
+  createOperatorReadTool,
   createSandboxedReadTool,
   wrapReadToolWithSkillContent,
 } from "./agent-tools.read.js";
@@ -36,7 +36,7 @@ function extractToolText(result: unknown): string {
   return textBlock?.text ?? "";
 }
 
-describe("createOpenClawCodingTools read behavior", () => {
+describe("createOperatorCodingTools read behavior", () => {
   it("reads exact node skill locators without sending them to the filesystem backend", async () => {
     const locator = "node://node-1/skills/pond/SKILL.md";
     const execute = vi.fn(async () => {
@@ -232,7 +232,7 @@ describe("createOpenClawCodingTools read behavior", () => {
       .fn()
       .mockResolvedValueOnce(readResult)
       .mockRejectedValueOnce(new Error("Offset 2 is beyond end of file (1 lines total)"));
-    const readTool = createOpenClawReadTool({
+    const readTool = createOperatorReadTool({
       name: "read",
       label: "read",
       description: "test read",
@@ -253,7 +253,7 @@ describe("createOpenClawCodingTools read behavior", () => {
   });
 
   it("keeps unrelated read failures loud", async () => {
-    const readTool = createOpenClawReadTool({
+    const readTool = createOperatorReadTool({
       name: "read",
       label: "read",
       description: "test read",
@@ -298,8 +298,8 @@ describe("createOpenClawCodingTools read behavior", () => {
       execute: vi.fn(async () => readResult),
     };
 
-    const wrapped = createOpenClawReadTool(
-      baseRead as unknown as Parameters<typeof createOpenClawReadTool>[0],
+    const wrapped = createOperatorReadTool(
+      baseRead as unknown as Parameters<typeof createOperatorReadTool>[0],
     );
     const result = await wrapped.execute("read-strip-1", { path: "demo.txt", limit: 1 });
 

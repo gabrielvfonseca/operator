@@ -1,6 +1,6 @@
 // Coverage for incomplete-turn safety, retry instructions, and liveness states.
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import {
   hasCommittedMessagingToolDeliveryEvidence,
   hasOutboundDeliveryEvidence,
@@ -4061,7 +4061,7 @@ describe("runEmbeddedAgent incomplete-turn safety", () => {
         agents: {
           list: [{ id: "main" }],
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     });
 
     expect(mockedRunEmbeddedAttempt).toHaveBeenCalledTimes(1);

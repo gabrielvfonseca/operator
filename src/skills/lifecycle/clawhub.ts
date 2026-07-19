@@ -2,7 +2,7 @@
 import fsSync from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   type ClawHubTrustErrorCode,
   ensureClawHubPackageTrustAcknowledged,
@@ -241,7 +241,7 @@ type ClawHubInstallParams = {
   acknowledgeClawHubRisk?: boolean;
   onClawHubRisk?: (request: ClawHubRiskAcknowledgementRequest) => boolean | Promise<boolean>;
   logger?: Logger;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 };
 
 type ClawHubOfficialFlagContainer = {
@@ -1159,7 +1159,7 @@ async function installArchiveResolution(params: {
   authority: "official" | "operator" | "third-party";
   force?: boolean;
   logger?: Logger;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }) {
   return await withExtractedArchiveRoot({
     archivePath: params.archivePath,
@@ -1208,7 +1208,7 @@ async function installGitHubResolution(params: {
   commit: string;
   force?: boolean;
   logger?: Logger;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }) {
   return await withExtractedArchiveRoot({
     archivePath: params.archivePath,
@@ -1601,7 +1601,7 @@ export async function installSkillFromClawHub(params: {
   acknowledgeClawHubRisk?: boolean;
   onClawHubRisk?: (request: ClawHubRiskAcknowledgementRequest) => boolean | Promise<boolean>;
   logger?: Logger;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }): Promise<InstallClawHubSkillResult> {
   return await installRequestedSkillFromClawHub(params);
 }
@@ -1614,7 +1614,7 @@ export async function updateSkillsFromClawHub(params: {
   acknowledgeClawHubRisk?: boolean;
   onClawHubRisk?: (request: ClawHubRiskAcknowledgementRequest) => boolean | Promise<boolean>;
   logger?: Logger;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }): Promise<UpdateClawHubSkillResult[]> {
   const lock = await readClawHubSkillsLockfile(params.workspaceDir);
   const slugs = params.slug

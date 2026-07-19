@@ -1,29 +1,29 @@
 /**
- * OpenClaw-owned tool registration filters.
+ * Operator-owned tool registration filters.
  *
  * Keeps optional tool gating separate from tool construction so config and execution contracts decide exposure.
  */
 import { uniqueStrings } from "@operator/normalization-core/string-normalization";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { isToolAllowedByPolicyName } from "./tool-policy-match.js";
 import type { AnyAgentTool } from "./tools/common.js";
 
 /**
- * Registration helpers for optional OpenClaw-owned tools.
+ * Registration helpers for optional Operator-owned tools.
  *
  * This keeps model/runtime gating separate from tool construction so callers can
  * assemble candidate tools first, then filter by config and execution contract.
  */
 /** Drops disabled optional tools while preserving candidate order. */
-export function collectPresentOpenClawTools(
+export function collectPresentOperatorTools(
   candidates: readonly (AnyAgentTool | null | undefined)[],
 ): AnyAgentTool[] {
   return candidates.filter((tool): tool is AnyAgentTool => tool !== null && tool !== undefined);
 }
 
 /** Resolves the default-on update_plan switch with an explicit kill switch. */
-function isUpdatePlanToolEnabledForOpenClawTools(params: {
-  config?: OpenClawConfig;
+function isUpdatePlanToolEnabledForOperatorTools(params: {
+  config?: OperatorConfig;
   agentSessionKey?: string;
   agentId?: string | null;
   modelProvider?: string;
@@ -32,9 +32,9 @@ function isUpdatePlanToolEnabledForOpenClawTools(params: {
   return params.config?.tools?.experimental?.planTool !== false;
 }
 
-/** Decides whether update_plan should be included in the assembled OpenClaw tool set. */
-export function shouldIncludeUpdatePlanToolForOpenClawTools(params: {
-  config?: OpenClawConfig;
+/** Decides whether update_plan should be included in the assembled Operator tool set. */
+export function shouldIncludeUpdatePlanToolForOperatorTools(params: {
+  config?: OperatorConfig;
   agentSessionKey?: string;
   agentId?: string | null;
   modelProvider?: string;
@@ -47,7 +47,7 @@ export function shouldIncludeUpdatePlanToolForOpenClawTools(params: {
     ...(params.pluginToolDenylist ?? []),
   ]);
   return (
-    isUpdatePlanToolEnabledForOpenClawTools(params) &&
+    isUpdatePlanToolEnabledForOperatorTools(params) &&
     isToolAllowedByPolicyName("update_plan", { deny })
   );
 }

@@ -250,17 +250,17 @@ describe("createTelegramBot", () => {
     pluginStateTestRuntime.resetPluginStateStoreForTests();
     clearPluginInteractiveHandlers();
     if (previousStateDir === undefined) {
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.OPERATOR_STATE_DIR;
     } else {
-      process.env.OPENCLAW_STATE_DIR = previousStateDir;
+      process.env.OPERATOR_STATE_DIR = previousStateDir;
     }
     for (const dir of tempStateDirs.splice(0)) {
       rmSync(dir, { recursive: true, force: true });
     }
   });
   beforeEach(async () => {
-    previousStateDir = process.env.OPENCLAW_STATE_DIR;
-    process.env.OPENCLAW_STATE_DIR = createTelegramBotTestStateDir();
+    previousStateDir = process.env.OPERATOR_STATE_DIR;
+    process.env.OPERATOR_STATE_DIR = createTelegramBotTestStateDir();
     resetTelegramForumFlagCacheForTest();
     clearPluginInteractiveHandlers();
     resetTelegramAccountThrottlersForTest();
@@ -375,7 +375,7 @@ describe("createTelegramBot", () => {
     const botInfo = {
       id: 123456,
       is_bot: true,
-      first_name: "OpenClaw",
+      first_name: "Operator",
       username: "openclaw_bot",
       can_join_groups: true,
       can_read_all_group_messages: false,
@@ -1643,7 +1643,7 @@ describe("createTelegramBot", () => {
         ctx: {
           update: { update_id: 104 },
           message: {
-            chat: { id: -1007, type: "supergroup", title: "OpenClaw Ops" },
+            chat: { id: -1007, type: "supergroup", title: "Operator Ops" },
             text: "first",
             date: 1736380804,
             message_id: 104,
@@ -1661,7 +1661,7 @@ describe("createTelegramBot", () => {
         ctx: {
           update: { update_id: 105 },
           message: {
-            chat: { id: -1007, type: "supergroup", title: "OpenClaw Ops" },
+            chat: { id: -1007, type: "supergroup", title: "Operator Ops" },
             text: "stop",
             date: 1736380805,
             message_id: 105,
@@ -2332,16 +2332,16 @@ describe("createTelegramBot", () => {
         chat: { id: 1234, type: "private", first_name: "Harold" },
         message_id: 1884,
         date: 1736380800,
-        from: { id: 7, is_bot: true, first_name: "OpenClaw", username: "openclaw_bot" },
+        from: { id: 7, is_bot: true, first_name: "Operator", username: "openclaw_bot" },
         pinned_message: {
           message_id: 1883,
           date: 1736380799,
           chat: { id: 1234, type: "private", first_name: "Harold" },
-          from: { id: 7, is_bot: true, first_name: "OpenClaw", username: "openclaw_bot" },
+          from: { id: 7, is_bot: true, first_name: "Operator", username: "openclaw_bot" },
           text: "Binding: Review pull request 54118 (openclaw)",
         },
       },
-      me: { id: 7, is_bot: true, first_name: "OpenClaw", username: "openclaw_bot" },
+      me: { id: 7, is_bot: true, first_name: "Operator", username: "openclaw_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -2603,13 +2603,13 @@ describe("createTelegramBot", () => {
 
     await handler({
       message: {
-        chat: { id: -1001234, type: "supergroup", title: "OpenClaw Ops" },
+        chat: { id: -1001234, type: "supergroup", title: "Operator Ops" },
         message_id: 1884,
         date: 1736380800,
-        from: { id: 7, is_bot: true, first_name: "OpenClaw", username: "openclaw_bot" },
+        from: { id: 7, is_bot: true, first_name: "Operator", username: "openclaw_bot" },
         text: "approval card update",
       },
-      me: { id: 7, is_bot: true, first_name: "OpenClaw", username: "openclaw_bot" },
+      me: { id: 7, is_bot: true, first_name: "Operator", username: "openclaw_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 

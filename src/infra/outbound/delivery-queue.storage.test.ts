@@ -3,7 +3,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import { openOpenClawStateDatabase } from "../../state/openclaw-state-db.js";
+import { openOperatorStateDatabase } from "../../state/openclaw-state-db.js";
 import {
   failPendingDelivery,
   loadPendingDelivery,
@@ -28,8 +28,8 @@ describe("delivery-queue storage", () => {
     enqueueDelivery(params, rootDir);
 
   function readStatus(id: string): string | undefined {
-    const { db } = openOpenClawStateDatabase({
-      env: { ...process.env, OPENCLAW_STATE_DIR: tmpDir() },
+    const { db } = openOperatorStateDatabase({
+      env: { ...process.env, OPERATOR_STATE_DIR: tmpDir() },
     });
     const row = db
       .prepare("SELECT status FROM delivery_queue_entries WHERE queue_name = 'outbound' AND id = ?")

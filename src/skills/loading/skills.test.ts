@@ -6,7 +6,7 @@ import {
   clearRuntimeConfigSnapshot,
   setRuntimeConfigSnapshot,
 } from "../../config/runtime-snapshot.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import { clearPluginMetadataLifecycleCaches } from "../../plugins/plugin-metadata-lifecycle.js";
 import { captureEnv, withPathResolutionEnv } from "../../test-utils/env.js";
 import { createFixtureSuite } from "../../test-utils/fixture-suite.js";
@@ -33,7 +33,7 @@ vi.mock("./plugin-skills.js", () => ({
 const fixtureSuite = createFixtureSuite("openclaw-skills-suite-");
 let tempHome: TempHomeEnv | null = null;
 let skillsHomeEnv: SkillsHomeEnvSnapshot | null = null;
-const pluginEnvSnapshot = captureEnv(["OPENCLAW_DISABLE_BUNDLED_PLUGINS"]);
+const pluginEnvSnapshot = captureEnv(["OPERATOR_DISABLE_BUNDLED_PLUGINS"]);
 
 const resolveTestSkillDirs = (workspaceDir: string) => ({
   managedSkillsDir: path.join(workspaceDir, ".managed"),
@@ -120,7 +120,7 @@ function envSkillSnapshot(name: string, metadata: SkillEntry["metadata"]): Skill
   };
 }
 
-function rawSkillApiKeyRefConfig(skillName: string): OpenClawConfig {
+function rawSkillApiKeyRefConfig(skillName: string): OperatorConfig {
   return {
     skills: {
       entries: {
@@ -136,7 +136,7 @@ function rawSkillApiKeyRefConfig(skillName: string): OpenClawConfig {
   };
 }
 
-function resolvedSkillApiKeyConfig(skillName: string, apiKey: string): OpenClawConfig {
+function resolvedSkillApiKeyConfig(skillName: string, apiKey: string): OperatorConfig {
   return {
     skills: {
       entries: {
@@ -150,7 +150,7 @@ function resolvedSkillApiKeyConfig(skillName: string, apiKey: string): OpenClawC
 
 beforeAll(async () => {
   await fixtureSuite.setup();
-  process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS = "1";
+  process.env.OPERATOR_DISABLE_BUNDLED_PLUGINS = "1";
   tempHome = await createTempHomeEnv("openclaw-skills-home-");
   skillsHomeEnv = setMockSkillsHomeEnv(tempHome.home);
   await fs.mkdir(path.join(tempHome.home, ".openclaw", "agents", "main", "sessions"), {
@@ -278,7 +278,7 @@ describe("buildWorkspaceSkillCommandSpecs", () => {
     expect(commands.map((entry) => entry.skillName)).toEqual(["alpha-skill"]);
   });
 
-  it("includes enabled Claude bundle markdown commands as native OpenClaw slash commands", async () => {
+  it("includes enabled Claude bundle markdown commands as native Operator slash commands", async () => {
     const workspaceDir = await makeWorkspace();
     const config = {
       plugins: {
@@ -286,7 +286,7 @@ describe("buildWorkspaceSkillCommandSpecs", () => {
           "compound-bundle": { enabled: true },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     // Prime plugin discovery before the bundle exists; clear the lifecycle cache
     // below to model the install/reload boundary that exposes new plugin files.
@@ -579,7 +579,7 @@ describe("applySkillEnvOverrides", () => {
       primaryEnv: "ENV_KEY",
       requires: { env: ["ENV_KEY"] },
     });
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       skills: {
         entries: {
           [skillName]: {

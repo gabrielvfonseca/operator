@@ -4,10 +4,10 @@ import { isRecord as isObjectRecord } from "@operator/normalization-core/record-
 import JSON5 from "json5";
 import { getCommandPathWithRootOptions } from "../cli/argv.js";
 import { resolveConfigPath } from "../config/paths.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 
 // Lightweight logging-config reader used before the full config runtime is safe to load.
-type LoggingConfig = OpenClawConfig["logging"];
+type LoggingConfig = OperatorConfig["logging"];
 
 let cachedLoggingConfig:
   | {

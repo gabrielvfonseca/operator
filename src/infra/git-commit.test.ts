@@ -51,7 +51,7 @@ async function makeFakeGitRepo(
   }
 }
 
-async function makeFakeOpenClawPackage(root: string) {
+async function makeFakeOperatorPackage(root: string) {
   await fs.mkdir(path.join(root, "src"), { recursive: true });
   await fs.writeFile(path.join(root, "package.json"), JSON.stringify({ name: "openclaw" }));
 }
@@ -79,7 +79,7 @@ describe("git commit resolution", () => {
     const repoRoot = path.join(temp, "openclaw");
     const repoCommit = "abcdef0123456789abcdef0123456789abcdef01";
     await makeFakeGitRepo(repoRoot, { head: `${repoCommit}\n` });
-    await makeFakeOpenClawPackage(repoRoot);
+    await makeFakeOperatorPackage(repoRoot);
 
     const otherRepo = path.join(temp, "other");
     const otherCommit = "1234567890abcdef1234567890abcdef12345678";
@@ -97,7 +97,7 @@ describe("git commit resolution", () => {
     const repoRoot = path.join(temp, "openclaw");
     const repoCommit = "abcdef0123456789abcdef0123456789abcdef01";
     await makeFakeGitRepo(repoRoot, { head: `${repoCommit}\n` });
-    await makeFakeOpenClawPackage(repoRoot);
+    await makeFakeOperatorPackage(repoRoot);
     const entryModuleUrl = pathToFileURL(path.join(repoRoot, "src", "entry.ts")).href;
 
     expect(
@@ -160,7 +160,7 @@ describe("git commit resolution", () => {
     const repoRoot = path.join(temp, "openclaw");
     const repoCommit = "abcdef0123456789abcdef0123456789abcdef01";
     await makeFakeGitRepo(repoRoot, { head: `${repoCommit}\n` });
-    await makeFakeOpenClawPackage(repoRoot);
+    await makeFakeOperatorPackage(repoRoot);
 
     expect(resolveCommitHash({ moduleUrl: "not-a-file-url", cwd: repoRoot, env: {} })).toBe(
       repoCommit.slice(0, 7),

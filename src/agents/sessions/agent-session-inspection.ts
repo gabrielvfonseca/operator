@@ -131,13 +131,13 @@ export abstract class AgentSessionInspection extends AgentSessionModels {
   }
 
   /**
-   * @deprecated Use the OpenClaw session export command instead.
+   * @deprecated Use the Operator session export command instead.
    * @param outputPath Optional output path (defaults to session directory)
    * @returns Path to exported file
    */
   async exportToHtml(_outputPath?: string): Promise<string> {
     throw new Error(
-      "AgentSession.exportToHtml is deprecated; use the OpenClaw session export command.",
+      "AgentSession.exportToHtml is deprecated; use the Operator session export command.",
     );
   }
 

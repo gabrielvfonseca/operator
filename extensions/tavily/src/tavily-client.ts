@@ -1,5 +1,5 @@
 // Tavily plugin module implements tavily client behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { readProviderJsonResponse } from "openclaw/plugin-sdk/provider-http";
 import {
   DEFAULT_CACHE_TTL_MINUTES,
@@ -30,7 +30,7 @@ const DEFAULT_SEARCH_COUNT = 5;
 const TAVILY_EXTRACT_RESPONSE_MAX_BYTES = 64 * 1024 * 1024;
 
 export type TavilySearchParams = {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   query: string;
   searchDepth?: string;
   topic?: string;
@@ -43,7 +43,7 @@ export type TavilySearchParams = {
 };
 
 export type TavilyExtractParams = {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   urls: string[];
   query?: string;
   extractDepth?: string;

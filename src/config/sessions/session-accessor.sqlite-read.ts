@@ -5,10 +5,10 @@ import {
   iterateSqliteQuerySync,
 } from "../../infra/kysely-sync.js";
 import { extractAssistantVisibleText } from "../../shared/chat-message-content.js";
-import { isTranscriptOnlyOpenClawAssistantModel } from "../../shared/transcript-only-operator-assistant.js";
+import { isTranscriptOnlyOperatorAssistantModel } from "../../shared/transcript-only-operator-assistant.js";
 import {
-  openOpenClawAgentDatabase,
-  type OpenClawAgentDatabase,
+  openOperatorAgentDatabase,
+  type OperatorAgentDatabase,
 } from "../../state/operator-agent-db.js";
 import type {
   LatestTranscriptAssistantMessage,
@@ -41,12 +41,12 @@ export function loadSqliteTranscriptEventsSync(
   scope: SessionTranscriptReadScope,
 ): TranscriptEvent[] {
   const resolved = resolveSqliteTranscriptReadScope(scope);
-  const database = openOpenClawAgentDatabase(toDatabaseOptions(resolved));
+  const database = openOperatorAgentDatabase(toDatabaseOptions(resolved));
   return loadSqliteTranscriptEventsFromDatabase(database, resolved.sessionId);
 }
 
 export function loadSqliteTranscriptEventsFromDatabase(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   sessionId: string,
 ): TranscriptEvent[] {
   const db = getSessionKysely(database.db);
@@ -62,7 +62,7 @@ export function loadSqliteTranscriptEventsFromDatabase(
 }
 
 export function readSqliteTranscriptSnapshot(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   sessionId: string,
 ): { events: TranscriptEvent[]; rows: SqliteTranscriptSnapshotRow[] } {
   const db = getSessionKysely(database.db);
@@ -93,7 +93,7 @@ export function readSqliteTranscriptStatsSync(
   scope: SessionTranscriptReadScope,
 ): SessionTranscriptStats {
   const resolved = resolveSqliteTranscriptReadScope(scope);
-  const database = openOpenClawAgentDatabase(toDatabaseOptions(resolved));
+  const database = openOperatorAgentDatabase(toDatabaseOptions(resolved));
   const db = getSessionKysely(database.db);
   const row = executeSqliteQueryTakeFirstSync(
     database.db,
@@ -127,7 +127,7 @@ export function readSqliteTranscriptStatsSync(
 }
 
 export function readTranscriptEventJsonSetInTransaction(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   sessionId: string,
 ): Set<string> {
   const db = getSessionKysely(database.db);
@@ -141,10 +141,10 @@ export function readTranscriptEventJsonSetInTransaction(
 /** Reads the latest visible assistant text from SQLite transcript rows in reverse order. */
 export function loadLatestSqliteAssistantText(
   scope: SessionTranscriptReadScope,
-  options: { includeTranscriptOnlyOpenClawAssistant?: boolean } = {},
+  options: { includeTranscriptOnlyOperatorAssistant?: boolean } = {},
 ): LatestTranscriptAssistantText | undefined {
   const resolved = resolveSqliteTranscriptReadScope(scope);
-  const database = openOpenClawAgentDatabase(toDatabaseOptions(resolved));
+  const database = openOperatorAgentDatabase(toDatabaseOptions(resolved));
   const db = getSessionKysely(database.db);
   const rows = iterateSqliteQuerySync(
     database.db,
@@ -190,7 +190,7 @@ function parseLatestAssistantText(
 
 function parseLatestAssistantMessageEvent(
   raw: string,
-  options: { includeTranscriptOnlyOpenClawAssistant?: boolean } = {},
+  options: { includeTranscriptOnlyOperatorAssistant?: boolean } = {},
 ): LatestTranscriptAssistantMessage | undefined {
   let parsed: {
     id?: unknown;
@@ -206,8 +206,8 @@ function parseLatestAssistantMessageEvent(
     return undefined;
   }
   if (
-    !options.includeTranscriptOnlyOpenClawAssistant &&
-    isTranscriptOnlyOpenClawAssistantModel(message.provider, message.model)
+    !options.includeTranscriptOnlyOperatorAssistant &&
+    isTranscriptOnlyOperatorAssistantModel(message.provider, message.model)
   ) {
     return undefined;
   }
@@ -223,12 +223,12 @@ export function findSqliteTranscriptEvent(
   match: (event: TranscriptEvent) => boolean,
 ): { event: TranscriptEvent } | undefined {
   const resolved = resolveSqliteTranscriptReadScope(scope);
-  const database = openOpenClawAgentDatabase(toDatabaseOptions(resolved));
+  const database = openOperatorAgentDatabase(toDatabaseOptions(resolved));
   return findSqliteTranscriptEventInDatabase(database, resolved.sessionId, match);
 }
 
 export function findSqliteTranscriptEventInDatabase(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   sessionId: string,
   match: (event: TranscriptEvent) => boolean,
 ): { event: TranscriptEvent } | undefined {

@@ -4,10 +4,10 @@ import path from "node:path";
 import { withTempHome as withTempHomeBase } from "operator/plugin-sdk/test-env";
 import { replaceSessionEntry } from "../config/sessions/session-accessor.js";
 import type { SessionEntry } from "../config/sessions/types.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { CronJob } from "./types.js";
 
-/** Runs a test callback with an isolated OpenClaw home for cron tests. */
+/** Runs a test callback with an isolated Operator home for cron tests. */
 export async function withTempCronHome<T>(fn: (home: string) => Promise<T>): Promise<T> {
   return withTempHomeBase(fn, { prefix: "operator-cron-" });
 }
@@ -41,9 +41,9 @@ export async function writeSessionStoreEntries(
 export function makeCfg(
   home: string,
   storePath: string,
-  overrides: Partial<OpenClawConfig> = {},
-): OpenClawConfig {
-  const base: OpenClawConfig = {
+  overrides: Partial<OperatorConfig> = {},
+): OperatorConfig {
+  const base: OperatorConfig = {
     agents: {
       defaults: {
         model: "anthropic/claude-opus-4-6",
@@ -51,7 +51,7 @@ export function makeCfg(
       },
     },
     session: { store: storePath, mainKey: "main" },
-  } as OpenClawConfig;
+  } as OperatorConfig;
   return { ...base, ...overrides };
 }
 

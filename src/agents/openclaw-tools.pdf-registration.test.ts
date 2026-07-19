@@ -1,9 +1,9 @@
-// Verifies PDF tool factory output is included in OpenClaw tool registration.
+// Verifies PDF tool factory output is included in Operator tool registration.
 import { describe, expect, it } from "vitest";
-import { collectPresentOpenClawTools } from "./openclaw-tools.registration.js";
+import { collectPresentOperatorTools } from "./openclaw-tools.registration.js";
 import { createPdfTool } from "./tools/pdf-tool.js";
 
-describe("createOpenClawTools PDF registration", () => {
+describe("createOperatorTools PDF registration", () => {
   it("includes the pdf tool when the pdf factory returns a tool", () => {
     const pdfTool = createPdfTool({
       agentDir: "/tmp/openclaw-agent-main",
@@ -17,6 +17,6 @@ describe("createOpenClawTools PDF registration", () => {
     });
 
     expect(pdfTool?.name).toBe("pdf");
-    expect(collectPresentOpenClawTools([pdfTool]).map((tool) => tool.name)).toEqual(["pdf"]);
+    expect(collectPresentOperatorTools([pdfTool]).map((tool) => tool.name)).toEqual(["pdf"]);
   });
 });

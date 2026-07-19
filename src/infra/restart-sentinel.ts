@@ -6,10 +6,10 @@ import { sliceUtf16Safe } from "@operator/normalization-core/utf16-slice";
 import { formatCliCommand } from "../cli/command-format.js";
 import { resolveStateDir } from "../config/paths.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
 } from "../state/operator-state-db.js";
 import { resolveRuntimeServiceVersion } from "../version.js";
 import { formatErrorMessage } from "./errors.js";
@@ -83,7 +83,7 @@ type RestartSentinel = {
 
 const RESTART_SENTINEL_KEY = "current";
 const LEGACY_RESTART_SENTINEL_FILENAME = "restart-sentinel.json";
-type GatewayRestartSentinelDatabase = Pick<OpenClawStateKyselyDatabase, "gateway_restart_sentinel">;
+type GatewayRestartSentinelDatabase = Pick<OperatorStateKyselyDatabase, "gateway_restart_sentinel">;
 
 export function formatDoctorNonInteractiveHint(
   env: Record<string, string | undefined> = process.env as Record<string, string | undefined>,
@@ -91,7 +91,7 @@ export function formatDoctorNonInteractiveHint(
   return `Recommended follow-up: run ${formatCliCommand(
     "operator doctor --non-interactive",
     env,
-  )} in a terminal or approvals-capable OpenClaw surface.`;
+  )} in a terminal or approvals-capable Operator surface.`;
 }
 
 export async function writeRestartSentinel(
@@ -99,7 +99,7 @@ export async function writeRestartSentinel(
   env: NodeJS.ProcessEnv = process.env,
 ): Promise<void> {
   const updatedAtMs = Date.now();
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     ({ db }) => {
       const stateDb = getNodeSqliteKysely<GatewayRestartSentinelDatabase>(db);
       executeSqliteQuerySync(
@@ -217,7 +217,7 @@ export async function markUpdateRestartSentinelFailure(
 
 export async function clearRestartSentinel(env: NodeJS.ProcessEnv = process.env): Promise<void> {
   try {
-    runOpenClawStateWriteTransaction(
+    runOperatorStateWriteTransaction(
       ({ db }) => {
         const stateDb = getNodeSqliteKysely<GatewayRestartSentinelDatabase>(db);
         executeSqliteQuerySync(
@@ -286,7 +286,7 @@ export async function readRestartSentinel(
   env: NodeJS.ProcessEnv = process.env,
 ): Promise<RestartSentinel | null> {
   try {
-    const database = openOpenClawStateDatabase({ env });
+    const database = openOperatorStateDatabase({ env });
     const stateDb = getNodeSqliteKysely<GatewayRestartSentinelDatabase>(database.db);
     const row = executeSqliteQueryTakeFirstSync(
       database.db,
@@ -318,7 +318,7 @@ export async function readRestartSentinel(
 
 export async function hasRestartSentinel(env: NodeJS.ProcessEnv = process.env): Promise<boolean> {
   try {
-    const database = openOpenClawStateDatabase({ env });
+    const database = openOperatorStateDatabase({ env });
     const stateDb = getNodeSqliteKysely<GatewayRestartSentinelDatabase>(database.db);
     const row = executeSqliteQueryTakeFirstSync(
       database.db,

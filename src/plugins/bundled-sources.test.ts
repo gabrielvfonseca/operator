@@ -15,11 +15,11 @@ function appBundledPluginRoot(pluginId: string): string {
   return bundledPluginRootAt(APP_ROOT, pluginId);
 }
 
-const discoverOpenClawPluginsMock = vi.fn();
+const discoverOperatorPluginsMock = vi.fn();
 const loadPluginManifestMock = vi.fn();
 
 vi.mock("./discovery.js", () => ({
-  discoverOpenClawPlugins: (...args: unknown[]) => discoverOpenClawPluginsMock(...args),
+  discoverOperatorPlugins: (...args: unknown[]) => discoverOperatorPluginsMock(...args),
 }));
 
 vi.mock("./manifest.js", () => ({
@@ -45,7 +45,7 @@ function createBundledCandidate(params: {
 }
 
 function setBundledDiscoveryCandidates(candidates: unknown[]) {
-  discoverOpenClawPluginsMock.mockReturnValue({
+  discoverOperatorPluginsMock.mockReturnValue({
     candidates,
     diagnostics: [],
   });
@@ -146,7 +146,7 @@ function expectBundledSourceLookupCase(params: {
 
 describe("bundled plugin sources", () => {
   beforeEach(() => {
-    discoverOpenClawPluginsMock.mockReset();
+    discoverOperatorPluginsMock.mockReset();
     loadPluginManifestMock.mockReset();
   });
 
@@ -157,7 +157,7 @@ describe("bundled plugin sources", () => {
     const second = getProcessBundledPluginSources();
 
     expect(second).toBe(first);
-    expect(discoverOpenClawPluginsMock).toHaveBeenCalledOnce();
+    expect(discoverOperatorPluginsMock).toHaveBeenCalledOnce();
   });
 
   it("resolves bundled sources keyed by plugin id", () => {
@@ -241,11 +241,11 @@ describe("bundled plugin sources", () => {
       env,
     });
 
-    expect(discoverOpenClawPluginsMock).toHaveBeenNthCalledWith(1, {
+    expect(discoverOperatorPluginsMock).toHaveBeenNthCalledWith(1, {
       workspaceDir: "/workspace",
       env,
     });
-    expect(discoverOpenClawPluginsMock).toHaveBeenNthCalledWith(2, {
+    expect(discoverOperatorPluginsMock).toHaveBeenNthCalledWith(2, {
       workspaceDir: "/workspace",
       env,
     });

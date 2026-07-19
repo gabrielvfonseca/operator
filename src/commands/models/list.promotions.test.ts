@@ -3,10 +3,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { maybeRefreshPromotionsFeed, recordPromotionClaim } from "../../infra/promotions-feed.js";
 import type { RuntimeEnv } from "../../runtime.js";
-import { closeOpenClawStateDatabaseForTest } from "../../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../state/openclaw-state-db.js";
 import {
-  createOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  type OperatorTestState,
 } from "../../test-utils/operator-test-state.js";
 import { applyPromotionClaimTags, printAvailablePromotionsSection } from "./list.promotions.js";
 import type { ModelRow } from "./list.types.js";
@@ -71,17 +71,17 @@ async function seedFeedCache(entries: unknown[]) {
 }
 
 describe("models list promotion decorations", () => {
-  let testState: OpenClawTestState;
+  let testState: OperatorTestState;
 
   beforeEach(async () => {
-    testState = await createOpenClawTestState({
+    testState = await createOperatorTestState({
       layout: "state-only",
       prefix: "openclaw-list-promotions-",
     });
   });
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await testState.cleanup();
   });
 

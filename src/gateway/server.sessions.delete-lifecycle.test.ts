@@ -22,7 +22,7 @@ import {
   beginSessionWorkAdmission,
   runExclusiveSessionLifecycleMutation,
 } from "../sessions/session-lifecycle-admission.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import { embeddedRunMock, rpcReq, testState, writeSessionStore } from "./test-helpers.js";
 import {
   setupGatewaySessionsTestHarness,
@@ -52,7 +52,7 @@ async function initializeRemoteBackedGitWorkspace(root: string): Promise<string>
   const remote = path.join(root, "remote.git");
   await fs.mkdir(workspace, { recursive: true });
   await execFileAsync("git", ["-C", workspace, "init", "-b", "main"]);
-  await execFileAsync("git", ["-C", workspace, "config", "user.name", "OpenClaw Test"]);
+  await execFileAsync("git", ["-C", workspace, "config", "user.name", "Operator Test"]);
   await execFileAsync("git", [
     "-C",
     workspace,
@@ -70,7 +70,7 @@ async function initializeRemoteBackedGitWorkspace(root: string): Promise<string>
 }
 
 afterEach(() => {
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorStateDatabaseForTest();
 });
 
 function expectObject(value: unknown) {
@@ -123,9 +123,9 @@ test("sessions.delete removes clean session worktrees and keeps dirty ones", asy
     path.join(await fs.realpath(os.tmpdir()), "openclaw-delete-worktree-"),
   );
   const workspace = await initializeRemoteBackedGitWorkspace(root);
-  const previousStateDir = process.env.OPENCLAW_STATE_DIR;
-  process.env.OPENCLAW_STATE_DIR = path.join(root, "state");
-  closeOpenClawStateDatabaseForTest();
+  const previousStateDir = process.env.OPERATOR_STATE_DIR;
+  process.env.OPERATOR_STATE_DIR = path.join(root, "state");
+  closeOperatorStateDatabaseForTest();
   testState.agentConfig = { workspace };
   await createSessionStoreDir();
   let dirtyWorktreeId: string | undefined;
@@ -170,11 +170,11 @@ test("sessions.delete removes clean session worktrees and keeps dirty ones", asy
     ) {
       await managedWorktrees.remove({ id: dirtyWorktreeId, reason: "test-cleanup", force: true });
     }
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     if (previousStateDir === undefined) {
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.OPERATOR_STATE_DIR;
     } else {
-      process.env.OPENCLAW_STATE_DIR = previousStateDir;
+      process.env.OPERATOR_STATE_DIR = previousStateDir;
     }
     testState.agentConfig = undefined;
     await fs.rm(root, { recursive: true, force: true });

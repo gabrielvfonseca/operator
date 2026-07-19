@@ -1,5 +1,5 @@
 // Voice Call plugin module implements realtime agent context behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { buildRealtimeVoiceAgentConsultPolicyInstructions } from "openclaw/plugin-sdk/realtime-voice";
 import { root } from "openclaw/plugin-sdk/security-runtime";
 import { normalizeOptionalString as normalizeString } from "openclaw/plugin-sdk/string-coerce-runtime";
@@ -59,7 +59,7 @@ async function readWorkspaceVoiceContextFiles(params: {
 export async function buildRealtimeVoiceInstructions(params: {
   baseInstructions: string;
   config: VoiceCallConfig;
-  coreConfig: OpenClawConfig;
+  coreConfig: OperatorConfig;
   agentRuntime: CoreAgentDeps;
 }): Promise<string> {
   const { config } = params;
@@ -76,9 +76,9 @@ export async function buildRealtimeVoiceInstructions(params: {
 
   const agentId = config.agentId ?? "main";
   const capsule: string[] = [
-    "OpenClaw agent voice context:",
+    "Operator agent voice context:",
     `- Agent id: ${agentId}`,
-    "- Use this context to match the OpenClaw agent's personality and standing preferences on fast voice turns.",
+    "- Use this context to match the Operator agent's personality and standing preferences on fast voice turns.",
     "- Treat this as compact context only; call openclaw_agent_consult when the caller needs the full agent brain, tools, memory, or workspace state.",
   ];
 

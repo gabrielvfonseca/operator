@@ -176,7 +176,7 @@ describe("brave web search provider", () => {
       throw new Error("Expected tool definition");
     }
 
-    const result = await tool.execute({ query: "OpenClaw docs" });
+    const result = await tool.execute({ query: "Operator docs" });
 
     expect(result).toEqual({
       error: "missing_brave_api_key",

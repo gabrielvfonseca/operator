@@ -586,8 +586,8 @@ describe("buildWorkspaceSkillStatus", () => {
         }),
         createEntry("needs-env", {
           metadata: {
-            primaryEnv: "OPENCLAW_TEST_MISSING_SKILL_KEY",
-            requires: { env: ["OPENCLAW_TEST_MISSING_SKILL_KEY"] },
+            primaryEnv: "OPERATOR_TEST_MISSING_SKILL_KEY",
+            requires: { env: ["OPERATOR_TEST_MISSING_SKILL_KEY"] },
           },
         }),
         createEntry("prompt-hidden", {
@@ -646,12 +646,12 @@ describe("buildWorkspaceSkillStatus", () => {
     ]);
     const needsEnv = requireSkillStatus(byName, "needs-env");
     expect(needsEnv.eligible).toBe(false);
-    expect(needsEnv.primaryEnv).toBe("OPENCLAW_TEST_MISSING_SKILL_KEY");
+    expect(needsEnv.primaryEnv).toBe("OPERATOR_TEST_MISSING_SKILL_KEY");
     expect(needsEnv.missing).toStrictEqual({
       anyBins: [],
       bins: [],
       config: [],
-      env: ["OPENCLAW_TEST_MISSING_SKILL_KEY"],
+      env: ["OPERATOR_TEST_MISSING_SKILL_KEY"],
       os: [],
     });
     expectStatusFlags(requireSkillStatus(byName, "prompt-hidden"), {

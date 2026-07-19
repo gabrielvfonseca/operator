@@ -1,7 +1,7 @@
 /** Gateway health probes used by doctor before deeper daemon and memory diagnostics. */
 import { note } from "../../packages/terminal-core/src/note.js";
 import { probeGatewayStatus } from "../cli/daemon-cli/probe.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   buildGatewayConnectionDetails,
   buildGatewayProbeConnectionDetails,
@@ -54,11 +54,11 @@ function noteCliGatewayVersionSkew(status: StatusSummary | undefined): void {
   }
   note(
     [
-      `This command is OpenClaw ${VERSION}; the running Gateway is OpenClaw ${gatewayVersion}.`,
+      `This command is Operator ${VERSION}; the running Gateway is Operator ${gatewayVersion}.`,
       "Check `operator --version`, `which operator`, and `operator gateway status --deep`.",
-      "If this mismatch is unexpected, update PATH so `operator` points to the version you want, or reinstall the Gateway service from that same OpenClaw install.",
+      "If this mismatch is unexpected, update PATH so `operator` points to the version you want, or reinstall the Gateway service from that same Operator install.",
     ].join("\n"),
-    "OpenClaw version mismatch",
+    "Operator version mismatch",
   );
 }
 
@@ -70,7 +70,7 @@ function noteCliGatewayVersionSkew(status: StatusSummary | undefined): void {
  */
 export async function checkGatewayHealth(params: {
   runtime: RuntimeEnv;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   timeoutMs?: number;
 }): Promise<{ healthOk: boolean; authenticated: boolean; status?: StatusSummary }> {
   const timeoutMs =
@@ -150,7 +150,7 @@ export async function checkGatewayHealth(params: {
 
 /** Probes gateway memory readiness without forcing deep embedding checks. */
 export async function probeGatewayMemoryStatus(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   timeoutMs?: number;
 }): Promise<GatewayMemoryProbe> {
   const timeoutMs =

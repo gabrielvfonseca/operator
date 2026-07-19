@@ -290,7 +290,7 @@ function parseOptionalCatalogString(
 
 function parseCatalogSession(
   value: unknown,
-  options: { allowOpenClawSessionKey?: boolean } = {},
+  options: { allowOperatorSessionKey?: boolean } = {},
 ): CodexSessionCatalogSession {
   if (
     !isRecord(value) ||
@@ -342,10 +342,10 @@ function parseCatalogSession(
     MAX_METADATA_LENGTH,
   );
   const gitBranch = parseOptionalCatalogString(value.gitBranch, "Git branch", MAX_METADATA_LENGTH);
-  const openClawSessionKey = options.allowOpenClawSessionKey
+  const openClawSessionKey = options.allowOperatorSessionKey
     ? parseOptionalCatalogString(
         value.openClawSessionKey,
-        "OpenClaw session key",
+        "Operator session key",
         MAX_SESSION_KEY_LENGTH,
       )
     : undefined;
@@ -373,7 +373,7 @@ function parseCatalogSession(
 
 export function parseCatalogPage(
   value: unknown,
-  options: { allowOpenClawSessionKey?: boolean } = {},
+  options: { allowOperatorSessionKey?: boolean } = {},
 ): CodexSessionCatalogPage {
   if (
     !isRecord(value) ||

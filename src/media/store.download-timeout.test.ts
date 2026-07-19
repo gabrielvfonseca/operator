@@ -8,8 +8,8 @@ import { PassThrough } from "node:stream";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { createPinnedLookup } from "../infra/net/ssrf.js";
 import {
-  createOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  type OperatorTestState,
 } from "../test-utils/operator-test-state.js";
 import { setMediaStoreDownloadDepsForTest } from "./store.download.js";
 import { saveMediaSource } from "./store.js";
@@ -66,7 +66,7 @@ async function listMediaFiles(root: string): Promise<string[]> {
 }
 
 describe("media store download timeouts", () => {
-  let testState: OpenClawTestState;
+  let testState: OperatorTestState;
   let mediaRoot: string;
   let server: http.Server;
   let baseUrl: string;
@@ -81,7 +81,7 @@ describe("media store download timeouts", () => {
   let stalledSocketClosed: Promise<void> | undefined;
 
   beforeAll(async () => {
-    testState = await createOpenClawTestState({
+    testState = await createOperatorTestState({
       layout: "state-only",
       prefix: "openclaw-media-store-download-timeout-",
     });

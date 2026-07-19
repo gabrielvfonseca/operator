@@ -20,7 +20,7 @@ import type {
 export { type ResolvedAcpxPluginConfig } from "./config-schema.js";
 
 const ACPX_PLUGIN_TOOLS_MCP_SERVER_NAME = "openclaw-plugin-tools";
-const ACPX_OPENCLAW_TOOLS_MCP_SERVER_NAME = "openclaw-tools";
+const ACPX_OPERATOR_TOOLS_MCP_SERVER_NAME = "openclaw-tools";
 const requireFromHere = createRequire(import.meta.url);
 
 function isAcpxPluginRoot(dir: string): boolean {
@@ -63,7 +63,7 @@ function resolveRepoAcpxPluginRoot(currentRoot: string): string | null {
   return isAcpxPluginRoot(workspaceRoot) ? workspaceRoot : null;
 }
 
-function resolveAcpxPluginRootFromOpenClawLayout(moduleUrl: string): string | null {
+function resolveAcpxPluginRootFromOperatorLayout(moduleUrl: string): string | null {
   let cursor = path.dirname(fileURLToPath(moduleUrl));
   for (let i = 0; i < 5; i += 1) {
     const candidates = [
@@ -93,8 +93,8 @@ export function resolveAcpxPluginRoot(moduleUrl: string = import.meta.url): stri
     resolveWorkspaceAcpxPluginRoot(resolvedRoot) ??
     resolveRepoAcpxPluginRoot(resolvedRoot) ??
     // Shared dist/dist-runtime chunks can load this module outside the plugin tree.
-    // Scan common OpenClaw layouts before falling back to the nearest path guess.
-    resolveAcpxPluginRootFromOpenClawLayout(moduleUrl) ??
+    // Scan common Operator layouts before falling back to the nearest path guess.
+    resolveAcpxPluginRootFromOperatorLayout(moduleUrl) ??
     resolvedRoot
   );
 }
@@ -122,7 +122,7 @@ function parseAcpxPluginConfig(value: unknown): ParseResult {
   };
 }
 
-function resolveOpenClawRoot(currentRoot: string): string {
+function resolveOperatorRoot(currentRoot: string): string {
   if (
     path.basename(currentRoot) === "acpx" &&
     path.basename(path.dirname(currentRoot)) === "extensions"
@@ -153,7 +153,7 @@ function shellQuoteCommandArg(arg: string): string {
 
 function resolvePluginToolsMcpServerConfig(moduleUrl: string = import.meta.url): McpServerConfig {
   const pluginRoot = resolveAcpxPluginRoot(moduleUrl);
-  const openClawRoot = resolveOpenClawRoot(pluginRoot);
+  const openClawRoot = resolveOperatorRoot(pluginRoot);
   const distEntry = path.join(openClawRoot, "dist", "mcp", "plugin-tools-serve.js");
   if (fs.existsSync(distEntry)) {
     return {
@@ -168,9 +168,9 @@ function resolvePluginToolsMcpServerConfig(moduleUrl: string = import.meta.url):
   };
 }
 
-function resolveOpenClawToolsMcpServerConfig(moduleUrl: string = import.meta.url): McpServerConfig {
+function resolveOperatorToolsMcpServerConfig(moduleUrl: string = import.meta.url): McpServerConfig {
   const pluginRoot = resolveAcpxPluginRoot(moduleUrl);
-  const openClawRoot = resolveOpenClawRoot(pluginRoot);
+  const openClawRoot = resolveOperatorRoot(pluginRoot);
   const distEntry = path.join(openClawRoot, "dist", "mcp", "openclaw-tools-serve.js");
   if (fs.existsSync(distEntry)) {
     return {
@@ -197,9 +197,9 @@ function resolveConfiguredMcpServers(params: {
       `mcpServers.${ACPX_PLUGIN_TOOLS_MCP_SERVER_NAME} is reserved when pluginToolsMcpBridge=true`,
     );
   }
-  if (params.openClawToolsMcpBridge && resolved[ACPX_OPENCLAW_TOOLS_MCP_SERVER_NAME]) {
+  if (params.openClawToolsMcpBridge && resolved[ACPX_OPERATOR_TOOLS_MCP_SERVER_NAME]) {
     throw new Error(
-      `mcpServers.${ACPX_OPENCLAW_TOOLS_MCP_SERVER_NAME} is reserved when openClawToolsMcpBridge=true`,
+      `mcpServers.${ACPX_OPERATOR_TOOLS_MCP_SERVER_NAME} is reserved when openClawToolsMcpBridge=true`,
     );
   }
   if (params.pluginToolsMcpBridge) {
@@ -208,14 +208,14 @@ function resolveConfiguredMcpServers(params: {
     );
   }
   if (params.openClawToolsMcpBridge) {
-    resolved[ACPX_OPENCLAW_TOOLS_MCP_SERVER_NAME] = resolveOpenClawToolsMcpServerConfig(
+    resolved[ACPX_OPERATOR_TOOLS_MCP_SERVER_NAME] = resolveOperatorToolsMcpServerConfig(
       params.moduleUrl,
     );
   }
   return resolved;
 }
 
-/** Convert OpenClaw MCP server config into ACPX runtime MCP server entries. */
+/** Convert Operator MCP server config into ACPX runtime MCP server entries. */
 export function toAcpMcpServers(mcpServers: Record<string, McpServerConfig>): AcpxMcpServer[] {
   return Object.entries(mcpServers).map(([name, server]) => ({
     name,

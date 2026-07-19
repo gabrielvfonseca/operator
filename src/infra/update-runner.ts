@@ -1,4 +1,4 @@
-// Runs OpenClaw package update checks, package steps, and restart handoff.
+// Runs Operator package update checks, package steps, and restart handoff.
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";

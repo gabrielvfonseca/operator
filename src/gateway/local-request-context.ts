@@ -2,7 +2,7 @@
 // Lets local agent paths reuse Gateway server methods without starting a server.
 import { loadManifestModelCatalog, loadModelCatalogSnapshot } from "../agents/model-catalog.js";
 import type { CliDeps } from "../cli/deps.types.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import {
   getPluginRuntimeGatewayRequestScope,
@@ -19,7 +19,7 @@ import type { GatewayRequestContext } from "./server-methods/types.js";
 // so local command paths do not silently enqueue cron/channel work.
 type LocalGatewayRequestContextParams = {
   deps: CliDeps;
-  getRuntimeConfig: () => OpenClawConfig;
+  getRuntimeConfig: () => OperatorConfig;
 };
 
 function cronUnavailable(): never {

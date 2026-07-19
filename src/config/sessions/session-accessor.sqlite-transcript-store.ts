@@ -5,7 +5,7 @@ import {
   executeSqliteQueryTakeFirstSync,
 } from "../../infra/kysely-sync.js";
 import { redactSecrets } from "../../logging/redact.js";
-import type { OpenClawAgentDatabase } from "../../state/operator-agent-db.js";
+import type { OperatorAgentDatabase } from "../../state/operator-agent-db.js";
 import type {
   TranscriptEvent,
   TranscriptMessageAppendOptions,
@@ -32,7 +32,7 @@ import {
 import { resolveVisibleTranscriptAppendParentId } from "./transcript-visible-events.js";
 
 export function appendTranscriptEventInTransaction(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   scope: ResolvedTranscriptScope,
   event: TranscriptEvent,
   options: { dedupeByMessageIdempotency?: boolean; touchMutation?: boolean } = {},
@@ -109,7 +109,7 @@ export function appendTranscriptEventInTransaction(
 }
 
 export function appendTranscriptEventsInTransaction(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   scope: ResolvedTranscriptScope,
   events: readonly TranscriptEvent[],
 ): number {
@@ -126,7 +126,7 @@ export function appendTranscriptEventsInTransaction(
 }
 
 function appendTranscriptEventRowInTransaction(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   scope: ResolvedTranscriptScope,
   event: TranscriptEvent,
   seq: number,
@@ -182,7 +182,7 @@ function appendTranscriptEventRowInTransaction(
 }
 
 export function ensureTranscriptHeader(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   scope: ResolvedTranscriptScope,
   cwd: string | undefined,
   now: number,
@@ -208,7 +208,7 @@ export function ensureTranscriptHeader(
 }
 
 export function readActiveTranscriptAppendParentId(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   sessionId: string,
 ): string | null {
   const db = getSessionKysely(database.db);
@@ -254,7 +254,7 @@ export function readActiveTranscriptAppendParentId(
 }
 
 function transcriptTreeReferenceExists(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   sessionId: string,
   eventId: string | null,
 ): boolean {
@@ -264,7 +264,7 @@ function transcriptTreeReferenceExists(
 }
 
 export function replaceSqliteTranscriptEventsInTransaction(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   resolved: ResolvedTranscriptScope,
   events: readonly TranscriptEvent[],
 ): void {
@@ -295,7 +295,7 @@ export function replaceSqliteTranscriptEventsInTransaction(
 }
 
 export function readTranscriptIdentityByEventId(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   sessionId: string,
   eventId: string,
 ): { eventId: string; seq: number } | undefined {
@@ -312,7 +312,7 @@ export function readTranscriptIdentityByEventId(
 }
 
 function readTranscriptIdentityByMessageIdempotencyKey(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   sessionId: string,
   idempotencyKey: string,
 ): { eventId: string; seq: number } | undefined {
@@ -331,7 +331,7 @@ function readTranscriptIdentityByMessageIdempotencyKey(
 }
 
 function readTranscriptMessageByIdempotencyKey(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   scope: ResolvedTranscriptScope,
   idempotencyKey: string,
 ): { messageId: string; message: unknown } | undefined {
@@ -344,7 +344,7 @@ function readTranscriptMessageByIdempotencyKey(
 }
 
 export function readTranscriptMessageByScopedIdempotencyKey(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   scope: ResolvedTranscriptScope,
   idempotencyKey: string,
   lookup: TranscriptMessageAppendOptions<unknown>["idempotencyLookup"],
@@ -366,7 +366,7 @@ export function readTranscriptMessageByScopedIdempotencyKey(
 }
 
 export function readTranscriptMessageByEventId(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   scope: ResolvedTranscriptScope,
   eventId: string,
 ): { messageId: string; message: unknown } | undefined {
@@ -375,7 +375,7 @@ export function readTranscriptMessageByEventId(
 }
 
 function readTranscriptMessageByIdentity(
-  database: OpenClawAgentDatabase,
+  database: OperatorAgentDatabase,
   scope: ResolvedTranscriptScope,
   identity: { eventId: string; seq: number },
 ): { messageId: string; message: unknown } | undefined {

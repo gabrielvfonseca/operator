@@ -1,17 +1,17 @@
-/** Persists hosted official external plugin catalog snapshots in OpenClaw state. */
+/** Persists hosted official external plugin catalog snapshots in Operator state. */
 import { existsSync } from "node:fs";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
   getNodeSqliteKysely,
 } from "../infra/kysely-sync.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
-  type OpenClawStateDatabaseOptions,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
+  type OperatorStateDatabaseOptions,
 } from "../state/operator-state-db.js";
-import { resolveOpenClawStateSqlitePath } from "../state/operator-state-db.paths.js";
+import { resolveOperatorStateSqlitePath } from "../state/operator-state-db.paths.js";
 import type {
   HostedOfficialExternalPluginCatalogMetadata,
   HostedOfficialExternalPluginCatalogSnapshot,
@@ -42,7 +42,7 @@ type HostedCatalogSnapshotRow = {
 };
 
 type HostedCatalogSnapshotDatabase = Pick<
-  OpenClawStateKyselyDatabase,
+  OperatorStateKyselyDatabase,
   "official_external_plugin_catalog_snapshots"
 >;
 
@@ -60,7 +60,7 @@ function resolveStoreEnv(
 
 function resolveStateDatabaseOptions(
   options: HostedOfficialExternalPluginCatalogSnapshotStoreOptions,
-): OpenClawStateDatabaseOptions {
+): OperatorStateDatabaseOptions {
   const env = resolveStoreEnv(options);
   return {
     ...(env ? { env } : {}),
@@ -74,7 +74,7 @@ function resolveStateDatabasePath(
   if (options.stateDatabasePath) {
     return options.stateDatabasePath;
   }
-  return resolveOpenClawStateSqlitePath(resolveStoreEnv(options) ?? process.env);
+  return resolveOperatorStateSqlitePath(resolveStoreEnv(options) ?? process.env);
 }
 
 function rowToTrustState(
@@ -193,7 +193,7 @@ export function createSqliteHostedOfficialExternalPluginCatalogSnapshotStore(
       if (!existsSync(pathname)) {
         return null;
       }
-      const database = openOpenClawStateDatabase(resolveStateDatabaseOptions(options));
+      const database = openOperatorStateDatabase(resolveStateDatabaseOptions(options));
       const stateDb = getNodeSqliteKysely<HostedCatalogSnapshotDatabase>(database.db);
       const row = executeSqliteQueryTakeFirstSync(
         database.db,
@@ -219,7 +219,7 @@ export function createSqliteHostedOfficialExternalPluginCatalogSnapshotStore(
     },
     async write(snapshot) {
       const now = Date.now();
-      runOpenClawStateWriteTransaction((database) => {
+      runOperatorStateWriteTransaction((database) => {
         const stateDb = getNodeSqliteKysely<HostedCatalogSnapshotDatabase>(database.db);
         const current = executeSqliteQueryTakeFirstSync(
           database.db,

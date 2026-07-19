@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import * as providerAuth from "openclaw/plugin-sdk/provider-auth-runtime";
 import {
-  type OpenClawConfig,
+  type OperatorConfig,
   resolveAgentModelPrimaryValue,
 } from "openclaw/plugin-sdk/provider-onboard";
 import { captureEnv } from "openclaw/plugin-sdk/test-env";
@@ -14,7 +14,7 @@ import { DEEPINFRA_BASE_URL, DEEPINFRA_DEFAULT_MODEL_REF } from "./provider-mode
 
 const { resolveEnvApiKey } = providerAuth;
 
-const emptyCfg: OpenClawConfig = {};
+const emptyCfg: OperatorConfig = {};
 
 describe("DeepInfra provider config", () => {
   describe("constants", () => {
@@ -49,7 +49,7 @@ describe("DeepInfra provider config", () => {
     });
 
     it("preserves an existing alias on the selected model", () => {
-      const cfg: OpenClawConfig = {
+      const cfg: OperatorConfig = {
         agents: {
           defaults: {
             models: {

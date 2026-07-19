@@ -6,7 +6,7 @@
  */
 export { getApiKeyForModel, requireApiKey } from "../model-auth.js";
 export { runWithImageModelFallback } from "../model-fallback.js";
-export { ensureOpenClawModelsJson } from "../models-config.js";
+export { ensureOperatorModelsJson } from "../models-config.js";
 export { discoverAuthStorage, discoverModels } from "../agent-model-discovery.js";
 export {
   createSandboxBridgeReadFile,

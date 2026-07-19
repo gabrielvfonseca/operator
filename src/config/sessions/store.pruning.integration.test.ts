@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { expectDefined } from "@operator/normalization-core";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import { closeOpenClawAgentDatabasesForTest } from "../../state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../state/openclaw-agent-db.js";
 import { createSuiteTempRootTracker } from "../../test-helpers/temp-dir.js";
 import {
   resolveTrajectoryFilePath,
@@ -201,19 +201,19 @@ describe("Integration: saveSessionStore with pruning", () => {
     mockLoadConfig.mockReset();
     testDir = await createCaseDir("pruning-integ");
     storePath = path.join(testDir, "sessions.json");
-    savedCacheTtl = process.env.OPENCLAW_SESSION_CACHE_TTL_MS;
-    process.env.OPENCLAW_SESSION_CACHE_TTL_MS = "0";
+    savedCacheTtl = process.env.OPERATOR_SESSION_CACHE_TTL_MS;
+    process.env.OPERATOR_SESSION_CACHE_TTL_MS = "0";
     clearSessionStoreCacheForTest();
   });
 
   afterEach(() => {
     mockLoadConfig.mockReset();
     clearSessionStoreCacheForTest();
-    closeOpenClawAgentDatabasesForTest();
+    closeOperatorAgentDatabasesForTest();
     if (savedCacheTtl === undefined) {
-      delete process.env.OPENCLAW_SESSION_CACHE_TTL_MS;
+      delete process.env.OPERATOR_SESSION_CACHE_TTL_MS;
     } else {
-      process.env.OPENCLAW_SESSION_CACHE_TTL_MS = savedCacheTtl;
+      process.env.OPERATOR_SESSION_CACHE_TTL_MS = savedCacheTtl;
     }
   });
 

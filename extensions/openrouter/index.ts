@@ -1,4 +1,4 @@
-// Openrouter plugin entrypoint registers its OpenClaw integration.
+// Openrouter plugin entrypoint registers its Operator integration.
 import {
   definePluginEntry,
   type ProviderReplayPolicy,

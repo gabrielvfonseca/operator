@@ -10,7 +10,7 @@ import {
   fingerprintResolvedProviderAuth,
 } from "../agents/execution-auth-binding.js";
 import { hashSystemAgentOperation } from "../agents/tools/system-agent-tool.js";
-import type { ConfigFileSnapshot, OpenClawConfig } from "../config/types.openclaw.js";
+import type { ConfigFileSnapshot, OperatorConfig } from "../config/types.openclaw.js";
 import type { WizardPrompter } from "../wizard/prompts.js";
 import { runSystemAgentTurnWithDeps } from "./agent-turn.test-support.js";
 import { classifySystemAgentApprovalText } from "./approval-intent.js";
@@ -92,7 +92,7 @@ const sharedVerifiedInferenceConfig = {
       },
     },
   },
-} satisfies OpenClawConfig;
+} satisfies OperatorConfig;
 
 let sharedVerifiedInference: SystemAgentVerifiedInferenceBinding | undefined;
 let sharedVerifiedInferenceDeps: SystemAgentVerifiedInferenceDeps | undefined;
@@ -100,11 +100,11 @@ let sharedVerifiedInferenceDeps: SystemAgentVerifiedInferenceDeps | undefined;
 function useTempStateDir(): string {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-engine-"));
   tempDirs.push(dir);
-  vi.stubEnv("OPENCLAW_STATE_DIR", dir);
+  vi.stubEnv("OPERATOR_STATE_DIR", dir);
   return dir;
 }
 
-function configSnapshot(config: OpenClawConfig): ConfigFileSnapshot {
+function configSnapshot(config: OperatorConfig): ConfigFileSnapshot {
   return {
     exists: true,
     valid: true,
@@ -145,7 +145,7 @@ function testHarnessBinding(route: SystemAgentConfiguredRoute) {
   };
 }
 
-async function createAmbientVerifiedBinding(config: OpenClawConfig) {
+async function createAmbientVerifiedBinding(config: OperatorConfig) {
   const route = await resolveSystemAgentConfiguredRouteFromConfig(config);
   if (!route) {
     throw new Error("missing test route");
@@ -168,7 +168,7 @@ async function createAmbientVerifiedBinding(config: OpenClawConfig) {
 }
 
 async function createOAuthVerifiedBinding(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   credential: Parameters<typeof fingerprintAuthProfileCredential>[0]["credential"],
 ) {
   const route = await resolveSystemAgentConfiguredRouteFromConfig(config);
@@ -195,7 +195,7 @@ async function createOAuthVerifiedBinding(
   });
 }
 
-async function createCliVerifiedBinding(config: OpenClawConfig) {
+async function createCliVerifiedBinding(config: OperatorConfig) {
   const route = await resolveSystemAgentConfiguredRouteFromConfig(config);
   if (!route || route.runner !== "cli") {
     throw new Error("missing test CLI route");
@@ -398,12 +398,12 @@ describe("SystemAgentChatEngine", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const changedConfig = {
       agents: { defaults: { model: "anthropic/claude-opus-4-8" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const verifiedInference = await createAmbientVerifiedBinding(baseConfig);
-    let currentConfig = baseConfig as OpenClawConfig;
+    let currentConfig = baseConfig as OperatorConfig;
     const runConfigSet = vi.fn(async () => {});
     const engine = new SystemAgentChatEngine({
       verifiedInference,
@@ -459,7 +459,7 @@ describe("SystemAgentChatEngine", () => {
     expect(reply.handoff).toBeUndefined();
     expect(reply.sensitive).toBeUndefined();
     expect(reply.text).toContain("replace the inference route powering this session");
-    expect(reply.text).toContain("Exit OpenClaw and run `openclaw onboard`");
+    expect(reply.text).toContain("Exit Operator and run `openclaw onboard`");
   });
 
   it("keeps the current inference route when model provider setup is declined", async () => {
@@ -547,7 +547,7 @@ describe("SystemAgentChatEngine", () => {
 
   it("rejects a hosted channel commit after a concurrent inference-route change", async () => {
     useTempStateDir();
-    const baseConfig: OpenClawConfig = {
+    const baseConfig: OperatorConfig = {
       agents: { defaults: { model: { primary: "openai/gpt-5.5" } } },
       auth: {
         profiles: { "openai:main": { provider: "openai", mode: "api_key" } },
@@ -565,7 +565,7 @@ describe("SystemAgentChatEngine", () => {
       issues: [],
     }));
     mocks.setupChannels.mockImplementation(
-      async (config: OpenClawConfig, _runtime: unknown, prompter: WizardPrompter) => {
+      async (config: OperatorConfig, _runtime: unknown, prompter: WizardPrompter) => {
         const token = await prompter.text({ message: "Bot token" });
         return {
           ...config,
@@ -577,7 +577,7 @@ describe("SystemAgentChatEngine", () => {
       },
     );
     mocks.writeWizardConfigFile.mockImplementation(
-      async (nextConfig: OpenClawConfig, opts: { baseHash?: string }) => {
+      async (nextConfig: OperatorConfig, opts: { baseHash?: string }) => {
         if (opts.baseHash !== currentHash) {
           throw new Error("configuration changed during channel setup");
         }
@@ -596,7 +596,7 @@ describe("SystemAgentChatEngine", () => {
     const tokenStep = await engine.handle("connect telegram");
     expect(tokenStep.text).toContain("Bot token");
 
-    const concurrentConfig: OpenClawConfig = {
+    const concurrentConfig: OperatorConfig = {
       agents: { defaults: { model: { primary: "anthropic/claude-opus-4-8" } } },
       auth: {
         profiles: { "anthropic:main": { provider: "anthropic", mode: "api_key" } },
@@ -623,7 +623,7 @@ describe("SystemAgentChatEngine", () => {
 
   it("rechecks inference authority immediately before a hosted channel write", async () => {
     useTempStateDir();
-    const baseConfig: OpenClawConfig = {
+    const baseConfig: OperatorConfig = {
       agents: { defaults: { model: { primary: "openai/gpt-5.5" } } },
       auth: { profiles: { "openai:main": { provider: "openai", mode: "api_key" } } },
       models: {
@@ -637,7 +637,7 @@ describe("SystemAgentChatEngine", () => {
         },
       },
     };
-    const changedConfig: OpenClawConfig = {
+    const changedConfig: OperatorConfig = {
       agents: { defaults: { model: { primary: "anthropic/claude-opus-4-8" } } },
     };
     const verifiedInference = await createAmbientVerifiedBinding(baseConfig);
@@ -652,7 +652,7 @@ describe("SystemAgentChatEngine", () => {
       issues: [],
     });
     mocks.setupChannels.mockImplementation(
-      async (config: OpenClawConfig, _runtime: unknown, prompter: WizardPrompter) => {
+      async (config: OperatorConfig, _runtime: unknown, prompter: WizardPrompter) => {
         const token = await prompter.text({ message: "Bot token" });
         currentConfig = structuredClone(changedConfig);
         return {
@@ -661,7 +661,7 @@ describe("SystemAgentChatEngine", () => {
         };
       },
     );
-    mocks.writeWizardConfigFile.mockImplementation(async (config: OpenClawConfig) => config);
+    mocks.writeWizardConfigFile.mockImplementation(async (config: OperatorConfig) => config);
     const engine = new SystemAgentChatEngine({
       surface: "gateway",
       verifiedInference,
@@ -684,7 +684,7 @@ describe("SystemAgentChatEngine", () => {
 
   it("rechecks inference authority before hosted channel post-write hooks", async () => {
     useTempStateDir();
-    const baseConfig: OpenClawConfig = {
+    const baseConfig: OperatorConfig = {
       agents: { defaults: { model: { primary: "openai/gpt-5.5" } } },
       auth: { profiles: { "openai:main": { provider: "openai", mode: "api_key" } } },
       models: {
@@ -698,7 +698,7 @@ describe("SystemAgentChatEngine", () => {
         },
       },
     };
-    const changedConfig: OpenClawConfig = {
+    const changedConfig: OperatorConfig = {
       agents: { defaults: { model: { primary: "anthropic/claude-opus-4-8" } } },
     };
     const verifiedInference = await createAmbientVerifiedBinding(baseConfig);
@@ -715,7 +715,7 @@ describe("SystemAgentChatEngine", () => {
     });
     mocks.setupChannels.mockImplementation(
       async (
-        config: OpenClawConfig,
+        config: OperatorConfig,
         _runtime: unknown,
         prompter: WizardPrompter,
         options: { onPostWriteHook?: (hook: unknown) => void },
@@ -728,7 +728,7 @@ describe("SystemAgentChatEngine", () => {
         };
       },
     );
-    mocks.writeWizardConfigFile.mockImplementation(async (config: OpenClawConfig) => {
+    mocks.writeWizardConfigFile.mockImplementation(async (config: OperatorConfig) => {
       currentConfig = structuredClone(changedConfig);
       return config;
     });
@@ -1110,10 +1110,10 @@ describe("SystemAgentChatEngine", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const changedConfig = {
       agents: { defaults: { model: "anthropic/claude-opus-4-8" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const verifiedInference = await createAmbientVerifiedBinding(baseConfig);
     const readConfigFileSnapshot = vi
       .fn()
@@ -1144,7 +1144,7 @@ describe("SystemAgentChatEngine", () => {
     const config = {
       agents: { defaults: { model: "anthropic/claude-opus-4-8@anthropic:oauth" } },
       auth: { profiles: { "anthropic:oauth": { provider: "anthropic", mode: "oauth" } } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     let credential = {
       type: "oauth" as const,
       provider: "anthropic",
@@ -1191,7 +1191,7 @@ describe("SystemAgentChatEngine", () => {
     const config = {
       agents: { defaults: { model: "anthropic/claude-opus-4-8@anthropic:oauth" } },
       auth: { profiles: { "anthropic:oauth": { provider: "anthropic", mode: "oauth" } } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     let credential = {
       type: "oauth" as const,
       provider: "anthropic",
@@ -1570,12 +1570,12 @@ describe("SystemAgentChatEngine", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const changedConfig = {
       agents: { defaults: { model: "anthropic/claude-opus-4-8" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const verifiedInference = await createAmbientVerifiedBinding(baseConfig);
-    let currentConfig: OpenClawConfig = baseConfig;
+    let currentConfig: OperatorConfig = baseConfig;
     const planner = vi.fn(async () => {
       currentConfig = changedConfig;
       return { reply: "stale reply" };
@@ -1792,7 +1792,7 @@ describe("SystemAgentChatEngine", () => {
   });
 });
 
-describe("OpenClaw agent loop backends", () => {
+describe("Operator agent loop backends", () => {
   it("runs a configured claude-cli model through the CLI loop with the ring-zero MCP tool", async () => {
     useTempStateDir();
     const config = {
@@ -1802,7 +1802,7 @@ describe("OpenClaw agent loop backends", () => {
           cliBackends: { "claude-cli": { command: "claude" } },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const snapshot = configSnapshot(config);
     const inference = await createCliVerifiedBinding(config);
     const inferenceDeps = {
@@ -1866,7 +1866,7 @@ describe("OpenClaw agent loop backends", () => {
           cliBackends: { "claude-cli": { command: "claude" } },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const snapshot = configSnapshot(config);
     const inference = await createCliVerifiedBinding(config);
     const inferenceDeps = {

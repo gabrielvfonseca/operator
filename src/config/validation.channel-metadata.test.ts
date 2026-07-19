@@ -253,7 +253,7 @@ vi.mock("../channels/plugins/legacy-config.js", () => ({
 }));
 
 vi.mock("./zod-schema.js", () => ({
-  OpenClawSchema: {
+  OperatorSchema: {
     safeParse: (raw: unknown) => ({ success: true, data: raw }),
   },
 }));
@@ -588,7 +588,7 @@ describe("validateConfigObjectRawWithPlugins channel metadata", () => {
           appId: "app-id",
           appSecret: "secret",
           replyMode: "thread",
-          footer: "OpenClaw",
+          footer: "Operator",
         },
       },
     });

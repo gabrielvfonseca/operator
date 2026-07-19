@@ -1,6 +1,6 @@
 // Legacy web-search migration tests cover doctor repair of old web search config.
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../../../config/config.js";
+import type { OperatorConfig } from "../../../config/config.js";
 import {
   listLegacyWebSearchConfigPaths,
   migrateLegacyWebSearchConfig,
@@ -8,7 +8,7 @@ import {
 
 describe("legacy web search config", () => {
   it("migrates legacy provider config through bundled web search ownership metadata", () => {
-    const res = migrateLegacyWebSearchConfig<OpenClawConfig>({
+    const res = migrateLegacyWebSearchConfig<OperatorConfig>({
       tools: {
         web: {
           search: {
@@ -65,14 +65,14 @@ describe("legacy web search config", () => {
   });
 
   it("repairs retired Grok code aliases while preserving current aliases", () => {
-    const retired = migrateLegacyWebSearchConfig<OpenClawConfig>({
+    const retired = migrateLegacyWebSearchConfig<OperatorConfig>({
       tools: {
         web: {
           search: { grok: { model: "grok-code-fast-1" } },
         },
       },
     });
-    const current = migrateLegacyWebSearchConfig<OpenClawConfig>({
+    const current = migrateLegacyWebSearchConfig<OperatorConfig>({
       tools: {
         web: {
           search: { grok: { model: "grok-latest" } },
@@ -106,10 +106,10 @@ describe("legacy web search config", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const original = structuredClone(input);
 
-    const res = migrateLegacyWebSearchConfig<OpenClawConfig>(input);
+    const res = migrateLegacyWebSearchConfig<OperatorConfig>(input);
 
     expect(res.config.plugins?.entries?.xai?.config?.webSearch).toEqual({
       apiKey: "xai-key",
@@ -119,7 +119,7 @@ describe("legacy web search config", () => {
   });
 
   it("preserves unrelated record-valued web search config", () => {
-    const res = migrateLegacyWebSearchConfig<OpenClawConfig>({
+    const res = migrateLegacyWebSearchConfig<OperatorConfig>({
       tools: {
         web: {
           search: {
@@ -156,7 +156,7 @@ describe("legacy web search config", () => {
   });
 
   it("drops dangerous record keys while preserving unrelated web search config", () => {
-    const res = migrateLegacyWebSearchConfig<OpenClawConfig>({
+    const res = migrateLegacyWebSearchConfig<OperatorConfig>({
       tools: {
         web: {
           search: {

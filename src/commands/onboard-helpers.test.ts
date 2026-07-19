@@ -64,7 +64,7 @@ describe("printWizardHeader", () => {
     const log = vi.fn();
     await withColumns(50, () => printWizardHeader({ log } as unknown as RuntimeEnv));
     const output = String(log.mock.calls[0]?.[0]);
-    expect(output).toContain("OPENCLAW");
+    expect(output).toContain("OPERATOR");
     expect(output).not.toContain("█");
   });
 });
@@ -167,10 +167,10 @@ describe("handleReset", () => {
       await withEnvAsync(
         {
           HOME: homeDir,
-          OPENCLAW_HOME: homeDir,
-          OPENCLAW_PROFILE: "work",
-          OPENCLAW_STATE_DIR: profileStateDir,
-          OPENCLAW_CONFIG_PATH: profileConfigPath,
+          OPERATOR_HOME: homeDir,
+          OPERATOR_PROFILE: "work",
+          OPERATOR_STATE_DIR: profileStateDir,
+          OPERATOR_CONFIG_PATH: profileConfigPath,
         },
         async () => await handleReset("full", workspaceDir, runtime),
       );
@@ -205,10 +205,10 @@ describe("handleReset", () => {
       await withEnvAsync(
         {
           HOME: homeDir,
-          OPENCLAW_HOME: homeDir,
-          OPENCLAW_PROFILE: "work",
-          OPENCLAW_STATE_DIR: profileStateDir,
-          OPENCLAW_CONFIG_PATH: profileConfigPath,
+          OPERATOR_HOME: homeDir,
+          OPERATOR_PROFILE: "work",
+          OPERATOR_STATE_DIR: profileStateDir,
+          OPERATOR_CONFIG_PATH: profileConfigPath,
         },
         async () => await handleReset("full", workspaceDir, runtime),
       );
@@ -245,10 +245,10 @@ describe("handleReset", () => {
         await withEnvAsync(
           {
             HOME: homeDir,
-            OPENCLAW_HOME: homeDir,
-            OPENCLAW_PROFILE: "work",
-            OPENCLAW_STATE_DIR: profileStateDir,
-            OPENCLAW_CONFIG_PATH: profileConfigPath,
+            OPERATOR_HOME: homeDir,
+            OPERATOR_PROFILE: "work",
+            OPERATOR_STATE_DIR: profileStateDir,
+            OPERATOR_CONFIG_PATH: profileConfigPath,
           },
           async () => {
             await expect(handleReset("full", workspaceDir, runtime)).resolves.toBeUndefined();
@@ -587,7 +587,7 @@ describe("probeGatewayReachable", () => {
       ok: false,
       connectLatencyMs: 42,
       error: "foreign protocol error",
-      connectErrorDetails: { code: "NOT_AN_OPENCLAW_CONNECT_ERROR" },
+      connectErrorDetails: { code: "NOT_AN_OPERATOR_CONNECT_ERROR" },
       auth: { role: null, scopes: [], capability: "unknown" },
       server: { version: null, connId: null },
     });

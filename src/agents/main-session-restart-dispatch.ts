@@ -7,7 +7,7 @@ import {
   resolveRestartRecoveryChannelAuthority,
 } from "../config/sessions/restart-recovery-state.js";
 import { applySessionEntryReplacements } from "../config/sessions/session-accessor.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { isTrustedMessageActionTurnIngress } from "../gateway/message-action-turn-capability.js";
 import type { GatewayRecoveryRuntime } from "../gateway/server-instance-runtime.types.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
@@ -27,7 +27,7 @@ import { ensureRuntimePluginsLoaded } from "./runtime-plugins.js";
 const log = createSubsystemLogger("main-session-restart-recovery");
 const RESTART_RECOVERY_RESUME_MESSAGE =
   "[System] Your previous turn was interrupted by a gateway restart while " +
-  "OpenClaw was waiting on tool/model work. Continue from the existing " +
+  "Operator was waiting on tool/model work. Continue from the existing " +
   "transcript and finish the interrupted response.";
 
 type RestartRecoveryTerminalStatus = "error" | "ok" | "timeout";
@@ -53,7 +53,7 @@ export function requiresRestartRecoveryMessageActionAuthority(entry: SessionEntr
 }
 
 export function resolveRestartRecoveryResumeBlockReason(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   entry: SessionEntry;
   sessionKey: string;
 }): string | undefined {
@@ -107,7 +107,7 @@ function buildResumeMessage(pendingFinalDeliveryText?: string | null): string {
 }
 
 export function resolveRestartRecoveryDeliveryContext(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   entry: SessionEntry;
   includeSessionDeliveryFallback?: boolean;
   sessionKey: string;
@@ -249,7 +249,7 @@ async function settleRestartRecoveryDispatch(params: {
 
 export async function resumeMainSession(params: {
   canonicalSessionKey?: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   entry: SessionEntry;
   storePath: string;
   sessionKey: string;

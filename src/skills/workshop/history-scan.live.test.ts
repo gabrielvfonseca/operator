@@ -1,9 +1,9 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { isLiveTestEnabled } from "../../agents/live-test-helpers.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import {
-  createOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  type OperatorTestState,
 } from "../../test-utils/operator-test-state.js";
 import { createTrackedTempDirs } from "../../test-utils/tracked-temp-dirs.js";
 import { formatSkillExperienceReviewTranscript } from "./experience-review-prompt.js";
@@ -12,15 +12,15 @@ import { runSkillHistoryScanReview } from "./history-scan-review.js";
 import { listSkillProposals } from "./service.js";
 
 const LIVE =
-  isLiveTestEnabled(["OPENCLAW_LIVE_SKILL_HISTORY_SCAN"]) &&
+  isLiveTestEnabled(["OPERATOR_LIVE_SKILL_HISTORY_SCAN"]) &&
   Boolean(process.env.OPENAI_API_KEY?.trim());
 const describeLive = LIVE ? describe : describe.skip;
 const tempDirs = createTrackedTempDirs();
-let testState: OpenClawTestState;
+let testState: OperatorTestState;
 let workspaceDir = "";
 
-function liveConfig(): OpenClawConfig {
-  const modelId = process.env.OPENCLAW_LIVE_SKILL_HISTORY_MODEL ?? "gpt-5.6-luna";
+function liveConfig(): OperatorConfig {
+  const modelId = process.env.OPERATOR_LIVE_SKILL_HISTORY_MODEL ?? "gpt-5.6-luna";
   return {
     models: {
       providers: {
@@ -82,7 +82,7 @@ function session(
 
 describeLive("Skill Workshop history scan live OpenAI eval", () => {
   beforeAll(async () => {
-    testState = await createOpenClawTestState({
+    testState = await createOperatorTestState({
       layout: "state-only",
       prefix: "openclaw-live-skill-history-state-",
     });

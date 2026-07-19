@@ -15,7 +15,7 @@ import {
 const baseZoneOpts: WideAreaGatewayZoneOpts = {
   domain: "openclaw.internal.",
   gatewayPort: 18789,
-  displayName: "Mac Studio (OpenClaw)",
+  displayName: "Mac Studio (Operator)",
   tailnetIPv4: "100.123.224.76",
   hostLabel: "studio-london",
   instanceLabel: "studio-london",
@@ -69,7 +69,7 @@ describe("wide-area DNS discovery domain helpers", () => {
     {
       name: "prefers config domain over env",
       params: {
-        env: { OPENCLAW_WIDE_AREA_DOMAIN: "env.internal" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_WIDE_AREA_DOMAIN: "env.internal" } as NodeJS.ProcessEnv,
         configDomain: "config.internal",
       },
       expected: "config.internal.",
@@ -77,14 +77,14 @@ describe("wide-area DNS discovery domain helpers", () => {
     {
       name: "falls back to env domain",
       params: {
-        env: { OPENCLAW_WIDE_AREA_DOMAIN: "env.internal" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_WIDE_AREA_DOMAIN: "env.internal" } as NodeJS.ProcessEnv,
       },
       expected: "env.internal.",
     },
     {
       name: "returns null when both sources are blank",
       params: {
-        env: { OPENCLAW_WIDE_AREA_DOMAIN: "   " } as NodeJS.ProcessEnv,
+        env: { OPERATOR_WIDE_AREA_DOMAIN: "   " } as NodeJS.ProcessEnv,
         configDomain: " ",
       },
       expected: null,
@@ -92,7 +92,7 @@ describe("wide-area DNS discovery domain helpers", () => {
     {
       name: "returns null for invalid config domains",
       params: {
-        env: { OPENCLAW_WIDE_AREA_DOMAIN: "env.internal" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_WIDE_AREA_DOMAIN: "env.internal" } as NodeJS.ProcessEnv,
         configDomain: "foo/bar",
       },
       expected: null,
@@ -100,7 +100,7 @@ describe("wide-area DNS discovery domain helpers", () => {
     {
       name: "returns null for invalid env domains",
       params: {
-        env: { OPENCLAW_WIDE_AREA_DOMAIN: "foo/bar" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_WIDE_AREA_DOMAIN: "foo/bar" } as NodeJS.ProcessEnv,
       },
       expected: null,
     },
@@ -131,7 +131,7 @@ describe("wide-area DNS-SD zone rendering", () => {
       `studio-london IN AAAA fd7a:115c:a1e0::8801:e04c`,
       `_openclaw-gw._tcp IN PTR studio-london._openclaw-gw._tcp`,
       `studio-london._openclaw-gw._tcp IN SRV 0 0 18789 studio-london`,
-      `displayName=Mac Studio (OpenClaw)`,
+      `displayName=Mac Studio (Operator)`,
       `gatewayPort=18789`,
       `sshPort=22`,
       `cliPath=/opt/homebrew/bin/openclaw`,
@@ -148,7 +148,7 @@ describe("wide-area DNS-SD zone rendering", () => {
       name: "includes gateway TLS TXT fields and trims display metadata",
       overrides: {
         domain: "openclaw.internal",
-        displayName: "  Mac Studio (OpenClaw)  ",
+        displayName: "  Mac Studio (Operator)  ",
         hostLabel: " Studio London ",
         instanceLabel: " Studio London ",
         gatewayTlsEnabled: true,
@@ -161,7 +161,7 @@ describe("wide-area DNS-SD zone rendering", () => {
         `$ORIGIN openclaw.internal.`,
         `studio-london IN A 100.123.224.76`,
         `studio-london._openclaw-gw._tcp IN TXT`,
-        `displayName=Mac Studio (OpenClaw)`,
+        `displayName=Mac Studio (Operator)`,
         `gatewayTls=1`,
         `gatewayTlsSha256=abc123`,
         `gatewayDirectReachable=1`,

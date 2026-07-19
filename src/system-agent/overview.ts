@@ -1,4 +1,4 @@
-// OpenClaw overview gathers config, agent, tool, docs, source, and gateway status.
+// Operator overview gathers config, agent, tool, docs, source, and gateway status.
 import {
   listAgentEntries,
   resolveAgentEffectiveModelPrimary,
@@ -7,14 +7,14 @@ import {
 import {
   OPERATOR_DOCS_URL,
   OPERATOR_SOURCE_URL,
-  resolveOpenClawReferencePaths,
+  resolveOperatorReferencePaths,
 } from "../agents/docs-path.js";
 import {
   readConfigFileSnapshot,
   resolveConfigPath,
   resolveGatewayPort,
   type ConfigFileSnapshot,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "../config/config.js";
 import { resolveAgentModelPrimaryValue } from "../config/model-input.js";
 import { normalizeAgentId } from "../routing/session-key.js";
@@ -62,7 +62,7 @@ export type SystemAgentOverview = {
   };
 };
 
-type OpenClawReferencePaths = Awaited<ReturnType<typeof resolveOpenClawReferencePaths>>;
+type OperatorReferencePaths = Awaited<ReturnType<typeof resolveOperatorReferencePaths>>;
 
 type GatewayConnectionDetails = {
   url: string;
@@ -75,12 +75,12 @@ type SystemAgentOverviewDependencies = {
   resolveConfigPath?: typeof resolveConfigPath;
   resolveGatewayPort?: typeof resolveGatewayPort;
   buildGatewayConnectionDetails?: (input: {
-    config: OpenClawConfig;
+    config: OperatorConfig;
     configPath: string;
   }) => GatewayConnectionDetails;
   probeLocalCommand?: typeof probeLocalCommand;
   probeGatewayUrl?: typeof probeGatewayUrl;
-  resolveOpenClawReferencePaths?: typeof resolveOpenClawReferencePaths;
+  resolveOperatorReferencePaths?: typeof resolveOperatorReferencePaths;
 };
 
 function issueMessages(snapshot: ConfigFileSnapshot): string[] {
@@ -90,7 +90,7 @@ function issueMessages(snapshot: ConfigFileSnapshot): string[] {
   });
 }
 
-function buildAgentSummaries(cfg: OpenClawConfig): SystemAgentSummary[] {
+function buildAgentSummaries(cfg: OperatorConfig): SystemAgentSummary[] {
   const defaultAgentId = resolveDefaultAgentId(cfg);
   const entries = listAgentEntries(cfg);
   if (entries.length === 0) {
@@ -130,7 +130,7 @@ function buildAgentSummaries(cfg: OpenClawConfig): SystemAgentSummary[] {
   return summaries;
 }
 
-function resolveFastTestReferences(env: NodeJS.ProcessEnv): OpenClawReferencePaths | undefined {
+function resolveFastTestReferences(env: NodeJS.ProcessEnv): OperatorReferencePaths | undefined {
   if (env.OPERATOR_TEST_FAST !== "1") {
     return undefined;
   }
@@ -168,7 +168,7 @@ export async function loadSystemAgentOverview(
   } catch (err) {
     gatewayError = err instanceof Error ? err.message : String(err);
   }
-  const resolveReferences = deps.resolveOpenClawReferencePaths ?? resolveOpenClawReferencePaths;
+  const resolveReferences = deps.resolveOperatorReferencePaths ?? resolveOperatorReferencePaths;
   const commandProbe = deps.probeLocalCommand ?? probeLocalCommand;
   const [codex, claude, gemini, gateway, references] = await Promise.all([
     // Probes run in parallel; each individual probe is timeout-bounded in probes.ts.
@@ -249,7 +249,7 @@ export function formatSystemAgentOverview(overview: SystemAgentOverview): string
       ? ["Config issues:", ...overview.config.issues.map((issue) => `  - ${issue}`)]
       : [];
   return [
-    "OpenClaw online. Little claws, typed tools.",
+    "Operator online. Little claws, typed tools.",
     "",
     `Config: ${configStatus}`,
     `Path: ${overview.config.path}`,
@@ -266,7 +266,7 @@ export function formatSystemAgentOverview(overview: SystemAgentOverview): string
     `AI: ${
       overview.defaultModel
         ? `conversation runs on ${overview.defaultModel}`
-        : "inference unavailable; run operator onboard before starting OpenClaw"
+        : "inference unavailable; run operator onboard before starting Operator"
     }`,
     `Docs: ${overview.references.docsPath ?? overview.references.docsUrl}`,
     overview.references.sourcePath
@@ -323,10 +323,10 @@ function formatStartupAction(overview: SystemAgentOverview): string {
     return "I can start debugging with `validate config` or `doctor`.";
   }
   if (!overview.defaultModel) {
-    return "OpenClaw needs working inference before it can help with the rest of setup.";
+    return "Operator needs working inference before it can help with the rest of setup.";
   }
   if (!overview.config.exists) {
-    return "Run `operator onboard` to establish inference before starting OpenClaw.";
+    return "Run `operator onboard` to establish inference before starting Operator.";
   }
   if (!overview.gateway.reachable) {
     return "I can start debugging with `gateway status`, or queue `restart gateway` for approval.";
@@ -335,7 +335,7 @@ function formatStartupAction(overview: SystemAgentOverview): string {
 }
 
 /**
- * Welcome shown right after inference activation. OpenClaw owns the
+ * Welcome shown right after inference activation. Operator owns the
  * remaining workspace, Gateway, channel, and agent setup.
  */
 export function formatSystemAgentOnboardingWelcome(overview: SystemAgentOverview): string {
@@ -357,7 +357,7 @@ export function formatSystemAgentStartupMessage(overview: SystemAgentOverview): 
     ? `${overview.defaultAgentId} (${agent.name})`
     : overview.defaultAgentId;
   return [
-    "## Hi, I'm OpenClaw.",
+    "## Hi, I'm Operator.",
     "",
     "- Start me when setup, config, Gateway, model choice, or agent routing feels off.",
     `- ${formatStartupUse(overview)}`,

@@ -6,8 +6,8 @@ import path from "node:path";
 import { MAX_DATE_TIMESTAMP_MS } from "@operator/normalization-core/number-coercion";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
 } from "../../state/openclaw-state-db.js";
 import { SkillUploadRequestError } from "./upload-store.js";
 import {
@@ -66,7 +66,7 @@ async function makeStore(options?: {
 }
 
 function stateDatabase(databasePath: string) {
-  return openOpenClawStateDatabase({ path: databasePath }).db;
+  return openOperatorStateDatabase({ path: databasePath }).db;
 }
 
 function uploadCount(databasePath: string): number {
@@ -162,7 +162,7 @@ describe("skill upload store", () => {
   });
 
   afterAll(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     if (activeLimitRoot) {
       await fs.rm(activeLimitRoot, { recursive: true, force: true });
     }
@@ -177,7 +177,7 @@ describe("skill upload store", () => {
     uploadSqliteMocks.readSkillUploadArchiveChunks.mockImplementation(
       uploadSqliteMocks.defaultReadSkillUploadArchiveChunks!,
     );
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await Promise.all(
       tempDirs.splice(0).map((dir) => fs.rm(dir, { recursive: true, force: true })),
     );

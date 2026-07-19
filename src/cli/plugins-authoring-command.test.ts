@@ -298,7 +298,7 @@ describe("plugin authoring commands", () => {
     ).rejects.toThrow("plugin entry not found: ./dist/index.js");
   });
 
-  it("loads source entries that import the OpenClaw plugin SDK package subpath", async () => {
+  it("loads source entries that import the Operator plugin SDK package subpath", async () => {
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-plugin-source-"));
     const entryPath = writeSourceToolPluginProject({
       tmpDir,
@@ -512,7 +512,7 @@ describe("plugin authoring commands", () => {
     expect(indexSource).toContain("buildSingleProviderApiKeyCatalog");
 
     expect(fs.readFileSync(path.join(projectDir, "src/index.test.ts"), "utf8")).toContain(
-      "OpenClawPluginApi",
+      "OperatorPluginApi",
     );
     expect(fs.readFileSync(path.join(projectDir, "vitest.config.ts"), "utf8")).toContain(
       'include: ["src/**/*.test.ts"]',

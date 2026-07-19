@@ -6,7 +6,7 @@ import {
 import { readAcpSessionMeta } from "../../acp/runtime/session-meta.js";
 import { isTimeoutError } from "../../agents/failover-error.js";
 import { resolveAgentIdFromSessionKey, resolveAgentMainSessionKey } from "../../config/sessions.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { isAbortError } from "../../infra/abort-signal.js";
 import { isAcpSessionKey } from "../../routing/session-key.js";
 import type { InputProvenance } from "../../sessions/input-provenance.js";
@@ -154,7 +154,7 @@ export function isConfirmedAcpManualSpawnTaskOwner(params: {
 }
 
 export async function registerPluginSubagentRunFromGateway(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   runId: string;
   childSessionKey: string;
   task: string;

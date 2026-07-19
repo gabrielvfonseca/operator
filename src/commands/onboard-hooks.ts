@@ -1,9 +1,9 @@
 /** Onboarding defaults for workspace hooks. */
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 
 const DEFAULT_ONBOARDING_INTERNAL_HOOKS = ["session-memory"] as const;
 
-export function enableDefaultOnboardingInternalHooks(cfg: OpenClawConfig): OpenClawConfig {
+export function enableDefaultOnboardingInternalHooks(cfg: OperatorConfig): OperatorConfig {
   const existingInternal = cfg.hooks?.internal;
   if (existingInternal?.enabled === false) {
     return cfg;

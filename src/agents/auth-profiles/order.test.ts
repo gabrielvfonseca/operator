@@ -7,7 +7,7 @@ import { mkdtemp, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import { resetProviderAuthAliasMapCacheForTest } from "../provider-auth-aliases.test-support.js";
 import { saveAuthProfileStore } from "./store.js";
 import type { AuthProfileStore } from "./types.js";
@@ -348,7 +348,7 @@ describe("resolveAuthProfileOrder", () => {
           "fixture-provider": ["fixture-provider:primary", "fixture-provider:backup"],
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     expect(
       resolveAuthProfileOrder({
@@ -398,7 +398,7 @@ describe("resolveAuthProfileOrder", () => {
           "fixture-provider": ["fixture-provider:primary", "fixture-provider:backup"],
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     expect(
       resolveAuthProfileOrder({

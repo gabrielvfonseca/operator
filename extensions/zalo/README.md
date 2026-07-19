@@ -1,6 +1,6 @@
 # @operator/zalo
 
-Zalo channel plugin for OpenClaw (Bot API).
+Zalo channel plugin for Operator (Bot API).
 
 ## Install (local checkout)
 

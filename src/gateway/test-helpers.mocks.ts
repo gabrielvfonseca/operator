@@ -296,7 +296,7 @@ vi.mock("../plugins/loader.js", async () => {
     await vi.importActual<typeof import("../plugins/loader.js")>("../plugins/loader.js");
   return {
     ...actual,
-    loadOpenClawPlugins: () => getTestPluginRegistry(),
+    loadOperatorPlugins: () => getTestPluginRegistry(),
   };
 });
 process.env.OPERATOR_SKIP_CHANNELS = "1";

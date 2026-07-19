@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import { runWithAgentRingZeroTools } from "../agent-tools.ring-zero-context.js";
 import { createStubTool } from "../test-helpers/agent-tool-stubs.js";
 import {
@@ -15,7 +15,7 @@ function tools(names: string[]) {
   return names.map(createStubTool);
 }
 
-function createRuntime(config: OpenClawConfig) {
+function createRuntime(config: OperatorConfig) {
   return createAgentHarnessToolSurfaceRuntime({
     config,
     executeTool: async () => ({ content: [], details: {} }),
@@ -49,7 +49,7 @@ describe("createAgentHarnessToolSurfaceRuntime", () => {
   });
 
   it("filters raw SDK tools but does not refilter prepared constructor output", () => {
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       agents: { defaults: { experimental: { localModelLean: true } } },
       tools: { alsoAllow: ["image_generate"], toolSearch: { enabled: false } },
     };
@@ -69,7 +69,7 @@ describe("createAgentHarnessToolSurfaceRuntime", () => {
   });
 
   it("keeps exec direct in lean structured Tool Search mode", () => {
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       agents: { defaults: { experimental: { localModelLean: true } } },
     };
     const runtime = createRuntime(config);
@@ -98,7 +98,7 @@ describe("createAgentHarnessToolSurfaceRuntime", () => {
   it("preserves explicit code-mode compaction for lean runs", () => {
     testing.setToolSearchCodeModeSupportedForTest(true);
     try {
-      const config: OpenClawConfig = {
+      const config: OperatorConfig = {
         agents: { defaults: { experimental: { localModelLean: true } } },
         tools: { toolSearch: { mode: "code" } },
       };

@@ -1,5 +1,5 @@
 import { replaceConfigFile } from "../../config/config.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 /**
  * Config write commit helper for non-interactive onboarding.
  *
@@ -15,11 +15,11 @@ import {
 
 /** Commits a non-interactive onboard config update with pending plugin records handled first. */
 export async function commitNonInteractiveOnboardConfig(params: {
-  nextConfig: OpenClawConfig;
-  baseConfig: OpenClawConfig;
+  nextConfig: OperatorConfig;
+  baseConfig: OperatorConfig;
   baseHash?: string;
   reset?: boolean;
-}): Promise<OpenClawConfig> {
+}): Promise<OperatorConfig> {
   // Ordinary onboard reruns must preserve existing agents.list / bindings.
   // Only explicit --reset may allow a config size drop; see operator#84692.
   const allowConfigSizeDrop = params.reset === true;

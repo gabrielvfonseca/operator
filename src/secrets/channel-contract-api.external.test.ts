@@ -176,7 +176,7 @@ describe("external channel secret contract api", () => {
         channelConfigs: {},
         rootDir,
       };
-      const env = { OPENCLAW_NIX_MODE: "1" };
+      const env = { OPERATOR_NIX_MODE: "1" };
       loadPluginMetadataSnapshotMock.mockReturnValue({
         plugins: [record],
       });

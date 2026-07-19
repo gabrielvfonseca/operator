@@ -7,13 +7,13 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import type { ExecApprovalsResolved } from "../infra/exec-approvals.js";
 import type { SafeBinProfileFixture } from "../infra/exec-safe-bin-policy.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import { resetProcessRegistryForTests } from "./bash-process-registry.test-support.js";
 
-let createOpenClawCodingTools: typeof import("./agent-tools.js").createOpenClawCodingTools;
+let createOperatorCodingTools: typeof import("./agent-tools.js").createOperatorCodingTools;
 
 const { mockExecApprovals, supervisorSpawnMock } = vi.hoisted(() => {
   const execApprovals = {
@@ -80,10 +80,10 @@ const { mockExecApprovals, supervisorSpawnMock } = vi.hoisted(() => {
 beforeAll(async () => {
   await withEnvAsync(
     {
-      OPENCLAW_BUNDLED_PLUGINS_DIR: path.join(os.tmpdir(), "openclaw-test-no-bundled-extensions"),
+      OPERATOR_BUNDLED_PLUGINS_DIR: path.join(os.tmpdir(), "openclaw-test-no-bundled-extensions"),
     },
     async () => {
-      ({ createOpenClawCodingTools } = await import("./agent-tools.js"));
+      ({ createOperatorCodingTools } = await import("./agent-tools.js"));
     },
   );
 });
@@ -120,7 +120,7 @@ vi.mock("./channel-tools.js", () => ({
 vi.mock("./openclaw-tools.js", async (importOriginal) => {
   const actual = await importOriginal<typeof import("./openclaw-tools.js")>();
   return {
-    createOpenClawTools: () => [],
+    createOperatorTools: () => [],
     filterToolsByClientCaps: actual.filterToolsByClientCaps,
   };
 });
@@ -200,7 +200,7 @@ async function createSafeBinsExecTool(params: {
     fs.writeFileSync(path.join(tmpDir, file.name), file.contents, "utf8");
   }
 
-  const cfg: OpenClawConfig = {
+  const cfg: OperatorConfig = {
     tools: {
       exec: {
         host: "gateway",
@@ -212,7 +212,7 @@ async function createSafeBinsExecTool(params: {
     },
   };
 
-  const tools = createOpenClawCodingTools({
+  const tools = createOperatorCodingTools({
     config: cfg,
     exec: {
       notifyOnExit: false,
@@ -239,7 +239,7 @@ async function withSafeBinsExecTool(
   try {
     await withEnvAsync(
       {
-        OPENCLAW_SHELL_ENV_TIMEOUT_MS: "1",
+        OPERATOR_SHELL_ENV_TIMEOUT_MS: "1",
         PATH: "/usr/bin:/bin",
         SHELL: "/bin/sh",
       },
@@ -253,7 +253,7 @@ async function withSafeBinsExecTool(
   }
 }
 
-describe("createOpenClawCodingTools safeBins", () => {
+describe("createOperatorCodingTools safeBins", () => {
   it("threads tools.exec.safeBins into exec allowlist checks", async () => {
     await withSafeBinsExecTool(
       {

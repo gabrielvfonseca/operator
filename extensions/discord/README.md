@@ -1,11 +1,11 @@
-# OpenClaw Discord
+# Operator Discord
 
-Official OpenClaw channel plugin for Discord servers, channels, DMs, slash commands, and app events.
+Official Operator channel plugin for Discord servers, channels, DMs, slash commands, and app events.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugin add @operator/discord
 ```
 
-Configure a Discord bot token and the channels or servers OpenClaw should handle. The plugin lets OpenClaw agents receive Discord messages and respond through the configured Discord app.
+Configure a Discord bot token and the channels or servers Operator should handle. The plugin lets Operator agents receive Discord messages and respond through the configured Discord app.

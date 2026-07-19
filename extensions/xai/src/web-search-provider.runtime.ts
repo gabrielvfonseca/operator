@@ -1,6 +1,6 @@
 // Xai provider module implements model/runtime integration.
 import { resolveDefaultAgentDir } from "openclaw/plugin-sdk/agent-runtime";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   coerceSecretRef,
   ensureAuthProfileStore,
@@ -212,7 +212,7 @@ async function resolveXaiProviderAuthCredential(params: {
   profileId?: string;
 }): Promise<XaiResolvedWebSearchAuth | undefined> {
   try {
-    const config = params.config as OpenClawConfig | undefined;
+    const config = params.config as OperatorConfig | undefined;
     const agentDir =
       params.agentDir?.trim() || (config ? resolveDefaultAgentDir(config) : undefined);
     const resolved = await resolveApiKeyForProvider({
@@ -246,7 +246,7 @@ async function resolveXaiProviderApiKeyProfileFallback(params: {
   config?: Record<string, unknown>;
   agentDir?: string;
 }): Promise<XaiResolvedWebSearchAuth | undefined> {
-  const config = params.config as OpenClawConfig | undefined;
+  const config = params.config as OperatorConfig | undefined;
   const usableProfiles = listUsableProviderAuthProfileIds({
     agentDir: params.agentDir,
     cfg: config,

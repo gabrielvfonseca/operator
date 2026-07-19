@@ -1,10 +1,10 @@
 // Tests npm registry spec parsing for packages, tags, and versions.
 import { describe, expect, it } from "vitest";
 import {
-  compareOpenClawReleaseVersions,
+  compareOperatorReleaseVersions,
   formatPrereleaseResolutionError,
   isExactSemverVersion,
-  isOpenClawOrgNpmSpec,
+  isOperatorOrgNpmSpec,
   isPrereleaseSemverVersion,
   isPrereleaseResolutionAllowed,
   parseRegistryNpmSpec,
@@ -112,8 +112,8 @@ describe("npm registry spec parsing helpers", () => {
     { spec: "voice-call", expected: false },
     { spec: "npm:@operator/voice-call", expected: false },
     { spec: undefined, expected: false },
-  ])("detects OpenClaw-org npm specs for %s", ({ spec, expected }) => {
-    expect(isOpenClawOrgNpmSpec(spec)).toBe(expected);
+  ])("detects Operator-org npm specs for %s", ({ spec, expected }) => {
+    expect(isOperatorOrgNpmSpec(spec)).toBe(expected);
   });
 
   it.each([
@@ -143,8 +143,8 @@ describe("npm registry spec parsing helpers", () => {
     { left: "2026.5.3-0", right: "2026.5.3", expected: null },
     { left: "2026.5.3+build", right: "2026.5.3", expected: null },
     { left: "1.2.3-1", right: "1.2.3", expected: null },
-  ])("compares OpenClaw release versions for %s and %s", ({ left, right, expected }) => {
-    expect(compareOpenClawReleaseVersions(left, right)).toBe(expected);
+  ])("compares Operator release versions for %s and %s", ({ left, right, expected }) => {
+    expect(compareOperatorReleaseVersions(left, right)).toBe(expected);
   });
 });
 

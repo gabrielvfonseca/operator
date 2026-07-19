@@ -1,5 +1,5 @@
 /**
- * OpenClaw-managed Chrome lifecycle and CDP helpers.
+ * Operator-managed Chrome lifecycle and CDP helpers.
  *
  * Builds launch args, starts/stops managed Chrome, probes CDP readiness, and
  * resolves WebSocket endpoints for browser control.
@@ -20,7 +20,7 @@ import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runti
 import { sliceUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
 import type { SsrFPolicy } from "../infra/net/ssrf.js";
 import { ensurePortAvailable } from "../infra/ports.js";
-import { resolvePreferredOpenClawTmpDir } from "../infra/tmp-openclaw-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../infra/tmp-openclaw-dir.js";
 import { redactToolPayloadText } from "../logging/redact.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { CONFIG_DIR } from "../utils.js";
@@ -63,11 +63,11 @@ import {
   resolveBrowserExecutableForPlatform,
 } from "./chrome.executables.js";
 import {
-  decorateOpenClawProfile,
+  decorateOperatorProfile,
   ensureProfileCleanExit,
   ensureProfileNetworkPredictionDisabled,
   isProfileDecorated,
-  usesOpenClawMockKeychain,
+  usesOperatorMockKeychain,
 } from "./chrome.profile-decoration.js";
 import type { BrowserGraphicsDiagnostics } from "./client.types.js";
 import {
@@ -79,8 +79,8 @@ import {
   type ResolvedBrowserProfile,
 } from "./config.js";
 import {
-  DEFAULT_OPENCLAW_BROWSER_COLOR,
-  DEFAULT_OPENCLAW_BROWSER_PROFILE_NAME,
+  DEFAULT_OPERATOR_BROWSER_COLOR,
+  DEFAULT_OPERATOR_BROWSER_PROFILE_NAME,
 } from "./constants.js";
 import { BROWSER_ERROR_REASONS, BrowserProfileUnavailableError } from "./errors.js";
 import { ensureOutputDirectory } from "./output-directories.js";
@@ -698,7 +698,7 @@ async function ensureManagedChromePortAvailable(
     }
   };
 
-  // Chromium tries IPv4 loopback first, while OpenClaw polls the configured endpoint.
+  // Chromium tries IPv4 loopback first, while Operator polls the configured endpoint.
   // Probe both so neither Chrome's bind nor the later readiness check can be captured.
   try {
     await ensureProbeHostsAvailable();
@@ -736,7 +736,7 @@ function chromeLaunchHints(params: {
     CHROME_MISSING_DISPLAY_PATTERN.test(params.stderrOutput);
   if (missingDisplay && !headlessMode.headless) {
     hints.push(
-      "No DISPLAY/X server was detected. Set OPENCLAW_BROWSER_HEADLESS=1, remove the headed override, start Xvfb, or run the Gateway in a desktop session.",
+      "No DISPLAY/X server was detected. Set OPERATOR_BROWSER_HEADLESS=1, remove the headed override, start Xvfb, or run the Gateway in a desktop session.",
     );
   }
   const singletonInUse =
@@ -789,8 +789,8 @@ function resolveBrowserExecutable(
   );
 }
 
-/** Resolve the user-data-dir path for a managed OpenClaw Chrome profile. */
-export function resolveOpenClawUserDataDir(profileName = DEFAULT_OPENCLAW_BROWSER_PROFILE_NAME) {
+/** Resolve the user-data-dir path for a managed Operator Chrome profile. */
+export function resolveOperatorUserDataDir(profileName = DEFAULT_OPERATOR_BROWSER_PROFILE_NAME) {
   return path.join(CONFIG_DIR, "browser", profileName, "user-data");
 }
 
@@ -798,8 +798,8 @@ function cdpUrlForPort(cdpPort: number) {
   return `http://127.0.0.1:${cdpPort}`;
 }
 
-/** Build Chrome launch arguments for the managed OpenClaw browser. */
-function buildOpenClawChromeLaunchArgs(params: {
+/** Build Chrome launch arguments for the managed Operator browser. */
+function buildOperatorChromeLaunchArgs(params: {
   resolved: ResolvedBrowserConfig;
   profile: ResolvedBrowserProfile;
   userDataDir: string;
@@ -826,7 +826,7 @@ function buildOpenClawChromeLaunchArgs(params: {
   ];
 
   if (platform === "darwin" && params.useMockKeychain) {
-    // This is an isolated OpenClaw-owned profile, not the user's Chrome profile.
+    // This is an isolated Operator-owned profile, not the user's Chrome profile.
     // Keep its basic password store non-interactive so headless Chrome can
     // encrypt and persist cookies without login-keychain prompts.
     args.push("--use-mock-keychain");
@@ -974,8 +974,8 @@ async function waitForManagedLaunchPoll(delayMs: number, signal?: AbortSignal): 
   }
 }
 
-/** Launch or attach to the managed OpenClaw Chrome profile. */
-export async function launchOpenClawChrome(
+/** Launch or attach to the managed Operator Chrome profile. */
+export async function launchOperatorChrome(
   resolved: ResolvedBrowserConfig,
   profile: ResolvedBrowserProfile,
   launchOptions: ManagedBrowserLaunchOptions = {},
@@ -1018,7 +1018,7 @@ export async function launchOpenClawChrome(
     );
   }
 
-  const userDataDir = resolveOpenClawUserDataDir(profile.name);
+  const userDataDir = resolveOperatorUserDataDir(profile.name);
   await ensureManagedChromePortAvailable(resolved, profile, userDataDir);
   signal?.throwIfAborted();
 
@@ -1040,19 +1040,19 @@ export async function launchOpenClawChrome(
   // so would make its existing cookies unreadable. New headless profiles opt in.
   const useMockKeychain =
     process.platform === "darwin" &&
-    (usesOpenClawMockKeychain(userDataDir) || (profileIsNew && headlessMode.headless));
+    (usesOperatorMockKeychain(userDataDir) || (profileIsNew && headlessMode.headless));
 
   const needsDecorate = !isProfileDecorated(
     userDataDir,
     profile.name,
-    (profile.color ?? DEFAULT_OPENCLAW_BROWSER_COLOR).toUpperCase(),
+    (profile.color ?? DEFAULT_OPERATOR_BROWSER_COLOR).toUpperCase(),
     DEFAULT_DOWNLOAD_DIR,
   );
 
   // First launch to create preference files if missing, then decorate and relaunch.
   const spawnOnce = async (onStderr?: (chunk: Buffer | string) => void) => {
     signal?.throwIfAborted();
-    const args = buildOpenClawChromeLaunchArgs({
+    const args = buildOperatorChromeLaunchArgs({
       resolved,
       profile,
       userDataDir,
@@ -1065,7 +1065,7 @@ export async function launchOpenClawChrome(
       HOME: os.homedir(),
     };
     if (process.platform === "linux") {
-      const chromiumStateDir = path.join(resolvePreferredOpenClawTmpDir(), ".chromium");
+      const chromiumStateDir = path.join(resolvePreferredOperatorTmpDir(), ".chromium");
       env.XDG_CONFIG_HOME ??= chromiumStateDir;
       env.XDG_CACHE_HOME ??= chromiumStateDir;
     }
@@ -1175,7 +1175,7 @@ export async function launchOpenClawChrome(
 
   if (needsDecorate) {
     try {
-      decorateOpenClawProfile(userDataDir, {
+      decorateOperatorProfile(userDataDir, {
         name: profile.name,
         color: profile.color,
         downloadDir: DEFAULT_DOWNLOAD_DIR,
@@ -1424,7 +1424,7 @@ async function requestGracefulChromeClose(
 }
 
 /** Stop a managed Chrome process and wait for shutdown. */
-export async function stopOpenClawChrome(
+export async function stopOperatorChrome(
   running: RunningChrome,
   timeoutMs = CHROME_STOP_TIMEOUT_MS,
 ) {

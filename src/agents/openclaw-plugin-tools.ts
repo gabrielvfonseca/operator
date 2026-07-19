@@ -1,23 +1,23 @@
 /**
- * OpenClaw plugin tool resolver.
+ * Operator plugin tool resolver.
  *
  * This module builds runtime plugin tools from config/options, delivery context,
  * auth profiles, and the current runtime config snapshot.
  */
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { resolvePluginTools } from "../plugins/tools.js";
 import { resolveApiKeyForProfile, resolveAuthProfileOrder } from "./auth-profiles.js";
 import type { AuthProfileStore } from "./auth-profiles/types.js";
 import { createNodePluginTools } from "./node-plugin-tools.js";
 import {
-  resolveOpenClawPluginToolInputs,
-  type OpenClawPluginToolOptions,
+  resolveOperatorPluginToolInputs,
+  type OperatorPluginToolOptions,
 } from "./operator-tools.plugin-context.js";
 import { applyPluginToolDeliveryDefaults } from "./plugin-tool-delivery-defaults.js";
 import { resolveAgentRuntimeToolConfig } from "./tool-runtime-config.js";
 import type { AnyAgentTool } from "./tools/common.js";
 
-type ResolveOpenClawPluginToolsOptions = OpenClawPluginToolOptions & {
+type ResolveOperatorPluginToolsOptions = OperatorPluginToolOptions & {
   pluginToolAllowlist?: string[];
   pluginToolDenylist?: string[];
   currentThreadTs?: string;
@@ -35,9 +35,9 @@ type ResolveOpenClawPluginToolsOptions = OpenClawPluginToolOptions & {
 };
 
 /** Resolves plugin tools for an agent run and applies delivery-context defaults. */
-export function resolveOpenClawPluginToolsForOptions(params: {
-  options?: ResolveOpenClawPluginToolsOptions;
-  resolvedConfig?: OpenClawConfig;
+export function resolveOperatorPluginToolsForOptions(params: {
+  options?: ResolveOperatorPluginToolsOptions;
+  resolvedConfig?: OperatorConfig;
   existingToolNames?: Set<string>;
 }): AnyAgentTool[] {
   if (params.options?.disablePluginTools) {
@@ -77,7 +77,7 @@ export function resolveOpenClawPluginToolsForOptions(params: {
         return undefined;
       }
     : undefined;
-  const pluginToolInputs = resolveOpenClawPluginToolInputs({
+  const pluginToolInputs = resolveOperatorPluginToolInputs({
     options: params.options,
     resolvedConfig: params.resolvedConfig,
     runtimeConfig: resolveCurrentRuntimeConfig(),

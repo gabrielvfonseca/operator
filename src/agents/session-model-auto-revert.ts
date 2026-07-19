@@ -8,7 +8,7 @@ import {
   createAgentPatchedSessionModelFallback,
   type AgentPatchedSessionModelFallback,
 } from "../config/sessions/session-model-fallback.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { FailoverReason } from "./embedded-agent-helpers/types.js";
 import { resolveFailoverReasonFromError } from "./failover-error.js";
 import { resolveSessionModelRef } from "./session-model-ref.js";
@@ -28,7 +28,7 @@ type SessionModelRunOutcome =
   | { success: false; error?: unknown; reason?: FailoverReason };
 
 async function reconcileAgentPatchedSessionModel(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId?: string;
   sessionKey: string;
   storePath?: string;
@@ -131,7 +131,7 @@ async function reconcileAgentPatchedSessionModel(params: {
 }
 
 export function createAgentPatchedSessionModelRunGuard(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string | undefined;
   sessionKey: string | undefined;
   storePath: string | undefined;

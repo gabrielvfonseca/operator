@@ -57,12 +57,12 @@ import { warnIfJSON5CommentsWillBeStripped } from "./json5-comments.js";
 import { assertConfigWriteAllowedInCurrentMode } from "./nix-mode-write-guard.js";
 import { resolveIncludeRoots } from "./paths.js";
 import { preflightRuntimeSnapshotWrite } from "./runtime-snapshot.js";
-import type { OpenClawConfig } from "./types.js";
+import type { OperatorConfig } from "./types.js";
 import { validateConfigObjectRawWithPlugins } from "./validation.js";
 
 export async function writeConfigFileFromContext(
   context: ConfigIoContext,
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   options: ConfigWriteOptions,
   readSnapshot: () => Promise<ReadConfigFileSnapshotInternalResult>,
 ): Promise<InternalConfigWriteResult> {
@@ -138,13 +138,13 @@ export async function writeConfigFileFromContext(
     }
   }
 
-  persistCandidate = applyUnsetPathsForWrite(persistCandidate as OpenClawConfig, unsetPaths);
+  persistCandidate = applyUnsetPathsForWrite(persistCandidate as OperatorConfig, unsetPaths);
   const envForRestore = options.envSnapshotForRestore ?? deps.env;
   const validationSourceCandidate = containsConfigIncludeDirective(persistCandidate)
     ? restoreEnvVarRefs(persistCandidate, snapshot.parsed, envForRestore)
     : persistCandidate;
   const validationCandidate = containsConfigIncludeDirective(validationSourceCandidate)
-    ? context.resolveRuntimePreflightSourceConfig(validationSourceCandidate as OpenClawConfig)
+    ? context.resolveRuntimePreflightSourceConfig(validationSourceCandidate as OperatorConfig)
     : validationSourceCandidate;
   const validated = validateConfigObjectRawWithPlugins(validationCandidate, {
     env: deps.env,
@@ -159,14 +159,14 @@ export async function writeConfigFileFromContext(
   }
   const previousWarningFingerprint = loggedConfigWarningFingerprints.get(configPath);
 
-  let cfgToWrite = persistCandidate as OpenClawConfig;
+  let cfgToWrite = persistCandidate as OperatorConfig;
   try {
     if (deps.fs.existsSync(configPath)) {
       const currentRaw = await deps.fs.promises.readFile(configPath, "utf-8");
       const parsed = parseConfigJson5(currentRaw, deps.json5);
       if (parsed.ok) {
         const beforeIdentityRestore = cfgToWrite;
-        cfgToWrite = restoreEnvVarRefs(cfgToWrite, parsed.parsed, envForRestore) as OpenClawConfig;
+        cfgToWrite = restoreEnvVarRefs(cfgToWrite, parsed.parsed, envForRestore) as OperatorConfig;
         collectChangedPaths(beforeIdentityRestore, cfgToWrite, "", identityRestoredPaths);
       }
     }
@@ -192,14 +192,14 @@ export async function writeConfigFileFromContext(
           envRefMap,
           changedPaths,
           identityRestoredPaths,
-        ) as OpenClawConfig)
+        ) as OperatorConfig)
       : cfgToWrite;
   const tildeRestoredOutputConfig = restoreAuthoredTildePathsForWrite(
     outputConfigBase,
     snapshot.parsed,
     undefined,
     deps.homedir(),
-  ) as OpenClawConfig;
+  ) as OperatorConfig;
   const outputConfig = applyUnsetPathsForWrite(tildeRestoredOutputConfig, unsetPaths);
   const stampedOutputConfig = stampConfigVersion(outputConfig, options.lastTouchedVersionOverride);
   const json = JSON.stringify(stampedOutputConfig, null, 2).trimEnd().concat("\n");
@@ -324,7 +324,7 @@ export async function writeConfigFileFromContext(
 
   const preCommitRuntimePreflight =
     options.preCommitRuntimePreflight ??
-    (async (sourceConfig: OpenClawConfig) => {
+    (async (sourceConfig: OperatorConfig) => {
       await preflightRuntimeSnapshotWrite({
         nextSourceConfig: sourceConfig,
         refreshOptions: options.runtimeRefresh,

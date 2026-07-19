@@ -1,7 +1,7 @@
 import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import { ErrorCodes, errorShape } from "../../../packages/gateway-protocol/src/index.js";
 import { mergeSessionEntry, type SessionEntry } from "../../config/sessions.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { normalizeDeliveryContext } from "../../utils/delivery-context.shared.js";
 import { formatForLog } from "../ws-log.js";
 import { createAgentAdmissionController } from "./agent-admission-controller.js";
@@ -160,7 +160,7 @@ export const agentRunHandler: GatewayRequestHandlers["agent"] = async ({
       | undefined;
     let sessionPersistedBeforeGatewayAdmission = false;
     let bestEffortDeliver = requestedBestEffortDeliver ?? false;
-    let cfgForAgent: OpenClawConfig | undefined;
+    let cfgForAgent: OperatorConfig | undefined;
     let resolvedSessionKey = requestedSessionKey;
     let resolvedSessionAgentId: string | undefined;
     let isNewSession = false;

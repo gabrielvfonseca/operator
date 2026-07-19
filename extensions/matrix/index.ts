@@ -1,7 +1,7 @@
-// Matrix plugin entrypoint registers its OpenClaw integration.
+// Matrix plugin entrypoint registers its Operator integration.
 import {
   defineBundledChannelEntry,
-  type OpenClawPluginApi,
+  type OperatorPluginApi,
 } from "openclaw/plugin-sdk/channel-entry-contract";
 import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
 import { registerMatrixCliMetadata } from "./cli-metadata.js";
@@ -11,7 +11,7 @@ const loadMatrixHandlersRuntimeModule = createLazyRuntimeModule(
   () => import("./plugin-entry.handlers.runtime.js"),
 );
 
-export function registerMatrixFullRuntime(api: OpenClawPluginApi): void {
+export function registerMatrixFullRuntime(api: OperatorPluginApi): void {
   api.registerGatewayMethod("matrix.verify.recoveryKey", async (ctx) => {
     const { handleVerifyRecoveryKey } = await loadMatrixHandlersRuntimeModule();
     await handleVerifyRecoveryKey(ctx);

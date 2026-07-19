@@ -30,13 +30,13 @@ import {
   resolveAgentModelFallbackValues,
   resolveAgentModelPrimaryValue,
 } from "../config/model-input.js";
-import type { OpenClawConfig } from "../config/types.js";
+import type { OperatorConfig } from "../config/types.js";
 import type {
   MediaUnderstandingConfig,
   MediaUnderstandingModelConfig,
 } from "../config/types.tools.js";
 import { logVerbose, shouldLogVerbose } from "../globals.js";
-import { resolvePreferredOpenClawTmpDir } from "../infra/tmp-operator-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../infra/tmp-operator-dir.js";
 import { logWarn } from "../logger.js";
 import { resolveChannelInboundAttachmentRoots } from "../media/channel-inbound-roots.js";
 import { getDefaultMediaLocalRoots } from "../media/local-roots.js";
@@ -91,7 +91,7 @@ const loadModelCatalogApi = createLazyRuntimeModule(
 );
 
 function resolveLiteralProviderApiKey(
-  cfg: OpenClawConfig | undefined,
+  cfg: OperatorConfig | undefined,
   providerId: string,
 ): string | null {
   return normalizeNullableString(
@@ -102,7 +102,7 @@ function resolveLiteralProviderApiKey(
 async function hasProviderAuthAvailable(params: {
   capability: MediaUnderstandingCapability;
   provider: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   agentDir?: string;
   workspaceDir?: string;
 }): Promise<boolean> {
@@ -122,7 +122,7 @@ async function hasProviderAuthAvailable(params: {
 }
 
 function resolveConfiguredKeyProviderOrder(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   providerRegistry: ProviderRegistry;
   capability: MediaUnderstandingCapability;
   fallbackProviders: readonly string[];
@@ -140,7 +140,7 @@ function resolveConfiguredKeyProviderOrder(params: {
 }
 
 function resolveConfiguredImageModelId(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   providerId: string;
 }): string | undefined {
   if (isMinimaxVlmProvider(params.providerId)) {
@@ -152,7 +152,7 @@ function resolveConfiguredImageModelId(params: {
 }
 
 function resolveConfiguredImageModel(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   providerId: string;
 }): { id?: string; input?: string[] } | undefined {
   const providerCfg = findNormalizedProviderValue(
@@ -230,7 +230,7 @@ function resolveAutoMediaKeyProvidersFromRegistry(params: {
 }
 
 async function explicitImageModelVisionStatus(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   providerId: string;
   model: string;
 }): Promise<"supported" | "unsupported" | "unknown"> {
@@ -256,7 +256,7 @@ async function explicitImageModelVisionStatus(params: {
 }
 
 async function resolveAutoImageModelId(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   providerId: string;
   providerRegistry: ProviderRegistry;
   explicitModel?: string;
@@ -309,13 +309,13 @@ async function resolveAutoImageModelId(params: {
 
 export function buildProviderRegistry(
   overrides?: Record<string, MediaUnderstandingProvider>,
-  cfg?: OpenClawConfig,
+  cfg?: OperatorConfig,
 ): ProviderRegistry {
   return buildMediaUnderstandingRegistry(overrides, cfg);
 }
 
 export function resolveMediaAttachmentLocalRoots(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   ctx: MsgContext;
   workspaceDir?: string;
 }): readonly string[] {
@@ -435,7 +435,7 @@ async function probeAntigravityCliCandidate(command: string): Promise<string | n
     return null;
   }
   const probeDir = await fs.mkdtemp(
-    path.join(resolvePreferredOpenClawTmpDir(), "operator-antigravity-probe-"),
+    path.join(resolvePreferredOperatorTmpDir(), "operator-antigravity-probe-"),
   );
   try {
     const { stdout } = await runExec(resolved, ["--help"], {
@@ -494,7 +494,7 @@ async function resolveAntigravityCliEntry(
 }
 
 async function resolveKeyEntry(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentDir?: string;
   workspaceDir?: string;
   providerRegistry: ProviderRegistry;
@@ -584,7 +584,7 @@ async function resolveKeyEntry(params: {
 }
 
 function resolveImageModelFromAgentDefaults(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId?: string;
 }): MediaUnderstandingModelConfig[] {
   const refs: string[] = [];
@@ -650,7 +650,7 @@ function isMinimaxNativeVisionModel(params: { provider: string; model?: string }
 }
 
 async function activeModelSupportsNativeVision(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   activeModel?: ActiveMediaModel;
 }): Promise<boolean> {
   const activeProvider = params.activeModel?.provider?.trim();
@@ -673,7 +673,7 @@ async function activeModelSupportsNativeVision(params: {
 }
 
 async function resolveAutoEntries(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId?: string;
   agentDir?: string;
   workspaceDir?: string;
@@ -722,7 +722,7 @@ async function resolveAutoEntries(params: {
 }
 
 export async function resolveAutoImageModel(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId?: string;
   agentDir?: string;
   workspaceDir?: string;
@@ -773,7 +773,7 @@ export async function resolveAutoImageModel(params: {
 }
 
 async function resolveActiveModelEntry(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentDir?: string;
   workspaceDir?: string;
   providerRegistry: ProviderRegistry;
@@ -847,7 +847,7 @@ async function resolveActiveModelEntry(params: {
 
 async function runAttachmentEntries(params: {
   capability: MediaUnderstandingCapability;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   ctx: MsgContext;
   attachmentIndex: number;
   agentDir?: string;
@@ -948,7 +948,7 @@ function hasFailedMediaAttempt(attachments: MediaUnderstandingDecision["attachme
 
 export async function runCapability(params: {
   capability: MediaUnderstandingCapability;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   ctx: MsgContext;
   attachments: MediaAttachmentCache;
   media: MediaAttachment[];

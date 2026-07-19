@@ -8,7 +8,7 @@ import {
   runHarnessContextEngineMaintenance,
 } from "openclaw/plugin-sdk/agent-harness-runtime";
 import {
-  buildCodexOpenClawPromptContext,
+  buildCodexOperatorPromptContext,
   buildCodexWorkspaceBootstrapContext,
   getCodexWorkspaceMemoryToolNames,
   readMirroredSessionHistoryMessages,
@@ -144,7 +144,7 @@ export async function prepareCodexAttemptContext(
     buildDeveloperInstructions(runtimeParams, { dynamicTools: toolBridge.availableSpecs }),
     workspaceBootstrapContext.developerInstructions,
   );
-  const openClawPromptContext = buildCodexOpenClawPromptContext({
+  const openClawPromptContext = buildCodexOperatorPromptContext({
     params: runtimeParams,
     workspacePromptContext: workspaceBootstrapContext.promptContext,
   });

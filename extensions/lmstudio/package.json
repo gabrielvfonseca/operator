@@ -2,7 +2,7 @@
   "name": "@operator/lmstudio-provider",
   "version": "2026.7.2",
   "private": true,
-  "description": "OpenClaw LM Studio provider plugin",
+  "description": "Operator LM Studio provider plugin",
   "type": "module",
   "openclaw": {
     "extensions": [

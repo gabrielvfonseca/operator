@@ -16,7 +16,7 @@ import {
 
 const ROOT_DIR = path.parse(process.cwd()).root;
 const CONFIG_DIR = path.join(ROOT_DIR, "config");
-const ETC_OPENCLAW_DIR = path.join(ROOT_DIR, "etc", "openclaw");
+const ETC_OPERATOR_DIR = path.join(ROOT_DIR, "etc", "openclaw");
 const SHARED_DIR = path.join(ROOT_DIR, "shared");
 
 const DEFAULT_BASE_PATH = path.join(CONFIG_DIR, "openclaw.json");
@@ -25,8 +25,8 @@ function configPath(...parts: string[]) {
   return path.join(CONFIG_DIR, ...parts);
 }
 
-function etcOpenClawPath(...parts: string[]) {
-  return path.join(ETC_OPENCLAW_DIR, ...parts);
+function etcOperatorPath(...parts: string[]) {
+  return path.join(ETC_OPERATOR_DIR, ...parts);
 }
 
 function sharedPath(...parts: string[]) {
@@ -83,7 +83,7 @@ describe("resolveConfigIncludes", () => {
   });
 
   it("rejects absolute path outside config directory (CWE-22)", () => {
-    const absolute = etcOpenClawPath("agents.json");
+    const absolute = etcOperatorPath("agents.json");
     const files = { [absolute]: { list: [{ id: "main" }] } };
     const obj = { agents: { $include: absolute } };
     expectResolveIncludeError(() => resolve(obj, files), /escapes config directory/);
@@ -873,7 +873,7 @@ describe("security: path traversal protection (CWE-22)", () => {
   });
 });
 
-describe("OPENCLAW_INCLUDE_ROOTS allowlist", () => {
+describe("OPERATOR_INCLUDE_ROOTS allowlist", () => {
   it("permits an include outside the config directory when its root is allowed", () => {
     const sharedFile = sharedPath("common.json");
     const files = { [sharedFile]: { shared: true } };
@@ -888,7 +888,7 @@ describe("OPENCLAW_INCLUDE_ROOTS allowlist", () => {
   });
 
   it("still rejects include paths that fall outside every allowed root", () => {
-    const obj = { $include: etcOpenClawPath("agents.json") };
+    const obj = { $include: etcOperatorPath("agents.json") };
     expect(() =>
       resolveConfigIncludes(obj, DEFAULT_BASE_PATH, createMockResolver({}), {
         allowedRoots: [SHARED_DIR],

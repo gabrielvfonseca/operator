@@ -10,7 +10,7 @@ export type { ChannelPlugin } from "openclaw/plugin-sdk/core";
 export {
   DEFAULT_ACCOUNT_ID,
   normalizeAccountId,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "openclaw/plugin-sdk/core";
 export { isDangerousNameMatchingEnabled } from "openclaw/plugin-sdk/dangerous-name-runtime";
 export type { GroupToolPolicyConfig } from "openclaw/plugin-sdk/config-contracts";

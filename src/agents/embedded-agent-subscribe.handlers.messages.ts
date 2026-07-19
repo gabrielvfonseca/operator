@@ -56,7 +56,7 @@ function shouldSuppressAssistantVisibleOutput(message: AgentMessage | undefined)
   return resolveAssistantMessagePhase(message) === "commentary";
 }
 
-function isTranscriptOnlyOpenClawAssistantMessage(message: AgentMessage | undefined): boolean {
+function isTranscriptOnlyOperatorAssistantMessage(message: AgentMessage | undefined): boolean {
   if (!message || message.role !== "assistant") {
     return false;
   }
@@ -101,7 +101,7 @@ export function preservePendingAssistantUsage(
   message: AssistantMessage,
   pendingUsage: NormalizedUsage | undefined,
 ): AssistantMessage {
-  if (isTranscriptOnlyOpenClawAssistantMessage(message) || !hasNonzeroUsage(pendingUsage)) {
+  if (isTranscriptOnlyOperatorAssistantMessage(message) || !hasNonzeroUsage(pendingUsage)) {
     return message;
   }
   const messageUsage = normalizeUsage((message as { usage?: UsageLike }).usage);
@@ -135,7 +135,7 @@ export function capturePendingAssistantUsage(
   evt: AgentEvent & { message: AgentMessage; assistantMessageEvent?: unknown },
 ): void {
   const msg = evt.message;
-  if (msg?.role !== "assistant" || isTranscriptOnlyOpenClawAssistantMessage(msg)) {
+  if (msg?.role !== "assistant" || isTranscriptOnlyOperatorAssistantMessage(msg)) {
     return;
   }
   const assistantRecord =
@@ -152,7 +152,7 @@ export function resetPendingAssistantUsage(
   ctx: EmbeddedAgentSubscribeContext,
   message: AgentMessage,
 ): void {
-  if (message?.role !== "assistant" || isTranscriptOnlyOpenClawAssistantMessage(message)) {
+  if (message?.role !== "assistant" || isTranscriptOnlyOperatorAssistantMessage(message)) {
     return;
   }
   ctx.state.pendingAssistantUsage = undefined;
@@ -699,7 +699,7 @@ export function handleMessageStart(
   evt: AgentEvent & { message: AgentMessage },
 ) {
   const msg = evt.message;
-  if (msg?.role !== "assistant" || isTranscriptOnlyOpenClawAssistantMessage(msg)) {
+  if (msg?.role !== "assistant" || isTranscriptOnlyOperatorAssistantMessage(msg)) {
     return;
   }
 
@@ -719,7 +719,7 @@ export function handleMessageUpdate(
   evt: AgentEvent & { message: AgentMessage; assistantMessageEvent?: unknown },
 ) {
   const msg = evt.message;
-  if (msg?.role !== "assistant" || isTranscriptOnlyOpenClawAssistantMessage(msg)) {
+  if (msg?.role !== "assistant" || isTranscriptOnlyOperatorAssistantMessage(msg)) {
     return;
   }
 
@@ -1149,7 +1149,7 @@ export function handleMessageEnd(
   evt: AgentEvent & { message: AgentMessage },
 ): void | Promise<void> {
   const msg = evt.message;
-  if (msg?.role !== "assistant" || isTranscriptOnlyOpenClawAssistantMessage(msg)) {
+  if (msg?.role !== "assistant" || isTranscriptOnlyOperatorAssistantMessage(msg)) {
     return;
   }
 

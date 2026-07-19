@@ -6,7 +6,7 @@ import { getContextEngineRegistration } from "../context-engine/registry.js";
 import { withEnv } from "../test-utils/env.js";
 import { getCompactionProvider } from "./compaction-provider.js";
 import { writePersistedInstalledPluginIndexInstallRecordsSync } from "./installed-plugin-index-records.js";
-import { loadOpenClawPlugins } from "./loader.js";
+import { loadOperatorPlugins } from "./loader.js";
 import {
   EMPTY_PLUGIN_SCHEMA,
   makeTempDir,
@@ -39,7 +39,7 @@ import type { PluginSdkResolutionPreference } from "./sdk-alias.js";
 afterEach(globalAfterEach0);
 afterAll(globalAfterAll1);
 
-describe("loadOpenClawPlugins", () => {
+describe("loadOperatorPlugins", () => {
   it.each([
     {
       name: "does not reuse cached registries when env-resolved install paths change",
@@ -80,7 +80,7 @@ describe("loadOpenClawPlugins", () => {
         const secondHome = makeTempDir();
         return {
           loadFirst: () =>
-            loadOpenClawPlugins({
+            loadOperatorPlugins({
               ...options,
               env: {
                 ...process.env,
@@ -91,7 +91,7 @@ describe("loadOpenClawPlugins", () => {
               },
             }),
           loadVariant: () =>
-            loadOpenClawPlugins({
+            loadOperatorPlugins({
               ...options,
               env: {
                 ...process.env,
@@ -127,9 +127,9 @@ describe("loadOpenClawPlugins", () => {
         };
 
         return {
-          loadFirst: () => loadOpenClawPlugins(options),
+          loadFirst: () => loadOperatorPlugins(options),
           loadVariant: () =>
-            loadOpenClawPlugins({
+            loadOperatorPlugins({
               ...options,
               pluginSdkResolution: "workspace" as PluginSdkResolutionPreference,
             }),
@@ -159,9 +159,9 @@ describe("loadOpenClawPlugins", () => {
         };
 
         return {
-          loadFirst: () => loadOpenClawPlugins(options),
+          loadFirst: () => loadOperatorPlugins(options),
           loadVariant: () =>
-            loadOpenClawPlugins({
+            loadOperatorPlugins({
               ...options,
               runtimeOptions: {
                 allowGatewaySubagentBinding: true,
@@ -185,7 +185,7 @@ describe("loadOpenClawPlugins", () => {
       body: `module.exports = { id: "tilde-bundled", register() {} };`,
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       env: {
         ...process.env,
         HOME: homeDir,
@@ -219,7 +219,7 @@ describe("loadOpenClawPlugins", () => {
       body: `module.exports = { id: "operator-home-demo", register() {} };`,
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       env: {
         ...process.env,
         HOME: ignoredHome,
@@ -369,7 +369,7 @@ describe("loadOpenClawPlugins", () => {
     });
 
     expect(() =>
-      loadOpenClawPlugins({
+      loadOperatorPlugins({
         cache: false,
         throwOnLoadError: true,
         config: {
@@ -507,7 +507,7 @@ describe("loadOpenClawPlugins", () => {
       }
     });
   } };`,
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadOperatorPlugins>) => {
           const channel = registry.channels.find((entry) => entry.plugin.id === "demo");
           expect(channel?.plugin.id).toBe("demo");
         },
@@ -553,7 +553,7 @@ describe("loadOpenClawPlugins", () => {
       }
     });
   } };`,
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadOperatorPlugins>) => {
           expect(countMatching(registry.channels, (entry) => entry.plugin.id === "demo")).toBe(1);
           expect(
             registry.channels.find((entry) => entry.plugin.id === "demo")?.plugin.meta?.label,
@@ -566,7 +566,7 @@ describe("loadOpenClawPlugins", () => {
         body: `module.exports = { id: "context-engine-malformed", register(api) {
     api.registerContextEngine({ id: "broken-context" });
   } };`,
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadOperatorPlugins>) => {
           expectRegistryErrorDiagnostic({
             registry,
             pluginId: "context-engine-malformed",
@@ -581,7 +581,7 @@ describe("loadOpenClawPlugins", () => {
         body: `module.exports = { id: "context-engine-core-collision", register(api) {
     api.registerContextEngine("legacy", () => ({}));
   } };`,
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadOperatorPlugins>) => {
           expectRegistryErrorDiagnostic({
             registry,
             pluginId: "context-engine-core-collision",
@@ -595,7 +595,7 @@ describe("loadOpenClawPlugins", () => {
         body: `module.exports = { id: "compaction-provider-malformed", register(api) {
     api.registerCompactionProvider({ id: "broken-compaction", label: "Broken" });
   } };`,
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadOperatorPlugins>) => {
           expectRegistryErrorDiagnostic({
             registry,
             pluginId: "compaction-provider-malformed",
@@ -610,7 +610,7 @@ describe("loadOpenClawPlugins", () => {
         body: `module.exports = { id: "memory-prompt-supplement-malformed", register(api) {
     api.registerMemoryPromptSupplement({ id: "broken-memory-prompt" });
   } };`,
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadOperatorPlugins>) => {
           expectRegistryErrorDiagnostic({
             registry,
             pluginId: "memory-prompt-supplement-malformed",
@@ -625,7 +625,7 @@ describe("loadOpenClawPlugins", () => {
         body: `module.exports = { id: "cli-missing-metadata", register(api) {
     api.registerCli(() => {});
   } };`,
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadOperatorPlugins>) => {
           expect(registry.cliRegistrars).toHaveLength(0);
           expectRegistryErrorDiagnostic({
             registry,
@@ -648,7 +648,7 @@ describe("loadOpenClawPlugins", () => {
       ],
     });
   } };`,
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadOperatorPlugins>) => {
           expect(registry.cliRegistrars).toHaveLength(1);
           expect(registry.cliRegistrars[0]?.parentPath).toEqual(["nodes"]);
           expect(registry.cliRegistrars[0]?.commands).toEqual(["demo-node"]);
@@ -712,7 +712,7 @@ describe("loadOpenClawPlugins", () => {
         buildBody: (ownerId: string) => `module.exports = { id: "${ownerId}", register(api) {
     api.registerHook("gateway:startup", () => {}, { name: "shared-hook" });
   } };`,
-        selectCount: (registry: ReturnType<typeof loadOpenClawPlugins>) =>
+        selectCount: (registry: ReturnType<typeof loadOperatorPlugins>) =>
           countMatching(registry.hooks, (entry) => entry.entry.hook.name === "shared-hook"),
         duplicateMessage: "hook already registered: shared-hook (hook-owner-a)",
         assert: expectDuplicateRegistrationResult,
@@ -724,7 +724,7 @@ describe("loadOpenClawPlugins", () => {
         buildBody: (ownerId: string) => `module.exports = { id: "${ownerId}", register(api) {
     api.registerService({ id: "shared-service", start() {} });
   } };`,
-        selectCount: (registry: ReturnType<typeof loadOpenClawPlugins>) =>
+        selectCount: (registry: ReturnType<typeof loadOperatorPlugins>) =>
           countMatching(registry.services, (entry) => entry.service.id === "shared-service"),
         duplicateMessage: "service already registered: shared-service (service-owner-a)",
         assert: expectDuplicateRegistrationResult,
@@ -736,13 +736,13 @@ describe("loadOpenClawPlugins", () => {
         buildBody: (ownerId: string) => `module.exports = { id: "${ownerId}", register(api) {
     api.registerGatewayDiscoveryService({ id: "shared-discovery", advertise() {} });
   } };`,
-        selectCount: (registry: ReturnType<typeof loadOpenClawPlugins>) =>
+        selectCount: (registry: ReturnType<typeof loadOperatorPlugins>) =>
           registry.gatewayDiscoveryServices.filter(
             (entry) => entry.service.id === "shared-discovery",
           ).length,
         duplicateMessage:
           "gateway discovery service already registered: shared-discovery (discovery-owner-a)",
-        assertPrimaryOwner: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assertPrimaryOwner: (registry: ReturnType<typeof loadOperatorPlugins>) => {
           expect(
             registry.plugins.find((entry) => entry.id === "discovery-owner-a")
               ?.gatewayDiscoveryServiceIds,
@@ -760,7 +760,7 @@ describe("loadOpenClawPlugins", () => {
         selectCount: () => 1,
         duplicateMessage:
           "context engine already registered: shared-context-engine-loader-test (plugin:context-engine-owner-a)",
-        assertPrimaryOwner: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assertPrimaryOwner: (registry: ReturnType<typeof loadOperatorPlugins>) => {
           expect(
             registry.plugins.find((entry) => entry.id === "context-engine-owner-a")
               ?.contextEngineIds,
@@ -775,10 +775,10 @@ describe("loadOpenClawPlugins", () => {
         buildBody: (ownerId: string) => `module.exports = { id: "${ownerId}", register(api) {
     api.registerCli(() => {}, { commands: ["shared-cli"] });
   } };`,
-        selectCount: (registry: ReturnType<typeof loadOpenClawPlugins>) =>
+        selectCount: (registry: ReturnType<typeof loadOperatorPlugins>) =>
           registry.cliRegistrars.length,
         duplicateMessage: "cli command already registered: shared-cli (cli-owner-a)",
-        assertPrimaryOwner: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assertPrimaryOwner: (registry: ReturnType<typeof loadOperatorPlugins>) => {
           expect(registry.cliRegistrars[0]?.pluginId).toBe("cli-owner-a");
         },
         assert: expectDuplicateRegistrationResult,
@@ -925,7 +925,7 @@ describe("loadOpenClawPlugins", () => {
   } };`,
           }),
         ],
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadOperatorPlugins>) => {
           expect(
             registry.httpRoutes.find((entry) => entry.pluginId === "http-route-missing-auth"),
           ).toBeUndefined();
@@ -947,7 +947,7 @@ describe("loadOpenClawPlugins", () => {
   } };`,
           }),
         ],
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadOperatorPlugins>) => {
           const routes = registry.httpRoutes.filter(
             (entry) => entry.pluginId === "http-route-replace-self",
           );
@@ -974,7 +974,7 @@ describe("loadOpenClawPlugins", () => {
   } };`,
           }),
         ],
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadOperatorPlugins>) => {
           const route = registry.httpRoutes.find((entry) => entry.path === "/demo");
           expect(route?.pluginId).toBe("http-route-owner-a");
           expectDiagnosticContaining({
@@ -995,7 +995,7 @@ describe("loadOpenClawPlugins", () => {
   } };`,
           }),
         ],
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadOperatorPlugins>) => {
           const routes = registry.httpRoutes.filter(
             (entry) => entry.pluginId === "http-route-overlap",
           );
@@ -1019,7 +1019,7 @@ describe("loadOpenClawPlugins", () => {
   } };`,
           }),
         ],
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadOperatorPlugins>) => {
           const routes = registry.httpRoutes.filter(
             (entry) => entry.pluginId === "http-route-overlap-same-auth",
           );
@@ -1041,7 +1041,7 @@ describe("loadOpenClawPlugins", () => {
       body: `module.exports = { id: "config-disable", register() {} };`,
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       config: {
         plugins: {
@@ -1125,7 +1125,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       config: {
         channels: {
@@ -1174,7 +1174,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       config: {
         plugins: {
@@ -1246,7 +1246,7 @@ describe("loadOpenClawPlugins", () => {
       },
     };
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       config,
     });
@@ -1257,7 +1257,7 @@ describe("loadOpenClawPlugins", () => {
       "disabled",
     );
 
-    const broadSetupRegistry = loadOpenClawPlugins({
+    const broadSetupRegistry = loadOperatorPlugins({
       cache: false,
       config,
       includeSetupOnlyChannelPlugins: true,
@@ -1270,7 +1270,7 @@ describe("loadOpenClawPlugins", () => {
       broadSetupRegistry.plugins.find((entry) => entry.id === "lazy-channel-plugin")?.status,
     ).toBe("disabled");
 
-    const scopedSetupRegistry = loadOpenClawPlugins({
+    const scopedSetupRegistry = loadOperatorPlugins({
       cache: false,
       config,
       includeSetupOnlyChannelPlugins: true,
@@ -1329,7 +1329,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       workspaceDir,
       includeSetupOnlyChannelPlugins: true,
@@ -1395,7 +1395,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadOperatorPlugins({
       cache: false,
       workspaceDir,
       includeSetupOnlyChannelPlugins: true,
@@ -1464,7 +1464,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
 
-    const scopedSetupRegistry = loadOpenClawPlugins({
+    const scopedSetupRegistry = loadOperatorPlugins({
       cache: false,
       config: {
         plugins: {
@@ -1529,7 +1529,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
 
-    const scopedSetupRegistry = loadOpenClawPlugins({
+    const scopedSetupRegistry = loadOperatorPlugins({
       cache: false,
       config: {
         plugins: {
@@ -1615,7 +1615,7 @@ describe("loadOpenClawPlugins", () => {
         "utf-8",
       );
 
-      const scopedSetupRegistry = loadOpenClawPlugins({
+      const scopedSetupRegistry = loadOperatorPlugins({
         cache: false,
         config: {
           plugins: {

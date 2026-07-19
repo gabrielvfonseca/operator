@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { verifySystemAgentInferenceWithFallback } from "./inference-fallback.js";
 import type { SystemAgentConfiguredRoute } from "./inference-route.js";
@@ -19,7 +19,7 @@ function route(agentId: string, provider: string): SystemAgentConfiguredRoute {
   };
 }
 
-const config: OpenClawConfig = {
+const config: OperatorConfig = {
   agents: {
     defaults: { model: { primary: "zeta/model" } },
     list: [
@@ -78,7 +78,7 @@ describe("system-agent inference fallback", () => {
 
   it("uses a later authenticated route for one fallback provider", async () => {
     const attempts: string[] = [];
-    const duplicateProviderConfig: OpenClawConfig = {
+    const duplicateProviderConfig: OperatorConfig = {
       agents: {
         defaults: { model: { primary: "zeta/model" } },
         list: [
@@ -112,7 +112,7 @@ describe("system-agent inference fallback", () => {
 
   it("tries another credential owner of the same provider after an auth failure", async () => {
     const attempts: string[] = [];
-    const sameProviderConfig: OpenClawConfig = {
+    const sameProviderConfig: OperatorConfig = {
       agents: {
         defaults: { model: { primary: "alpha/model" } },
         list: [
@@ -144,7 +144,7 @@ describe("system-agent inference fallback", () => {
 
   it("treats a rate limit as credential-scoped and tries another owner", async () => {
     const attempts: string[] = [];
-    const sameProviderConfig: OpenClawConfig = {
+    const sameProviderConfig: OperatorConfig = {
       agents: {
         defaults: { model: { primary: "alpha/model" } },
         list: [
@@ -176,7 +176,7 @@ describe("system-agent inference fallback", () => {
 
   it("retires the whole provider after a provider-wide failure", async () => {
     const attempts: string[] = [];
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       agents: {
         defaults: { model: { primary: "alpha/model" } },
         list: [

@@ -3,7 +3,7 @@ import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
 import { expectDefined } from "@operator/normalization-core";
 import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
 import type { ModelProviderConfig } from "../../config/types.models.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { fetchWithSsrFGuard } from "../../infra/net/fetch-guard.js";
 import type { SsrFPolicy } from "../../infra/net/ssrf.js";
 
@@ -39,7 +39,7 @@ type CachedEndpointPreflightResult = {
 const preflightCache = new Map<string, CachedEndpointPreflightResult>();
 
 function resolveProviderConfig(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   provider: string,
 ): ModelProviderConfig | undefined {
   const providers = cfg.models?.providers;
@@ -138,7 +138,7 @@ function formatUnavailableReason(params: {
 }): string {
   return [
     `Agent cron job uses ${params.provider}/${params.model} but the local provider endpoint is not reachable at ${params.baseUrl}.`,
-    `Skipping this cron run; OpenClaw will retry the provider preflight on a later scheduled run.`,
+    `Skipping this cron run; Operator will retry the provider preflight on a later scheduled run.`,
     `Last error: ${String(params.error)}`,
   ].join(" ");
 }
@@ -187,7 +187,7 @@ async function probeLocalProviderEndpoint(params: {
 
 /** Checks local model-provider reachability before a scheduled cron run starts. */
 export async function preflightCronModelProvider(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   provider: string;
   model: string;
   nowMs?: number;

@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { MODEL_SELECTION_LOCKED_MESSAGE } from "openclaw/plugin-sdk/model-session-runtime";
-import type { OpenClawPluginToolContext } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginToolContext } from "openclaw/plugin-sdk/plugin-entry";
 import { createPluginRuntimeMock } from "openclaw/plugin-sdk/plugin-test-runtime";
 import { withTempDir } from "openclaw/plugin-sdk/test-env";
 import { describe, expect, it, vi } from "vitest";
@@ -51,7 +51,7 @@ describe("native Codex thread tool", () => {
     modelSelectionLocked?: boolean;
     bindingStore?: CodexAppServerBindingStore;
   }) {
-    const context: OpenClawPluginToolContext = {
+    const context: OperatorPluginToolContext = {
       config: {},
       agentId: "main",
       agentDir: path.join(root, "agent"),
@@ -412,7 +412,7 @@ describe("native Codex thread tool", () => {
       });
     }));
 
-  it("forks a native thread and attaches the fork to the OpenClaw session", () =>
+  it("forks a native thread and attaches the fork to the Operator session", () =>
     withFixture(async () => {
       const request = vi.fn(async (_config, method: string) =>
         method === CODEX_CONTROL_METHODS.readThread
@@ -923,7 +923,7 @@ describe("native Codex thread tool", () => {
       });
     }));
 
-  it("rejects archive when another OpenClaw session owns the thread", () =>
+  it("rejects archive when another Operator session owns the thread", () =>
     withFixture(async () => {
       await writeCodexAppServerBinding("session-id", {
         threadId: "current-thread",
@@ -946,7 +946,7 @@ describe("native Codex thread tool", () => {
           thread_id: "other-thread",
           confirm: true,
         }),
-      ).rejects.toThrow("owned by another OpenClaw session");
+      ).rejects.toThrow("owned by another Operator session");
 
       expect(request).toHaveBeenCalledOnce();
       expect(request).not.toHaveBeenCalledWith(
@@ -960,7 +960,7 @@ describe("native Codex thread tool", () => {
       });
     }));
 
-  it("rejects archive when a spawned descendant is owned by an OpenClaw session", () =>
+  it("rejects archive when a spawned descendant is owned by an Operator session", () =>
     withFixture(async () => {
       await writeCodexAppServerBinding("session-id", {
         threadId: "current-thread",
@@ -992,7 +992,7 @@ describe("native Codex thread tool", () => {
           thread_id: "parent-thread",
           confirm: true,
         }),
-      ).rejects.toThrow("spawned descendant is owned by an OpenClaw session");
+      ).rejects.toThrow("spawned descendant is owned by an Operator session");
 
       expect(request).toHaveBeenCalledWith(
         expect.anything(),

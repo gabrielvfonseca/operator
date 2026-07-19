@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import { withoutPluginInstallRecords } from "../plugins/installed-plugin-index-records.js";
 
 const mocks = vi.hoisted(() => ({
@@ -23,7 +23,7 @@ describe("writeWizardConfigFile pending install ownership", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.commitConfigWriteWithPendingPluginInstalls.mockImplementation(
-      async (params: { nextConfig: OpenClawConfig }) => ({
+      async (params: { nextConfig: OperatorConfig }) => ({
         config: withoutPluginInstallRecords(params.nextConfig),
         installRecords: {},
         movedInstallRecords: true,
@@ -34,7 +34,7 @@ describe("writeWizardConfigFile pending install ownership", () => {
   });
 
   it("rejects a normal write with pending records but no migration base", async () => {
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       plugins: { installs: { demo: { source: "npm", spec: "demo@1.0.0" } } },
     };
 
@@ -45,7 +45,7 @@ describe("writeWizardConfigFile pending install ownership", () => {
   });
 
   it("migrates the baseline as source before the final wizard write", async () => {
-    const baseConfig: OpenClawConfig = {
+    const baseConfig: OperatorConfig = {
       plugins: { installs: { demo: { source: "npm", spec: "demo@1.0.0" } } },
     };
 
@@ -66,7 +66,7 @@ describe("writeWizardConfigFile pending install ownership", () => {
   });
 
   it("commits fresh pending records after baseline migration is complete", async () => {
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       plugins: { installs: { fresh: { source: "npm", spec: "fresh@1.0.0" } } },
     };
 
@@ -82,7 +82,7 @@ describe("writeWizardConfigFile pending install ownership", () => {
   });
 
   it("binds the final write to the live-verified config hash", async () => {
-    const config: OpenClawConfig = { gateway: { port: 18789 } };
+    const config: OperatorConfig = { gateway: { port: 18789 } };
 
     await writeWizardConfigFile(config, { baseHash: "verified-hash" });
 

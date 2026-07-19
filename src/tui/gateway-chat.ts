@@ -19,7 +19,7 @@ import {
   type TaskSuggestionsListResult,
 } from "../../packages/gateway-protocol/src/index.js";
 import { getRuntimeConfig } from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { assertExplicitGatewayAuthModeWhenBothConfigured } from "../gateway/auth-mode-policy.js";
 import { resolveGatewayInteractiveSurfaceAuth } from "../gateway/auth-surface-resolution.js";
 import {
@@ -188,7 +188,7 @@ export class GatewayChatClient implements TuiBackend {
 
   /** Connect to a target already selected and authenticated by a preceding Gateway probe. */
   static connectBound(
-    opts: GatewayConnectionOptions & { config: OpenClawConfig; url: string },
+    opts: GatewayConnectionOptions & { config: OperatorConfig; url: string },
   ): GatewayChatClient {
     return new GatewayChatClient(resolveBoundGatewayConnection(opts));
   }
@@ -395,7 +395,7 @@ export class GatewayChatClient implements TuiBackend {
  * credentials, while still applying the normal remote URL safety policy.
  */
 function resolveBoundGatewayConnection(
-  opts: GatewayConnectionOptions & { config: OpenClawConfig; url: string },
+  opts: GatewayConnectionOptions & { config: OperatorConfig; url: string },
 ): ResolvedGatewayConnection {
   const url = buildGatewayConnectionDetails({
     config: opts.config,

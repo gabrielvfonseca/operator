@@ -1,5 +1,5 @@
 // Telegram tests cover setup surface plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/setup";
 import { describe, expect, it, vi } from "vitest";
 import { promptTelegramAllowFromForAccount } from "./setup-core.js";
@@ -120,7 +120,7 @@ describe("telegramSetupDmPolicy", () => {
   });
 
   it("uses configured defaultAccount for omitted DM policy account context", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       channels: {
         telegram: {
           defaultAccount: "alerts",
@@ -148,7 +148,7 @@ describe("telegramSetupDmPolicy", () => {
   });
 
   it('writes open policy state to the named account and preserves inherited allowFrom with "*"', () => {
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       channels: {
         telegram: {
           allowFrom: ["123"],
@@ -194,8 +194,8 @@ describe("telegramSetupWizard allowFrom", () => {
   });
 
   it("localizes setup wizard allowFrom copy when loaded under zh-CN", async () => {
-    const previousLocale = process.env.OPENCLAW_LOCALE;
-    process.env.OPENCLAW_LOCALE = "zh-CN";
+    const previousLocale = process.env.OPERATOR_LOCALE;
+    process.env.OPERATOR_LOCALE = "zh-CN";
 
     try {
       vi.resetModules();
@@ -208,16 +208,16 @@ describe("telegramSetupWizard allowFrom", () => {
       );
     } finally {
       if (previousLocale === undefined) {
-        delete process.env.OPENCLAW_LOCALE;
+        delete process.env.OPERATOR_LOCALE;
       } else {
-        process.env.OPENCLAW_LOCALE = previousLocale;
+        process.env.OPERATOR_LOCALE = previousLocale;
       }
     }
   });
 
   it("localizes legacy allowFrom prompt copy", async () => {
-    const previousLocale = process.env.OPENCLAW_LOCALE;
-    process.env.OPENCLAW_LOCALE = "zh-CN";
+    const previousLocale = process.env.OPERATOR_LOCALE;
+    process.env.OPERATOR_LOCALE = "zh-CN";
     const note = vi.fn(async () => {});
     const text = vi.fn(async () => "123456789");
 
@@ -239,9 +239,9 @@ describe("telegramSetupWizard allowFrom", () => {
       );
     } finally {
       if (previousLocale === undefined) {
-        delete process.env.OPENCLAW_LOCALE;
+        delete process.env.OPERATOR_LOCALE;
       } else {
-        process.env.OPENCLAW_LOCALE = previousLocale;
+        process.env.OPERATOR_LOCALE = previousLocale;
       }
     }
   });

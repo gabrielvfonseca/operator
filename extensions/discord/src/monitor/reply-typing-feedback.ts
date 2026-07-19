@@ -1,7 +1,7 @@
 // Discord plugin module implements reply typing feedback behavior.
 import { logTypingFailure } from "openclaw/plugin-sdk/channel-feedback";
 import { createTypingCallbacks } from "openclaw/plugin-sdk/channel-outbound";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { createDiscordRestClient } from "../client.js";
 import type { RequestClient } from "../internal/discord.js";
 import { sendTyping } from "./typing.js";
@@ -17,7 +17,7 @@ export type DiscordReplyTypingFeedback = ReturnType<typeof createTypingCallbacks
 };
 
 export function createDiscordReplyTypingFeedback(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   token: string;
   accountId: string;
   channelId: string;

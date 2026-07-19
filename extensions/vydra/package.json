@@ -2,7 +2,7 @@
   "name": "@operator/vydra-provider",
   "version": "2026.7.2",
   "private": true,
-  "description": "OpenClaw Vydra media provider plugin",
+  "description": "Operator Vydra media provider plugin",
   "type": "module",
   "devDependencies": {
     "@operator/plugin-sdk": "workspace:*"

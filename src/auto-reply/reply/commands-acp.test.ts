@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { AcpRuntimeError } from "../../acp/runtime/errors.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import type { SessionBindingRecord } from "../../infra/outbound/session-binding-service.js";
 import { setActivePluginRegistry } from "../../plugins/runtime.js";
 import {
@@ -97,7 +97,7 @@ vi.mock("../../acp/runtime/session-meta.js", () => ({
 }));
 
 vi.mock("../../agents/acp-spawn.js", () => ({
-  resolveAcpSpawnRuntimePolicyError: (params: { cfg?: OpenClawConfig }) =>
+  resolveAcpSpawnRuntimePolicyError: (params: { cfg?: OperatorConfig }) =>
     params.cfg?.agents?.defaults?.sandbox?.mode === "all"
       ? 'Sandboxed sessions cannot spawn ACP sessions because runtime="acp" runs on the host. Use runtime="subagent" from sandboxed sessions.'
       : undefined,
@@ -509,9 +509,9 @@ const baseCfg = {
       },
     },
   },
-} satisfies OpenClawConfig;
+} satisfies OperatorConfig;
 
-function createDiscordParams(commandBody: string, cfg: OpenClawConfig = baseCfg) {
+function createDiscordParams(commandBody: string, cfg: OperatorConfig = baseCfg) {
   const params = buildCommandTestParams(commandBody, cfg, {
     Provider: "discord",
     Surface: "discord",
@@ -722,7 +722,7 @@ function mockBoundThreadSession(options?: {
   );
 }
 
-function createThreadParams(commandBody: string, cfg: OpenClawConfig = baseCfg) {
+function createThreadParams(commandBody: string, cfg: OperatorConfig = baseCfg) {
   const params = createDiscordParams(commandBody, cfg);
   params.ctx.MessageThreadId = defaultThreadId;
   return params;
@@ -741,7 +741,7 @@ type ConversationCommandFixture = {
 function createConversationParams(
   commandBody: string,
   fixture: ConversationCommandFixture,
-  cfg: OpenClawConfig = baseCfg,
+  cfg: OperatorConfig = baseCfg,
 ) {
   const params = buildCommandTestParams(commandBody, cfg, {
     Provider: fixture.channel,
@@ -759,15 +759,15 @@ function createConversationParams(
   return params;
 }
 
-async function runDiscordAcpCommand(commandBody: string, cfg: OpenClawConfig = baseCfg) {
+async function runDiscordAcpCommand(commandBody: string, cfg: OperatorConfig = baseCfg) {
   return handleAcpCommand(createDiscordParams(commandBody, cfg), true);
 }
 
-async function runThreadAcpCommand(commandBody: string, cfg: OpenClawConfig = baseCfg) {
+async function runThreadAcpCommand(commandBody: string, cfg: OperatorConfig = baseCfg) {
   return handleAcpCommand(createThreadParams(commandBody, cfg), true);
 }
 
-async function runTelegramAcpCommand(commandBody: string, cfg: OpenClawConfig = baseCfg) {
+async function runTelegramAcpCommand(commandBody: string, cfg: OperatorConfig = baseCfg) {
   return handleAcpCommand(
     createConversationParams(
       commandBody,
@@ -782,7 +782,7 @@ async function runTelegramAcpCommand(commandBody: string, cfg: OpenClawConfig = 
   );
 }
 
-async function runTelegramDmAcpCommand(commandBody: string, cfg: OpenClawConfig = baseCfg) {
+async function runTelegramDmAcpCommand(commandBody: string, cfg: OperatorConfig = baseCfg) {
   return handleAcpCommand(
     createConversationParams(
       commandBody,
@@ -796,7 +796,7 @@ async function runTelegramDmAcpCommand(commandBody: string, cfg: OpenClawConfig 
   );
 }
 
-async function runSlackDmAcpCommand(commandBody: string, cfg: OpenClawConfig = baseCfg) {
+async function runSlackDmAcpCommand(commandBody: string, cfg: OperatorConfig = baseCfg) {
   return handleAcpCommand(
     createConversationParams(
       commandBody,
@@ -811,7 +811,7 @@ async function runSlackDmAcpCommand(commandBody: string, cfg: OpenClawConfig = b
   );
 }
 
-function createMatrixThreadParams(commandBody: string, cfg: OpenClawConfig = baseCfg) {
+function createMatrixThreadParams(commandBody: string, cfg: OperatorConfig = baseCfg) {
   const params = createConversationParams(
     commandBody,
     {
@@ -824,7 +824,7 @@ function createMatrixThreadParams(commandBody: string, cfg: OpenClawConfig = bas
   return params;
 }
 
-async function runMatrixAcpCommand(commandBody: string, cfg: OpenClawConfig = baseCfg) {
+async function runMatrixAcpCommand(commandBody: string, cfg: OperatorConfig = baseCfg) {
   return handleAcpCommand(
     createConversationParams(
       commandBody,
@@ -838,11 +838,11 @@ async function runMatrixAcpCommand(commandBody: string, cfg: OpenClawConfig = ba
   );
 }
 
-async function runMatrixThreadAcpCommand(commandBody: string, cfg: OpenClawConfig = baseCfg) {
+async function runMatrixThreadAcpCommand(commandBody: string, cfg: OperatorConfig = baseCfg) {
   return handleAcpCommand(createMatrixThreadParams(commandBody, cfg), true);
 }
 
-async function runFeishuDmAcpCommand(commandBody: string, cfg: OpenClawConfig = baseCfg) {
+async function runFeishuDmAcpCommand(commandBody: string, cfg: OperatorConfig = baseCfg) {
   return handleAcpCommand(
     createConversationParams(
       commandBody,
@@ -857,7 +857,7 @@ async function runFeishuDmAcpCommand(commandBody: string, cfg: OpenClawConfig = 
   );
 }
 
-async function runLineDmAcpCommand(commandBody: string, cfg: OpenClawConfig = baseCfg) {
+async function runLineDmAcpCommand(commandBody: string, cfg: OperatorConfig = baseCfg) {
   return handleAcpCommand(
     createConversationParams(
       commandBody,
@@ -872,7 +872,7 @@ async function runLineDmAcpCommand(commandBody: string, cfg: OpenClawConfig = ba
   );
 }
 
-async function runIMessageDmAcpCommand(commandBody: string, cfg: OpenClawConfig = baseCfg) {
+async function runIMessageDmAcpCommand(commandBody: string, cfg: OperatorConfig = baseCfg) {
   return handleAcpCommand(
     createConversationParams(
       commandBody,
@@ -889,7 +889,7 @@ async function runIMessageDmAcpCommand(commandBody: string, cfg: OpenClawConfig 
 async function runInternalAcpCommand(params: {
   commandBody: string;
   scopes: string[];
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
 }) {
   const commandParams = buildCommandTestParams(params.commandBody, params.cfg ?? baseCfg, {
     Provider: INTERNAL_MESSAGE_CHANNEL,
@@ -1248,7 +1248,7 @@ describe("/acp command", () => {
             },
           ],
         },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = await runDiscordAcpCommand("/acp spawn codex", cfg);
 
@@ -1282,7 +1282,7 @@ describe("/acp command", () => {
           },
         ],
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await runDiscordAcpCommand("/acp spawn codex", cfg);
 
@@ -1332,7 +1332,7 @@ describe("/acp command", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await runDiscordAcpCommand("/acp spawn codex --bind here", cfg);
 
@@ -1418,7 +1418,7 @@ describe("/acp command", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await runMatrixAcpCommand("/acp spawn codex --bind here", cfg);
 
@@ -1444,7 +1444,7 @@ describe("/acp command", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await runMatrixAcpCommand("/acp spawn codex", cfg);
 
@@ -1470,7 +1470,7 @@ describe("/acp command", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await runMatrixThreadAcpCommand("/acp spawn codex --thread here", cfg);
 
@@ -1542,7 +1542,7 @@ describe("/acp command", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await runDiscordAcpCommand("/acp spawn codex", cfg);
 
@@ -1563,7 +1563,7 @@ describe("/acp command", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await runMatrixAcpCommand("/acp spawn codex", cfg);
 
@@ -1579,7 +1579,7 @@ describe("/acp command", () => {
           sandbox: { mode: "all" },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await runDiscordAcpCommand("/acp spawn codex", cfg);
 
@@ -1692,7 +1692,7 @@ describe("/acp command", () => {
           defaultAccount: "work",
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     hoisted.sessionBindingResolveByConversationMock.mockImplementation(
       (ref: {
         channel?: string;
@@ -1739,7 +1739,7 @@ describe("/acp command", () => {
         ...baseCfg.acp,
         dispatch: { enabled: false },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const result = await runDiscordAcpCommand("/acp steer tighten logging", cfg);
     expect(result?.reply?.text).toContain("ACP dispatch is disabled by policy");
     expect(hoisted.runTurnMock).not.toHaveBeenCalled();
@@ -1963,7 +1963,7 @@ describe("/acp command", () => {
           lastUpdatedAt: Date.now(),
         },
         lastError: [
-          "OpenClaw runtime context (internal):",
+          "Operator runtime context (internal):",
           "This context is runtime-generated, not user-authored. Keep internal details private.",
           "",
           "[Internal task completion event]",
@@ -1973,7 +1973,7 @@ describe("/acp command", () => {
     });
     hoisted.getStatusMock.mockResolvedValue({
       summary: [
-        "OpenClaw runtime context (internal):",
+        "Operator runtime context (internal):",
         "This context is runtime-generated, not user-authored. Keep internal details private.",
         "",
         "[Internal task completion event]",
@@ -1981,7 +1981,7 @@ describe("/acp command", () => {
       ].join("\n"),
       details: {
         payload: [
-          "OpenClaw runtime context (internal):",
+          "Operator runtime context (internal):",
           "This context is runtime-generated, not user-authored. Keep internal details private.",
           "",
           "[Internal task completion event]",
@@ -2002,7 +2002,7 @@ describe("/acp command", () => {
       runId: "acp-run-1",
       endedAt: Date.now(),
       error: [
-        "OpenClaw runtime context (internal):",
+        "Operator runtime context (internal):",
         "This context is runtime-generated, not user-authored. Keep internal details private.",
         "",
         "[Internal task completion event]",
@@ -2015,7 +2015,7 @@ describe("/acp command", () => {
 
     expect(result?.reply?.text).toContain("ACP status:");
     expect(result?.reply?.text).toContain("taskSummary: Needs approval to continue.");
-    expect(result?.reply?.text).not.toContain("OpenClaw runtime context (internal):");
+    expect(result?.reply?.text).not.toContain("Operator runtime context (internal):");
     expect(result?.reply?.text).not.toContain("Internal task completion event");
   });
 

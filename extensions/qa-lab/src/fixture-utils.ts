@@ -317,7 +317,7 @@ async function countNeedlesInFile(filePath: string, needles: Record<string, stri
   return counts;
 }
 
-function resolveAgentSqlitePathFromSessionsDir(sessionsDir: string): string | null {
+function resolveOperatorAgentSqlitePathFromSessionsDir(sessionsDir: string): string | null {
   if (path.basename(sessionsDir) !== "sessions") {
     return null;
   }
@@ -363,7 +363,7 @@ async function countNeedlesInSqliteTranscriptStore(
   sessionsDir: string,
   needles: Record<string, string>,
 ): Promise<Record<string, number>> {
-  const sqlitePath = resolveAgentSqlitePathFromSessionsDir(sessionsDir);
+  const sqlitePath = resolveOperatorAgentSqlitePathFromSessionsDir(sessionsDir);
   if (!sqlitePath) {
     return createCounts(needles);
   }

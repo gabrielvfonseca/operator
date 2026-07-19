@@ -1,15 +1,15 @@
 // QA Lab Matrix plugin module implements scenario runtime cli behavior.
-import { spawn as startOpenClawCliProcess } from "node:child_process";
+import { spawn as startOperatorCliProcess } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { chmod, mkdir, mkdtemp, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import { redactSensitiveText } from "openclaw/plugin-sdk/logging-core";
-import { resolvePreferredOpenClawTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
 import {
   killMatrixQaCliChild,
-  resolveMatrixQaOpenClawCliEntryPath,
+  resolveMatrixQaOperatorCliEntryPath,
 } from "./scenario-runtime-cli-process.js";
 
 export type MatrixQaCliRunResult = {
@@ -101,7 +101,7 @@ function formatMatrixQaCliTimeoutError(result: MatrixQaCliRunResult, timeoutMs: 
 }
 
 function isMatrixQaCliChildProcessGroupRunning(
-  child: ReturnType<typeof startOpenClawCliProcess>,
+  child: ReturnType<typeof startOperatorCliProcess>,
 ): boolean {
   if (process.platform === "win32" || !child.pid) {
     return false;
@@ -114,7 +114,7 @@ function isMatrixQaCliChildProcessGroupRunning(
   }
 }
 
-export function startMatrixQaOpenClawCli(params: {
+export function startMatrixQaOperatorCli(params: {
   allowNonZero?: boolean;
   args: string[];
   cwd?: string;
@@ -123,7 +123,7 @@ export function startMatrixQaOpenClawCli(params: {
   timeoutMs: number;
 }): MatrixQaCliSession {
   const cwd = params.cwd ?? process.cwd();
-  const distEntryPath = resolveMatrixQaOpenClawCliEntryPath(cwd);
+  const distEntryPath = resolveMatrixQaOperatorCliEntryPath(cwd);
   const stdout: Buffer[] = [];
   const stderr: Buffer[] = [];
   let closed = false;
@@ -141,7 +141,7 @@ export function startMatrixQaOpenClawCli(params: {
       }
     | undefined;
 
-  const child = startOpenClawCliProcess(process.execPath, [distEntryPath, ...params.args], {
+  const child = startOperatorCliProcess(process.execPath, [distEntryPath, ...params.args], {
     cwd,
     detached: process.platform !== "win32",
     env: params.env,
@@ -344,7 +344,7 @@ export function startMatrixQaOpenClawCli(params: {
   };
 }
 
-export async function runMatrixQaOpenClawCli(params: {
+export async function runMatrixQaOperatorCli(params: {
   allowNonZero?: boolean;
   args: string[];
   cwd?: string;
@@ -352,7 +352,7 @@ export async function runMatrixQaOpenClawCli(params: {
   stdin?: string;
   timeoutMs: number;
 }): Promise<MatrixQaCliRunResult> {
-  return await startMatrixQaOpenClawCli(params).wait();
+  return await startMatrixQaOperatorCli(params).wait();
 }
 
 async function assertMatrixQaPrivatePathMode(pathToCheck: string, label: string) {
@@ -365,7 +365,7 @@ async function assertMatrixQaPrivatePathMode(pathToCheck: string, label: string)
   }
 }
 
-export async function createMatrixQaOpenClawCliRuntime(params: {
+export async function createMatrixQaOperatorCliRuntime(params: {
   accountId: string;
   accessToken: string;
   artifactLabel: string;
@@ -377,7 +377,7 @@ export async function createMatrixQaOpenClawCliRuntime(params: {
   userId: string;
 }) {
   const rootDir = await mkdtemp(
-    path.join(resolvePreferredOpenClawTmpDir(), "openclaw-matrix-cli-qa-"),
+    path.join(resolvePreferredOperatorTmpDir(), "openclaw-matrix-cli-qa-"),
   );
   const artifactDir = path.join(
     params.outputDir,
@@ -435,9 +435,9 @@ export async function createMatrixQaOpenClawCliRuntime(params: {
     ...params.runtimeEnv,
     FORCE_COLOR: "0",
     NO_COLOR: "1",
-    OPENCLAW_CONFIG_PATH: configPath,
-    OPENCLAW_DISABLE_AUTO_UPDATE: "1",
-    OPENCLAW_STATE_DIR: stateDir,
+    OPERATOR_CONFIG_PATH: configPath,
+    OPERATOR_DISABLE_AUTO_UPDATE: "1",
+    OPERATOR_STATE_DIR: stateDir,
   };
   return {
     artifactDir,
@@ -449,7 +449,7 @@ export async function createMatrixQaOpenClawCliRuntime(params: {
       args: string[],
       opts: { allowNonZero?: boolean; stdin?: string; timeoutMs: number },
     ): Promise<MatrixQaCliRunResult> =>
-      await runMatrixQaOpenClawCli({
+      await runMatrixQaOperatorCli({
         allowNonZero: opts.allowNonZero,
         args,
         env,
@@ -457,7 +457,7 @@ export async function createMatrixQaOpenClawCliRuntime(params: {
         timeoutMs: opts.timeoutMs,
       }),
     start: (args: string[], opts: { allowNonZero?: boolean; timeoutMs: number }) =>
-      startMatrixQaOpenClawCli({
+      startMatrixQaOperatorCli({
         allowNonZero: opts.allowNonZero,
         args,
         env,

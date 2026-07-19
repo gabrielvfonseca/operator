@@ -21,7 +21,7 @@ vi.mock("openclaw/plugin-sdk/agent-harness", async (importOriginal) => {
 
   return {
     ...actual,
-    createOpenClawCodingTools: vi.fn(() => [
+    createOperatorCodingTools: vi.fn(() => [
       {
         name: liveToolState.toolName,
         label: liveToolState.toolName,
@@ -58,9 +58,9 @@ vi.mock("openclaw/plugin-sdk/agent-harness", async (importOriginal) => {
   };
 });
 
-const LIVE = isLiveTestEnabled(["OPENCLAW_COPILOT_AGENT_LIVE_TEST"]);
+const LIVE = isLiveTestEnabled(["OPERATOR_COPILOT_AGENT_LIVE_TEST"]);
 const TOKEN =
-  process.env.OPENCLAW_COPILOT_AGENT_LIVE_TOKEN ||
+  process.env.OPERATOR_COPILOT_AGENT_LIVE_TOKEN ||
   process.env.GITHUB_TOKEN ||
   process.env.GH_TOKEN ||
   "";

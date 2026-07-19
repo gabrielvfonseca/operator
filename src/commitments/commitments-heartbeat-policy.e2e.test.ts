@@ -1,13 +1,13 @@
 // Exercises commitment heartbeat policy through end-to-end runtime flows.
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { runHeartbeatOnce } from "../infra/heartbeat-runner.js";
 import { installHeartbeatRunnerTestRuntime } from "../infra/heartbeat-runner.test-harness.js";
 import {
   seedSessionStore,
   withTempHeartbeatSandbox,
 } from "../infra/heartbeat-runner.test-utils.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import { readCommitmentsForTest, seedCommitmentsForTest } from "./store.test-utils.js";
 import type { CommitmentRecord } from "./types.js";
@@ -19,7 +19,7 @@ describe("commitments heartbeat delivery policy e2e", () => {
   const sessionKey = "agent:main:telegram:user-155462274";
 
   afterEach(() => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     vi.unstubAllEnvs();
   });
 
@@ -53,8 +53,8 @@ describe("commitments heartbeat delivery policy e2e", () => {
 
   it("does not send externally when heartbeat target is none", async () => {
     await withTempHeartbeatSandbox(async ({ tmpDir, storePath, replySpy }) => {
-      await withEnvAsync({ OPENCLAW_STATE_DIR: tmpDir }, async () => {
-        const cfg: OpenClawConfig = {
+      await withEnvAsync({ OPERATOR_STATE_DIR: tmpDir }, async () => {
+        const cfg: OperatorConfig = {
           agents: {
             defaults: {
               workspace: tmpDir,

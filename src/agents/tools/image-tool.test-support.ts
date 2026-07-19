@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type {
   resolveAutoMediaKeyProviders,
   resolveDefaultMediaModel,
@@ -44,7 +44,7 @@ type ImageWebMediaRuntime = {
 };
 
 type ResolveImageCompressionPolicy = (params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   imageModelConfig?: ImageModelConfig | null;
   modelOverride?: string;
   imageCount: number;
@@ -63,7 +63,7 @@ type ImageToolProviderDeps = {
   resolveModelAsync: ResolveModelAsync;
   resolveRegisteredMediaUnderstandingProvider(params: {
     providerId: string;
-    cfg?: OpenClawConfig;
+    cfg?: OperatorConfig;
   }): MediaUnderstandingProvider | undefined;
   resolveImageCompressionPolicy: ResolveImageCompressionPolicy;
   loadImageWebMediaRuntime: () => Promise<ImageWebMediaRuntime>;
@@ -80,7 +80,7 @@ type ImageToolTestApi = {
   resolveImageCompressionPolicy: ResolveImageCompressionPolicy;
   setProviderDepsForTest(overrides?: Partial<ImageToolProviderDeps>): void;
   resolveImageModelConfigForTool(params: {
-    cfg?: OpenClawConfig;
+    cfg?: OperatorConfig;
     agentDir: string;
     workspaceDir?: string;
     authStore?: AuthProfileStore;

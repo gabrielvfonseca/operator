@@ -1,11 +1,11 @@
-# OpenClaw Amazon Bedrock Mantle Provider
+# Operator Amazon Bedrock Mantle Provider
 
-Official OpenClaw provider plugin for routing Amazon Bedrock Mantle models through OpenAI-compatible provider flows.
+Official Operator provider plugin for routing Amazon Bedrock Mantle models through OpenAI-compatible provider flows.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugin add @operator/amazon-bedrock-mantle-provider
 ```
 
-Use this plugin when your Bedrock deployment exposes Mantle-compatible model routing and you want OpenClaw agents to address those models through the Bedrock Mantle provider.
+Use this plugin when your Bedrock deployment exposes Mantle-compatible model routing and you want Operator agents to address those models through the Bedrock Mantle provider.

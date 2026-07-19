@@ -121,17 +121,17 @@ const {
 
 const CHOKIDAR_FACTORY_KEY = Symbol.for("openclaw.test.memoryWatchFactory");
 const NATIVE_FACTORY_KEY = Symbol.for("openclaw.test.memoryNativeWatchFactory");
-const originalWatcherStateDir = process.env.OPENCLAW_STATE_DIR;
+const originalWatcherStateDir = process.env.OPERATOR_STATE_DIR;
 
 function setWatcherStateDir(stateDir: string): void {
-  Reflect.set(process.env, "OPENCLAW_STATE_DIR", stateDir);
+  Reflect.set(process.env, "OPERATOR_STATE_DIR", stateDir);
 }
 
 function restoreWatcherStateDir(): void {
   if (originalWatcherStateDir === undefined) {
-    Reflect.deleteProperty(process.env, "OPENCLAW_STATE_DIR");
+    Reflect.deleteProperty(process.env, "OPERATOR_STATE_DIR");
   } else {
-    Reflect.set(process.env, "OPENCLAW_STATE_DIR", originalWatcherStateDir);
+    Reflect.set(process.env, "OPERATOR_STATE_DIR", originalWatcherStateDir);
   }
 }
 
@@ -517,7 +517,7 @@ describe("memory watcher config", () => {
 
   it("routes Linux directories through directory-only native watchers", async () => {
     // Node's Linux `fs.watch({ recursive: true })` watches every file via
-    // internal/fs/recursive_watch. OpenClaw watches directories only so
+    // internal/fs/recursive_watch. Operator watches directories only so
     // large file-heavy memory trees do not allocate per-file watchers.
     const originalPlatformValue = process.platform;
     try {

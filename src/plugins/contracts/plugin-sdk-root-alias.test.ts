@@ -27,7 +27,7 @@ const legacyRootExportNames = [
   "createTypingCallbacks",
   "createChannelReplyPipeline",
   "resolveChannelSourceReplyDeliveryMode",
-  "resolvePreferredOpenClawTmpDir",
+  "resolvePreferredOperatorTmpDir",
 ] as const;
 
 type EmptySchema = {
@@ -614,7 +614,7 @@ describe("plugin-sdk root alias", () => {
       "ssrf-runtime-internal.ts",
     );
     const lazyModule = loadRootAliasWithStubs({
-      env: { OPENCLAW_ENABLE_PRIVATE_QA_CLI: "1" },
+      env: { OPERATOR_ENABLE_PRIVATE_QA_CLI: "1" },
       privateLocalOnlySubpaths: ["qa-lab", "../escape", "nested/path", "ssrf-runtime-internal"],
       existingPaths: [qaLabPath, ssrfRuntimeInternalPath],
       monolithicExports: {

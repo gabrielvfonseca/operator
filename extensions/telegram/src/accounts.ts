@@ -5,7 +5,7 @@ import {
   normalizeAccountId,
   normalizeOptionalAccountId,
   resolveAccountWithDefaultFallback,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "openclaw/plugin-sdk/account-core";
 import type {
   TelegramAccountConfig,
@@ -44,7 +44,7 @@ function formatDebugArg(value: unknown): string {
 }
 
 const debugAccounts = (...args: unknown[]) => {
-  if (isTruthyEnvValue(process.env.OPENCLAW_DEBUG_TELEGRAM_ACCOUNTS)) {
+  if (isTruthyEnvValue(process.env.OPERATOR_DEBUG_TELEGRAM_ACCOUNTS)) {
     const parts = args.map((arg) => formatDebugArg(arg));
     getLog().warn(parts.join(" ").trim());
   }
@@ -67,7 +67,7 @@ export type TelegramMediaRuntimeOptions = {
   dangerouslyAllowPrivateNetwork?: boolean;
 };
 
-export function listTelegramAccountIds(cfg: OpenClawConfig): string[] {
+export function listTelegramAccountIds(cfg: OperatorConfig): string[] {
   const ids = listSelectedTelegramAccountIds(cfg);
   debugAccounts("listTelegramAccountIds", ids);
   return ids;
@@ -80,7 +80,7 @@ export function resetMissingDefaultWarnFlag(): void {
   emittedMissingDefaultWarn = false;
 }
 
-export function resolveDefaultTelegramAccountId(cfg: OpenClawConfig): string {
+export function resolveDefaultTelegramAccountId(cfg: OperatorConfig): string {
   const selection = resolveDefaultTelegramAccountSelection(cfg);
   if (selection.shouldWarnMissingDefault && !emittedMissingDefaultWarn) {
     emittedMissingDefaultWarn = true;
@@ -93,7 +93,7 @@ export function resolveDefaultTelegramAccountId(cfg: OpenClawConfig): string {
 }
 
 export function createTelegramActionGate(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
 }): (key: keyof TelegramActionConfig, defaultValue?: boolean) => boolean {
   const accountId = normalizeAccountId(
@@ -106,7 +106,7 @@ export function createTelegramActionGate(params: {
 }
 
 export function resolveTelegramMediaRuntimeOptions(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
   token: string;
   transport?: TelegramTransport;
@@ -143,7 +143,7 @@ export function resolveTelegramPollActionGateState(
 }
 
 export function resolveTelegramAccount(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
 }): ResolvedTelegramAccount {
   const baseEnabled = params.cfg.channels?.telegram?.enabled !== false;
@@ -178,7 +178,7 @@ export function resolveTelegramAccount(params: {
   });
 }
 
-export function listEnabledTelegramAccounts(cfg: OpenClawConfig): ResolvedTelegramAccount[] {
+export function listEnabledTelegramAccounts(cfg: OperatorConfig): ResolvedTelegramAccount[] {
   const baseEnabled = cfg.channels?.telegram?.enabled !== false;
   if (!baseEnabled) {
     return [];

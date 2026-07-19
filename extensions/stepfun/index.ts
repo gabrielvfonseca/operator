@@ -1,7 +1,7 @@
-// Stepfun plugin entrypoint registers its OpenClaw integration.
+// Stepfun plugin entrypoint registers its Operator integration.
 import {
   definePluginEntry,
-  type OpenClawConfig,
+  type OperatorConfig,
   type ProviderCatalogContext,
 } from "openclaw/plugin-sdk/plugin-entry";
 import { createProviderApiKeyAuthMethod } from "openclaw/plugin-sdk/provider-auth-api-key";
@@ -132,7 +132,7 @@ function createStepFunApiKeyMethod(params: {
   choiceId: string;
   choiceLabel: string;
   choiceHint: string;
-  applyConfig: (cfg: OpenClawConfig) => OpenClawConfig;
+  applyConfig: (cfg: OperatorConfig) => OperatorConfig;
 }) {
   return createProviderApiKeyAuthMethod({
     providerId: params.providerId,

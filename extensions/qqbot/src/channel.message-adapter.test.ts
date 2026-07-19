@@ -1,6 +1,6 @@
 // Qqbot tests cover channel.message adapter plugin behavior.
 import { verifyChannelMessageAdapterCapabilityProofs } from "openclaw/plugin-sdk/channel-outbound";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { describe, expect, it, vi } from "vitest";
 import { qqbotPlugin } from "./channel.js";
 
@@ -106,7 +106,7 @@ const cfg = {
       clientSecret: "secret",
     },
   },
-} as OpenClawConfig;
+} as OperatorConfig;
 
 describe("qqbot message adapter", () => {
   it("declares durable text, media, and reply target capabilities with receipt proofs", async () => {

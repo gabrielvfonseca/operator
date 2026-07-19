@@ -3,7 +3,7 @@
  */
 import http from "node:http";
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { getFreePort, installGatewayTestHooks, startGatewayServer } from "./test-helpers.js";
 import { readClientResponseBody } from "./test-http-response.js";
 
@@ -65,7 +65,7 @@ async function requestHealthz(port: number): Promise<{ status: number; body: str
   });
 }
 
-async function writeConfig(config: OpenClawConfig): Promise<void> {
+async function writeConfig(config: OperatorConfig): Promise<void> {
   const { writeConfigFile } = await import("../config/config.js");
   await writeConfigFile(config);
 }
@@ -76,8 +76,8 @@ describe("gateway startup web fetch config", () => {
   let server: Awaited<ReturnType<typeof startGatewayServer>> | undefined;
 
   beforeAll(async () => {
-    previousMinimal = process.env.OPENCLAW_TEST_MINIMAL_GATEWAY;
-    process.env.OPENCLAW_TEST_MINIMAL_GATEWAY = "0";
+    previousMinimal = process.env.OPERATOR_TEST_MINIMAL_GATEWAY;
+    process.env.OPERATOR_TEST_MINIMAL_GATEWAY = "0";
     await writeConfig({
       gateway: {
         mode: "local",
@@ -98,7 +98,7 @@ describe("gateway startup web fetch config", () => {
           },
         },
       },
-    } as OpenClawConfig);
+    } as OperatorConfig);
 
     port = await getFreePort();
     server = await startGatewayServer(port, {
@@ -111,9 +111,9 @@ describe("gateway startup web fetch config", () => {
       await server.close();
     }
     if (previousMinimal === undefined) {
-      delete process.env.OPENCLAW_TEST_MINIMAL_GATEWAY;
+      delete process.env.OPERATOR_TEST_MINIMAL_GATEWAY;
     } else {
-      process.env.OPENCLAW_TEST_MINIMAL_GATEWAY = previousMinimal;
+      process.env.OPERATOR_TEST_MINIMAL_GATEWAY = previousMinimal;
     }
   });
 

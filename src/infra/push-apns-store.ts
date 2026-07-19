@@ -4,11 +4,11 @@ import {
 } from "@operator/normalization-core/string-coerce";
 // Canonical shared-SQLite store for APNs device and relay registrations.
 import type { Insertable, Selectable } from "kysely";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
-  type OpenClawStateDatabaseOptions,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
+  type OperatorStateDatabaseOptions,
 } from "../state/operator-state-db.js";
 import {
   executeSqliteQuerySync,
@@ -74,7 +74,7 @@ type RegisterRelayApnsParams = {
 type RegisterApnsParams = RegisterDirectApnsParams | RegisterRelayApnsParams;
 
 type ApnsRegistrationDatabase = Pick<
-  OpenClawStateKyselyDatabase,
+  OperatorStateKyselyDatabase,
   "apns_registrations" | "apns_registration_tombstones"
 >;
 type ApnsRegistrationRow = Selectable<ApnsRegistrationDatabase["apns_registrations"]>;
@@ -87,7 +87,7 @@ const MAX_RELAY_IDENTIFIER_LENGTH = 256;
 const MAX_SEND_GRANT_LENGTH = 1024;
 const APNS_REGISTRATION_LOOKUP_CHUNK_SIZE = 500;
 
-function apnsStateDatabaseOptions(stateDir?: string): OpenClawStateDatabaseOptions {
+function apnsStateDatabaseOptions(stateDir?: string): OperatorStateDatabaseOptions {
   return stateDir
     ? { env: { ...process.env, OPERATOR_STATE_DIR: stateDir } }
     : { env: process.env };
@@ -506,7 +506,7 @@ export async function registerApnsRegistration(
     };
   }
 
-  return runOpenClawStateWriteTransaction(({ db }) => {
+  return runOperatorStateWriteTransaction(({ db }) => {
     const stateDb = getNodeSqliteKysely<ApnsRegistrationDatabase>(db);
     const current = executeSqliteQueryTakeFirstSync(
       db,
@@ -579,7 +579,7 @@ export async function loadApnsRegistration(
   if (!normalizedNodeId) {
     return null;
   }
-  const database = openOpenClawStateDatabase(apnsStateDatabaseOptions(baseDir));
+  const database = openOperatorStateDatabase(apnsStateDatabaseOptions(baseDir));
   const row = executeSqliteQueryTakeFirstSync(
     database.db,
     getNodeSqliteKysely<ApnsRegistrationDatabase>(database.db)
@@ -609,7 +609,7 @@ export async function loadApnsRegistrations(
   if (uniqueNodeIds.length === 0) {
     return [];
   }
-  const database = openOpenClawStateDatabase(apnsStateDatabaseOptions(baseDir));
+  const database = openOperatorStateDatabase(apnsStateDatabaseOptions(baseDir));
   const registrations = new Map<string, ApnsRegistration>();
   const stateDb = getNodeSqliteKysely<ApnsRegistrationDatabase>(database.db);
   for (
@@ -648,7 +648,7 @@ export async function clearApnsRegistrationIfCurrent(params: {
   if (!normalizedNodeId) {
     return false;
   }
-  return runOpenClawStateWriteTransaction(({ db }) => {
+  return runOperatorStateWriteTransaction(({ db }) => {
     const stateDb = getNodeSqliteKysely<ApnsRegistrationDatabase>(db);
     const currentRow = executeSqliteQueryTakeFirstSync(
       db,

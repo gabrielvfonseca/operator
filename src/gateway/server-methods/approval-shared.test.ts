@@ -6,7 +6,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { GATEWAY_CLIENT_IDS } from "../../../packages/gateway-protocol/src/client-info.js";
-import { closeOpenClawStateDatabaseForTest } from "../../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../state/openclaw-state-db.js";
 import { ExecApprovalManager } from "../exec-approval-manager.js";
 import {
   bindApprovalReviewerDeviceIds,
@@ -1579,7 +1579,7 @@ describe("handlePendingApprovalRequest", () => {
       expect(JSON.stringify(respond.mock.calls)).not.toContain(databasePath);
       expect(logError).toHaveBeenCalledTimes(1);
     } finally {
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorStateDatabaseForTest();
       fs.rmSync(tempDir, { force: true, recursive: true });
     }
   });
@@ -1597,7 +1597,7 @@ describe("handlePendingApprovalRequest", () => {
     });
     const record = manager.create({ command: "echo safe" }, 60_000, "route-failure");
     const decisionPromise = manager.register(record, 60_000);
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     fs.rmSync(databasePath, { force: true });
     fs.mkdirSync(databasePath);
     const respond = vi.fn();
@@ -1634,7 +1634,7 @@ describe("handlePendingApprovalRequest", () => {
       expect(logError).toHaveBeenCalledTimes(1);
       await expect(decisionPromise).resolves.toBe("deny");
     } finally {
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorStateDatabaseForTest();
       fs.rmSync(tempDir, { force: true, recursive: true });
     }
   });
@@ -1651,7 +1651,7 @@ describe("handlePendingApprovalRequest", () => {
     });
     const record = manager.create({ command: "echo safe" }, 60_000, "resolve-failure");
     const decisionPromise = manager.register(record, 60_000);
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     fs.rmSync(databasePath, { force: true });
     fs.mkdirSync(databasePath);
     const respond = vi.fn();
@@ -1686,7 +1686,7 @@ describe("handlePendingApprovalRequest", () => {
       expect(logError).toHaveBeenCalledTimes(1);
       await expect(decisionPromise).resolves.toBe("deny");
     } finally {
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorStateDatabaseForTest();
       fs.rmSync(tempDir, { force: true, recursive: true });
     }
   });

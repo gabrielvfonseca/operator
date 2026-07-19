@@ -1,6 +1,6 @@
 // Doctor quarantine for plugin entries whose config fails plugin-aware validation.
 import { sanitizeForLog } from "../../../../packages/terminal-core/src/ansi.js";
-import type { OpenClawConfig } from "../../../config/types.operator.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import { validateConfigObjectWithPlugins } from "../../../config/validation.js";
 import { asObjectRecord } from "./object.js";
 
@@ -11,7 +11,7 @@ type InvalidPluginConfigHit = {
 
 const PLUGIN_CONFIG_ISSUE_RE = /^plugins\.entries\.([^.]+)\.config(?:\.|$)/;
 
-function scanInvalidPluginConfig(cfg: OpenClawConfig): InvalidPluginConfigHit[] {
+function scanInvalidPluginConfig(cfg: OperatorConfig): InvalidPluginConfigHit[] {
   const validation = validateConfigObjectWithPlugins(cfg);
   if (validation.ok) {
     return [];
@@ -37,8 +37,8 @@ function scanInvalidPluginConfig(cfg: OpenClawConfig): InvalidPluginConfigHit[] 
 }
 
 /** Disable plugin entries and clear config when plugin validation marks their config invalid. */
-export function maybeRepairInvalidPluginConfig(cfg: OpenClawConfig): {
-  config: OpenClawConfig;
+export function maybeRepairInvalidPluginConfig(cfg: OperatorConfig): {
+  config: OperatorConfig;
   changes: string[];
 } {
   const hits = scanInvalidPluginConfig(cfg);

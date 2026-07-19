@@ -1,8 +1,8 @@
-# OpenClaw Kimi Coding Provider
+# Operator Kimi Coding Provider
 
-Official OpenClaw provider plugin for Kimi Coding.
+Official Operator provider plugin for Kimi Coding.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/kimi-provider

@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { note } from "../../packages/terminal-core/src/note.js";
 import { formatCliCommand } from "../cli/command-format.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import {
   probeInstallPolicy,
@@ -23,7 +23,7 @@ function formatTargets(validation: InstallPolicyStaticValidation): string {
 
 /** Builds doctor note lines for static install policy validation and optional deep probing. */
 async function collectInstallPolicyHealthLines(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   options: InstallPolicyHealthOptions = {},
 ): Promise<string[]> {
   const validation = await validateInstallPolicyStatic(cfg);
@@ -79,7 +79,7 @@ async function collectInstallPolicyHealthLines(
 
 /** Emits install policy health notes when policy validation finds configured coverage or errors. */
 export async function noteInstallPolicyHealth(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   options: InstallPolicyHealthOptions = {},
 ): Promise<void> {
   const lines = await collectInstallPolicyHealthLines(cfg, options);

@@ -9,7 +9,7 @@ import {
   appendTranscriptMessage,
   createSessionEntryWithTranscript,
 } from "../../../config/sessions/session-accessor.js";
-import type { OpenClawConfig } from "../../../config/types.js";
+import type { OperatorConfig } from "../../../config/types.js";
 import { buildMemorySystemPromptAddition } from "../../../context-engine/delegate.js";
 import {
   clearMemoryPluginState,
@@ -278,14 +278,14 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
             tools: {
               toolSearch: true,
             },
-          } as OpenClawConfig,
+          } as OperatorConfig,
         },
       });
 
       toolSearchControlsCase = mockParams(
-        hoisted.createOpenClawCodingToolsMock,
+        hoisted.createOperatorCodingToolsMock,
         0,
-        "createOpenClawCodingTools options",
+        "createOperatorCodingTools options",
       );
     } finally {
       await cleanupTempPaths(setupTempPaths);
@@ -307,7 +307,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
     vi.restoreAllMocks();
   });
 
-  it("enables Tool Search controls for embedded OpenClaw runs when configured", async () => {
+  it("enables Tool Search controls for embedded Operator runs when configured", async () => {
     expect(toolSearchControlsCase.includeToolSearchControls).toBe(true);
     expect(toolSearchControlsCase.toolSearchCatalogRef).toEqual({});
   });
@@ -325,7 +325,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
           tools: {
             toolSearch: { enabled: true, mode: "directory" },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         clientTools: [
           {
             type: "function",
@@ -429,21 +429,21 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
       },
     });
 
-    expect(hoisted.createOpenClawCodingToolsMock).toHaveBeenCalledTimes(1);
+    expect(hoisted.createOperatorCodingToolsMock).toHaveBeenCalledTimes(1);
     const options = mockParams(
-      hoisted.createOpenClawCodingToolsMock,
+      hoisted.createOperatorCodingToolsMock,
       0,
-      "createOpenClawCodingTools options",
+      "createOperatorCodingTools options",
     );
     expect(options.includeToolSearchControls).toBe(true);
-    const optionsConfig = requireRecord(options.config, "createOpenClawCodingTools config");
+    const optionsConfig = requireRecord(options.config, "createOperatorCodingTools config");
     const toolsConfig = requireRecord(
       optionsConfig.tools,
-      "createOpenClawCodingTools tools config",
+      "createOperatorCodingTools tools config",
     );
     expect(toolsConfig.toolSearch).toEqual({
       enabled: true,
@@ -454,7 +454,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
   });
 
   it("keeps Tool Search controls off for lean message-tool-only delivery", async () => {
-    hoisted.createOpenClawCodingToolsMock.mockReturnValueOnce([
+    hoisted.createOperatorCodingToolsMock.mockReturnValueOnce([
       {
         name: "message",
         label: "Message",
@@ -488,15 +488,15 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
       },
     });
 
-    expect(hoisted.createOpenClawCodingToolsMock).toHaveBeenCalledTimes(1);
+    expect(hoisted.createOperatorCodingToolsMock).toHaveBeenCalledTimes(1);
     const options = mockParams(
-      hoisted.createOpenClawCodingToolsMock,
+      hoisted.createOperatorCodingToolsMock,
       0,
-      "createOpenClawCodingTools options",
+      "createOperatorCodingTools options",
     );
     expect(options.includeToolSearchControls).toBe(false);
     const sessionOptions = mockParams(
@@ -509,7 +509,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
   });
 
   it("quarantines unsupported tool schemas before creating the model session", async () => {
-    hoisted.createOpenClawCodingToolsMock.mockReturnValue([
+    hoisted.createOperatorCodingToolsMock.mockReturnValue([
       {
         name: "healthy_lookup",
         label: "Healthy Lookup",
@@ -543,7 +543,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
             codeMode: { enabled: false },
             toolSearch: false,
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
       },
       createSession: () => {
         const session = createDefaultEmbeddedSession();
@@ -598,7 +598,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
           agents: {
             list: [{ id: "ops", tools: { codeMode: true } }],
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         model: {
           api: "openai-chatgpt-responses",
           provider: "gateway",
@@ -857,9 +857,9 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
         prompt: [
           "visible ask",
           "",
-          "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+          "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
           "secret runtime context",
-          "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+          "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
         ].join("\n"),
         transcriptPrompt: "visible ask",
       },
@@ -906,7 +906,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
       modelCompleted?.data?.finalPromptText,
       traceArtifacts?.data?.finalPromptText,
     ]) {
-      expect(String(value)).not.toContain("OPENCLAW_INTERNAL_CONTEXT");
+      expect(String(value)).not.toContain("OPERATOR_INTERNAL_CONTEXT");
       expect(String(value)).not.toContain("secret runtime context");
     }
   });
@@ -1699,9 +1699,9 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
         prompt: [
           "visible ask",
           "",
-          "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+          "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
           "secret runtime context",
-          "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+          "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
         ].join("\n"),
         transcriptPrompt: "visible ask",
       },
@@ -1757,7 +1757,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
               bootstrapTotalMaxChars: 50,
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         prompt: "visible ask",
         transcriptPrompt: "visible ask",
       },
@@ -1779,7 +1779,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
   it("preserves bootstrap system context in the assembled system prompt", async () => {
     const seen: { prompt?: string; messages?: unknown[] } = {};
     hoisted.isWorkspaceBootstrapPendingMock.mockResolvedValueOnce(true);
-    hoisted.createOpenClawCodingToolsMock.mockImplementationOnce(() => [
+    hoisted.createOperatorCodingToolsMock.mockImplementationOnce(() => [
       { name: "read", execute: async () => "" },
     ]);
     hoisted.resolveBootstrapContextForRunMock.mockResolvedValueOnce({
@@ -1921,9 +1921,9 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
         prompt: [
           "what does this mean?",
           "",
-          "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+          "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
           "secret runtime context",
-          "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+          "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
         ].join("\n"),
         transcriptPrompt: "what does this mean?",
         currentInboundContext: {
@@ -1958,7 +1958,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
     expect(seenPrompt).not.toContain(
       "Reply target of current user message (untrusted, for context):",
     );
-    expect(seenPrompt).not.toContain("OPENCLAW_INTERNAL_CONTEXT");
+    expect(seenPrompt).not.toContain("OPERATOR_INTERNAL_CONTEXT");
     expect(seenPrompt).not.toContain("secret runtime context");
     expect(result.finalPromptText).toBe(seenPrompt);
     const runtimeContext = findRecord(
@@ -2010,9 +2010,9 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
         prompt: [
           "visible ask",
           "",
-          "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+          "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
           "secret runtime context",
-          "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+          "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
         ].join("\n"),
         transcriptPrompt: "visible ask",
         inputProvenance: {
@@ -2103,8 +2103,8 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
       },
     });
 
-    expect(seenPrompt).toBe("Continue the OpenClaw runtime event.");
-    expect(result.finalPromptText).toBe("Continue the OpenClaw runtime event.");
+    expect(seenPrompt).toBe("Continue the Operator runtime event.");
+    expect(result.finalPromptText).toBe("Continue the Operator runtime event.");
     expect(JSON.stringify(seenModelMessages)).toContain("dynamic hook context");
     expect(JSON.stringify(seenModelMessages)).toContain("internal heartbeat event");
     expect(JSON.stringify(seenModelMessages)).toContain("dynamic hook tail");
@@ -2204,7 +2204,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
 
     expect(seenPrompt).toContain("Reply target of current user message (untrusted, for context):");
     expect(seenPrompt).toContain("Hello from the replied message");
-    expect(seenPrompt).toContain("Continue the OpenClaw runtime event.");
+    expect(seenPrompt).toContain("Continue the Operator runtime event.");
     expect(result.finalPromptText).toBe(seenPrompt);
     const trajectoryEvents = await readTrajectoryEvents(tempPaths);
     const contextCompiled = trajectoryEvents.find((event) => event.type === "context.compiled");
@@ -2232,12 +2232,12 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
       tempPaths,
       trajectory: true,
       attemptOverrides: {
-        prompt: "[OpenClaw room event]",
+        prompt: "[Operator room event]",
         transcriptPrompt: "",
         currentInboundEventKind: "room_event",
         currentInboundContext: {
           text: [
-            "[OpenClaw room event]",
+            "[Operator room event]",
             "inbound_event_kind: room_event",
             "visible_reply_contract: message_tool_only",
             "Room context:\n#2001 Alice: lunch at 2?\n#2002 Bob: works",
@@ -2267,9 +2267,9 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
 
     // The user prompt stays the bare room-event marker; the room context is
     // routed into the runtime-context carrier instead of the user text.
-    expect(seenPrompt).toBe("[OpenClaw room event]");
+    expect(seenPrompt).toBe("[Operator room event]");
     expect(seenPrompt).not.toContain("inbound_event_kind: room_event");
-    expect(seenPrompt).not.toBe("Continue the OpenClaw runtime event.");
+    expect(seenPrompt).not.toBe("Continue the Operator runtime event.");
     expect(seenPrompt).not.toContain("dynamic hook context");
     expect(seenPrompt).not.toContain("dynamic hook tail");
     const roomRuntimeContext = findRecord(
@@ -2291,7 +2291,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
     expect(contextCompiled?.data?.prompt).not.toContain(
       "visible_reply_contract: message_tool_only",
     );
-    expect(contextCompiled?.data?.prompt).toContain("[OpenClaw room event]");
+    expect(contextCompiled?.data?.prompt).toContain("[Operator room event]");
   });
 
   it("skips blank visible prompts with replay history before provider submission", async () => {
@@ -2824,7 +2824,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
       tempPaths,
       attemptOverrides: {
         currentInboundEventKind: "room_event",
-        currentInboundContext: { text: "[OpenClaw room event]" },
+        currentInboundContext: { text: "[Operator room event]" },
         suppressNextUserMessagePersistence: true,
         transcriptPrompt: "",
       },
@@ -3380,7 +3380,7 @@ describe("runEmbeddedAttempt context engine mid-turn precheck integration", () =
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
       },
     });
 
@@ -3428,7 +3428,7 @@ describe("runEmbeddedAttempt context engine mid-turn precheck integration", () =
               },
             },
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
       },
       sessionMessages: [seedMessage],
       sessionPrompt: async (session) => {
@@ -3625,7 +3625,7 @@ describe("runEmbeddedAttempt tool-result guard budget wiring", () => {
             },
             list: [{ id: "main" }],
           },
-        } as OpenClawConfig,
+        } as OperatorConfig,
       },
       createSession: () => {
         const session = createDefaultEmbeddedSession({ initialMessages: sessionMessages });

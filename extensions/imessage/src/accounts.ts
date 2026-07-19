@@ -4,7 +4,7 @@ import {
   createAccountListHelpers,
   normalizeAccountId,
   resolveMergedAccountConfig,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "openclaw/plugin-sdk/account-resolution";
 // Imessage plugin module implements accounts behavior.
 import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
@@ -30,7 +30,7 @@ export const listIMessageAccountIds = listAccountIds;
 export const resolveDefaultIMessageAccountId = resolveDefaultAccountId;
 
 function resolveIMessageAccountConfig(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   accountId: string,
 ): IMessageAccountConfig | undefined {
   return resolveAccountEntry(cfg.channels?.imessage?.accounts, accountId);
@@ -75,7 +75,7 @@ function mergeIMessageStreamingConfig(
   };
 }
 
-function mergeIMessageAccountConfig(cfg: OpenClawConfig, accountId: string): IMessageAccountConfig {
+function mergeIMessageAccountConfig(cfg: OperatorConfig, accountId: string): IMessageAccountConfig {
   const accountConfig = resolveIMessageAccountConfig(cfg, accountId);
   const merged = resolveMergedAccountConfig<IMessageAccountConfig>({
     channelConfig: cfg.channels?.imessage as IMessageAccountConfig | undefined,
@@ -92,7 +92,7 @@ function mergeIMessageAccountConfig(cfg: OpenClawConfig, accountId: string): IMe
 }
 
 export function resolveIMessageAccount(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId?: string | null;
 }): ResolvedIMessageAccount {
   const accountId = normalizeAccountId(
@@ -146,7 +146,7 @@ function resolveIMessageAccountSourceSignature(account: ResolvedIMessageAccount)
 }
 
 function resolveIMessageAccountSourceOwner(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   signature: string;
 }): string | undefined {
   // Prefer an explicit named account over the implicit "default" so that
@@ -190,7 +190,7 @@ function resolveIMessageDatabaseFileIdentity(dbPath: string): string | undefined
  * keep treating both accounts normally.
  */
 export function resolveIMessageDuplicateSourceOwner(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   account: ResolvedIMessageAccount;
 }): string | undefined {
   if (!params.account.enabled) {
@@ -203,14 +203,14 @@ export function resolveIMessageDuplicateSourceOwner(params: {
   return owner && owner !== params.account.accountId ? owner : undefined;
 }
 
-export function listEnabledIMessageAccounts(cfg: OpenClawConfig): ResolvedIMessageAccount[] {
+export function listEnabledIMessageAccounts(cfg: OperatorConfig): ResolvedIMessageAccount[] {
   return listIMessageAccountIds(cfg)
     .map((accountId) => resolveIMessageAccount({ cfg, accountId }))
     .filter((account) => account.enabled);
 }
 
 export function hasExclusiveIMessageLocalDatabase(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   account: ResolvedIMessageAccount;
   cliPath: string;
   dbPath?: string;
@@ -256,7 +256,7 @@ export function hasExclusiveIMessageLocalDatabase(params: {
 }
 
 export function collectIMessageDuplicateAccountSourceWarnings(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
 }): string[] {
   const groups = new Map<string, ResolvedIMessageAccount[]>();
   for (const accountId of listIMessageAccountIds(params.cfg)) {
@@ -289,7 +289,7 @@ export function collectIMessageDuplicateAccountSourceWarnings(params: {
     const dbPath = normalizeIMessageDbPath(owner.config.dbPath);
     const where = dbPath ? `cliPath=${cliPath}, dbPath=${dbPath}` : `cliPath=${cliPath}`;
     warnings.push(
-      `- channels.imessage: accounts "${owner.accountId}" and ${dupIds} watch the same local Messages source (${where}). OpenClaw runs one watcher (owner: "${owner.accountId}") and idles the duplicate; the other accounts stay enabled for outbound sends and status. Inbound messages arrive tagged with accountId="${owner.accountId}", so bindings pinned to ${dupIds} should be re-pointed at "${owner.accountId}" (or set "enabled": false on "${owner.accountId}" to flip ownership). Set "enabled": false on the unused duplicates to silence this warning.`,
+      `- channels.imessage: accounts "${owner.accountId}" and ${dupIds} watch the same local Messages source (${where}). Operator runs one watcher (owner: "${owner.accountId}") and idles the duplicate; the other accounts stay enabled for outbound sends and status. Inbound messages arrive tagged with accountId="${owner.accountId}", so bindings pinned to ${dupIds} should be re-pointed at "${owner.accountId}" (or set "enabled": false on "${owner.accountId}" to flip ownership). Set "enabled": false on the unused duplicates to silence this warning.`,
     );
   }
   return warnings;

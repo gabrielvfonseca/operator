@@ -1,6 +1,6 @@
-# ClickClack OpenClaw channel
+# ClickClack Operator channel
 
-Official OpenClaw channel plugin for ClickClack.
+Official Operator channel plugin for ClickClack.
 
 ## Install
 
@@ -27,7 +27,7 @@ storage is the normal setup path.
 ## Command menus
 
 ClickClack command menus are enabled by default. At gateway startup, the
-extension publishes OpenClaw's native commands for composer autocomplete,
+extension publishes Operator's native commands for composer autocomplete,
 labeled with the bot's handle. The bot token must include `commands:write`;
 current `bot:write` and `bot:admin` bundles include it.
 
@@ -37,4 +37,4 @@ continue to work without a menu.
 
 ## Docs
 
-See `docs/channels/clickclack.md` in the OpenClaw repository, or the published docs at `https://docs.openclaw.ai/channels/clickclack`.
+See `docs/channels/clickclack.md` in the Operator repository, or the published docs at `https://docs.openclaw.ai/channels/clickclack`.

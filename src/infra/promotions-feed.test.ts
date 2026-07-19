@@ -1,15 +1,15 @@
 // Covers the promotions feed cache: refresh cadence, 304 revalidation,
 // sequence monotonicity, notified markers, and claim provenance.
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  runOpenClawStateWriteTransaction,
+  closeOperatorStateDatabaseForTest,
+  runOperatorStateWriteTransaction,
 } from "../state/openclaw-state-db.js";
 import { useMockHttp } from "../test-utils/mock-http.js";
 import {
-  createOpenClawTestState,
-  type OpenClawTestState,
+  createOperatorTestState,
+  type OperatorTestState,
 } from "../test-utils/operator-test-state.js";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "./kysely-sync.js";
 import {
@@ -49,17 +49,17 @@ function feedPayload(overrides: Record<string, unknown> = {}) {
 }
 
 describe("promotions feed state", () => {
-  let testState: OpenClawTestState;
+  let testState: OperatorTestState;
 
   beforeEach(async () => {
-    testState = await createOpenClawTestState({
+    testState = await createOperatorTestState({
       layout: "state-only",
       prefix: "openclaw-promotions-feed-",
     });
   });
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await testState.cleanup();
   });
 
@@ -167,9 +167,9 @@ describe("promotions feed state", () => {
       reply: { json: feedPayload({ sequence: 5 }), headers: { etag: '"v5"' } },
     });
     await maybeRefreshPromotionsFeed({ nowMs: NOW, fetchImpl: globalThis.fetch });
-    runOpenClawStateWriteTransaction(({ db }) => {
+    runOperatorStateWriteTransaction(({ db }) => {
       const kysely =
-        getNodeSqliteKysely<Pick<OpenClawStateKyselyDatabase, "clawhub_promotions_feed_state">>(db);
+        getNodeSqliteKysely<Pick<OperatorStateKyselyDatabase, "clawhub_promotions_feed_state">>(db);
       executeSqliteQuerySync(
         db,
         kysely

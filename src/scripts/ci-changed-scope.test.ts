@@ -104,8 +104,8 @@ describe("detectChangedScope", () => {
       "apps/.i18n/native-source.json",
       "apps/android/app/src/main/java/ai/openclaw/app/MainActivity.kt",
       "apps/ios/Sources/RootTabs.swift",
-      "apps/macos/Sources/OpenClaw/Settings.swift",
-      "apps/shared/OpenClawKit/Sources/OpenClawKit/Client.swift",
+      "apps/macos/Sources/Operator/Settings.swift",
+      "apps/shared/OperatorKit/Sources/OperatorKit/Client.swift",
       "scripts/native-app-i18n.ts",
       "scripts/android-app-i18n.ts",
       "scripts/apple-app-i18n.ts",
@@ -175,7 +175,7 @@ describe("detectChangedScope", () => {
       runUiTests: false,
     });
     expect(
-      detectChangedScope(["apps/macos-mlx-tts/Sources/OpenClawMLXTTSHelper/main.swift"]),
+      detectChangedScope(["apps/macos-mlx-tts/Sources/OperatorMLXTTSHelper/main.swift"]),
     ).toEqual({
       runNode: false,
       runMacos: true,
@@ -198,7 +198,7 @@ describe("detectChangedScope", () => {
       runControlUiI18n: false,
       runUiTests: false,
     });
-    expect(detectChangedScope(["apps/shared/OpenClawKit/Sources/Foo.swift"])).toEqual({
+    expect(detectChangedScope(["apps/shared/OperatorKit/Sources/Foo.swift"])).toEqual({
       runNode: false,
       runMacos: true,
       runIosBuild: true,
@@ -282,7 +282,7 @@ describe("detectChangedScope", () => {
 
   it("runs the iOS build but not macOS for generated protocol model-only changes", () => {
     expect(
-      detectChangedScope(["apps/shared/OpenClawKit/Sources/OpenClawProtocol/GatewayModels.swift"]),
+      detectChangedScope(["apps/shared/OperatorKit/Sources/OperatorProtocol/GatewayModels.swift"]),
     ).toEqual({
       runNode: false,
       runMacos: false,

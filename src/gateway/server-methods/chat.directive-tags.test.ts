@@ -519,7 +519,7 @@ async function withTranscriptFixtureState(
   run: (fixtureDir: string) => Promise<void>,
 ): Promise<void> {
   const fixtureDir = await createTranscriptFixture(prefix);
-  await withEnvAsync({ OPENCLAW_STATE_DIR: fixtureDir }, async () => await run(fixtureDir));
+  await withEnvAsync({ OPERATOR_STATE_DIR: fixtureDir }, async () => await run(fixtureDir));
 }
 
 async function withSqliteTranscriptFixtureState(
@@ -527,7 +527,7 @@ async function withSqliteTranscriptFixtureState(
   run: (fixtureDir: string) => Promise<void>,
 ): Promise<void> {
   const fixtureDir = createSqliteTranscriptFixture(prefix);
-  await withEnvAsync({ OPENCLAW_STATE_DIR: fixtureDir }, async () => await run(fixtureDir));
+  await withEnvAsync({ OPERATOR_STATE_DIR: fixtureDir }, async () => await run(fixtureDir));
 }
 
 function transcriptScope(): SessionTranscriptReadScope {
@@ -2647,7 +2647,7 @@ describe("chat directive tag stripping for non-streaming final payloads", () => 
       {
         kind: "final",
         payload: {
-          text: "Scan this QR code with the OpenClaw iOS app:",
+          text: "Scan this QR code with the Operator iOS app:",
           channelData: {
             openclawPairingQr: {
               setupCode,
@@ -2671,7 +2671,7 @@ describe("chat directive tag stripping for non-streaming final payloads", () => 
     const content = getMessageContent(payload);
     expect(content[0]).toEqual({
       type: "text",
-      text: "Scan this QR code with the OpenClaw iOS app:",
+      text: "Scan this QR code with the Operator iOS app:",
     });
     expect(content[1]).toEqual(
       expect.objectContaining({
@@ -2683,7 +2683,7 @@ describe("chat directive tag stripping for non-streaming final payloads", () => 
     );
     const transcriptMessages = await readActiveAssistantTranscriptMessages();
     const serializedTranscript = JSON.stringify(transcriptMessages);
-    expect(serializedTranscript).toContain("Scan this QR code with the OpenClaw iOS app:");
+    expect(serializedTranscript).toContain("Scan this QR code with the Operator iOS app:");
     expect(serializedTranscript).not.toContain("openclaw_pairing_qr");
     expect(serializedTranscript).not.toContain("data:image/png");
     expect(serializedTranscript).not.toContain("terminalText");
@@ -3397,7 +3397,7 @@ describe("chat directive tag stripping for non-streaming final payloads", () => 
   it("renders image reply payloads as assistant image content instead of MEDIA text", async () => {
     await createTranscriptFixture("openclaw-chat-send-agent-image-");
     mockState.finalPayload = {
-      text: "Scan this QR code with the OpenClaw iOS app:",
+      text: "Scan this QR code with the Operator iOS app:",
       mediaUrl: "data:image/png;base64,cG5n",
     };
     const respond = vi.fn();
@@ -3413,7 +3413,7 @@ describe("chat directive tag stripping for non-streaming final payloads", () => 
     expect(getMessage(payload)?.role).toBe("assistant");
     expect(content[0]).toEqual({
       type: "text",
-      text: "Scan this QR code with the OpenClaw iOS app:",
+      text: "Scan this QR code with the Operator iOS app:",
     });
     expect(content[1]).toEqual({ type: "input_image", image_url: "data:image/png;base64,cG5n" });
     expect(JSON.stringify(payload?.message)).not.toContain("MEDIA:data:image/png;base64,cG5n");
@@ -5274,7 +5274,7 @@ describe("chat directive tag stripping for non-streaming final payloads", () => 
   it("does not persist sensitive image media into transcript updates", async () => {
     await createTranscriptFixture("openclaw-chat-send-sensitive-media-final-");
     mockState.finalPayload = {
-      text: "Scan this QR code with the OpenClaw iOS app:",
+      text: "Scan this QR code with the Operator iOS app:",
       mediaUrl: "data:image/png;base64,cG5n",
       sensitiveMedia: true,
     };
@@ -5291,7 +5291,7 @@ describe("chat directive tag stripping for non-streaming final payloads", () => 
     expect(getMessage(payload)?.role).toBe("assistant");
     expect(content[0]).toEqual({
       type: "text",
-      text: "Scan this QR code with the OpenClaw iOS app:",
+      text: "Scan this QR code with the Operator iOS app:",
     });
     expect(content[1]).toEqual({ type: "input_image", image_url: "data:image/png;base64,cG5n" });
     const transcriptUpdate = mockState.emittedTranscriptUpdates.find(
@@ -5304,7 +5304,7 @@ describe("chat directive tag stripping for non-streaming final payloads", () => 
     expect(transcriptMessage?.role).toBe("assistant");
     expect(transcriptMessage?.content?.[0]).toEqual({
       type: "text",
-      text: "Scan this QR code with the OpenClaw iOS app:",
+      text: "Scan this QR code with the Operator iOS app:",
     });
     expect(JSON.stringify(transcriptUpdate)).not.toContain("input_image");
     expect(JSON.stringify(transcriptUpdate)).not.toContain("data:image/png;base64,cG5n");
@@ -5866,7 +5866,7 @@ describe("chat directive tag stripping for non-streaming final payloads", () => 
     mockState.stageSandboxMediaError = stageError;
     const respond = vi.fn();
     const context = createChatContext();
-    const binPayload = Buffer.from("OPENCLAW-BINARY\n").toString("base64");
+    const binPayload = Buffer.from("OPERATOR-BINARY\n").toString("base64");
 
     await runNonStreamingChatSend({
       context,
@@ -5994,7 +5994,7 @@ describe("chat directive tag stripping for non-streaming final payloads", () => 
     mockState.unstagedSources = ["/home/user/.openclaw/media/inbound/data.bin"];
     const respond = vi.fn();
     const context = createChatContext();
-    const binPayload = Buffer.from("OPENCLAW-BINARY\n").toString("base64");
+    const binPayload = Buffer.from("OPERATOR-BINARY\n").toString("base64");
 
     await runNonStreamingChatSend({
       context,
@@ -6241,7 +6241,7 @@ describe("chat directive tag stripping for non-streaming final payloads", () => 
     const respond = vi.fn();
     const context = createChatContext();
     const pdf = Buffer.from("%PDF-1.4\n").toString("base64");
-    const bin = Buffer.from("OPENCLAW-BINARY\n").toString("base64");
+    const bin = Buffer.from("OPERATOR-BINARY\n").toString("base64");
 
     await runNonStreamingChatSend({
       context,
@@ -6311,7 +6311,7 @@ describe("chat directive tag stripping for non-streaming final payloads", () => 
     const context = createChatContext();
     // 6MB buffer — above STAGED_MEDIA_MAX_BYTES (5MB) but below the 20MB parse cap.
     const oversized = Buffer.alloc(6 * 1024 * 1024);
-    oversized.set(Buffer.from("OPENCLAW-BINARY\n"), 0);
+    oversized.set(Buffer.from("OPERATOR-BINARY\n"), 0);
     const oversizedPayload = oversized.toString("base64");
 
     await runNonStreamingChatSend({

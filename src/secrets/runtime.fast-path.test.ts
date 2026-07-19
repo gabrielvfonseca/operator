@@ -10,7 +10,7 @@ import { clearConfigCache, clearRuntimeConfigSnapshot } from "../config/config.j
 import { resolveOAuthPath } from "../config/paths.js";
 import { createEmptyPluginRegistry } from "../plugins/registry-empty.js";
 import { setActivePluginRegistry } from "../plugins/runtime.js";
-import { closeOpenClawAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
 import { clearSecretsRuntimeSnapshot } from "./runtime.js";
 import { asConfig } from "./runtime.test-support.js";
 
@@ -82,7 +82,7 @@ describe("secrets runtime fast path", () => {
     clearSecretsRuntimeSnapshot();
     clearRuntimeConfigSnapshot();
     clearConfigCache();
-    closeOpenClawAgentDatabasesForTest();
+    closeOperatorAgentDatabasesForTest();
     vi.resetModules();
   });
 
@@ -236,7 +236,7 @@ describe("secrets runtime fast path", () => {
     const root = mkdtempSync(path.join(tmpdir(), "openclaw-runtime-fast-path-"));
     const env: NodeJS.ProcessEnv = {
       HOME: root,
-      OPENCLAW_STATE_DIR: root,
+      OPERATOR_STATE_DIR: root,
     };
     const mainAgentDir = resolveDefaultAgentDir({}, env);
     const agentDir = path.join(root, "custom-agent");
@@ -267,7 +267,7 @@ describe("secrets runtime fast path", () => {
     const root = mkdtempSync(path.join(tmpdir(), "openclaw-runtime-fast-path-refresh-"));
     const env: NodeJS.ProcessEnv = {
       HOME: root,
-      OPENCLAW_STATE_DIR: root,
+      OPERATOR_STATE_DIR: root,
     };
     const agentDir = path.join(root, "custom-agent");
     mkdirSync(agentDir, { recursive: true });
@@ -450,7 +450,7 @@ describe("secrets runtime fast path", () => {
     const root = mkdtempSync(path.join(tmpdir(), "openclaw-runtime-fast-path-empty-store-"));
     const env: NodeJS.ProcessEnv = {
       HOME: root,
-      OPENCLAW_STATE_DIR: root,
+      OPERATOR_STATE_DIR: root,
     };
     const agentDir = path.join(root, "custom-agent");
     mkdirSync(agentDir, { recursive: true });

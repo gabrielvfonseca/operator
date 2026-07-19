@@ -1,5 +1,5 @@
 // Ollama provider module implements model/runtime integration.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/provider-auth";
+import type { OperatorConfig } from "openclaw/plugin-sdk/provider-auth";
 import {
   isKnownEnvApiKeyMarker,
   isNonSecretApiKeyMarker,
@@ -44,7 +44,7 @@ type MemoryCoreAcquireLocalService = (
 ) => Promise<{ release: () => void } | undefined>;
 
 type OllamaEmbeddingOptions = {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   agentDir?: string;
   provider?: string;
   remote?: {

@@ -435,29 +435,29 @@ describe("test-projects args", () => {
   it("caps project-level parallelism when the Vitest worker budget is conservative", () => {
     expect(
       resolveParallelFullSuiteConcurrency(58, {
-        OPENCLAW_VITEST_MAX_WORKERS: "1",
+        OPERATOR_VITEST_MAX_WORKERS: "1",
       }),
     ).toBe(1);
 
     expect(
       resolveParallelFullSuiteConcurrency(58, {
-        OPENCLAW_TEST_WORKERS: "1",
+        OPERATOR_TEST_WORKERS: "1",
       }),
     ).toBe(1);
   });
 
   it("keeps conservative local full-suite runs on leaf project configs", () => {
-    const originalVitestMaxWorkers = process.env.OPENCLAW_VITEST_MAX_WORKERS;
-    const originalTestWorkers = process.env.OPENCLAW_TEST_WORKERS;
-    const originalProjectParallel = process.env.OPENCLAW_TEST_PROJECTS_PARALLEL;
-    const originalLeafShards = process.env.OPENCLAW_TEST_PROJECTS_LEAF_SHARDS;
+    const originalVitestMaxWorkers = process.env.OPERATOR_VITEST_MAX_WORKERS;
+    const originalTestWorkers = process.env.OPERATOR_TEST_WORKERS;
+    const originalProjectParallel = process.env.OPERATOR_TEST_PROJECTS_PARALLEL;
+    const originalLeafShards = process.env.OPERATOR_TEST_PROJECTS_LEAF_SHARDS;
     const originalCi = process.env.CI;
     const originalActions = process.env.GITHUB_ACTIONS;
     try {
-      process.env.OPENCLAW_VITEST_MAX_WORKERS = "1";
-      delete process.env.OPENCLAW_TEST_WORKERS;
-      delete process.env.OPENCLAW_TEST_PROJECTS_PARALLEL;
-      delete process.env.OPENCLAW_TEST_PROJECTS_LEAF_SHARDS;
+      process.env.OPERATOR_VITEST_MAX_WORKERS = "1";
+      delete process.env.OPERATOR_TEST_WORKERS;
+      delete process.env.OPERATOR_TEST_PROJECTS_PARALLEL;
+      delete process.env.OPERATOR_TEST_PROJECTS_LEAF_SHARDS;
       delete process.env.CI;
       delete process.env.GITHUB_ACTIONS;
 
@@ -471,24 +471,24 @@ describe("test-projects args", () => {
       expect(configs).not.toContain("test/vitest/vitest.full-agentic.config.ts");
     } finally {
       if (originalVitestMaxWorkers === undefined) {
-        delete process.env.OPENCLAW_VITEST_MAX_WORKERS;
+        delete process.env.OPERATOR_VITEST_MAX_WORKERS;
       } else {
-        process.env.OPENCLAW_VITEST_MAX_WORKERS = originalVitestMaxWorkers;
+        process.env.OPERATOR_VITEST_MAX_WORKERS = originalVitestMaxWorkers;
       }
       if (originalTestWorkers === undefined) {
-        delete process.env.OPENCLAW_TEST_WORKERS;
+        delete process.env.OPERATOR_TEST_WORKERS;
       } else {
-        process.env.OPENCLAW_TEST_WORKERS = originalTestWorkers;
+        process.env.OPERATOR_TEST_WORKERS = originalTestWorkers;
       }
       if (originalProjectParallel === undefined) {
-        delete process.env.OPENCLAW_TEST_PROJECTS_PARALLEL;
+        delete process.env.OPERATOR_TEST_PROJECTS_PARALLEL;
       } else {
-        process.env.OPENCLAW_TEST_PROJECTS_PARALLEL = originalProjectParallel;
+        process.env.OPERATOR_TEST_PROJECTS_PARALLEL = originalProjectParallel;
       }
       if (originalLeafShards === undefined) {
-        delete process.env.OPENCLAW_TEST_PROJECTS_LEAF_SHARDS;
+        delete process.env.OPERATOR_TEST_PROJECTS_LEAF_SHARDS;
       } else {
-        process.env.OPENCLAW_TEST_PROJECTS_LEAF_SHARDS = originalLeafShards;
+        process.env.OPERATOR_TEST_PROJECTS_LEAF_SHARDS = originalLeafShards;
       }
       if (originalCi === undefined) {
         delete process.env.CI;
@@ -507,8 +507,8 @@ describe("test-projects args", () => {
     expect(
       resolveParallelFullSuiteConcurrency(58, {
         GITHUB_ACTIONS: "true",
-        OPENCLAW_TEST_PROJECTS_PARALLEL: "3",
-        OPENCLAW_VITEST_MAX_WORKERS: "1",
+        OPERATOR_TEST_PROJECTS_PARALLEL: "3",
+        OPERATOR_VITEST_MAX_WORKERS: "1",
       }),
     ).toBe(3);
   });
@@ -518,7 +518,7 @@ describe("test-projects args", () => {
       resolveParallelFullSuiteConcurrency(
         58,
         {
-          OPENCLAW_TEST_PROJECTS_LEAF_SHARDS: "1",
+          OPERATOR_TEST_PROJECTS_LEAF_SHARDS: "1",
         },
         {
           cpuCount: 8,
@@ -549,10 +549,10 @@ describe("test-projects args", () => {
 
     const firstEnv = specs[0]?.env;
     expect(firstEnv?.KEEP_ME).toBe("1");
-    expect(firstEnv?.OPENCLAW_VITEST_FS_MODULE_CACHE_PATH?.replaceAll("\\", "/")).toBe(
+    expect(firstEnv?.OPERATOR_VITEST_FS_MODULE_CACHE_PATH?.replaceAll("\\", "/")).toBe(
       "/repo/node_modules/.experimental-vitest-cache/0-test-vitest-vitest.gateway.config.ts",
     );
-    expect(specs[1]?.env.OPENCLAW_VITEST_FS_MODULE_CACHE_PATH?.replaceAll("\\", "/")).toBe(
+    expect(specs[1]?.env.OPERATOR_VITEST_FS_MODULE_CACHE_PATH?.replaceAll("\\", "/")).toBe(
       "/repo/node_modules/.experimental-vitest-cache/1-test-vitest-vitest.gateway-server.config.ts",
     );
   });
@@ -569,7 +569,7 @@ describe("test-projects args", () => {
       applyParallelVitestCachePaths(specs, {
         cwd: "/repo",
         env: {
-          OPENCLAW_VITEST_FS_MODULE_CACHE_PATH: "/tmp/cache",
+          OPERATOR_VITEST_FS_MODULE_CACHE_PATH: "/tmp/cache",
         },
       }),
     ).toBe(specs);
@@ -991,7 +991,7 @@ describe("test-projects args", () => {
     expect(targetArgs).toEqual(["src/plugin-sdk/core.test.ts"]);
     expect(
       resolveChangedTargetArgs(["--changed=origin/main"], process.cwd(), () => changedPaths, {
-        env: { OPENCLAW_TEST_CHANGED_BROAD: "1" },
+        env: { OPERATOR_TEST_CHANGED_BROAD: "1" },
       }),
     ).toEqual(["src/plugin-sdk/core.test.ts", "extensions"]);
     expect(plans[0]).toEqual({
@@ -1066,7 +1066,7 @@ describe("test-projects args", () => {
       "extensions/discord/src/monitor/message-handler.preflight.test.ts",
     ]);
     expect(spec?.includeFilePath).toContain("openclaw-vitest-include-");
-    expect(spec?.env.OPENCLAW_VITEST_INCLUDE_FILE).toBe(spec?.includeFilePath);
+    expect(spec?.env.OPERATOR_VITEST_INCLUDE_FILE).toBe(spec?.includeFilePath);
   });
 
   it("rejects explicit test file targets that do not exist", () => {
@@ -1218,7 +1218,7 @@ describe("test-projects args", () => {
         ],
         {
           baseEnv: {
-            OPENCLAW_VITEST_INCLUDE_FILE: includeFile,
+            OPERATOR_VITEST_INCLUDE_FILE: includeFile,
           } as NodeJS.ProcessEnv,
         },
       );

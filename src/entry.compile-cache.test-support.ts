@@ -17,7 +17,7 @@ type CompileCacheRespawnPlan = {
 };
 
 type CompileCacheTestApi = {
-  buildOpenClawCompileCacheRespawnPlan(params: {
+  buildOperatorCompileCacheRespawnPlan(params: {
     currentFile: string;
     env?: NodeJS.ProcessEnv;
     execArgv?: string[];
@@ -30,15 +30,15 @@ type CompileCacheTestApi = {
   }): CompileCacheRespawnPlan | undefined;
   isNodeVersionAffectedByCompileCacheDeadlock(nodeVersion: string | undefined): boolean;
   isSourceCheckoutInstallRoot(installRoot: string): boolean;
-  resolveOpenClawCompileCacheDirectory(params: {
+  resolveOperatorCompileCacheDirectory(params: {
     env?: NodeJS.ProcessEnv;
     installRoot: string;
   }): string;
-  runOpenClawCompileCacheRespawnPlan(
+  runOperatorCompileCacheRespawnPlan(
     plan: CompileCacheRespawnPlan,
     runtime?: RespawnChildRuntime & { writeError(message: string): void },
   ): ChildProcess;
-  shouldEnableOpenClawCompileCache(params: CompileCacheParams): boolean;
+  shouldEnableOperatorCompileCache(params: CompileCacheParams): boolean;
 };
 
 function getTestApi(): CompileCacheTestApi {
@@ -47,10 +47,10 @@ function getTestApi(): CompileCacheTestApi {
   ] as CompileCacheTestApi;
 }
 
-export function buildOpenClawCompileCacheRespawnPlan(
-  params: Parameters<CompileCacheTestApi["buildOpenClawCompileCacheRespawnPlan"]>[0],
+export function buildOperatorCompileCacheRespawnPlan(
+  params: Parameters<CompileCacheTestApi["buildOperatorCompileCacheRespawnPlan"]>[0],
 ): CompileCacheRespawnPlan | undefined {
-  return getTestApi().buildOpenClawCompileCacheRespawnPlan(params);
+  return getTestApi().buildOperatorCompileCacheRespawnPlan(params);
 }
 
 export function isNodeVersionAffectedByCompileCacheDeadlock(
@@ -63,18 +63,18 @@ export function isSourceCheckoutInstallRoot(installRoot: string): boolean {
   return getTestApi().isSourceCheckoutInstallRoot(installRoot);
 }
 
-export function resolveOpenClawCompileCacheDirectory(
-  params: Parameters<CompileCacheTestApi["resolveOpenClawCompileCacheDirectory"]>[0],
+export function resolveOperatorCompileCacheDirectory(
+  params: Parameters<CompileCacheTestApi["resolveOperatorCompileCacheDirectory"]>[0],
 ): string {
-  return getTestApi().resolveOpenClawCompileCacheDirectory(params);
+  return getTestApi().resolveOperatorCompileCacheDirectory(params);
 }
 
-export function runOpenClawCompileCacheRespawnPlan(
-  ...args: Parameters<CompileCacheTestApi["runOpenClawCompileCacheRespawnPlan"]>
+export function runOperatorCompileCacheRespawnPlan(
+  ...args: Parameters<CompileCacheTestApi["runOperatorCompileCacheRespawnPlan"]>
 ): ChildProcess {
-  return getTestApi().runOpenClawCompileCacheRespawnPlan(...args);
+  return getTestApi().runOperatorCompileCacheRespawnPlan(...args);
 }
 
-export function shouldEnableOpenClawCompileCache(params: CompileCacheParams): boolean {
-  return getTestApi().shouldEnableOpenClawCompileCache(params);
+export function shouldEnableOperatorCompileCache(params: CompileCacheParams): boolean {
+  return getTestApi().shouldEnableOperatorCompileCache(params);
 }

@@ -1,6 +1,6 @@
 import type { AgentMessage } from "../agents/runtime/index.js";
 import type { AnyAgentTool } from "../agents/tools/common.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { ProviderRuntimeModel } from "./provider-runtime-model.types.js";
 
 type ProviderReplaySanitizeMode = "full" | "images-only";
@@ -13,7 +13,7 @@ export type ProviderReasoningOutputMode = "native" | "tagged";
  * @deprecated Legacy static provider capability bag.
  *
  * Core replay/runtime ownership now lives on explicit provider hooks such as
- * `buildReplayPolicy`, `normalizeToolSchemas`, and `wrapStreamFn`. OpenClaw no
+ * `buildReplayPolicy`, `normalizeToolSchemas`, and `wrapStreamFn`. Operator no
  * longer reads this bag at runtime, but the field remains typed so existing
  * third-party plugins do not fail to compile immediately.
  */
@@ -53,7 +53,7 @@ export type ProviderReplayPolicy = {
  * behavior and should stay with the provider plugin instead of core tables.
  */
 export type ProviderReplayPolicyContext = {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentDir?: string;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;

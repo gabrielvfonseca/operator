@@ -2,7 +2,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("./openclaw-plugin-tools.js", () => ({
-  resolveOpenClawPluginToolsForOptions: () => [
+  resolveOperatorPluginToolsForOptions: () => [
     {
       name: "show_widget",
       label: "Show widget",
@@ -14,8 +14,8 @@ vi.mock("./openclaw-plugin-tools.js", () => ({
   ],
 }));
 
-import { createOpenClawCodingTools } from "./agent-tools.js";
-import { createOpenClawTools } from "./openclaw-tools.js";
+import { createOperatorCodingTools } from "./agent-tools.js";
+import { createOperatorTools } from "./openclaw-tools.js";
 
 function hasWidget(tools: readonly { name: string }[]): boolean {
   return tools.some((tool) => tool.name === "show_widget");
@@ -23,21 +23,21 @@ function hasWidget(tools: readonly { name: string }[]): boolean {
 
 describe("gateway client capability tool filtering", () => {
   it("excludes capability-gated tools when no gateway client caps exist", () => {
-    expect(hasWidget(createOpenClawTools())).toBe(false);
+    expect(hasWidget(createOperatorTools())).toBe(false);
   });
 
   it("excludes capability-gated tools when a required cap is absent", () => {
-    expect(hasWidget(createOpenClawTools({ clientCaps: ["tool-events"] }))).toBe(false);
+    expect(hasWidget(createOperatorTools({ clientCaps: ["tool-events"] }))).toBe(false);
   });
 
   it("includes capability-gated tools when the client caps are a superset", () => {
-    expect(hasWidget(createOpenClawTools({ clientCaps: ["tool-events", "inline-widgets"] }))).toBe(
+    expect(hasWidget(createOperatorTools({ clientCaps: ["tool-events", "inline-widgets"] }))).toBe(
       true,
     );
   });
 
   it("does not let tools.allow resurrect a gated tool for a channel run", () => {
-    const tools = createOpenClawCodingTools({
+    const tools = createOperatorCodingTools({
       messageProvider: "telegram",
       disableMessageTool: true,
       config: { tools: { allow: ["show_widget"] } },
@@ -45,7 +45,7 @@ describe("gateway client capability tool filtering", () => {
         includeBaseCodingTools: false,
         includeShellTools: false,
         includeChannelTools: false,
-        includeOpenClawTools: true,
+        includeOperatorTools: true,
         includePluginTools: true,
       },
     });
@@ -54,24 +54,24 @@ describe("gateway client capability tool filtering", () => {
   });
 
   it("filters gated tools on plugin-only construction plans", () => {
-    // Regression: plugin-only plans bypass createOpenClawTools, which used to
+    // Regression: plugin-only plans bypass createOperatorTools, which used to
     // skip the capability gate entirely for narrow allowlists.
     const plan = {
       includeBaseCodingTools: false,
       includeShellTools: false,
       includeChannelTools: false,
-      includeOpenClawTools: false,
+      includeOperatorTools: false,
       includePluginTools: true,
     };
 
     expect(
       hasWidget(
-        createOpenClawCodingTools({ messageProvider: "telegram", toolConstructionPlan: plan }),
+        createOperatorCodingTools({ messageProvider: "telegram", toolConstructionPlan: plan }),
       ),
     ).toBe(false);
     expect(
       hasWidget(
-        createOpenClawCodingTools({
+        createOperatorCodingTools({
           messageProvider: "webchat",
           clientCaps: ["inline-widgets"],
           toolConstructionPlan: plan,

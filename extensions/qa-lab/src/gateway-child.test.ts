@@ -26,7 +26,7 @@ vi.mock("openclaw/plugin-sdk/ssrf-runtime", () => ({
 
 vi.mock("openclaw/plugin-sdk/temp-path", async (importOriginal) => ({
   ...(await importOriginal<typeof import("openclaw/plugin-sdk/temp-path")>()),
-  resolvePreferredOpenClawTmpDir: () => qaTempPathState.preferredTmpDir,
+  resolvePreferredOperatorTmpDir: () => qaTempPathState.preferredTmpDir,
 }));
 
 vi.mock("./node-exec.js", () => ({
@@ -122,7 +122,7 @@ describe("runQaGatewayCliCommand", () => {
       executablePath: process.execPath,
       argsPrefix: [
         "--eval",
-        'process.stdout.write(`${process.env.OPENCLAW_CLI}:${process.env.QA_VALUE}:${process.argv.slice(1).join(",")}`)',
+        'process.stdout.write(`${process.env.OPERATOR_CLI}:${process.env.QA_VALUE}:${process.argv.slice(1).join(",")}`)',
       ],
       args: ["voicecall", "start"],
       cwd: process.cwd(),
@@ -141,7 +141,7 @@ describe("runQaGatewayCliCommand", () => {
         cwd: process.cwd(),
         env: process.env,
       }),
-    ).rejects.toThrow("OpenClaw CLI exited 7: fixture failure");
+    ).rejects.toThrow("Operator CLI exited 7: fixture failure");
   });
 
   it.each(["stdout", "stderr"] as const)(
@@ -301,26 +301,26 @@ describe("buildQaRuntimeEnv", () => {
       providerMode: "mock-openai",
     });
 
-    expect(env.OPENCLAW_TEST_FAST).toBe("1");
-    expect(env.OPENCLAW_SKIP_STARTUP_MODEL_PREWARM).toBe("1");
-    expect(env.OPENCLAW_EMBEDDED_ABORT_SETTLE_TIMEOUT_MS).toBe("2000");
-    expect(env.OPENCLAW_QA_PARENT_PID).toBe(String(process.pid));
-    expect(env.OPENCLAW_QA_TEMP_ROOT).toBe("/tmp/openclaw-qa");
-    expect(env.OPENCLAW_QA_STAGED_RUNTIME_ROOT).toBe(
+    expect(env.OPERATOR_TEST_FAST).toBe("1");
+    expect(env.OPERATOR_SKIP_STARTUP_MODEL_PREWARM).toBe("1");
+    expect(env.OPERATOR_EMBEDDED_ABORT_SETTLE_TIMEOUT_MS).toBe("2000");
+    expect(env.OPERATOR_QA_PARENT_PID).toBe(String(process.pid));
+    expect(env.OPERATOR_QA_TEMP_ROOT).toBe("/tmp/openclaw-qa");
+    expect(env.OPERATOR_QA_STAGED_RUNTIME_ROOT).toBe(
       "/repo/.artifacts/qa-runtime/openclaw-qa-suite-test",
     );
-    expect(env.OPENCLAW_QA_ALLOW_LOCAL_IMAGE_PROVIDER).toBe("1");
-    expect(env.OPENCLAW_ALLOW_SLOW_REPLY_TESTS).toBe("1");
-    expect(env.OPENCLAW_BUNDLED_PLUGINS_DIR).toBe("/tmp/openclaw-qa/bundled-plugins");
-    expect(env.OPENCLAW_COMPATIBILITY_HOST_VERSION).toBe("2026.4.8");
+    expect(env.OPERATOR_QA_ALLOW_LOCAL_IMAGE_PROVIDER).toBe("1");
+    expect(env.OPERATOR_ALLOW_SLOW_REPLY_TESTS).toBe("1");
+    expect(env.OPERATOR_BUNDLED_PLUGINS_DIR).toBe("/tmp/openclaw-qa/bundled-plugins");
+    expect(env.OPERATOR_COMPATIBILITY_HOST_VERSION).toBe("2026.4.8");
   });
 
   it("maps live frontier key aliases into provider env vars", () => {
     const env = buildQaRuntimeEnv({
       ...createParams({
-        OPENCLAW_LIVE_OPENAI_KEY: "openai-live",
-        OPENCLAW_LIVE_ANTHROPIC_KEY: "anthropic-live",
-        OPENCLAW_LIVE_GEMINI_KEY: "gemini-live",
+        OPERATOR_LIVE_OPENAI_KEY: "openai-live",
+        OPERATOR_LIVE_ANTHROPIC_KEY: "anthropic-live",
+        OPERATOR_LIVE_GEMINI_KEY: "gemini-live",
       }),
       providerMode: "live-frontier",
     });
@@ -339,7 +339,7 @@ describe("buildQaRuntimeEnv", () => {
     const env = buildQaRuntimeEnv({
       ...createParams({
         OPENAI_API_KEY: "openai-explicit",
-        OPENCLAW_LIVE_OPENAI_KEY: "openai-live",
+        OPERATOR_LIVE_OPENAI_KEY: "openai-live",
       }),
       providerMode: "live-frontier",
     });
@@ -347,7 +347,7 @@ describe("buildQaRuntimeEnv", () => {
     expect(env.OPENAI_API_KEY).toBe("openai-explicit");
   });
 
-  it("preserves Codex CLI auth home for live frontier runs while sandboxing OpenClaw home", async () => {
+  it("preserves Codex CLI auth home for live frontier runs while sandboxing Operator home", async () => {
     const hostHome = await mkdtemp(path.join(os.tmpdir(), "qa-host-home-"));
     cleanups.push(async () => {
       await rm(hostHome, { recursive: true, force: true });
@@ -363,11 +363,11 @@ describe("buildQaRuntimeEnv", () => {
     });
 
     expect(env.HOME).toBe("/tmp/openclaw-qa/home");
-    expect(env.OPENCLAW_HOME).toBe("/tmp/openclaw-qa/home");
+    expect(env.OPERATOR_HOME).toBe("/tmp/openclaw-qa/home");
     expect(env.CODEX_HOME).toBe(codexHome);
   });
 
-  it("forwards host HOME for live Claude CLI runs while keeping OpenClaw home sandboxed", async () => {
+  it("forwards host HOME for live Claude CLI runs while keeping Operator home sandboxed", async () => {
     const hostHome = await mkdtemp(path.join(os.tmpdir(), "qa-host-home-"));
     cleanups.push(async () => {
       await rm(hostHome, { recursive: true, force: true });
@@ -382,11 +382,11 @@ describe("buildQaRuntimeEnv", () => {
     });
 
     expect(env.HOME).toBe(hostHome);
-    expect(env.OPENCLAW_HOME).toBe("/tmp/openclaw-qa/home");
-    expect(env.OPENCLAW_STATE_DIR).toBe("/tmp/openclaw-qa/state");
+    expect(env.OPERATOR_HOME).toBe("/tmp/openclaw-qa/home");
+    expect(env.OPERATOR_STATE_DIR).toBe("/tmp/openclaw-qa/state");
   });
 
-  it("can forward host HOME for browser-backed QA runs while keeping OpenClaw home sandboxed", async () => {
+  it("can forward host HOME for browser-backed QA runs while keeping Operator home sandboxed", async () => {
     const hostHome = await mkdtemp(path.join(os.tmpdir(), "qa-host-home-"));
     cleanups.push(async () => {
       await rm(hostHome, { recursive: true, force: true });
@@ -401,8 +401,8 @@ describe("buildQaRuntimeEnv", () => {
     });
 
     expect(env.HOME).toBe(hostHome);
-    expect(env.OPENCLAW_HOME).toBe("/tmp/openclaw-qa/home");
-    expect(env.OPENCLAW_STATE_DIR).toBe("/tmp/openclaw-qa/state");
+    expect(env.OPERATOR_HOME).toBe("/tmp/openclaw-qa/home");
+    expect(env.OPERATOR_STATE_DIR).toBe("/tmp/openclaw-qa/state");
   });
 
   it("preserves the live Anthropic key for live Claude CLI runs without writing it into config", async () => {
@@ -414,8 +414,8 @@ describe("buildQaRuntimeEnv", () => {
     const env = buildQaRuntimeEnv({
       ...createParams({
         HOME: hostHome,
-        OPENCLAW_LIVE_ANTHROPIC_KEY: "anthropic-live",
-        OPENCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV: '["SAFE_KEEP"]',
+        OPERATOR_LIVE_ANTHROPIC_KEY: "anthropic-live",
+        OPERATOR_LIVE_CLI_BACKEND_PRESERVE_ENV: '["SAFE_KEEP"]',
       }),
       providerMode: "live-frontier",
       forwardHostHomeForClaudeCli: true,
@@ -423,8 +423,8 @@ describe("buildQaRuntimeEnv", () => {
     });
 
     expect(env.ANTHROPIC_API_KEY).toBe("anthropic-live");
-    expect(env.OPENCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV).toBe('["SAFE_KEEP","ANTHROPIC_API_KEY"]');
-    expect(env.OPENCLAW_LIVE_CLI_BACKEND_AUTH_MODE).toBe("api-key");
+    expect(env.OPERATOR_LIVE_CLI_BACKEND_PRESERVE_ENV).toBe('["SAFE_KEEP","ANTHROPIC_API_KEY"]');
+    expect(env.OPERATOR_LIVE_CLI_BACKEND_AUTH_MODE).toBe("api-key");
   });
 
   it("removes preserved Anthropic keys for live Claude CLI subscription runs", async () => {
@@ -437,7 +437,7 @@ describe("buildQaRuntimeEnv", () => {
       ...createParams({
         HOME: hostHome,
         ANTHROPIC_API_KEY: "anthropic-live",
-        OPENCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV: '["SAFE_KEEP","ANTHROPIC_API_KEY"]',
+        OPERATOR_LIVE_CLI_BACKEND_PRESERVE_ENV: '["SAFE_KEEP","ANTHROPIC_API_KEY"]',
       }),
       providerMode: "live-frontier",
       forwardHostHomeForClaudeCli: true,
@@ -445,42 +445,42 @@ describe("buildQaRuntimeEnv", () => {
     });
 
     expect(env.ANTHROPIC_API_KEY).toBe("anthropic-live");
-    expect(env.OPENCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV).toBe('["SAFE_KEEP"]');
-    expect(env.OPENCLAW_LIVE_CLI_BACKEND_AUTH_MODE).toBe("subscription");
+    expect(env.OPERATOR_LIVE_CLI_BACKEND_PRESERVE_ENV).toBe('["SAFE_KEEP"]');
+    expect(env.OPERATOR_LIVE_CLI_BACKEND_AUTH_MODE).toBe("subscription");
   });
 
   it("does not pass QA setup-token values to the gateway child env", () => {
     const env = buildQaRuntimeEnv({
       ...createParams({
-        OPENCLAW_LIVE_SETUP_TOKEN_VALUE: `sk-ant-oat01-${"a".repeat(80)}`,
-        OPENCLAW_QA_LIVE_ANTHROPIC_SETUP_TOKEN: `sk-ant-oat01-${"b".repeat(80)}`,
+        OPERATOR_LIVE_SETUP_TOKEN_VALUE: `sk-ant-oat01-${"a".repeat(80)}`,
+        OPERATOR_QA_LIVE_ANTHROPIC_SETUP_TOKEN: `sk-ant-oat01-${"b".repeat(80)}`,
       }),
       providerMode: "live-frontier",
     });
 
-    expect(env.OPENCLAW_LIVE_SETUP_TOKEN_VALUE).toBeUndefined();
-    expect(env.OPENCLAW_QA_LIVE_ANTHROPIC_SETUP_TOKEN).toBeUndefined();
+    expect(env.OPERATOR_LIVE_SETUP_TOKEN_VALUE).toBeUndefined();
+    expect(env.OPERATOR_QA_LIVE_ANTHROPIC_SETUP_TOKEN).toBeUndefined();
   });
 
   it("does not pass credential broker or Telegram harness secrets to the gateway child env", () => {
     const env = buildQaRuntimeEnv({
       ...createParams({
-        OPENCLAW_QA_CONVEX_SECRET_CI: "convex-ci-secret",
-        OPENCLAW_QA_CONVEX_SECRET_MAINTAINER: "convex-maintainer-secret",
-        OPENCLAW_QA_SUT_FORBIDDEN_SENTINEL: "trusted-parent-only",
-        OPENCLAW_QA_TELEGRAM_GROUP_ID: "-1001234567890",
-        OPENCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN: "driver-token",
-        OPENCLAW_QA_TELEGRAM_SUT_BOT_TOKEN: "sut-token",
+        OPERATOR_QA_CONVEX_SECRET_CI: "convex-ci-secret",
+        OPERATOR_QA_CONVEX_SECRET_MAINTAINER: "convex-maintainer-secret",
+        OPERATOR_QA_SUT_FORBIDDEN_SENTINEL: "trusted-parent-only",
+        OPERATOR_QA_TELEGRAM_GROUP_ID: "-1001234567890",
+        OPERATOR_QA_TELEGRAM_DRIVER_BOT_TOKEN: "driver-token",
+        OPERATOR_QA_TELEGRAM_SUT_BOT_TOKEN: "sut-token",
       }),
       providerMode: "live-frontier",
     });
 
-    expect(env.OPENCLAW_QA_CONVEX_SECRET_CI).toBeUndefined();
-    expect(env.OPENCLAW_QA_CONVEX_SECRET_MAINTAINER).toBeUndefined();
-    expect(env.OPENCLAW_QA_SUT_FORBIDDEN_SENTINEL).toBeUndefined();
-    expect(env.OPENCLAW_QA_TELEGRAM_GROUP_ID).toBeUndefined();
-    expect(env.OPENCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN).toBeUndefined();
-    expect(env.OPENCLAW_QA_TELEGRAM_SUT_BOT_TOKEN).toBeUndefined();
+    expect(env.OPERATOR_QA_CONVEX_SECRET_CI).toBeUndefined();
+    expect(env.OPERATOR_QA_CONVEX_SECRET_MAINTAINER).toBeUndefined();
+    expect(env.OPERATOR_QA_SUT_FORBIDDEN_SENTINEL).toBeUndefined();
+    expect(env.OPERATOR_QA_TELEGRAM_GROUP_ID).toBeUndefined();
+    expect(env.OPERATOR_QA_TELEGRAM_DRIVER_BOT_TOKEN).toBeUndefined();
+    expect(env.OPERATOR_QA_TELEGRAM_SUT_BOT_TOKEN).toBeUndefined();
   });
 
   it("re-scrubs blocked credentials after runtime env patches", () => {
@@ -488,24 +488,24 @@ describe("buildQaRuntimeEnv", () => {
       ...createParams({ SAFE_VALUE: "base" }),
       runtimeEnvPatch: {
         SAFE_VALUE: "patched",
-        OPENCLAW_LIVE_SETUP_TOKEN_VALUE: "setup-token",
-        OPENCLAW_QA_LIVE_ANTHROPIC_SETUP_TOKEN: "anthropic-setup-token",
-        OPENCLAW_QA_CONVEX_SECRET_CI: "convex-ci-secret",
-        OPENCLAW_QA_SUT_FORBIDDEN_SENTINEL: "trusted-parent-only",
-        OPENCLAW_QA_TELEGRAM_GROUP_ID: "-1001234567890",
-        OPENCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN: "driver-token",
-        OPENCLAW_QA_TELEGRAM_SUT_BOT_TOKEN: "sut-token",
+        OPERATOR_LIVE_SETUP_TOKEN_VALUE: "setup-token",
+        OPERATOR_QA_LIVE_ANTHROPIC_SETUP_TOKEN: "anthropic-setup-token",
+        OPERATOR_QA_CONVEX_SECRET_CI: "convex-ci-secret",
+        OPERATOR_QA_SUT_FORBIDDEN_SENTINEL: "trusted-parent-only",
+        OPERATOR_QA_TELEGRAM_GROUP_ID: "-1001234567890",
+        OPERATOR_QA_TELEGRAM_DRIVER_BOT_TOKEN: "driver-token",
+        OPERATOR_QA_TELEGRAM_SUT_BOT_TOKEN: "sut-token",
       },
     });
 
     expect(env.SAFE_VALUE).toBe("patched");
-    expect(env.OPENCLAW_LIVE_SETUP_TOKEN_VALUE).toBeUndefined();
-    expect(env.OPENCLAW_QA_LIVE_ANTHROPIC_SETUP_TOKEN).toBeUndefined();
-    expect(env.OPENCLAW_QA_CONVEX_SECRET_CI).toBeUndefined();
-    expect(env.OPENCLAW_QA_SUT_FORBIDDEN_SENTINEL).toBeUndefined();
-    expect(env.OPENCLAW_QA_TELEGRAM_GROUP_ID).toBeUndefined();
-    expect(env.OPENCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN).toBeUndefined();
-    expect(env.OPENCLAW_QA_TELEGRAM_SUT_BOT_TOKEN).toBeUndefined();
+    expect(env.OPERATOR_LIVE_SETUP_TOKEN_VALUE).toBeUndefined();
+    expect(env.OPERATOR_QA_LIVE_ANTHROPIC_SETUP_TOKEN).toBeUndefined();
+    expect(env.OPERATOR_QA_CONVEX_SECRET_CI).toBeUndefined();
+    expect(env.OPERATOR_QA_SUT_FORBIDDEN_SENTINEL).toBeUndefined();
+    expect(env.OPERATOR_QA_TELEGRAM_GROUP_ID).toBeUndefined();
+    expect(env.OPERATOR_QA_TELEGRAM_DRIVER_BOT_TOKEN).toBeUndefined();
+    expect(env.OPERATOR_QA_TELEGRAM_SUT_BOT_TOKEN).toBeUndefined();
   });
 
   it("re-scrubs blocked credentials in the spawned gateway child env", async () => {
@@ -519,13 +519,13 @@ describe("buildQaRuntimeEnv", () => {
       'const fs = require("node:fs");',
       "const env = {",
       "SAFE_VALUE: process.env.SAFE_VALUE,",
-      "OPENCLAW_LIVE_SETUP_TOKEN_VALUE: process.env.OPENCLAW_LIVE_SETUP_TOKEN_VALUE,",
-      "OPENCLAW_QA_LIVE_ANTHROPIC_SETUP_TOKEN: process.env.OPENCLAW_QA_LIVE_ANTHROPIC_SETUP_TOKEN,",
-      "OPENCLAW_QA_CONVEX_SECRET_CI: process.env.OPENCLAW_QA_CONVEX_SECRET_CI,",
-      "OPENCLAW_QA_SUT_FORBIDDEN_SENTINEL: process.env.OPENCLAW_QA_SUT_FORBIDDEN_SENTINEL,",
-      "OPENCLAW_QA_TELEGRAM_GROUP_ID: process.env.OPENCLAW_QA_TELEGRAM_GROUP_ID,",
-      "OPENCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN: process.env.OPENCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN,",
-      "OPENCLAW_QA_TELEGRAM_SUT_BOT_TOKEN: process.env.OPENCLAW_QA_TELEGRAM_SUT_BOT_TOKEN,",
+      "OPERATOR_LIVE_SETUP_TOKEN_VALUE: process.env.OPERATOR_LIVE_SETUP_TOKEN_VALUE,",
+      "OPERATOR_QA_LIVE_ANTHROPIC_SETUP_TOKEN: process.env.OPERATOR_QA_LIVE_ANTHROPIC_SETUP_TOKEN,",
+      "OPERATOR_QA_CONVEX_SECRET_CI: process.env.OPERATOR_QA_CONVEX_SECRET_CI,",
+      "OPERATOR_QA_SUT_FORBIDDEN_SENTINEL: process.env.OPERATOR_QA_SUT_FORBIDDEN_SENTINEL,",
+      "OPERATOR_QA_TELEGRAM_GROUP_ID: process.env.OPERATOR_QA_TELEGRAM_GROUP_ID,",
+      "OPERATOR_QA_TELEGRAM_DRIVER_BOT_TOKEN: process.env.OPERATOR_QA_TELEGRAM_DRIVER_BOT_TOKEN,",
+      "OPERATOR_QA_TELEGRAM_SUT_BOT_TOKEN: process.env.OPERATOR_QA_TELEGRAM_SUT_BOT_TOKEN,",
       "};",
       `fs.writeFileSync(${JSON.stringify(observedEnvPath)}, JSON.stringify(env));`,
     ].join("\n");
@@ -540,13 +540,13 @@ describe("buildQaRuntimeEnv", () => {
         },
         runtimeEnvPatch: {
           SAFE_VALUE: "patched",
-          OPENCLAW_LIVE_SETUP_TOKEN_VALUE: "setup-token",
-          OPENCLAW_QA_LIVE_ANTHROPIC_SETUP_TOKEN: "anthropic-setup-token",
-          OPENCLAW_QA_CONVEX_SECRET_CI: "convex-ci-secret",
-          OPENCLAW_QA_SUT_FORBIDDEN_SENTINEL: "trusted-parent-only",
-          OPENCLAW_QA_TELEGRAM_GROUP_ID: "-1001234567890",
-          OPENCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN: "driver-token",
-          OPENCLAW_QA_TELEGRAM_SUT_BOT_TOKEN: "sut-token",
+          OPERATOR_LIVE_SETUP_TOKEN_VALUE: "setup-token",
+          OPERATOR_QA_LIVE_ANTHROPIC_SETUP_TOKEN: "anthropic-setup-token",
+          OPERATOR_QA_CONVEX_SECRET_CI: "convex-ci-secret",
+          OPERATOR_QA_SUT_FORBIDDEN_SENTINEL: "trusted-parent-only",
+          OPERATOR_QA_TELEGRAM_GROUP_ID: "-1001234567890",
+          OPERATOR_QA_TELEGRAM_DRIVER_BOT_TOKEN: "driver-token",
+          OPERATOR_QA_TELEGRAM_SUT_BOT_TOKEN: "sut-token",
         },
         transport: {
           requiredPluginIds: [],
@@ -605,11 +605,11 @@ describe("buildQaRuntimeEnv", () => {
           OPENAI_API_KEY: "openai-live",
           OPENAI_API_KEYS: "openai-a,openai-b",
           CODEX_HOME: "/host/.codex",
-          OPENCLAW_LIVE_ANTHROPIC_KEY: "anthropic-live",
-          OPENCLAW_LIVE_ANTHROPIC_KEYS: "anthropic-a,anthropic-b",
-          OPENCLAW_LIVE_CODEX_API_KEY: "codex-live",
-          OPENCLAW_LIVE_GEMINI_KEY: "gemini-live",
-          OPENCLAW_LIVE_OPENAI_KEY: "openai-live",
+          OPERATOR_LIVE_ANTHROPIC_KEY: "anthropic-live",
+          OPERATOR_LIVE_ANTHROPIC_KEYS: "anthropic-a,anthropic-b",
+          OPERATOR_LIVE_CODEX_API_KEY: "codex-live",
+          OPERATOR_LIVE_GEMINI_KEY: "gemini-live",
+          OPERATOR_LIVE_OPENAI_KEY: "openai-live",
         }),
         providerMode,
       });
@@ -623,11 +623,11 @@ describe("buildQaRuntimeEnv", () => {
       expect(env.GEMINI_API_KEY).toBeUndefined();
       expect(env.GEMINI_API_KEYS).toBeUndefined();
       expect(env.GOOGLE_API_KEY).toBeUndefined();
-      expect(env.OPENCLAW_LIVE_OPENAI_KEY).toBeUndefined();
-      expect(env.OPENCLAW_LIVE_ANTHROPIC_KEY).toBeUndefined();
-      expect(env.OPENCLAW_LIVE_ANTHROPIC_KEYS).toBeUndefined();
-      expect(env.OPENCLAW_LIVE_CODEX_API_KEY).toBeUndefined();
-      expect(env.OPENCLAW_LIVE_GEMINI_KEY).toBeUndefined();
+      expect(env.OPERATOR_LIVE_OPENAI_KEY).toBeUndefined();
+      expect(env.OPERATOR_LIVE_ANTHROPIC_KEY).toBeUndefined();
+      expect(env.OPERATOR_LIVE_ANTHROPIC_KEYS).toBeUndefined();
+      expect(env.OPERATOR_LIVE_CODEX_API_KEY).toBeUndefined();
+      expect(env.OPERATOR_LIVE_GEMINI_KEY).toBeUndefined();
     },
   );
 
@@ -705,7 +705,7 @@ describe("buildQaRuntimeEnv", () => {
       cfg: {},
       stateDir,
       env: {
-        OPENCLAW_LIVE_SETUP_TOKEN_VALUE: token,
+        OPERATOR_LIVE_SETUP_TOKEN_VALUE: token,
       },
     });
 
@@ -771,7 +771,7 @@ describe("buildQaRuntimeEnv", () => {
       stateDir,
       providerIds: ["openai"],
       env: {
-        OPENCLAW_LIVE_OPENAI_KEY: "qa-live-codex-fallback-key",
+        OPERATOR_LIVE_OPENAI_KEY: "qa-live-codex-fallback-key",
       },
     });
 
@@ -813,7 +813,7 @@ describe("buildQaRuntimeEnv", () => {
       stateDir,
       providerIds: ["openai"],
       env: {
-        OPENCLAW_LIVE_CODEX_API_KEY: "qa-live-direct-codex-key",
+        OPERATOR_LIVE_CODEX_API_KEY: "qa-live-direct-codex-key",
       },
     });
 
@@ -834,7 +834,7 @@ describe("buildQaRuntimeEnv", () => {
         cfg,
         providerIds: ["openai"],
         env: {
-          OPENCLAW_LIVE_CODEX_API_KEY: "qa-live-direct-codex-key",
+          OPERATOR_LIVE_CODEX_API_KEY: "qa-live-direct-codex-key",
         },
         readCodexCredentials: () => null,
       }),
@@ -896,7 +896,7 @@ describe("buildQaRuntimeEnv", () => {
         providerIds: ["openai"],
         env: {
           CODEX_HOME: path.join(os.tmpdir(), "missing-openclaw-codex-home"),
-          OPENCLAW_QA_FORCE_RUNTIME: "codex",
+          OPERATOR_QA_FORCE_RUNTIME: "codex",
         },
         readCodexCredentials: () => null,
       }),
@@ -909,8 +909,8 @@ describe("buildQaRuntimeEnv", () => {
         cfg: {},
         providerIds: ["openai"],
         env: {
-          OPENCLAW_LIVE_OPENAI_KEY: "qa-live-codex-fallback-key",
-          OPENCLAW_QA_FORCE_RUNTIME: "codex",
+          OPERATOR_LIVE_OPENAI_KEY: "qa-live-codex-fallback-key",
+          OPERATOR_QA_FORCE_RUNTIME: "codex",
         },
         readCodexCredentials: () => null,
       }),
@@ -972,7 +972,7 @@ describe("buildQaRuntimeEnv", () => {
       await rm(stateDir, { recursive: true, force: true });
     });
     const env = {
-      OPENCLAW_LIVE_CODEX_API_KEY: "qa-configured-env-ref-not-a-real-key",
+      OPERATOR_LIVE_CODEX_API_KEY: "qa-configured-env-ref-not-a-real-key",
     };
     const cfg = await testing.stageQaLiveApiKeyProfiles({
       cfg: {
@@ -984,7 +984,7 @@ describe("buildQaRuntimeEnv", () => {
               apiKey: {
                 source: "env",
                 provider: "default",
-                id: "OPENCLAW_LIVE_CODEX_API_KEY",
+                id: "OPERATOR_LIVE_CODEX_API_KEY",
               },
             },
           },
@@ -1029,7 +1029,7 @@ describe("buildQaRuntimeEnv", () => {
             openai: {
               baseUrl: "",
               models: [],
-              apiKey: "OPENCLAW_LIVE_CODEX_API_KEY",
+              apiKey: "OPERATOR_LIVE_CODEX_API_KEY",
             },
           },
         },
@@ -1037,7 +1037,7 @@ describe("buildQaRuntimeEnv", () => {
       stateDir,
       providerIds: ["openai"],
       env: {
-        OPENCLAW_LIVE_CODEX_API_KEY: "qa-configured-marker-not-a-real-key",
+        OPERATOR_LIVE_CODEX_API_KEY: "qa-configured-marker-not-a-real-key",
       },
     });
 
@@ -1404,11 +1404,11 @@ describe("buildQaRuntimeEnv", () => {
     await writeFile(
       stdoutLogPath,
       [
-        "OPENCLAW_GATEWAY_TOKEN=qa-suite-token",
+        "OPERATOR_GATEWAY_TOKEN=qa-suite-token",
         'OPENAI_API_KEY="openai-live"',
-        "OPENCLAW_QA_CONVEX_SECRET_CI=convex-ci-secret",
-        "OPENCLAW_QA_CONVEX_SECRET_MAINTAINER=convex-maintainer-secret",
-        "OPENCLAW_LIVE_CODEX_API_KEY=codex-live-secret",
+        "OPERATOR_QA_CONVEX_SECRET_CI=convex-ci-secret",
+        "OPERATOR_QA_CONVEX_SECRET_MAINTAINER=convex-maintainer-secret",
+        "OPERATOR_LIVE_CODEX_API_KEY=codex-live-secret",
         "botToken=12345:AbCdEfGhIjKl",
         "--botToken=12345:flag-secret",
         '"driverToken":"12345:driver-secr3t"',
@@ -1449,11 +1449,11 @@ describe("buildQaRuntimeEnv", () => {
     ]);
     await expect(readFile(path.join(artifactDir, "gateway.stdout.log"), "utf8")).resolves.toBe(
       [
-        "OPENCLAW_GATEWAY_TOKEN=<redacted>",
+        "OPERATOR_GATEWAY_TOKEN=<redacted>",
         "OPENAI_API_KEY=<redacted>",
-        "OPENCLAW_QA_CONVEX_SECRET_CI=<redacted>",
-        "OPENCLAW_QA_CONVEX_SECRET_MAINTAINER=<redacted>",
-        "OPENCLAW_LIVE_CODEX_API_KEY=<redacted>",
+        "OPERATOR_QA_CONVEX_SECRET_CI=<redacted>",
+        "OPERATOR_QA_CONVEX_SECRET_MAINTAINER=<redacted>",
+        "OPERATOR_LIVE_CODEX_API_KEY=<redacted>",
         "botToken=<redacted>",
         "--botToken=<redacted>",
         '"driverToken":"<redacted>"',
@@ -2108,7 +2108,7 @@ describe("qa bundled plugin dir", () => {
 
     const overrides = await testing.readQaLiveProviderConfigOverrides({
       providerIds: ["custom-openai"],
-      env: { OPENCLAW_QA_LIVE_PROVIDER_CONFIG_PATH: configPath },
+      env: { OPERATOR_QA_LIVE_PROVIDER_CONFIG_PATH: configPath },
     });
     expect(Object.keys(overrides)).toEqual(["custom-openai"]);
     expect(overrides["custom-openai"]?.baseUrl).toBe("https://api.example.test/v1");
@@ -2131,7 +2131,7 @@ describe("qa bundled plugin dir", () => {
             openai: {
               apiKey: {
                 source: "env",
-                id: "OPENCLAW_LIVE_CODEX_API_KEY",
+                id: "OPERATOR_LIVE_CODEX_API_KEY",
               },
             },
           },
@@ -2142,14 +2142,14 @@ describe("qa bundled plugin dir", () => {
 
     const overrides = await testing.readQaLiveProviderConfigOverrides({
       providerIds: ["openai"],
-      env: { OPENCLAW_QA_LIVE_PROVIDER_CONFIG_PATH: configPath },
+      env: { OPERATOR_QA_LIVE_PROVIDER_CONFIG_PATH: configPath },
     });
     expect(Object.keys(overrides)).toEqual(["openai"]);
     expect(overrides["openai"]?.baseUrl).toBe("");
     expect(overrides["openai"]?.models).toEqual([]);
     expect(overrides["openai"]?.apiKey).toEqual({
       source: "env",
-      id: "OPENCLAW_LIVE_CODEX_API_KEY",
+      id: "OPERATOR_LIVE_CODEX_API_KEY",
     });
   });
 
@@ -2171,7 +2171,7 @@ describe("qa bundled plugin dir", () => {
               models: [],
               apiKey: {
                 source: "env",
-                id: "OPENCLAW_LIVE_CODEX_API_KEY",
+                id: "OPERATOR_LIVE_CODEX_API_KEY",
               },
             },
           },
@@ -2182,7 +2182,7 @@ describe("qa bundled plugin dir", () => {
 
     const overrides = await testing.readQaLiveProviderConfigOverrides({
       providerIds: ["openai"],
-      env: { OPENCLAW_QA_LIVE_PROVIDER_CONFIG_PATH: configPath },
+      env: { OPERATOR_QA_LIVE_PROVIDER_CONFIG_PATH: configPath },
     });
     expect(Object.keys(overrides)).toEqual(["openai"]);
     expect(overrides.openai?.baseUrl).toBe("https://proxy.example.test/v1");

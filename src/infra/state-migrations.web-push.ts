@@ -5,7 +5,7 @@ import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
 import { root, type Root } from "@operator/fs-safe";
 import { isRecord } from "@operator/normalization-core/record-coerce";
-import { runOpenClawStateWriteTransaction } from "../state/operator-state-db.js";
+import { runOperatorStateWriteTransaction } from "../state/operator-state-db.js";
 import { formatErrorMessage } from "./errors.js";
 import { acquireGatewayLock, GatewayLockError } from "./gateway-lock.js";
 import {
@@ -389,7 +389,7 @@ function migrateIntoDatabase(params: {
 }): { importedSubscriptions: number; importedVapidKeys: boolean } {
   let importedSubscriptions = 0;
   let importedVapidKeys = false;
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     ({ db }) => {
       const webPushDb = getNodeSqliteKysely<WebPushDatabase>(db);
       const expectedSubscriptions = new Map<string, WebPushSubscription>();

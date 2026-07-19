@@ -32,7 +32,7 @@ describe("compareSemverStrings", () => {
     expect(compareSemverStrings("2026.6.6.beta.2", "2026.6.6-beta.1")).toBe(1);
   });
 
-  it("treats OpenClaw stable correction releases as newer than their base release", () => {
+  it("treats Operator stable correction releases as newer than their base release", () => {
     expect(compareSemverStrings("2026.5.3", "2026.5.3-1")).toBe(-1);
     expect(compareSemverStrings("2026.5.3-1", "2026.5.3")).toBe(1);
     expect(compareSemverStrings("2026.5.3-2", "2026.5.3-1")).toBe(1);
@@ -466,7 +466,7 @@ describe("resolveExtendedStablePackage", () => {
         timeoutMs: 1000,
         packageName: "@kevins8/openclaw",
         env: {
-          OPENCLAW_UPDATE_PACKAGE_SPEC: "@kevins8/openclaw",
+          OPERATOR_UPDATE_PACKAGE_SPEC: "@kevins8/openclaw",
           NPM_CONFIG_REGISTRY: "http://127.0.0.1:4873/",
         },
       }),
@@ -494,7 +494,7 @@ describe("resolveExtendedStablePackage", () => {
         timeoutMs: 1000,
         packageName: "@kevins8/openclaw",
         env: {
-          OPENCLAW_UPDATE_PACKAGE_SPEC: "@kevins8/openclaw",
+          OPERATOR_UPDATE_PACKAGE_SPEC: "@kevins8/openclaw",
           NPM_CONFIG_REGISTRY: "https://registry.example.com/",
         },
       }),

@@ -2,7 +2,7 @@
 import { mkdtempSync, readFileSync, rmSync, truncateSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type { SpeechProviderConfig, SpeechSynthesisRequest } from "openclaw/plugin-sdk/speech-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -21,7 +21,7 @@ vi.mock("openclaw/plugin-sdk/runtime-env", () => ({
 
 import { buildCliSpeechProvider } from "./speech-provider.js";
 
-const TEST_CFG = {} as OpenClawConfig;
+const TEST_CFG = {} as OperatorConfig;
 const MAX_AUDIO_OUTPUT_BYTES = 50 * 1024 * 1024;
 
 function createCliFixture(): { dir: string; script: string } {
@@ -371,7 +371,7 @@ mkdirSync(process.argv[outIndex + 1]);
   );
 
   it("can synthesize through a real local CLI fixture and ffmpeg", async () => {
-    if (process.env.OPENCLAW_LIVE_TEST !== "1") {
+    if (process.env.OPERATOR_LIVE_TEST !== "1") {
       return;
     }
     const fixture = createCliFixture();

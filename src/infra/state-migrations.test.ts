@@ -5,15 +5,15 @@ import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { readAcpSessionMetaForEntry } from "../acp/runtime/session-meta.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import * as sessionStore from "../config/sessions.js";
 import { loadNodeHostConfig } from "../node-host/config.js";
 import { readChannelPairingStateSnapshot } from "../pairing/pairing-store-sqlite.test-helpers.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
-  OPENCLAW_STATE_SCHEMA_VERSION,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
+  OPERATOR_STATE_SCHEMA_VERSION,
 } from "../state/openclaw-state-db.js";
 import { createTrackedTempDirs } from "../test-utils/tracked-temp-dirs.js";
 import {
@@ -48,14 +48,14 @@ const pluginDoctorStateMigrationEntries = vi.hoisted(
           id: string;
           label: string;
           detectLegacyState: (params: {
-            config: OpenClawConfig;
+            config: OperatorConfig;
             env: NodeJS.ProcessEnv;
             stateDir: string;
             oauthDir: string;
             context: unknown;
           }) => Promise<{ preview: string[] } | null> | { preview: string[] } | null;
           migrateLegacyState: (params: {
-            config: OpenClawConfig;
+            config: OperatorConfig;
             env: NodeJS.ProcessEnv;
             stateDir: string;
             oauthDir: string;
@@ -75,14 +75,14 @@ const pluginDoctorStateMigrationEntries = vi.hoisted(
           id: string;
           label: string;
           detectLegacyState: (params: {
-            config: OpenClawConfig;
+            config: OperatorConfig;
             env: NodeJS.ProcessEnv;
             stateDir: string;
             oauthDir: string;
             context: unknown;
           }) => Promise<{ preview: string[] } | null> | { preview: string[] } | null;
           migrateLegacyState: (params: {
-            config: OpenClawConfig;
+            config: OperatorConfig;
             env: NodeJS.ProcessEnv;
             stateDir: string;
             oauthDir: string;
@@ -166,11 +166,11 @@ vi.mock("../plugins/doctor-contract-registry.js", async (importOriginal) => {
 const tempDirs = createTrackedTempDirs();
 const APNS_DEVICE_FIELD = "token";
 
-type UpdateCheckStateDatabase = Pick<OpenClawStateKyselyDatabase, "update_check_state">;
-type ConfigHealthDatabase = Pick<OpenClawStateKyselyDatabase, "config_health_entries">;
-type PluginBindingApprovalsDatabase = Pick<OpenClawStateKyselyDatabase, "plugin_binding_approvals">;
+type UpdateCheckStateDatabase = Pick<OperatorStateKyselyDatabase, "update_check_state">;
+type ConfigHealthDatabase = Pick<OperatorStateKyselyDatabase, "config_health_entries">;
+type PluginBindingApprovalsDatabase = Pick<OperatorStateKyselyDatabase, "plugin_binding_approvals">;
 type CurrentConversationBindingsDatabase = Pick<
-  OpenClawStateKyselyDatabase,
+  OperatorStateKyselyDatabase,
   "current_conversation_bindings"
 >;
 
@@ -196,7 +196,7 @@ function readUpdateCheckState(env: NodeJS.ProcessEnv):
       auto_install_id: string | null;
     }
   | undefined {
-  const { db } = openOpenClawStateDatabase({ env });
+  const { db } = openOperatorStateDatabase({ env });
   const stateDb = getNodeSqliteKysely<UpdateCheckStateDatabase>(db);
   return executeSqliteQueryTakeFirstSync(
     db,
@@ -218,7 +218,7 @@ function readConfigHealthRows(env: NodeJS.ProcessEnv): Array<{
   last_promoted_good_json: string | null;
   last_observed_suspicious_signature: string | null;
 }> {
-  const { db } = openOpenClawStateDatabase({ env });
+  const { db } = openOperatorStateDatabase({ env });
   const stateDb = getNodeSqliteKysely<ConfigHealthDatabase>(db);
   return executeSqliteQuerySync(
     db,
@@ -243,7 +243,7 @@ function insertConfigHealthRow(
     last_observed_suspicious_signature: string | null;
   },
 ): void {
-  const { db } = openOpenClawStateDatabase({ env });
+  const { db } = openOperatorStateDatabase({ env });
   const stateDb = getNodeSqliteKysely<ConfigHealthDatabase>(db);
   executeSqliteQuerySync(
     db,
@@ -263,7 +263,7 @@ function readCurrentConversationBindingRows(env: NodeJS.ProcessEnv): Array<{
   conversation_id: string;
   record_json: string;
 }> {
-  const { db } = openOpenClawStateDatabase({ env });
+  const { db } = openOperatorStateDatabase({ env });
   const stateDb = getNodeSqliteKysely<CurrentConversationBindingsDatabase>(db);
   return executeSqliteQuerySync(
     db,
@@ -290,7 +290,7 @@ function readPluginBindingApprovalRows(env: NodeJS.ProcessEnv): Array<{
   plugin_name: string | null;
   approved_at: number;
 }> {
-  const { db } = openOpenClawStateDatabase({ env });
+  const { db } = openOperatorStateDatabase({ env });
   const stateDb = getNodeSqliteKysely<PluginBindingApprovalsDatabase>(db);
   return executeSqliteQuerySync(
     db,
@@ -313,7 +313,7 @@ function insertCurrentConversationBindingRow(
     recordJson: string;
   },
 ): void {
-  const { db } = openOpenClawStateDatabase({ env });
+  const { db } = openOperatorStateDatabase({ env });
   const stateDb = getNodeSqliteKysely<CurrentConversationBindingsDatabase>(db);
   executeSqliteQuerySync(
     db,
@@ -339,7 +339,7 @@ function insertCurrentConversationBindingRow(
   );
 }
 
-function createConfig(): OpenClawConfig {
+function createConfig(): OperatorConfig {
   return {
     agents: {
       list: [{ id: "worker-1", default: true }],
@@ -356,14 +356,14 @@ function createConfig(): OpenClawConfig {
         },
       },
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 function createEnv(stateDir: string): NodeJS.ProcessEnv {
   return {
     ...process.env,
     HOME: path.dirname(stateDir),
-    OPENCLAW_STATE_DIR: stateDir,
+    OPERATOR_STATE_DIR: stateDir,
   };
 }
 
@@ -485,7 +485,7 @@ afterEach(async () => {
   pluginDoctorStateMigrationEntries.entries = [];
   resetAutoMigrateLegacyStateForTest();
   resetAutoMigrateLegacyStateDirForTest();
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorStateDatabaseForTest();
   await tempDirs.cleanup();
 });
 
@@ -510,7 +510,7 @@ describe("state migrations", () => {
     const root = await createTempDir();
     const stateDir = path.join(root, "custom-state");
     const customHome = path.join(root, "custom-home");
-    const env = { ...process.env, HOME: customHome, OPENCLAW_STATE_DIR: stateDir };
+    const env = { ...process.env, HOME: customHome, OPERATOR_STATE_DIR: stateDir };
     const observed: string[] = [];
     pluginDoctorStateMigrationEntries.entries = [
       {
@@ -715,7 +715,7 @@ describe("state migrations", () => {
     const cfg = {
       session: { mainKey: "work" },
       agents: { list: [{ id: "main", default: true }] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const detected = await detectLegacyStateMigrations({ cfg, env, homedir: () => root });
 
     await runLegacyStateMigrations({ detected, config: cfg, now: () => 1234 });
@@ -757,7 +757,7 @@ describe("state migrations", () => {
     const cfg = {
       session: { mainKey: "work", store: configuredStorePath },
       agents: { list: [{ id: "ops", default: true }, { id: "research" }] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const detected = await detectLegacyStateMigrations({ cfg, env, homedir: () => root });
     expect(detected.sessions.preserveAmbiguousKeys).toBe(true);
 
@@ -796,7 +796,7 @@ describe("state migrations", () => {
       }),
       "utf8",
     );
-    const cfg = { agents: { list: [{ id: "main", default: true }] } } as OpenClawConfig;
+    const cfg = { agents: { list: [{ id: "main", default: true }] } } as OperatorConfig;
     const detected = await detectLegacyStateMigrations({ cfg, env, homedir: () => root });
 
     const result = await runLegacyStateMigrations({ detected, config: cfg, now: () => 1234 });
@@ -828,7 +828,7 @@ describe("state migrations", () => {
     const cfg = {
       session: { store: configuredStorePath },
       agents: { list: [{ id: "main", default: true }] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const realStatSync = fsSync.statSync.bind(fsSync);
     const statSpy = vi.spyOn(fsSync, "statSync").mockImplementation((candidate) => {
       if (path.resolve(candidate.toString()) === configuredStorePath) {
@@ -869,7 +869,7 @@ describe("state migrations", () => {
     );
     const cfg = {
       agents: { list: [{ id: "main", default: true }] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const detected = await detectLegacyStateMigrations({ cfg, env, homedir: () => root });
     const realSaveSessionStore = sessionStore.saveSessionStore;
     let sawRequiredWrite = false;
@@ -919,7 +919,7 @@ describe("state migrations", () => {
     const cfg = {
       session: { mainKey: "work", store: configuredStorePath },
       agents: { list: [{ id: "ops", default: true }] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const detected = await detectLegacyStateMigrations({
       cfg,
       env,
@@ -984,7 +984,7 @@ describe("state migrations", () => {
             "voice-call": { config: { agentId: "worker-1" } },
           },
         },
-      } as OpenClawConfig;
+      } as OperatorConfig;
 
       result = await autoMigrateLegacyState({ cfg, env, homedir: () => root });
       targetStore = JSON.parse(await fs.readFile(targetStorePath, "utf8")) as Record<
@@ -1024,7 +1024,7 @@ describe("state migrations", () => {
     const storePath = path.join(stateDir, "agents", "main", "sessions", "sessions.json");
     await fs.mkdir(path.dirname(storePath), { recursive: true });
     await fs.symlink(outsideStorePath, storePath);
-    const cfg = { agents: { list: [{ id: "main", default: true }] } } as OpenClawConfig;
+    const cfg = { agents: { list: [{ id: "main", default: true }] } } as OperatorConfig;
 
     const result = await autoMigrateLegacyState({ cfg, env, homedir: () => root });
 
@@ -1068,7 +1068,7 @@ describe("state migrations", () => {
     const cfg = {
       session: { store: configuredStorePath },
       agents: { list: [{ id: "main", default: true }] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await autoMigrateLegacyState({ cfg, env, homedir: () => root });
 
@@ -1115,7 +1115,7 @@ describe("state migrations", () => {
     const cfg = {
       session: { store: configuredStorePath },
       agents: { list: [{ id: "main", default: true }] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await autoMigrateLegacyState({ cfg, env, homedir: () => root });
 
@@ -1163,7 +1163,7 @@ describe("state migrations", () => {
     const cfg = {
       session: { scope: "global", store: configuredStorePath },
       agents: { list: [{ id: "main", default: true }] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await autoMigrateLegacyState({ cfg, env, homedir: () => root });
 
@@ -1222,7 +1222,7 @@ describe("state migrations", () => {
           "voice-call": { config: { agentId: "voice" } },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await autoMigrateLegacyState({ cfg, env, homedir: () => root });
 
@@ -1295,7 +1295,7 @@ describe("state migrations", () => {
           "voice-call": { config: { agentId: "voice" } },
         },
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await autoMigrateLegacyState({ cfg, env, homedir: () => root });
 
@@ -1389,7 +1389,7 @@ describe("state migrations", () => {
       session: { store: storeTemplate },
       agents: { list: [{ id: "main", default: true }] },
       acp: { allowedAgents: ["voice"] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await autoMigrateLegacyState({ cfg, env, homedir: () => root });
 
@@ -1444,7 +1444,7 @@ describe("state migrations", () => {
     const storePath = path.join(stateDir, "agents", "main", "sessions", "sessions.json");
     await fs.mkdir(path.dirname(storePath), { recursive: true });
     await fs.symlink(outsideStorePath, storePath);
-    const cfg = { agents: { list: [{ id: "main", default: true }] } } as OpenClawConfig;
+    const cfg = { agents: { list: [{ id: "main", default: true }] } } as OperatorConfig;
 
     const result = await autoMigrateLegacyState({ cfg, env, homedir: () => root });
 
@@ -1498,7 +1498,7 @@ describe("state migrations", () => {
     const cfg = {
       session: { mainKey: "desk", store: storeTemplate },
       agents: { list: [{ id: "main", default: true }, { id: "voice" }] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const result = await autoMigrateLegacyState({ cfg, env, homedir: () => root });
 
@@ -1593,7 +1593,7 @@ describe("state migrations", () => {
     expect(result.changes).toContain(
       "Migrated 2 session delivery queue entries → shared SQLite state",
     );
-    const { db } = openOpenClawStateDatabase({ env });
+    const { db } = openOperatorStateDatabase({ env });
     const rows = db
       .prepare(
         "SELECT queue_name, id, status, channel, target, retry_count FROM delivery_queue_entries ORDER BY queue_name, id",
@@ -1818,7 +1818,7 @@ describe("state migrations", () => {
       "Migrated shared state audit event ledger → versioned message lifecycle schema",
     );
 
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     const db = new DatabaseSync(databasePath);
     try {
       expect(
@@ -1834,7 +1834,7 @@ describe("state migrations", () => {
         schema_version: 1,
       });
       expect(db.prepare("PRAGMA user_version").get()).toEqual({
-        user_version: OPENCLAW_STATE_SCHEMA_VERSION,
+        user_version: OPERATOR_STATE_SCHEMA_VERSION,
       });
     } finally {
       db.close();
@@ -1855,7 +1855,7 @@ describe("state migrations", () => {
     await fs.mkdir(path.dirname(stateDbPath), { recursive: true });
     const db = new DatabaseSync(stateDbPath);
     try {
-      db.exec(`PRAGMA user_version = ${OPENCLAW_STATE_SCHEMA_VERSION + 1};`);
+      db.exec(`PRAGMA user_version = ${OPERATOR_STATE_SCHEMA_VERSION + 1};`);
     } finally {
       db.close();
     }
@@ -1901,7 +1901,7 @@ describe("state migrations", () => {
     await fs.writeFile(voiceWakePath, JSON.stringify({ triggers: ["leave-me"] }), "utf8");
     const db = new DatabaseSync(stateDbPath);
     try {
-      db.exec(`PRAGMA user_version = ${OPENCLAW_STATE_SCHEMA_VERSION + 1};`);
+      db.exec(`PRAGMA user_version = ${OPERATOR_STATE_SCHEMA_VERSION + 1};`);
     } finally {
       db.close();
     }
@@ -1921,7 +1921,7 @@ describe("state migrations", () => {
     const root = await createTempDir();
     const stateDir = path.join(root, ".openclaw");
     const env = createEnv(stateDir);
-    const cfg = { ...createConfig(), agents: { list: 42 } } as unknown as OpenClawConfig;
+    const cfg = { ...createConfig(), agents: { list: 42 } } as unknown as OperatorConfig;
     pluginDoctorStateMigrationEntries.entries = [
       {
         pluginId: "msteams",
@@ -1948,7 +1948,7 @@ describe("state migrations", () => {
     const root = await createTempDir();
     const stateDir = path.join(root, ".openclaw");
     const env = createEnv(stateDir);
-    const cfg = { ...createConfig(), agents: { list: 42 } } as unknown as OpenClawConfig;
+    const cfg = { ...createConfig(), agents: { list: 42 } } as unknown as OperatorConfig;
     const migrateLegacyState = vi.fn(() => ({
       changes: ["healthy plugin state migrated"],
       warnings: [],
@@ -2042,7 +2042,7 @@ describe("state migrations", () => {
     await fs.mkdir(legacyStateDir, { recursive: true });
     await fs.writeFile(path.join(legacyStateDir, "legacy.txt"), "legacy", "utf8");
     const env: NodeJS.ProcessEnv = { ...process.env, HOME: root };
-    delete env.OPENCLAW_STATE_DIR;
+    delete env.OPERATOR_STATE_DIR;
     const cfg = createConfig();
     const detectedStateDirs: string[] = [];
     const migratedStateDirs: string[] = [];
@@ -2693,7 +2693,7 @@ describe("state migrations", () => {
   });
 
   it("leaves home-state-dir plugin binding approvals alone without the cross-state-dir opt-in", async () => {
-    // Regression: an isolated gateway pointed at a temp OPENCLAW_STATE_DIR must
+    // Regression: an isolated gateway pointed at a temp OPERATOR_STATE_DIR must
     // not import (and archive) the default state dir's approvals file.
     const root = await createTempDir();
     const stateDir = path.join(root, "custom-state");
@@ -2741,7 +2741,7 @@ describe("state migrations", () => {
   it("never imports default-profile approvals into a named profile", async () => {
     const root = await createTempDir();
     const stateDir = path.join(root, ".openclaw-work");
-    const env = { ...createEnv(stateDir), OPENCLAW_PROFILE: "work" };
+    const env = { ...createEnv(stateDir), OPERATOR_PROFILE: "work" };
     const cfg = createConfig();
     const defaultStateDir = path.join(root, ".openclaw");
     const execApprovalsPath = path.join(defaultStateDir, "exec-approvals.json");
@@ -2916,7 +2916,7 @@ describe("state migrations", () => {
       "utf8",
     );
 
-    const { db } = openOpenClawStateDatabase({ env });
+    const { db } = openOperatorStateDatabase({ env });
     db.prepare(
       `
         INSERT INTO delivery_queue_entries (

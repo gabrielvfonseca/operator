@@ -57,7 +57,7 @@ async function resolveTrajectoryExportBaseDir(workspaceDir: string): Promise<{
   const stateDir = path.join(workspacePath, ".operator");
   await mkdirIfMissingThenValidate({
     dir: stateDir,
-    label: "OpenClaw state directory",
+    label: "Operator state directory",
     realWorkspace,
   });
   const baseDir = path.join(stateDir, "trajectory-exports");

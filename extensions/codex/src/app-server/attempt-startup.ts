@@ -39,7 +39,7 @@ import {
 } from "./config.js";
 import {
   resolveCodexAppServerExecutionCwd,
-  resolveCodexExternalSandboxPolicyForOpenClawSandbox,
+  resolveCodexExternalSandboxPolicyForOperatorSandbox,
   resolveCodexSandboxEnvironmentSelection,
   shouldRequireCodexSandboxExecServerEnvironment,
 } from "./dynamic-tool-build.js";
@@ -390,7 +390,7 @@ export async function startCodexAttemptThread(params: {
                 !startupSandboxEnvironment
               ) {
                 throw new Error(
-                  "Codex app-server did not register an OpenClaw sandbox exec-server environment.",
+                  "Codex app-server did not register an Operator sandbox exec-server environment.",
                 );
               }
             } catch (error) {
@@ -409,7 +409,7 @@ export async function startCodexAttemptThread(params: {
               remoteWorkspaceRoot: params.appServer.remoteWorkspaceRoot,
             });
             const startupSandboxPolicy = startupSandboxEnvironment
-              ? resolveCodexExternalSandboxPolicyForOpenClawSandbox(params.sandbox)
+              ? resolveCodexExternalSandboxPolicyForOperatorSandbox(params.sandbox)
               : undefined;
             let startupReservation: CodexThreadRouteReservation | undefined;
             const releaseStartupReservation = () => {

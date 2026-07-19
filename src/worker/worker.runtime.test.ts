@@ -1054,28 +1054,28 @@ describe("worker runtime", () => {
 
   it("executes coding tools locally without reading the preexisting auth profile", async () => {
     const { gateway, workspaceDir, launch } = await setup({ inferencePlans: ["tool", "text"] });
-    const previousStateDir = process.env.OPENCLAW_STATE_DIR;
-    const previousConfigPath = process.env.OPENCLAW_CONFIG_PATH;
+    const previousStateDir = process.env.OPERATOR_STATE_DIR;
+    const previousConfigPath = process.env.OPERATOR_CONFIG_PATH;
     const trapStateDir = path.join(workspaceDir, "state-trap");
     const authDir = path.join(trapStateDir, "agents", "main", "agent");
     const configTrap = path.join(workspaceDir, "config-trap");
     await mkdir(authDir, { recursive: true });
     await writeFile(path.join(authDir, "auth-profiles.json"), "not valid json", "utf8");
     await mkdir(configTrap);
-    process.env.OPENCLAW_STATE_DIR = trapStateDir;
-    process.env.OPENCLAW_CONFIG_PATH = configTrap;
+    process.env.OPERATOR_STATE_DIR = trapStateDir;
+    process.env.OPERATOR_CONFIG_PATH = configTrap;
     try {
       await expect(runWorkerDescriptor(launch)).resolves.toMatchObject({ status: "completed" });
     } finally {
       if (previousStateDir === undefined) {
-        delete process.env.OPENCLAW_STATE_DIR;
+        delete process.env.OPERATOR_STATE_DIR;
       } else {
-        process.env.OPENCLAW_STATE_DIR = previousStateDir;
+        process.env.OPERATOR_STATE_DIR = previousStateDir;
       }
       if (previousConfigPath === undefined) {
-        delete process.env.OPENCLAW_CONFIG_PATH;
+        delete process.env.OPERATOR_CONFIG_PATH;
       } else {
-        process.env.OPENCLAW_CONFIG_PATH = previousConfigPath;
+        process.env.OPERATOR_CONFIG_PATH = previousConfigPath;
       }
     }
 

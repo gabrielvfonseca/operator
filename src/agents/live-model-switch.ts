@@ -5,7 +5,7 @@ import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
 import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import { resolveStorePath } from "../config/sessions/paths.js";
 import { loadSessionEntry, patchSessionEntry } from "../config/sessions/session-accessor.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   normalizeStoredOverrideModel,
   resolveDefaultModelForAgent,
@@ -25,7 +25,7 @@ const OPENAI_PROVIDER_ID = "openai";
 const OPENAI_CODEX_PROVIDER_ID = "openai";
 
 function resolveLiveSessionModelSelection(params: {
-  cfg?: OpenClawConfig | undefined;
+  cfg?: OperatorConfig | undefined;
   sessionKey?: string;
   agentId?: string;
   defaultProvider: string;
@@ -144,7 +144,7 @@ function hasDifferentLiveSessionModelSelection(
  * user-initiated `/model` switches and system-initiated fallback rotations.
  */
 export function shouldSwitchToLiveModel(params: {
-  cfg?: OpenClawConfig | undefined;
+  cfg?: OperatorConfig | undefined;
   sessionKey?: string;
   agentId?: string;
   defaultProvider: string;

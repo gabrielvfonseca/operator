@@ -10,7 +10,7 @@ import {
 } from "../../agents/embedded-agent-runner/runs.js";
 import { testing as embeddedRunTesting } from "../../agents/embedded-agent-runner/runs.test-support.js";
 import { clearRuntimeConfigSnapshot } from "../../config/config.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import * as sessionTypesModule from "../../config/sessions.js";
 import type { SessionEntry } from "../../config/sessions.js";
 import { loadSessionEntry, replaceSessionEntry } from "../../config/sessions/session-accessor.js";
@@ -138,7 +138,7 @@ vi.mock("../../agents/model-selection.js", async () => {
   );
   return {
     ...actual,
-    isCliProvider: (provider: string, cfg?: OpenClawConfig) => {
+    isCliProvider: (provider: string, cfg?: OperatorConfig) => {
       const normalized = provider.trim().toLowerCase();
       return (
         normalized === "claude-cli" ||
@@ -398,7 +398,7 @@ describe("runReplyAgent auto-compaction token update", () => {
     agentResult: Record<string, unknown>,
     options?: {
       agentEvents?: Array<{ stream: string; data: Record<string, unknown> }>;
-      config?: OpenClawConfig;
+      config?: OperatorConfig;
       onBlockReply?: (payload: unknown) => Promise<void> | void;
     },
   ) {
@@ -466,7 +466,7 @@ describe("runReplyAgent auto-compaction token update", () => {
   async function runBaseReplyWithAgentMeta(params: {
     agentMeta: Record<string, unknown>;
     collectDiagnostics?: boolean;
-    config?: OpenClawConfig;
+    config?: OperatorConfig;
     tmpPrefix: string;
     workspaceDir?: string;
   }) {

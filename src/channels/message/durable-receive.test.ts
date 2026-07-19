@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { closeOpenClawStateDatabaseForTest } from "../../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../state/openclaw-state-db.js";
 import { createDurableInboundReceiveJournalFromQueue } from "./durable-receive.js";
 import { createChannelIngressQueue } from "./ingress-queue.js";
 
@@ -16,7 +16,7 @@ async function withTempState<T>(fn: (stateDir: string) => Promise<T>): Promise<T
   try {
     return await fn(stateDir);
   } finally {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await fs.rm(stateDir, { recursive: true, force: true });
   }
 }

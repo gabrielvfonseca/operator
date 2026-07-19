@@ -13,14 +13,14 @@ import {
   cleanupTrackedTempDirs,
   makeTrackedTempDir,
 } from "../../../plugins/test-helpers/fs-fixtures.js";
-import { runOpenClawStateWriteTransaction } from "../../../state/openclaw-state-db.js";
+import { runOperatorStateWriteTransaction } from "../../../state/openclaw-state-db.js";
 import {
   DISABLE_PLUGIN_REGISTRY_MIGRATION_ENV,
   migratePluginRegistryForInstall,
   preflightPluginRegistryInstallMigration,
 } from "./plugin-registry-migration.js";
 
-const FORCE_PLUGIN_REGISTRY_MIGRATION_ENV = "OPENCLAW_FORCE_PLUGIN_REGISTRY_MIGRATION";
+const FORCE_PLUGIN_REGISTRY_MIGRATION_ENV = "OPERATOR_FORCE_PLUGIN_REGISTRY_MIGRATION";
 const tempDirs: string[] = [];
 
 afterEach(() => {
@@ -33,8 +33,8 @@ function makeTempDir() {
 
 function hermeticEnv(overrides: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
   return {
-    OPENCLAW_BUNDLED_PLUGINS_DIR: undefined,
-    OPENCLAW_VERSION: "2026.4.25",
+    OPERATOR_BUNDLED_PLUGINS_DIR: undefined,
+    OPERATOR_VERSION: "2026.4.25",
     VITEST: "true",
     ...overrides,
   };
@@ -124,7 +124,7 @@ function requirePlugin(index: InstalledPluginIndex | null | undefined, pluginId:
 }
 
 function insertStalePersistedIndexRow(stateDir: string) {
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     ({ db }) => {
       db.prepare(
         `
@@ -140,7 +140,7 @@ function insertStalePersistedIndexRow(stateDir: string) {
         `,
       ).run();
     },
-    { env: { ...process.env, OPENCLAW_STATE_DIR: stateDir } },
+    { env: { ...process.env, OPERATOR_STATE_DIR: stateDir } },
   );
 }
 

@@ -1,13 +1,13 @@
-// Qqbot plugin entrypoint registers its OpenClaw integration.
+// Qqbot plugin entrypoint registers its Operator integration.
 import {
   defineBundledChannelEntry,
   loadBundledEntryExportSync,
-  type OpenClawPluginApi,
+  type OperatorPluginApi,
 } from "openclaw/plugin-sdk/channel-entry-contract";
 
-function registerQQBotFull(api: OpenClawPluginApi): void {
+function registerQQBotFull(api: OperatorPluginApi): void {
   if (api.registrationMode === "tool-discovery") {
-    const registerTools = loadBundledEntryExportSync<(api: OpenClawPluginApi) => void>(
+    const registerTools = loadBundledEntryExportSync<(api: OperatorPluginApi) => void>(
       import.meta.url,
       {
         specifier: "./tools-api.js",
@@ -17,7 +17,7 @@ function registerQQBotFull(api: OpenClawPluginApi): void {
     registerTools(api);
     return;
   }
-  const register = loadBundledEntryExportSync<(api: OpenClawPluginApi) => void>(import.meta.url, {
+  const register = loadBundledEntryExportSync<(api: OperatorPluginApi) => void>(import.meta.url, {
     specifier: "./channel-entry-api.js",
     exportName: "registerQQBotFull",
   });

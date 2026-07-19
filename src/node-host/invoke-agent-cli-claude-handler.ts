@@ -1,6 +1,6 @@
 import { createExecApprovalPolicySnapshot } from "../infra/exec-approvals.js";
-import type { OpenClawPluginNodeHostCommandIo } from "../plugins/types.js";
-import type { OpenClawPluginNodeHostCommandContext } from "../plugins/types.node-host.js";
+import type { OperatorPluginNodeHostCommandIo } from "../plugins/types.js";
+import type { OperatorPluginNodeHostCommandContext } from "../plugins/types.node-host.js";
 import type { NodeHostClient } from "./client.js";
 import {
   decodeClaudeCliNodeRunParams,
@@ -19,8 +19,8 @@ export type NodeHostInvokeRuntime = {
   claudePath?: string;
   handleSystemRun?: typeof handleSystemRunInvoke;
   signal?: AbortSignal;
-  pluginCommandIo?: OpenClawPluginNodeHostCommandIo;
-  pluginCommandContext?: OpenClawPluginNodeHostCommandContext;
+  pluginCommandIo?: OperatorPluginNodeHostCommandIo;
+  pluginCommandContext?: OperatorPluginNodeHostCommandContext;
 };
 
 type ClaudeCliNodeInvokeDeps = Pick<

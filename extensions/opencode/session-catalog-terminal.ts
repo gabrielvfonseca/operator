@@ -4,7 +4,7 @@ import {
   resolveNodeHostExecutable,
   runNodePtyCommand,
 } from "openclaw/plugin-sdk/node-host";
-import type { OpenClawPluginNodeHostCommand } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginNodeHostCommand } from "openclaw/plugin-sdk/plugin-entry";
 import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
 import type {
   SessionCatalogSession,
@@ -46,8 +46,8 @@ async function requireLocalOpenCodeSession(threadId: string): Promise<SessionCat
 }
 
 export function createOpenCodeTerminalNodeHostCommand(
-  isAvailable: NonNullable<OpenClawPluginNodeHostCommand["isAvailable"]>,
-): OpenClawPluginNodeHostCommand {
+  isAvailable: NonNullable<OperatorPluginNodeHostCommand["isAvailable"]>,
+): OperatorPluginNodeHostCommand {
   return {
     command: OPENCODE_TERMINAL_RESUME_COMMAND,
     cap: OPENCODE_SESSIONS_CAPABILITY,

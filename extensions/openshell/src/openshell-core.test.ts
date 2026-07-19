@@ -295,7 +295,7 @@ describe("openshell backend manager", () => {
     },
   );
 
-  it("checks runtime status with config override from OpenClaw config", async () => {
+  it("checks runtime status with config override from Operator config", async () => {
     cliMocks.runOpenShellCli.mockResolvedValue({
       code: 0,
       stdout: "{}",
@@ -619,9 +619,9 @@ async function readOpenShellSshConfig(params: {
     name: "openshell-ssh-config",
     script: [
       "#!/bin/sh",
-      "cat <<'OPENCLAW_SSH_CONFIG'",
+      "cat <<'OPERATOR_SSH_CONFIG'",
       params.configText,
-      "OPENCLAW_SSH_CONFIG",
+      "OPERATOR_SSH_CONFIG",
     ].join("\n"),
   });
   const session = await createOpenShellSshSession({

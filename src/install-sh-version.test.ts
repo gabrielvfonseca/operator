@@ -23,18 +23,18 @@ function resolveInstallerVersionCases(params: { stdinCwd: string }): string[] {
     [
       "-c",
       `${versionHelperSource}
-fake_openclaw_decorated() { printf '%s\\n' 'OpenClaw 2026.3.10 (abcdef0)'; }
-fake_openclaw_raw() { printf '%s\\n' "OpenClaw dev's build"; }
-OPENCLAW_BIN=fake_openclaw_decorated resolve_openclaw_version
-OPENCLAW_BIN=fake_openclaw_raw resolve_openclaw_version
+fake_openclaw_decorated() { printf '%s\\n' 'Operator 2026.3.10 (abcdef0)'; }
+fake_openclaw_raw() { printf '%s\\n' "Operator dev's build"; }
+OPERATOR_BIN=fake_openclaw_decorated resolve_openclaw_version
+OPERATOR_BIN=fake_openclaw_raw resolve_openclaw_version
 (
   cd "$1"
-  source /dev/stdin <<'OPENCLAW_STDIN_INSTALLER'
+  source /dev/stdin <<'OPERATOR_STDIN_INSTALLER'
 ${versionHelperSource}
-fake_openclaw_stdin() { printf '%s\\n' 'OpenClaw 2026.3.10 (abcdef0)'; }
-OPENCLAW_BIN=fake_openclaw_stdin
+fake_openclaw_stdin() { printf '%s\\n' 'Operator 2026.3.10 (abcdef0)'; }
+OPERATOR_BIN=fake_openclaw_stdin
 resolve_openclaw_version
-OPENCLAW_STDIN_INSTALLER
+OPERATOR_STDIN_INSTALLER
 )`,
       "openclaw-version-test",
       params.stdinCwd,
@@ -44,7 +44,7 @@ OPENCLAW_STDIN_INSTALLER
       encoding: "utf-8",
       env: {
         ...process.env,
-        OPENCLAW_INSTALL_SH_NO_RUN: "1",
+        OPERATOR_INSTALL_SH_NO_RUN: "1",
       },
     },
   );
@@ -81,7 +81,7 @@ extract_openclaw_semver() {
         resolveInstallerVersionCases({
           stdinCwd: hostileCwd,
         }),
-      ).toEqual(["2026.3.10", "OpenClaw dev's build", "2026.3.10"]);
+      ).toEqual(["2026.3.10", "Operator dev's build", "2026.3.10"]);
     },
   );
 });

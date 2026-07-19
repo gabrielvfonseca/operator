@@ -1,6 +1,6 @@
 // Verifies models.json planning applies config env vars and discovery scope.
 import { beforeAll, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { createConfigRuntimeEnv } from "../config/env-vars.js";
 import type { PluginMetadataSnapshot } from "../plugins/plugin-metadata-snapshot.js";
 import { withEnvAsync } from "../test-utils/env.js";
@@ -11,7 +11,7 @@ import {
 } from "./auth-profiles/store.js";
 import { unsetEnv, withTempEnv } from "./models-config.e2e-harness.js";
 import {
-  planOpenClawModelsJsonWithDeps,
+  planOperatorModelsJsonWithDeps,
   resolveProvidersForModelsJsonWithDeps,
 } from "./models-config.plan.test-support.js";
 import type { ProviderConfig } from "./models-config.providers.secrets.js";
@@ -49,7 +49,7 @@ vi.mock("./model-auth-env-vars.js", () => ({
   }),
 }));
 
-const TEST_ENV_VAR = "OPENCLAW_MODELS_CONFIG_TEST_ENV";
+const TEST_ENV_VAR = "OPERATOR_MODELS_CONFIG_TEST_ENV";
 
 function createImplicitOpenRouterProvider(): ProviderConfig {
   return {
@@ -110,7 +110,7 @@ function createImplicitGoogleVertexProvider(): ProviderConfig {
 }
 
 async function resolveProvidersForConfigEnvTest(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   onResolveImplicitProviders: (env: NodeJS.ProcessEnv) => void;
 }) {
   // Config env vars are materialized into the discovery env before implicit
@@ -133,7 +133,7 @@ async function resolveProvidersForConfigEnvTest(params: {
   );
 }
 
-function createConfigEnvVarsConfig(): OpenClawConfig {
+function createConfigEnvVarsConfig(): OperatorConfig {
   return {
     models: { providers: {} },
     env: {
@@ -145,7 +145,7 @@ function createConfigEnvVarsConfig(): OpenClawConfig {
   };
 }
 
-async function resolveProvidersAndCaptureDiscoveryEnv(cfg: OpenClawConfig) {
+async function resolveProvidersAndCaptureDiscoveryEnv(cfg: OperatorConfig) {
   let discoveryEnv: NodeJS.ProcessEnv | undefined;
   const providers = await resolveProvidersForConfigEnvTest({
     cfg,
@@ -156,7 +156,7 @@ async function resolveProvidersAndCaptureDiscoveryEnv(cfg: OpenClawConfig) {
   return { discoveryEnv, providers };
 }
 
-let unauthenticatedProviderWritePlan: Awaited<ReturnType<typeof planOpenClawModelsJsonWithDeps>>;
+let unauthenticatedProviderWritePlan: Awaited<ReturnType<typeof planOperatorModelsJsonWithDeps>>;
 let unauthenticatedProviderParsed: { providers?: Record<string, unknown> };
 let googleVertexProfileCatalogPlan: Awaited<ReturnType<typeof planGoogleVertexProfileCatalog>>;
 
@@ -183,7 +183,7 @@ async function planGoogleVertexProfileCatalog() {
       },
     ]);
 
-    return await planOpenClawModelsJsonWithDeps(
+    return await planOperatorModelsJsonWithDeps(
       {
         cfg: {
           agents: {
@@ -216,7 +216,7 @@ async function planGoogleVertexProfileCatalog() {
 beforeAll(async () => {
   // Reused no-auth write plan proves generated providers stay serializable
   // even when discovery returns auth-only provider shells.
-  unauthenticatedProviderWritePlan = await planOpenClawModelsJsonWithDeps(
+  unauthenticatedProviderWritePlan = await planOperatorModelsJsonWithDeps(
     {
       cfg: { models: { providers: {} } },
       agentDir: "/tmp/openclaw-models-config-env-vars-test",
@@ -248,7 +248,7 @@ beforeAll(async () => {
 
 describe("models-config", () => {
   it("keeps the implicit provider catalog when explicit baseUrl is blank", async () => {
-    let observedConfig: OpenClawConfig | undefined;
+    let observedConfig: OperatorConfig | undefined;
     const providers = await resolveProvidersForModelsJsonWithDeps(
       {
         cfg: {
@@ -373,7 +373,7 @@ describe("models-config", () => {
       | Pick<PluginMetadataSnapshot, "index" | "manifestRegistry" | "owners">
       | undefined;
 
-    await planOpenClawModelsJsonWithDeps(
+    await planOperatorModelsJsonWithDeps(
       {
         cfg: { models: { providers: {} } },
         agentDir: "/tmp/openclaw-models-config-env-vars-test",
@@ -400,7 +400,7 @@ describe("models-config", () => {
   });
 
   it("treats empty replace-mode provider sets as authoritative", async () => {
-    const plan = await planOpenClawModelsJsonWithDeps(
+    const plan = await planOperatorModelsJsonWithDeps(
       {
         cfg: { models: { mode: "replace", providers: {} } },
         agentDir: "/tmp/openclaw-models-config-env-vars-test",
@@ -432,7 +432,7 @@ describe("models-config", () => {
         setupProviders: new Map(),
       },
     } as unknown as Pick<PluginMetadataSnapshot, "index" | "manifestRegistry" | "owners">;
-    const plan = await planOpenClawModelsJsonWithDeps(
+    const plan = await planOperatorModelsJsonWithDeps(
       {
         cfg: { models: { providers: {} } },
         agentDir: "/tmp/openclaw-models-config-env-vars-test",
@@ -472,7 +472,7 @@ describe("models-config", () => {
   });
 
   it("falls back to canonical env markers when provider runtime has no api-key policy", async () => {
-    const plan = await planOpenClawModelsJsonWithDeps(
+    const plan = await planOperatorModelsJsonWithDeps(
       {
         cfg: { models: { providers: {} } },
         agentDir: "/tmp/openclaw-models-config-env-vars-test",
@@ -498,7 +498,7 @@ describe("models-config", () => {
   });
 
   it("normalizes retired Gemini ids preserved from existing models.json rows", async () => {
-    const plan = await planOpenClawModelsJsonWithDeps(
+    const plan = await planOperatorModelsJsonWithDeps(
       {
         cfg: { models: { mode: "merge", providers: {} } },
         agentDir: "/tmp/openclaw-models-config-env-vars-test",
@@ -576,7 +576,7 @@ describe("models-config", () => {
   });
 
   it("keeps google-vertex static catalog rows when discovery supplies the ADC marker", async () => {
-    const plan = await planOpenClawModelsJsonWithDeps(
+    const plan = await planOperatorModelsJsonWithDeps(
       {
         cfg: {
           agents: {

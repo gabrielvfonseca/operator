@@ -10,7 +10,7 @@ import {
   type NormalizeLegacyChannelAccountParams,
 } from "./channel-compat-normalization.js";
 import type { LegacyConfigRule } from "./legacy.shared.js";
-import type { OpenClawConfig } from "./types.operator.js";
+import type { OperatorConfig } from "./types.operator.js";
 
 export type StreamingAliasMode = "off" | "partial" | "block" | "progress";
 
@@ -109,8 +109,8 @@ export function defineChannelAliasMigration<TMode extends string = StreamingAlia
 ): {
   legacyConfigRules: LegacyConfigRule[];
   hasLegacyAliases: (value: unknown) => boolean;
-  normalizeChannelConfig: (params: { cfg: OpenClawConfig; changes?: string[] }) => {
-    config: OpenClawConfig;
+  normalizeChannelConfig: (params: { cfg: OperatorConfig; changes?: string[] }) => {
+    config: OperatorConfig;
     changes: string[];
   };
 } {
@@ -144,7 +144,7 @@ export function defineChannelAliasMigration<TMode extends string = StreamingAlia
     resolvedNativeTransport: streaming.resolveNativeTransport?.(entry),
   });
 
-  const normalizeChannelConfig = (params: { cfg: OpenClawConfig; changes?: string[] }) => {
+  const normalizeChannelConfig = (params: { cfg: OperatorConfig; changes?: string[] }) => {
     const changes = params.changes ?? [];
     const channels = params.cfg.channels as Record<string, unknown> | undefined;
     const entry = asObjectRecord(channels?.[spec.channelId]);
@@ -176,7 +176,7 @@ export function defineChannelAliasMigration<TMode extends string = StreamingAlia
       config: {
         ...params.cfg,
         channels: { ...channels, [spec.channelId]: result.entry },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       changes,
     };
   };

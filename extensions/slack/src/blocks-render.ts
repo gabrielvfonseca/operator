@@ -184,7 +184,7 @@ function readSlackBlockId(block: SlackBlock): string | undefined {
   return typeof value === "string" ? value : undefined;
 }
 
-function readSlackOpenClawBlockIndex(blockId: string, prefix: string): number | undefined {
+function readSlackOperatorBlockIndex(blockId: string, prefix: string): number | undefined {
   if (!blockId.startsWith(prefix)) {
     return undefined;
   }
@@ -209,11 +209,11 @@ export function resolveSlackBlockOffsets(blocks?: readonly SlackBlock[]): SlackB
     }
     buttonIndexOffset = Math.max(
       buttonIndexOffset,
-      readSlackOpenClawBlockIndex(blockId, "openclaw_reply_buttons_") ?? 0,
+      readSlackOperatorBlockIndex(blockId, "openclaw_reply_buttons_") ?? 0,
     );
     selectIndexOffset = Math.max(
       selectIndexOffset,
-      readSlackOpenClawBlockIndex(blockId, "openclaw_reply_select_") ?? 0,
+      readSlackOperatorBlockIndex(blockId, "openclaw_reply_select_") ?? 0,
     );
   }
   return {

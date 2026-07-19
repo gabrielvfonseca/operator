@@ -2,7 +2,7 @@
  * Bundled Codex plugin entry: app-server harness, media understanding,
  * migration provider, CLI-session commands, and binding hooks.
  */
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { mutateConfigFile } from "openclaw/plugin-sdk/config-mutation";
 import {
   normalizePluginsConfig,
@@ -59,8 +59,8 @@ export default definePluginEntry({
   description: "Codex app-server harness and native session supervision.",
   register(api) {
     const resolveCurrentConfig = () =>
-      api.runtime.config?.current ? (api.runtime.config.current() as OpenClawConfig) : undefined;
-    const resolvePluginConfig = (resolveConfig: () => OpenClawConfig | undefined) => {
+      api.runtime.config?.current ? (api.runtime.config.current() as OperatorConfig) : undefined;
+    const resolvePluginConfig = (resolveConfig: () => OperatorConfig | undefined) => {
       const liveConfig = resolveConfig();
       // Codex plugin config can change at runtime. A missing live entry is an
       // explicit removal, while an unavailable runtime snapshot uses startup config.
@@ -196,7 +196,7 @@ export default definePluginEntry({
             resolveCodexCliSessionForBindingOnNode({ runtime: api.runtime, ...params }),
           codexPluginsManagementIo: {
             readConfig: () => {
-              const current = (api.runtime.config?.current?.() ?? {}) as OpenClawConfig;
+              const current = (api.runtime.config?.current?.() ?? {}) as OperatorConfig;
               const plugins = (current as Record<string, unknown>).plugins;
               if (!plugins || typeof plugins !== "object") {
                 return Promise.resolve({});

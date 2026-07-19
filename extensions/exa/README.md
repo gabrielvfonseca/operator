@@ -1,8 +1,8 @@
-# OpenClaw Exa Plugin
+# Operator Exa Plugin
 
-Official OpenClaw plugin for Exa.
+Official Operator plugin for Exa.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/exa-plugin

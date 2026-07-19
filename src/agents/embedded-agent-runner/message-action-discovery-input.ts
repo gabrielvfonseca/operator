@@ -1,7 +1,7 @@
 /**
  * Builds scoped message-action discovery inputs for embedded-agent tool setup.
  */
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 
 /**
  * Normalizes channel/session/message context before message-action discovery.
@@ -11,7 +11,7 @@ import type { OpenClawConfig } from "../../config/types.operator.js";
  */
 /** Collect the current sender/channel hints used to discover message actions. */
 export function buildEmbeddedMessageActionDiscoveryInput(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   channel: string;
   currentChannelId?: string | null;
   currentThreadTs?: string | null;

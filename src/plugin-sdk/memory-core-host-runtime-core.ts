@@ -14,7 +14,7 @@ export { resolveDefaultAgentId, resolveSessionAgentIds } from "../agents/agent-s
 export { resolveMemorySearchConfig } from "../agents/memory-search.js";
 export { parseNonNegativeByteSize } from "../config/byte-size.js";
 export { getRuntimeConfig } from "../config/config.js";
-export type { OpenClawConfig } from "../config/config.js";
+export type { OperatorConfig } from "../config/config.js";
 export { resolveStateDir } from "../config/paths.js";
 export { resolveSessionTranscriptsDirForAgent } from "../config/sessions/paths.js";
 export type { MemoryCitationsMode } from "../config/types.memory.js";

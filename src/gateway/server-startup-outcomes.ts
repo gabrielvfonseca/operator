@@ -1,6 +1,6 @@
 // Fixed-vocabulary Gateway startup outcomes keep normal boot logs useful
 // without exposing configuration values, paths, or startup errors.
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { hasConfiguredInternalHooks } from "../hooks/configured.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 
@@ -46,7 +46,7 @@ export type GatewayStartupOutcomeRecorder = {
 };
 
 type GatewayStartupOutcomeRecorderParams = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   gatewayStartHooks: boolean;
   memoryStartupMode: "off" | "immediate" | "idle";
   env?: NodeJS.ProcessEnv;

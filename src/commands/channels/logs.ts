@@ -1,4 +1,4 @@
-// Implements channel-scoped tailing of the OpenClaw log file.
+// Implements channel-scoped tailing of the Operator log file.
 import fs from "node:fs/promises";
 import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
 import { theme } from "../../../packages/terminal-core/src/theme.js";

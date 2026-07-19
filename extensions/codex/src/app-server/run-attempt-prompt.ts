@@ -7,7 +7,7 @@ import {
 } from "openclaw/plugin-sdk/agent-harness-runtime";
 import {
   buildCodexSystemPromptReport,
-  prependCodexOpenClawPromptContext,
+  prependCodexOperatorPromptContext,
   readContextEngineThreadBootstrapProjection,
   resolveCodexDeliveryHintPreservedInputRange,
   resolveContextEngineBootstrapProjectionDecision,
@@ -247,7 +247,7 @@ export async function prepareCodexAttemptPrompt(context: CodexAttemptContext) {
     prompt: string;
     promptInputRange?: { start: number; end: number };
   }) => {
-    const turnPromptText = prependCodexOpenClawPromptContext(
+    const turnPromptText = prependCodexOperatorPromptContext(
       promptBuildResult.prompt,
       openClawPromptContext,
       {

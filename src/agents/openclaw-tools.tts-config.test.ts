@@ -1,7 +1,7 @@
-// Verifies createOpenClawTools wires shared config and context into the TTS tool.
+// Verifies createOperatorTools wires shared config and context into the TTS tool.
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
-import { createOpenClawTools } from "./openclaw-tools.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
+import { createOperatorTools } from "./openclaw-tools.js";
 import type { AnyAgentTool } from "./tools/common.js";
 
 const mocks = vi.hoisted(() => {
@@ -33,7 +33,7 @@ const mocks = vi.hoisted(() => {
 });
 
 vi.mock("./openclaw-plugin-tools.js", () => ({
-  resolveOpenClawPluginToolsForOptions: () => [],
+  resolveOperatorPluginToolsForOptions: () => [],
 }));
 
 vi.mock("./openclaw-tools.nodes-workspace-guard.js", () => ({
@@ -142,7 +142,7 @@ function getTextToSpeechParams() {
   return calls[0]?.[0] as
     | {
         text?: string;
-        cfg?: OpenClawConfig;
+        cfg?: OperatorConfig;
         agentId?: string;
         channel?: string;
         accountId?: string;
@@ -150,7 +150,7 @@ function getTextToSpeechParams() {
     | undefined;
 }
 
-describe("createOpenClawTools TTS config wiring", () => {
+describe("createOperatorTools TTS config wiring", () => {
   beforeEach(() => {
     mocks.createCronToolOptions.mockClear();
     mocks.createImageGenerateToolOptions.mockClear();
@@ -172,9 +172,9 @@ describe("createOpenClawTools TTS config wiring", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       config: injectedConfig,
       disableMessageTool: true,
       disablePluginTools: true,
@@ -192,7 +192,7 @@ describe("createOpenClawTools TTS config wiring", () => {
   });
 
   it("keeps direct TTS tool guidance explicit even when the tool is available", async () => {
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       config: {},
       disableMessageTool: true,
       disablePluginTools: true,
@@ -211,9 +211,9 @@ describe("createOpenClawTools TTS config wiring", () => {
       agents: {
         list: [{ id: "reader" }, { id: "main" }],
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       config: injectedConfig,
       agentSessionKey: "agent:reader:telegram:chat:123",
       disableMessageTool: true,
@@ -244,9 +244,9 @@ describe("createOpenClawTools TTS config wiring", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
-    const tool = createOpenClawTools({
+    const tool = createOperatorTools({
       config: injectedConfig,
       agentChannel: "feishu",
       agentAccountId: "feishu-main",
@@ -268,7 +268,7 @@ describe("createOpenClawTools TTS config wiring", () => {
   });
 });
 
-describe("createOpenClawTools media generation session wiring", () => {
+describe("createOperatorTools media generation session wiring", () => {
   beforeEach(() => {
     mocks.createImageGenerateToolOptions.mockClear();
     mocks.createMusicGenerateToolOptions.mockClear();
@@ -284,9 +284,9 @@ describe("createOpenClawTools media generation session wiring", () => {
           musicGenerationModel: { primary: "music-owner/model" },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
-    createOpenClawTools({
+    createOperatorTools({
       config,
       agentSessionKey: "agent:main:cron:daily-media",
       runSessionKey: "agent:main:cron:daily-media:run:run-123",
@@ -320,9 +320,9 @@ describe("createOpenClawTools media generation session wiring", () => {
           imageGenerationModel: { primary: "image-owner/model" },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
-    createOpenClawTools({
+    createOperatorTools({
       config,
       agentSessionKey: "agent:main:slack:channel:C123",
       runSessionKey: "agent:main:slack:channel:C123:run:run-123",
@@ -338,13 +338,13 @@ describe("createOpenClawTools media generation session wiring", () => {
   });
 });
 
-describe("createOpenClawTools session status route context wiring", () => {
+describe("createOperatorTools session status route context wiring", () => {
   beforeEach(() => {
     mocks.createSessionStatusToolOptions.mockClear();
   });
 
   it("passes the active live-run route into the session_status tool", () => {
-    createOpenClawTools({
+    createOperatorTools({
       agentSessionKey: "agent:main:discord:channel:1489550370136129537",
       runSessionKey: "agent:main:discord:channel:1489550370136129537",
       agentChannel: "webchat",
@@ -372,13 +372,13 @@ describe("createOpenClawTools session status route context wiring", () => {
   });
 });
 
-describe("createOpenClawTools cron context wiring", () => {
+describe("createOperatorTools cron context wiring", () => {
   beforeEach(() => {
     mocks.createCronToolOptions.mockClear();
   });
 
   it("passes preserved channel delivery context into the cron tool", async () => {
-    createOpenClawTools({
+    createOperatorTools({
       agentSessionKey: "agent:main:matrix:channel:!abcdef1234567890:example.org",
       agentChannel: "matrix",
       agentAccountId: "bot-a",
@@ -402,7 +402,7 @@ describe("createOpenClawTools cron context wiring", () => {
   });
 
   it("uses agent route context when auto-threading context is unavailable", async () => {
-    createOpenClawTools({
+    createOperatorTools({
       agentSessionKey: "agent:main:matrix:channel:!abcdef1234567890:example.org",
       agentChannel: "matrix",
       agentAccountId: "bot-a",
@@ -424,7 +424,7 @@ describe("createOpenClawTools cron context wiring", () => {
   });
 
   it("passes self-remove scope into the cron tool", async () => {
-    createOpenClawTools({
+    createOperatorTools({
       agentSessionKey: "agent:main:cron:job-current",
       cronSelfRemoveOnlyJobId: "job-current",
       disableMessageTool: true,

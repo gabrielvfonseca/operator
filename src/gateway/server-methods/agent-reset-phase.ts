@@ -3,7 +3,7 @@ import {
   normalizeOptionalString,
 } from "@operator/normalization-core/string-coerce";
 import { ErrorCodes, errorShape } from "../../../packages/gateway-protocol/src/index.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { assertAgentRunLifecycleGenerationCurrent } from "../../infra/agent-events.js";
 import { ADMIN_SCOPE } from "../method-scopes.js";
 import { formatForLog } from "../ws-log.js";
@@ -38,7 +38,7 @@ type AgentResetPhaseResult = {
 
 export async function runAgentResetPhase(params: {
   request: AgentRunRequest;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   requestedSessionKey?: string;
   resolvedSessionId?: string;
   effectiveTranscriptInputText: string;

@@ -125,8 +125,8 @@ describe("resolveUpdatedGatewayRestartPort", () => {
     expect(
       resolveUpdatedGatewayRestartPort({
         config: { gateway: { port: 19000 } } as never,
-        processEnv: { OPENCLAW_GATEWAY_PORT: "19001" },
-        serviceEnv: { OPENCLAW_GATEWAY_PORT: "19002" },
+        processEnv: { OPERATOR_GATEWAY_PORT: "19001" },
+        serviceEnv: { OPERATOR_GATEWAY_PORT: "19002" },
       }),
     ).toBe(19002);
   });
@@ -145,12 +145,12 @@ describe("resolveUpdatedGatewayRestartPort", () => {
 describe("resolvePostUpdateServiceStateReadEnv", () => {
   it("keeps package restart preparation anchored to the pre-update service env", () => {
     const processEnv = {
-      OPENCLAW_STATE_DIR: "/source/state",
-      OPENCLAW_CONFIG_PATH: "/source/openclaw.json",
+      OPERATOR_STATE_DIR: "/source/state",
+      OPERATOR_CONFIG_PATH: "/source/openclaw.json",
     } as NodeJS.ProcessEnv;
     const prePackageServiceEnv = {
-      OPENCLAW_STATE_DIR: "/managed/state",
-      OPENCLAW_CONFIG_PATH: "/managed/openclaw.json",
+      OPERATOR_STATE_DIR: "/managed/state",
+      OPERATOR_CONFIG_PATH: "/managed/openclaw.json",
     } as NodeJS.ProcessEnv;
 
     expect(
@@ -163,8 +163,8 @@ describe("resolvePostUpdateServiceStateReadEnv", () => {
   });
 
   it("keeps git updates tied to the caller environment", () => {
-    const processEnv = { OPENCLAW_STATE_DIR: "/source/state" } as NodeJS.ProcessEnv;
-    const prePackageServiceEnv = { OPENCLAW_STATE_DIR: "/managed/state" } as NodeJS.ProcessEnv;
+    const processEnv = { OPERATOR_STATE_DIR: "/source/state" } as NodeJS.ProcessEnv;
+    const prePackageServiceEnv = { OPERATOR_STATE_DIR: "/managed/state" } as NodeJS.ProcessEnv;
 
     expect(
       resolvePostUpdateServiceStateReadEnv({
@@ -176,8 +176,8 @@ describe("resolvePostUpdateServiceStateReadEnv", () => {
   });
 
   it("uses the managed service environment for git updates stopped by this updater", () => {
-    const processEnv = { OPENCLAW_STATE_DIR: "/source/state" } as NodeJS.ProcessEnv;
-    const preManagedServiceEnv = { OPENCLAW_STATE_DIR: "/managed/state" } as NodeJS.ProcessEnv;
+    const processEnv = { OPERATOR_STATE_DIR: "/source/state" } as NodeJS.ProcessEnv;
+    const preManagedServiceEnv = { OPERATOR_STATE_DIR: "/managed/state" } as NodeJS.ProcessEnv;
 
     expect(
       resolvePostUpdateServiceStateReadEnv({
@@ -195,41 +195,41 @@ describe("resolvePostInstallDoctorEnv", () => {
       invocationCwd: "/srv/openclaw",
       baseEnv: {
         PATH: "/bin",
-        OPENCLAW_STATE_DIR: "/wrong/state",
-        OPENCLAW_CONFIG_PATH: "/wrong/openclaw.json",
-        OPENCLAW_PROFILE: "wrong",
+        OPERATOR_STATE_DIR: "/wrong/state",
+        OPERATOR_CONFIG_PATH: "/wrong/openclaw.json",
+        OPERATOR_PROFILE: "wrong",
       },
       serviceEnv: {
-        OPENCLAW_STATE_DIR: "daemon-state",
-        OPENCLAW_CONFIG_PATH: "daemon-state/openclaw.json",
-        OPENCLAW_PROFILE: "work",
+        OPERATOR_STATE_DIR: "daemon-state",
+        OPERATOR_CONFIG_PATH: "daemon-state/openclaw.json",
+        OPERATOR_PROFILE: "work",
       },
     });
 
     expect(env.PATH).toBe("/bin");
     expect(env.NODE_DISABLE_COMPILE_CACHE).toBe("1");
     expect(env[DOCTOR_DISABLE_CROSS_STATE_DIR_IMPORTS_ENV]).toBe("1");
-    expect(env.OPENCLAW_STATE_DIR).toBe(path.join("/srv/openclaw", "daemon-state"));
-    expect(env.OPENCLAW_CONFIG_PATH).toBe(
+    expect(env.OPERATOR_STATE_DIR).toBe(path.join("/srv/openclaw", "daemon-state"));
+    expect(env.OPERATOR_CONFIG_PATH).toBe(
       path.join("/srv/openclaw", "daemon-state", "openclaw.json"),
     );
-    expect(env.OPENCLAW_PROFILE).toBe("work");
+    expect(env.OPERATOR_PROFILE).toBe("work");
   });
 
   it("keeps the caller env when no managed service env is available", () => {
     const env = resolvePostInstallDoctorEnv({
       baseEnv: {
         PATH: "/bin",
-        OPENCLAW_STATE_DIR: "/caller/state",
-        OPENCLAW_PROFILE: "caller",
+        OPERATOR_STATE_DIR: "/caller/state",
+        OPERATOR_PROFILE: "caller",
       },
     });
 
     expect(env.PATH).toBe("/bin");
     expect(env.NODE_DISABLE_COMPILE_CACHE).toBe("1");
     expect(env[DOCTOR_DISABLE_CROSS_STATE_DIR_IMPORTS_ENV]).toBe("1");
-    expect(env.OPENCLAW_STATE_DIR).toBe("/caller/state");
-    expect(env.OPENCLAW_PROFILE).toBe("caller");
+    expect(env.OPERATOR_STATE_DIR).toBe("/caller/state");
+    expect(env.OPERATOR_PROFILE).toBe("caller");
   });
 });
 
@@ -605,8 +605,8 @@ describe("formatPostUpdateGatewayRecoveryInstructions", () => {
 describe("recoverInstalledLaunchAgentAfterUpdate", () => {
   it("re-bootstraps an installed-but-not-loaded macOS LaunchAgent after update", async () => {
     const service = {} as never;
-    const serviceEnv = { OPENCLAW_PROFILE: "stomme" } as NodeJS.ProcessEnv;
-    const recoveredEnv = { ...serviceEnv, OPENCLAW_PORT: "18790" } as NodeJS.ProcessEnv;
+    const serviceEnv = { OPERATOR_PROFILE: "stomme" } as NodeJS.ProcessEnv;
+    const recoveredEnv = { ...serviceEnv, OPERATOR_PORT: "18790" } as NodeJS.ProcessEnv;
     const readState = vi.fn(async () => ({
       installed: true,
       loaded: false,
@@ -665,7 +665,7 @@ describe("recoverInstalledLaunchAgentAfterUpdate", () => {
       installed: true,
       loaded: true,
       running: true,
-      env: { OPENCLAW_PROFILE: "stomme" } as NodeJS.ProcessEnv,
+      env: { OPERATOR_PROFILE: "stomme" } as NodeJS.ProcessEnv,
       command: null,
       runtime: { status: "running" },
     }));
@@ -690,7 +690,7 @@ describe("recoverInstalledLaunchAgentAfterUpdate", () => {
       installed: true,
       loaded: false,
       running: false,
-      env: { OPENCLAW_PROFILE: "stomme" } as NodeJS.ProcessEnv,
+      env: { OPERATOR_PROFILE: "stomme" } as NodeJS.ProcessEnv,
       command: null,
       runtime: { status: "unknown", missingSupervision: true },
     }));
@@ -745,7 +745,7 @@ describe("recoverLaunchAgentAndRecheckGatewayHealth", () => {
         service,
         port: 18790,
         expectedVersion: "2026.5.3",
-        env: { OPENCLAW_PROFILE: "stomme", OPENCLAW_PORT: "18790" },
+        env: { OPERATOR_PROFILE: "stomme", OPERATOR_PORT: "18790" },
         deps: { recoverLaunchAgent, waitForHealthy },
       }),
     ).resolves.toEqual({
@@ -762,7 +762,7 @@ describe("recoverLaunchAgentAndRecheckGatewayHealth", () => {
       service,
       port: 18790,
       expectedVersion: "2026.5.3",
-      env: { OPENCLAW_PROFILE: "stomme", OPENCLAW_PORT: "18790" },
+      env: { OPERATOR_PROFILE: "stomme", OPERATOR_PORT: "18790" },
     });
   });
 

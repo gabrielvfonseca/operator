@@ -4,7 +4,7 @@
  */
 import type { IncomingMessage, ServerResponse } from "node:http";
 import type { Duplex } from "node:stream";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
 import { definePluginEntry, type AnyAgentTool } from "openclaw/plugin-sdk/plugin-entry";
@@ -29,7 +29,7 @@ const CANVAS_NODE_COMMANDS = [
 ];
 
 function createLazyCanvasTool(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   workspaceDir?: string;
   agentSessionKey?: string;
 }): AnyAgentTool {
@@ -54,7 +54,7 @@ function createLazyCanvasTool(params: {
 }
 
 function createLazyShowWidgetTool(params: {
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   sessionId?: string;
   agentId?: string;
 }): AnyAgentTool {

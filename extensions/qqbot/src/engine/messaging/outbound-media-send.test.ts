@@ -77,7 +77,7 @@ const mockedLoadOutboundMediaFromUrl = vi.mocked(loadOutboundMediaFromUrl);
 const mockedSenderSendMedia = vi.mocked(senderSendMedia);
 
 let openclawHome: string;
-let originalOpenClawHome: string | undefined;
+let originalOperatorHome: string | undefined;
 
 function makeCtx() {
   return {
@@ -102,13 +102,13 @@ function makeCtx() {
 
 beforeEach(async () => {
   vi.clearAllMocks();
-  originalOpenClawHome = process.env.OPENCLAW_HOME;
+  originalOperatorHome = process.env.OPERATOR_HOME;
   // realpath: macOS tmpdir is a /var -> /private/var symlink and trusted-root
   // resolution returns canonicalized paths that assertions compare against.
   openclawHome = await fs.realpath(
     await fs.mkdtemp(path.join(os.tmpdir(), "qqbot-host-read-voice-")),
   );
-  process.env.OPENCLAW_HOME = openclawHome;
+  process.env.OPERATOR_HOME = openclawHome;
   audioPortMock.audioFileToSilkBase64.mockResolvedValue(undefined);
   audioPortMock.isAudioFile.mockReturnValue(true);
   audioPortMock.shouldTranscodeVoice.mockReturnValue(false);
@@ -116,10 +116,10 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
-  if (originalOpenClawHome === undefined) {
-    delete process.env.OPENCLAW_HOME;
+  if (originalOperatorHome === undefined) {
+    delete process.env.OPERATOR_HOME;
   } else {
-    process.env.OPENCLAW_HOME = originalOpenClawHome;
+    process.env.OPERATOR_HOME = originalOperatorHome;
   }
   if (openclawHome) {
     await fs.rm(openclawHome, { recursive: true, force: true });

@@ -125,9 +125,9 @@ describe("doctor session transcript repair", () => {
           content: [
             "visible ask",
             "",
-            "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+            "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
             "secret",
-            "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+            "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
           ].join("\n"),
         },
       },
@@ -181,7 +181,7 @@ describe("doctor session transcript repair", () => {
         message: {
           role: "user",
           content:
-            "visible ask\n\n<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>\nsecret\n<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+            "visible ask\n\n<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>\nsecret\n<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
         },
       },
       {
@@ -256,7 +256,7 @@ describe("doctor session transcript repair", () => {
         validatedTranscriptEvents: 0,
       },
     });
-    const env = { ...process.env, OPENCLAW_STATE_DIR: root };
+    const env = { ...process.env, OPERATOR_STATE_DIR: root };
     const cfg = {};
 
     await noteSessionTranscriptHealth({
@@ -303,7 +303,7 @@ describe("doctor session transcript repair", () => {
         validatedTranscriptEvents: 0,
       },
     });
-    const env = { ...process.env, OPENCLAW_STATE_DIR: root };
+    const env = { ...process.env, OPERATOR_STATE_DIR: root };
     const cfg = {};
 
     await noteSessionTranscriptHealth({
@@ -333,7 +333,7 @@ describe("doctor session transcript repair", () => {
         message: {
           role: "user",
           content:
-            "visible ask\n\n<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>\nsecret\n<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+            "visible ask\n\n<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>\nsecret\n<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
         },
       },
       {
@@ -370,7 +370,7 @@ describe("doctor session transcript repair", () => {
         message: {
           role: "user",
           content:
-            "visible ask\n\n<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>\nsecret\n<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+            "visible ask\n\n<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>\nsecret\n<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
         },
       },
       {
@@ -468,7 +468,7 @@ describe("doctor session transcript repair", () => {
         message: {
           role: "user",
           content:
-            "visible ask\n\n<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>\nsecret\n<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+            "visible ask\n\n<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>\nsecret\n<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
         },
       },
       {
@@ -526,7 +526,7 @@ describe("doctor session transcript repair", () => {
         message: {
           role: "user",
           content:
-            "visible ask\n\n<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>\nsecret\n<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+            "visible ask\n\n<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>\nsecret\n<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
         },
       },
       {

@@ -2,8 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
 import { resolveAgentIdFromSessionKey } from "../routing/session-key.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
-import { runOpenClawStateWriteTransaction } from "../state/operator-state-db.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import { runOperatorStateWriteTransaction } from "../state/operator-state-db.js";
 import { resolveRequiredHomeDir } from "./home-dir.js";
 import {
   executeSqliteQuerySync,
@@ -18,16 +18,16 @@ import type { LegacyStateDetection } from "./state-migrations.types.js";
 import { normalizeVoiceWakeRoutingConfig } from "./voicewake-routing.js";
 
 type LegacyVoiceWakeImportDatabase = Pick<
-  OpenClawStateKyselyDatabase,
+  OperatorStateKyselyDatabase,
   "voicewake_routing_config" | "voicewake_routing_routes" | "voicewake_triggers"
 >;
-type LegacyConfigHealthImportDatabase = Pick<OpenClawStateKyselyDatabase, "config_health_entries">;
+type LegacyConfigHealthImportDatabase = Pick<OperatorStateKyselyDatabase, "config_health_entries">;
 type LegacyPluginBindingApprovalsImportDatabase = Pick<
-  OpenClawStateKyselyDatabase,
+  OperatorStateKyselyDatabase,
   "plugin_binding_approvals"
 >;
 type LegacyCurrentConversationBindingsImportDatabase = Pick<
-  OpenClawStateKyselyDatabase,
+  OperatorStateKyselyDatabase,
   "current_conversation_bindings"
 >;
 
@@ -157,7 +157,7 @@ export function migrateLegacyVoiceWakeSettings(params: {
       let imported = false;
       let shouldArchive = false;
       try {
-        runOpenClawStateWriteTransaction(
+        runOperatorStateWriteTransaction(
           ({ db }) => {
             const stateDb = getNodeSqliteKysely<LegacyVoiceWakeImportDatabase>(db);
             const existing = executeSqliteQuerySync(
@@ -229,7 +229,7 @@ export function migrateLegacyVoiceWakeSettings(params: {
       let imported = false;
       let shouldArchive = false;
       try {
-        runOpenClawStateWriteTransaction(
+        runOperatorStateWriteTransaction(
           ({ db }) => {
             const stateDb = getNodeSqliteKysely<LegacyVoiceWakeImportDatabase>(db);
             const existing = executeSqliteQueryTakeFirstSync(
@@ -449,7 +449,7 @@ export function migrateLegacyConfigHealth(params: {
   let reconciledCount = 0;
   let shouldArchive = false;
   try {
-    const result = runOpenClawStateWriteTransaction(
+    const result = runOperatorStateWriteTransaction(
       ({ db }) => {
         const stateDb = getNodeSqliteKysely<LegacyConfigHealthImportDatabase>(db);
         const existing = executeSqliteQuerySync(
@@ -669,7 +669,7 @@ export function migrateLegacyPluginBindingApprovals(params: {
   let importedCount = 0;
   let shouldArchive = approvals.length === 0;
   try {
-    runOpenClawStateWriteTransaction(
+    runOperatorStateWriteTransaction(
       ({ db }) => {
         const stateDb = getNodeSqliteKysely<LegacyPluginBindingApprovalsImportDatabase>(db);
         const existing = executeSqliteQuerySync(
@@ -893,7 +893,7 @@ export function migrateLegacyCurrentConversationBindings(params: {
   let importedCount = 0;
   let shouldArchive = records.length === 0;
   try {
-    runOpenClawStateWriteTransaction(
+    runOperatorStateWriteTransaction(
       ({ db }) => {
         const stateDb = getNodeSqliteKysely<LegacyCurrentConversationBindingsImportDatabase>(db);
         const existing = executeSqliteQuerySync(

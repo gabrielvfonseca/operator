@@ -18,12 +18,12 @@ import {
 } from "../../../agents/auth-profiles/sqlite.js";
 import type { AuthProfileStore } from "../../../agents/auth-profiles/types.js";
 import { resetProviderAuthAliasMapCacheForTest } from "../../../agents/provider-auth-aliases.test-support.js";
-import type { OpenClawConfig } from "../../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../../config/types.openclaw.js";
 import {
-  closeOpenClawAgentDatabasesForTest,
-  openOpenClawAgentDatabase,
+  closeOperatorAgentDatabasesForTest,
+  openOperatorAgentDatabase,
 } from "../../../state/openclaw-agent-db.js";
-import { closeOpenClawStateDatabaseForTest } from "../../../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../../state/openclaw-state-db.js";
 import {
   collectStaleConfiguredAuthOrderWarnings,
   maybeRepairStaleConfiguredAuthOrders,
@@ -82,7 +82,7 @@ function tokenStore(params: {
 }
 
 function repair(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   stores: AuthProfileStore[],
   runtimeProfileIds?: ReadonlySet<string>,
 ) {
@@ -109,7 +109,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
       auth: {
         order: { anthropic: ["anthropic:claude-cli"] },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const before = buildAuthHealthSummary({ cfg, store });
     const result = repair(cfg, [store]);
     const after = buildAuthHealthSummary({ cfg: result.config, store });
@@ -138,7 +138,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
   });
 
   it("preserves an explicit empty order", () => {
-    const cfg = { auth: { order: { anthropic: [] } } } satisfies OpenClawConfig;
+    const cfg = { auth: { order: { anthropic: [] } } } satisfies OperatorConfig;
 
     const result = repair(cfg, [tokenStore({ profileId: "claude-cli:setup-token" })]);
 
@@ -150,7 +150,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
     (orderEntry) => {
       const cfg = {
         auth: { order: { anthropic: orderEntry } },
-      } as unknown as OpenClawConfig;
+      } as unknown as OperatorConfig;
 
       expect(repair(cfg, [tokenStore({ profileId: "claude-cli:setup-token" })])).toEqual({
         config: cfg,
@@ -171,7 +171,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
         profiles: { broken: null },
         order: { anthropic: ["anthropic:missing"] },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     expect(repair(cfg, [tokenStore({ profileId: "claude-cli:setup-token" })])).toEqual({
       config: cfg,
@@ -193,7 +193,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
         },
         order: { anthropic: ["anthropic:removed", "anthropic:pending"] },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = repair(cfg, [tokenStore({ profileId: "claude-cli:setup-token" })]);
 
@@ -205,7 +205,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
       auth: {
         order: { anthropic: ["anthropic:removed", "anthropic:existing"] },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const store = tokenStore({
       profileId: "anthropic:existing",
       provider: "anthropic",
@@ -219,7 +219,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
   it("does not use a stored profile from another provider", () => {
     const cfg = {
       auth: { order: { anthropic: ["anthropic:removed"] } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const store = tokenStore({
       profileId: "openai:manual",
       provider: "openai",
@@ -233,7 +233,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
   it("does not remove an order when the only fallback credential is expired", () => {
     const cfg = {
       auth: { order: { anthropic: ["anthropic:removed"] } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const store = tokenStore({
       profileId: "claude-cli:expired",
       expires: Date.now() - 1,
@@ -247,7 +247,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
   it("preserves a stale config order when the agent's stored order has no usable fallback", () => {
     const cfg = {
       auth: { order: { anthropic: ["anthropic:removed"] } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const store: AuthProfileStore = {
       version: 1,
       profiles: {
@@ -277,7 +277,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
           "claude-cli": ["claude-cli:removed"],
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const mainStore: AuthProfileStore = {
       version: 1,
       profiles: {
@@ -315,7 +315,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
   it("preserves a stale order unless every active agent has an automatic fallback", () => {
     const cfg = {
       auth: { order: { anthropic: ["anthropic:removed"] } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
     const healthyStore = tokenStore({ profileId: "claude-cli:setup-token" });
     const missingFallbackStore: AuthProfileStore = { version: 1, profiles: {} };
 
@@ -339,11 +339,11 @@ describe("repairStaleConfiguredAuthOrders", () => {
       const cfg = {
         agents: { list: [{ id: "work", default: true }] },
         auth: { order: { anthropic: ["anthropic:removed"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({
         cfg,
-        env: { OPENCLAW_STATE_DIR: stateDir },
+        env: { OPERATOR_STATE_DIR: stateDir },
       });
 
       expect(result.config.auth?.order?.anthropic).toBeUndefined();
@@ -362,11 +362,11 @@ describe("repairStaleConfiguredAuthOrders", () => {
       const cfg = {
         agents: { list: [{ id: "work", default: true }] },
         auth: { order: { anthropic: ["anthropic:removed"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({
         cfg,
-        env: { OPENCLAW_STATE_DIR: stateDir },
+        env: { OPERATOR_STATE_DIR: stateDir },
       });
 
       expect(result.config.auth?.order?.anthropic).toBeUndefined();
@@ -385,8 +385,8 @@ describe("repairStaleConfiguredAuthOrders", () => {
           tokenStore({ profileId: "claude-cli:setup-token" }),
           agentDir,
         );
-        closeOpenClawAgentDatabasesForTest();
-        closeOpenClawStateDatabaseForTest();
+        closeOperatorAgentDatabasesForTest();
+        closeOperatorStateDatabaseForTest();
         const [, walPath] = resolveAuthProfileDatabaseFilePaths(agentDir);
         if (!walPath) {
           throw new Error("expected SQLite WAL path");
@@ -395,11 +395,11 @@ describe("repairStaleConfiguredAuthOrders", () => {
         await fs.symlink(path.join(stateDir, "missing-wal"), walPath);
         const cfg = {
           auth: { order: { anthropic: ["anthropic:removed"] } },
-        } satisfies OpenClawConfig;
+        } satisfies OperatorConfig;
 
         const result = maybeRepairStaleConfiguredAuthOrders({
           cfg,
-          env: { OPENCLAW_STATE_DIR: stateDir },
+          env: { OPERATOR_STATE_DIR: stateDir },
         });
 
         expect(result.config).toBe(cfg);
@@ -408,8 +408,8 @@ describe("repairStaleConfiguredAuthOrders", () => {
           expect.stringContaining("SQLite auth profile store is unreadable"),
         ]);
       } finally {
-        closeOpenClawAgentDatabasesForTest();
-        closeOpenClawStateDatabaseForTest();
+        closeOperatorAgentDatabasesForTest();
+        closeOperatorStateDatabaseForTest();
         await fs.rm(stateDir, { recursive: true, force: true });
       }
     },
@@ -428,11 +428,11 @@ describe("repairStaleConfiguredAuthOrders", () => {
       );
       const cfg = {
         auth: { order: { anthropic: ["anthropic:retained"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({
         cfg,
-        env: { OPENCLAW_STATE_DIR: stateDir },
+        env: { OPERATOR_STATE_DIR: stateDir },
       });
 
       expect(result).toEqual({ config: cfg, changes: [] });
@@ -443,14 +443,14 @@ describe("repairStaleConfiguredAuthOrders", () => {
 
   it("preserves an ordered profile in a registered custom agent directory", async () => {
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-custom-auth-order-"));
-    const env = { OPENCLAW_STATE_DIR: stateDir };
+    const env = { OPERATOR_STATE_DIR: stateDir };
     try {
       writePersistedAuthProfileStoreRaw(
         tokenStore({ profileId: "claude-cli:setup-token" }),
         path.join(stateDir, "agents", "main", "agent"),
       );
       const customAgentDir = path.join(stateDir, "custom-agents", "retained");
-      const database = openOpenClawAgentDatabase({
+      const database = openOperatorAgentDatabase({
         agentId: "retained",
         env,
         path: resolveAuthProfileDatabasePath(customAgentDir),
@@ -460,28 +460,28 @@ describe("repairStaleConfiguredAuthOrders", () => {
         customAgentDir,
         database,
       );
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       const cfg = {
         auth: { order: { anthropic: ["anthropic:retained"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({ cfg, env });
 
       expect(result).toEqual({ config: cfg, changes: [] });
     } finally {
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(stateDir, { recursive: true, force: true });
     }
   });
 
   it("does not use a registered inactive store as the automatic fallback proof", async () => {
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-custom-fallback-"));
-    const env = { OPENCLAW_STATE_DIR: stateDir };
+    const env = { OPERATOR_STATE_DIR: stateDir };
     try {
       const customAgentDir = path.join(stateDir, "custom-agents", "retained");
-      const database = openOpenClawAgentDatabase({
+      const database = openOperatorAgentDatabase({
         agentId: "retained",
         env,
         path: resolveAuthProfileDatabasePath(customAgentDir),
@@ -491,32 +491,32 @@ describe("repairStaleConfiguredAuthOrders", () => {
         customAgentDir,
         database,
       );
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       const cfg = {
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({ cfg, env });
 
       expect(result).toEqual({ config: cfg, changes: [] });
     } finally {
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(stateDir, { recursive: true, force: true });
     }
   });
 
   it("preserves an ordered runtime profile from a registered custom agent directory", async () => {
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-custom-runtime-auth-"));
-    const env = { OPENCLAW_STATE_DIR: stateDir };
+    const env = { OPERATOR_STATE_DIR: stateDir };
     try {
       writePersistedAuthProfileStoreRaw(
         tokenStore({ profileId: "claude-cli:main-token" }),
         path.join(stateDir, "agents", "main", "agent"),
       );
       const customAgentDir = path.join(stateDir, "custom-agents", "retained");
-      const database = openOpenClawAgentDatabase({
+      const database = openOperatorAgentDatabase({
         agentId: "retained",
         env,
         path: resolveAuthProfileDatabasePath(customAgentDir),
@@ -526,8 +526,8 @@ describe("repairStaleConfiguredAuthOrders", () => {
         customAgentDir,
         database,
       );
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       externalAuthTesting.setResolveExternalAuthProfilesForTest((params) =>
         params.context.agentDir === customAgentDir &&
         params.context.store.order?.anthropic?.includes("anthropic:runtime-only")
@@ -548,21 +548,21 @@ describe("repairStaleConfiguredAuthOrders", () => {
       );
       const cfg = {
         auth: { order: { anthropic: ["anthropic:runtime-only"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({ cfg, env });
 
       expect(result).toEqual({ config: cfg, changes: [] });
     } finally {
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(stateDir, { recursive: true, force: true });
     }
   });
 
   it("does not repair while a registered custom agent has an unmigrated auth store", async () => {
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-custom-legacy-auth-"));
-    const env = { OPENCLAW_STATE_DIR: stateDir };
+    const env = { OPERATOR_STATE_DIR: stateDir };
     try {
       writePersistedAuthProfileStoreRaw(
         tokenStore({ profileId: "claude-cli:main-token" }),
@@ -570,23 +570,23 @@ describe("repairStaleConfiguredAuthOrders", () => {
       );
       const customAgentDir = path.join(stateDir, "custom-agents", "retained");
       const databasePath = resolveAuthProfileDatabasePath(customAgentDir);
-      openOpenClawAgentDatabase({ agentId: "retained", env, path: databasePath });
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      openOperatorAgentDatabase({ agentId: "retained", env, path: databasePath });
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.writeFile(
         resolveAuthStorePath(customAgentDir),
         JSON.stringify(tokenStore({ profileId: "anthropic:legacy", provider: "anthropic" })),
       );
       const cfg = {
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({ cfg, env });
 
       expect(result).toEqual({ config: cfg, changes: [] });
     } finally {
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(stateDir, { recursive: true, force: true });
     }
   });
@@ -600,11 +600,11 @@ describe("repairStaleConfiguredAuthOrders", () => {
       );
       const cfg = {
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({
         cfg,
-        env: { OPENCLAW_STATE_DIR: stateDir },
+        env: { OPERATOR_STATE_DIR: stateDir },
       });
 
       expect(result).toEqual({ config: cfg, changes: [] });
@@ -631,11 +631,11 @@ describe("repairStaleConfiguredAuthOrders", () => {
         );
         const cfg = {
           auth: { order: { anthropic: ["anthropic:missing"] } },
-        } satisfies OpenClawConfig;
+        } satisfies OperatorConfig;
 
         const result = maybeRepairStaleConfiguredAuthOrders({
           cfg,
-          env: { OPENCLAW_STATE_DIR: stateDir },
+          env: { OPERATOR_STATE_DIR: stateDir },
         });
 
         expect(result.config).toBe(cfg);
@@ -647,7 +647,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
     },
   );
 
-  it.each(["OPENCLAW_AGENT_DIR", "PI_CODING_AGENT_DIR"] as const)(
+  it.each(["OPERATOR_AGENT_DIR", "PI_CODING_AGENT_DIR"] as const)(
     "preserves profiles in the %s-selected auth store",
     async (envKey) => {
       const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-env-auth-order-"));
@@ -663,12 +663,12 @@ describe("repairStaleConfiguredAuthOrders", () => {
         );
         const cfg = {
           auth: { order: { anthropic: ["claude-cli:selected-token"] } },
-        } satisfies OpenClawConfig;
+        } satisfies OperatorConfig;
 
         const result = maybeRepairStaleConfiguredAuthOrders({
           cfg,
           env: {
-            OPENCLAW_STATE_DIR: stateDir,
+            OPERATOR_STATE_DIR: stateDir,
             [envKey]: selectedAgentDir,
           },
         });
@@ -687,7 +687,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
       const cfg = {
         agents: { list: [{ id: "work", default: true }] },
         auth: { order: { openai: ["openai:runtime-only"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       writePersistedAuthProfileStoreRaw(
         {
           version: 1,
@@ -722,7 +722,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
 
       const result = maybeRepairStaleConfiguredAuthOrders({
         cfg,
-        env: { OPENCLAW_STATE_DIR: stateDir },
+        env: { OPERATOR_STATE_DIR: stateDir },
       });
 
       expect(result).toEqual({ config: cfg, changes: [] });
@@ -744,11 +744,11 @@ describe("repairStaleConfiguredAuthOrders", () => {
       const cfg = {
         agents: { list: [{ id: "work", default: true }] },
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({
         cfg,
-        env: { OPENCLAW_STATE_DIR: stateDir },
+        env: { OPERATOR_STATE_DIR: stateDir },
       });
 
       expect(result.config).toBe(cfg);
@@ -758,7 +758,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
         collectStaleConfiguredAuthOrderWarnings({
           cfg,
           doctorFixCommand: "openclaw doctor --fix",
-          env: { OPENCLAW_STATE_DIR: stateDir },
+          env: { OPERATOR_STATE_DIR: stateDir },
         }).join("\n"),
       ).toContain("SQLite auth profile store is unreadable");
     } finally {
@@ -786,11 +786,11 @@ describe("repairStaleConfiguredAuthOrders", () => {
         const cfg = {
           agents: { list: [{ id: "work", default: true }] },
           auth: { order: { anthropic: ["anthropic:missing"] } },
-        } satisfies OpenClawConfig;
+        } satisfies OperatorConfig;
 
         const result = maybeRepairStaleConfiguredAuthOrders({
           cfg,
-          env: { OPENCLAW_STATE_DIR: stateDir },
+          env: { OPERATOR_STATE_DIR: stateDir },
         });
 
         expect(result.config).toBe(cfg);
@@ -825,11 +825,11 @@ describe("repairStaleConfiguredAuthOrders", () => {
         const cfg = {
           agents: { list: [{ id: "work", default: true }] },
           auth: { order: { anthropic: ["anthropic:missing"] } },
-        } satisfies OpenClawConfig;
+        } satisfies OperatorConfig;
 
         const result = maybeRepairStaleConfiguredAuthOrders({
           cfg,
-          env: { OPENCLAW_STATE_DIR: stateDir },
+          env: { OPERATOR_STATE_DIR: stateDir },
         });
 
         expect(result.config).toBe(cfg);
@@ -853,11 +853,11 @@ describe("repairStaleConfiguredAuthOrders", () => {
       await fs.writeFile(resolveAuthProfileDatabasePath(retainedAgentDir), "not-sqlite");
       const cfg = {
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({
         cfg,
-        env: { OPENCLAW_STATE_DIR: stateDir },
+        env: { OPERATOR_STATE_DIR: stateDir },
       });
 
       expect(result.config).toBe(cfg);
@@ -870,7 +870,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
 
   it("fails closed when a registered custom auth database is unreadable", async () => {
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-custom-invalid-auth-"));
-    const env = { OPENCLAW_STATE_DIR: stateDir };
+    const env = { OPERATOR_STATE_DIR: stateDir };
     try {
       writePersistedAuthProfileStoreRaw(
         tokenStore({ profileId: "claude-cli:main-token" }),
@@ -878,13 +878,13 @@ describe("repairStaleConfiguredAuthOrders", () => {
       );
       const customAgentDir = path.join(stateDir, "custom-agents", "retained");
       const databasePath = resolveAuthProfileDatabasePath(customAgentDir);
-      openOpenClawAgentDatabase({ agentId: "retained", env, path: databasePath });
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      openOperatorAgentDatabase({ agentId: "retained", env, path: databasePath });
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.writeFile(databasePath, "not-sqlite");
       const cfg = {
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({ cfg, env });
 
@@ -892,15 +892,15 @@ describe("repairStaleConfiguredAuthOrders", () => {
       expect(result.changes).toEqual([]);
       expect(result.warnings?.join("\n")).toContain("Skipped auth.order repair");
     } finally {
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(stateDir, { recursive: true, force: true });
     }
   });
 
   it("fails closed when registered auth runtime state is unreadable without a secrets row", async () => {
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-custom-state-auth-"));
-    const env = { OPENCLAW_STATE_DIR: stateDir };
+    const env = { OPERATOR_STATE_DIR: stateDir };
     try {
       writePersistedAuthProfileStoreRaw(
         tokenStore({ profileId: "claude-cli:main-token" }),
@@ -908,7 +908,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
       );
       const customAgentDir = path.join(stateDir, "custom-agents", "retained");
       const databasePath = resolveAuthProfileDatabasePath(customAgentDir);
-      const database = openOpenClawAgentDatabase({
+      const database = openOperatorAgentDatabase({
         agentId: "retained",
         env,
         path: databasePath,
@@ -918,8 +918,8 @@ describe("repairStaleConfiguredAuthOrders", () => {
         customAgentDir,
         database,
       );
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       const rawDatabase = new DatabaseSync(databasePath);
       rawDatabase
         .prepare("UPDATE auth_profile_state SET state_json = ? WHERE state_key = ?")
@@ -927,7 +927,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
       rawDatabase.close();
       const cfg = {
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({ cfg, env });
 
@@ -935,15 +935,15 @@ describe("repairStaleConfiguredAuthOrders", () => {
       expect(result.changes).toEqual([]);
       expect(result.warnings?.join("\n")).toContain("unreadable");
     } finally {
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(stateDir, { recursive: true, force: true });
     }
   });
 
   it("fails closed when a registered auth database owner no longer matches", async () => {
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-custom-owner-auth-"));
-    const env = { OPENCLAW_STATE_DIR: stateDir };
+    const env = { OPERATOR_STATE_DIR: stateDir };
     try {
       writePersistedAuthProfileStoreRaw(
         tokenStore({ profileId: "claude-cli:main-token" }),
@@ -951,9 +951,9 @@ describe("repairStaleConfiguredAuthOrders", () => {
       );
       const customAgentDir = path.join(stateDir, "custom-agents", "retained");
       const databasePath = resolveAuthProfileDatabasePath(customAgentDir);
-      openOpenClawAgentDatabase({ agentId: "retained", env, path: databasePath });
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      openOperatorAgentDatabase({ agentId: "retained", env, path: databasePath });
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       const rawDatabase = new DatabaseSync(databasePath);
       rawDatabase
         .prepare("UPDATE schema_meta SET agent_id = ? WHERE meta_key = ?")
@@ -961,7 +961,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
       rawDatabase.close();
       const cfg = {
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({ cfg, env });
 
@@ -969,15 +969,15 @@ describe("repairStaleConfiguredAuthOrders", () => {
       expect(result.changes).toEqual([]);
       expect(result.warnings?.join("\n")).toContain("Skipped auth.order repair");
     } finally {
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(stateDir, { recursive: true, force: true });
     }
   });
 
   it("uses the live owner after a registered database pathname is recreated", async () => {
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-reowned-auth-"));
-    const env = { OPENCLAW_STATE_DIR: stateDir };
+    const env = { OPERATOR_STATE_DIR: stateDir };
     try {
       writePersistedAuthProfileStoreRaw(
         tokenStore({ profileId: "claude-cli:main-token" }),
@@ -985,17 +985,17 @@ describe("repairStaleConfiguredAuthOrders", () => {
       );
       const customAgentDir = path.join(stateDir, "custom-agents", "retained");
       const databasePath = resolveAuthProfileDatabasePath(customAgentDir);
-      openOpenClawAgentDatabase({ agentId: "retired", env, path: databasePath });
-      closeOpenClawAgentDatabasesForTest();
+      openOperatorAgentDatabase({ agentId: "retired", env, path: databasePath });
+      closeOperatorAgentDatabasesForTest();
       for (const pathname of resolveAuthProfileDatabaseFilePaths(customAgentDir)) {
         await fs.rm(pathname, { force: true });
       }
-      openOpenClawAgentDatabase({ agentId: "replacement", env, path: databasePath });
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      openOperatorAgentDatabase({ agentId: "replacement", env, path: databasePath });
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       const cfg = {
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({ cfg, env });
 
@@ -1003,22 +1003,22 @@ describe("repairStaleConfiguredAuthOrders", () => {
       expect(result.changes).toHaveLength(1);
       expect(result.warnings).toBeUndefined();
     } finally {
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(stateDir, { recursive: true, force: true });
     }
   });
 
   it("fails closed when an active agent points at another agent's database", async () => {
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-active-owner-auth-"));
-    const env = { OPENCLAW_STATE_DIR: stateDir };
+    const env = { OPERATOR_STATE_DIR: stateDir };
     try {
       writePersistedAuthProfileStoreRaw(
         tokenStore({ profileId: "claude-cli:main-token" }),
         path.join(stateDir, "agents", "main", "agent"),
       );
       const customAgentDir = path.join(stateDir, "custom-agents", "shared");
-      const database = openOpenClawAgentDatabase({
+      const database = openOperatorAgentDatabase({
         agentId: "other",
         env,
         path: resolveAuthProfileDatabasePath(customAgentDir),
@@ -1028,12 +1028,12 @@ describe("repairStaleConfiguredAuthOrders", () => {
         customAgentDir,
         database,
       );
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       const cfg = {
         agents: { list: [{ id: "work", default: true, agentDir: customAgentDir }] },
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({ cfg, env });
 
@@ -1041,8 +1041,8 @@ describe("repairStaleConfiguredAuthOrders", () => {
       expect(result.changes).toEqual([]);
       expect(result.warnings?.join("\n")).toContain("Skipped auth.order repair");
     } finally {
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(stateDir, { recursive: true, force: true });
     }
   });
@@ -1078,43 +1078,43 @@ describe("repairStaleConfiguredAuthOrders", () => {
       rawDatabase.close();
       const cfg = {
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({
         cfg,
-        env: { OPENCLAW_STATE_DIR: stateDir },
+        env: { OPERATOR_STATE_DIR: stateDir },
       });
 
       expect(result.config).toBe(cfg);
       expect(result.changes).toEqual([]);
       expect(result.warnings?.join("\n")).toContain("Skipped auth.order repair");
     } finally {
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(stateDir, { recursive: true, force: true });
     }
   });
 
   it("prefers a configured owner over the retained directory basename", async () => {
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-renamed-owner-auth-"));
-    const env = { OPENCLAW_STATE_DIR: stateDir };
+    const env = { OPERATOR_STATE_DIR: stateDir };
     try {
       writePersistedAuthProfileStoreRaw(
         tokenStore({ profileId: "claude-cli:main-token" }),
         path.join(stateDir, "agents", "main", "agent"),
       );
       const renamedAgentDir = path.join(stateDir, "agents", "old", "agent");
-      openOpenClawAgentDatabase({
+      openOperatorAgentDatabase({
         agentId: "work",
         env,
         path: resolveAuthProfileDatabasePath(renamedAgentDir),
       });
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       const cfg = {
         agents: { list: [{ id: "work", default: true, agentDir: renamedAgentDir }] },
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({ cfg, env });
 
@@ -1122,31 +1122,31 @@ describe("repairStaleConfiguredAuthOrders", () => {
       expect(result.changes).toHaveLength(1);
       expect(result.warnings).toBeUndefined();
     } finally {
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(stateDir, { recursive: true, force: true });
     }
   });
 
   it("uses durable ownership for a deconfigured relocated agent directory", async () => {
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-relocated-owner-auth-"));
-    const env = { OPENCLAW_STATE_DIR: stateDir };
+    const env = { OPERATOR_STATE_DIR: stateDir };
     try {
       writePersistedAuthProfileStoreRaw(
         tokenStore({ profileId: "claude-cli:main-token" }),
         path.join(stateDir, "agents", "main", "agent"),
       );
       const relocatedAgentDir = path.join(stateDir, "agents", "old", "agent");
-      openOpenClawAgentDatabase({
+      openOperatorAgentDatabase({
         agentId: "work",
         env,
         path: resolveAuthProfileDatabasePath(relocatedAgentDir),
       });
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       const cfg = {
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({ cfg, env });
 
@@ -1154,8 +1154,8 @@ describe("repairStaleConfiguredAuthOrders", () => {
       expect(result.changes).toHaveLength(1);
       expect(result.warnings).toBeUndefined();
     } finally {
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(stateDir, { recursive: true, force: true });
     }
   });
@@ -1163,13 +1163,13 @@ describe("repairStaleConfiguredAuthOrders", () => {
   it("fails closed when an environment-selected directory belongs to another agent", async () => {
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-env-owner-auth-"));
     const envAgentDir = path.join(stateDir, "custom-env-agent");
-    const env = { OPENCLAW_STATE_DIR: stateDir, OPENCLAW_AGENT_DIR: envAgentDir };
+    const env = { OPERATOR_STATE_DIR: stateDir, OPERATOR_AGENT_DIR: envAgentDir };
     try {
       writePersistedAuthProfileStoreRaw(
         tokenStore({ profileId: "claude-cli:main-token" }),
         path.join(stateDir, "agents", "main", "agent"),
       );
-      const database = openOpenClawAgentDatabase({
+      const database = openOperatorAgentDatabase({
         agentId: "other",
         env,
         path: resolveAuthProfileDatabasePath(envAgentDir),
@@ -1179,11 +1179,11 @@ describe("repairStaleConfiguredAuthOrders", () => {
         envAgentDir,
         database,
       );
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       const cfg = {
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({ cfg, env });
 
@@ -1191,8 +1191,8 @@ describe("repairStaleConfiguredAuthOrders", () => {
       expect(result.changes).toEqual([]);
       expect(result.warnings?.join("\n")).toContain("Skipped auth.order repair");
     } finally {
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(stateDir, { recursive: true, force: true });
     }
   });
@@ -1209,34 +1209,34 @@ describe("repairStaleConfiguredAuthOrders", () => {
         tokenStore({ profileId: "anthropic:work", provider: "anthropic" }),
         workAgentDir,
       );
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       const rawDatabase = new DatabaseSync(resolveAuthProfileDatabasePath(workAgentDir));
       rawDatabase.exec("DROP TABLE auth_profile_state;");
       rawDatabase.close();
       const cfg = {
         agents: { list: [{ id: "work", default: true }] },
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({
         cfg,
-        env: { OPENCLAW_STATE_DIR: stateDir },
+        env: { OPERATOR_STATE_DIR: stateDir },
       });
 
       expect(result.config).toBe(cfg);
       expect(result.changes).toEqual([]);
       expect(result.warnings?.join("\n")).toContain("Skipped auth.order repair");
     } finally {
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(stateDir, { recursive: true, force: true });
     }
   });
 
   it("fails closed when a stale registered database leaves a SQLite sidecar", async () => {
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-custom-sidecar-auth-"));
-    const env = { OPENCLAW_STATE_DIR: stateDir };
+    const env = { OPERATOR_STATE_DIR: stateDir };
     try {
       writePersistedAuthProfileStoreRaw(
         tokenStore({ profileId: "claude-cli:main-token" }),
@@ -1244,9 +1244,9 @@ describe("repairStaleConfiguredAuthOrders", () => {
       );
       const customAgentDir = path.join(stateDir, "custom-agents", "retained");
       const databasePath = resolveAuthProfileDatabasePath(customAgentDir);
-      openOpenClawAgentDatabase({ agentId: "retained", env, path: databasePath });
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      openOperatorAgentDatabase({ agentId: "retained", env, path: databasePath });
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(databasePath);
       const [, walPath] = resolveAuthProfileDatabaseFilePaths(customAgentDir);
       if (!walPath) {
@@ -1255,7 +1255,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
       await fs.writeFile(walPath, "orphaned-wal");
       const cfg = {
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({ cfg, env });
 
@@ -1263,15 +1263,15 @@ describe("repairStaleConfiguredAuthOrders", () => {
       expect(result.changes).toEqual([]);
       expect(result.warnings?.join("\n")).toContain("unavailable");
     } finally {
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(stateDir, { recursive: true, force: true });
     }
   });
 
   it("ignores a stale registered auth database after its pathname is removed", async () => {
     const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-custom-missing-auth-"));
-    const env = { OPENCLAW_STATE_DIR: stateDir };
+    const env = { OPERATOR_STATE_DIR: stateDir };
     try {
       writePersistedAuthProfileStoreRaw(
         tokenStore({ profileId: "claude-cli:main-token" }),
@@ -1279,13 +1279,13 @@ describe("repairStaleConfiguredAuthOrders", () => {
       );
       const customAgentDir = path.join(stateDir, "custom-agents", "retained");
       const databasePath = resolveAuthProfileDatabasePath(customAgentDir);
-      openOpenClawAgentDatabase({ agentId: "retained", env, path: databasePath });
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      openOperatorAgentDatabase({ agentId: "retained", env, path: databasePath });
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(databasePath);
       const cfg = {
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({ cfg, env });
 
@@ -1293,8 +1293,8 @@ describe("repairStaleConfiguredAuthOrders", () => {
       expect(result.changes).toHaveLength(1);
       expect(result.warnings).toBeUndefined();
     } finally {
-      closeOpenClawAgentDatabasesForTest();
-      closeOpenClawStateDatabaseForTest();
+      closeOperatorAgentDatabasesForTest();
+      closeOperatorStateDatabaseForTest();
       await fs.rm(stateDir, { recursive: true, force: true });
     }
   });
@@ -1303,7 +1303,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
     "fails closed on a dangling registered auth database symlink",
     async () => {
       const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-custom-dangling-auth-"));
-      const env = { OPENCLAW_STATE_DIR: stateDir };
+      const env = { OPERATOR_STATE_DIR: stateDir };
       try {
         writePersistedAuthProfileStoreRaw(
           tokenStore({ profileId: "claude-cli:main-token" }),
@@ -1311,14 +1311,14 @@ describe("repairStaleConfiguredAuthOrders", () => {
         );
         const customAgentDir = path.join(stateDir, "custom-agents", "retained");
         const databasePath = resolveAuthProfileDatabasePath(customAgentDir);
-        openOpenClawAgentDatabase({ agentId: "retained", env, path: databasePath });
-        closeOpenClawAgentDatabasesForTest();
-        closeOpenClawStateDatabaseForTest();
+        openOperatorAgentDatabase({ agentId: "retained", env, path: databasePath });
+        closeOperatorAgentDatabasesForTest();
+        closeOperatorStateDatabaseForTest();
         await fs.rm(databasePath);
         await fs.symlink(path.join(customAgentDir, "missing.sqlite"), databasePath);
         const cfg = {
           auth: { order: { anthropic: ["anthropic:missing"] } },
-        } satisfies OpenClawConfig;
+        } satisfies OperatorConfig;
 
         const result = maybeRepairStaleConfiguredAuthOrders({ cfg, env });
 
@@ -1326,8 +1326,8 @@ describe("repairStaleConfiguredAuthOrders", () => {
         expect(result.changes).toEqual([]);
         expect(result.warnings?.join("\n")).toContain("unavailable");
       } finally {
-        closeOpenClawAgentDatabasesForTest();
-        closeOpenClawStateDatabaseForTest();
+        closeOperatorAgentDatabasesForTest();
+        closeOperatorStateDatabaseForTest();
         await fs.rm(stateDir, { recursive: true, force: true });
       }
     },
@@ -1339,7 +1339,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
       const stateDir = await fs.mkdtemp(
         path.join(os.tmpdir(), "openclaw-custom-dangling-parent-auth-"),
       );
-      const env = { OPENCLAW_STATE_DIR: stateDir };
+      const env = { OPERATOR_STATE_DIR: stateDir };
       try {
         writePersistedAuthProfileStoreRaw(
           tokenStore({ profileId: "claude-cli:main-token" }),
@@ -1350,18 +1350,18 @@ describe("repairStaleConfiguredAuthOrders", () => {
         await fs.mkdir(originalAgentDir, { recursive: true });
         await fs.mkdir(path.dirname(customAgentDir), { recursive: true });
         await fs.symlink(originalAgentDir, customAgentDir, "dir");
-        openOpenClawAgentDatabase({
+        openOperatorAgentDatabase({
           agentId: "retained",
           env,
           path: resolveAuthProfileDatabasePath(customAgentDir),
         });
-        closeOpenClawAgentDatabasesForTest();
-        closeOpenClawStateDatabaseForTest();
+        closeOperatorAgentDatabasesForTest();
+        closeOperatorStateDatabaseForTest();
         await fs.rm(customAgentDir);
         await fs.symlink(path.join(stateDir, "missing-agent-target"), customAgentDir, "dir");
         const cfg = {
           auth: { order: { anthropic: ["anthropic:missing"] } },
-        } satisfies OpenClawConfig;
+        } satisfies OperatorConfig;
 
         const result = maybeRepairStaleConfiguredAuthOrders({ cfg, env });
 
@@ -1369,8 +1369,8 @@ describe("repairStaleConfiguredAuthOrders", () => {
         expect(result.changes).toEqual([]);
         expect(result.warnings?.join("\n")).toContain("unavailable");
       } finally {
-        closeOpenClawAgentDatabasesForTest();
-        closeOpenClawStateDatabaseForTest();
+        closeOperatorAgentDatabasesForTest();
+        closeOperatorStateDatabaseForTest();
         await fs.rm(stateDir, { recursive: true, force: true });
       }
     },
@@ -1395,11 +1395,11 @@ describe("repairStaleConfiguredAuthOrders", () => {
       );
       const cfg = {
         auth: { order: { anthropic: ["anthropic:old"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({
         cfg,
-        env: { OPENCLAW_STATE_DIR: stateDir },
+        env: { OPERATOR_STATE_DIR: stateDir },
       });
 
       expect(result.config).toBe(cfg);
@@ -1422,11 +1422,11 @@ describe("repairStaleConfiguredAuthOrders", () => {
       const cfg = {
         agents: { list: [{ id: "work", default: true }] },
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({
         cfg,
-        env: { OPENCLAW_STATE_DIR: stateDir },
+        env: { OPERATOR_STATE_DIR: stateDir },
       });
 
       expect(result.config.auth?.order?.anthropic).toBeUndefined();
@@ -1451,11 +1451,11 @@ describe("repairStaleConfiguredAuthOrders", () => {
       const cfg = {
         agents: { list: [{ id: "work", default: true }] },
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({
         cfg,
-        env: { OPENCLAW_STATE_DIR: stateDir },
+        env: { OPERATOR_STATE_DIR: stateDir },
       });
 
       expect(result.config.auth?.order?.anthropic).toBeUndefined();
@@ -1477,11 +1477,11 @@ describe("repairStaleConfiguredAuthOrders", () => {
       const cfg = {
         agents: { list: [{ id: "work", default: true }] },
         auth: { order: { anthropic: ["anthropic:missing"] } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
 
       const result = maybeRepairStaleConfiguredAuthOrders({
         cfg,
-        env: { OPENCLAW_STATE_DIR: stateDir },
+        env: { OPERATOR_STATE_DIR: stateDir },
       });
 
       expect(result).toEqual({ config: cfg, changes: [] });

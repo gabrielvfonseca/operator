@@ -1,7 +1,7 @@
 /** Integration coverage for breaker-suppressed startup SecretRef projection. */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import "../secrets/runtime-telegram.test-support.ts";
-import type { ConfigFileSnapshot, OpenClawConfig } from "../config/types.js";
+import type { ConfigFileSnapshot, OperatorConfig } from "../config/types.js";
 import {
   asConfig,
   beginSecretsRuntimeIsolationForTest,
@@ -26,7 +26,7 @@ import { buildTestConfigSnapshot } from "./test-helpers.config-snapshots.js";
 const GATEWAY_TOKEN_ENV = "BREAKER_GATEWAY_AUTH_TOKEN";
 const CHANNEL_TOKEN_ENV = "BREAKER_TELEGRAM_BOT_TOKEN";
 
-function buildSnapshot(config: OpenClawConfig): ConfigFileSnapshot {
+function buildSnapshot(config: OperatorConfig): ConfigFileSnapshot {
   const raw = `${JSON.stringify(config, null, 2)}\n`;
   return buildTestConfigSnapshot({
     path: "/tmp/openclaw-breaker-secrets-integration.json",
@@ -58,10 +58,10 @@ describe("gateway breaker SecretRef integration", () => {
         {
           [GATEWAY_TOKEN_ENV]: "resolved-gateway-token",
           [CHANNEL_TOKEN_ENV]: undefined,
-          OPENCLAW_BUNDLED_PLUGINS_DIR: undefined,
-          OPENCLAW_SKIP_CHANNELS: undefined,
-          OPENCLAW_SKIP_PROVIDERS: undefined,
-          OPENCLAW_VERSION: undefined,
+          OPERATOR_BUNDLED_PLUGINS_DIR: undefined,
+          OPERATOR_SKIP_CHANNELS: undefined,
+          OPERATOR_SKIP_PROVIDERS: undefined,
+          OPERATOR_VERSION: undefined,
         },
         async () => {
           const gatewayTokenRef = {

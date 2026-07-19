@@ -122,7 +122,7 @@ describe("registerMaintenanceCommands doctor action", () => {
 
   it("denies cross-state imports for older update parents", async () => {
     doctorCommand.mockResolvedValue(undefined);
-    vi.stubEnv("OPENCLAW_UPDATE_IN_PROGRESS", "1");
+    vi.stubEnv("OPERATOR_UPDATE_IN_PROGRESS", "1");
 
     await runMaintenanceCli(["doctor", "--fix", "--non-interactive"]);
 

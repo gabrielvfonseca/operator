@@ -1,7 +1,7 @@
 {
   "name": "@operator/gradium-speech",
   "version": "2026.7.2",
-  "description": "OpenClaw Gradium speech plugin.",
+  "description": "Operator Gradium speech plugin.",
   "repository": {
     "type": "git",
     "url": "https://github.com/openclaw/openclaw"

@@ -1,8 +1,8 @@
-# OpenClaw StepFun Provider
+# Operator StepFun Provider
 
-Official OpenClaw provider plugin for StepFun.
+Official Operator provider plugin for StepFun.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/stepfun-provider

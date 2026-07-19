@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { resolveStateDir } from "../../../config/paths.js";
 import type { HealthFinding } from "../../../flows/health-checks.js";
-import { resolveOpenClawPackageRootSync } from "../../../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../../../infra/operator-root.js";
 import { resolveConfigDir, resolveUserPath } from "../../../utils.js";
 import { removeStalePluginRuntimeSymlinks } from "./plugin-runtime-symlinks.js";
 
@@ -188,7 +188,7 @@ function collectExplicitStageTargets(env: NodeJS.ProcessEnv): CleanupTarget[] {
   }));
 }
 
-async function hasOpenClawRenameResidue(root: string): Promise<boolean> {
+async function hasOperatorRenameResidue(root: string): Promise<boolean> {
   const nodeModulesRoot = path.join(root, "node_modules");
   if (await isFile(path.join(nodeModulesRoot, ".operator-rename-tmp"))) {
     return true;
@@ -223,7 +223,7 @@ async function hasExplicitStageDebrisProof(root: string): Promise<boolean> {
   if (children.some((childPath) => isRuntimeDependencyMarkerName(path.basename(childPath)))) {
     return true;
   }
-  return await hasOpenClawRenameResidue(root);
+  return await hasOperatorRenameResidue(root);
 }
 
 function filterLegacyStaleRootCandidates(
@@ -255,7 +255,7 @@ function filterLegacyStaleRootCandidates(
     }
     if (!cleanupRootPaths.some((rootPath) => isPathInsideRoot(targetPath, rootPath))) {
       warnings.push(
-        `Skipped legacy plugin dependency state ${targetPath}: outside OpenClaw cleanup roots`,
+        `Skipped legacy plugin dependency state ${targetPath}: outside Operator cleanup roots`,
       );
       continue;
     }
@@ -297,7 +297,7 @@ async function resolveSafeRemovalTarget(
   }
   if (!cleanupRoots.some((root) => isPathInsideRoot(realPath, root.realPath))) {
     return {
-      warning: `Skipped legacy plugin dependency state ${targetPath}: resolved outside OpenClaw cleanup roots`,
+      warning: `Skipped legacy plugin dependency state ${targetPath}: resolved outside Operator cleanup roots`,
     };
   }
   return { target: targetPath };
@@ -335,7 +335,7 @@ async function collectLegacyPluginDependencyTargetEntries(
 ): Promise<CleanupTarget[]> {
   const packageRoot =
     options.packageRoot ??
-    resolveOpenClawPackageRootSync({
+    resolveOperatorPackageRootSync({
       argv1: process.argv[1],
       moduleUrl: import.meta.url,
       cwd: process.cwd(),
@@ -401,7 +401,7 @@ export async function detectLegacyPluginDependencyStateIssues(
   const env = params.env ?? process.env;
   const packageRoot =
     params.packageRoot ??
-    resolveOpenClawPackageRootSync({
+    resolveOperatorPackageRootSync({
       argv1: process.argv[1],
       moduleUrl: import.meta.url,
       cwd: process.cwd(),
@@ -435,7 +435,7 @@ export function legacyPluginDependencyStateIssueToHealthFinding(
   };
 }
 
-/** Remove legacy plugin dependency state under trusted OpenClaw cleanup roots. */
+/** Remove legacy plugin dependency state under trusted Operator cleanup roots. */
 export async function cleanupLegacyPluginDependencyState(params: {
   env?: NodeJS.ProcessEnv;
   packageRoot?: string | null;
@@ -445,7 +445,7 @@ export async function cleanupLegacyPluginDependencyState(params: {
   const warnings: string[] = [];
   const packageRoot =
     params.packageRoot ??
-    resolveOpenClawPackageRootSync({
+    resolveOperatorPackageRootSync({
       argv1: process.argv[1],
       moduleUrl: import.meta.url,
       cwd: process.cwd(),

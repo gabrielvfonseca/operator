@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import type { checkQmdBinaryAvailability as checkQmdBinaryAvailabilityFn } from "../memory-host-sdk/engine-qmd.js";
 import type { DoctorPrompter } from "./doctor-prompter.js";
 
@@ -151,7 +151,7 @@ function firstNoteMessage(): string {
 }
 
 describe("noteMemorySearchHealth", () => {
-  const cfg = {} as OpenClawConfig;
+  const cfg = {} as OperatorConfig;
 
   async function expectNoWarningWithConfiguredRemoteApiKey(provider: string) {
     resolveMemorySearchConfig.mockReturnValue({
@@ -183,7 +183,7 @@ describe("noteMemorySearchHealth", () => {
     getActiveMemorySearchManager.mockReset();
     resolveActiveMemoryBackendConfig.mockReset();
     resolveActiveMemoryBackendConfig.mockImplementation(
-      ({ cfg: cfgLocal }: { cfg: OpenClawConfig }) =>
+      ({ cfg: cfgLocal }: { cfg: OperatorConfig }) =>
         cfgLocal.memory?.backend === "qmd"
           ? { backend: "qmd", qmd: cfgLocal.memory.qmd ?? {} }
           : { backend: "builtin" },
@@ -487,7 +487,7 @@ describe("noteMemorySearchHealth", () => {
         slots: { memory: "memory-lancedb" },
         entries: { "memory-lancedb": { enabled: true, config: { dbPath: ".openclaw/memory" } } },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     await noteMemorySearchHealth(cfgWithLancedb, {});
 
@@ -505,7 +505,7 @@ describe("noteMemorySearchHealth", () => {
     });
     const cfgWithSlotOnly = {
       plugins: { slots: { memory: "memory-lancedb" } },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     await noteMemorySearchHealth(cfgWithSlotOnly, {});
 
@@ -525,7 +525,7 @@ describe("noteMemorySearchHealth", () => {
         slots: { memory: "memory-lancedb" },
         entries: { "memory-lancedb": { enabled: false } },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     await noteMemorySearchHealth(cfgWithDisabledLancedb, {});
 
@@ -545,7 +545,7 @@ describe("noteMemorySearchHealth", () => {
         slots: { memory: "memory-lancedb" },
         entries: { "memory-lancedb": {} },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     await noteMemorySearchHealth(cfgWithPlaceholderEntry, {});
 
@@ -607,7 +607,7 @@ describe("noteMemorySearchHealth", () => {
   });
 
   it("does not warn when QMD backend is active", async () => {
-    const qmdCfg = { memory: { backend: "qmd", qmd: { command: "qmd" } } } as OpenClawConfig;
+    const qmdCfg = { memory: { backend: "qmd", qmd: { command: "qmd" } } } as OperatorConfig;
     resolveMemorySearchConfig.mockReturnValue({
       provider: "auto",
       local: {},
@@ -625,7 +625,7 @@ describe("noteMemorySearchHealth", () => {
   });
 
   it("skips QMD binary probing while preserving QMD session export warnings", async () => {
-    const qmdCfg = { memory: { backend: "qmd", qmd: { command: "custom-qmd" } } } as OpenClawConfig;
+    const qmdCfg = { memory: { backend: "qmd", qmd: { command: "custom-qmd" } } } as OperatorConfig;
     resolveMemorySearchConfig.mockReturnValue({
       provider: "auto",
       sources: ["memory", "sessions"],
@@ -646,7 +646,7 @@ describe("noteMemorySearchHealth", () => {
   });
 
   it("warns when QMD backend is active but the qmd binary is unavailable", async () => {
-    const qmdCfg = { memory: { backend: "qmd", qmd: { command: "qmd" } } } as OpenClawConfig;
+    const qmdCfg = { memory: { backend: "qmd", qmd: { command: "qmd" } } } as OperatorConfig;
     checkQmdBinaryAvailability.mockResolvedValueOnce({
       available: false,
       reason: "binary",
@@ -669,7 +669,7 @@ describe("noteMemorySearchHealth", () => {
   });
 
   it("treats legacy QMD unavailable results without a reason as binary failures", async () => {
-    const qmdCfg = { memory: { backend: "qmd", qmd: { command: "qmd" } } } as OpenClawConfig;
+    const qmdCfg = { memory: { backend: "qmd", qmd: { command: "qmd" } } } as OperatorConfig;
     checkQmdBinaryAvailability.mockResolvedValueOnce({
       available: false,
       error: "spawn qmd ENOENT",
@@ -691,7 +691,7 @@ describe("noteMemorySearchHealth", () => {
   });
 
   it("warns with a workspace-specific fix when the QMD probe cwd is missing", async () => {
-    const qmdCfg = { memory: { backend: "qmd", qmd: { command: "qmd" } } } as OpenClawConfig;
+    const qmdCfg = { memory: { backend: "qmd", qmd: { command: "qmd" } } } as OperatorConfig;
     checkQmdBinaryAvailability.mockResolvedValueOnce({
       available: false,
       reason: "workspace-cwd",
@@ -714,7 +714,7 @@ describe("noteMemorySearchHealth", () => {
   });
 
   it("warns when QMD backend uses session sources but QMD session export is disabled", async () => {
-    const qmdCfg = { memory: { backend: "qmd", qmd: { command: "qmd" } } } as OpenClawConfig;
+    const qmdCfg = { memory: { backend: "qmd", qmd: { command: "qmd" } } } as OperatorConfig;
     resolveMemorySearchConfig.mockReturnValue({
       provider: "auto",
       sources: ["memory", "sessions"],
@@ -735,7 +735,7 @@ describe("noteMemorySearchHealth", () => {
   it("warns when QMD session export is explicitly disabled", async () => {
     const qmdCfg = {
       memory: { backend: "qmd", qmd: { command: "qmd", sessions: { enabled: false } } },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     resolveMemorySearchConfig.mockReturnValue({
       provider: "auto",
       sources: ["memory", "sessions"],
@@ -752,7 +752,7 @@ describe("noteMemorySearchHealth", () => {
   });
 
   it("does not warn about QMD session export when session sources are not enabled", async () => {
-    const qmdCfg = { memory: { backend: "qmd", qmd: { command: "qmd" } } } as OpenClawConfig;
+    const qmdCfg = { memory: { backend: "qmd", qmd: { command: "qmd" } } } as OperatorConfig;
     resolveMemorySearchConfig.mockReturnValue({
       provider: "auto",
       sources: ["memory"],
@@ -767,7 +767,7 @@ describe("noteMemorySearchHealth", () => {
   });
 
   it("reports QMD binary and session export warnings independently", async () => {
-    const qmdCfg = { memory: { backend: "qmd", qmd: { command: "qmd" } } } as OpenClawConfig;
+    const qmdCfg = { memory: { backend: "qmd", qmd: { command: "qmd" } } } as OperatorConfig;
     checkQmdBinaryAvailability.mockResolvedValueOnce({
       available: false,
       error: "spawn qmd ENOENT",
@@ -792,7 +792,7 @@ describe("noteMemorySearchHealth", () => {
   it("does not warn when QMD session sources and QMD session export are both enabled", async () => {
     const qmdCfg = {
       memory: { backend: "qmd", qmd: { command: "qmd", sessions: { enabled: true } } },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     resolveMemorySearchConfig.mockReturnValue({
       provider: "auto",
       sources: ["memory", "sessions"],
@@ -1062,7 +1062,7 @@ describe("noteMemorySearchHealth", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     resolveMemorySearchConfig.mockReturnValue({
       provider: "localEmbeddings",
       model: "text-embedding-bge-m3",
@@ -1110,7 +1110,7 @@ describe("noteMemorySearchHealth", () => {
     const orderedCfg = {
       ...cfg,
       auth: { order: { openai: ["openai:expired"] } },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     await noteMemorySearchHealth(orderedCfg, {
       skipAuthProfileResolution: true,
@@ -1137,7 +1137,7 @@ describe("noteMemorySearchHealth", () => {
     const orderedCfg = {
       ...cfg,
       auth: { order: { openai: [] } },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     await noteMemorySearchHealth(orderedCfg, {
       skipAuthProfileResolution: true,
@@ -1167,7 +1167,7 @@ describe("noteMemorySearchHealth", () => {
           "amazon-bedrock": { auth: "aws-sdk", models: [] },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     await noteMemorySearchHealth(bedrockCfg, {
       skipAuthProfileResolution: true,
@@ -1202,7 +1202,7 @@ describe("noteMemorySearchHealth", () => {
         },
         order: { "amazon-bedrock": ["amazon-bedrock:default"] },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     await noteMemorySearchHealth(bedrockCfg, {
       skipAuthProfileResolution: true,
@@ -1270,7 +1270,7 @@ describe("noteMemorySearchHealth", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     resolveMemorySearchConfig.mockReturnValue({
       provider: "openai",
       model: "text-embedding-3-small",
@@ -1445,7 +1445,7 @@ describe("noteMemorySearchHealth", () => {
 });
 
 describe("memory recall doctor integration", () => {
-  const cfg = {} as OpenClawConfig;
+  const cfg = {} as OperatorConfig;
 
   beforeEach(() => {
     note.mockClear();

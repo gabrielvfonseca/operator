@@ -3,10 +3,10 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  closeOpenClawAgentDatabasesForTest,
-  resolveOpenClawAgentSqlitePath,
+  closeOperatorAgentDatabasesForTest,
+  resolveOperatorAgentSqlitePath,
 } from "../../state/openclaw-agent-db.js";
-import { closeOpenClawStateDatabaseForTest } from "../../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../state/openclaw-state-db.js";
 import {
   hasTerminalMainSessionTranscriptNewerThanRegistry,
   hasTerminalMainSessionTranscriptNewerThanRegistrySync,
@@ -24,8 +24,8 @@ describe("terminal main session transcript freshness", () => {
   });
 
   afterEach(() => {
-    closeOpenClawAgentDatabasesForTest();
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorAgentDatabasesForTest();
+    closeOperatorStateDatabaseForTest();
     fs.rmSync(stateDir, { recursive: true, force: true });
   });
 
@@ -41,9 +41,9 @@ describe("terminal main session transcript freshness", () => {
     const sessionEntry = {
       sessionFile:
         params.sessionFile ??
-        `sqlite:main:${sessionId}:${resolveOpenClawAgentSqlitePath({
+        `sqlite:main:${sessionId}:${resolveOperatorAgentSqlitePath({
           agentId: "main",
-          env: { OPENCLAW_STATE_DIR: stateDir },
+          env: { OPERATOR_STATE_DIR: stateDir },
         })}`,
       sessionId,
       updatedAt: params.updatedAt,

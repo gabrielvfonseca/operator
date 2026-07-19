@@ -598,7 +598,7 @@ describe("getCachedPluginModuleLoader", () => {
     ]);
   });
 
-  it("can transform OpenClaw dependencies on a forced source fallback", async () => {
+  it("can transform Operator dependencies on a forced source fallback", async () => {
     const fromSourceTransformer = vi.fn(() => ({ fromSourceTransform: true }));
     const createJiti = vi.fn(() => fromSourceTransformer);
     const nativeStub = vi.fn(() => ({ ok: true, moduleExport: { fromNative: true } }));
@@ -615,7 +615,7 @@ describe("getCachedPluginModuleLoader", () => {
       modulePath: "/repo/dist/extensions/demo/api.js",
       importerUrl: "file:///repo/src/plugin-sdk/channel-entry-contract.ts",
       loaderFilename: "file:///repo/src/plugin-sdk/channel-entry-contract.ts",
-      transformOpenClawDependencies: true,
+      transformOperatorDependencies: true,
       createLoader: asPluginModuleLoaderFactory(createJiti),
     });
 

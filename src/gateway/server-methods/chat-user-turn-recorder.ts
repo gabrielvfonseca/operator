@@ -1,5 +1,5 @@
 import { runAgentHarnessBeforeMessageWriteHook } from "../../agents/harness/hook-helpers.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { measureDiagnosticsTimelineSpan } from "../../infra/diagnostics-timeline.js";
 import type { InputProvenance } from "../../sessions/input-provenance.js";
 import {
@@ -28,7 +28,7 @@ type GatewayChatUserTurnController = {
 
 export function createGatewayChatUserTurnController(params: {
   agentId: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   clientRunId: string;
   initialSessionId: string;
   now: number;

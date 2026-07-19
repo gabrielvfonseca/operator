@@ -1,7 +1,7 @@
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useAutoCleanupTempDirTracker } from "../../../test/helpers/temp-dir.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OperatorConfig } from "../../config/config.js";
 import {
   loadExactSessionEntry,
   loadSessionEntry,
@@ -72,7 +72,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
         session: {
           store: path.join(tempDirs.make("openclaw-native-slash-"), "sessions.json"),
         },
-      } as OpenClawConfig),
+      } as OperatorConfig),
       agentId: "main",
       agentDir: "/tmp/agent",
       agentCfg: undefined,
@@ -136,7 +136,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
         session: {
           store: path.join(tempDirs.make("openclaw-text-slash-"), "sessions.json"),
         },
-      } as OpenClawConfig),
+      } as OperatorConfig),
       agentId: "dev",
       agentDir: "/tmp/agent",
       agentCfg: undefined,
@@ -191,7 +191,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
         session: {
           store: path.join(tempDirs.make("openclaw-external-text-slash-"), "sessions.json"),
         },
-      } as OpenClawConfig),
+      } as OperatorConfig),
       agentId: "dev",
       agentDir: "/tmp/agent",
       agentCfg: undefined,
@@ -237,7 +237,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
           body: "/config show",
         },
       }),
-      cfg: markCompleteReplyConfig({ session: { store: storePath } } as OpenClawConfig),
+      cfg: markCompleteReplyConfig({ session: { store: storePath } } as OperatorConfig),
       agentId: "main",
       agentDir: "/tmp/agent",
       agentCfg: undefined,
@@ -283,7 +283,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
         session: {
           store: path.join(tempDirs.make("openclaw-native-slash-conflict-"), "sessions.json"),
         },
-      } as OpenClawConfig),
+      } as OperatorConfig),
       agentId: "main",
       agentDir: "/tmp/agent",
       agentCfg: undefined,
@@ -330,7 +330,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
         session: {
           store: path.join(tempDirs.make("openclaw-native-slash-rotation-"), "sessions.json"),
         },
-      } as OpenClawConfig),
+      } as OperatorConfig),
       agentId: "main",
       agentDir: "/tmp/agent",
       agentCfg: undefined,
@@ -378,7 +378,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
           body: "/compact",
         },
       }),
-      cfg: markCompleteReplyConfig({ session: { store: storePath } } as OpenClawConfig),
+      cfg: markCompleteReplyConfig({ session: { store: storePath } } as OperatorConfig),
       agentId: "main",
       agentDir: "/tmp/agent",
       agentCfg: undefined,
@@ -428,7 +428,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
           body: "/compact",
         },
       }),
-      cfg: markCompleteReplyConfig({ session: { store: storePath } } as OpenClawConfig),
+      cfg: markCompleteReplyConfig({ session: { store: storePath } } as OperatorConfig),
       agentId: "main",
       agentDir: "/tmp/agent",
       agentCfg: undefined,
@@ -489,7 +489,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
             body: "/compact",
           },
         }),
-        cfg: markCompleteReplyConfig({ session: { store: storePath } } as OpenClawConfig),
+        cfg: markCompleteReplyConfig({ session: { store: storePath } } as OperatorConfig),
         agentId: "main",
         agentDir: "/tmp/agent",
         agentCfg: undefined,

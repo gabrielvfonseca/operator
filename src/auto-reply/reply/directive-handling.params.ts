@@ -3,14 +3,14 @@ import type { FastMode } from "@operator/normalization-core/string-coerce";
 import type { ModelCatalogEntry } from "../../agents/model-catalog.js";
 import type { ModelAliasIndex } from "../../agents/model-selection.js";
 import type { SessionEntry } from "../../config/sessions.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { MsgContext } from "../templating.js";
 import type { InlineDirectives } from "./directive-handling.parse.js";
 import type { ElevatedLevel, ReasoningLevel, ThinkLevel, VerboseLevel } from "./directives.js";
 
 /** Core directive handler inputs that do not depend on the inbound message shape. */
 type HandleDirectiveOnlyCoreParams = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   directives: InlineDirectives;
   sessionEntry: SessionEntry;
   sessionStore: Record<string, SessionEntry>;
@@ -61,7 +61,7 @@ export type ApplyInlineDirectivesFastLaneParams = HandleDirectiveOnlyCoreParams 
   workspaceDir?: string;
   agentId?: string;
   isGroup: boolean;
-  agentCfg?: NonNullable<OpenClawConfig["agents"]>["defaults"];
+  agentCfg?: NonNullable<OperatorConfig["agents"]>["defaults"];
   modelState: {
     resolveDefaultThinkingLevel: () => Promise<ThinkLevel | undefined>;
     resolveThinkingCatalog: () => Promise<ModelCatalogEntry[] | undefined>;

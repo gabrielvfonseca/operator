@@ -12,7 +12,7 @@ import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../agents/agent
 import { resolveExecDefaults } from "../agents/exec-defaults.js";
 import { resolveSandboxConfigForAgent } from "../agents/sandbox/config.js";
 import type { ChannelPlugin } from "../channels/plugins/types.plugin.js";
-import type { ConfigFileSnapshot, OpenClawConfig } from "../config/config.js";
+import type { ConfigFileSnapshot, OperatorConfig } from "../config/config.js";
 import { resolveConfigPath, resolveStateDir } from "../config/paths.js";
 import type { CliBackendConfig } from "../config/types.agent-defaults.js";
 import type { GatewayAuthConfig } from "../config/types.gateway.js";
@@ -85,8 +85,8 @@ type AgentSkillMcpBoundaryScope = {
 export type { SecurityAuditReport } from "./audit.types.js";
 
 type SecurityAuditOptions = {
-  config: OpenClawConfig;
-  sourceConfig?: OpenClawConfig;
+  config: OperatorConfig;
+  sourceConfig?: OperatorConfig;
   env?: NodeJS.ProcessEnv;
   platform?: NodeJS.Platform;
   deep?: boolean;
@@ -121,8 +121,8 @@ type SecurityAuditOptions = {
 };
 
 type AuditExecutionContext = {
-  cfg: OpenClawConfig;
-  sourceConfig: OpenClawConfig;
+  cfg: OperatorConfig;
+  sourceConfig: OperatorConfig;
   env: NodeJS.ProcessEnv;
   platform: NodeJS.Platform;
   includeFilesystem: boolean;
@@ -242,9 +242,9 @@ function normalizeSuppressionText(value: string | undefined): string {
 }
 
 async function materializeAuditGatewayAuthRefs(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   env: NodeJS.ProcessEnv;
-}): Promise<OpenClawConfig> {
+}): Promise<OperatorConfig> {
   const materializeParams = {
     cfg: params.cfg,
     env: params.env,
@@ -262,7 +262,7 @@ async function materializeAuditGatewayAuthRefs(params: {
   }
 }
 
-function shouldMaterializeHooksGatewayAuthRefs(cfg: OpenClawConfig): boolean {
+function shouldMaterializeHooksGatewayAuthRefs(cfg: OperatorConfig): boolean {
   return cfg.hooks?.enabled === true && Boolean(normalizeOptionalString(cfg.hooks.token));
 }
 
@@ -362,7 +362,7 @@ async function collectFilesystemFindings(params: {
         checkId: "fs.state_dir.perms_world_writable",
         severity: "critical",
         title: "State dir is world-writable",
-        detail: `${formatPermissionDetail(params.stateDir, stateDirPerms)}; other users can write into your OpenClaw state.`,
+        detail: `${formatPermissionDetail(params.stateDir, stateDirPerms)}; other users can write into your Operator state.`,
         remediation: formatPermissionRemediation({
           targetPath: params.stateDir,
           perms: stateDirPerms,
@@ -376,7 +376,7 @@ async function collectFilesystemFindings(params: {
         checkId: "fs.state_dir.perms_group_writable",
         severity: "warn",
         title: "State dir is group-writable",
-        detail: `${formatPermissionDetail(params.stateDir, stateDirPerms)}; group users can write into your OpenClaw state.`,
+        detail: `${formatPermissionDetail(params.stateDir, stateDirPerms)}; group users can write into your Operator state.`,
         remediation: formatPermissionRemediation({
           targetPath: params.stateDir,
           perms: stateDirPerms,
@@ -466,8 +466,8 @@ async function collectFilesystemFindings(params: {
 }
 
 function collectGatewayConfigFindings(
-  cfg: OpenClawConfig,
-  sourceConfig: OpenClawConfig,
+  cfg: OperatorConfig,
+  sourceConfig: OperatorConfig,
   env: NodeJS.ProcessEnv,
   options: { gatewayAuthOverride?: SecurityAuditGatewayAuthOverride } = {},
 ): SecurityAuditFinding[] {
@@ -569,7 +569,7 @@ async function collectPluginSecurityAuditFindings(
   return collectorResults.flat();
 }
 
-function collectLoggingFindings(cfg: OpenClawConfig): SecurityAuditFinding[] {
+function collectLoggingFindings(cfg: OperatorConfig): SecurityAuditFinding[] {
   const redact = cfg.logging?.redactSensitive;
   if (redact !== "off") {
     return [];
@@ -585,7 +585,7 @@ function collectLoggingFindings(cfg: OpenClawConfig): SecurityAuditFinding[] {
   ];
 }
 
-function collectElevatedFindings(cfg: OpenClawConfig): SecurityAuditFinding[] {
+function collectElevatedFindings(cfg: OperatorConfig): SecurityAuditFinding[] {
   const findings: SecurityAuditFinding[] = [];
   const enabled = cfg.tools?.elevated?.enabled;
   const allowFrom = cfg.tools?.elevated?.allowFrom ?? {};
@@ -703,7 +703,7 @@ function findClaudeCliBackendConfig(
   return undefined;
 }
 
-function collectYoloExecScopeIds(cfg: OpenClawConfig, approvals: ExecApprovalsFile): string[] {
+function collectYoloExecScopeIds(cfg: OperatorConfig, approvals: ExecApprovalsFile): string[] {
   const agents = Array.isArray(cfg.agents?.list) ? cfg.agents.list : [];
   return [
     { id: DEFAULT_AGENT_ID },
@@ -735,7 +735,7 @@ function collectYoloExecScopeIds(cfg: OpenClawConfig, approvals: ExecApprovalsFi
     .map((entry) => entry.id);
 }
 
-function collectExecRuntimeFindings(cfg: OpenClawConfig): SecurityAuditFinding[] {
+function collectExecRuntimeFindings(cfg: OperatorConfig): SecurityAuditFinding[] {
   const findings: SecurityAuditFinding[] = [];
   const globalExecHost = cfg.tools?.exec?.host;
   const globalStrictInlineEval = cfg.tools?.exec?.strictInlineEval === true;
@@ -832,9 +832,9 @@ function collectExecRuntimeFindings(cfg: OpenClawConfig): SecurityAuditFinding[]
       checkId: "agents.claude_cli.permission_mode_overridden_by_yolo",
       severity: "warn",
       title: "Claude permission mode is ignored under YOLO exec",
-      detail: `claude-cli sets ${claudePermissionModeHits.map((hit) => `${hit.argSet}=${hit.mode}`).join(", ")}, but OpenClaw exec is YOLO for: ${yoloExecScopeIds.join(", ")}. Managed Claude live sessions use --permission-mode bypassPermissions.`,
+      detail: `claude-cli sets ${claudePermissionModeHits.map((hit) => `${hit.argSet}=${hit.mode}`).join(", ")}, but Operator exec is YOLO for: ${yoloExecScopeIds.join(", ")}. Managed Claude live sessions use --permission-mode bypassPermissions.`,
       remediation:
-        "Restrict OpenClaw tools.exec.security/tools.exec.ask, or remove the Claude --permission-mode override.",
+        "Restrict Operator tools.exec.security/tools.exec.ask, or remove the Claude --permission-mode override.",
     });
   }
 
@@ -1059,7 +1059,7 @@ function formatNamesPreview(names: readonly string[]): string {
   return `${visible.join(", ")}${suffix}`;
 }
 
-function listConfiguredMcpServerNames(cfg: OpenClawConfig): string[] {
+function listConfiguredMcpServerNames(cfg: OperatorConfig): string[] {
   return Object.entries(cfg.mcp?.servers ?? {})
     .filter(([, server]) => server?.enabled !== false)
     .map(([name]) => name)
@@ -1091,7 +1091,7 @@ function hasOwnSkillsAllowlist(entry: object | undefined): boolean {
   return Boolean(entry && Object.hasOwn(entry, "skills"));
 }
 
-function collectAgentSkillMcpBoundaryScopes(cfg: OpenClawConfig): AgentSkillMcpBoundaryScope[] {
+function collectAgentSkillMcpBoundaryScopes(cfg: OperatorConfig): AgentSkillMcpBoundaryScope[] {
   const agents = Array.isArray(cfg.agents?.list) ? cfg.agents.list : [];
   const defaultsHaveSkillAllowlist = hasOwnSkillsAllowlist(cfg.agents?.defaults);
   const candidates = [
@@ -1149,7 +1149,7 @@ function collectAgentSkillMcpBoundaryScopes(cfg: OpenClawConfig): AgentSkillMcpB
 }
 
 async function collectAgentSkillMcpBoundaryFindings(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   stateDir: string;
 }): Promise<SecurityAuditFinding[]> {
   const sources: McpServerSourceSummary[] = [];
@@ -1187,7 +1187,7 @@ async function collectAgentSkillMcpBoundaryFindings(params: {
         `\nMCP server registries visible to the gateway configuration/state:\n${sources
           .map((source) => `- ${source.label}: ${formatNamesPreview(source.names)}`)
           .join("\n")}\n` +
-        "agents.*.skills filters OpenClaw skill visibility and snapshots; it is not a shell-time authorization boundary. " +
+        "agents.*.skills filters Operator skill visibility and snapshots; it is not a shell-time authorization boundary. " +
         "A host exec process can run external MCP clients or read a global mcporter registry unless sandbox, filesystem, network, or MCP credential boundaries block it.",
       remediation:
         'For agents that need per-agent MCP isolation, set their exec policy to security="deny" or a tight allowlist, run them in sandbox/container/OS-user isolation where the global MCP registry is not readable, split sensitive MCP servers into a separate gateway/trust boundary, or require per-agent MCP credentials at the server layer.',
@@ -1195,7 +1195,7 @@ async function collectAgentSkillMcpBoundaryFindings(params: {
   ];
 }
 
-function collectOpenExecSurfacePaths(cfg: OpenClawConfig): string[] {
+function collectOpenExecSurfacePaths(cfg: OperatorConfig): string[] {
   const channels = asNullableRecord(cfg.channels);
   if (!channels) {
     return [];
@@ -1263,7 +1263,7 @@ function collectInterpreterAllowlistHits(params: {
 }
 
 async function maybeProbeGateway(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   env: NodeJS.ProcessEnv;
   timeoutMs: number;
   probe: ProbeGatewayFn;

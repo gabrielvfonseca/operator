@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/core";
+import type { OperatorConfig } from "openclaw/plugin-sdk/core";
 import { fingerprint } from "../protocol/index.js";
 import {
   parseReefRelayUrl,
@@ -29,7 +29,7 @@ export const reefSetupAdapter = {
     cfg,
     input,
   }: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     accountId: string;
     input: Record<string, unknown>;
   }) =>
@@ -39,12 +39,12 @@ export const reefSetupAdapter = {
         ...cfg.channels,
         reef: { ...(cfg.channels?.reef as object), ...input },
       },
-    }) as OpenClawConfig,
+    }) as OperatorConfig,
 };
 
 export const reefSetupWizard = {
   channel: "reef",
-  getStatus: async ({ cfg }: { cfg: OpenClawConfig }) => {
+  getStatus: async ({ cfg }: { cfg: OperatorConfig }) => {
     const raw = cfg.channels?.reef as unknown;
     const parsed = ReefChannelConfigSchema.safeParse(raw ?? {});
     const configured =
@@ -55,8 +55,8 @@ export const reefSetupWizard = {
       statusLines: [configured ? `Reef @${parsed.data.handle}` : "Reef not configured"],
     };
   },
-  configure: async ({ cfg }: { cfg: OpenClawConfig }) => ({ cfg }),
-  configureInteractive: async ({ cfg, prompter }: { cfg: OpenClawConfig; prompter: Prompt }) => {
+  configure: async ({ cfg }: { cfg: OperatorConfig }) => ({ cfg }),
+  configureInteractive: async ({ cfg, prompter }: { cfg: OperatorConfig; prompter: Prompt }) => {
     const rawRelayUrl = await prompter.text({
       message: "Reef relay origin URL",
       initialValue: "https://reefwire.ai",
@@ -150,7 +150,7 @@ export const reefSetupWizard = {
       "Reef safety fingerprint — share out of band",
     );
     return {
-      cfg: { ...cfg, channels: { ...cfg.channels, reef } } as OpenClawConfig,
+      cfg: { ...cfg, channels: { ...cfg.channels, reef } } as OperatorConfig,
       accountId: "default",
     };
   },

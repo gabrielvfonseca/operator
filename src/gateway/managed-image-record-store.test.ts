@@ -10,8 +10,8 @@ import {
   getNodeSqliteKysely,
 } from "../infra/kysely-sync.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
 } from "../state/openclaw-state-db.js";
 import {
   attachManagedImageRecordToMessage,
@@ -58,7 +58,7 @@ describe("managed image record SQLite store", () => {
   });
 
   afterEach(async () => {
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await fs.rm(stateDir, { recursive: true, force: true });
   });
 
@@ -77,8 +77,8 @@ describe("managed image record SQLite store", () => {
   it("uses typed columns when the debug JSON copy is corrupt", () => {
     const expected = record();
     insertManagedImageRecord(expected, stateDir);
-    const database = openOpenClawStateDatabase({
-      env: { ...process.env, OPENCLAW_STATE_DIR: stateDir },
+    const database = openOperatorStateDatabase({
+      env: { ...process.env, OPERATOR_STATE_DIR: stateDir },
     });
     executeSqliteQuerySync(
       database.db,
@@ -111,8 +111,8 @@ describe("managed image record SQLite store", () => {
       retentionClass: "history",
       updatedAt: "2026-07-15T00:02:00.000Z",
     });
-    const database = openOpenClawStateDatabase({
-      env: { ...process.env, OPENCLAW_STATE_DIR: stateDir },
+    const database = openOperatorStateDatabase({
+      env: { ...process.env, OPERATOR_STATE_DIR: stateDir },
     });
     const row = executeSqliteQueryTakeFirstSync(
       database.db,

@@ -1,5 +1,5 @@
 /**
- * Realtime voice tool definition and helpers for delegating work to OpenClaw.
+ * Realtime voice tool definition and helpers for delegating work to Operator.
  *
  * Voice providers call this function tool when a spoken request needs normal
  * agent tools, memory, workspace context, or current information before reply.
@@ -38,7 +38,7 @@ export const REALTIME_VOICE_AGENT_CONSULT_TOOL: RealtimeVoiceTool = {
   type: "function",
   name: REALTIME_VOICE_AGENT_CONSULT_TOOL_NAME,
   description:
-    "Delegate the caller's request to the configured OpenClaw agent for normal tool-backed work, actions, context, memory, or reasoning before speaking.",
+    "Delegate the caller's request to the configured Operator agent for normal tool-backed work, actions, context, memory, or reasoning before speaking.",
   parameters: {
     type: "object",
     properties: {
@@ -66,7 +66,7 @@ export function buildRealtimeVoiceAgentConsultWorkingResponse(
   return {
     status: "working",
     tool: REALTIME_VOICE_AGENT_CONSULT_TOOL_NAME,
-    message: `Tell the ${audienceLabel} briefly that you are checking, then wait for the final OpenClaw result before answering with the actual result.`,
+    message: `Tell the ${audienceLabel} briefly that you are checking, then wait for the final Operator result before answering with the actual result.`,
   };
 }
 
@@ -130,7 +130,7 @@ function readRealtimeVoiceCustomToolName(tool: RealtimeVoiceTool): string | unde
   }
 }
 
-/** Resolve the OpenClaw tool allowlist paired with the consult exposure policy. */
+/** Resolve the Operator tool allowlist paired with the consult exposure policy. */
 export function resolveRealtimeVoiceAgentConsultToolsAllow(
   policy: RealtimeVoiceAgentConsultToolPolicy,
 ): string[] | undefined {
@@ -162,7 +162,7 @@ export function buildRealtimeVoiceAgentConsultPolicyInstructions(config: {
   return [
     "Consult behavior:",
     "- Answer directly for greetings, acknowledgements, simple conversational glue, and brief latency tests.",
-    "- Call operator_agent_consult before answering requests that need facts, memory, current information, tools, workspace state, or the user's OpenClaw-specific context.",
+    "- Call operator_agent_consult before answering requests that need facts, memory, current information, tools, workspace state, or the user's Operator-specific context.",
     "- Keep spoken replies concise and natural.",
   ].join("\n");
 }
@@ -196,7 +196,7 @@ export function buildRealtimeVoiceAgentConsultChatMessage(args: unknown): string
     .join("\n\n");
 }
 
-/** Build the delegated OpenClaw agent prompt for a live voice consult. */
+/** Build the delegated Operator agent prompt for a live voice consult. */
 export function buildRealtimeVoiceAgentConsultPrompt(params: {
   args: unknown;
   transcript: RealtimeVoiceAgentConsultTranscriptEntry[];
@@ -218,7 +218,7 @@ export function buildRealtimeVoiceAgentConsultPrompt(params: {
 
   return [
     `Live voice request from the ${questionSourceLabel} during ${params.surface}.`,
-    "Act as the configured OpenClaw agent on behalf of this user. Use available tools when the request asks you to do work.",
+    "Act as the configured Operator agent on behalf of this user. Use available tools when the request asks you to do work.",
     "When finished, return only the concise result the realtime voice agent should speak back.",
     "Do not include markdown, tool logs, or private reasoning. Include citations only when the spoken answer needs them.",
     parsed.responseStyle ? `Spoken style: ${parsed.responseStyle}` : undefined,

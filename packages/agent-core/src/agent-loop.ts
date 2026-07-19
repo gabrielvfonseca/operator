@@ -1,4 +1,4 @@
-// Keep the runtime class on the public package specifier so OpenClaw and
+// Keep the runtime class on the public package specifier so Operator and
 // external consumers share one constructor identity.
 import { EventStream as LlmEventStream } from "@operator/ai/event-stream";
 import type {

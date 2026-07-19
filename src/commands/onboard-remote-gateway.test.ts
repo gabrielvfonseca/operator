@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { createWizardPrompter } from "../../test/helpers/wizard-prompter.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import type { CallGatewayCliOptions } from "../gateway/call.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { WizardCancelledError } from "../wizard/prompts.js";
@@ -23,7 +23,7 @@ function makeRuntime(): RuntimeEnv {
   };
 }
 
-function makeLocalConfig(): OpenClawConfig {
+function makeLocalConfig(): OperatorConfig {
   return {
     wizard: { securityAcknowledgedAt: "2026-07-11T00:00:00.000Z" },
     agents: {
@@ -40,7 +40,7 @@ function makeLocalConfig(): OpenClawConfig {
 }
 
 function makeTarget(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   auth: { token?: string; password?: string },
 ): RemoteGatewayInferenceTarget {
   return {
@@ -127,7 +127,7 @@ describe("runRemoteGatewayInferenceOnboarding", () => {
       secret: "selected-password",
     },
   ])(
-    "pins $label across detect, activate, verify, OpenClaw, and in-process TUI",
+    "pins $label across detect, activate, verify, Operator, and in-process TUI",
     async ({ auth, secret }) => {
       const localConfig = makeLocalConfig();
       const localConfigBefore = structuredClone(localConfig);
@@ -285,7 +285,7 @@ describe("runRemoteGatewayInferenceOnboarding", () => {
       verification: { ok: true, modelRef: "openai/other", latencyMs: 100 },
       error: "Gateway verified openai/other, not the activated claude-cli/opus",
     },
-  ])("fails closed on $label before OpenClaw", async ({ verification, error }) => {
+  ])("fails closed on $label before Operator", async ({ verification, error }) => {
     const localConfig = makeLocalConfig();
     const localConfigBefore = structuredClone(localConfig);
     const methods: string[] = [];
@@ -362,7 +362,7 @@ describe("runRemoteGatewayInferenceOnboarding", () => {
     expect(runTui).not.toHaveBeenCalled();
   });
 
-  it("treats a cancelled remote OpenClaw conversation as a pause without opening the agent", async () => {
+  it("treats a cancelled remote Operator conversation as a pause without opening the agent", async () => {
     const methods: string[] = [];
     const callGatewayMock = vi.fn(async (options: CallGatewayCliOptions): Promise<unknown> => {
       methods.push(options.method);
@@ -413,7 +413,7 @@ describe("runRemoteGatewayInferenceOnboarding", () => {
       "openclaw.setup.verify",
       "openclaw.chat",
     ]);
-    expect(prompter.outro).toHaveBeenCalledWith("OpenClaw setup paused.");
+    expect(prompter.outro).toHaveBeenCalledWith("Operator setup paused.");
     expect(runTui).not.toHaveBeenCalled();
   });
 });

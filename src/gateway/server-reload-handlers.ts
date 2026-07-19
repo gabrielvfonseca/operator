@@ -18,7 +18,7 @@ import {
   getRuntimeConfigSourceSnapshot,
   setRuntimeConfigAppliedHash,
 } from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { isSecretRef } from "../config/types.secrets.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import { formatErrorMessage } from "../infra/errors.js";
@@ -157,9 +157,9 @@ type GatewayGmailRestartAbortController = {
 type GatewayHotReloadPublication = {
   publish: (commit: () => Promise<void>, isCommitted: () => boolean) => Promise<void>;
   isCurrent: () => boolean;
-  prepareRestartRuntimeConfig?: () => Promise<OpenClawConfig>;
+  prepareRestartRuntimeConfig?: () => Promise<OperatorConfig>;
   runtimeEnv?: NodeJS.ProcessEnv;
-  sourceConfig?: OpenClawConfig;
+  sourceConfig?: OperatorConfig;
 };
 
 type GatewayRestartTransactionState = "pending" | "committed" | "rejected";
@@ -171,14 +171,14 @@ type GatewayRestartTransactionResult = {
 
 type GatewayRestartRequestOptions = {
   retainDebtAcrossConfigChanges?: boolean;
-  prepareRuntimeConfig?: () => Promise<OpenClawConfig>;
-  debtConfig?: OpenClawConfig;
+  prepareRuntimeConfig?: () => Promise<OperatorConfig>;
+  debtConfig?: OperatorConfig;
 };
 
 type AcceptedRestartTarget = {
-  runtimeConfig: OpenClawConfig;
-  sourceConfig: OpenClawConfig;
-  prepareRuntimeConfig: () => Promise<OpenClawConfig>;
+  runtimeConfig: OperatorConfig;
+  sourceConfig: OperatorConfig;
+  prepareRuntimeConfig: () => Promise<OperatorConfig>;
 };
 
 type AcceptedRestartTargetOwnership = {
@@ -256,10 +256,10 @@ function projectCanonicalSecretRefsOntoRuntime(
 }
 
 function restoreCanonicalSecretRefs(
-  runtimeConfig: OpenClawConfig,
-  sourceConfig: OpenClawConfig,
-): OpenClawConfig {
-  return projectCanonicalSecretRefsOntoRuntime(sourceConfig, runtimeConfig) as OpenClawConfig;
+  runtimeConfig: OperatorConfig,
+  sourceConfig: OperatorConfig,
+): OperatorConfig {
+  return projectCanonicalSecretRefsOntoRuntime(sourceConfig, runtimeConfig) as OperatorConfig;
 }
 
 function resetPreparedModelRuntimeStateForHotReload(): void {
@@ -340,7 +340,7 @@ type GatewayReloadHandlerParams = {
   getChannelAutostartSuppression?: GatewayChannelManager["getAutostartSuppression"];
   stopPostReadySidecars?: () => Promise<void> | void;
   reloadPlugins: (params: {
-    nextConfig: OpenClawConfig;
+    nextConfig: OperatorConfig;
     changedPaths: readonly string[];
     beforeReplace: (channels: ReadonlySet<ChannelKind>) => Promise<void>;
     commitRuntime: () => Promise<void>;
@@ -356,7 +356,7 @@ type GatewayReloadHandlerParams = {
   logCron: { error: (msg: string) => void };
   logReload: GatewayReloadLog;
   cronReconciliation: GatewayCronReconciliation;
-  createHealthMonitor: (config: OpenClawConfig) => ChannelHealthMonitor | null;
+  createHealthMonitor: (config: OperatorConfig) => ChannelHealthMonitor | null;
   createGmailRestartAbortController?: () => GatewayGmailRestartAbortController;
   clearGmailRestartAbortController?: (controller: GatewayGmailRestartAbortController) => void;
   onCronRestart?: () => void;
@@ -369,8 +369,8 @@ type ManagedGatewayConfigReloaderParams = Omit<
   "createHealthMonitor" | "logReload"
 > & {
   minimalTestGateway: boolean;
-  initialConfig: OpenClawConfig;
-  initialCompareConfig?: OpenClawConfig;
+  initialConfig: OperatorConfig;
+  initialCompareConfig?: OperatorConfig;
   initialInternalWriteHash: string | null;
   watchPath: string;
   readSnapshot: typeof import("../config/io.js").readConfigFileSnapshotForRuntimeTransaction;
@@ -383,22 +383,22 @@ type ManagedGatewayConfigReloaderParams = Omit<
   activateRuntimeSecrets: ActivateRuntimeSecrets;
   /** Applies one immutable effective config/compare snapshot before reload planning. */
   prepareConfigCandidate?: (params: {
-    runtimeConfig: OpenClawConfig;
-    sourceConfig: OpenClawConfig;
+    runtimeConfig: OperatorConfig;
+    sourceConfig: OperatorConfig;
   }) => {
-    runtimeConfig: OpenClawConfig;
-    compareConfig: OpenClawConfig;
-    reapplyRuntimeOverlays?: (config: OpenClawConfig) => OpenClawConfig;
-    reapplyCompareOverlays?: (config: OpenClawConfig) => OpenClawConfig;
+    runtimeConfig: OperatorConfig;
+    compareConfig: OperatorConfig;
+    reapplyRuntimeOverlays?: (config: OperatorConfig) => OperatorConfig;
+    reapplyCompareOverlays?: (config: OperatorConfig) => OperatorConfig;
   };
   /** Reapplies fixed process-lifetime overlays before secrets preparation. */
-  applyRuntimeConfigOverrides?: (config: OpenClawConfig) => OpenClawConfig;
-  resolveSharedGatewaySessionGenerationForConfig: (config: OpenClawConfig) => string | undefined;
+  applyRuntimeConfigOverrides?: (config: OperatorConfig) => OperatorConfig;
+  resolveSharedGatewaySessionGenerationForConfig: (config: OperatorConfig) => string | undefined;
   sharedGatewaySessionGenerationState: SharedGatewaySessionGenerationState;
   clients: Iterable<SharedGatewayAuthClient>;
-  prepareTerminalConfig: (plan: GatewayReloadPlan, nextConfig: OpenClawConfig) => void;
-  reconcileTerminalSessions: (plan: GatewayReloadPlan, nextConfig: OpenClawConfig) => void;
-  commitTerminalConfig: (nextConfig: OpenClawConfig) => void;
+  prepareTerminalConfig: (plan: GatewayReloadPlan, nextConfig: OperatorConfig) => void;
+  reconcileTerminalSessions: (plan: GatewayReloadPlan, nextConfig: OperatorConfig) => void;
+  commitTerminalConfig: (nextConfig: OperatorConfig) => void;
   acceptTerminalConfig: (options: { retireRejectedRestart: boolean }) => void;
 };
 
@@ -463,7 +463,7 @@ export function createGatewayReloadHandlers(params: GatewayReloadHandlerParams) 
   };
   const waitForActiveWorkBeforeChannelReload = async (
     channels: Iterable<ChannelKind>,
-    nextConfig: OpenClawConfig,
+    nextConfig: OperatorConfig,
     isTransactionCurrent: () => boolean,
   ): Promise<boolean> => {
     // Returns true when the wait was cancelled (restart or config supersession),
@@ -530,7 +530,7 @@ export function createGatewayReloadHandlers(params: GatewayReloadHandlerParams) 
 
   const applyHotReload = async (
     plan: GatewayReloadPlan,
-    nextConfig: OpenClawConfig,
+    nextConfig: OperatorConfig,
     publication?: GatewayHotReloadPublication,
   ): Promise<void> => {
     assertIrreversibleReloadPlanHasRecoveryOwner(plan, restartRecoveryAvailable);
@@ -1052,7 +1052,7 @@ export function createGatewayReloadHandlers(params: GatewayReloadHandlerParams) 
   let restartEmissionSettled = false;
   type RestartRequestDetails = {
     plan: GatewayReloadPlan;
-    nextConfig: OpenClawConfig;
+    nextConfig: OperatorConfig;
     restartOwnedPaths: string[];
     retainDebtAcrossConfigChanges: boolean;
   };
@@ -1104,7 +1104,7 @@ export function createGatewayReloadHandlers(params: GatewayReloadHandlerParams) 
 
   const createRestartRequestDetails = (
     plan: GatewayReloadPlan,
-    nextConfig: OpenClawConfig,
+    nextConfig: OperatorConfig,
     options?: GatewayRestartRequestOptions,
   ): RestartRequestDetails => {
     const explicitRestartPaths = plan.restartReasons.filter((path) =>
@@ -1121,7 +1121,7 @@ export function createGatewayReloadHandlers(params: GatewayReloadHandlerParams) 
 
   const deferGatewayRestartDebt = (
     plan: GatewayReloadPlan,
-    nextConfig: OpenClawConfig,
+    nextConfig: OperatorConfig,
     options?: GatewayRestartRequestOptions,
   ) => {
     const details = createRestartRequestDetails(plan, nextConfig, options);
@@ -1238,7 +1238,7 @@ export function createGatewayReloadHandlers(params: GatewayReloadHandlerParams) 
     restartRetryTimer.unref?.();
   };
 
-  const acceptRestartConfig = (acceptedConfig?: OpenClawConfig) => {
+  const acceptRestartConfig = (acceptedConfig?: OperatorConfig) => {
     if (restartRequestTransaction?.state !== "rejected") {
       return { retireRejectedRestart: false };
     }
@@ -1309,7 +1309,7 @@ export function createGatewayReloadHandlers(params: GatewayReloadHandlerParams) 
 
   const requestGatewayRestartForGeneration = (
     plan: GatewayReloadPlan,
-    nextConfig: OpenClawConfig,
+    nextConfig: OperatorConfig,
     requestGeneration: number,
     options?: GatewayRestartRequestOptions,
   ): boolean => {
@@ -1486,7 +1486,7 @@ export function createGatewayReloadHandlers(params: GatewayReloadHandlerParams) 
 
   const requestGatewayRestart = (
     plan: GatewayReloadPlan,
-    nextConfig: OpenClawConfig,
+    nextConfig: OperatorConfig,
     options?: GatewayRestartRequestOptions,
   ): GatewayRestartTransactionResult => {
     if (restartRetryStopped) {
@@ -1538,15 +1538,15 @@ export function startManagedGatewayConfigReloader(
   }
 
   const prepareRuntimeCandidate = (
-    runtimeConfig: OpenClawConfig,
-    sourceConfig: OpenClawConfig,
+    runtimeConfig: OperatorConfig,
+    sourceConfig: OperatorConfig,
     ownership?: GatewayConfigReloadTransactionOwnership,
-  ): OpenClawConfig => {
+  ): OperatorConfig => {
     const canonicalConfig = restoreCanonicalSecretRefs(runtimeConfig, sourceConfig);
     const candidateConfig = ownership?.reapplyRuntimeOverlays(canonicalConfig) ?? canonicalConfig;
     return params.applyRuntimeConfigOverrides?.(candidateConfig) ?? candidateConfig;
   };
-  const applyRuntimeConfigOverrides = (config: OpenClawConfig): OpenClawConfig =>
+  const applyRuntimeConfigOverrides = (config: OperatorConfig): OperatorConfig =>
     params.applyRuntimeConfigOverrides?.(config) ?? config;
   const restartRecoveryAvailable =
     params.restartRecoveryAvailable !== false && params.requestRecoveryRestart !== undefined;
@@ -1613,9 +1613,9 @@ export function startManagedGatewayConfigReloader(
   });
   const runManagedRestart = async (
     plan: GatewayReloadPlan,
-    nextConfig: OpenClawConfig,
+    nextConfig: OperatorConfig,
     transactionOwnership: GatewayConfigReloadTransactionOwnership,
-    sourceConfig: OpenClawConfig,
+    sourceConfig: OperatorConfig,
     restartOptions?: GatewayRestartRequestOptions,
     beforeRestartRequest?: () => Promise<void>,
   ) => {
@@ -1633,7 +1633,7 @@ export function startManagedGatewayConfigReloader(
           previousRequired: string | undefined | null;
           previousCurrent: string | undefined;
           nextGeneration: string | undefined;
-          runtimeConfig: OpenClawConfig;
+          runtimeConfig: OperatorConfig;
         }
       | undefined;
     try {

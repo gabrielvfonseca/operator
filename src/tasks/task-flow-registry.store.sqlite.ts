@@ -1,13 +1,13 @@
-// Persists managed task-flow records through the OpenClaw SQLite state database.
+// Persists managed task-flow records through the Operator SQLite state database.
 import type { DatabaseSync } from "node:sqlite";
 import type { Insertable, Selectable } from "kysely";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-sync.js";
 import { normalizeSqliteNumber } from "../infra/sqlite-number.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
-  closeOpenClawStateDatabase,
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
+  closeOperatorStateDatabase,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
 } from "../state/operator-state-db.js";
 import type { TaskFlowRegistryStoreSnapshot } from "./task-flow-registry.store.types.js";
 import {
@@ -20,8 +20,8 @@ import {
 import { parseDeliveryContextJson } from "./task-registry.sqlite.shared.js";
 import { parseTaskNotifyPolicy } from "./task-registry.types.js";
 
-type FlowRunsTable = OpenClawStateKyselyDatabase["flow_runs"];
-type FlowRegistryStoreDatabase = Pick<OpenClawStateKyselyDatabase, "flow_runs">;
+type FlowRunsTable = OperatorStateKyselyDatabase["flow_runs"];
+type FlowRegistryStoreDatabase = Pick<OperatorStateKyselyDatabase, "flow_runs">;
 
 type FlowRegistryRow = Selectable<FlowRunsTable> & {
   sync_mode: string | null;
@@ -195,7 +195,7 @@ function upsertFlowRow(db: DatabaseSync, row: Insertable<FlowRunsTable>): void {
 }
 
 function openFlowRegistryDatabase(): FlowRegistryDatabase {
-  const database = openOpenClawStateDatabase();
+  const database = openOperatorStateDatabase();
   const pathname = database.path;
   if (cachedDatabase && cachedDatabase.path === pathname && cachedDatabase.db.isOpen) {
     return cachedDatabase;
@@ -212,7 +212,7 @@ function openFlowRegistryDatabase(): FlowRegistryDatabase {
 
 function withWriteTransaction(write: (database: FlowRegistryDatabase) => void) {
   const database = openFlowRegistryDatabase();
-  runOpenClawStateWriteTransaction(() => {
+  runOperatorStateWriteTransaction(() => {
     write(database);
   });
 }
@@ -257,5 +257,5 @@ export function deleteTaskFlowRegistryRecordFromSqlite(flowId: string) {
 
 export function closeTaskFlowRegistryDatabase() {
   cachedDatabase = null;
-  closeOpenClawStateDatabase();
+  closeOperatorStateDatabase();
 }

@@ -57,10 +57,10 @@ export type AgentHarnessAuthBindingFingerprintParams = {
   authProfileId: string;
   authProfileStore: import("../auth-profiles/types.js").AuthProfileStore;
   agentDir: string;
-  config?: import("../../config/types.operator.js").OpenClawConfig;
+  config?: import("../../config/types.operator.js").OperatorConfig;
 };
 export type AgentHarnessSideQuestionParams = {
-  cfg: import("../../config/types.operator.js").OpenClawConfig;
+  cfg: import("../../config/types.operator.js").OperatorConfig;
   agentDir: string;
   provider: string;
   model: string;

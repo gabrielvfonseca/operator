@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { toRepoRelativePath } from "../test-utils/repo-files.js";
 import { resolvePluginNpmProjectDir } from "./install-paths.js";
 import { resolvePluginInstallDir } from "./install.js";
@@ -23,7 +23,7 @@ vi.mock("../process/exec.js", () => ({
   runCommandWithTimeout: runCommandWithTimeoutMock,
 }));
 
-type PluginConfig = NonNullable<OpenClawConfig["plugins"]>;
+type PluginConfig = NonNullable<OperatorConfig["plugins"]>;
 type PluginInstallRecord = NonNullable<PluginConfig["installs"]>[string];
 
 async function uninstallPlugin(params: Parameters<typeof planPluginUninstall>[0]) {
@@ -48,7 +48,7 @@ async function createInstalledNpmPluginFixture(params: {
   pluginId: string;
   extensionsDir: string;
   pluginDir: string;
-  config: OpenClawConfig;
+  config: OperatorConfig;
 }> {
   const pluginId = params.pluginId ?? "my-plugin";
   const extensionsDir = path.join(params.baseDir, "extensions");
@@ -165,8 +165,8 @@ function createPluginConfig(params: {
   enabled?: boolean;
   slots?: PluginConfig["slots"];
   loadPaths?: string[];
-  channels?: OpenClawConfig["channels"];
-}): OpenClawConfig {
+  channels?: OperatorConfig["channels"];
+}): OperatorConfig {
   const plugins: PluginConfig = {};
   if (params.entries) {
     plugins.entries = params.entries;
@@ -196,14 +196,14 @@ function createPluginConfig(params: {
 }
 
 function expectRemainingChannels(
-  channels: OpenClawConfig["channels"],
+  channels: OperatorConfig["channels"],
   expected: Record<string, unknown> | undefined,
 ) {
   expect(channels as Record<string, unknown> | undefined).toEqual(expected);
 }
 
 function expectChannelCleanupResult(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   pluginId: string;
   expectedChannels: Record<string, unknown> | undefined;
   expectedChanged: boolean;
@@ -222,14 +222,14 @@ function expectChannelCleanupResult(params: {
   expect(actions.channelConfig).toBe(params.expectedChanged);
 }
 
-function createSinglePluginWithEmptySlotsConfig(): OpenClawConfig {
+function createSinglePluginWithEmptySlotsConfig(): OperatorConfig {
   return createPluginConfig({
     entries: createSinglePluginEntries(),
     slots: {},
   });
 }
 
-function createSingleNpmInstallConfig(installPath: string): OpenClawConfig {
+function createSingleNpmInstallConfig(installPath: string): OperatorConfig {
   return createPluginConfig({
     entries: createSinglePluginEntries(),
     installs: {
@@ -652,7 +652,7 @@ describe("removePluginFromConfig", () => {
           defaults: { groupPolicy: "opt-in" },
           modelByChannel: { timbot: "gpt-3.5" } as Record<string, string>,
           timbot: { sdkAppId: "123" },
-        } as unknown as OpenClawConfig["channels"],
+        } as unknown as OperatorConfig["channels"],
       }),
       pluginId: "timbot",
       expectedChannels: {
@@ -672,7 +672,7 @@ describe("removePluginFromConfig", () => {
         },
         channels: {
           defaults: { groupPolicy: "opt-in" },
-        } as unknown as OpenClawConfig["channels"],
+        } as unknown as OperatorConfig["channels"],
       }),
       pluginId: "bad-plugin",
       options: {

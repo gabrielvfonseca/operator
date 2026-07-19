@@ -1,7 +1,7 @@
 // Resolves diagnostics feature flags from config and environment.
 import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
 import { normalizeUniqueStringEntriesLower } from "@operator/normalization-core/string-normalization";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 
 const DIAGNOSTICS_ENV = "OPERATOR_DIAGNOSTICS";
 
@@ -36,7 +36,7 @@ function parseEnvFlags(raw?: string): ParsedEnvFlags {
 
 /** Resolves enabled diagnostic flags from config plus `OPERATOR_DIAGNOSTICS` overrides. */
 export function resolveDiagnosticFlags(
-  cfg?: OpenClawConfig,
+  cfg?: OperatorConfig,
   env: NodeJS.ProcessEnv = process.env,
 ): string[] {
   const configFlags = Array.isArray(cfg?.diagnostics?.flags) ? cfg?.diagnostics?.flags : [];
@@ -83,7 +83,7 @@ export function matchesDiagnosticFlag(flag: string, enabledFlags: string[]): boo
 /** Returns whether a diagnostic flag is enabled after config/env resolution. */
 export function isDiagnosticFlagEnabled(
   flag: string,
-  cfg?: OpenClawConfig,
+  cfg?: OperatorConfig,
   env: NodeJS.ProcessEnv = process.env,
 ): boolean {
   const flags = resolveDiagnosticFlags(cfg, env);

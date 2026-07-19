@@ -453,17 +453,17 @@ function extractLiveExecOutput(result: unknown): string | undefined {
   return typeof output === "string" ? truncateLiveExecOutput(output) : undefined;
 }
 
-function isOpenClawExecutable(token: string | undefined): boolean {
+function isOperatorExecutable(token: string | undefined): boolean {
   const executable = normalizeOptionalLowercaseString(token);
   return executable?.split(/[\\/]/).at(-1) === "operator";
 }
 
-function isOpenClawPackageSpec(token: string | undefined): boolean {
+function isOperatorPackageSpec(token: string | undefined): boolean {
   const packageSpec = normalizeOptionalLowercaseString(token);
   return packageSpec?.startsWith("operator@") === true && packageSpec.length > "operator@".length;
 }
 
-function skipOpenClawPackageRunner(
+function skipOperatorPackageRunner(
   tokens: string[],
   startIndex: number,
 ): { commandIndex: number; acceptsPackageSpec: boolean } {
@@ -516,7 +516,7 @@ function skipOpenClawPackageRunner(
   return { commandIndex, acceptsPackageSpec };
 }
 
-function isOpenClawCronAddShellCommand(args: unknown): boolean {
+function isOperatorCronAddShellCommand(args: unknown): boolean {
   const record = asOptionalObjectRecord(args);
   const command = readStringValue(record?.command) ?? readStringValue(record?.cmd);
   if (!command || hasTopLevelShellControlOperator(command)) {
@@ -535,7 +535,7 @@ function isOpenClawCronAddShellCommand(args: unknown): boolean {
   while (/^[A-Za-z_][A-Za-z0-9_]*=/u.test(tokens[commandIndex] ?? "")) {
     commandIndex += 1;
   }
-  const packageRunner = skipOpenClawPackageRunner(tokens, commandIndex);
+  const packageRunner = skipOperatorPackageRunner(tokens, commandIndex);
   commandIndex = packageRunner.commandIndex;
 
   let cliArgIndex = commandIndex + 1;
@@ -549,8 +549,8 @@ function isOpenClawCronAddShellCommand(args: unknown): boolean {
   const action = normalizeOptionalLowercaseString(tokens[cliArgIndex + 1]);
   const actionArgs = tokens.slice(cliArgIndex + 2);
   return (
-    (isOpenClawExecutable(tokens[commandIndex]) ||
-      (packageRunner.acceptsPackageSpec && isOpenClawPackageSpec(tokens[commandIndex]))) &&
+    (isOperatorExecutable(tokens[commandIndex]) ||
+      (packageRunner.acceptsPackageSpec && isOperatorPackageSpec(tokens[commandIndex]))) &&
     normalizeOptionalLowercaseString(tokens[cliArgIndex]) === "cron" &&
     (action === "add" || action === "create") &&
     !actionArgs.some((token) => token === "-h" || token === "--help")
@@ -558,7 +558,7 @@ function isOpenClawCronAddShellCommand(args: unknown): boolean {
 }
 
 function didShellCronAddSucceed(args: unknown, result: unknown): boolean {
-  if (!isOpenClawCronAddShellCommand(args)) {
+  if (!isOperatorCronAddShellCommand(args)) {
     return false;
   }
   const details = readExecToolDetails(result);

@@ -1,7 +1,7 @@
 // Qwen setup module handles plugin onboarding behavior.
 import {
   createModelCatalogPresetAppliers,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "openclaw/plugin-sdk/provider-onboard";
 import {
   QWEN_CN_BASE_URL,
@@ -24,7 +24,7 @@ import {
 
 const qwenPresetAppliers = createModelCatalogPresetAppliers<[string]>({
   primaryModelRef: QWEN_DEFAULT_MODEL_REF,
-  resolveParams: (_cfg: OpenClawConfig, baseUrl: string) => {
+  resolveParams: (_cfg: OperatorConfig, baseUrl: string) => {
     const provider = buildQwenProvider({ baseUrl });
     return {
       providerId: "qwen",
@@ -61,7 +61,7 @@ const qwenOAuthPresetAppliers = createModelCatalogPresetAppliers<[]>({
 
 const qwenTokenPlanPresetAppliers = createModelCatalogPresetAppliers<[string]>({
   primaryModelRef: QWEN_TOKEN_PLAN_DEFAULT_MODEL_REF,
-  resolveParams: (_cfg: OpenClawConfig, baseUrl: string) => {
+  resolveParams: (_cfg: OperatorConfig, baseUrl: string) => {
     const provider = buildQwenTokenPlanProvider({ baseUrl });
     return {
       providerId: QWEN_TOKEN_PLAN_PROVIDER_ID,
@@ -76,29 +76,29 @@ const qwenTokenPlanPresetAppliers = createModelCatalogPresetAppliers<[string]>({
   },
 });
 
-export function applyQwenConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyQwenConfig(cfg: OperatorConfig): OperatorConfig {
   return qwenPresetAppliers.applyConfig(cfg, QWEN_GLOBAL_BASE_URL);
 }
 
-export function applyQwenConfigCn(cfg: OpenClawConfig): OpenClawConfig {
+export function applyQwenConfigCn(cfg: OperatorConfig): OperatorConfig {
   return qwenPresetAppliers.applyConfig(cfg, QWEN_CN_BASE_URL);
 }
 
-export function applyQwenStandardConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyQwenStandardConfig(cfg: OperatorConfig): OperatorConfig {
   return qwenPresetAppliers.applyConfig(cfg, QWEN_STANDARD_GLOBAL_BASE_URL);
 }
 
-export function applyQwenStandardConfigCn(cfg: OpenClawConfig): OpenClawConfig {
+export function applyQwenStandardConfigCn(cfg: OperatorConfig): OperatorConfig {
   return qwenPresetAppliers.applyConfig(cfg, QWEN_STANDARD_CN_BASE_URL);
 }
 
-export function applyQwenOAuthConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyQwenOAuthConfig(cfg: OperatorConfig): OperatorConfig {
   return qwenOAuthPresetAppliers.applyConfig(cfg);
 }
 
 export function applyQwenTokenPlanConfig(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   region: QwenTokenPlanRegion,
-): OpenClawConfig {
+): OperatorConfig {
   return qwenTokenPlanPresetAppliers.applyConfig(cfg, resolveQwenTokenPlanBaseUrl(region));
 }

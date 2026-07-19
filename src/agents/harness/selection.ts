@@ -1,7 +1,7 @@
 /**
  * Selects and invokes native agent harnesses for embedded run attempts.
  */
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   createChildDiagnosticTraceContext,
   createDiagnosticTraceContext,
@@ -31,7 +31,7 @@ import {
 import { resolveSandboxRuntimeStatus } from "../sandbox/runtime-status.js";
 import { expandToolGroups, mergeAlsoAllowPolicy, normalizeToolName } from "../tool-policy.js";
 import type { SystemAgentToolOptions } from "../tools/system-agent-tool.js";
-import { createOpenClawAgentHarness } from "./builtin-operator.js";
+import { createOperatorAgentHarness } from "./builtin-operator.js";
 import { MissingAgentHarnessError } from "./errors.js";
 import { runAgentHarnessLifecycleAttempt } from "./lifecycle.js";
 import {
@@ -55,7 +55,7 @@ type AgentHarnessAvailabilityParams = {
   provider?: string;
   modelId?: string;
   modelProvider?: AgentHarnessSupportContext["modelProvider"];
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
   sessionKey?: string;
   env?: NodeJS.ProcessEnv;
@@ -66,7 +66,7 @@ type AgentHarnessSelectionParams = {
   provider: string;
   modelId?: string;
   modelProvider?: AgentHarnessSupportContext["modelProvider"];
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentId?: string;
   sessionKey?: string;
   agentHarnessId?: string;
@@ -110,15 +110,15 @@ type AgentHarnessSelectionDecision = {
   selectedReason:
     | "forced_operator"
     | "forced_plugin"
-    // Implicit Codex preference found no registered Codex harness, so OpenClaw handled the run.
+    // Implicit Codex preference found no registered Codex harness, so Operator handled the run.
     | "implicit_plugin_unavailable_operator"
-    // Implicit Codex preference cannot reproduce the prepared transport, so OpenClaw handled it.
+    // Implicit Codex preference cannot reproduce the prepared transport, so Operator handled it.
     | "implicit_plugin_unsupported_operator"
     // Provider-owned CLI runtime aliases have no agent harness plugin counterpart.
     | "cli_runtime_passthrough_operator"
     // Auto mode chose a registered plugin harness that supports the provider/model.
     | "auto_plugin"
-    // Auto mode found no supporting plugin harness, so OpenClaw handled the run.
+    // Auto mode found no supporting plugin harness, so Operator handled the run.
     | "auto_operator";
   candidates: AgentHarnessSelectionCandidate[];
 };
@@ -240,18 +240,18 @@ export function selectAgentHarnessForPreparedModelProviders(
   // runtime owns the complete retry set; explicit and pinned plugins fail during probing above.
   return (
     decisions.find((decision) => decision.selectedHarnessId === "operator")?.harness ??
-    createOpenClawAgentHarness()
+    createOperatorAgentHarness()
   );
 }
 
-/** Returns whether a plugin harness constructs OpenClaw tools inside its runtime. */
-export function agentHarnessBuildsOpenClawTools(harnessId: string): boolean {
+/** Returns whether a plugin harness constructs Operator tools inside its runtime. */
+export function agentHarnessBuildsOperatorTools(harnessId: string): boolean {
   return harnessId === "codex" || harnessId === "copilot";
 }
 
-/** Returns whether the selected harness exposes OpenClaw's agent-tool surface. */
-export function agentHarnessExposesOpenClawTools(harnessId: string): boolean {
-  return harnessId === "operator" || agentHarnessBuildsOpenClawTools(harnessId);
+/** Returns whether the selected harness exposes Operator's agent-tool surface. */
+export function agentHarnessExposesOperatorTools(harnessId: string): boolean {
+  return harnessId === "operator" || agentHarnessBuildsOperatorTools(harnessId);
 }
 
 function selectAgentHarnessDecision(
@@ -285,10 +285,10 @@ function selectAgentHarnessDecision(
         runtimeSource: "model",
       } as AgentHarnessPolicy)
     : resolvedPolicy;
-  // OpenClaw's built-in harness is intentionally not part of the plugin candidate list. Explicit plugin
-  // runtimes fail closed; only `auto` may route an unmatched turn to OpenClaw.
+  // Operator's built-in harness is intentionally not part of the plugin candidate list. Explicit plugin
+  // runtimes fail closed; only `auto` may route an unmatched turn to Operator.
   const pluginHarnesses = listPluginAgentHarnesses();
-  const openClawHarness = createOpenClawAgentHarness();
+  const openClawHarness = createOperatorAgentHarness();
   const runtime = policy.runtime;
   if (runtime === "operator") {
     const selectedReason = selectedRuntimeOverride
@@ -468,7 +468,7 @@ export async function runAgentHarnessAttempt(
   });
   const harness = selection.harness;
   if (internalParams.systemAgentTool && !isSystemAgentOnlyAllowlist(internalParams.toolsAllow)) {
-    throw new Error('OpenClaw host authority requires toolsAllow: ["operator"]');
+    throw new Error('Operator host authority requires toolsAllow: ["operator"]');
   }
   const ringZeroTools = internalParams.systemAgentTool
     ? [
@@ -499,7 +499,7 @@ export async function runAgentHarnessAttempt(
   try {
     return await runWithDiagnosticTraceContext(harnessTrace, runAttempt);
   } catch (error) {
-    log.warn(`${harness.label} failed; not falling back to embedded OpenClaw backend`, {
+    log.warn(`${harness.label} failed; not falling back to embedded Operator backend`, {
       harnessId: harness.id,
       provider: params.provider,
       modelId: params.modelId,

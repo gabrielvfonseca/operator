@@ -1,18 +1,18 @@
 import { replaceConfigFile } from "../../config/config.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { commitConfigWithPendingPluginInstalls } from "../../plugins/install-record-commit.js";
 import { refreshPluginRegistryAfterConfigMutation } from "../../plugins/registry-refresh.js";
 import type { RuntimeEnv } from "../../runtime.js";
 
 export async function persistResolvedChannelPluginConfig(params: {
   resolved: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     configChanged: boolean;
     pluginInstalled: boolean;
   };
   baseHash?: string;
   runtime: RuntimeEnv;
-}): Promise<OpenClawConfig> {
+}): Promise<OperatorConfig> {
   if (!params.resolved.configChanged) {
     return params.resolved.cfg;
   }

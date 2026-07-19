@@ -3,7 +3,7 @@
  */
 import { findNormalizedProviderValue } from "@operator/model-catalog-core/provider-id";
 import { normalizeUniqueSingleOrTrimmedStringList } from "@operator/normalization-core/string-normalization";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 
 function providerConfigDeclaresModel(
   providerConfig: { models?: readonly { id?: string }[] } | undefined,
@@ -18,7 +18,7 @@ function providerConfigDeclaresModel(
 
 /** Resolves provider/model refs used to scope model catalog discovery. */
 export function resolveModelCatalogScope(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   provider: string;
   model: string;
 }): { providerRefs: string[]; modelRefs: string[] } {

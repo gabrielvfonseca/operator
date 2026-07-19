@@ -3,14 +3,14 @@ import fs from "node:fs";
 import fsPromises from "node:fs/promises";
 import path from "node:path";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import {
   onInternalDiagnosticEvent,
   resetDiagnosticEventsForTest,
   type DiagnosticSecurityEvent,
 } from "../infra/diagnostic-events.js";
 import { safePathSegmentHashed } from "../infra/install-safe-path.js";
-import { resolveOpenClawPackageRootSync } from "../infra/openclaw-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/openclaw-root.js";
 import { runCommandWithTimeout } from "../process/exec.js";
 import { initializeGlobalHookRunner, resetGlobalHookRunner } from "./hook-runner-global.js";
 import { createMockPluginRegistry } from "./hooks.test-helpers.js";
@@ -49,7 +49,7 @@ vi.mock("../process/exec.js", () => ({
 }));
 
 vi.mock("../infra/openclaw-root.js", () => ({
-  resolveOpenClawPackageRootSync: vi.fn(),
+  resolveOperatorPackageRootSync: vi.fn(),
 }));
 
 const resolveCompatibilityHostVersionMock = vi.fn();
@@ -272,7 +272,7 @@ function setupInstallPluginFromDirFixture(params?: {
 async function installFromDirWithWarnings(params: {
   pluginDir: string;
   extensionsDir: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   dangerouslyForceUnsafeInstall?: boolean;
   trustedSourceLinkedOfficialInstall?: boolean;
   mode?: "install" | "update";
@@ -315,7 +315,7 @@ process.stdin.on("data", (chunk) => {
   input += chunk;
 });
 process.stdin.on("end", () => {
-  fs.appendFileSync(process.env.OPENCLAW_POLICY_LOG, input + "\\n");
+  fs.appendFileSync(process.env.OPERATOR_POLICY_LOG, input + "\\n");
   process.stdout.write(JSON.stringify({ protocolVersion: 1, decision: "allow" }));
 });
 `,
@@ -348,7 +348,7 @@ process.stdin.on("end", () => {
     }));
     return;
   }
-  fs.appendFileSync(process.env.OPENCLAW_POLICY_LOG, input + "\\n");
+  fs.appendFileSync(process.env.OPERATOR_POLICY_LOG, input + "\\n");
   process.stdout.write(JSON.stringify({
     protocolVersion: 1,
     decision: "block",
@@ -376,7 +376,7 @@ process.stdin.on("data", (chunk) => {
   input += chunk;
 });
 process.stdin.on("end", () => {
-  fs.appendFileSync(process.env.OPENCLAW_POLICY_LOG, input + "\\n");
+  fs.appendFileSync(process.env.OPERATOR_POLICY_LOG, input + "\\n");
   const request = JSON.parse(input).request;
   if (request.mode === "install") {
     process.stdout.write(JSON.stringify({
@@ -395,7 +395,7 @@ process.stdin.on("end", () => {
   return { scriptPath, logPath };
 }
 
-function configWithInstallPolicy(scriptPath: string, logPath: string): OpenClawConfig {
+function configWithInstallPolicy(scriptPath: string, logPath: string): OperatorConfig {
   return {
     security: {
       installPolicy: {
@@ -404,7 +404,7 @@ function configWithInstallPolicy(scriptPath: string, logPath: string): OpenClawC
           source: "exec",
           command: process.execPath,
           args: [scriptPath],
-          env: { OPENCLAW_POLICY_LOG: logPath },
+          env: { OPERATOR_POLICY_LOG: logPath },
           allowInsecurePath: true,
           timeoutMs: 5000,
           maxOutputBytes: 16 * 1024,
@@ -516,7 +516,7 @@ function mockSuccessfulManagedNpmInstall(params: { packageName: string; version?
 async function installFromArchiveWithWarnings(params: {
   archivePath: string;
   extensionsDir: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   dangerouslyForceUnsafeInstall?: boolean;
   trustedSourceLinkedOfficialInstall?: boolean;
 }) {
@@ -1359,7 +1359,7 @@ describe("installPluginFromArchive", () => {
       return;
     }
     expect(result.error).toContain("openclaw.extensions");
-    expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.MISSING_OPENCLAW_EXTENSIONS);
+    expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.MISSING_OPERATOR_EXTENSIONS);
   });
 
   it("rejects legacy plugin package shape when openclaw.extensions is missing", async () => {
@@ -1391,7 +1391,7 @@ describe("installPluginFromArchive", () => {
     if (!result.ok) {
       expect(result.error).toContain("package.json missing openclaw.extensions");
       expect(result.error).toContain("update the plugin package");
-      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.MISSING_OPENCLAW_EXTENSIONS);
+      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.MISSING_OPERATOR_EXTENSIONS);
       return;
     }
     expect.unreachable("expected install to fail without openclaw.extensions");
@@ -1420,7 +1420,7 @@ describe("installPluginFromArchive", () => {
 
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPENCLAW_EXTENSIONS);
+      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPERATOR_EXTENSIONS);
       expect(result.error).toContain("extension entry escapes plugin directory");
     }
   });
@@ -1443,7 +1443,7 @@ describe("installPluginFromArchive", () => {
 
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPENCLAW_EXTENSIONS);
+      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPERATOR_EXTENSIONS);
       expect(result.error).toContain("extension entry not found");
     }
   });
@@ -1492,7 +1492,7 @@ describe("installPluginFromArchive", () => {
 
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPENCLAW_EXTENSIONS);
+      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPERATOR_EXTENSIONS);
       expect(result.error).toContain("openclaw.extensions[1]");
       expect(result.error).toContain("non-empty string");
     }
@@ -1518,7 +1518,7 @@ describe("installPluginFromArchive", () => {
 
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPENCLAW_EXTENSIONS);
+      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPERATOR_EXTENSIONS);
       expect(result.error).toContain("requires compiled runtime output");
       expect(result.error).toContain("./dist/index.js");
       expect(result.error).toContain("plugin packaging issue");
@@ -1576,7 +1576,7 @@ describe("installPluginFromArchive", () => {
 
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPENCLAW_EXTENSIONS);
+      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPERATOR_EXTENSIONS);
       expect(result.error).toContain("runtimeExtensions length (1)");
       expect(result.error).toContain("extensions length (2)");
     }
@@ -1607,7 +1607,7 @@ describe("installPluginFromArchive", () => {
 
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPENCLAW_EXTENSIONS);
+      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPERATOR_EXTENSIONS);
       expect(result.error).toContain("openclaw.runtimeExtensions[0]");
       expect(result.error).toContain("non-empty string");
     }
@@ -1639,7 +1639,7 @@ describe("installPluginFromArchive", () => {
 
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPENCLAW_EXTENSIONS);
+      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPERATOR_EXTENSIONS);
       expect(result.error).toContain("runtime setup entry not found");
       expect(result.error).toContain("./dist/setup-entry.js");
     }
@@ -1673,7 +1673,7 @@ describe("installPluginFromArchive", () => {
 
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPENCLAW_EXTENSIONS);
+      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPERATOR_EXTENSIONS);
       expect(result.error).toContain("extension entry");
     }
   });
@@ -1712,7 +1712,7 @@ describe("installPluginFromArchive", () => {
 
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPENCLAW_EXTENSIONS);
+      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_OPERATOR_EXTENSIONS);
       expect(result.error).toContain("boundary checks");
     }
   });
@@ -3669,7 +3669,7 @@ describe("installPluginFromDir", () => {
       hostVersion: "2026.3.21",
       minHostVersion: ">=2026.3.22",
       expectedCode: PLUGIN_INSTALL_ERROR_CODE.INCOMPATIBLE_HOST_VERSION,
-      expectedMessageIncludes: ["requires OpenClaw >=2026.3.22, but this host is 2026.3.21"],
+      expectedMessageIncludes: ["requires Operator >=2026.3.22, but this host is 2026.3.21"],
     },
     {
       name: "rejects plugins with invalid minHostVersion metadata",
@@ -3992,8 +3992,8 @@ describe("installPluginFromDir", () => {
   });
 });
 
-describe("linkOpenClawPeerDependencies (via installPluginFromDir)", () => {
-  const resolveRootMock = vi.mocked(resolveOpenClawPackageRootSync);
+describe("linkOperatorPeerDependencies (via installPluginFromDir)", () => {
+  const resolveRootMock = vi.mocked(resolveOperatorPackageRootSync);
 
   function writePluginWithPeerDeps(
     pluginDir: string,
@@ -4135,7 +4135,7 @@ describe("linkOpenClawPeerDependencies (via installPluginFromDir)", () => {
     expect(fs.lstatSync(symlinkPath).isSymbolicLink()).toBe(true);
   });
 
-  it("rejects when resolveOpenClawPackageRootSync returns null", async () => {
+  it("rejects when resolveOperatorPackageRootSync returns null", async () => {
     const { pluginDir, extensionsDir } = setupPluginInstallDirs();
     resolveRootMock.mockReturnValue(null);
 

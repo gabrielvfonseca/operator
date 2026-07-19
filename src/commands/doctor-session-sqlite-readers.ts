@@ -8,7 +8,7 @@ import { resolveSqliteTargetFromSessionStorePath } from "../config/sessions/sess
 import type { SessionStoreTarget } from "../config/sessions/targets.js";
 import type { SessionEntry } from "../config/sessions/types.js";
 import { requireNodeSqlite } from "../infra/node-sqlite.js";
-import { resolveOpenClawAgentSqlitePath } from "../state/operator-agent-db.js";
+import { resolveOperatorAgentSqlitePath } from "../state/operator-agent-db.js";
 
 type ReadOnlySqliteSessionSummary = {
   entry: SessionEntry;
@@ -284,7 +284,7 @@ export function resolveTargetSqlitePath(target: SessionStoreTarget): string {
   const sqliteTarget = resolveSqliteTargetFromSessionStorePath(target.storePath, {
     agentId: target.agentId,
   });
-  return resolveOpenClawAgentSqlitePath({
+  return resolveOperatorAgentSqlitePath({
     agentId: sqliteTarget.agentId ?? target.agentId,
     ...(sqliteTarget.path ? { path: sqliteTarget.path } : {}),
   });

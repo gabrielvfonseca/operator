@@ -14,7 +14,7 @@ import { resolveConfigPath, resolveGatewayLockDir, resolveStateDir } from "../co
 import { getFileLockProcessStartTime, isPidAlive } from "../shared/pid-alive.js";
 import { safeParseJsonWithSchema } from "../utils/zod-parse.js";
 import { sha256HexPrefix } from "./crypto-digest.js";
-import { isGatewayArgv, isOpenClawCommandArgv, parseProcCmdline } from "./gateway-process-argv.js";
+import { isGatewayArgv, isOperatorCommandArgv, parseProcCmdline } from "./gateway-process-argv.js";
 import { requireNodeSqlite } from "./node-sqlite.js";
 import { isSqliteLockError } from "./sqlite-transaction.js";
 import {
@@ -217,7 +217,7 @@ async function resolveGatewayOwnerStatus(
     if (!args) {
       return "unknown";
     }
-    return isOpenClawCommandArgv(args, "doctor") ? "alive" : "dead";
+    return isOperatorCommandArgv(args, "doctor") ? "alive" : "dead";
   }
 
   const args = readFn(pid);

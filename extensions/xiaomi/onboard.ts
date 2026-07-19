@@ -1,7 +1,7 @@
 // Xiaomi setup module handles plugin onboarding behavior.
 import {
   createDefaultModelsPresetAppliers,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "openclaw/plugin-sdk/provider-onboard";
 import {
   buildXiaomiProvider,
@@ -19,7 +19,7 @@ export const XIAOMI_TOKEN_PLAN_DEFAULT_MODEL_REF = `${XIAOMI_TOKEN_PLAN_PROVIDER
 
 const xiaomiPresetAppliers = createDefaultModelsPresetAppliers({
   primaryModelRef: XIAOMI_DEFAULT_MODEL_REF,
-  resolveParams: (_cfg: OpenClawConfig) => {
+  resolveParams: (_cfg: OperatorConfig) => {
     const defaultProvider = buildXiaomiProvider();
     return {
       providerId: XIAOMI_PROVIDER_ID,
@@ -34,7 +34,7 @@ const xiaomiPresetAppliers = createDefaultModelsPresetAppliers({
 
 const xiaomiTokenPlanPresetAppliers = createDefaultModelsPresetAppliers({
   primaryModelRef: XIAOMI_TOKEN_PLAN_DEFAULT_MODEL_REF,
-  resolveParams: (_cfg: OpenClawConfig) => {
+  resolveParams: (_cfg: OperatorConfig) => {
     const defaultProvider = buildXiaomiTokenPlanProvider();
     return {
       providerId: XIAOMI_TOKEN_PLAN_PROVIDER_ID,
@@ -58,10 +58,10 @@ const xiaomiTokenPlanPresetAppliers = createDefaultModelsPresetAppliers({
 });
 
 function withProviderBaseUrl(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   providerId: string,
   baseUrl: string,
-): OpenClawConfig {
+): OperatorConfig {
   const providers: Record<string, unknown> = {
     ...cfg.models?.providers,
     [providerId]: {
@@ -75,21 +75,21 @@ function withProviderBaseUrl(
       ...cfg.models,
       providers,
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
-export function applyXiaomiProviderConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyXiaomiProviderConfig(cfg: OperatorConfig): OperatorConfig {
   return xiaomiPresetAppliers.applyProviderConfig(cfg);
 }
 
-export function applyXiaomiConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyXiaomiConfig(cfg: OperatorConfig): OperatorConfig {
   return xiaomiPresetAppliers.applyConfig(cfg);
 }
 
 export function applyXiaomiTokenPlanConfig(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   region: XiaomiTokenPlanRegion,
-): OpenClawConfig {
+): OperatorConfig {
   return withProviderBaseUrl(
     xiaomiTokenPlanPresetAppliers.applyConfig(cfg),
     XIAOMI_TOKEN_PLAN_PROVIDER_ID,

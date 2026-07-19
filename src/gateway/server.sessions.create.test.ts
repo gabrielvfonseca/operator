@@ -14,7 +14,7 @@ import { managedWorktrees } from "../agents/worktrees/service.js";
 import { loadSessionEntry, loadTranscriptEvents } from "../config/sessions/session-accessor.js";
 import { createEmptyPluginRegistry } from "../plugins/registry-empty.js";
 import { setActivePluginRegistry } from "../plugins/runtime.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import {
   agentCommand,
   agentDiscoveryMock,
@@ -41,7 +41,7 @@ async function initializeGitWorkspace(root: string): Promise<string> {
   const workspace = path.join(root, "workspace");
   await fs.mkdir(workspace, { recursive: true });
   await execFileAsync("git", ["-C", workspace, "init", "-b", "main"]);
-  await execFileAsync("git", ["-C", workspace, "config", "user.name", "OpenClaw Test"]);
+  await execFileAsync("git", ["-C", workspace, "config", "user.name", "Operator Test"]);
   await execFileAsync("git", [
     "-C",
     workspace,
@@ -67,9 +67,9 @@ test("sessions.create provisions and reuses a session worktree for later runs", 
     path.join(await fs.realpath(os.tmpdir()), "openclaw-session-worktree-"),
   );
   const workspace = await initializeGitWorkspace(root);
-  const previousStateDir = process.env.OPENCLAW_STATE_DIR;
-  process.env.OPENCLAW_STATE_DIR = path.join(root, "state");
-  closeOpenClawStateDatabaseForTest();
+  const previousStateDir = process.env.OPERATOR_STATE_DIR;
+  process.env.OPERATOR_STATE_DIR = path.join(root, "state");
+  closeOperatorStateDatabaseForTest();
   testState.agentConfig = { workspace };
   await createSessionStoreDir();
   let worktreeId: string | undefined;
@@ -135,11 +135,11 @@ test("sessions.create provisions and reuses a session worktree for later runs", 
     if (worktreeId) {
       await managedWorktrees.remove({ id: worktreeId, reason: "test-cleanup", force: true });
     }
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     if (previousStateDir === undefined) {
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.OPERATOR_STATE_DIR;
     } else {
-      process.env.OPENCLAW_STATE_DIR = previousStateDir;
+      process.env.OPERATOR_STATE_DIR = previousStateDir;
     }
     testState.agentConfig = undefined;
     await fs.rm(root, { recursive: true, force: true });
@@ -162,9 +162,9 @@ test("sessions.create honors worktree name/base ref and persists worktree info",
     "HEAD",
   ]);
   await execFileAsync("git", ["-C", workspace, "checkout", "main"]);
-  const previousStateDir = process.env.OPENCLAW_STATE_DIR;
-  process.env.OPENCLAW_STATE_DIR = path.join(root, "state");
-  closeOpenClawStateDatabaseForTest();
+  const previousStateDir = process.env.OPERATOR_STATE_DIR;
+  process.env.OPERATOR_STATE_DIR = path.join(root, "state");
+  closeOperatorStateDatabaseForTest();
   testState.agentConfig = { workspace };
   await createSessionStoreDir();
   let worktreeId: string | undefined;
@@ -211,11 +211,11 @@ test("sessions.create honors worktree name/base ref and persists worktree info",
     if (worktreeId) {
       await managedWorktrees.remove({ id: worktreeId, reason: "test-cleanup", force: true });
     }
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     if (previousStateDir === undefined) {
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.OPERATOR_STATE_DIR;
     } else {
-      process.env.OPENCLAW_STATE_DIR = previousStateDir;
+      process.env.OPERATOR_STATE_DIR = previousStateDir;
     }
     testState.agentConfig = undefined;
     await fs.rm(root, { recursive: true, force: true });
@@ -336,9 +336,9 @@ test("sessions.create provisions a worktree from an admin-selected cwd", async (
   );
   const configuredWorkspace = await initializeGitWorkspace(configuredRoot);
   const selectedWorkspace = await initializeGitWorkspace(selectedRoot);
-  const previousStateDir = process.env.OPENCLAW_STATE_DIR;
-  process.env.OPENCLAW_STATE_DIR = path.join(configuredRoot, "state");
-  closeOpenClawStateDatabaseForTest();
+  const previousStateDir = process.env.OPERATOR_STATE_DIR;
+  process.env.OPERATOR_STATE_DIR = path.join(configuredRoot, "state");
+  closeOperatorStateDatabaseForTest();
   testState.agentConfig = { workspace: configuredWorkspace };
   await createSessionStoreDir();
   let worktreeId: string | undefined;
@@ -382,11 +382,11 @@ test("sessions.create provisions a worktree from an admin-selected cwd", async (
     if (worktreeId) {
       await managedWorktrees.remove({ id: worktreeId, reason: "test-cleanup", force: true });
     }
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     if (previousStateDir === undefined) {
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.OPERATOR_STATE_DIR;
     } else {
-      process.env.OPENCLAW_STATE_DIR = previousStateDir;
+      process.env.OPERATOR_STATE_DIR = previousStateDir;
     }
     testState.agentConfig = undefined;
     await fs.rm(configuredRoot, { recursive: true, force: true });
@@ -413,9 +413,9 @@ test("sessions.create skips the worktree setup script for non-admin callers", as
   const setupScript = path.join(workspace, ".openclaw", "worktree-setup.sh");
   await fs.writeFile(setupScript, "#!/bin/sh\ntouch setup-marker.txt\n");
   await fs.chmod(setupScript, 0o755);
-  const previousStateDir = process.env.OPENCLAW_STATE_DIR;
-  process.env.OPENCLAW_STATE_DIR = path.join(root, "state");
-  closeOpenClawStateDatabaseForTest();
+  const previousStateDir = process.env.OPERATOR_STATE_DIR;
+  process.env.OPERATOR_STATE_DIR = path.join(root, "state");
+  closeOperatorStateDatabaseForTest();
   testState.agentConfig = { workspace };
   await createSessionStoreDir();
   let worktreeId: string | undefined;
@@ -437,11 +437,11 @@ test("sessions.create skips the worktree setup script for non-admin callers", as
     if (worktreeId) {
       await managedWorktrees.remove({ id: worktreeId, reason: "test-cleanup", force: true });
     }
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     if (previousStateDir === undefined) {
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.OPERATOR_STATE_DIR;
     } else {
-      process.env.OPENCLAW_STATE_DIR = previousStateDir;
+      process.env.OPERATOR_STATE_DIR = previousStateDir;
     }
     testState.agentConfig = undefined;
     await fs.rm(root, { recursive: true, force: true });
@@ -457,9 +457,9 @@ test("sessions.create preserves a linked-worktree subdirectory", async () => {
   await execFileAsync("git", ["-C", repoRoot, "worktree", "add", "-b", "linked", linkedRoot]);
   const workspace = path.join(linkedRoot, "packages", "app");
   await fs.mkdir(workspace, { recursive: true });
-  const previousStateDir = process.env.OPENCLAW_STATE_DIR;
-  process.env.OPENCLAW_STATE_DIR = path.join(root, "state");
-  closeOpenClawStateDatabaseForTest();
+  const previousStateDir = process.env.OPERATOR_STATE_DIR;
+  process.env.OPERATOR_STATE_DIR = path.join(root, "state");
+  closeOperatorStateDatabaseForTest();
   testState.agentConfig = { workspace };
   await createSessionStoreDir();
   let worktreeId: string | undefined;
@@ -486,11 +486,11 @@ test("sessions.create preserves a linked-worktree subdirectory", async () => {
     if (worktreeId) {
       await managedWorktrees.remove({ id: worktreeId, reason: "test-cleanup", force: true });
     }
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     if (previousStateDir === undefined) {
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.OPERATOR_STATE_DIR;
     } else {
-      process.env.OPENCLAW_STATE_DIR = previousStateDir;
+      process.env.OPERATOR_STATE_DIR = previousStateDir;
     }
     testState.agentConfig = undefined;
     await fs.rm(root, { recursive: true, force: true });
@@ -508,9 +508,9 @@ test("sessions.create reset-in-place persists the returned worktree cwd", async 
   await execFileAsync("git", ["init", "--bare", origin]);
   await execFileAsync("git", ["-C", workspace, "remote", "add", "origin", origin]);
   await execFileAsync("git", ["-C", workspace, "push", "-u", "origin", "main"]);
-  const previousStateDir = process.env.OPENCLAW_STATE_DIR;
-  process.env.OPENCLAW_STATE_DIR = path.join(root, "state");
-  closeOpenClawStateDatabaseForTest();
+  const previousStateDir = process.env.OPERATOR_STATE_DIR;
+  process.env.OPERATOR_STATE_DIR = path.join(root, "state");
+  closeOperatorStateDatabaseForTest();
   testState.agentConfig = { workspace, model: { primary: "openai/current-model" } };
   testState.sessionConfig = { dmScope: "main" };
   const { storePath } = await createSessionStoreDir();
@@ -576,11 +576,11 @@ test("sessions.create reset-in-place persists the returned worktree cwd", async 
     if (worktreeId) {
       await managedWorktrees.remove({ id: worktreeId, reason: "test-cleanup", force: true });
     }
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     if (previousStateDir === undefined) {
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.OPERATOR_STATE_DIR;
     } else {
-      process.env.OPENCLAW_STATE_DIR = previousStateDir;
+      process.env.OPERATOR_STATE_DIR = previousStateDir;
     }
     testState.agentConfig = undefined;
     testState.sessionConfig = undefined;

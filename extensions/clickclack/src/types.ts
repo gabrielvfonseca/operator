@@ -1,7 +1,7 @@
 /**
  * Shared ClickClack config, runtime account, API object, and target types.
  */
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 
 /** User-configurable settings for one ClickClack account. */
 export type ClickClackAccountConfig = {
@@ -33,9 +33,9 @@ type ClickClackConfig = ClickClackAccountConfig & {
   defaultAccount?: string;
 };
 
-/** OpenClaw config narrowed to include ClickClack channel settings. */
-export type CoreConfig = OpenClawConfig & {
-  channels?: OpenClawConfig["channels"] & {
+/** Operator config narrowed to include ClickClack channel settings. */
+export type CoreConfig = OperatorConfig & {
+  channels?: OperatorConfig["channels"] & {
     clickclack?: ClickClackConfig;
   };
 };

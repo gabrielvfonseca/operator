@@ -46,7 +46,7 @@ import { bindSimpleCompletionModelResolverWorkspace } from "../../agents/simple-
 import { normalizeCodexResponsesBaseUrlForOpenAISdk } from "../../agents/simple-completion-transport.js";
 import { normalizeUsage, hasNonzeroUsage } from "../../agents/usage.js";
 import { getRuntimeConfig } from "../../config/config.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { emitTrustedDiagnosticEvent, isDiagnosticsEnabled } from "../../infra/diagnostic-events.js";
 import { resolveDiagnosticModelContentCapturePolicy } from "../../infra/diagnostic-llm-content.js";
 import {
@@ -85,7 +85,7 @@ type WorkerInferenceSessionTarget = Pick<
 > & { agentId: string };
 
 type WorkerInferenceUsageParams = {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   target: WorkerInferenceSessionTarget;
   request: WorkerInferenceStartParams;
   model: Model;
@@ -97,7 +97,7 @@ type WorkerInferenceUsageParams = {
 type WorkerInferenceRuntimeDependencies = {
   now: () => number;
   resolveSessionTarget: (
-    config: OpenClawConfig,
+    config: OperatorConfig,
     sessionId: string,
   ) => WorkerInferenceSessionTarget | undefined;
   loadManifestSnapshot: typeof loadManifestMetadataSnapshot;
@@ -117,7 +117,7 @@ type WorkerInferenceRuntimeDependencies = {
 };
 
 function resolveWorkerInferenceAuthProfileMode(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   agentDir: string;
   profileId: string;
 }): string | undefined {
@@ -133,11 +133,11 @@ function resolveWorkerInferenceAuthProfileMode(params: {
 }
 
 export function projectWorkerInferenceModelRouteConfig(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   provider: string;
   modelId: string;
   authMode?: string;
-}): OpenClawConfig {
+}): OperatorConfig {
   const authRequirement = resolveProviderModelRouteAuthRequirement(params.authMode);
   if (!authRequirement) {
     return params.config;
@@ -414,7 +414,7 @@ function resolveReturnedProfileSource(
 }
 
 async function resolveApprovedModel(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   target: WorkerInferenceSessionTarget;
   request: WorkerInferenceStartParams;
   dependencies: WorkerInferenceRuntimeDependencies;

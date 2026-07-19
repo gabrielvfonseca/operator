@@ -1,7 +1,7 @@
 {
   "name": "@operator/vercel-ai-gateway-provider",
   "version": "2026.7.2",
-  "description": "OpenClaw Vercel AI Gateway provider plugin",
+  "description": "Operator Vercel AI Gateway provider plugin",
   "type": "module",
   "devDependencies": {
     "@operator/plugin-sdk": "workspace:*"

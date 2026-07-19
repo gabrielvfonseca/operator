@@ -25,7 +25,7 @@ import { readTranscriptStatsSync } from "../../config/sessions/session-accessor.
 import { parseSqliteSessionFileMarker } from "../../config/sessions/sqlite-marker.js";
 import { resolveMaintenanceConfigFromInput } from "../../config/sessions/store-maintenance.js";
 import { isRecoverableTerminalSessionStatus } from "../../config/sessions/terminal-status.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { parseCronRunScopeSuffix } from "../../sessions/session-key-utils.js";
 import { loadSessionEntry } from "../session-utils.js";
 import {
@@ -36,7 +36,7 @@ import type { AgentRunRequest } from "./agent-request-types.js";
 import type { GatewayRequestHandlerOptions } from "./types.js";
 
 type PreparedAgentSession = {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   storePath: string;
   entry?: SessionEntry;
   canonicalKey: string;

@@ -15,7 +15,7 @@ import {
 } from "../commands/backup-shared.js";
 import { isPathWithin } from "../commands/cleanup-utils.js";
 import { createLazyRuntimeModule } from "../shared/lazy-runtime.js";
-import { resolveOpenClawStateSqlitePath } from "../state/operator-state-db.paths.js";
+import { resolveOperatorStateSqlitePath } from "../state/operator-state-db.paths.js";
 import { resolveHomeDir, resolveUserPath } from "../utils.js";
 import { resolveRuntimeServiceVersion } from "../version.js";
 import { writeArchiveStreamToFile } from "./backup-create-stream.js";
@@ -581,7 +581,7 @@ async function createStateSqliteBackupPlan(params: {
   // tempDir outside stateDir, and this ordering prevents future overlap from
   // making backup discover one of its own staged SQLite files.
   const globalStateSqlitePath = path.resolve(
-    resolveOpenClawStateSqlitePath({
+    resolveOperatorStateSqlitePath({
       ...process.env,
       OPERATOR_STATE_DIR: params.stateDir,
     }),
@@ -647,8 +647,8 @@ export async function createBackupArchive(
   if (plan.included.length === 0) {
     throw new Error(
       onlyConfig
-        ? "No OpenClaw config file was found to back up."
-        : "No local OpenClaw state was found to back up.",
+        ? "No Operator config file was found to back up."
+        : "No local Operator state was found to back up.",
     );
   }
 

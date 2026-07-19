@@ -1,8 +1,8 @@
-# OpenClaw Arcee AI Provider
+# Operator Arcee AI Provider
 
-Official OpenClaw provider plugin for Arcee AI.
+Official Operator provider plugin for Arcee AI.
 
-Install from OpenClaw:
+Install from Operator:
 
 ```bash
 openclaw plugins install @operator/arcee-provider

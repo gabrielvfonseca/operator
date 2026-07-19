@@ -490,7 +490,7 @@ describe("runAgentTurnWithFallback: terminal failures", () => {
   it("surfaces CLI max-turn recovery context at normal verbosity", async () => {
     const recoveryText =
       "Claude CLI stopped after reaching the maximum number of turns (limit: 1). " +
-      "OpenClaw run: run-max-turns. OpenClaw session: session-1. Claude session: claude-session-1. " +
+      "Operator run: run-max-turns. Operator session: session-1. Claude session: claude-session-1. " +
       "Tool actions may already have run; verify their effects before retrying. " +
       "Retry with a higher --max-turns value or a narrower task.";
     const maxTurns = new FailoverError(recoveryText, {

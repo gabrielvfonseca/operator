@@ -3,12 +3,12 @@ import { isRecord } from "@operator/normalization-core/record-coerce";
 import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-sync.js";
 import { DEFAULT_ACCOUNT_ID } from "../routing/session-key.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
-  type OpenClawStateDatabase,
-  type OpenClawStateDatabaseOptions,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
+  type OperatorStateDatabase,
+  type OperatorStateDatabaseOptions,
 } from "../state/operator-state-db.js";
 import {
   dedupePreserveOrder,
@@ -20,7 +20,7 @@ import type { PairingChannel, PairingRequestRecord } from "./pairing-store.types
 type PairingRequest = PairingRequestRecord;
 
 type PairingDatabase = Pick<
-  OpenClawStateKyselyDatabase,
+  OperatorStateKyselyDatabase,
   "channel_pairing_allow_entries" | "channel_pairing_requests"
 >;
 
@@ -78,12 +78,12 @@ export function resolvePairingRequestAccountId(entry: PairingRequest): string {
   return resolveAllowFromAccountId(entry.meta?.accountId) || DEFAULT_ACCOUNT_ID;
 }
 
-export function sqliteOptionsForEnv(env: NodeJS.ProcessEnv): OpenClawStateDatabaseOptions {
+export function sqliteOptionsForEnv(env: NodeJS.ProcessEnv): OperatorStateDatabaseOptions {
   return { env };
 }
 
 export function readChannelPairingStateFromDatabase(
-  database: OpenClawStateDatabase,
+  database: OperatorStateDatabase,
   channel: PairingChannel,
 ): ChannelPairingState {
   const db = getNodeSqliteKysely<PairingDatabase>(database.db);
@@ -142,13 +142,13 @@ export function readChannelPairingState(
   env: NodeJS.ProcessEnv,
 ): ChannelPairingState {
   return readChannelPairingStateFromDatabase(
-    openOpenClawStateDatabase(sqliteOptionsForEnv(env)),
+    openOperatorStateDatabase(sqliteOptionsForEnv(env)),
     channel,
   );
 }
 
 export function writeChannelPairingStateToDatabase(
-  database: OpenClawStateDatabase,
+  database: OperatorStateDatabase,
   channel: PairingChannel,
   state: ChannelPairingState,
 ): void {
@@ -207,7 +207,7 @@ export function updateChannelPairingStateSnapshot<T>(
   env: NodeJS.ProcessEnv,
   update: (state: ChannelPairingState) => T,
 ): T {
-  return runOpenClawStateWriteTransaction((database) => {
+  return runOperatorStateWriteTransaction((database) => {
     const state = readChannelPairingStateFromDatabase(database, channel);
     const result = update(state);
     writeChannelPairingStateToDatabase(database, channel, state);

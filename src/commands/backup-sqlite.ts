@@ -9,8 +9,8 @@ import type {
   SnapshotRef,
   SnapshotSummary,
 } from "../snapshot/snapshot-provider.js";
-import { resolveOpenClawAgentSqlitePath } from "../state/operator-agent-db.paths.js";
-import { resolveOpenClawStateSqlitePath } from "../state/operator-state-db.paths.js";
+import { resolveOperatorAgentSqlitePath } from "../state/operator-agent-db.paths.js";
+import { resolveOperatorStateSqlitePath } from "../state/operator-state-db.paths.js";
 import { resolveUserPath, shortenHomePath } from "../utils.js";
 
 type BackupSqliteCreateOptions = {
@@ -148,13 +148,13 @@ async function resolveSnapshotDatabase(
   }
   if (options.global === true) {
     return {
-      path: await fs.realpath(resolveOpenClawStateSqlitePath()),
+      path: await fs.realpath(resolveOperatorStateSqlitePath()),
       identity: { role: "global" },
     };
   }
   const agentId = normalizeAgentId(rawAgentId);
   return {
-    path: await fs.realpath(resolveOpenClawAgentSqlitePath({ agentId })),
+    path: await fs.realpath(resolveOperatorAgentSqlitePath({ agentId })),
     identity: { role: "agent", agentId },
   };
 }

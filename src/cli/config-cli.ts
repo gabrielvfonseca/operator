@@ -27,7 +27,7 @@ import { CONFIG_PATH } from "../config/paths.js";
 import { isPluginPackagingRuntimeOutputInvalidConfigSnapshot } from "../config/recovery-policy.js";
 import { redactConfigObject } from "../config/redact-snapshot.js";
 import { readBestEffortRuntimeConfigSchema } from "../config/runtime-schema.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   coerceSecretRef,
   isValidEnvSecretRefId,
@@ -209,7 +209,7 @@ function normalizeProviderCatalogModelsForConfigMutation(
 }
 
 function normalizeModelProviderRefsForConfigMutation(
-  providers: NonNullable<OpenClawConfig["models"]>["providers"] | undefined,
+  providers: NonNullable<OperatorConfig["models"]>["providers"] | undefined,
 ): unknown {
   if (!isPlainRecord(providers)) {
     return providers;
@@ -232,7 +232,7 @@ function normalizeModelProviderRefsForConfigMutation(
   return mutated ? nextProviders : providers;
 }
 
-function normalizeConfigMutationModelRefs(cfg: OpenClawConfig): OpenClawConfig {
+function normalizeConfigMutationModelRefs(cfg: OperatorConfig): OperatorConfig {
   const defaults = cfg.agents?.defaults;
   const agentList = cfg.agents?.list;
   const providers = cfg.models?.providers;
@@ -951,7 +951,7 @@ async function loadValidConfig(runtime: RuntimeEnv = defaultRuntime) {
   if (snapshot.valid) {
     return snapshot;
   }
-  runtime.error(`OpenClaw config is invalid: ${shortenHomePath(snapshot.path)}`);
+  runtime.error(`Operator config is invalid: ${shortenHomePath(snapshot.path)}`);
   for (const line of formatConfigIssueLines(snapshot.issues, "-", { normalizeRoot: true })) {
     runtime.error(line);
   }
@@ -1032,7 +1032,7 @@ function isPluginEntryConfigPath(path: string): boolean {
   return path === "plugins.entries" || path.startsWith("plugins.entries.");
 }
 
-function configApplyHintForPaths(paths: string[], afterConfig: OpenClawConfig): string {
+function configApplyHintForPaths(paths: string[], afterConfig: OperatorConfig): string {
   if (paths.length === 0) {
     return RESTART_HINT;
   }
@@ -1055,8 +1055,8 @@ function configApplyHintForPaths(paths: string[], afterConfig: OpenClawConfig): 
 
 function configApplyHintForOperations(
   operations: ReadonlyArray<{ requestedPath?: PathSegment[] }>,
-  beforeConfig: OpenClawConfig,
-  afterConfig: OpenClawConfig,
+  beforeConfig: OperatorConfig,
+  afterConfig: OperatorConfig,
 ): string {
   const requestedPaths: string[] = [];
   for (const operation of operations) {
@@ -1079,8 +1079,8 @@ function configApplyHintForOperations(
 function expandActualChangedPathsWithRequestedDescendants(
   actualChangedPaths: string[],
   requestedPaths: string[],
-  beforeConfig: OpenClawConfig,
-  afterConfig: OpenClawConfig,
+  beforeConfig: OperatorConfig,
+  afterConfig: OperatorConfig,
 ): string[] {
   const expanded = new Set<string>();
   for (const actualPath of actualChangedPaths) {
@@ -1102,8 +1102,8 @@ function expandActualChangedPathsWithRequestedDescendants(
 
 function expandWholeValueChangePath(
   actualPath: string,
-  beforeConfig: OpenClawConfig,
-  afterConfig: OpenClawConfig,
+  beforeConfig: OperatorConfig,
+  afterConfig: OperatorConfig,
 ): string[] {
   const path = actualPath === "<root>" ? [] : actualPath.split(".");
   const before = getAtPath(beforeConfig, path);
@@ -1734,7 +1734,7 @@ function buildSingleSetOperations(params: {
 }
 
 function collectDryRunRefs(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   operations: ConfigSetOperation[];
 }): SecretRef[] {
   const refsByKey = new Map<string, SecretRef>();
@@ -1785,7 +1785,7 @@ function collectDryRunRefs(params: {
 
 async function collectDryRunResolvabilityErrors(params: {
   refs: SecretRef[];
-  config: OpenClawConfig;
+  config: OperatorConfig;
 }): Promise<ConfigSetDryRunError[]> {
   const failures: ConfigSetDryRunError[] = [];
   for (const ref of params.refs) {
@@ -1807,7 +1807,7 @@ async function collectDryRunResolvabilityErrors(params: {
 
 function collectDryRunStaticErrorsForSkippedExecRefs(params: {
   refs: SecretRef[];
-  config: OpenClawConfig;
+  config: OperatorConfig;
 }): ConfigSetDryRunError[] {
   const failures: ConfigSetDryRunError[] = [];
   for (const ref of params.refs) {
@@ -1974,9 +1974,9 @@ function formatAutoManagedMetaError(paths: readonly PathSegment[][]): string {
   const targets = paths.map((path) => toDotPath(path));
   const subject = targets.length === 1 ? targets[0] : targets.join(", ");
   return [
-    `${subject} is auto-managed by OpenClaw and cannot be edited; the value would be overwritten on the next config write.`,
+    `${subject} is auto-managed by Operator and cannot be edited; the value would be overwritten on the next config write.`,
     "",
-    "These fields are stamped on every config write to record the OpenClaw version and timestamp that produced the file.",
+    "These fields are stamped on every config write to record the Operator version and timestamp that produced the file.",
   ].join("\n");
 }
 
@@ -1988,7 +1988,7 @@ async function loadConfigMutationSchema(): Promise<JsonSchemaRecord | undefined>
   }
 }
 
-function collectDryRunSchemaErrors(params: { config: OpenClawConfig }): ConfigSetDryRunError[] {
+function collectDryRunSchemaErrors(params: { config: OperatorConfig }): ConfigSetDryRunError[] {
   const validated = validateConfigObjectRawWithPlugins(params.config);
   if (validated.ok) {
     return [];
@@ -2000,7 +2000,7 @@ function collectDryRunSchemaErrors(params: { config: OpenClawConfig }): ConfigSe
 }
 
 function collectPluginIntegrationProviderErrors(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   operations: ConfigSetOperation[];
 }): ConfigSetDryRunError[] {
   const providers = params.config.secrets?.providers ?? {};
@@ -2141,7 +2141,7 @@ async function runConfigOperations(params: {
   // This prevents runtime defaults from leaking into the written config file (issue #6070)
   const next = structuredClone(snapshot.resolved) as Record<string, unknown>;
   const currentConfigForApplyHint = normalizeConfigMutationModelRefs(
-    structuredClone(snapshot.resolved) as OpenClawConfig,
+    structuredClone(snapshot.resolved) as OperatorConfig,
   );
   const mutationSchema = await loadConfigMutationSchema();
   const unsetPaths: PathSegment[][] = [];
@@ -2175,7 +2175,7 @@ async function runConfigOperations(params: {
     root: next,
     operations,
   });
-  const nextConfig = normalizeConfigMutationModelRefs(next as OpenClawConfig);
+  const nextConfig = normalizeConfigMutationModelRefs(next as OperatorConfig);
   const normalizedExplicitSetPaths = explicitSetPaths.map(normalizeConfigMutationExplicitSetPath);
   const policyIssues = collectUnsupportedSecretRefPolicyIssues(nextConfig);
   const policyIssueLines = formatConfigIssueLines(policyIssues, "", { normalizeRoot: true }).map(
@@ -2500,7 +2500,7 @@ export async function runConfigUnset(opts: {
     // This prevents runtime defaults from leaking into the written config file (issue #6070)
     const next = structuredClone(snapshot.resolved) as Record<string, unknown>;
     const currentConfigForApplyHint = normalizeConfigMutationModelRefs(
-      structuredClone(snapshot.resolved) as OpenClawConfig,
+      structuredClone(snapshot.resolved) as OperatorConfig,
     );
     const unsetResult = unsetAtPath(next, parsedPath);
     if (!unsetResult.removed) {
@@ -2555,7 +2555,7 @@ export async function runConfigUnset(opts: {
     const hint = configApplyHintForOperations(
       [buildUnsetOperation(parsedPath)],
       currentConfigForApplyHint,
-      normalizeConfigMutationModelRefs(structuredClone(next) as OpenClawConfig),
+      normalizeConfigMutationModelRefs(structuredClone(next) as OperatorConfig),
     );
     runtime.log(info(`Removed ${opts.path}. ${hint}`));
   } catch (err) {
@@ -2626,7 +2626,7 @@ async function runConfigValidate(opts: { json?: boolean; runtime?: RuntimeEnv } 
       if (opts.json) {
         writeRuntimeJson(runtime, { valid: false, path: outputPath, issues });
       } else {
-        runtime.error(danger(`OpenClaw config is invalid: ${shortPath}`));
+        runtime.error(danger(`Operator config is invalid: ${shortPath}`));
         for (const line of formatConfigIssueLines(issues, danger("×"), { normalizeRoot: true })) {
           runtime.error(`  ${line}`);
         }

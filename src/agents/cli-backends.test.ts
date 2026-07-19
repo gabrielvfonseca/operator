@@ -2,7 +2,7 @@
 
 import { expectDefined } from "@operator/normalization-core";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import type { CliBackendConfig } from "../config/types.js";
 import type { CliBackendRuntimeArtifactPolicy } from "../plugins/cli-backend.types.js";
 import type {
@@ -112,7 +112,7 @@ function requireCliBackendConfig(...args: Parameters<typeof resolveCliBackendCon
   return resolved;
 }
 
-function createClaudeCliOverrideConfig(config: CliBackendConfig): OpenClawConfig {
+function createClaudeCliOverrideConfig(config: CliBackendConfig): OperatorConfig {
   return {
     agents: {
       defaults: {
@@ -121,7 +121,7 @@ function createClaudeCliOverrideConfig(config: CliBackendConfig): OpenClawConfig
         },
       },
     },
-  } satisfies OpenClawConfig;
+  } satisfies OperatorConfig;
 }
 
 const NORMALIZED_CLAUDE_FALLBACK_ARGS = [
@@ -513,7 +513,7 @@ describe("resolveCliBackendConfig reliability merge", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const resolved = requireCliBackendConfig("codex-cli", cfg);
 
@@ -556,7 +556,7 @@ describe("resolveCliBackendConfig reliability merge", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const resolved = requireCliBackendConfig("test-cli", cfg);
 
@@ -600,7 +600,7 @@ describe("resolveCliBackendLiveTest", () => {
 });
 
 describe("resolveCliBackendConfig claude-cli defaults", () => {
-  it("derives bypassPermissions from OpenClaw's default YOLO exec policy", () => {
+  it("derives bypassPermissions from Operator's default YOLO exec policy", () => {
     const resolved = requireCliBackendConfig("claude-cli");
 
     expect(resolved?.bundleMcp).toBe(true);
@@ -637,7 +637,7 @@ describe("resolveCliBackendConfig claude-cli defaults", () => {
     expect(resolved?.ownsNativeCompaction).toBe(true);
   });
 
-  it("keeps Claude permission mode unset when OpenClaw exec policy is not YOLO", () => {
+  it("keeps Claude permission mode unset when Operator exec policy is not YOLO", () => {
     const resolved = requireCliBackendConfig("claude-cli", {
       tools: { exec: { security: "allowlist", ask: "on-miss" } },
     });
@@ -663,7 +663,7 @@ describe("resolveCliBackendConfig claude-cli defaults", () => {
           },
         ],
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const reviewer = resolveCliBackendConfig("claude-cli", cfg, { agentId: "reviewer" });
     const builder = resolveCliBackendConfig("claude-cli", cfg, { agentId: "builder" });
@@ -723,7 +723,7 @@ describe("resolveCliBackendConfig claude-cli defaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const resolved = requireCliBackendConfig("claude-cli", cfg);
 
@@ -770,7 +770,7 @@ describe("resolveCliBackendConfig claude-cli defaults", () => {
         },
       },
       tools: { exec: { security: "allowlist", ask: "on-miss" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const resolved = requireCliBackendConfig("claude-cli", cfg);
 
@@ -799,7 +799,7 @@ describe("resolveCliBackendConfig claude-cli defaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const resolved = requireCliBackendConfig("claude-cli", cfg);
 
@@ -843,7 +843,7 @@ describe("resolveCliBackendConfig claude-cli defaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const resolved = requireCliBackendConfig("claude-cli", cfg);
 
@@ -871,7 +871,7 @@ describe("resolveCliBackendConfig claude-cli defaults", () => {
         resumeArgs: ["-p", "--setting-sources", "--resume", "{sessionId}"],
       }),
       tools: { exec: { security: "allowlist", ask: "on-miss" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const resolved = requireCliBackendConfig("claude-cli", cfg);
 
@@ -887,7 +887,7 @@ describe("resolveCliBackendConfig claude-cli defaults", () => {
         resumeArgs: ["-p", "--permission-mode=--resume", "--resume", "{sessionId}"],
       }),
       tools: { exec: { security: "allowlist", ask: "on-miss" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const resolved = requireCliBackendConfig("claude-cli", cfg);
 
@@ -916,7 +916,7 @@ describe("resolveCliBackendConfig claude-cli defaults", () => {
         },
       },
       tools: { exec: { security: "allowlist", ask: "on-miss" } },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const resolved = requireCliBackendConfig("claude-cli", cfg);
 
@@ -944,7 +944,7 @@ describe("resolveCliBackendConfig claude-cli defaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const resolved = requireCliBackendConfig("claude-cli", cfg);
 
@@ -978,7 +978,7 @@ describe("resolveCliBackendConfig claude-cli defaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const resolved = requireCliBackendConfig("claude-cli", cfg);
 
@@ -1071,7 +1071,7 @@ describe("resolveCliBackendConfig google-gemini-cli defaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const resolved = requireCliBackendConfig("google-gemini-cli", cfg);
 
@@ -1107,7 +1107,7 @@ describe("resolveCliBackendConfig google-gemini-cli defaults", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const resolved = requireCliBackendConfig("google-gemini-cli", cfg);
 
@@ -1182,7 +1182,7 @@ describe("resolveCliBackendConfig alias precedence", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const resolved = requireCliBackendConfig("kimi", cfg);
 

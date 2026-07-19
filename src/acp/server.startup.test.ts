@@ -40,7 +40,7 @@ const mockState = vi.hoisted(() => ({
   routeLogsToStderr: vi.fn(),
   startProxy: vi.fn(async (_configForTest: unknown) => null as unknown),
   stopProxy: vi.fn(async (_handle: unknown) => {}),
-  closeOpenClawStateDatabase: vi.fn(),
+  closeOperatorStateDatabase: vi.fn(),
   migrateEventLedger: vi.fn(async () => ({ importedSessions: 0, importedEvents: 0 })),
   gatewayStopDeferred: null as {
     resolve: () => void;
@@ -180,7 +180,7 @@ vi.mock("../logging/console.js", async (importOriginal) => {
 });
 
 vi.mock("../state/openclaw-state-db.js", () => ({
-  closeOpenClawStateDatabase: () => mockState.closeOpenClawStateDatabase(),
+  closeOperatorStateDatabase: () => mockState.closeOperatorStateDatabase(),
 }));
 
 vi.mock("./event-ledger.js", () => ({
@@ -328,7 +328,7 @@ describe("serveAcpGateway startup", () => {
     mockState.routeLogsToStderr.mockReset();
     mockState.startProxy.mockReset();
     mockState.stopProxy.mockReset();
-    mockState.closeOpenClawStateDatabase.mockReset();
+    mockState.closeOperatorStateDatabase.mockReset();
     mockState.migrateEventLedger.mockReset();
     mockState.migrateEventLedger.mockResolvedValue({ importedSessions: 0, importedEvents: 0 });
     mockState.gatewayStopDeferred = null;
@@ -559,14 +559,14 @@ describe("serveAcpGateway startup", () => {
 
   it("closes the shared state database on shutdown", async () => {
     const { signalHandlers, onceSpy } = captureProcessSignalHandlers();
-    expect(mockState.closeOpenClawStateDatabase).not.toHaveBeenCalled();
+    expect(mockState.closeOperatorStateDatabase).not.toHaveBeenCalled();
 
     try {
       const servePromise = serveAcpGateway({});
       await emitHelloAndWaitForAgentSideConnection();
       await stopServeWithSigint(signalHandlers, servePromise);
       expect(mockState.agentShutdown).toHaveBeenCalledOnce();
-      expect(mockState.closeOpenClawStateDatabase).toHaveBeenCalledOnce();
+      expect(mockState.closeOperatorStateDatabase).toHaveBeenCalledOnce();
     } finally {
       onceSpy.mockRestore();
     }
@@ -587,11 +587,11 @@ describe("serveAcpGateway startup", () => {
       await vi.waitFor(() => {
         expect(mockState.agentShutdown).toHaveBeenCalledOnce();
       });
-      expect(mockState.closeOpenClawStateDatabase).not.toHaveBeenCalled();
+      expect(mockState.closeOperatorStateDatabase).not.toHaveBeenCalled();
 
       resolveStop();
       await servePromise;
-      expect(mockState.closeOpenClawStateDatabase).toHaveBeenCalledOnce();
+      expect(mockState.closeOperatorStateDatabase).toHaveBeenCalledOnce();
     } finally {
       onceSpy.mockRestore();
     }
@@ -624,17 +624,17 @@ describe("serveAcpGateway startup", () => {
 
       signalHandlers.get("SIGTERM")?.();
       await Promise.resolve();
-      expect(mockState.closeOpenClawStateDatabase).not.toHaveBeenCalled();
+      expect(mockState.closeOperatorStateDatabase).not.toHaveBeenCalled();
 
       resolveMigration();
       await Promise.resolve();
-      expect(mockState.closeOpenClawStateDatabase).not.toHaveBeenCalled();
+      expect(mockState.closeOperatorStateDatabase).not.toHaveBeenCalled();
 
       resolveStop();
       await servePromise;
 
       expect(mockState.agentSideConnectionCtor).not.toHaveBeenCalled();
-      expect(mockState.closeOpenClawStateDatabase).toHaveBeenCalledOnce();
+      expect(mockState.closeOperatorStateDatabase).toHaveBeenCalledOnce();
     } finally {
       onceSpy.mockRestore();
     }
@@ -662,13 +662,13 @@ describe("serveAcpGateway startup", () => {
 
       signalHandlers.get("SIGTERM")?.();
       await Promise.resolve();
-      expect(mockState.closeOpenClawStateDatabase).not.toHaveBeenCalled();
+      expect(mockState.closeOperatorStateDatabase).not.toHaveBeenCalled();
 
       rejectMigration(new Error("sqlite busy"));
       await expect(servePromise).resolves.toBeUndefined();
 
       expect(mockState.agentSideConnectionCtor).not.toHaveBeenCalled();
-      expect(mockState.closeOpenClawStateDatabase).toHaveBeenCalledOnce();
+      expect(mockState.closeOperatorStateDatabase).toHaveBeenCalledOnce();
     } finally {
       onceSpy.mockRestore();
     }
@@ -677,19 +677,19 @@ describe("serveAcpGateway startup", () => {
   it("closes a real node:sqlite DatabaseSync handle through serveAcpGateway shutdown", async () => {
     // Use the real state-db module to open and verify a DatabaseSync handle —
     // this proves the full serveAcpGateway → shutdown → close path, not just
-    // the closeOpenClawStateDatabase helper in isolation.
+    // the closeOperatorStateDatabase helper in isolation.
     const actualStateDb = await vi.importActual<typeof import("../state/openclaw-state-db.js")>(
       "../state/openclaw-state-db.js",
     );
 
-    const realDb = actualStateDb.openOpenClawStateDatabase();
+    const realDb = actualStateDb.openOperatorStateDatabase();
     expect(realDb.db.isOpen).toBe(true);
-    expect(actualStateDb.isOpenClawStateDatabaseOpen()).toBe(true);
+    expect(actualStateDb.isOperatorStateDatabaseOpen()).toBe(true);
 
     // Wire the test mock so serveAcpGateway's shutdown handler calls the
-    // real closeOpenClawStateDatabase, which closes the handle we opened above.
-    mockState.closeOpenClawStateDatabase.mockImplementation(() => {
-      actualStateDb.closeOpenClawStateDatabase();
+    // real closeOperatorStateDatabase, which closes the handle we opened above.
+    mockState.closeOperatorStateDatabase.mockImplementation(() => {
+      actualStateDb.closeOperatorStateDatabase();
     });
 
     const { signalHandlers, onceSpy } = captureProcessSignalHandlers();
@@ -702,9 +702,9 @@ describe("serveAcpGateway startup", () => {
       // handle must be closed — proving the ACP shutdown fix works
       // end-to-end, not just in the helper function.
       expect(realDb.db.isOpen).toBe(false);
-      expect(actualStateDb.isOpenClawStateDatabaseOpen()).toBe(false);
+      expect(actualStateDb.isOperatorStateDatabaseOpen()).toBe(false);
     } finally {
-      actualStateDb.closeOpenClawStateDatabase();
+      actualStateDb.closeOperatorStateDatabase();
       onceSpy.mockRestore();
     }
   });

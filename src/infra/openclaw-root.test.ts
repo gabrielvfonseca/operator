@@ -1,4 +1,4 @@
-// Covers OpenClaw package root resolution.
+// Covers Operator package root resolution.
 import actualFs from "node:fs";
 import actualFsPromises from "node:fs/promises";
 import path from "node:path";
@@ -33,9 +33,9 @@ function setPackageRoot(root: string, name = "openclaw") {
 }
 
 function expectResolvedPackageRoot(
-  syncResolver: typeof import("./openclaw-root.js").resolveOpenClawPackageRootSync,
-  asyncResolver: typeof import("./openclaw-root.js").resolveOpenClawPackageRoot,
-  opts: Parameters<typeof import("./openclaw-root.js").resolveOpenClawPackageRootSync>[0],
+  syncResolver: typeof import("./openclaw-root.js").resolveOperatorPackageRootSync,
+  asyncResolver: typeof import("./openclaw-root.js").resolveOperatorPackageRoot,
+  opts: Parameters<typeof import("./openclaw-root.js").resolveOperatorPackageRootSync>[0],
   expected: string | null,
 ) {
   expect(syncResolver(opts)).toBe(expected);
@@ -106,12 +106,12 @@ vi.mock("./openclaw-root.fs.runtime.js", () => ({
   openClawRootFs: mockFsPromisesModule(),
 }));
 
-describe("resolveOpenClawPackageRoot", () => {
-  let resolveOpenClawPackageRoot: typeof import("./openclaw-root.js").resolveOpenClawPackageRoot;
-  let resolveOpenClawPackageRootSync: typeof import("./openclaw-root.js").resolveOpenClawPackageRootSync;
+describe("resolveOperatorPackageRoot", () => {
+  let resolveOperatorPackageRoot: typeof import("./openclaw-root.js").resolveOperatorPackageRoot;
+  let resolveOperatorPackageRootSync: typeof import("./openclaw-root.js").resolveOperatorPackageRootSync;
 
   beforeAll(async () => {
-    ({ resolveOpenClawPackageRoot, resolveOpenClawPackageRootSync } =
+    ({ resolveOperatorPackageRoot, resolveOperatorPackageRootSync } =
       await import("./openclaw-root.js"));
   });
 
@@ -266,8 +266,8 @@ describe("resolveOpenClawPackageRoot", () => {
   ])("$name", async ({ setup }) => {
     const { opts, expected } = setup();
     await expectResolvedPackageRoot(
-      resolveOpenClawPackageRootSync,
-      resolveOpenClawPackageRoot,
+      resolveOperatorPackageRootSync,
+      resolveOperatorPackageRoot,
       opts,
       expected,
     );

@@ -4,13 +4,13 @@
  */
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import { resolveOpenClawPluginToolInputs } from "./openclaw-tools.plugin-context.js";
+import { resolveOperatorPluginToolInputs } from "./openclaw-tools.plugin-context.js";
 import { applyPluginToolDeliveryDefaults } from "./plugin-tool-delivery-defaults.js";
 import type { AnyAgentTool } from "./tools/common.js";
 
 describe("openclaw plugin tool context", () => {
   it("forwards trusted requester sender identity", () => {
-    const result = resolveOpenClawPluginToolInputs({
+    const result = resolveOperatorPluginToolInputs({
       options: {
         config: {} as never,
         requesterSenderId: "trusted-sender",
@@ -21,7 +21,7 @@ describe("openclaw plugin tool context", () => {
   });
 
   it("forwards the trusted owner bit", () => {
-    const result = resolveOpenClawPluginToolInputs({
+    const result = resolveOperatorPluginToolInputs({
       options: {
         config: {} as never,
         senderIsOwner: true,
@@ -32,7 +32,7 @@ describe("openclaw plugin tool context", () => {
   });
 
   it("forwards the trusted native conversation id", () => {
-    const result = resolveOpenClawPluginToolInputs({
+    const result = resolveOperatorPluginToolInputs({
       options: {
         config: {} as never,
         nativeChannelId: "oc_native_chat",
@@ -43,10 +43,10 @@ describe("openclaw plugin tool context", () => {
   });
 
   it("defaults missing and unknown conversation-read origins to delegated", () => {
-    const missing = resolveOpenClawPluginToolInputs({
+    const missing = resolveOperatorPluginToolInputs({
       options: { config: {} as never },
     });
-    const unknown = resolveOpenClawPluginToolInputs({
+    const unknown = resolveOperatorPluginToolInputs({
       options: {
         config: {} as never,
         conversationReadOrigin: "forged" as never,
@@ -58,7 +58,7 @@ describe("openclaw plugin tool context", () => {
   });
 
   it("preserves a server-owned direct-operator origin", () => {
-    const result = resolveOpenClawPluginToolInputs({
+    const result = resolveOperatorPluginToolInputs({
       options: {
         config: {} as never,
         conversationReadOrigin: "direct-operator",
@@ -69,7 +69,7 @@ describe("openclaw plugin tool context", () => {
   });
 
   it("forwards fs policy for plugin tool sandbox enforcement", () => {
-    const result = resolveOpenClawPluginToolInputs({
+    const result = resolveOperatorPluginToolInputs({
       options: {
         config: {} as never,
         fsPolicy: { workspaceOnly: true },
@@ -80,7 +80,7 @@ describe("openclaw plugin tool context", () => {
   });
 
   it("forwards ephemeral sessionId", () => {
-    const result = resolveOpenClawPluginToolInputs({
+    const result = resolveOperatorPluginToolInputs({
       options: {
         config: {} as never,
         agentSessionKey: "agent:main:telegram:direct:12345",
@@ -93,7 +93,7 @@ describe("openclaw plugin tool context", () => {
   });
 
   it("forwards runtime-owned active model metadata", () => {
-    const result = resolveOpenClawPluginToolInputs({
+    const result = resolveOperatorPluginToolInputs({
       options: {
         config: {} as never,
         modelProvider: " local-provider ",
@@ -109,7 +109,7 @@ describe("openclaw plugin tool context", () => {
   });
 
   it("does not duplicate provider-qualified active model refs", () => {
-    const result = resolveOpenClawPluginToolInputs({
+    const result = resolveOperatorPluginToolInputs({
       options: {
         config: {} as never,
         modelProvider: "openrouter",
@@ -126,7 +126,7 @@ describe("openclaw plugin tool context", () => {
 
   it("infers the default agent workspace when workspaceDir is omitted", () => {
     const workspaceDir = path.join(process.cwd(), "tmp-main-workspace");
-    const result = resolveOpenClawPluginToolInputs({
+    const result = resolveOperatorPluginToolInputs({
       options: {
         config: {
           agents: {
@@ -159,7 +159,7 @@ describe("openclaw plugin tool context", () => {
         ],
       },
     } as never;
-    const result = resolveOpenClawPluginToolInputs({
+    const result = resolveOperatorPluginToolInputs({
       options: {
         config,
         agentSessionKey: "agent:support:main",
@@ -182,7 +182,7 @@ describe("openclaw plugin tool context", () => {
         ],
       },
     } as never;
-    const result = resolveOpenClawPluginToolInputs({
+    const result = resolveOperatorPluginToolInputs({
       options: {
         config,
         agentSessionKey: "explicit:user-session:active-memory:abc123",
@@ -196,7 +196,7 @@ describe("openclaw plugin tool context", () => {
   });
 
   it("forwards browser session wiring", () => {
-    const result = resolveOpenClawPluginToolInputs({
+    const result = resolveOperatorPluginToolInputs({
       options: {
         config: {} as never,
         sandboxBrowserBridgeUrl: "http://127.0.0.1:9999",
@@ -211,7 +211,7 @@ describe("openclaw plugin tool context", () => {
   });
 
   it("forwards gateway subagent binding", () => {
-    const result = resolveOpenClawPluginToolInputs({
+    const result = resolveOperatorPluginToolInputs({
       options: {
         config: {} as never,
         allowGatewaySubagentBinding: true,
@@ -222,7 +222,7 @@ describe("openclaw plugin tool context", () => {
   });
 
   it("forwards ambient deliveryContext", () => {
-    const result = resolveOpenClawPluginToolInputs({
+    const result = resolveOperatorPluginToolInputs({
       options: {
         config: {} as never,
         agentChannel: "slack",
@@ -241,7 +241,7 @@ describe("openclaw plugin tool context", () => {
   });
 
   it("uses the current conversation target when agentTo is unavailable", () => {
-    const result = resolveOpenClawPluginToolInputs({
+    const result = resolveOperatorPluginToolInputs({
       options: {
         config: {} as never,
         agentChannel: "discord",
@@ -258,7 +258,7 @@ describe("openclaw plugin tool context", () => {
   });
 
   it("keeps an explicit agent target ahead of the current conversation target", () => {
-    const result = resolveOpenClawPluginToolInputs({
+    const result = resolveOperatorPluginToolInputs({
       options: {
         config: {} as never,
         agentChannel: "discord",
@@ -272,7 +272,7 @@ describe("openclaw plugin tool context", () => {
   });
 
   it("keeps the routable conversation target ahead of the native channel id", () => {
-    const result = resolveOpenClawPluginToolInputs({
+    const result = resolveOperatorPluginToolInputs({
       options: {
         config: {} as never,
         agentChannel: "slack",

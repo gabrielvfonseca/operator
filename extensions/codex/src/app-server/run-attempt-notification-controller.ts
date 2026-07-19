@@ -43,7 +43,7 @@ export function createCodexAttemptNotificationController(
     activeCompletionBlockerItemIds,
     activeFinalizationHookRunIds,
     finalizationHookBatchStatuses,
-    pendingOpenClawDynamicToolCompletionIds,
+    pendingOperatorDynamicToolCompletionIds,
     postToolRawAssistantCompletionIdleTimeoutMs,
   } = turnRuntime;
   const {
@@ -80,7 +80,7 @@ export function createCodexAttemptNotificationController(
       activeTurnItemIds,
       activeCompletionBlockerItemIds,
       activeAppServerTurnRequests: state.activeAppServerTurnRequests,
-      pendingOpenClawDynamicToolCompletionIds,
+      pendingOperatorDynamicToolCompletionIds,
       turnCrossedToolHandoff: state.turnCrossedToolHandoff,
       postToolRawAssistantCompletionIdleTimeoutMs,
       onScheduleTerminalDynamicToolReleaseCheck: scheduleTerminalDynamicToolReleaseCheck,
@@ -130,7 +130,7 @@ export function createCodexAttemptNotificationController(
           state.activeAppServerTurnRequests === 0 &&
           activeTurnItemIds.size === 0 &&
           activeCompletionBlockerItemIds.size === 0 &&
-          pendingOpenClawDynamicToolCompletionIds.size === 0 &&
+          pendingOperatorDynamicToolCompletionIds.size === 0 &&
           projector.hasLatestTerminalAssistantCandidateText()
         ) {
           turnWatches.armAssistantCompletionIdleWatch(describeNotificationActivity(notification));
@@ -173,7 +173,7 @@ export function createCodexAttemptNotificationController(
           state.activeAppServerTurnRequests === 0 &&
           activeTurnItemIds.size === 0 &&
           activeCompletionBlockerItemIds.size === 0 &&
-          pendingOpenClawDynamicToolCompletionIds.size === 0 &&
+          pendingOperatorDynamicToolCompletionIds.size === 0 &&
           projector.hasLatestTerminalAssistantCandidateText()
         ) {
           turnWatches.armAssistantCompletionIdleWatch({

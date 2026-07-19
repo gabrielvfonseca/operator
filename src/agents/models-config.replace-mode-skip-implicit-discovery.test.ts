@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.js";
+import type { OperatorConfig } from "../config/types.js";
 import { resolveProvidersForModelsJsonWithDeps } from "./models-config.plan.test-support.js";
 import type { ProviderConfig } from "./models-config.providers.secrets.js";
 
@@ -44,7 +44,7 @@ function createImplicitProvider(): ProviderConfig {
 describe("models-config plan: replace mode skips implicit discovery", () => {
   it("skips implicit discovery when models.mode === 'replace'", async () => {
     const explicitProvider = createExplicitProvider();
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       models: {
         mode: "replace",
         providers: { explicit: explicitProvider },
@@ -71,7 +71,7 @@ describe("models-config plan: replace mode skips implicit discovery", () => {
 
   it("still resolves implicit when models.mode === 'merge'", async () => {
     const explicitProvider = createExplicitProvider();
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       models: {
         mode: "merge",
         providers: { explicit: explicitProvider },
@@ -97,7 +97,7 @@ describe("models-config plan: replace mode skips implicit discovery", () => {
 
   it("still resolves implicit when models.mode is undefined (defaults to merge)", async () => {
     const explicitProvider = createExplicitProvider();
-    const cfg: OpenClawConfig = {
+    const cfg: OperatorConfig = {
       models: {
         providers: { explicit: explicitProvider },
       },

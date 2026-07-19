@@ -2,7 +2,7 @@ import type { ActiveMediaModel } from "../../packages/media-understanding-common
 // Public media-understanding runtime API types for file-based image/audio/video
 // helpers and direct structured extraction.
 import type { AuthProfileStore } from "../agents/auth-profiles/types.js";
-import type { OpenClawConfig } from "../config/types.js";
+import type { OperatorConfig } from "../config/types.js";
 import type {
   MediaUnderstandingDecision,
   MediaUnderstandingOutput,
@@ -14,7 +14,7 @@ export type RunMediaUnderstandingFileParams = {
   capability: "image" | "audio" | "video";
   filePath: string;
   mediaUrl?: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentDir?: string;
   workspaceDir?: string;
   mime?: string;
@@ -41,7 +41,7 @@ export type RunMediaUnderstandingFileResult = {
 export type DescribeImageFileParams = {
   filePath: string;
   mediaUrl?: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentDir?: string;
   workspaceDir?: string;
   mime?: string;
@@ -54,7 +54,7 @@ export type DescribeImageFileParams = {
 export type DescribeImageFileWithModelParams = {
   filePath: string;
   mediaUrl?: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentDir?: string;
   workspaceDir?: string;
   mime?: string;
@@ -94,7 +94,7 @@ export type ExtractStructuredWithModelParams = {
   schemaName?: string;
   jsonSchema?: unknown;
   jsonMode?: boolean;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentDir?: string;
   provider: string;
   model: string;
@@ -110,7 +110,7 @@ type ExtractStructuredWithModelResult = Awaited<
 
 export type DescribeVideoFileParams = {
   filePath: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentDir?: string;
   workspaceDir?: string;
   mime?: string;
@@ -119,7 +119,7 @@ export type DescribeVideoFileParams = {
 
 export type TranscribeAudioFileParams = {
   filePath: string;
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentDir?: string;
   workspaceDir?: string;
   mime?: string;

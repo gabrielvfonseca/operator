@@ -97,7 +97,7 @@ function compareCodexPluginVersions(left: ParsedSemver, right: ParsedSemver): nu
       ? right.prerelease[0]
       : null;
   if (sameCore && (leftCorrection !== null || rightCorrection !== null)) {
-    // OpenClaw numeric suffixes are correction releases after stable, unlike SemVer prereleases.
+    // Operator numeric suffixes are correction releases after stable, unlike SemVer prereleases.
     const leftRank = leftCorrection !== null ? 2 : left.prerelease.length === 0 ? 1 : 0;
     const rightRank = rightCorrection !== null ? 2 : right.prerelease.length === 0 ? 1 : 0;
     if (leftRank !== rightRank) {
@@ -111,11 +111,11 @@ function compareCodexPluginVersions(left: ParsedSemver, right: ParsedSemver): nu
 }
 
 function formatPinnedOldRemediation(pluginVersion: string, hostVersion: string) {
-  return `Codex plugin version ${pluginVersion} is older than OpenClaw ${hostVersion}. Run "openclaw plugins update codex" or unpin codex, then rerun "openclaw doctor --fix".`;
+  return `Codex plugin version ${pluginVersion} is older than Operator ${hostVersion}. Run "openclaw plugins update codex" or unpin codex, then rerun "openclaw doctor --fix".`;
 }
 
 function formatPinnedNewRemediation(pluginVersion: string, hostVersion: string) {
-  return `Codex plugin version ${pluginVersion} requires a newer OpenClaw host than ${hostVersion}. Upgrade OpenClaw or install a codex plugin version pinned to ${hostVersion}.`;
+  return `Codex plugin version ${pluginVersion} requires a newer Operator host than ${hostVersion}. Upgrade Operator or install a codex plugin version pinned to ${hostVersion}.`;
 }
 
 function collectStaleLegacyRuntimePins(config: unknown): string[] {

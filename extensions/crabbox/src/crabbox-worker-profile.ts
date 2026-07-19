@@ -161,7 +161,7 @@ export function resolveCrabboxBinary(params: {
   return "crabbox";
 }
 
-export function resolveOpenClawRoot(pluginRoot: string | undefined): string {
+export function resolveOperatorRoot(pluginRoot: string | undefined): string {
   if (!pluginRoot) {
     return process.cwd();
   }

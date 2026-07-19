@@ -1,5 +1,5 @@
 // Googlechat tests cover secret contract plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   applyResolvedAssignments,
   createResolverContext,
@@ -26,8 +26,8 @@ describe("googlechat secret contract", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
-    const resolvedConfig: OpenClawConfig = structuredClone(sourceConfig);
+    } satisfies OperatorConfig;
+    const resolvedConfig: OperatorConfig = structuredClone(sourceConfig);
     const context = createResolverContext({
       sourceConfig,
       env: {

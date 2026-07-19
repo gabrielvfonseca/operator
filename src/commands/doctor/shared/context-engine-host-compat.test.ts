@@ -1,6 +1,6 @@
 // Context engine host compatibility tests cover doctor warnings for host/context mismatches.
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../../config/types.openclaw.js";
 import {
   getContextEngineRegistration,
   registerContextEngine,
@@ -22,7 +22,7 @@ vi.mock("../../../agents/cli-backends.js", () => ({
 
 vi.mock("../../../agents/harness/policy.js", () => ({
   resolveAgentHarnessPolicy: vi.fn(
-    (params: { config: OpenClawConfig; modelId: string; provider: string }) => ({
+    (params: { config: OperatorConfig; modelId: string; provider: string }) => ({
       runtime:
         params.config.agents?.defaults?.models?.[`${params.provider}/${params.modelId}`]
           ?.agentRuntime?.id ?? "openclaw",
@@ -79,7 +79,7 @@ function registerEngine(requiredCapabilities: ContextEngineHostCapability[]): st
   return id;
 }
 
-function configWithEngine(engineId: string, cfg: OpenClawConfig = {}): OpenClawConfig {
+function configWithEngine(engineId: string, cfg: OperatorConfig = {}): OperatorConfig {
   return {
     ...cfg,
     plugins: {
@@ -109,7 +109,7 @@ describe("doctor context-engine host compatibility", () => {
     });
   });
 
-  it("evaluates native Codex and OpenClaw agent-run hosts", async () => {
+  it("evaluates native Codex and Operator agent-run hosts", async () => {
     const engineId = registerEngine(["thread-bootstrap-projection"]);
     const warnings = await collectContextEngineHostCompatibilityWarnings({
       cfg: configWithEngine(engineId, {
@@ -125,7 +125,7 @@ describe("doctor context-engine host compatibility", () => {
       doctorFixCommand: "openclaw doctor --fix",
     });
 
-    expect(warnings.join("\n")).toContain("OpenClaw embedded runner");
+    expect(warnings.join("\n")).toContain("Operator embedded runner");
     expect(warnings.join("\n")).toContain("Some configured runtimes support");
     expect(warnings.join("\n")).not.toContain("Codex app-server harness (");
   });

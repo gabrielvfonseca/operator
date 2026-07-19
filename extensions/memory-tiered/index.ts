@@ -1,12 +1,12 @@
 // Memory Tiered plugin entry. Replaces the SQLite/Markdown memory-core slot
 // with the real 3-tier orchestrator: working (Redis), semantic (Qdrant),
 // and procedural (Neo4j + Temporal), exposed via agent tools.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { resolveLivePluginConfigObject } from "openclaw/plugin-sdk/plugin-config-runtime";
 import {
   definePluginEntry,
-  type OpenClawPluginApi,
-  type OpenClawPluginToolContext,
+  type OperatorPluginApi,
+  type OperatorPluginToolContext,
 } from "./api.js";
 import { parseMemoryTieredConfig, type MemoryTieredPluginConfig } from "./src/config.js";
 import { createEmbedder } from "./src/embedding.js";
@@ -19,15 +19,15 @@ export default definePluginEntry({
   id: "memory-tiered",
   name: "Memory (Tiered)",
   description: "Real tiered memory: working, semantic, and procedural stores via agent tools.",
-  register(api: OpenClawPluginApi) {
-    const readCurrentConfig = (): OpenClawConfig | undefined => {
+  register(api: OperatorPluginApi) {
+    const readCurrentConfig = (): OperatorConfig | undefined => {
       try {
         return (
-          (api.runtime.config?.current?.() as OpenClawConfig | undefined) ??
-          (api.config as OpenClawConfig | undefined)
+          (api.runtime.config?.current?.() as OperatorConfig | undefined) ??
+          (api.config as OperatorConfig | undefined)
         );
       } catch {
-        return api.config as OpenClawConfig | undefined;
+        return api.config as OperatorConfig | undefined;
       }
     };
 
@@ -35,7 +35,7 @@ export default definePluginEntry({
     const refreshLiveConfig = () => {
       const live = resolveLivePluginConfigObject(
         api.runtime.config?.current
-          ? () => api.runtime.config.current() as OpenClawConfig
+          ? () => api.runtime.config.current() as OperatorConfig
           : undefined,
         "memory-tiered",
         api.pluginConfig as Record<string, unknown>,
@@ -45,7 +45,7 @@ export default definePluginEntry({
 
     const embedder = createEmbedder(pluginConfig, readCurrentConfig);
 
-    const buildContext = (ctx: OpenClawPluginToolContext): MemoryToolContext => {
+    const buildContext = (ctx: OperatorPluginToolContext): MemoryToolContext => {
       refreshLiveConfig();
       const agentId = ctx.agentId ?? "main";
       return {

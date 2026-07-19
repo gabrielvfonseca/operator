@@ -1,6 +1,6 @@
-# SMS OpenClaw channel
+# SMS Operator channel
 
-Official OpenClaw channel plugin for SMS.
+Official Operator channel plugin for SMS.
 
 ## Install
 
@@ -10,4 +10,4 @@ openclaw plugins install @operator/sms
 
 ## Docs
 
-See `docs/channels/sms.md` in the OpenClaw repository, or the published docs at `https://docs.openclaw.ai/channels/sms`.
+See `docs/channels/sms.md` in the Operator repository, or the published docs at `https://docs.openclaw.ai/channels/sms`.

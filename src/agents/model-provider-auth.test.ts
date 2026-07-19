@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import type { AuthProfileStore } from "./auth-profiles.js";
 import type {
   ModelAuthAvailabilityEvaluation,
@@ -32,7 +32,7 @@ const modelAuthMocks = vi.hoisted(() => ({
     vi.fn<
       (params: {
         provider: string;
-        cfg?: OpenClawConfig;
+        cfg?: OperatorConfig;
         workspaceDir?: string;
         runtimeLookup?: unknown;
       }) => boolean
@@ -110,7 +110,7 @@ const {
 } = await import("./model-provider-auth.js");
 
 async function publishCurrentProviderAuthStateSnapshot(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   options?: Parameters<typeof buildCurrentProviderAuthStateSnapshot>[1],
 ): Promise<void> {
   publishProviderAuthWarmSnapshot(await buildCurrentProviderAuthStateSnapshot(cfg, options));
@@ -129,7 +129,7 @@ describe("prepared provider auth state", () => {
   it("reuses prepared runtime auth lookup data while warming providers", async () => {
     // Warming should build one runtime lookup and carry it across provider
     // checks instead of rediscovering auth for every catalog entry.
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
     modelCatalogMocks.loadModelCatalog.mockResolvedValue([
       { id: "gpt", name: "gpt", provider: "openai" },
       { id: "claude", name: "claude", provider: "anthropic" },
@@ -147,7 +147,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("uses the read-only model catalog while warming provider auth", async () => {
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
     modelCatalogMocks.loadModelCatalog.mockResolvedValue([
       { id: "gpt", name: "gpt", provider: "openai" },
     ]);
@@ -162,7 +162,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("disables persisted auth-store sync for read-only warm snapshots", async () => {
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
     const externalCli = { mode: "scoped" };
     modelCatalogMocks.loadModelCatalog.mockResolvedValue([
       { id: "gpt", name: "gpt", provider: "openai" },
@@ -191,7 +191,7 @@ describe("prepared provider auth state", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     modelCatalogMocks.loadModelCatalog.mockResolvedValue([
       { id: "plugin-model", name: "Plugin Model", provider: "plugin-provider" },
     ]);
@@ -218,7 +218,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("hasAuthForModelProvider returns the prepared answer after warm and falls through to compute after clear", async () => {
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
     modelCatalogMocks.loadModelCatalog.mockResolvedValue([
       { id: "gpt", name: "gpt", provider: "openai" },
       { id: "claude", name: "claude", provider: "anthropic" },
@@ -245,7 +245,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("hasAuthForModelProvider falls through to compute when the caller narrows the auth-discovery scope", async () => {
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
     modelCatalogMocks.loadModelCatalog.mockResolvedValue([
       { id: "gpt", name: "gpt", provider: "openai" },
     ]);
@@ -287,7 +287,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("keeps provider-only OpenAI checks on the legacy auth path", async () => {
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
     modelAuthMocks.hasRuntimeAvailableProviderAuth.mockReturnValue(false);
 
     const hasAuth = createProviderAuthChecker({
@@ -316,7 +316,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("preserves explicit prepared runtime auth while keeping disabled discovery isolated", async () => {
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
     const hasAuth = createProviderAuthChecker({
       cfg,
       allowPluginSyntheticAuth: false,
@@ -343,7 +343,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("keeps tuple-aware null-artifact checks indeterminate with broad auth enabled", async () => {
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
     const hasAuth = createProviderAuthChecker({ cfg });
 
     await expect(hasAuth("openai", { modelId: "gpt-5.5" })).resolves.toBe(false);
@@ -366,7 +366,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("caches OpenAI auth by the complete route tuple", async () => {
-    const hasAuth = createProviderAuthChecker({ cfg: {} as OpenClawConfig });
+    const hasAuth = createProviderAuthChecker({ cfg: {} as OperatorConfig });
     const platformRef = {
       modelId: "gpt-5.5",
       api: "openai-responses",
@@ -391,7 +391,7 @@ describe("prepared provider auth state", () => {
       evidence: "profile" as const,
     };
     modelAuthAvailabilityMocks.evaluateModelAuth.mockReturnValue(evaluation);
-    const hasAuth = createProviderAuthChecker({ cfg: {} as OpenClawConfig });
+    const hasAuth = createProviderAuthChecker({ cfg: {} as OperatorConfig });
     const ref = {
       modelId: "gpt-5.5",
       api: "openai-responses",
@@ -411,7 +411,7 @@ describe("prepared provider auth state", () => {
       evidence: "aws-sdk" as const,
     };
     modelAuthAvailabilityMocks.evaluateModelAuth.mockReturnValue(evaluation);
-    const hasAuth = createProviderAuthChecker({ cfg: {} as OpenClawConfig });
+    const hasAuth = createProviderAuthChecker({ cfg: {} as OperatorConfig });
     const ref = {
       modelId: "us.anthropic.claude-sonnet-4-5",
       api: "bedrock-converse-stream",
@@ -435,7 +435,7 @@ describe("prepared provider auth state", () => {
     };
     modelAuthAvailabilityMocks.evaluateModelAuth.mockReturnValue(evaluation);
     modelAuthMocks.hasRuntimeAvailableProviderAuth.mockReturnValue(true);
-    const hasAuth = createProviderAuthChecker({ cfg: {} as OpenClawConfig });
+    const hasAuth = createProviderAuthChecker({ cfg: {} as OperatorConfig });
     const ref = { modelId: "claude-sonnet-4-6", api: "anthropic-messages" };
 
     await expect(hasAuth.evaluateModelAuth("anthropic", ref)).resolves.toBe(evaluation);
@@ -445,7 +445,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("uses an explicit agent auth store directory for provider auth checks", async () => {
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
     modelAuthMocks.hasRuntimeAvailableProviderAuth.mockReturnValue(false);
     authProfilesMocks.listProfilesForProvider.mockReturnValueOnce([{} as never]);
 
@@ -467,7 +467,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("hasAuthForModelProvider uses the prepared answer for equivalent runtime config clones", async () => {
-    const cfg = { gateway: { port: 18789 } } as OpenClawConfig;
+    const cfg = { gateway: { port: 18789 } } as OperatorConfig;
     const clonedCfg = structuredClone(cfg);
     modelCatalogMocks.loadModelCatalog.mockResolvedValue([
       { id: "gpt", name: "gpt", provider: "openai" },
@@ -484,7 +484,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("hasAuthForModelProvider falls through to compute when the caller passes a non-default workspaceDir", async () => {
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
     modelCatalogMocks.loadModelCatalog.mockResolvedValue([
       { id: "gpt", name: "gpt", provider: "openai" },
     ]);
@@ -517,7 +517,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("returns an empty warm snapshot when cancelled before publication", async () => {
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
     let cancelled = false;
     modelCatalogMocks.loadModelCatalog.mockResolvedValue([
       { id: "gpt", name: "gpt", provider: "openai" },
@@ -542,7 +542,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("stops sweeping providers when a warm is cancelled mid-flight", async () => {
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
     let cancelled = false;
     modelCatalogMocks.loadModelCatalog.mockResolvedValue([
       { id: "gpt", name: "gpt", provider: "openai" },
@@ -567,7 +567,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("publishes provider auth state produced by the off-main-thread warm runner", async () => {
-    const cfg = { gateway: { port: 18789 } } as OpenClawConfig;
+    const cfg = { gateway: { port: 18789 } } as OperatorConfig;
     modelCatalogMocks.loadModelCatalog.mockResolvedValue([
       { id: "gpt", name: "gpt", provider: "openai" },
     ]);
@@ -595,7 +595,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("passes runtime auth profile snapshots to the off-main-thread warm runner", async () => {
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
     const store = {
       version: 1,
       profiles: {
@@ -648,7 +648,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("keeps off-main-thread warm partial when plugin synthetic auth lookup is incomplete", async () => {
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
     authProfilesMocks.getRuntimeAuthProfileStoreSnapshot.mockReturnValue(undefined);
     modelAuthMocks.createRuntimeProviderAuthLookup.mockReturnValueOnce({
       envApiKey: {
@@ -714,7 +714,7 @@ describe("prepared provider auth state", () => {
 
     try {
       const warmPromise = warmCurrentProviderAuthStateOffMainThread(
-        { markerPath } as unknown as OpenClawConfig,
+        { markerPath } as unknown as OperatorConfig,
         {
           isCancelled: () => cancelled,
           timeoutMs: 5_000,
@@ -735,7 +735,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("does not publish an off-main-thread warm after the prepared auth state is cleared", async () => {
-    const cfg = { gateway: { port: 18789 } } as OpenClawConfig;
+    const cfg = { gateway: { port: 18789 } } as OperatorConfig;
     modelCatalogMocks.loadModelCatalog.mockResolvedValue([
       { id: "gpt", name: "gpt", provider: "openai" },
     ]);

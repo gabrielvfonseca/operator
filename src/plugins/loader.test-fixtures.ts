@@ -5,14 +5,14 @@ import path from "node:path";
 import { resetDiagnosticEventsForTest } from "../infra/diagnostic-events.js";
 import { withEnv } from "../test-utils/env.js";
 import { pluginLoaderCacheInstances } from "./loader-cache-instances.js";
-import { clearActivatedPluginRuntimeState, loadOpenClawPlugins } from "./loader.js";
+import { clearActivatedPluginRuntimeState, loadOperatorPlugins } from "./loader.js";
 import { resetPluginRuntimeStateForTest } from "./runtime.js";
 
-export { loadOpenClawPlugins };
+export { loadOperatorPlugins };
 
 export type TempPlugin = { dir: string; file: string; id: string };
-export type PluginLoadConfig = NonNullable<Parameters<typeof loadOpenClawPlugins>[0]>["config"];
-export type PluginRegistry = ReturnType<typeof loadOpenClawPlugins>;
+export type PluginLoadConfig = NonNullable<Parameters<typeof loadOperatorPlugins>[0]>["config"];
+export type PluginRegistry = ReturnType<typeof loadOperatorPlugins>;
 
 function chmodSafeDir(dir: string) {
   if (process.platform === "win32") {
@@ -124,7 +124,7 @@ export function loadBundleFixture(params: {
   const bundleRoot = path.join(workspaceDir, ".operator", "extensions", params.pluginId);
   params.build(bundleRoot);
   return withEnv({ OPERATOR_STATE_DIR: stateDir, ...params.env }, () =>
-    loadOpenClawPlugins({
+    loadOperatorPlugins({
       workspaceDir,
       onlyPluginIds: params.onlyPluginIds ?? [params.pluginId],
       config: {

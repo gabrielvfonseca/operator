@@ -585,7 +585,7 @@ describe("handleToolExecutionEnd cron mutation tracking", () => {
     ["exec", "bunx openclaw@latest cron add --at +1h --message 'follow up'"],
     ["exec", "/usr/local/bin/openclaw cron add --at +1h --message 'follow up'"],
     ["bash", "corepack pnpm exec openclaw cron add --at +1h --message 'follow up'"],
-    ["exec", "env OPENCLAW_PROFILE=test openclaw cron add --at +1h --message 'follow up'"],
+    ["exec", "env OPERATOR_PROFILE=test openclaw cron add --at +1h --message 'follow up'"],
     ["exec", "openclaw cron create --at +1h --message 'follow up'"],
     ["exec", "openclaw --profile work cron create --at +1h --message 'follow up'"],
     ["exec", "openclaw --dev cron add --at +1h --message 'follow up'"],
@@ -2108,7 +2108,7 @@ describe("handleToolExecutionEnd timeout metadata", () => {
         type: "tool_execution_start",
         toolName: "exec",
         toolCallId: "tool-exec-repo-raw-command",
-        args: { command: "git status", workdir: "/Users/agent/Projects/OpenClaw" },
+        args: { command: "git status", workdir: "/Users/agent/Projects/Operator" },
       } as never,
     );
 

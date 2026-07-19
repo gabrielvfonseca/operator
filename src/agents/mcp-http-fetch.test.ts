@@ -14,7 +14,7 @@ import {
 } from "./mcp-http-fetch.js";
 
 const testGlobal = globalThis as Record<string, unknown>;
-const TEST_UNDICI_RUNTIME_DEPS_KEY = "__OPENCLAW_TEST_UNDICI_RUNTIME_DEPS__";
+const TEST_UNDICI_RUNTIME_DEPS_KEY = "__OPERATOR_TEST_UNDICI_RUNTIME_DEPS__";
 const { lookupMock } = vi.hoisted(() => ({
   lookupMock: vi.fn(),
 }));

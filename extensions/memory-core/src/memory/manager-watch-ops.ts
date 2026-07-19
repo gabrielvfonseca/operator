@@ -236,7 +236,7 @@ export abstract class MemoryManagerWatchOps extends MemoryManagerSyncBase {
       this.memoryWatchPressureWarning,
       count,
       unit,
-      "Large memory folders or extraPaths can make OpenClaw run out of file watchers or open files.",
+      "Large memory folders or extraPaths can make Operator run out of file watchers or open files.",
       "Remove large extraPaths, or set memorySearch.sync.watch to false and refresh memory manually or with sync.intervalMinutes.",
       (message) => log.warn(message),
     );

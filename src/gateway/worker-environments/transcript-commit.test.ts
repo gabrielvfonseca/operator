@@ -14,11 +14,11 @@ import {
   resolveSessionTranscriptRuntimeTarget,
   upsertSessionEntry,
 } from "../../config/sessions/session-accessor.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.openclaw.js";
 import { onSessionTranscriptUpdate } from "../../sessions/transcript-events.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
 } from "../../state/openclaw-state-db.js";
 import type { WorkerConnectionIdentity } from "./connection-identity.js";
 import {
@@ -144,7 +144,7 @@ describe("worker transcript commit application", () => {
   let sessionsDir: string;
   let storePath: string;
   let sessionFile: string;
-  let cfg: OpenClawConfig;
+  let cfg: OperatorConfig;
   let committer: WorkerTranscriptCommitter;
   let ledgerStore: WorkerTranscriptCommitStore;
   let unsubscribe: (() => void) | undefined;
@@ -175,8 +175,8 @@ describe("worker transcript commit application", () => {
         storePath,
       })
     ).sessionFile;
-    const database = openOpenClawStateDatabase({
-      env: { OPENCLAW_STATE_DIR: path.join(root, "state") },
+    const database = openOperatorStateDatabase({
+      env: { OPERATOR_STATE_DIR: path.join(root, "state") },
     });
     ledgerStore = createWorkerTranscriptCommitStore({ database });
     committer = createWorkerTranscriptCommitter({
@@ -187,7 +187,7 @@ describe("worker transcript commit application", () => {
 
   afterEach(async () => {
     unsubscribe?.();
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     await fs.rm(root, { recursive: true, force: true });
   });
 

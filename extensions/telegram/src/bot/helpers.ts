@@ -6,7 +6,7 @@ import {
   type CommandAuthorization,
 } from "openclaw/plugin-sdk/command-auth-native";
 import type {
-  OpenClawConfig,
+  OperatorConfig,
   DmPolicy,
   TelegramDirectConfig,
   TelegramGroupConfig,
@@ -198,7 +198,7 @@ export function withResolvedTelegramForumFlag<T extends { chat: object }>(
 }
 
 export async function resolveTelegramGroupAllowFromContext(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   chatId: string | number;
   accountId?: string;
   dmPolicy?: DmPolicy;
@@ -216,7 +216,7 @@ export async function resolveTelegramGroupAllowFromContext(params: {
   resolveTelegramGroupConfig: (
     chatId: string | number,
     messageThreadId: number | undefined,
-    cfg: OpenClawConfig,
+    cfg: OperatorConfig,
   ) => {
     groupConfig?: TelegramGroupConfig | TelegramDirectConfig;
     topicConfig?: TelegramTopicConfig;
@@ -286,7 +286,7 @@ export async function resolveTelegramGroupAllowFromContext(params: {
 }
 
 async function isTelegramDmAllowedByConfiguredAllowFrom(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   allowFrom?: Array<string | number>;
   groupAllowOverride?: Array<string | number>;
   accountId: string;
@@ -323,7 +323,7 @@ export class TelegramPairingStoreReadError extends Error {
 
 // Could add bounded retries to absorb short FD-pressure spikes; deferred. See #85555.
 async function loadTelegramPairingStoreIfNeeded(params: {
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   allowFrom?: Array<string | number>;
   groupAllowOverride?: Array<string | number>;
   accountId: string;
@@ -516,7 +516,7 @@ export function buildTelegramGroupFrom(chatId: number | string, messageThreadId?
   return `telegram:group:${buildTelegramGroupPeerId(chatId, messageThreadId)}`;
 }
 
-export function isTelegramCommandsAllowFromConfigured(cfg: OpenClawConfig): boolean {
+export function isTelegramCommandsAllowFromConfigured(cfg: OperatorConfig): boolean {
   const commandsAllowFrom = cfg.commands?.allowFrom;
   return (
     commandsAllowFrom != null &&
@@ -526,7 +526,7 @@ export function isTelegramCommandsAllowFromConfigured(cfg: OpenClawConfig): bool
 }
 
 export function resolveTelegramCommandAuthorization(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   accountId: string;
   chatId: number;
   isGroup: boolean;

@@ -13,9 +13,9 @@ import {
   OPERATOR_DELIVERY_MIRROR_MODEL,
   OPERATOR_TRANSCRIPT_ARTIFACT_API,
   OPERATOR_TRANSCRIPT_ARTIFACT_PROVIDER,
-  isTranscriptOnlyOpenClawAssistantModel,
+  isTranscriptOnlyOperatorAssistantModel,
 } from "../../shared/transcript-only-operator-assistant.js";
-import type { OpenClawConfig } from "../types.operator.js";
+import type { OperatorConfig } from "../types.operator.js";
 import {
   resolveDefaultSessionStorePath,
   resolveSessionFilePath,
@@ -119,7 +119,7 @@ export { resolveSessionTranscriptFile } from "./transcript-file-resolve.js";
 
 function parseAssistantTranscriptText(
   line: string,
-  options?: { excludeTranscriptOnlyOpenClawAssistant?: boolean },
+  options?: { excludeTranscriptOnlyOperatorAssistant?: boolean },
 ): AssistantTranscriptText | undefined {
   const parsed = JSON.parse(line) as {
     id?: unknown;
@@ -132,8 +132,8 @@ function parseAssistantTranscriptText(
     return undefined;
   }
   if (
-    options?.excludeTranscriptOnlyOpenClawAssistant &&
-    isTranscriptOnlyOpenClawAssistantMessage(message)
+    options?.excludeTranscriptOnlyOperatorAssistant &&
+    isTranscriptOnlyOperatorAssistantMessage(message)
   ) {
     return undefined;
   }
@@ -150,11 +150,11 @@ function parseAssistantTranscriptText(
   };
 }
 
-function isTranscriptOnlyOpenClawAssistantMessage(message: {
+function isTranscriptOnlyOperatorAssistantMessage(message: {
   provider?: unknown;
   model?: unknown;
 }): boolean {
-  return isTranscriptOnlyOpenClawAssistantModel(message.provider, message.model);
+  return isTranscriptOnlyOperatorAssistantModel(message.provider, message.model);
 }
 
 type SessionConversationTranscriptTarget = {
@@ -187,7 +187,7 @@ function parseRecentConversationText(
   ) {
     return undefined;
   }
-  if (message.role === "assistant" && isTranscriptOnlyOpenClawAssistantMessage(message)) {
+  if (message.role === "assistant" && isTranscriptOnlyOperatorAssistantMessage(message)) {
     return undefined;
   }
   const upstreamUserText =
@@ -348,7 +348,7 @@ export async function readLatestAssistantTextFromSessionTranscript(
   for await (const line of streamSessionTranscriptLinesReverse(sessionFile)) {
     try {
       const assistantText = parseAssistantTranscriptText(line, {
-        excludeTranscriptOnlyOpenClawAssistant: true,
+        excludeTranscriptOnlyOperatorAssistant: true,
       });
       if (assistantText) {
         return assistantText;
@@ -362,7 +362,7 @@ export async function readLatestAssistantTextFromSessionTranscript(
 
 export async function readTailAssistantTextFromSessionTranscript(
   sessionFile: string | undefined,
-  options?: { excludeTranscriptOnlyOpenClawAssistant?: boolean },
+  options?: { excludeTranscriptOnlyOperatorAssistant?: boolean },
 ): Promise<TailAssistantTranscriptText | undefined> {
   const sqliteMarker = parseSqliteSessionFileMarker(sessionFile);
   if (sqliteMarker) {
@@ -380,15 +380,15 @@ export async function readTailAssistantTextFromSessionTranscript(
         return undefined;
       }
       const assistantText = parseAssistantTranscriptText(JSON.stringify(event), {
-        excludeTranscriptOnlyOpenClawAssistant:
-          options?.excludeTranscriptOnlyOpenClawAssistant === true,
+        excludeTranscriptOnlyOperatorAssistant:
+          options?.excludeTranscriptOnlyOperatorAssistant === true,
       });
       if (assistantText) {
         return assistantText;
       }
       if (
-        options?.excludeTranscriptOnlyOpenClawAssistant !== true ||
-        !isTranscriptOnlyOpenClawAssistantMessage(parsed.message)
+        options?.excludeTranscriptOnlyOperatorAssistant !== true ||
+        !isTranscriptOnlyOperatorAssistantMessage(parsed.message)
       ) {
         return undefined;
       }
@@ -416,8 +416,8 @@ export async function readTailAssistantTextFromSessionTranscript(
         return assistantText;
       }
       if (
-        options?.excludeTranscriptOnlyOpenClawAssistant === true &&
-        isTranscriptOnlyOpenClawAssistantMessage(parsed.message)
+        options?.excludeTranscriptOnlyOperatorAssistant === true &&
+        isTranscriptOnlyOperatorAssistantMessage(parsed.message)
       ) {
         continue;
       }
@@ -442,7 +442,7 @@ export async function appendAssistantMessageToSessionTranscript(params: {
   /** Optional override for store path (mostly for tests). */
   storePath?: string;
   updateMode?: SessionTranscriptUpdateMode;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   beforeMessageWrite?: AssistantBeforeMessageWrite;
 }): Promise<SessionTranscriptAppendResult> {
   const sessionKey = params.sessionKey.trim();
@@ -508,7 +508,7 @@ export async function appendExactAssistantMessageToSessionTranscript(params: {
   idempotencyKey?: string;
   storePath?: string;
   updateMode?: SessionTranscriptUpdateMode;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   beforeMessageWrite?: AssistantBeforeMessageWrite;
 }): Promise<SessionTranscriptAppendResult> {
   const sessionKey = params.sessionKey.trim();
@@ -786,7 +786,7 @@ function extractAssistantMessageText(message: SessionTranscriptAssistantMessage)
 async function findLatestEquivalentAssistantMessageId(
   target: SessionTranscriptTurnWriteContext,
   message: SessionTranscriptAssistantMessage,
-  config?: OpenClawConfig,
+  config?: OperatorConfig,
 ): Promise<string | undefined> {
   const expectedText = extractAssistantMessageText(
     redactTranscriptMessage(message, config) as unknown as SessionTranscriptAssistantMessage,

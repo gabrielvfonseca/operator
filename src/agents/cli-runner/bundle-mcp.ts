@@ -7,7 +7,7 @@ import os from "node:os";
 import path from "node:path";
 import { applyMergePatch } from "../../config/merge-patch.js";
 import type { CliBackendConfig } from "../../config/types.js";
-import type { OpenClawConfig } from "../../config/types.operator.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { formatErrorMessage } from "../../infra/errors.js";
 import { tryReadJson } from "../../infra/json-files.js";
 import {
@@ -60,7 +60,7 @@ function sortJsonValue(value: unknown): unknown {
   );
 }
 
-function normalizeOpenClawLoopbackUrl(value: string): string {
+function normalizeOperatorLoopbackUrl(value: string): string {
   const match =
     /^(http:\/\/(?:127\.0\.0\.1|localhost|\[::1\])):\d+(\/mcp)$/.exec(value.trim()) ?? undefined;
   if (!match) {
@@ -88,7 +88,7 @@ function canonicalizeSystemAgentTurnStateForResume(
 }
 
 function canonicalizeBundleMcpConfigForResume(config: BundleMcpConfig): BundleMcpConfig {
-  // The OpenClaw loopback MCP port changes across runs. Replace it before
+  // The Operator loopback MCP port changes across runs. Replace it before
   // hashing so resume compatibility tracks config shape, not ephemeral ports.
   const canonicalServers = Object.fromEntries(
     Object.entries(config.mcpServers).map(([name, server]) => {
@@ -100,7 +100,7 @@ function canonicalizeBundleMcpConfigForResume(config: BundleMcpConfig): BundleMc
         name,
         sortJsonValue({
           ...canonicalServer,
-          url: normalizeOpenClawLoopbackUrl(canonicalServer.url),
+          url: normalizeOperatorLoopbackUrl(canonicalServer.url),
         }),
       ];
     }),
@@ -112,7 +112,7 @@ function canonicalizeBundleMcpConfigForResume(config: BundleMcpConfig): BundleMc
 
 const OPERATOR_MCP_ENV_TEMPLATE_PATTERN = /\$\{(OPERATOR_MCP_[A-Z0-9_]+)\}/g;
 
-function resolveOpenClawMcpEnvTemplates(value: unknown, env?: Record<string, string>): unknown {
+function resolveOperatorMcpEnvTemplates(value: unknown, env?: Record<string, string>): unknown {
   if (!env) {
     return value;
   }
@@ -123,13 +123,13 @@ function resolveOpenClawMcpEnvTemplates(value: unknown, env?: Record<string, str
     });
   }
   if (Array.isArray(value)) {
-    return value.map((entry) => resolveOpenClawMcpEnvTemplates(entry, env));
+    return value.map((entry) => resolveOperatorMcpEnvTemplates(entry, env));
   }
   if (!isRecord(value)) {
     return value;
   }
   return Object.fromEntries(
-    Object.entries(value).map(([key, entry]) => [key, resolveOpenClawMcpEnvTemplates(entry, env)]),
+    Object.entries(value).map(([key, entry]) => [key, resolveOperatorMcpEnvTemplates(entry, env)]),
   );
 }
 
@@ -177,7 +177,7 @@ async function prepareModeSpecificBundleMcpConfig(params: {
 
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-cli-mcp-"));
   const mcpConfigPath = path.join(tempDir, "mcp.json");
-  const runtimeConfig = resolveOpenClawMcpEnvTemplates(
+  const runtimeConfig = resolveOperatorMcpEnvTemplates(
     params.mergedConfig,
     params.env,
   ) as BundleMcpConfig;
@@ -207,12 +207,12 @@ export async function prepareCliBundleMcpConfig(params: {
   mode?: CliBundleMcpMode;
   backend: CliBackendConfig;
   workspaceDir: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   agentDir?: string;
   additionalConfig?: BundleMcpConfig;
   /**
    * Serve exactly these servers, skipping user/plugin/additional merges.
-   * Ring-zero OpenClaw runs use this so the CLI harness sees only the
+   * Ring-zero Operator runs use this so the CLI harness sees only the
    * operator MCP server instead of the normal operator tool surface.
    */
   exclusiveConfig?: BundleMcpConfig;

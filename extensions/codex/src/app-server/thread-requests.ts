@@ -10,7 +10,7 @@ import {
 } from "./dynamic-tool-profile.js";
 import { mergeCodexThreadConfigs } from "./plugin-thread-config.js";
 import {
-  CODEX_OPENCLAW_DIRECT_DYNAMIC_TOOL_NAMESPACE,
+  CODEX_OPERATOR_DIRECT_DYNAMIC_TOOL_NAMESPACE,
   isJsonObject,
   type CodexConfigReadResponse,
   type CodexConfigRequirementsReadResponse,
@@ -160,7 +160,7 @@ export function buildThreadStartParams(
       ? { serviceTier: options.appServer.serviceTier }
       : {}),
     personality: CODEX_NATIVE_PERSONALITY_NONE,
-    serviceName: "OpenClaw",
+    serviceName: "Operator",
     ...(ringZeroActive ? { baseInstructions: CODEX_RING_ZERO_BASE_INSTRUCTIONS } : {}),
     config: buildCodexRuntimeThreadConfigForRun(params, options.config, {
       nativeCodeModeEnabled: options.nativeCodeModeEnabled,
@@ -314,7 +314,7 @@ function resolveDirectOnlyToolNamespaces(
   return (dynamicTools ?? [])
     .filter(
       (tool) =>
-        tool.type === "namespace" && tool.name === CODEX_OPENCLAW_DIRECT_DYNAMIC_TOOL_NAMESPACE,
+        tool.type === "namespace" && tool.name === CODEX_OPERATOR_DIRECT_DYNAMIC_TOOL_NAMESPACE,
     )
     .map((tool) => tool.name);
 }
@@ -387,7 +387,7 @@ export function buildCodexRingZeroThreadConfigPatch(
   if (!hostSystemAgentActive || !isSystemAgentOnlyCodexDynamicToolAllowlist(params.toolsAllow)) {
     return undefined;
   }
-  // Narrow OpenClaw allowlists already send environments: [] and disable
+  // Narrow Operator allowlists already send environments: [] and disable
   // native code mode. Also remove every configurable Codex-owned tool source;
   // upstream still adds its inert update_plan utility unconditionally.
   const mcpServers = Object.fromEntries(

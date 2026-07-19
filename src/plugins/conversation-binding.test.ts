@@ -6,11 +6,11 @@ import type {
   SessionBindingAdapter,
   SessionBindingRecord,
 } from "../infra/outbound/session-binding-service.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
-  runOpenClawStateWriteTransaction,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
 } from "../state/openclaw-state-db.js";
 import { resetPluginConversationBindingStateForTest } from "./conversation-binding.test-fixtures.js";
 import { createEmptyPluginRegistry } from "./registry-empty.js";
@@ -19,9 +19,9 @@ import { cleanupTrackedTempDirs, makeTrackedTempDir } from "./test-helpers/fs-fi
 
 const tempDirs: string[] = [];
 const tempRoot = makeTrackedTempDir("openclaw-plugin-binding", tempDirs);
-const previousStateDir = process.env.OPENCLAW_STATE_DIR;
+const previousStateDir = process.env.OPERATOR_STATE_DIR;
 
-type PluginBindingApprovalsDatabase = Pick<OpenClawStateKyselyDatabase, "plugin_binding_approvals">;
+type PluginBindingApprovalsDatabase = Pick<OperatorStateKyselyDatabase, "plugin_binding_approvals">;
 
 const sessionBindingState = vi.hoisted(() => {
   const records = new Map<string, SessionBindingRecord>();
@@ -159,11 +159,11 @@ function createAdapter(channel: string, accountId: string): SessionBindingAdapte
 }
 
 afterAll(() => {
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorStateDatabaseForTest();
   if (previousStateDir == null) {
-    delete process.env.OPENCLAW_STATE_DIR;
+    delete process.env.OPERATOR_STATE_DIR;
   } else {
-    process.env.OPENCLAW_STATE_DIR = previousStateDir;
+    process.env.OPERATOR_STATE_DIR = previousStateDir;
   }
   cleanupTrackedTempDirs(tempDirs);
 });
@@ -416,7 +416,7 @@ async function expectResolutionDoesNotWait(params: {
 }
 
 function clearPluginBindingApprovalRows(): void {
-  runOpenClawStateWriteTransaction(({ db }) => {
+  runOperatorStateWriteTransaction(({ db }) => {
     const approvalsDb = getNodeSqliteKysely<PluginBindingApprovalsDatabase>(db);
     executeSqliteQuerySync(db, approvalsDb.deleteFrom("plugin_binding_approvals"));
   });
@@ -428,7 +428,7 @@ function readPluginBindingApprovalRows(): Array<{
   plugin_id: string;
   plugin_root: string;
 }> {
-  const { db } = openOpenClawStateDatabase();
+  const { db } = openOperatorStateDatabase();
   const approvalsDb = getNodeSqliteKysely<PluginBindingApprovalsDatabase>(db);
   return executeSqliteQuerySync(
     db,
@@ -446,7 +446,7 @@ function insertPluginBindingApprovalRow(params: {
   accountId: string;
   pluginId: string;
 }): void {
-  runOpenClawStateWriteTransaction(({ db }) => {
+  runOperatorStateWriteTransaction(({ db }) => {
     const approvalsDb = getNodeSqliteKysely<PluginBindingApprovalsDatabase>(db);
     executeSqliteQuerySync(
       db,
@@ -464,7 +464,7 @@ function insertPluginBindingApprovalRow(params: {
 
 describe("plugin conversation binding approvals", () => {
   beforeEach(() => {
-    process.env.OPENCLAW_STATE_DIR = tempRoot;
+    process.env.OPERATOR_STATE_DIR = tempRoot;
     clearPluginBindingApprovalRows();
     sessionBindingState.reset();
     resetPluginConversationBindingStateForTest();

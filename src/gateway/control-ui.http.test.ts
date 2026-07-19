@@ -11,13 +11,13 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { useAutoCleanupTempDirTracker } from "../../test/helpers/temp-dir.js";
 import { normalizeAssistantIdentity } from "../../ui/src/lib/assistant-identity.ts";
 import { resolveStateDir } from "../config/paths.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.openclaw.js";
 import {
   approveDevicePairing,
   ensureDeviceToken,
   requestDevicePairing,
 } from "../infra/device-pairing.js";
-import { resolvePreferredOpenClawTmpDir } from "../infra/tmp-openclaw-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../infra/tmp-openclaw-dir.js";
 import { AVATAR_MAX_DATA_URL_CHARS } from "../shared/avatar-limits.js";
 import { AVATAR_MAX_BYTES } from "../shared/avatar-policy.js";
 import { withEnvAsync } from "../test-utils/env.js";
@@ -47,7 +47,7 @@ const REAL_PNG_DATA_URL = `data:image/png;base64,${REAL_PNG.toString("base64")}`
 const avatarTempDirs = useAutoCleanupTempDirTracker(afterEach);
 
 describe("handleControlUiHttpRequest", () => {
-  function createAvatarConfig(workspace: string, avatar: string): OpenClawConfig {
+  function createAvatarConfig(workspace: string, avatar: string): OperatorConfig {
     return {
       agents: {
         defaults: { workspace },
@@ -143,7 +143,7 @@ describe("handleControlUiHttpRequest", () => {
     basePath?: string;
     auth?: ResolvedGatewayAuth;
     headers?: IncomingMessage["headers"];
-    config?: OpenClawConfig;
+    config?: OperatorConfig;
   }) {
     const { res, end } = makeMockHttpResponse();
     const url = params.basePath
@@ -170,7 +170,7 @@ describe("handleControlUiHttpRequest", () => {
   async function runAvatarRequest(params: {
     url: string;
     method: "GET" | "HEAD" | "POST";
-    config: OpenClawConfig;
+    config: OperatorConfig;
     basePath?: string;
     auth?: ResolvedGatewayAuth;
     headers?: IncomingMessage["headers"];
@@ -263,7 +263,7 @@ describe("handleControlUiHttpRequest", () => {
     agentId?: string;
     meta?: boolean;
     headers?: IncomingMessage["headers"];
-    config?: OpenClawConfig;
+    config?: OperatorConfig;
   }) {
     return await runAvatarRequest({
       url: `/avatar/${params.agentId ?? "main"}${params.meta ? "?meta=1" : ""}`,
@@ -311,7 +311,7 @@ describe("handleControlUiHttpRequest", () => {
     prefix: string;
     fn: (tmpRoot: string) => Promise<T>;
   }) {
-    const tmpRoot = await fs.mkdtemp(path.join(resolvePreferredOpenClawTmpDir(), params.prefix));
+    const tmpRoot = await fs.mkdtemp(path.join(resolvePreferredOperatorTmpDir(), params.prefix));
     try {
       return await params.fn(tmpRoot);
     } finally {
@@ -343,7 +343,7 @@ describe("handleControlUiHttpRequest", () => {
   }) {
     const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-ui-device-token-"));
     try {
-      return await withEnvAsync({ OPENCLAW_HOME: tempHome }, async () => {
+      return await withEnvAsync({ OPERATOR_HOME: tempHome }, async () => {
         const deviceId = "control-ui-device";
         const requested = await requestDevicePairing({
           deviceId,

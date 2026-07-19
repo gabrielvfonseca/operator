@@ -19,15 +19,15 @@ import {
 import { createSuiteTempRootTracker } from "./test-helpers/fs-fixtures.js";
 
 const runCommandWithTimeoutMock = vi.fn();
-const resolveOpenClawPackageRootSyncMock = vi.fn();
+const resolveOperatorPackageRootSyncMock = vi.fn();
 
 vi.mock("../process/exec.js", () => ({
   runCommandWithTimeout: (...args: unknown[]) => runCommandWithTimeoutMock(...args),
 }));
 
 vi.mock("../infra/openclaw-root.js", () => ({
-  resolveOpenClawPackageRootSync: (...args: unknown[]) =>
-    resolveOpenClawPackageRootSyncMock(...args),
+  resolveOperatorPackageRootSync: (...args: unknown[]) =>
+    resolveOperatorPackageRootSyncMock(...args),
 }));
 
 vi.resetModules();
@@ -312,7 +312,7 @@ type MockNpmPackage = {
   installedIntegrity?: string;
   omitInstalledVersion?: boolean;
   omitInstalledIntegrity?: boolean;
-  materializesRootOpenClaw?: boolean;
+  materializesRootOperator?: boolean;
   skipLockfileEntry?: boolean;
   packArchivePath?: string;
   packTarballName?: string;
@@ -339,7 +339,7 @@ function writeNpmRootPackageLock(params: {
         ? {}
         : { integrity: pkg.installedIntegrity ?? pkg.integrity ?? "sha512-plugin-test" }),
     };
-    if (pkg.materializesRootOpenClaw) {
+    if (pkg.materializesRootOperator) {
       lockPackages["node_modules/openclaw"] = {
         peer: true,
         version: "2026.5.3",
@@ -392,7 +392,7 @@ function readTextFileTree(dir: string, rootDir = dir): Record<string, string> {
   );
 }
 
-function prunePluginLocalOpenClawPeerLinks(npmRoot: string) {
+function prunePluginLocalOperatorPeerLinks(npmRoot: string) {
   const nodeModulesDir = path.join(npmRoot, "node_modules");
   if (!fs.existsSync(nodeModulesDir)) {
     return;
@@ -513,7 +513,7 @@ function mockNpmViewAndInstallMany(packages: MockNpmPackage[]) {
           dependencies?: Record<string, string>;
         };
         const installedPackages: MockNpmPackage[] = [];
-        prunePluginLocalOpenClawPeerLinks(npmRoot);
+        prunePluginLocalOperatorPeerLinks(npmRoot);
         for (const packageName of Object.keys(manifest.dependencies ?? {})) {
           if (packageName === "openclaw") {
             const openclawRoot = path.join(npmRoot, "node_modules", "openclaw");
@@ -546,7 +546,7 @@ function mockNpmViewAndInstallMany(packages: MockNpmPackage[]) {
             npmRoot,
             version: pkg.installedVersion ?? pkg.version,
           });
-          if (pkg.materializesRootOpenClaw) {
+          if (pkg.materializesRootOperator) {
             const openclawRoot = path.join(npmRoot, "node_modules", "openclaw");
             fs.mkdirSync(openclawRoot, { recursive: true });
             fs.writeFileSync(
@@ -613,28 +613,28 @@ afterAll(() => {
 
 beforeEach(() => {
   runCommandWithTimeoutMock.mockReset();
-  resolveOpenClawPackageRootSyncMock.mockReset();
+  resolveOperatorPackageRootSyncMock.mockReset();
   const hostRoot = suiteTempRootTracker.makeTempDir();
   fs.writeFileSync(
     path.join(hostRoot, "package.json"),
     `${JSON.stringify({ name: "openclaw", version: "0.0.0-test" }, null, 2)}\n`,
     "utf8",
   );
-  resolveOpenClawPackageRootSyncMock.mockReturnValue(hostRoot);
+  resolveOperatorPackageRootSyncMock.mockReturnValue(hostRoot);
   vi.unstubAllEnvs();
   process.env.NPM_CONFIG_GLOBALCONFIG = npmGlobalConfigPath;
 });
 
 beforeAll(async () => {
   runCommandWithTimeoutMock.mockReset();
-  resolveOpenClawPackageRootSyncMock.mockReset();
+  resolveOperatorPackageRootSyncMock.mockReset();
   const hostRoot = suiteTempRootTracker.makeTempDir();
   fs.writeFileSync(
     path.join(hostRoot, "package.json"),
     `${JSON.stringify({ name: "openclaw", version: "0.0.0-test" }, null, 2)}\n`,
     "utf8",
   );
-  resolveOpenClawPackageRootSyncMock.mockReturnValue(hostRoot);
+  resolveOperatorPackageRootSyncMock.mockReturnValue(hostRoot);
   process.env.NPM_CONFIG_GLOBALCONFIG = npmGlobalConfigPath;
 
   const stateDir = suiteTempRootTracker.makeTempDir();
@@ -692,14 +692,14 @@ beforeAll(async () => {
 
 beforeAll(async () => {
   runCommandWithTimeoutMock.mockReset();
-  resolveOpenClawPackageRootSyncMock.mockReset();
+  resolveOperatorPackageRootSyncMock.mockReset();
   const hostRoot = suiteTempRootTracker.makeTempDir();
   fs.writeFileSync(
     path.join(hostRoot, "package.json"),
     `${JSON.stringify({ name: "openclaw", version: "0.0.0-test" }, null, 2)}\n`,
     "utf8",
   );
-  resolveOpenClawPackageRootSyncMock.mockReturnValue(hostRoot);
+  resolveOperatorPackageRootSyncMock.mockReturnValue(hostRoot);
   process.env.NPM_CONFIG_GLOBALCONFIG = npmGlobalConfigPath;
 
   const stateDir = suiteTempRootTracker.makeTempDir();
@@ -2084,7 +2084,7 @@ describe("installPluginFromNpmSpec", () => {
     const npmRoot = path.join(stateDir, "npm");
     const warnings: string[] = [];
 
-    resolveOpenClawPackageRootSyncMock.mockReturnValue(null);
+    resolveOperatorPackageRootSyncMock.mockReturnValue(null);
     mockNpmViewAndInstall({
       spec: "@operator/codex@2026.5.7",
       packageName: "@operator/codex",
@@ -2120,7 +2120,7 @@ describe("installPluginFromNpmSpec", () => {
   it("rejects exact npm plugins whose package compatibility requires a newer host", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
-    vi.stubEnv("OPENCLAW_COMPATIBILITY_HOST_VERSION", "2026.5.10-beta.1");
+    vi.stubEnv("OPERATOR_COMPATIBILITY_HOST_VERSION", "2026.5.10-beta.1");
 
     mockNpmViewAndInstall({
       spec: "@operator/whatsapp@2026.5.27",
@@ -2161,7 +2161,7 @@ describe("installPluginFromNpmSpec", () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
     const warnings: string[] = [];
-    vi.stubEnv("OPENCLAW_COMPATIBILITY_HOST_VERSION", "2026.5.10-beta.1");
+    vi.stubEnv("OPERATOR_COMPATIBILITY_HOST_VERSION", "2026.5.10-beta.1");
 
     mockNpmViewAndInstallMany([
       {
@@ -2245,7 +2245,7 @@ describe("installPluginFromNpmSpec", () => {
         compat: { pluginApi: ">=2026.5.10-beta.1" },
       },
     });
-    vi.stubEnv("OPENCLAW_COMPATIBILITY_HOST_VERSION", "2026.5.10-beta.1");
+    vi.stubEnv("OPERATOR_COMPATIBILITY_HOST_VERSION", "2026.5.10-beta.1");
     mockNpmViewAndInstallMany([
       {
         spec: "@operator/whatsapp",
@@ -2309,7 +2309,7 @@ describe("installPluginFromNpmSpec", () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
     const warnings: string[] = [];
-    vi.stubEnv("OPENCLAW_COMPATIBILITY_HOST_VERSION", "2026.5.28-beta.3");
+    vi.stubEnv("OPERATOR_COMPATIBILITY_HOST_VERSION", "2026.5.28-beta.3");
 
     mockNpmViewAndInstallMany([
       {
@@ -2367,7 +2367,7 @@ describe("installPluginFromNpmSpec", () => {
   it("does not resolve explicit prerelease tags to stable compatible versions", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
-    vi.stubEnv("OPENCLAW_COMPATIBILITY_HOST_VERSION", "2026.5.28-beta.3");
+    vi.stubEnv("OPERATOR_COMPATIBILITY_HOST_VERSION", "2026.5.28-beta.3");
 
     mockNpmViewAndInstallMany([
       {
@@ -2405,7 +2405,7 @@ describe("installPluginFromNpmSpec", () => {
   it("does not resolve explicit prerelease tags to a different prerelease channel", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
-    vi.stubEnv("OPENCLAW_COMPATIBILITY_HOST_VERSION", "2026.5.28-beta.3");
+    vi.stubEnv("OPERATOR_COMPATIBILITY_HOST_VERSION", "2026.5.28-beta.3");
 
     mockNpmViewAndInstallMany([
       {
@@ -2453,7 +2453,7 @@ describe("installPluginFromNpmSpec", () => {
         pluginId: "required-peer-plugin",
         npmRoot,
         peerDependencies: { openclaw: "^2026.0.0" },
-        materializesRootOpenClaw: true,
+        materializesRootOperator: true,
       });
 
       const result = await installPluginFromNpmSpec({
@@ -2620,7 +2620,7 @@ describe("installPluginFromNpmSpec", () => {
       "utf-8",
     );
 
-    resolveOpenClawPackageRootSyncMock.mockReturnValue(hostPackageRoot);
+    resolveOperatorPackageRootSyncMock.mockReturnValue(hostPackageRoot);
     mockNpmViewAndInstall({
       spec: "@xdarkicex/openclaw-memory-libravdb@1.4.69",
       packageName: "@xdarkicex/openclaw-memory-libravdb",
@@ -2814,7 +2814,7 @@ describe("installPluginFromNpmSpec", () => {
       `${JSON.stringify({ name: "openclaw", version: "0.0.0-test" }, null, 2)}\n`,
       "utf8",
     );
-    resolveOpenClawPackageRootSyncMock.mockReturnValue(hostRoot);
+    resolveOperatorPackageRootSyncMock.mockReturnValue(hostRoot);
     const installedDir = writeInstalledNpmPlugin({
       npmRoot: npmProjectRoot,
       packageName: "@operator/codex",
@@ -2954,7 +2954,7 @@ describe("installPluginFromNpmSpec", () => {
       ].join("\n"),
       "utf8",
     );
-    resolveOpenClawPackageRootSyncMock.mockReturnValue(hostRoot);
+    resolveOperatorPackageRootSyncMock.mockReturnValue(hostRoot);
     mockNpmViewAndInstall({
       spec: "@operator/voice-call@0.0.1",
       packageName: "@operator/voice-call",
@@ -3228,7 +3228,7 @@ describe("installPluginFromNpmSpec", () => {
       expect(fs.existsSync(resolveTestPluginPackageDir(npmRoot, spec))).toBe(true);
       expect(
         warnings.some((warning) =>
-          warning.includes("allowed because it is an official OpenClaw package"),
+          warning.includes("allowed because it is an official Operator package"),
         ),
       ).toBe(false);
     },

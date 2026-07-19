@@ -13,4 +13,4 @@ export {
   type WebhookInFlightLimiter,
 } from "openclaw/plugin-sdk/webhook-ingress";
 export { resolveConfiguredSecretInputString } from "openclaw/plugin-sdk/secret-input-runtime";
-export type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+export type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";

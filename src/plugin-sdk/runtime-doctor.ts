@@ -31,10 +31,10 @@ export type {
 } from "../plugin-state/plugin-state-store.js";
 export { createPluginStateSyncKeyedStore } from "../plugin-state/plugin-state-store.js";
 export {
-  detectOpenClawStateDatabaseSchemaMigrations,
-  repairOpenClawStateDatabaseSchema,
+  detectOperatorStateDatabaseSchemaMigrations,
+  repairOperatorStateDatabaseSchema,
 } from "../state/operator-state-db.js";
-export type { OpenClawStateDatabaseSchemaMigration } from "../state/operator-state-db.js";
+export type { OperatorStateDatabaseSchemaMigration } from "../state/operator-state-db.js";
 export { removePluginFromConfig } from "../plugins/uninstall.js";
 export type {
   PluginDoctorStateMigration,

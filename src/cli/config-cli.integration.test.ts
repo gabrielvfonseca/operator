@@ -72,7 +72,7 @@ async function withExecDryRunConfigHarness(
   const configPath = path.join(tempDir, "openclaw.json");
   const batchPath = path.join(tempDir, "batch.json");
   const markerPath = path.join(tempDir, "marker.txt");
-  const envSnapshot = captureEnv(["OPENCLAW_CONFIG_PATH", "OPENCLAW_TEST_FAST"]);
+  const envSnapshot = captureEnv(["OPERATOR_CONFIG_PATH", "OPERATOR_TEST_FAST"]);
   try {
     fs.writeFileSync(
       configPath,
@@ -91,8 +91,8 @@ async function withExecDryRunConfigHarness(
       "utf8",
     );
 
-    setTestEnvValue("OPENCLAW_TEST_FAST", "1");
-    setTestEnvValue("OPENCLAW_CONFIG_PATH", configPath);
+    setTestEnvValue("OPERATOR_TEST_FAST", "1");
+    setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
     clearConfigCache();
     clearRuntimeConfigSnapshot();
 
@@ -114,11 +114,11 @@ describe("config cli integration", () => {
   beforeAll(async () => {
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-config-cli-warmup-"));
     const configPath = path.join(tempDir, "openclaw.json");
-    const envSnapshot = captureEnv(["OPENCLAW_CONFIG_PATH", "OPENCLAW_TEST_FAST"]);
+    const envSnapshot = captureEnv(["OPERATOR_CONFIG_PATH", "OPERATOR_TEST_FAST"]);
     try {
       fs.writeFileSync(configPath, `${JSON.stringify({ gateway: { port: 18789 } }, null, 2)}\n`);
-      setTestEnvValue("OPENCLAW_TEST_FAST", "1");
-      setTestEnvValue("OPENCLAW_CONFIG_PATH", configPath);
+      setTestEnvValue("OPERATOR_TEST_FAST", "1");
+      setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
       clearConfigCache();
       clearRuntimeConfigSnapshot();
       await runConfigSet({
@@ -138,7 +138,7 @@ describe("config cli integration", () => {
   it("accepts plugin hook conversation-access policy via config set", async () => {
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-config-cli-plugin-hooks-"));
     const configPath = path.join(tempDir, "openclaw.json");
-    const envSnapshot = captureEnv(["OPENCLAW_CONFIG_PATH", "OPENCLAW_TEST_FAST"]);
+    const envSnapshot = captureEnv(["OPERATOR_CONFIG_PATH", "OPERATOR_TEST_FAST"]);
     try {
       fs.writeFileSync(
         configPath,
@@ -152,8 +152,8 @@ describe("config cli integration", () => {
         "utf8",
       );
 
-      setTestEnvValue("OPENCLAW_TEST_FAST", "1");
-      setTestEnvValue("OPENCLAW_CONFIG_PATH", configPath);
+      setTestEnvValue("OPERATOR_TEST_FAST", "1");
+      setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
       clearConfigCache();
       clearRuntimeConfigSnapshot();
 
@@ -183,8 +183,8 @@ describe("config cli integration", () => {
     const configPath = path.join(tempDir, "openclaw.json");
     const batchPath = path.join(tempDir, "batch.json");
     const envSnapshot = captureEnv([
-      "OPENCLAW_CONFIG_PATH",
-      "OPENCLAW_TEST_FAST",
+      "OPERATOR_CONFIG_PATH",
+      "OPERATOR_TEST_FAST",
       "DISCORD_BOT_TOKEN",
     ]);
     try {
@@ -222,8 +222,8 @@ describe("config cli integration", () => {
         "utf8",
       );
 
-      setTestEnvValue("OPENCLAW_TEST_FAST", "1");
-      setTestEnvValue("OPENCLAW_CONFIG_PATH", configPath);
+      setTestEnvValue("OPERATOR_TEST_FAST", "1");
+      setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
       setTestEnvValue("DISCORD_BOT_TOKEN", "test-token");
       clearConfigCache();
       clearRuntimeConfigSnapshot();
@@ -271,8 +271,8 @@ describe("config cli integration", () => {
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-config-cli-int-fail-"));
     const configPath = path.join(tempDir, "openclaw.json");
     const envSnapshot = captureEnv([
-      "OPENCLAW_CONFIG_PATH",
-      "OPENCLAW_TEST_FAST",
+      "OPERATOR_CONFIG_PATH",
+      "OPERATOR_TEST_FAST",
       "MISSING_TEST_SECRET",
     ]);
     try {
@@ -293,8 +293,8 @@ describe("config cli integration", () => {
         "utf8",
       );
 
-      setTestEnvValue("OPENCLAW_TEST_FAST", "1");
-      setTestEnvValue("OPENCLAW_CONFIG_PATH", configPath);
+      setTestEnvValue("OPERATOR_TEST_FAST", "1");
+      setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
       deleteTestEnvValue("MISSING_TEST_SECRET");
       clearConfigCache();
       clearRuntimeConfigSnapshot();
