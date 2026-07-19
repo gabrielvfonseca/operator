@@ -8,7 +8,7 @@
     "json5": "2.2.3"
   },
   "devDependencies": {
-    "@gabrielvfonseca/plugin-sdk": "workspace:*",
+    "@operator/plugin-sdk": "workspace:*",
     "@gabrielvfonseca/operator": "workspace:*"
   },
   "peerDependencies": {

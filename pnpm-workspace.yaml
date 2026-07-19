@@ -1,3 +1,5 @@
+onlyBuiltDependencies:
+  - sharp
 packages:
   - .
   - ui
@@ -6,6 +8,7 @@ packages:
   - packages/*
   - extensions/*
   - examples/*
+  - sdks/*
 
 minimumReleaseAge: 2880
 
@@ -149,6 +152,7 @@ allowBuilds:
   "@openclaw/crabline": true
   rastermill: true
   node-pty: true
+  sharp: set this to true or false
 
 packageExtensions:
   baileys:

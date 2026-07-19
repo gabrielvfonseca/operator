@@ -8,7 +8,7 @@
   },
   "type": "module",
   "devDependencies": {
-    "@gabrielvfonseca/plugin-sdk": "workspace:*"
+    "@operator/plugin-sdk": "workspace:*"
   },
   "dependencies": {
     "@microsoft/mxc-sdk": "0.7.0",

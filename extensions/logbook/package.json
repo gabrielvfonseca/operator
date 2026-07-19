@@ -5,7 +5,7 @@
   "description": "Operator automatic work journal plugin",
   "type": "module",
   "devDependencies": {
-    "@gabrielvfonseca/plugin-sdk": "workspace:*",
+    "@operator/plugin-sdk": "workspace:*",
     "@gabrielvfonseca/operator": "workspace:*"
   },
   "peerDependencies": {

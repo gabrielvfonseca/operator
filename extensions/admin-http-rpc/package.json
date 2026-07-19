@@ -5,7 +5,7 @@
   "description": "Operator admin HTTP RPC endpoint",
   "type": "module",
   "devDependencies": {
-    "@gabrielvfonseca/plugin-sdk": "workspace:*"
+    "@operator/plugin-sdk": "workspace:*"
   },
   "@gabrielvfonseca/operator": {
     "extensions": [

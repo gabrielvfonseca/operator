@@ -19,6 +19,6 @@
     "build": "tsdown src/index.ts --no-config --platform node --format esm --dts --out-dir dist --clean"
   },
   "dependencies": {
-    "@operator/gateway-client": "workspace:*"
+    "@gabrielvfonseca/gateway-client": "workspace:*"
   }
 }

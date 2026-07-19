@@ -29,6 +29,6 @@
     }
   },
   "devDependencies": {
-    "@gabrielvfonseca/plugin-sdk": "workspace:*"
+    "@operator/plugin-sdk": "workspace:*"
   }
 }

@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@gabrielvfonseca/discord": "workspace:*",
-    "@gabrielvfonseca/plugin-sdk": "workspace:*",
+    "@operator/plugin-sdk": "workspace:*",
     "@gabrielvfonseca/slack": "workspace:*",
     "@gabrielvfonseca/whatsapp": "workspace:*",
     "@gabrielvfonseca/operator": "workspace:*",
