@@ -1,27 +1,101 @@
 {
+  "$schema": "https://biomejs.dev/schemas/2.5.4/schema.json",
+  "extends": ["./ultracite.json"],
+  "files": {
+    "includes": [
+      "src/**",
+      "ui/src/**",
+      "packages/**",
+      "extensions/**",
+      "scripts/**",
+      "test/**",
+      "ui/**",
+      "config/**",
+      "docs/**",
+      "skills/**",
+      "apps/**",
+      "openclaw.mjs",
+      "package.json",
+      "pnpm-workspace.yaml",
+      "!**/dist",
+      "!**/dist-runtime",
+      "!**/node_modules",
+      "!**/*.min.js",
+      "!**/build",
+      "!**/coverage",
+      "!**/vendor",
+      "!**/patches",
+      "!**/pnpm-lock.yaml",
+      "!docs/_layouts",
+      "!**/a2ui.bundle.js",
+      "!src/auto-reply/reply/export-html/template.js",
+      "!**/.openclaw-runtime-deps-copy-*"
+    ]
+  },
   "formatter": {
     "enabled": true,
-    "formatWithErrors": true,
-    "indentWidth": 2,
     "indentStyle": "space",
-    "lineWidth": 80
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "trailingCommas": "all",
+      "semicolons": "always"
+    }
   },
   "linter": {
     "enabled": true,
-    "lintAllUnmatched": false
+    "rules": {
+      "suspicious": {
+        "noExplicitAny": "off",
+        "noAssignInExpressions": "off"
+      },
+      "complexity": {
+        "noForEach": "off",
+        "noBannedTypes": "off",
+        "useLiteralKeys": "off"
+      },
+      "performance": {
+        "noDelete": "off"
+      },
+      "correctness": {
+        "noUnusedImports": "warn",
+        "noUnusedVariables": "off"
+      },
+      "a11y": {
+        "useKeyWithClickEvents": "off",
+        "noSvgWithoutTitle": "off",
+        "useSemanticElements": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off",
+        "useImportType": "off",
+        "noParameterAssign": "off",
+        "useNodejsImportProtocol": "off",
+        "useConst": "off",
+        "noUnusedTemplateLiteral": "off"
+      }
+    }
   },
-  "ignore": ["dist/**", "node_modules/**", "bun.lockb", ".artifacts/**", "**/*.min.js", "**/*.d.ts"],
-  "override": [
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "off"
+      }
+    }
+  },
+  "overrides": [
     {
-      "files": "*.{ts,tsx}",
+      "includes": ["**/openclaw.plugin.json", "**/operator.plugin.json"],
       "linter": {
         "rules": {
-          "style": {
-            "noImplicitAny": "off",
-            "preferForEach": "off"
-          },
-          "correctness": {
-            "noUnusedVariables": "off"
+          "suspicious": {
+            "noDuplicateObjectKeys": "off"
           }
         }
       }

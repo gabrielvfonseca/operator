@@ -245,6 +245,8 @@
       "@gabrielvfonseca/sdk": ["./packages/sdk/src/index.ts"],
       "@gabrielvfonseca/plugin-sdk": ["./src/plugin-sdk/index.ts"],
       "@gabrielvfonseca/plugin-sdk/*": ["./src/plugin-sdk/*.ts"],
+      "@gabrielvfonseca/operator/plugin-sdk": ["./src/plugin-sdk/index.ts"],
+      "@gabrielvfonseca/operator/plugin-sdk/*": ["./src/plugin-sdk/*.ts"],
       "openclaw/plugin-sdk/account-id": ["./src/plugin-sdk/account-id.ts"],
       "@gabrielvfonseca/*": ["./extensions/*"]
     }

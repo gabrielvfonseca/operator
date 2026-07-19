@@ -7,6 +7,14 @@
     "composite": true,
     "declarationMap": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/dist/**", "**/*.test.ts", "**/*.tests.ts"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/dist/**",
+    "**/*.test.ts",
+    "**/*.tests.ts"
+  ]
 }

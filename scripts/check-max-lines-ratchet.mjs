@@ -18,7 +18,7 @@ const compareStrings = (left, right) => left.localeCompare(right);
 
 export function isGovernedSourcePath(filePath) {
   const normalized = filePath.replaceAll("\\", "/");
-  if (!SOURCE_ROOTS.some((root) => normalized === root || normalized.startsWith(root + "/"))) {
+  if (!SOURCE_ROOTS.some((root) => normalized === root || normalized.startsWith(`${root}/`))) {
     return false;
   }
   if (!SOURCE_EXTENSIONS.has(path.posix.extname(normalized))) {
@@ -120,7 +120,7 @@ function baselineWithVerifiedRenames(root, baseRef, staged, baseline, baseBaseli
     .toString("utf8")
     .split("\0");
   const allowed = new Set(baseBaseline);
-  for (let index = 0; index < fields.length;) {
+  for (let index = 0; index < fields.length; ) {
     const status = fields[index++];
     if (!status) {
       break;
@@ -146,7 +146,7 @@ function baselineWithVerifiedRenames(root, baseRef, staged, baseline, baseBaseli
 
 function readSnapshotFile(root, filePath, staged) {
   if (staged) {
-    return execFileSync("git", ["show", ":" + filePath], {
+    return execFileSync("git", ["show", `:${filePath}`], {
       cwd: root,
       encoding: "utf8",
       stdio: ["ignore", "pipe", "ignore"],
@@ -189,7 +189,7 @@ function readStagedSources(root, filePaths) {
   }
   const output = execFileSync("git", ["cat-file", "--batch", "-z"], {
     cwd: root,
-    input: filePaths.map((filePath) => ":" + filePath).join("\0") + "\0",
+    input: `${filePaths.map((filePath) => `:${filePath}`).join("\0")}\0`,
     maxBuffer: GIT_MAX_BUFFER,
   });
   const sources = new Map();
@@ -198,17 +198,17 @@ function readStagedSources(root, filePaths) {
   for (const filePath of filePaths) {
     const headerEnd = output.indexOf(10, offset);
     if (headerEnd < 0) {
-      throw new Error("Invalid git cat-file response for " + filePath);
+      throw new Error(`Invalid git cat-file response for ${filePath}`);
     }
     const header = output.subarray(offset, headerEnd).toString("utf8").split(" ");
     const size = Number(header[2]);
     if (!Number.isSafeInteger(size)) {
-      throw new Error("Could not read staged source " + filePath);
+      throw new Error(`Could not read staged source ${filePath}`);
     }
     const sourceStart = headerEnd + 1;
     const sourceEnd = sourceStart + size;
     if (output[sourceEnd] !== 10) {
-      throw new Error("Invalid git cat-file framing for " + filePath);
+      throw new Error(`Invalid git cat-file framing for ${filePath}`);
     }
     sources.set(filePath, output.subarray(sourceStart, sourceEnd).toString("utf8"));
     offset = sourceEnd + 1;
@@ -253,7 +253,7 @@ export function collectCurrentSuppressions(root = process.cwd(), options = {}) {
 }
 
 function readBaselineAtRef(root, ref) {
-  execFileSync("git", ["rev-parse", "--verify", ref + "^{commit}"], {
+  execFileSync("git", ["rev-parse", "--verify", `${ref}^{commit}`], {
     cwd: root,
     stdio: "ignore",
   });
@@ -266,7 +266,7 @@ function readBaselineAtRef(root, ref) {
     return null;
   }
   return parseBaseline(
-    execFileSync("git", ["show", ref + ":" + BASELINE_PATH], {
+    execFileSync("git", ["show", `${ref}:${BASELINE_PATH}`], {
       cwd: root,
       encoding: "utf8",
       stdio: ["ignore", "pipe", "ignore"],
@@ -278,7 +278,7 @@ function resolveDefaultBase(root, staged) {
   const candidates = staged ? ["HEAD"] : ["origin/main", "HEAD"];
   const resolved = candidates.find((ref) => {
     try {
-      execFileSync("git", ["rev-parse", "--verify", ref + "^{commit}"], {
+      execFileSync("git", ["rev-parse", "--verify", `${ref}^{commit}`], {
         cwd: root,
         stdio: "ignore",
       });
@@ -304,7 +304,7 @@ function resolveDefaultBase(root, staged) {
 }
 
 function writeBaseline(root, entries) {
-  fs.writeFileSync(path.join(root, BASELINE_PATH), BASELINE_HEADER + entries.join("\n") + "\n");
+  fs.writeFileSync(path.join(root, BASELINE_PATH), `${BASELINE_HEADER + entries.join("\n")}\n`);
 }
 
 function parseArgs(argv) {
@@ -324,7 +324,7 @@ function parseArgs(argv) {
       index += 1;
       continue;
     }
-    throw new Error("Unknown or incomplete argument: " + arg);
+    throw new Error(`Unknown or incomplete argument: ${arg}`);
   }
   return args;
 }
@@ -332,7 +332,7 @@ function parseArgs(argv) {
 function printEntries(title, entries) {
   console.error(title);
   for (const entry of entries) {
-    console.error("  " + entry);
+    console.error(`  ${entry}`);
   }
 }
 
@@ -347,7 +347,7 @@ export function main(root = process.cwd(), argv = process.argv.slice(2)) {
     try {
       baselineSource = readSnapshotFile(root, BASELINE_PATH, args.staged);
     } catch {
-      throw new Error("Missing " + BASELINE_PATH + (args.staged ? " in the index" : ""));
+      throw new Error(`Missing ${BASELINE_PATH}${args.staged ? " in the index" : ""}`);
     }
     const baseline = parseBaseline(baselineSource);
     const { allRules, explicit: current } = collectCurrentSuppressionState(root, {
@@ -380,7 +380,7 @@ export function main(root = process.cwd(), argv = process.argv.slice(2)) {
         .filter((entry) => current.includes(entry))
         .toSorted(compareStrings);
       writeBaseline(root, kept);
-      console.log("Pruned " + BASELINE_PATH + ": " + baseline.size + " -> " + kept.length + ".");
+      console.log(`Pruned ${BASELINE_PATH}: ${baseline.size} -> ${kept.length}.`);
       return 0;
     }
     if (stale.length > 0) {
@@ -388,7 +388,7 @@ export function main(root = process.cwd(), argv = process.argv.slice(2)) {
       return 1;
     }
 
-    console.log("max-lines ratchet OK: " + current.length + " grandfathered suppressions.");
+    console.log(`max-lines ratchet OK: ${current.length} grandfathered suppressions.`);
     return 0;
   } catch (error) {
     console.error(error instanceof Error ? error.message : String(error));
