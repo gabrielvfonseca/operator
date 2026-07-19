@@ -256,5 +256,8 @@
       "types": "./dist/src/plugin-sdk/zod.d.ts",
       "default": "./src/zod.ts"
     }
+  },
+  "devDependencies": {
+    "@operator/typescript-config": "workspace:*"
   }
 }

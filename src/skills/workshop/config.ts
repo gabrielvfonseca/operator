@@ -1,5 +1,5 @@
 // Workshop config helpers resolve skill workshop settings from Operator config.
-import { asNullableRecord } from "@operator/normalization-core/record-coerce";
+import { asNullableRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import type { OperatorConfig } from "../../config/types.operator.js";
 
 /** Runtime configuration for the skill workshop proposal flow. */

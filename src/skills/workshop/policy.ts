@@ -1,6 +1,6 @@
 // Workshop policy helpers validate generated skill drafts against workspace policy.
-import { asNullableRecord } from "@operator/normalization-core/record-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { asNullableRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { getRuntimeConfig } from "../../config/config.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { PLUGIN_APPROVAL_DESCRIPTION_MAX_LENGTH } from "../../infra/plugin-approvals.js";

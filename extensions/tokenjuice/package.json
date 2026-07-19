@@ -20,7 +20,8 @@
   },
   "devDependencies": {
     "@operator/plugin-sdk": "workspace:*",
-    "@gabrielvfonseca/operator": "workspace:*"
+    "@gabrielvfonseca/operator": "workspace:*",
+    "@operator/typescript-config": "workspace:*"
   },
   "@gabrielvfonseca/operator": {
     "extensions": [

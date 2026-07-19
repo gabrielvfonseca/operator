@@ -2,7 +2,7 @@
 import {
   normalizeStringEntries,
   sortUniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 
 /** Normalizes an optional skill filter while preserving undefined as "not configured". */
 export function normalizeSkillFilter(skillFilter?: ReadonlyArray<unknown>): string[] | undefined {

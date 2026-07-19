@@ -5,6 +5,7 @@
   "description": "Operator image generation runtime package",
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@operator/plugin-sdk": "workspace:*",
+    "@operator/typescript-config": "workspace:*"
   }
 }

@@ -3,7 +3,7 @@
  *
  * Stubs unrelated tool factories so sessions/subagent registration tests import cheaply.
  */
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { vi } from "vitest";
 import { stubTool } from "./fast-tool-stubs.js";
 

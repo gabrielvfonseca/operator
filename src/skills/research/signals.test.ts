@@ -1,6 +1,6 @@
 // Signal extraction tests cover reactive/prospective patterns, grouping, and skill routing.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it } from "vitest";
 import { extractDurableInstructions, groupDurableInstructionProposals } from "./signals.js";
 

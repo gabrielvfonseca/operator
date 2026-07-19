@@ -1,6 +1,6 @@
 // Install output helpers format skill installation results for CLI callers.
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 
 type InstallCommandResult = {
   code: number | null;

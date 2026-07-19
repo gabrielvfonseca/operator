@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import chokidar, { type FSWatcher } from "chokidar";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";

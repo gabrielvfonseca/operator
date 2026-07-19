@@ -1,5 +1,5 @@
 // Verbose tar install helpers parse archive extraction output for diagnostics.
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 
 const TAR_VERBOSE_MONTHS = new Set([
   "Jan",

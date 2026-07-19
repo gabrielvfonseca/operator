@@ -152,7 +152,7 @@ allowBuilds:
   "@openclaw/crabline": true
   rastermill: true
   node-pty: true
-  sharp: set this to true or false
+  sharp: true
 
 packageExtensions:
   baileys:

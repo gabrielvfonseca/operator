@@ -24,9 +24,9 @@ export {
   writeJson,
   writeJson as writeJsonAtomic,
   writeJsonSync,
-} from "@operator/fs-safe/json";
+} from "@openclaw/fs-safe/json";
 
-export { createAsyncLock } from "@operator/fs-safe/advanced";
+export { createAsyncLock } from "@openclaw/fs-safe/advanced";
 
 export type WriteTextAtomicOptions = {
   mode?: number;

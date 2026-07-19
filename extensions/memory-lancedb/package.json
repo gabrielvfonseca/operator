@@ -14,7 +14,8 @@
     "typebox": "1.3.3"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@operator/plugin-sdk": "workspace:*",
+    "@operator/typescript-config": "workspace:*"
   },
   "openclaw": {
     "extensions": [

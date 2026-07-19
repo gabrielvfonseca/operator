@@ -1,5 +1,5 @@
 // Frontmatter helpers parse skill metadata from SKILL.md files.
-import { readStringValue } from "@operator/normalization-core/string-coerce";
+import { readStringValue } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { parseFrontmatterBlock } from "../../../packages/markdown-core/src/frontmatter.js";
 import { validateRegistryNpmSpec } from "../../infra/npm-registry-spec.js";
 import {

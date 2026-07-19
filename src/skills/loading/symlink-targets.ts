@@ -1,8 +1,8 @@
 // Shared helpers for config-trusted skill symlink targets.
 import fs from "node:fs";
 import path from "node:path";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { isPathInside } from "../../infra/path-guards.js";
 import { resolveUserPath } from "../../utils.js";

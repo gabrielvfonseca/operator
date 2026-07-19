@@ -2,7 +2,7 @@
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { canonicalizePath } from "../../agents/utils/paths.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";

@@ -19,7 +19,8 @@
     "@operator/plugin-sdk": "workspace:*",
     "jose": "6.2.3",
     "jwks-rsa": "3.2.2",
-    "@gabrielvfonseca/operator": "workspace:*"
+    "@gabrielvfonseca/operator": "workspace:*",
+    "@operator/typescript-config": "workspace:*"
   },
   "peerDependencies": {
     "@gabrielvfonseca/operator": ">=2026.7.2"

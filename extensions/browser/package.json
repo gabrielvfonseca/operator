@@ -13,7 +13,8 @@
   },
   "devDependencies": {
     "@operator/plugin-sdk": "workspace:*",
-    "undici": "8.6.0"
+    "undici": "8.6.0",
+    "@operator/typescript-config": "workspace:*"
   },
   "@gabrielvfonseca/operator": {
     "extensions": [

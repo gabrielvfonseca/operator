@@ -4,7 +4,8 @@
   "description": "Operator SearXNG plugin",
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@operator/plugin-sdk": "workspace:*",
+    "@operator/typescript-config": "workspace:*"
   },
   "@gabrielvfonseca/operator": {
     "extensions": [

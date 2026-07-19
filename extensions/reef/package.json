@@ -29,6 +29,7 @@
     }
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@operator/plugin-sdk": "workspace:*",
+    "@operator/typescript-config": "workspace:*"
   }
 }

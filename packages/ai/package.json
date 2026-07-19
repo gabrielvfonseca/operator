@@ -85,5 +85,8 @@
     "release": {
       "publishToNpm": true
     }
+  },
+  "devDependencies": {
+    "@operator/typescript-config": "workspace:*"
   }
 }

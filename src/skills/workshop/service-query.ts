@@ -1,5 +1,5 @@
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { normalizeSkillIndexName } from "../discovery/skill-index.js";
 import { assertInsideWorkspace } from "../lifecycle/workspace-skill-write.js";
 import {

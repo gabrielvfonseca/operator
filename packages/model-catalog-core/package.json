@@ -52,5 +52,8 @@
       "import": "./dist/provider-model-id-normalize.mjs",
       "default": "./dist/provider-model-id-normalize.mjs"
     }
+  },
+  "devDependencies": {
+    "@operator/typescript-config": "workspace:*"
   }
 }

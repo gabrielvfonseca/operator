@@ -16,9 +16,26 @@ if (!fs.existsSync(distDir)) {
 
 // Copy essential files to dist
 try {
-  // Copy package.json to dist
-  const packageJsonContent = fs.readFileSync("./package.json", "utf8");
-  fs.writeFileSync("./dist/package.json", packageJsonContent);
+  // Copy package.json to dist, rewriting paths so they resolve from the dist
+  // package root (strip the leading ./dist/ prefix that is only valid at repo root).
+  const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"));
+  const stripDist = (value) => {
+    if (typeof value === "string" && value.startsWith("./dist/")) {
+      return "./" + value.slice("./dist/".length);
+    }
+    if (value && typeof value === "object") {
+      for (const key of Object.keys(value)) value[key] = stripDist(value[key]);
+    }
+    return value;
+  };
+  if (packageJson.main && packageJson.main.startsWith("dist/")) {
+    packageJson.main = "./" + packageJson.main.slice("dist/".length);
+  }
+  if (packageJson.types && packageJson.types.startsWith("dist/")) {
+    packageJson.types = "./" + packageJson.types.slice("dist/".length);
+  }
+  if (packageJson.exports) stripDist(packageJson.exports);
+  fs.writeFileSync("./dist/package.json", JSON.stringify(packageJson, null, 2) + "\n");
   console.error("[tsdown] Copied package.json to dist");
 } catch (error) {
   console.error("[tsdown] Warning: Could not copy package.json:", error);

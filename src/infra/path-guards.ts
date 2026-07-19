@@ -7,4 +7,4 @@ export {
   isPathInside,
   normalizeWindowsPathForComparison,
   safeStatSync,
-} from "@operator/fs-safe/path";
+} from "@openclaw/fs-safe/path";

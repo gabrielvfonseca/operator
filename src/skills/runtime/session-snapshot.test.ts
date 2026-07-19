@@ -1,5 +1,5 @@
 // Session snapshot tests cover runtime skill state captured for agent sessions.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../../config/config.js";
 import { WORKSPACE_SKILLS_PROMPT_FORMAT_VERSION } from "../types.js";

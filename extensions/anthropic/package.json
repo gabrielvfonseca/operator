@@ -5,7 +5,8 @@
   "description": "Operator Anthropic provider, Claude CLI, and native session catalog plugin",
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@operator/plugin-sdk": "workspace:*",
+    "@operator/typescript-config": "workspace:*"
   },
   "@gabrielvfonseca/operator": {
     "extensions": [

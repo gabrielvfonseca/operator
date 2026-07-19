@@ -1,8 +1,8 @@
 // Source install helpers install skills from source directories and repositories.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { redactSensitiveUrlLikeString } from "@operator/net-policy/redact-sensitive-url";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { redactSensitiveUrlLikeString } from "@gabrielvfonseca/net-policy/redact-sensitive-url";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { sanitizeForLog } from "../../../packages/terminal-core/src/ansi.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { sanitizeHostExecEnv } from "../../infra/host-env-security.js";

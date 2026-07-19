@@ -20,7 +20,8 @@
   "devDependencies": {
     "@operator/plugin-sdk": "workspace:*",
     "@types/ws": "8.18.1",
-    "@gabrielvfonseca/operator": "workspace:*"
+    "@gabrielvfonseca/operator": "workspace:*",
+    "@operator/typescript-config": "workspace:*"
   },
   "peerDependencies": {
     "@gabrielvfonseca/operator": ">=2026.7.2"
