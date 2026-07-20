@@ -29,6 +29,8 @@ import { mergeGatewayTailscaleConfig } from "./startup-auth.js";
 type GatewayRuntimeConfig = {
   bindHost: string;
   controlUiEnabled: boolean;
+  controlUiMode: "static" | "next";
+  controlUiNextUrl?: string;
   openAiChatCompletionsEnabled: boolean;
   openAiChatCompletionsConfig?: import("../config/types.gateway.js").GatewayHttpChatCompletionsConfig;
   openResponsesEnabled: boolean;

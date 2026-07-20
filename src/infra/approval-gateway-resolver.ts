@@ -56,7 +56,7 @@ type ResolveApprovalOverGatewayParams =
  */
 export function resolveApprovalOverGateway(
   params: LegacyResolveApprovalOverGatewayParams,
-): Promise<void>;
+): Promise<ApprovalResolveResult | undefined>;
 /** Resolves a typed approval through the canonical operator approval service. */
 export function resolveApprovalOverGateway(
   params: CanonicalResolveApprovalOverGatewayParams,

@@ -271,14 +271,15 @@ export async function recordInboundSessionAndDispatchReply(
             ctxPayload: params.ctxPayload,
             payload,
             info,
-            ...params.durable,
+            ...(params.durable ? params.durable : {}),
           });
           throwIfDurableInboundReplyDeliveryFailed(durable);
           if (isDurableInboundReplyDeliveryHandled(durable)) {
             return durable.delivery;
           }
         }
-        return await params.deliver(payload as OutboundReplyPayload);
+        await params.deliver(payload as OutboundReplyPayload);
+        return undefined;
       },
       onError: params.onDispatchError,
     },

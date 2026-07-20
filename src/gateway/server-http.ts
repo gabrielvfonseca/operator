@@ -6,6 +6,7 @@ import {
   type Server as HttpServer,
   type IncomingMessage,
   type ServerResponse,
+  type RequestOptions,
 } from "node:http";
 import { createServer as createHttpsServer, request as httpsRequest } from "node:https";
 import type { TlsOptions } from "node:tls";
@@ -528,11 +529,10 @@ export function createGatewayHttpServer(opts: {
             ? 443
             : 80,
         path: finalUrl.pathname + finalUrl.search,
-        rejectUnauthorized: false, // For dev/self-signed certs
       };
 
       const protocol = finalUrl.protocol === "https:" ? httpsRequest : httpRequest;
-      const proxyReq = protocol(options, (proxyRes) => {
+      const proxyReq = protocol(options as Parameters<typeof protocol>[0], (proxyRes) => {
         // Copy response headers
         res.writeHead(proxyRes.statusCode ?? 200, proxyRes.headers);
         proxyRes.pipe(res, { end: true });
@@ -557,8 +557,9 @@ export function createGatewayHttpServer(opts: {
       return true;
     } catch (err) {
       if (!res.headersSent) {
+        const message = err instanceof Error ? err.message : String(err);
         res.writeHead(500, { "Content-Type": "text/plain" });
-        res.end(`Internal Server Error: ${err.message}`);
+        res.end(`Internal Server Error: ${message}`);
       } else {
         res.destroy();
       }
@@ -827,6 +828,12 @@ export function createGatewayHttpServer(opts: {
           res,
           requestPath: scopedRequestPath,
           getGatewayAuthBypassPaths: () => getCachedPluginGatewayAuthBypassPaths(configSnapshot),
+          pluginPathContext,
+          resolvedAuth: resolvedAuthValue,
+          trustedProxies,
+          allowRealIpFallback,
+          handlePluginRequest: opts.handlePluginRequest,
+          shouldEnforcePluginGatewayAuth,
         }),
       );
 

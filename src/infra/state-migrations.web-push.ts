@@ -28,6 +28,7 @@ import {
   type WebPushSubscription,
 } from "./push-web-store.js";
 import type { LegacyStateDetection, MigrationMessages } from "./state-migrations.types.js";
+import { runOperatorStateWriteTransaction } from "../state/openclaw-state-db.js";
 
 const LEGACY_SUBSCRIPTIONS_MAX_BYTES = 4 * 1024 * 1024;
 const LEGACY_VAPID_KEYS_MAX_BYTES = 64 * 1024;
@@ -388,7 +389,7 @@ function migrateIntoDatabase(params: {
 }): { importedSubscriptions: number; importedVapidKeys: boolean } {
   let importedSubscriptions = 0;
   let importedVapidKeys = false;
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     ({ db }) => {
       const webPushDb = getNodeSqliteKysely<WebPushDatabase>(db);
       const expectedSubscriptions = new Map<string, WebPushSubscription>();

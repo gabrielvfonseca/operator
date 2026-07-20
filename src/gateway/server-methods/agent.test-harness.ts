@@ -797,7 +797,7 @@ export function operatorWriteGatewayClient(): AgentHandlerArgs["client"] {
       minProtocol: 1,
       maxProtocol: 1,
       client: {
-        id: "operator-control-ui",
+        id: "openclaw-control-ui",
         version: "test",
         platform: "test",
         mode: "ui",

@@ -13,7 +13,7 @@ import { resolveBundledPluginsDir } from "../plugins/bundled-dir.js";
 import type { PluginPackageChannel } from "../plugins/manifest.js";
 
 type ChannelCatalogEntryLike = {
-  openclaw?: {
+  operator?: {
     channel?: PluginPackageChannel;
   };
 };

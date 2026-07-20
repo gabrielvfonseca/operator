@@ -19,6 +19,8 @@ import {
   getNodeSqliteKysely,
 } from "./kysely-sync.js";
 import type { LegacyStateDetection, MigrationMessages } from "./state-migrations.types.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import { runOperatorStateWriteTransaction } from "../state/openclaw-state-db.js";
 
 const LEGACY_NODE_HOST_MAX_BYTES = 64 * 1024;
 const MIGRATION_LOCK_TIMEOUT_MS = 250;
@@ -332,7 +334,7 @@ function migrateIntoDatabase(params: { env: NodeJS.ProcessEnv; legacy: Canonical
 } {
   let imported = false;
   let preservedCanonical = false;
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     ({ db }) => {
       const stateDb = getNodeSqliteKysely<NodeHostConfigDatabase>(db);
       const row = executeSqliteQueryTakeFirstSync(

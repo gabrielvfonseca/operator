@@ -22,6 +22,11 @@ import {
   type ApnsRegistration,
 } from "./push-apns-store.js";
 import type { LegacyStateDetection, MigrationMessages } from "./state-migrations.types.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import {
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
+} from "../state/openclaw-state-db.js";
 
 const LEGACY_APNS_REGISTRATION_PATH = "push/apns-registrations.json";
 const APNS_DOCTOR_CLAIM_SUFFIX = ".doctor-importing";
@@ -216,7 +221,7 @@ function receiptSourceKey(sourcePath: string): string {
 
 function readMigrationReceipt(sourcePath: string, env: NodeJS.ProcessEnv): MigrationReceipt | null {
   const sourceKey = receiptSourceKey(sourcePath);
-  const { db } = openOpenClawStateDatabase({ env });
+  const { db } = openOperatorStateDatabase({ env });
   const row = executeSqliteQueryTakeFirstSync(
     db,
     getNodeSqliteKysely<ApnsMigrationDatabase>(db)
@@ -242,7 +247,7 @@ function importAndRecordReceipt(params: {
   const sourceKey = receiptSourceKey(params.sourcePath);
   const runId = `${sourceKey}:${params.snapshot.sha256.slice(0, 16)}`;
   const now = Date.now();
-  return runOpenClawStateWriteTransaction(
+  return runOperatorStateWriteTransaction(
     ({ db }) => {
       const stateDb = getNodeSqliteKysely<ApnsMigrationDatabase>(db);
       const existingReceipt = executeSqliteQueryTakeFirstSync(
@@ -353,7 +358,7 @@ function importAndRecordReceipt(params: {
 }
 
 function markSourceRemoved(sourceKey: string, env: NodeJS.ProcessEnv): void {
-  runOpenClawStateWriteTransaction(
+  runOperatorStateWriteTransaction(
     ({ db }) => {
       executeSqliteQuerySync(
         db,
