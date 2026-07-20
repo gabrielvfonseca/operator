@@ -22,8 +22,8 @@ export function createWorkingMemoryClient(config: MemoryWorkingConfig): WorkingM
 
   let client: {
     get: (k: string) => Promise<string | null>;
-    set: (k: string, v: string, ex?: number) => Promise<void>;
-    del: (k: string) => Promise<void>;
+    set: (k: string, v: string, ex?: number) => Promise<"OK">;
+    del: (k: string) => Promise<number>;
     keys: (p: string) => Promise<string[]>;
     exists: (k: string) => Promise<number>;
     ttl: (k: string) => Promise<number>;
@@ -32,7 +32,6 @@ export function createWorkingMemoryClient(config: MemoryWorkingConfig): WorkingM
   async function ensureClient(): Promise<typeof client> {
     if (client) return client;
     try {
-      // @ts-expect-error external module
       const mod = await import("redis");
       const redisClient = mod.createClient({ url: config.redisUrl });
       await redisClient.connect();

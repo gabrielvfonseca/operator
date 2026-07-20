@@ -4,6 +4,12 @@ import fs from "node:fs";
 import path from "node:path";
 import type { Insertable, Selectable } from "kysely";
 import { resolveStateDir } from "../config/paths.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { OperatorStateDatabaseOptions } from "../state/openclaw-state-db.js";
+import {
+  openOperatorStateDatabase,
+  runOperatorStateWriteTransaction,
+} from "../state/openclaw-state-db.js";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
@@ -161,7 +167,7 @@ function configToRow(params: {
 }
 
 function readNodeHostConfigRow(
-  database: ReturnType<typeof openOpenClawStateDatabase>,
+  database: ReturnType<typeof openOperatorStateDatabase>,
 ): NodeHostConfigRuntimeRow | undefined {
   return executeSqliteQueryTakeFirstSync(
     database.db,
@@ -188,7 +194,7 @@ export async function loadNodeHostConfig(
   env: NodeJS.ProcessEnv = process.env,
 ): Promise<NodeHostConfig | null> {
   assertNodeHostLegacyStateMigrated(env);
-  const database = openOpenClawStateDatabase(databaseOptions(env));
+  const database = openOperatorStateDatabase(databaseOptions(env));
   const row = readNodeHostConfigRow(database);
   return row ? rowToNodeHostConfig(row) : null;
 }
@@ -218,7 +224,7 @@ export async function configureNodeHost(params: {
     throw new Error("invalid node-host updatedAtMs: expected a non-negative integer");
   }
 
-  const config = runOpenClawStateWriteTransaction((database) => {
+  const config = runOperatorStateWriteTransaction((database) => {
     const { db } = database;
     const existingRow = readNodeHostConfigRow(database);
     const existing = existingRow ? rowToNodeHostConfig(existingRow) : null;
