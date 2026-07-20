@@ -1981,7 +1981,7 @@ async function dispatchReplyFromConfigInner(
         releaseStart: () => releaseStart?.(),
       };
     };
-    const wrapProgressCallback = <Args extends unknown[], Result extends false | undefined>(
+    const wrapProgressCallback = <Args extends unknown[], Result extends void | false | undefined>(
       callback: ((...args: Args) => Promise<Result> | Result) | undefined,
       options?: {
         allowWhenToolSummariesHidden?: boolean;

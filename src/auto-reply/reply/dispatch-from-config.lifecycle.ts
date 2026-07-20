@@ -30,6 +30,28 @@ type DispatchReplyOperationAcquisition =
   | { status: "busy" }
   | { status: "aborted" };
 
+type DispatchReplyOperationCoordinator = {
+  completeDispatchReplyOperation: () => void;
+  dispatchHookDispatcher: ReplyDispatcher;
+  ensureDispatchReplyOperation: (
+    phase: "pre_dispatch" | "dispatch",
+  ) => Promise<DispatchReplyOperationAcquisition>;
+  failDispatchReplyOperation: (error: unknown) => void;
+  getDispatchAbortOperation: () => ReplyOperation | undefined;
+  getDispatchAbortSignal: () => AbortSignal | undefined;
+  getDispatchReplyOperation: () => ReplyOperation | undefined;
+  getReplyOptions: () => DispatchFromConfigParams["replyOptions"];
+  getObservedReplyDelivery: () => boolean;
+  getPreDispatchAbortSignal: () => AbortSignal | undefined;
+  isDispatchOperationAborted: () => boolean;
+  isPreDispatchOperationAborted: () => boolean;
+  markObservedReplyDelivery: () => void;
+  releasePreDispatchLifecycleAdmission: (cb?: () => Promise<void>) => void;
+  runWithDispatchLifecycleAdmission: <T>(run: () => Promise<T>) => Promise<T>;
+  throwIfDispatchOperationAborted: () => void;
+  trackDispatchLifecycleWork: (work: Promise<unknown>) => void;
+};
+
 export function createDispatchReplyOperationCoordinator(params: {
   ctx: FinalizedMsgContext;
   dispatcher: ReplyDispatcher;
@@ -43,7 +65,7 @@ export function createDispatchReplyOperationCoordinator(params: {
   replyOptions?: DispatchFromConfigParams["replyOptions"];
   resolveOperationExpectedSessionId: () => string | undefined;
   routeThreadId?: string | number;
-}) {
+}): DispatchReplyOperationCoordinator {
   let dispatchReplyOperation: ReplyOperation | undefined;
   let dispatchAbortOperation: ReplyOperation | undefined;
   let preDispatchAbortOperation: ReplyOperation | undefined;

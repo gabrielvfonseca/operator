@@ -683,9 +683,45 @@ describe("dispatchReplyFromConfig", () => {
       To: "discord:channel:C1",
     });
     const callbacks = {
-      toolStart: vi.fn(async () => {}),
-      itemEvent: vi.fn(async () => {}),
-      commandOutput: vi.fn(async () => {}),
+      toolStart: vi.fn(
+        async (_payload: {
+          itemId?: string;
+          toolCallId?: string;
+          name?: string;
+          phase?: string;
+          args?: Record<string, unknown>;
+          detailMode?: "explain" | "raw";
+        }) => {},
+      ),
+      itemEvent: vi.fn(
+        async (_payload: {
+          itemId?: string;
+          toolCallId?: string;
+          kind?: string;
+          title?: string;
+          name?: string;
+          phase?: string;
+          status?: string;
+          summary?: string;
+          progressText?: string;
+          meta?: string;
+          approvalId?: string;
+          approvalSlug?: string;
+        }) => {},
+      ),
+      commandOutput: vi.fn(
+        async (_payload: {
+          phase?: string;
+          title?: string;
+          toolCallId?: string;
+          name?: string;
+          output?: string;
+          status?: string;
+          exitCode?: number;
+          durationMs?: number;
+          cwd?: string;
+        }) => {},
+      ),
     };
     const replyResolver = async (
       _ctx: MsgContext,
@@ -704,9 +740,9 @@ describe("dispatchReplyFromConfig", () => {
       replyOptions: {
         sourceReplyDeliveryMode: "message_tool_only",
         allowProgressCallbacksWhenSourceDeliverySuppressed: true,
-        onToolStart: callbacks.toolStart,
-        onItemEvent: callbacks.itemEvent,
-        onCommandOutput: callbacks.commandOutput,
+        onToolStart: callbacks.toolStart as any,
+        onItemEvent: callbacks.itemEvent as any,
+        onCommandOutput: callbacks.commandOutput as any,
       },
       replyResolver,
     });
