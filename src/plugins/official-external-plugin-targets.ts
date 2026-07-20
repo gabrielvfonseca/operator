@@ -22,7 +22,7 @@ type StaticManifest = {
   webSearchProviders?: readonly StaticWebProvider[];
 };
 
-type StaticEntry = { openclaw?: StaticManifest };
+type StaticEntry = { operator?: StaticManifest };
 
 const STATIC_ENTRIES = BUNDLED_OFFICIAL_EXTERNAL_PLUGIN_CATALOG_ENTRIES as readonly StaticEntry[];
 

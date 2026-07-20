@@ -48,7 +48,7 @@ function readBundledInstallRecoveryMetadata(rootDir: string): {
   const manifest = loadPluginManifest(rootDir, false);
   const pluginId = manifest.ok ? manifest.manifest.id : undefined;
   const parsed = tryReadJsonSync<{
-    openclaw?: {
+    operator?: {
       install?: {
         allowInvalidConfigRecovery?: boolean;
       };

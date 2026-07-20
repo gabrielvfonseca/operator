@@ -202,12 +202,12 @@ export function buildToolPluginPackageManifest(params: {
   packageManifest: JsonObject;
   entry: string;
 }): JsonObject {
-  const openclaw =
+  const operator =
     params.packageManifest.operator &&
     typeof params.packageManifest.operator === "object" &&
     !Array.isArray(params.packageManifest.operator)
       ? { ...(params.packageManifest.operator as JsonObject) }
-      : {};
+      : ({} as JsonObject);
   const existingExtensions = Array.isArray(operator.extensions)
     ? operator.extensions.filter((entry): entry is string => typeof entry === "string")
     : [];

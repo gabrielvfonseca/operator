@@ -5,6 +5,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { readPersistedInstalledPluginIndex } from "../plugins/installed-plugin-index-store.js";
 import type { PackageManifest } from "../plugins/manifest.js";
+import { MANIFEST_KEY } from "../compat/legacy-names.js";
 import { validatePackageExtensionEntriesForInstall } from "../plugins/package-entry-resolution.js";
 import {
   POST_UPGRADE_PROBE_CODES,
@@ -180,7 +181,7 @@ export async function runPostUpgradeProbes(params: {
         );
         continue;
       }
-      const entries = pkg.operator?.extensions ?? [];
+      const entries = pkg[MANIFEST_KEY]?.extensions ?? [];
       if (entries.length > 0) {
         // Delegate to the install-time resolver so the probe enforces the same
         // contract as plugin install/discovery: runtimeExtensions shape, plugin-root

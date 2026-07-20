@@ -41,7 +41,7 @@ export function resolveOperatorToolsForMcp(
 ): AnyAgentTool[] {
   const selection = params.tools ?? resolveOperatorToolsMcpToolSelection();
   return selection.map((tool) => {
-    if (tool === "operator") {
+    if (tool === "@gabrielvfonseca/operator") {
       return createSystemAgentTool({
         surface: params.systemAgentSurface ?? resolveOperatorToolsMcpSystemAgentSurface(),
         ...resolveOperatorToolsMcpSystemAgentApproval(),

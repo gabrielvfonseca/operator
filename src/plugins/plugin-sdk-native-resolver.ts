@@ -194,7 +194,7 @@ function resolveLoaderPackageRootFromModulePath(modulePath: string): string {
           packageJson.name === "@gabrielvfonseca/operator" ||
           (typeof packageJson.bin === "object" &&
             packageJson.bin !== null &&
-            typeof (packageJson.bin as { openclaw?: unknown }).operator === "string")
+            typeof (packageJson.bin as { operator?: unknown }).operator === "string")
         ) {
           return cursor;
         }

@@ -177,7 +177,7 @@ function parseRecentConversationText(
         provenance?: unknown;
         provider?: unknown;
         model?: unknown;
-        __openclaw?: unknown;
+        __operator?: unknown;
       }
     | undefined;
   if (

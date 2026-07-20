@@ -50,7 +50,7 @@ export type SecretsApplyPlan = {
   version: 1;
   protocolVersion: 1;
   generatedAt: string;
-  generatedBy: "openclaw secrets configure" | "manual";
+  generatedBy: "operator secrets configure" | "openclaw secrets configure" | "manual";
   providerUpserts?: Record<string, SecretProviderConfig>;
   providerDeletes?: string[];
   targets: SecretsPlanTarget[];

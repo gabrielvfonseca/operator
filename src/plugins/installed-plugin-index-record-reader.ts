@@ -85,8 +85,8 @@ function readStringRecord(value: unknown): Record<string, string> {
 }
 
 function hasPackagePluginMetadata(manifest: Record<string, unknown>): boolean {
-  const openclaw = manifest.operator;
-  if (!isRecord(openclaw)) {
+  const operator = manifest.operator;
+  if (!isRecord(operator)) {
     return false;
   }
   const extensions = operator.extensions;

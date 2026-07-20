@@ -710,9 +710,19 @@ export async function installSkill(params: SkillInstallRequest): Promise<SkillIn
     },
     source:
       skillSource === "operator-bundled"
-        ? { kind: "bundled", authority: "operator", mutable: false, network: false }
+        ? {
+            kind: "bundled",
+            authority: "@gabrielvfonseca/operator",
+            mutable: false,
+            network: false,
+          }
         : skillSource === "operator-managed" || skillSource === "operator-extra"
-          ? { kind: "managed", authority: "operator", mutable: false, network: false }
+          ? {
+              kind: "managed",
+              authority: "@gabrielvfonseca/operator",
+              mutable: false,
+              network: false,
+            }
           : { kind: "workspace", authority: "user", mutable: true, network: false },
     requestedSpecifier: `${params.skillName}:${params.installId}`,
     skillName: params.skillName,

@@ -90,7 +90,7 @@ export function getExamplesPath(): string {
 interface PackageJson {
   name?: string;
   version?: string;
-  openclawConfig?: {
+  operatorConfig?: {
     name?: string;
     configDir?: string;
   };

@@ -385,7 +385,11 @@ export async function executeSystemAgentOperation(
         runtime,
         opts,
         run: async (ctx) => {
-          const runGatewayStart = ctx.deps?.runGatewayStart ?? (() => runGatewayLifecycle("start"));
+          const runGatewayStart =
+            ctx.deps?.runGatewayStart ??
+            (async () => {
+              await runGatewayLifecycle("start");
+            });
           await ctx.commit(runGatewayStart);
           return { summary: "Started Gateway" };
         },
@@ -397,7 +401,11 @@ export async function executeSystemAgentOperation(
         runtime,
         opts,
         run: async (ctx) => {
-          const runGatewayStop = ctx.deps?.runGatewayStop ?? (() => runGatewayLifecycle("stop"));
+          const runGatewayStop =
+            ctx.deps?.runGatewayStop ??
+            (async () => {
+              await runGatewayLifecycle("stop");
+            });
           await ctx.commit(runGatewayStop);
           return { summary: "Stopped Gateway" };
         },

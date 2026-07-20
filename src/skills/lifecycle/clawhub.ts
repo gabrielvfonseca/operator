@@ -1183,7 +1183,8 @@ async function installArchiveResolution(params: {
           },
           source: {
             kind: "clawhub",
-            authority: params.authority,
+            authority:
+              params.authority === "operator" ? "@gabrielvfonseca/operator" : params.authority,
             mutable: false,
             network: true,
           },
