@@ -5,6 +5,7 @@ import type { SourceReplyDeliveryMode } from "../../auto-reply/get-reply-options
 import type { ReasoningLevel, ThinkLevel } from "../../auto-reply/thinking.js";
 import type { ChatType } from "../../channels/chat-type.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
+import type { SkillSnapshot } from "../../skills/types.js";
 import { isDefaultAgentRuntimeId, normalizeOptionalAgentRuntimeId } from "../agent-runtime-id.js";
 import {
   listActiveProcessSessionReferences,
@@ -53,6 +54,8 @@ type EmbeddedCompactionRuntimeContext = {
   sourceReplyDeliveryMode?: SourceReplyDeliveryMode;
   ownerNumbers?: string[];
   activeProcessSessions?: ActiveProcessSessionReference[];
+  skillsSnapshot?: SkillSnapshot;
+  skillsPrompt?: string;
 };
 
 /**
@@ -293,9 +296,11 @@ export function buildEmbeddedCompactionRuntimeContext(params: {
   reasoningLevel?: ReasoningLevel;
   bashElevated?: ExecElevatedDefaults;
   extraSystemPrompt?: string;
+  skillsPrompt?: string;
   sourceReplyDeliveryMode?: SourceReplyDeliveryMode;
   ownerNumbers?: string[];
   activeProcessSessions?: ActiveProcessSessionReference[];
+  skillsSnapshot?: SkillSnapshot;
 }): EmbeddedCompactionRuntimeContext {
   const resolved = resolveEmbeddedCompactionTarget({
     config: params.config,

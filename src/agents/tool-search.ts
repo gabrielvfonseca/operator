@@ -1716,7 +1716,7 @@ function readCallArgs(args: unknown): { id: string; input: unknown } {
 
 function getTelemetry(catalog: ToolSearchCatalogSession) {
   const sources: Record<CatalogSource, number> = {
-    operator: 0,
+    "@gabrielvfonseca/operator": 0,
     mcp: 0,
     client: 0,
   };

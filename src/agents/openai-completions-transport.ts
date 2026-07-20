@@ -1928,7 +1928,7 @@ const completionsTesting = {
 };
 
 declare global {
-  var openclawOpenAICompletionsTransportTestApi: typeof completionsTesting | undefined;
+  var operatorOpenAICompletionsTransportTestApi: typeof completionsTesting | undefined;
 }
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {

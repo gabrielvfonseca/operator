@@ -9,7 +9,7 @@ import { applyVerboseOverride } from "../../sessions/level-overrides.js";
 import { recordSessionHumanDirectMessage } from "../../sessions/session-state-events.js";
 import { resolveEffectiveAgentSkillFilter } from "../../skills/discovery/agent-filter.js";
 import { resolveAgentRunContext } from "./run-context.js";
-import { loadExecDefaultsRuntime, loadSkillsRuntime } from "./runtime-loaders.js";
+import { loadExecDefaultsRuntime } from "./runtime-loaders.js";
 import { persistSessionEntry } from "./session-helpers.js";
 import type { AgentCommandOpts } from "./types.js";
 
@@ -55,9 +55,12 @@ export async function prepareEmbeddedSessionState(params: {
   const skillFilter = resolveEffectiveAgentSkillFilter(params.cfg, params.sessionAgentId);
   const currentSkillsSnapshot = sessionEntry?.skillsSnapshot;
   const [
-    { getRemoteSkillEligibility, resolveReusableWorkspaceSkillSnapshot },
     { resolveNodeExecEligibility },
-  ] = await Promise.all([loadSkillsRuntime(), loadExecDefaultsRuntime()]);
+    { getRemoteSkillEligibility, resolveReusableWorkspaceSkillSnapshot },
+  ] = await Promise.all([
+    loadExecDefaultsRuntime(),
+    import("../../skills/runtime/cron-snapshot.runtime.js"),
+  ]);
   const nodeSkillsEligibility = resolveNodeExecEligibility({
     cfg: params.cfg,
     sessionEntry,

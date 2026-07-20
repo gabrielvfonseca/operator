@@ -1275,7 +1275,7 @@ async function compactEmbeddedAgentSessionDirectOnce(
           agentId: sessionAgentId,
           defaultAgentId,
         }),
-        skillsPrompt,
+        skillsPrompt: params.skillsPrompt,
         docsPath: openClawReferences.docsPath ?? undefined,
         sourcePath: openClawReferences.sourcePath ?? undefined,
         promptMode,

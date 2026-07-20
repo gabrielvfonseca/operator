@@ -58,6 +58,7 @@ export type CompactEmbeddedAgentSessionParams = {
   agentDir?: string;
   config?: OperatorConfig;
   skillsSnapshot?: SkillSnapshot;
+  skillsPrompt?: string;
   senderIsOwner?: boolean;
   provider?: string;
   model?: string;

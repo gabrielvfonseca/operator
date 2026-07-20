@@ -353,7 +353,7 @@ export function handleAgentEnd(
       return;
     }
     lifecycleTerminalEmitted = true;
-    let beforeLifecycleTerminal: void | Promise<void>;
+    let beforeLifecycleTerminal: void | Promise<void> = undefined;
     try {
       beforeLifecycleTerminal = ctx.params.onBeforeLifecycleTerminal?.();
     } catch (err) {

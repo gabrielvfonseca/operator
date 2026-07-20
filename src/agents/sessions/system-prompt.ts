@@ -4,6 +4,7 @@
 
 import { getDocsPath, getExamplesPath, getReadmePath } from "../config.js";
 import { buildPromisedWorkPromptSection } from "../promised-work-prompt.js";
+import type { Skill } from "../../skills/loading/session.js";
 
 export interface BuildSystemPromptOptions {
   /** Custom system prompt (replaces default). */
@@ -16,6 +17,8 @@ export interface BuildSystemPromptOptions {
   promptGuidelines?: string[];
   /** Text to append to system prompt. */
   appendSystemPrompt?: string;
+  /** Loaded skills to reference in the system prompt. */
+  skills?: Skill[];
   /** Working directory. */
   cwd: string;
   /** Pre-loaded context files. */
@@ -45,7 +48,6 @@ export function buildSystemPrompt(options: BuildSystemPromptOptions): string {
   const appendSection = appendSystemPrompt ? `\n\n${appendSystemPrompt}` : "";
 
   const contextFiles = providedContextFiles ?? [];
-  const skills = providedSkills ?? [];
 
   if (customPrompt) {
     let prompt = customPrompt;
@@ -100,7 +102,6 @@ export function buildSystemPrompt(options: BuildSystemPromptOptions): string {
   const hasGrep = tools.includes("grep");
   const hasFind = tools.includes("find");
   const hasLs = tools.includes("ls");
-  const hasRead = tools.includes("read");
 
   // File exploration guidelines
   if (hasBash && !hasGrep && !hasFind && !hasLs) {

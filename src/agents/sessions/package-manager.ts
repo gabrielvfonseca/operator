@@ -401,7 +401,7 @@ function collectTopLevelAutoResourceEntries(
 function readResourceManifestFile(packageJsonPath: string): ResourceManifest | null {
   try {
     const content = readFileSync(packageJsonPath, "utf-8");
-    const pkg = JSON.parse(content) as { openclaw?: ResourceManifest };
+    const pkg = JSON.parse(content) as { operator?: ResourceManifest };
     return pkg.operator ?? null;
   } catch {
     return null;
@@ -1120,7 +1120,7 @@ export class DefaultPackageManager implements PackageManager {
 
     try {
       const content = readFileSync(packageJsonPath, "utf-8");
-      const pkg = JSON.parse(content) as { openclaw?: ResourceManifest };
+      const pkg = JSON.parse(content) as { operator?: ResourceManifest };
       return pkg.operator ?? null;
     } catch {
       return null;

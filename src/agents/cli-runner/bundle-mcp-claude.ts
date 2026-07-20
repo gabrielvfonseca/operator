@@ -77,8 +77,8 @@ export async function writeClaudeMcpCaptureConfig(params: {
     throw new Error("Claude MCP capture requires an object config");
   }
   const mcpServers = isRecord(raw.mcpServers) ? raw.mcpServers : {};
-  const openclaw = isRecord(mcpServers.operator) ? mcpServers.operator : undefined;
-  if (!openclaw) {
+  const operator = isRecord(mcpServers.operator) ? mcpServers.operator : undefined;
+  if (!operator) {
     throw new Error("Claude MCP capture requires an openclaw server config");
   }
   const headers = isRecord(operator.headers) ? operator.headers : {};

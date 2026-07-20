@@ -22,7 +22,6 @@ type ResolvedAgentSystemPromptConfig = Pick<
   | "subagentDelegationMode"
   | "ttsHint"
   | "modelAliasLines"
-  | "memoryCitationsMode"
   | "fsWorkspaceOnly"
 >;
 
@@ -49,7 +48,6 @@ function resolveAgentSystemPromptConfig(params: {
       "suggest",
     ttsHint: config ? buildTtsSystemPromptHint(config, agentId) : undefined,
     modelAliasLines: buildModelAliasLines(config),
-    memoryCitationsMode: config?.memory?.citations,
     fsWorkspaceOnly: resolveEffectiveToolFsWorkspaceOnly({ cfg: config, agentId }),
   };
 }

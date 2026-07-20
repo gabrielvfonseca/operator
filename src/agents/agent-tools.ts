@@ -410,8 +410,13 @@ type OperatorCodingToolsOptions = {
   /** Supplies run-global model-call ordering for parallel tool outcomes. */
   allocateToolOutcomeOrdinal?: (toolCallId?: string) => number;
   /** Runtime-only resolved skill paths that the read tool may load under workspaceOnly. */
-  /** Supplies run-global model-call ordering for parallel tool outcomes. */
-  allocateToolOutcomeOrdinal?: (toolCallId?: string) => number;
+  skillUsagePaths?: import("../skills/types.js").SkillUsagePath[];
+  /** Resolved skill snapshot for the current run. */
+  skillsSnapshot?: import("../skills/types.js").SkillSnapshot;
+  /** Conversation capability profile for model-aware tool availability. */
+  conversationCapabilityProfile?: import("../agents/conversation-capability-profile.js").ResolvedConversationCapabilityProfile;
+  /** Workshop run options for skill creation/refinement. */
+  skillWorkshop?: import("../skills/workshop/types.js").SkillWorkshopRunOptions;
 };
 
 function createOperatorCodingToolsInternal(options?: OperatorCodingToolsOptions): AnyAgentTool[] {

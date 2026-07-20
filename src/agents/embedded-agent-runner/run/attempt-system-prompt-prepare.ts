@@ -271,8 +271,6 @@ export async function prepareEmbeddedAttemptSystemPrompt(params: {
       bootstrapTruncationNotice: buildBootstrapPromptWarningNotice(
         params.bootstrap.bootstrapPromptWarning.lines,
       ),
-      includeMemorySection:
-        !params.activeContextEngine || params.activeContextEngine.info.id === "legacy",
       promptContribution,
     },
     providerTransform: {
