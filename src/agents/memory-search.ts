@@ -1,54 +1,34 @@
 /**
  * Resolves memory-search configuration for the new four-tier memory subsystem.
  */
+import type { MemorySearchConfig } from "../config/types.tools.js";
 import type { OperatorConfig } from "../config/config.js";
-import type { SecretInput } from "../config/types.secrets.js";
 import { clampInt } from "../utils.js";
+
+type ResolvedStore = {
+  driver: "qdrant" | "postgres" | "sqlite";
+  qdrantUrl?: string;
+  postgresUrl?: string;
+  databasePath?: string;
+  fts: { tokenizer: "unicode61" | "trigram" };
+  vector: { enabled: boolean };
+};
 
 export type ResolvedMemorySearchConfig = {
   enabled: boolean;
   sources: Array<"memory" | "sessions">;
   extraPaths: string[];
   provider: string;
-  remote?: {
-    baseUrl?: string;
-    apiKey?: SecretInput;
-    headers?: Record<string, string>;
-    nonBatchConcurrency?: number;
-    batch?: {
-      enabled: boolean;
-      wait: boolean;
-      concurrency: number;
-      pollIntervalMs: number;
-      timeoutMinutes: number;
-    };
-  };
-  experimental: {
-    sessionMemory: boolean;
-  };
+  remote?: MemorySearchConfig["remote"];
+  experimental: { sessionMemory: boolean };
   fallback: string;
   model: string;
   inputType?: string;
   queryInputType?: string;
   documentInputType?: string;
   outputDimensionality?: number;
-  local: {
-    modelPath?: string;
-    modelCacheDir?: string;
-    contextSize?: number | "auto";
-  };
-  store: {
-    driver: "qdrant" | "postgres" | "sqlite";
-    qdrantUrl?: string;
-    postgresUrl?: string;
-    databasePath?: string;
-    fts: {
-      tokenizer: "unicode61" | "trigram";
-    };
-    vector: {
-      enabled: boolean;
-    };
-  };
+  local: MemorySearchConfig["local"];
+  store: ResolvedStore;
   chunking: {
     tokens: number;
     overlap: number;
@@ -57,23 +37,36 @@ export type ResolvedMemorySearchConfig = {
     onSessionStart: boolean;
     onSearch: boolean;
     watch: boolean;
+    sessions: {
+      deltaBytes?: number;
+      deltaMessages?: number;
+      postCompactionForce?: boolean;
+    };
   };
   citationsMode: "off" | "compact" | "full";
 };
 
-export function resolveMemorySearchConfig(params: {
-  config: OperatorConfig;
-  agentId?: string;
-}): ResolvedMemorySearchConfig {
-  const cfg = params.config;
+export function resolveMemorySearchConfig(
+  cfg: OperatorConfig,
+  _agentId?: string,
+): ResolvedMemorySearchConfig {
   const memorySearch = cfg.agents?.defaults?.memorySearch;
   const provider = memorySearch?.provider ?? "openai";
   const model = memorySearch?.model ?? "text-embedding-3-small";
   const chunking = memorySearch?.chunking ?? { tokens: 400, overlap: 80 };
-  const store = memorySearch?.store ?? {
+  const rawStore = memorySearch?.store ?? {
     driver: "qdrant" as const,
     fts: { tokenizer: "unicode61" as const },
     vector: { enabled: true },
+  };
+  const driver = rawStore.driver === "sqlite" ? "qdrant" : (rawStore.driver ?? "qdrant");
+  const resolvedStore: ResolvedStore = {
+    driver,
+    qdrantUrl: driver === "qdrant" ? "http://localhost:6333" : undefined,
+    postgresUrl: driver === "postgres" ? "postgres://localhost:5432/operator" : undefined,
+    databasePath: rawStore.databasePath,
+    fts: { tokenizer: rawStore.fts?.tokenizer ?? "unicode61" },
+    vector: { enabled: rawStore.vector?.enabled ?? true },
   };
   return {
     enabled: true,
@@ -95,22 +88,16 @@ export function resolveMemorySearchConfig(params: {
       modelCacheDir: memorySearch?.local?.modelCacheDir,
       contextSize: memorySearch?.local?.contextSize,
     },
-    store: {
-      driver: store.driver === "sqlite" ? "qdrant" : store.driver,
-      qdrantUrl: store.driver === "qdrant" ? "http://localhost:6333" : undefined,
-      postgresUrl: store.driver === "postgres" ? "postgres://localhost:5432/operator" : undefined,
-      databasePath: store.driver === "sqlite" ? undefined : store.databasePath,
-      fts: store.fts,
-      vector: store.vector,
-    },
+    store: resolvedStore,
     chunking: {
-      tokens: clampInt(chunking.tokens ?? 400, { min: 50, max: 4000 }),
-      overlap: clampInt(chunking.overlap ?? 80, { min: 0, max: 500 }),
+      tokens: clampInt(chunking.tokens ?? 400, 50, 4000),
+      overlap: clampInt(chunking.overlap ?? 80, 0, 500),
     },
     sync: {
       onSessionStart: memorySearch?.sync?.onSessionStart ?? true,
       onSearch: memorySearch?.sync?.onSearch ?? true,
       watch: memorySearch?.sync?.watch ?? true,
+      sessions: memorySearch?.sync?.sessions ?? {},
     },
     citationsMode: memorySearch?.citationsMode ?? "off",
   };

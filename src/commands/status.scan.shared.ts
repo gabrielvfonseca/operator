@@ -47,8 +47,8 @@ function loadGatewayCallModule() {
   return gatewayCallModuleLoader.load();
 }
 
-function hasBuiltInMemoryState(databasePath: string): boolean {
-  if (!existsSync(databasePath)) {
+function hasBuiltInMemoryState(databasePath: string | undefined): boolean {
+  if (!databasePath || !existsSync(databasePath)) {
     return false;
   }
   const { DatabaseSync } = requireNodeSqlite();
@@ -385,7 +385,7 @@ export async function resolveSharedMemoryStatusSnapshot(params: {
   resolveMemoryConfig: (
     cfg: OperatorConfig,
     agentId: string,
-  ) => { store: { databasePath: string } } | null;
+  ) => { store: { databasePath?: string } } | null;
   getMemorySearchManager: StatusMemorySearchManagerResolver;
   requireDefaultDatabasePath?: (agentId: string) => string | null;
 }): Promise<MemoryStatusSnapshot | null> {

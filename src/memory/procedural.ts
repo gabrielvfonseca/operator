@@ -44,11 +44,12 @@ export type ProceduralClient = {
 
 export function createProceduralClient(config: MemoryProceduralConfig): ProceduralClient {
   let neo4j: {
-    query: (
+    run: (
       cypher: string,
       params?: Record<string, unknown>,
     ) => Promise<{ records: { keys: string[]; toObject: () => Record<string, unknown> }[] }>;
   } | null = null;
+
   let temporal: {
     connect: () => Promise<void>;
     start: (params: {
@@ -56,18 +57,11 @@ export function createProceduralClient(config: MemoryProceduralConfig): Procedur
       taskQueue: string;
       args: unknown[];
     }) => Promise<{ runId: string }>;
-    signal: (params: {
-      workflowId: string;
-      runId: string;
-      signalName: string;
-      args: unknown[];
-    }) => Promise<void>;
   } | null = null;
 
   async function ensureNeo4j() {
     if (neo4j) return neo4j;
     try {
-      // @ts-expect-error external module
       const mod = await import("neo4j-driver");
       const driver = mod.driver(
         config.neo4jUrl ?? "bolt://localhost:7687",
@@ -75,7 +69,12 @@ export function createProceduralClient(config: MemoryProceduralConfig): Procedur
       );
       const session = driver.session();
       await session.run("RETURN 1");
-      neo4j = session;
+      neo4j = {
+        run: (cypher: string, params?: Record<string, unknown>) =>
+          session.run(cypher, params) as Promise<{
+            records: { keys: string[]; toObject: () => Record<string, unknown> }[];
+          }>,
+      };
       return neo4j;
     } catch {
       return null;
@@ -106,7 +105,7 @@ export function createProceduralClient(config: MemoryProceduralConfig): Procedur
       const id =
         procedure.workflowId ?? `proc_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
       const now = new Date().toISOString();
-      await db.query(
+      await db.run(
         `MERGE (p:Procedure {id: $id}) SET p.name = $name, p.description = $description, p.tags = $tags, p.inputSchema = $inputSchema, p.outputSchema = $outputSchema, p.version = $version, p.workflowId = $workflowId, p.updatedAt = $updatedAt, p.createdAt = coalesce(p.createdAt, $updatedAt)`,
         {
           id,
@@ -122,7 +121,7 @@ export function createProceduralClient(config: MemoryProceduralConfig): Procedur
         },
       );
       for (const tag of procedure.tags) {
-        await db.query(`MERGE (t:Tag {name: $tag}) MERGE (p)-[:TAGGED]->(t) WHERE p.id = $id`, {
+        await db.run(`MERGE (t:Tag {name: $tag}) MERGE (p)-[:TAGGED]->(t) WHERE p.id = $id`, {
           tag,
           id,
         });
@@ -132,7 +131,7 @@ export function createProceduralClient(config: MemoryProceduralConfig): Procedur
     async getProcedure(id) {
       const db = await ensureNeo4j();
       if (!db) return null;
-      const res = await db.query(`MATCH (p:Procedure {id: $id}) RETURN p`, { id });
+      const res = await db.run(`MATCH (p:Procedure {id: $id}) RETURN p`, { id });
       const record = res.records[0];
       if (!record) return null;
       const p = record.toObject().p as Record<string, unknown>;
@@ -164,7 +163,7 @@ export function createProceduralClient(config: MemoryProceduralConfig): Procedur
       }
       const where = clauses.length ? `WHERE ${clauses.join(" AND ")}` : "";
       const limit = q.limit ?? 50;
-      const res = await db.query(
+      const res = await db.run(
         `MATCH (p:Procedure) ${where} RETURN p ORDER BY p.updatedAt DESC LIMIT ${limit}`,
         params,
       );

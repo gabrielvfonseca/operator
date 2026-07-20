@@ -510,7 +510,9 @@ export type MemorySearchConfig = {
   };
   /** Index storage configuration. */
   store?: {
-    driver?: "sqlite";
+    driver?: "sqlite" | "qdrant" | "postgres";
+    /** Optional SQLite database path for local storage. */
+    databasePath?: string;
     fts?: {
       /** FTS5 tokenizer (default: "unicode61"). Use "trigram" for CJK text support. */
       tokenizer?: "unicode61" | "trigram";
@@ -590,6 +592,8 @@ export type MemorySearchConfig = {
     /** Optional cap on cached embeddings (best-effort). */
     maxEntries?: number;
   };
+  /** Citation display mode for memory search results. */
+  citationsMode?: "off" | "compact" | "full";
 };
 
 export type ToolsConfig = {

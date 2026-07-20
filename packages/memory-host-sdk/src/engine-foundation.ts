@@ -9,9 +9,7 @@ export {
 } from "./host/openclaw-runtime-agent.js";
 export {
   resolveMemorySearchConfig,
-  resolveMemorySearchSyncConfig,
   type ResolvedMemorySearchConfig,
-  type ResolvedMemorySearchSyncConfig,
 } from "./host/openclaw-runtime-agent.js";
 export { parseDurationMs } from "./host/openclaw-runtime-config.js";
 export { loadConfig } from "./host/openclaw-runtime-config.js";

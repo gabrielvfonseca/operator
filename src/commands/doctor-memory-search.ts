@@ -561,9 +561,9 @@ export async function noteMemorySearchHealth(
       }
       return;
     }
-    const hasExplicitLocalModel = hasLocalEmbeddings(resolved.local);
+    const hasExplicitLocalModel = hasLocalEmbeddings(resolved.local ?? {});
     const hasUnavailableConfiguredLocalModel =
-      Boolean(normalizeOptionalString(resolved.local.modelPath)) && !hasExplicitLocalModel;
+      Boolean(normalizeOptionalString(resolved.local?.modelPath)) && !hasExplicitLocalModel;
     if (opts?.gatewayMemoryProbe?.skipped && !hasUnavailableConfiguredLocalModel) {
       return;
     }
@@ -704,7 +704,11 @@ export async function noteMemorySearchHealth(
  * Check whether local embeddings are available.
  *
  */
-function hasLocalEmbeddings(local: { modelPath?: string }): boolean {
+function hasLocalEmbeddings(local: {
+  modelPath?: string;
+  modelCacheDir?: string;
+  contextSize?: number | "auto";
+}): boolean {
   const modelPath = normalizeOptionalString(local.modelPath);
   if (!modelPath) {
     return false;

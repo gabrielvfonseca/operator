@@ -13,11 +13,9 @@ export {
   resolveCronStyleNow,
   resolveDefaultAgentId,
   resolveMemorySearchConfig,
-  resolveMemorySearchSyncConfig,
   resolveSessionAgentId,
 } from "./operator-runtime.js";
 export type {
   AnyAgentTool,
   ResolvedMemorySearchConfig,
-  ResolvedMemorySearchSyncConfig,
 } from "./operator-runtime.js";

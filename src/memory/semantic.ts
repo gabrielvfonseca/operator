@@ -31,31 +31,77 @@ export type SemanticClient = {
   >;
 };
 
+type QdrantApi = {
+  collections: {
+    getCollections: () => Promise<{ result?: { collections: Array<{ name: string }> } }>;
+  };
+  points: {
+    upsertPoints: (
+      collectionName: string,
+      data: {
+        points: Array<{ id: string | number; vector: number[]; payload?: Record<string, unknown> }>;
+      },
+    ) => Promise<{ result?: { status: string } }>;
+    searchPoints: (
+      collectionName: string,
+      data: {
+        vector: number[];
+        limit: number;
+        scoreThreshold?: number;
+        filter?: { must: Array<{ key: string; match: { value: string } }> };
+      },
+    ) => Promise<{
+      result?: Array<{ id: string | number; score: number; payload?: Record<string, unknown> }>;
+    }>;
+    deletePoints: (
+      collectionName: string,
+      data: { points: Array<string | number> },
+    ) => Promise<{ result?: { status: string } }>;
+  };
+};
+
 export function createSemanticClient(config: MemorySemanticConfig): SemanticClient {
-  let qdrant: {
-    upsert: (params: {
-      collectionName: string;
-      points: { id: string | number; vector: number[]; payload?: Record<string, unknown> }[];
-    }) => Promise<void>;
-    search: (params: {
-      collectionName: string;
-      vector: number[];
-      limit: number;
-      scoreThreshold?: number;
-      filter?: { must: { key: string; match: { value: string } }[] };
-    }) => Promise<{ id: string | number; score: number; payload?: Record<string, unknown> }[]>;
-    delete: (params: { collectionName: string; points: (string | number)[] }) => Promise<void>;
+  let client: {
+    getCollections: () => Promise<{ result?: { collections: Array<{ name: string }> } }>;
+    upsertPoints: (
+      collectionName: string,
+      data: {
+        points: Array<{ id: string | number; vector: number[]; payload?: Record<string, unknown> }>;
+      },
+    ) => Promise<{ result?: { status: string } }>;
+    searchPoints: (
+      collectionName: string,
+      data: {
+        vector: number[];
+        limit: number;
+        scoreThreshold?: number;
+        filter?: { must: Array<{ key: string; match: { value: string } }> };
+      },
+    ) => Promise<{
+      result?: Array<{ id: string | number; score: number; payload?: Record<string, unknown> }>;
+    }>;
+    deletePoints: (
+      collectionName: string,
+      data: { points: Array<string | number> },
+    ) => Promise<{ result?: { status: string } }>;
   } | null = null;
 
   async function ensureQdrant() {
-    if (qdrant) return qdrant;
+    if (client) return client;
     try {
-      // @ts-expect-error external module
       const mod = await import("qdrant-client");
-      const client = new mod.QdrantClient({ url: config.qdrantUrl });
-      await client.getCollections();
-      qdrant = client;
-      return qdrant;
+      const httpClient = new mod.Api({ baseUrl: config.qdrantUrl }) as unknown as QdrantApi;
+      await httpClient.collections.getCollections();
+      client = {
+        getCollections: () => httpClient.collections.getCollections(),
+        upsertPoints: (collectionName, data) =>
+          httpClient.points.upsertPoints(collectionName, { points: data.points }),
+        searchPoints: (collectionName, data) =>
+          httpClient.points.searchPoints(collectionName, data),
+        deletePoints: (collectionName, data) =>
+          httpClient.points.deletePoints(collectionName, { points: data.points }),
+      };
+      return client;
     } catch {
       return null;
     }
@@ -66,8 +112,7 @@ export function createSemanticClient(config: MemorySemanticConfig): SemanticClie
       const q = await ensureQdrant();
       if (!q) throw new Error("semantic store unavailable");
       const id = `${chunk.agentId}:${Date.now()}:${Math.random().toString(36).slice(2, 9)}`;
-      await q.upsert({
-        collectionName: config.collection ?? "semantic_memory",
+      await q.upsertPoints(config.collection ?? "semantic_memory", {
         points: [
           {
             id,
@@ -88,7 +133,7 @@ export function createSemanticClient(config: MemorySemanticConfig): SemanticClie
     async deleteChunk(id) {
       const q = await ensureQdrant();
       if (!q) return;
-      await q.delete({ collectionName: config.collection ?? "semantic_memory", points: [id] });
+      await q.deletePoints(config.collection ?? "semantic_memory", { points: [id] });
     },
     async query(qParams) {
       const q = await ensureQdrant();
@@ -101,14 +146,13 @@ export function createSemanticClient(config: MemorySemanticConfig): SemanticClie
       const filter = qParams.agentId
         ? { must: [{ key: "agentId", match: { value: qParams.agentId } }] }
         : undefined;
-      const res = await q.search({
-        collectionName: config.collection ?? "semantic_memory",
+      const res = await q.searchPoints(config.collection ?? "semantic_memory", {
         vector: qParams.queryEmbedding ?? [],
         limit: qParams.limit ?? 20,
         scoreThreshold: qParams.scoreThreshold,
-        filter: filter as any,
+        filter,
       });
-      return res.map((r) => ({
+      return (res.result ?? []).map((r) => ({
         id: String(r.id),
         score: r.score,
         text: (r.payload?.text as string | undefined) ?? "",
