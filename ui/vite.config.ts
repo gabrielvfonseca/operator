@@ -289,7 +289,7 @@ export function resolveSourcePackageAliasesForVite(): ControlUiViteAlias[] {
 export function resolveExternalPackageAliasesForVite(): ControlUiViteAlias[] {
   return [
     {
-      find: "@operator/libterminal/browser",
+      find: "@openclaw/libterminal/browser",
       replacement: path.join(
         repoRoot,
         "node_modules",
@@ -300,7 +300,7 @@ export function resolveExternalPackageAliasesForVite(): ControlUiViteAlias[] {
       ),
     },
     {
-      find: "@operator/uirouter",
+      find: "@openclaw/uirouter",
       replacement: path.join(repoRoot, "node_modules", "@openclaw", "uirouter", "dist", "index.js"),
     },
   ];

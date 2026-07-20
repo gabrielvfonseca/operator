@@ -108,7 +108,7 @@ const OPENAI_CODEX_RESPONSES_DEFAULT_INSTRUCTIONS = "Follow the user request.";
 const AZURE_RESPONSES_FIRST_EVENT_TIMEOUT_MS = 30_000;
 const RESPONSE_FAILED_NO_DETAILS_MESSAGE = "Unknown error (no error details in response)";
 const OPENAI_RESPONSES_REASONING_REPLAY_META_KEY = "__operator_replay";
-const OPENAI_RESPONSES_REASONING_REPLAY_BLOCK_META_KEY = "openclawReasoningReplay";
+const OPENAI_RESPONSES_REASONING_REPLAY_BLOCK_META_KEY = "operatorReasoningReplay";
 const OPENAI_RESPONSES_REPLAY_ITEM_ID_MAX_LENGTH = 64;
 
 type ReplayableResponseOutputMessage = Omit<ResponseOutputMessage, "id"> & { id?: string };
@@ -1924,7 +1924,7 @@ export function createOpenAIResponsesTransportStreamFn(): StreamFn {
         ) as typeof params;
         params = sanitizeResponsesImagePayload(params as Record<string, unknown>) as typeof params;
         if (
-          (options as { openclawCodeModeToolSurface?: unknown } | undefined)
+          (options as { operatorCodeModeToolSurface?: unknown } | undefined)
             ?.operatorCodeModeToolSurface === true
         ) {
           enforceCodeModeResponsesToolSurface(params);
@@ -2325,7 +2325,7 @@ export function createAzureOpenAIResponsesTransportStreamFn(): StreamFn {
         ) as typeof params;
         params = sanitizeResponsesImagePayload(params as Record<string, unknown>) as typeof params;
         if (
-          (options as { openclawCodeModeToolSurface?: unknown } | undefined)
+          (options as { operatorCodeModeToolSurface?: unknown } | undefined)
             ?.operatorCodeModeToolSurface === true
         ) {
           enforceCodeModeResponsesToolSurface(params);

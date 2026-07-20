@@ -12,7 +12,7 @@ import { clearRuntimeConfigSnapshot, setRuntimeConfigSnapshot } from "../../conf
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { createDeferred } from "../../test-utils/deferred.js";
 import { withEnvAsync } from "../../test-utils/env.js";
-import { withOperatorTestState } from "../../test-utils/openclaw-test-state.js";
+import { withOperatorTestState } from "../../test-utils/operator-test-state.ts";
 import { expectGatewayErrorResponse } from "./gateway-response.test-helpers.js";
 import { modelsHandlers } from "./models.js";
 import type { RespondFn } from "./types.js";

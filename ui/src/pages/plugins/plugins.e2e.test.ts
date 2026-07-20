@@ -69,7 +69,7 @@ const lobsterPlugin = {
   state: "not-installed",
   featured: true,
   order: 50,
-  install: { source: "clawhub", packageName: "@operator/lobster" },
+  install: { source: "clawhub", packageName: "@gabrielvfonseca/lobster" },
 } satisfies PluginCatalogItem;
 
 const calendarPlugin = {

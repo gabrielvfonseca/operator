@@ -305,7 +305,7 @@ export function createOpenAICompletionsTransportStreamFn(): StreamFn {
           params = nextParams as typeof params;
         }
         if (
-          (options as { openclawCodeModeToolSurface?: unknown } | undefined)
+          (options as { operatorCodeModeToolSurface?: unknown } | undefined)
             ?.operatorCodeModeToolSurface === true
         ) {
           enforceCodeModeResponsesToolSurface(params);

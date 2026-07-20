@@ -43,7 +43,7 @@ const log = createSubsystemLogger("llm/providers/stream-wrappers");
 type OpenAIServiceTier = "auto" | "default" | "flex" | "priority";
 type DynamicFastMode = boolean | (() => boolean | undefined);
 type OperatorSimpleStreamOptions = SimpleStreamOptions & {
-  openclawCodeModeToolSurface?: boolean;
+  operatorCodeModeToolSurface?: boolean;
 };
 type OpenAIResponsesReplayOptions = Parameters<StreamFn>[2] & {
   replayResponsesItemIds?: boolean;
@@ -711,7 +711,7 @@ export function createCodexNativeWebSearchWrapper(
       const originalOnPayload = options?.onPayload;
       const codeModeOptions: OperatorSimpleStreamOptions = {
         ...options,
-        openclawCodeModeToolSurface: true,
+        operatorCodeModeToolSurface: true,
         onPayload: (payload) => {
           filterCodeModePayloadTools(payload);
           const nextPayload = originalOnPayload?.(payload, model);

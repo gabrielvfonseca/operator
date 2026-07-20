@@ -36,8 +36,8 @@ describe("parsePluginReleaseSelection", () => {
 
   it("dedupes and sorts comma or whitespace separated package names", () => {
     expect(
-      parsePluginReleaseSelection(" @operator/zalo, @operator/feishu  @operator/zalo "),
-    ).toEqual(["@operator/feishu", "@operator/zalo"]);
+      parsePluginReleaseSelection(" @operator/zalo, @gabrielvfonseca/feishu  @operator/zalo "),
+    ).toEqual(["@gabrielvfonseca/feishu", "@operator/zalo"]);
   });
 });
 
@@ -145,7 +145,7 @@ function externalPluginContract(version: string) {
       pluginApi: `>=${version}`,
     },
     build: {
-      openclawVersion: version,
+      operatorVersion: version,
     },
   };
 }
@@ -299,7 +299,7 @@ describe("collectPublishablePluginPackageErrors", () => {
       }),
     ).toEqual([
       "openclaw.compat.pluginApi is required for external code plugin packages.",
-      "openclaw.build.openclawVersion is required for external code plugin packages.",
+      "openclaw.build.operatorVersion is required for external code plugin packages.",
     ]);
   });
 
@@ -738,7 +738,7 @@ describe("resolveSelectedPublishablePluginPackages", () => {
     {
       extensionId: "feishu",
       packageDir: bundledPluginRoot("feishu"),
-      packageName: "@operator/feishu",
+      packageName: "@gabrielvfonseca/feishu",
       version: "2026.3.15",
       channel: "stable",
       publishTag: "latest",
@@ -799,7 +799,7 @@ describe("resolveChangedPublishablePluginPackages", () => {
     {
       extensionId: "feishu",
       packageDir: bundledPluginRoot("feishu"),
-      packageName: "@operator/feishu",
+      packageName: "@gabrielvfonseca/feishu",
       version: "2026.3.15",
       channel: "stable",
       publishTag: "latest",

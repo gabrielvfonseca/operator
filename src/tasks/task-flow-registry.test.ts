@@ -1,6 +1,6 @@
 // Covers managed task-flow creation, lookup, ownership, and state transitions.
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { withOperatorTestState } from "../test-utils/openclaw-test-state.js";
+import { withOperatorTestState } from "../test-utils/operator-test-state.ts";
 import {
   createTaskFlowForTask as createTaskFlowForTaskOrNull,
   createManagedTaskFlow as createManagedTaskFlowOrNull,

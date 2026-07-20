@@ -100,7 +100,7 @@ describe("resolveChangedClawHubPublishablePluginPackages", () => {
     {
       extensionId: "feishu",
       packageDir: "extensions/feishu",
-      packageName: "@operator/feishu",
+      packageName: "@gabrielvfonseca/feishu",
       version: "2026.4.1",
       channel: "stable",
       publishTag: "latest",
@@ -335,7 +335,7 @@ describe("collectClawHubVersionGateErrors", () => {
               npmSpec: "@operator/demo-plugin",
             },
             build: {
-              openclawVersion: "2026.4.1",
+              operatorVersion: "2026.4.1",
             },
             release: {
               publishToClawHub: true,
@@ -2044,7 +2044,7 @@ function createTempPluginRepo(
                     pluginApi: ">=2026.4.1",
                   },
                   build: {
-                    openclawVersion: "2026.4.1",
+                    operatorVersion: "2026.4.1",
                   },
                 }),
             install: {

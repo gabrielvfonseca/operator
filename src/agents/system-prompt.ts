@@ -44,8 +44,8 @@ import type {
 } from "./embedded-agent-runner/types.js";
 import { buildPromisedWorkPromptSection } from "./promised-work-prompt.js";
 import {
-  buildOpenClawToolFallbackText,
-  shouldRenderOpenClawToolWorkflowHints,
+  buildOperatorToolFallbackText,
+  shouldRenderOperatorToolWorkflowHints,
 } from "./prompt-surface.js";
 import { sanitizeForPromptLiteral } from "./sanitize-for-prompt.js";
 import type {
@@ -838,7 +838,7 @@ export function buildAgentSystemPrompt(params: {
     toolLines.push(summary ? `- ${name}: ${summary}` : `- ${name}`);
   }
   const toolSchemaDirectoryPrompt = params.toolSchemaDirectoryPrompt?.trim();
-  const renderOpenClawToolWorkflowHints = shouldRenderOpenClawToolWorkflowHints({
+  const renderOpenClawToolWorkflowHints = shouldRenderOperatorToolWorkflowHints({
     surface: promptSurface,
     hasToolList: toolLines.length > 0,
   });
@@ -996,7 +996,7 @@ export function buildAgentSystemPrompt(params: {
       "Tools policy-filtered. Names case-sensitive; call exact.",
       toolLines.length > 0
         ? toolLines.join("\n")
-        : buildOpenClawToolFallbackText({
+        : buildOperatorToolFallbackText({
             surface: promptSurface,
             execToolName,
             processToolName,

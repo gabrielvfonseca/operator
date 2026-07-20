@@ -132,7 +132,7 @@ function binaryCandidates(base: string, platform: NodeJS.Platform): string[] {
 export function resolveCrabboxBinary(params: {
   explicit?: string;
   isExecutable?: IsExecutable;
-  openclawRoot: string;
+  operatorRoot: string;
   pathEnv?: string;
   platform?: NodeJS.Platform;
 }): string {

@@ -988,7 +988,7 @@ describe("gateway server chat", () => {
         if (!message || typeof message !== "object") {
           return false;
         }
-        const entry = message as { role?: unknown; openclawMessageToolMirror?: unknown };
+        const entry = message as { role?: unknown; operatorMessageToolMirror?: unknown };
         return entry.role === "assistant" && Boolean(entry.operatorMessageToolMirror);
       }),
     ).toBe(true);
@@ -1042,7 +1042,7 @@ describe("gateway server chat", () => {
       expect.objectContaining({
         role: "assistant",
         content: [{ type: "text", text: replyText }],
-        openclawMessageToolMirror: {
+        operatorMessageToolMirror: {
           toolName: "message",
           toolCallId: "call-message-internal-source",
           sourceReplySink: "internal-ui",
@@ -1102,7 +1102,7 @@ describe("gateway server chat", () => {
         (message) =>
           Boolean(message) &&
           typeof message === "object" &&
-          Boolean((message as { openclawMessageToolMirror?: unknown }).operatorMessageToolMirror),
+          Boolean((message as { operatorMessageToolMirror?: unknown }).operatorMessageToolMirror),
       ),
     ).toBe(true);
     expect(historyMessages).not.toContainEqual(
@@ -1150,7 +1150,7 @@ describe("gateway server chat", () => {
         (message) =>
           Boolean(message) &&
           typeof message === "object" &&
-          Boolean((message as { openclawMessageToolMirror?: unknown }).operatorMessageToolMirror),
+          Boolean((message as { operatorMessageToolMirror?: unknown }).operatorMessageToolMirror),
       ),
     ).toBe(true);
     expect(historyMessages).not.toContainEqual(
@@ -1198,7 +1198,7 @@ describe("gateway server chat", () => {
         (message) =>
           Boolean(message) &&
           typeof message === "object" &&
-          Boolean((message as { openclawMessageToolMirror?: unknown }).operatorMessageToolMirror),
+          Boolean((message as { operatorMessageToolMirror?: unknown }).operatorMessageToolMirror),
       ),
     ).toBe(true);
     expect(historyMessages).not.toContainEqual(
@@ -1270,7 +1270,7 @@ describe("gateway server chat", () => {
         (message) =>
           Boolean(message) &&
           typeof message === "object" &&
-          Boolean((message as { openclawMessageToolMirror?: unknown }).operatorMessageToolMirror),
+          Boolean((message as { operatorMessageToolMirror?: unknown }).operatorMessageToolMirror),
       ),
     ).toHaveLength(2);
     expect(historyMessages).not.toContainEqual(
@@ -1336,7 +1336,7 @@ describe("gateway server chat", () => {
         (message) =>
           Boolean(message) &&
           typeof message === "object" &&
-          Boolean((message as { openclawMessageToolMirror?: unknown }).operatorMessageToolMirror),
+          Boolean((message as { operatorMessageToolMirror?: unknown }).operatorMessageToolMirror),
       ),
     ).toBe(true);
   });
@@ -1384,7 +1384,7 @@ describe("gateway server chat", () => {
         (message) =>
           Boolean(message) &&
           typeof message === "object" &&
-          Boolean((message as { openclawMessageToolMirror?: unknown }).operatorMessageToolMirror),
+          Boolean((message as { operatorMessageToolMirror?: unknown }).operatorMessageToolMirror),
       ),
     ).toBe(false);
   });
@@ -1429,7 +1429,7 @@ describe("gateway server chat", () => {
         (message) =>
           Boolean(message) &&
           typeof message === "object" &&
-          Boolean((message as { openclawMessageToolMirror?: unknown }).operatorMessageToolMirror),
+          Boolean((message as { operatorMessageToolMirror?: unknown }).operatorMessageToolMirror),
       ),
     ).toBe(false);
   });
@@ -1481,7 +1481,7 @@ describe("gateway server chat", () => {
         (message) =>
           Boolean(message) &&
           typeof message === "object" &&
-          Boolean((message as { openclawMessageToolMirror?: unknown }).operatorMessageToolMirror),
+          Boolean((message as { operatorMessageToolMirror?: unknown }).operatorMessageToolMirror),
       ),
     ).toBe(false);
   });

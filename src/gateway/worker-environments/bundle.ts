@@ -21,7 +21,7 @@ const NPM_RELEASE_PROOF_TIMEOUT_MS = 60_000;
 const NPM_SHA512_INTEGRITY_PATTERN = /^sha512-[A-Za-z0-9+/]{86}==$/u;
 type WorkerInstallationArtifactBase = {
   bundleHash: string;
-  openclawVersion: string;
+  operatorVersion: string;
   protocolFeatures: readonly string[];
 };
 
@@ -46,7 +46,7 @@ export type WorkerBundleProducer = {
 type WorkerBundleProducerOptions = {
   packageRoot?: string;
   cacheDir?: string;
-  openclawVersion?: string;
+  operatorVersion?: string;
   protocolFeatures?: readonly string[];
 };
 
@@ -252,7 +252,7 @@ async function verifyPublishedNpmRelease(params: {
     const packedBundle = await prepareWorkerBundle({
       packageRoot: extractedRoot,
       cacheDir: path.join(temporaryRoot, "bundle-cache"),
-      openclawVersion: params.version,
+      operatorVersion: params.version,
     });
     if (packedBundle.bundleHash !== params.bundleHash) {
       throw new Error(
@@ -433,8 +433,8 @@ async function prepareWorkerBundle(
   const cacheDir = options.cacheDir
     ? path.resolve(options.cacheDir)
     : path.join(resolveStateDir(), "cache", "worker-bundles");
-  const openclawVersion = (options.operatorVersion ?? VERSION).trim();
-  if (!openclawVersion) {
+  const operatorVersion = (options.operatorVersion ?? VERSION).trim();
+  if (!operatorVersion) {
     throw new Error("Worker bundle requires a non-empty Operator version");
   }
   const protocolFeatures = normalizeProtocolFeatures(options.protocolFeatures ?? []);
@@ -452,7 +452,7 @@ async function prepareWorkerBundle(
     return {
       install: "bundle",
       bundleHash,
-      openclawVersion,
+      operatorVersion,
       protocolFeatures,
       tarballSha256: await hashWorkerBundleTarball(tarballPath),
       tarballPath,
@@ -515,7 +515,7 @@ export async function resolveWorkerNpmInstallationArtifact(params: {
   return {
     install: "npm",
     bundleHash: params.bundle.bundleHash,
-    openclawVersion: version,
+    operatorVersion: version,
     packageIntegrity,
     protocolFeatures: params.bundle.protocolFeatures,
     packageSpec: `openclaw@${version}`,

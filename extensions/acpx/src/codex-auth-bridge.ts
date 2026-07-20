@@ -16,9 +16,9 @@ import { quoteCommandPart, splitCommandParts } from "./command-line.js";
 import { resolveAcpxPluginRoot } from "./config.js";
 import type { ResolvedAcpxPluginConfig } from "./config.js";
 import {
-  OPENCLAW_ACPX_LEASE_ID_ARG,
-  OPENCLAW_ACPX_LEASE_ID_ENV,
-  OPENCLAW_GATEWAY_INSTANCE_ID_ARG,
+  OPERATOR_ACPX_LEASE_ID_ARG,
+  OPERATOR_ACPX_LEASE_ID_ENV,
+  OPERATOR_GATEWAY_INSTANCE_ID_ARG,
 } from "./process-lease.js";
 
 const CODEX_ACP_PACKAGE = "@zed-industries/codex-acp";
@@ -245,8 +245,8 @@ const stderrLogFileNamePrefix = ${params.stderrLogFileNamePrefix ? JSON.stringif
 const stderrLogMaxChars = 256 * 1024;
 
 const openClawWrapperArgs = new Set([
-  ${quoteCommandPart(OPENCLAW_ACPX_LEASE_ID_ARG)},
-  ${quoteCommandPart(OPENCLAW_GATEWAY_INSTANCE_ID_ARG)},
+  ${quoteCommandPart(OPERATOR_ACPX_LEASE_ID_ARG)},
+  ${quoteCommandPart(OPERATOR_GATEWAY_INSTANCE_ID_ARG)},
 ]);
 
 function readOpenClawWrapperArg(args, name) {
@@ -268,8 +268,8 @@ function resolveStderrLogPath(args) {
     return undefined;
   }
   const leaseId =
-    process.env[${JSON.stringify(OPENCLAW_ACPX_LEASE_ID_ENV)}] ||
-    readOpenClawWrapperArg(args, ${quoteCommandPart(OPENCLAW_ACPX_LEASE_ID_ARG)}) ||
+    process.env[${JSON.stringify(OPERATOR_ACPX_LEASE_ID_ENV)}] ||
+    readOpenClawWrapperArg(args, ${quoteCommandPart(OPERATOR_ACPX_LEASE_ID_ARG)}) ||
     "pid-" + process.pid;
   const fileName = stderrLogFileNamePrefix + "." + safeDiagnosticFilePart(leaseId) + ".log";
   return fileURLToPath(new URL("./" + fileName, import.meta.url));

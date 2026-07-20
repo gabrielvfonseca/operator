@@ -705,7 +705,7 @@ function descriptor(socketPath: string, workspaceDir: string): WorkerLaunchDescr
       rpcSetVersion: WORKER_RPC_SET_VERSION,
       handshake: {
         bundleHash: BUNDLE_HASH,
-        openclawVersion: "worker-test",
+        operatorVersion: "worker-test",
         protocolFeatures: [...WORKER_PROTOCOL_FEATURES],
       },
     },

@@ -49,7 +49,7 @@ function bundleArtifact(overrides: Partial<WorkerBundleArtifact> = {}): WorkerBu
   return {
     install: "bundle",
     bundleHash: "a".repeat(64),
-    openclawVersion: "1.2.3",
+    operatorVersion: "1.2.3",
     protocolFeatures: [],
     tarballSha256: "b".repeat(64),
     tarballPath: "/tmp/operator-worker.tgz",
@@ -74,12 +74,12 @@ describe("worker bundle producer", () => {
       const first = await createWorkerBundleProducer({
         packageRoot: packageA,
         cacheDir: path.join(root, "cache-a"),
-        openclawVersion: "1.2.3",
+        operatorVersion: "1.2.3",
       }).prepare();
       const second = await createWorkerBundleProducer({
         packageRoot: packageB,
         cacheDir: path.join(root, "cache-b"),
-        openclawVersion: "1.2.3",
+        operatorVersion: "1.2.3",
       }).prepare();
 
       expect(first.bundleHash).toMatch(/^[a-f0-9]{64}$/u);
@@ -115,7 +115,7 @@ describe("worker bundle producer", () => {
       const bundle = await createWorkerBundleProducer({
         packageRoot,
         cacheDir: path.join(root, "cache"),
-        openclawVersion: "1.2.3",
+        operatorVersion: "1.2.3",
       }).prepare();
       const extractRoot = path.join(root, "extract");
       await fs.mkdir(extractRoot, { recursive: true });
@@ -175,7 +175,7 @@ describe("worker bundle producer", () => {
       const bundle = await createWorkerBundleProducer({
         packageRoot,
         cacheDir: path.join(root, "cache"),
-        openclawVersion: "1.2.3",
+        operatorVersion: "1.2.3",
       }).prepare();
 
       await expect(listTarball(bundle.tarballPath)).resolves.toEqual([
@@ -226,7 +226,7 @@ describe("worker bundle producer", () => {
         createWorkerBundleProducer({
           packageRoot,
           cacheDir: path.join(root, "cache"),
-          openclawVersion: "1.2.3",
+          operatorVersion: "1.2.3",
         }).prepare(),
       ).rejects.toThrow("cannot resolve workspace dependency @gabrielvfonseca/fake-pkg");
     });
@@ -395,7 +395,7 @@ describe("worker npm installation artifact", () => {
       expect(artifact).toEqual({
         install: "npm",
         bundleHash: "a".repeat(64),
-        openclawVersion: "1.2.3",
+        operatorVersion: "1.2.3",
         packageIntegrity,
         protocolFeatures: ["admission"],
         packageSpec: "openclaw@1.2.3",
@@ -409,7 +409,7 @@ describe("worker npm installation artifact", () => {
     });
     await expect(
       resolveWorkerNpmInstallationArtifact({
-        bundle: bundleArtifact({ openclawVersion: "dev" }),
+        bundle: bundleArtifact({ operatorVersion: "dev" }),
         isPackageInstall: async () => true,
         verifyRelease,
       }),

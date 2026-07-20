@@ -9,7 +9,7 @@ import {
   createOperatorTestState,
   withOperatorTestState,
   type OperatorTestState,
-} from "../test-utils/openclaw-test-state.js";
+} from "../test-utils/operator-test-state.ts";
 import {
   closePluginStateDatabase,
   createCorePluginStateSyncKeyedStore,

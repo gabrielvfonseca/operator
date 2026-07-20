@@ -391,17 +391,17 @@ function stubDeleteConfirmGeometry(params: {
     offsetTop: params.viewport.top ?? 0,
     width: params.viewport.width,
   });
-  vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(
-    function (this: HTMLElement) {
-      if (this.classList.contains("chat-group-delete")) {
-        return domRect(params.trigger);
-      }
-      if (this.classList.contains("chat-delete-confirm")) {
-        return domRect(params.popover);
-      }
-      return domRect({});
-    },
-  );
+  vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function (
+    this: HTMLElement,
+  ) {
+    if (this.classList.contains("chat-group-delete")) {
+      return domRect(params.trigger);
+    }
+    if (this.classList.contains("chat-delete-confirm")) {
+      return domRect(params.popover);
+    }
+    return domRect({});
+  });
 }
 
 function clickDeleteButtonIconPath(deleteButton: HTMLButtonElement) {
@@ -3145,7 +3145,7 @@ describe("grouped chat rendering", () => {
       {
         role: "assistant",
         content: [{ type: "text", text: "mirrored text\n...(truncated)..." }],
-        openclawMessageToolMirror: { toolName: "message", toolCallId: "call-1" },
+        operatorMessageToolMirror: { toolName: "message", toolCallId: "call-1" },
         __operator: { id: "msg-tool-result", seq: 2, truncated: true },
       },
       {

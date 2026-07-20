@@ -7,7 +7,7 @@ import { createPinnedLookup } from "../infra/net/ssrf.js";
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../test-utils/openclaw-test-state.js";
+} from "../test-utils/operator-test-state.ts";
 import { saveMediaSource } from "./store.js";
 import { setMediaStoreNetworkDepsForTest } from "./store.test-support.js";
 

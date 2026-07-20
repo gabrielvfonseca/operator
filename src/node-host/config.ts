@@ -30,12 +30,12 @@ export const NODE_HOST_CONFIG_KEY = "current";
 export const LEGACY_NODE_HOST_CONFIG_FILE = "node.json";
 export const LEGACY_NODE_HOST_CONFIG_CLAIM_SUFFIX = ".doctor-importing";
 
-type NodeHostConfigDatabase = Pick<OpenClawStateKyselyDatabase, "node_host_config">;
+type NodeHostConfigDatabase = Pick<OperatorStateKyselyDatabase, "node_host_config">;
 type NodeHostConfigRow = Selectable<NodeHostConfigDatabase["node_host_config"]>;
 type NodeHostConfigRuntimeRow = Omit<NodeHostConfigRow, "token">;
 type NodeHostConfigInsert = Insertable<NodeHostConfigDatabase["node_host_config"]>;
 
-function databaseOptions(env: NodeJS.ProcessEnv): OpenClawStateDatabaseOptions {
+function databaseOptions(env: NodeJS.ProcessEnv): OperatorStateDatabaseOptions {
   return { env };
 }
 

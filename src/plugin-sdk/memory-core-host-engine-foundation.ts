@@ -8,10 +8,7 @@ export {
   resolveAgentDir,
   resolveAgentWorkspaceDir,
 } from "../agents/agent-scope.js";
-export {
-  resolveMemorySearchConfig,
-  resolveMemorySearchSyncConfig,
-} from "../agents/memory-search.js";
+export { resolveMemorySearchConfig } from "../agents/memory-search.js";
 export type { ResolvedMemorySearchConfig } from "../agents/memory-search.js";
 
 export type { OperatorConfig } from "../config/config.js";

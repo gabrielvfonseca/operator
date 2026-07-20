@@ -426,7 +426,7 @@ describe("sessions_send gateway loopback", () => {
             content: expect.arrayContaining([
               expect.objectContaining({ type: "text", text: deliveredReply }),
             ]),
-            openclawMessageToolMirror: expect.objectContaining({
+            operatorMessageToolMirror: expect.objectContaining({
               toolName: "message",
               toolCallId: "call-message-duplicate-proof",
             }),

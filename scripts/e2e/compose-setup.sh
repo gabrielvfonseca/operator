@@ -82,7 +82,7 @@ node --import tsx "$ROOT_DIR/scripts/e2e/lib/docker-artifact-proof/write-identit
   --package "$PACKAGE_TGZ" \
   --container "gateway=$GATEWAY_ID" \
   --container "cli=$CLI_NAME" \
-  --detail "gateway:openclawVersion=$GATEWAY_VERSION" \
+  --detail "gateway:operatorVersion=$GATEWAY_VERSION" \
   --detail "gateway:health=healthy" \
   --detail "cli:healthCommand=passed"
 

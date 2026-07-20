@@ -206,13 +206,13 @@ describe("SessionHistorySseState", () => {
       (
         appended?.message as {
           content?: Array<{ text?: string }>;
-          openclawMessageToolMirror?: unknown;
+          operatorMessageToolMirror?: unknown;
         }
       )?.content?.[0]?.text,
     ).toBe("Still the current chat.");
     expect(
       Boolean(
-        (appended?.message as { openclawMessageToolMirror?: unknown } | undefined)
+        (appended?.message as { operatorMessageToolMirror?: unknown } | undefined)
           ?.operatorMessageToolMirror,
       ),
     ).toBe(true);
@@ -278,13 +278,13 @@ describe("SessionHistorySseState", () => {
       (
         appended?.message as {
           content?: Array<{ text?: string }>;
-          openclawMessageToolMirror?: unknown;
+          operatorMessageToolMirror?: unknown;
         }
       )?.content?.[0]?.text,
     ).toBe("Still visible after forwarded handoff.");
     expect(
       Boolean(
-        (appended?.message as { openclawMessageToolMirror?: unknown } | undefined)
+        (appended?.message as { operatorMessageToolMirror?: unknown } | undefined)
           ?.operatorMessageToolMirror,
       ),
     ).toBe(true);

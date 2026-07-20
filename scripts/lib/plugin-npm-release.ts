@@ -37,7 +37,7 @@ type PluginPackageJson = {
       minGatewayVersion?: string;
     };
     build?: {
-      openclawVersion?: string;
+      operatorVersion?: string;
       pluginSdkVersion?: string;
     };
     release?: {

@@ -873,7 +873,7 @@ function summarizeSentinelErrorClass(findings: readonly GatewayLogSentinelFindin
 function classifyRuntimeParityCells(params: {
   operator: RuntimeParityCell;
   codex: RuntimeParityCell;
-  openclawScenarioStatus: "pass" | "fail";
+  operatorScenarioStatus: "pass" | "fail";
   codexScenarioStatus: "pass" | "fail";
 }): Pick<RuntimeParityResult, "drift" | "driftDetails"> {
   if (
@@ -1140,7 +1140,7 @@ export async function runRuntimeParityScenario(params: {
   const drift = classifyRuntimeParityCells({
     operator: operator.cell,
     codex: codex.cell,
-    openclawScenarioStatus: operator.scenarioStatus,
+    operatorScenarioStatus: operator.scenarioStatus,
     codexScenarioStatus: codex.scenarioStatus,
   });
   return {

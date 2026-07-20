@@ -9,7 +9,7 @@ import { getAgentScopedMediaLocalRoots } from "../../media/local-roots.js";
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../../test-utils/openclaw-test-state.js";
+} from "../../test-utils/operator-test-state.ts";
 import { createManagedOutgoingImageBlocks } from "../managed-image-attachments.js";
 import { normalizeWebchatReplyMediaPathsForDisplay } from "./chat-reply-media.js";
 

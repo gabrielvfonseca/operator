@@ -1,6 +1,6 @@
 import { expectDefined } from "@gabrielvfonseca/normalization-core";
 // Qa Lab tests cover bounded CI smoke profile planning.
-import { OPERATOR_CRABLINE_DEFAULT_CHANNEL } from "@openclaw/crabline";
+import { OPENCLAW_CRABLINE_DEFAULT_CHANNEL } from "@openclaw/crabline";
 import { describe, expect, it } from "vitest";
 import { createQaSmokeCiPart } from "./ci-smoke-plan.js";
 import { readQaScenarioPack } from "./scenario-catalog.js";
@@ -30,7 +30,7 @@ describe("createQaSmokeCiPart", () => {
 
     expect(repeatedLast).toEqual(parts[3]);
     for (const part of parts) {
-      expect(part.runs[0]?.channel).toBe(OPERATOR_CRABLINE_DEFAULT_CHANNEL);
+      expect(part.runs[0]?.channel).toBe(OPENCLAW_CRABLINE_DEFAULT_CHANNEL);
     }
     // The matrix channel run rides only on the last part.
     expect(

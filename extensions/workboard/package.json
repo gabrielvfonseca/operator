@@ -8,7 +8,7 @@
     "typebox": "1.3.3"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
     "@gabrielvfonseca/workboard-contract": "workspace:*",
     "@gabrielvfonseca/operator": "workspace:*"
   },

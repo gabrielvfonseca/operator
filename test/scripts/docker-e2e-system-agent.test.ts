@@ -25,7 +25,7 @@ describe("OpenClaw Docker E2E scripts", () => {
     );
     expect(source).toContain("const PACKAGED_CLI_TIMEOUT_MS = 60_000");
     expect(source).toContain("inference activation did not send the live model probe");
-    expect(source).toContain("function resolveDefaultModel(config: OpenClawConfig)");
+    expect(source).toContain("function resolveDefaultModel(config: OperatorConfig)");
     expect(source).toContain("resolveDefaultModel(config) === spec.model");
     expect(source).toContain("Fake Claude planner selected an inference-backed typed setup.");
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint

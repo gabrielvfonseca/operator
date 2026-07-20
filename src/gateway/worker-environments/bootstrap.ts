@@ -55,7 +55,7 @@ try {
   const actual = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
   const expected = JSON.parse(process.argv[2]);
   const shapeMatches =
-    Object.keys(actual).sort().join(",") === "bundleHash,openclawVersion,protocolFeatures";
+    Object.keys(actual).sort().join(",") === "bundleHash,operatorVersion,protocolFeatures";
   const featuresMatch =
     Array.isArray(actual.protocolFeatures) &&
     Array.isArray(expected.protocolFeatures) &&
@@ -520,12 +520,12 @@ type WorkerBootstrapDependencies = {
 
 function normalizeHandshake(artifact: WorkerInstallationArtifact): WorkerAdmissionHandshake {
   const bundleHash = artifact.bundleHash.trim();
-  const openclawVersion = artifact.operatorVersion.trim();
+  const operatorVersion = artifact.operatorVersion.trim();
   const protocolFeatures = artifact.protocolFeatures.map((feature) => feature.trim());
   if (!BUNDLE_HASH_PATTERN.test(bundleHash)) {
     throw new Error("Worker bundle hash must be a lowercase SHA-256 digest");
   }
-  if (!openclawVersion) {
+  if (!operatorVersion) {
     throw new Error("Worker Operator version must be non-empty");
   }
   if (
@@ -538,10 +538,10 @@ function normalizeHandshake(artifact: WorkerInstallationArtifact): WorkerAdmissi
   }
   if (artifact.install === "npm") {
     if (
-      !isExactSemverVersion(openclawVersion) ||
-      artifact.packageSpec !== `openclaw@${openclawVersion}`
+      !isExactSemverVersion(operatorVersion) ||
+      artifact.packageSpec !== `openclaw@${operatorVersion}`
     ) {
-      throw new Error(`Worker npm install must use exact package openclaw@${openclawVersion}`);
+      throw new Error(`Worker npm install must use exact package openclaw@${operatorVersion}`);
     }
     if (!NPM_INTEGRITY_PATTERN.test(artifact.packageIntegrity)) {
       throw new Error("Worker npm install requires a pinned SHA-512 package integrity");
@@ -549,7 +549,7 @@ function normalizeHandshake(artifact: WorkerInstallationArtifact): WorkerAdmissi
   } else if (!BUNDLE_HASH_PATTERN.test(artifact.tarballSha256)) {
     throw new Error("Worker bundle archive digest must be a lowercase SHA-256 digest");
   }
-  return { bundleHash, openclawVersion, protocolFeatures };
+  return { bundleHash, operatorVersion, protocolFeatures };
 }
 
 function parseReceiptJson(

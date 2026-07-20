@@ -473,7 +473,7 @@ describe("plugin authoring commands", () => {
           pluginApi: `>=${VERSION}`,
         },
         build: {
-          openclawVersion: VERSION,
+          operatorVersion: VERSION,
         },
         release: {
           publishToClawHub: true,

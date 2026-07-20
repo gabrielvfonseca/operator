@@ -10,7 +10,7 @@ import { makeTempWorkspace, writeWorkspaceFile } from "../test-helpers/workspace
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../test-utils/openclaw-test-state.js";
+} from "../test-utils/operator-test-state.ts";
 import {
   DEFAULT_AGENTS_FILENAME,
   DEFAULT_BOOTSTRAP_FILENAME,

@@ -5,7 +5,7 @@ import path from "node:path";
 import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { bundledPluginRootAt } from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import { withEnvAsync } from "../test-utils/env.js";
 
 const APP_ROOT = "/app";
@@ -204,7 +204,7 @@ function createMarketplaceInstallConfig(params: {
   marketplaceSource: string;
   marketplacePlugin: string;
   marketplaceName?: string;
-}): OpenClawConfig {
+}): OperatorConfig {
   return {
     plugins: {
       installs: {
@@ -228,7 +228,7 @@ function createClawHubInstallConfig(params: {
   clawhubFamily: "bundle-plugin" | "code-plugin";
   clawhubChannel: "community" | "official" | "private";
   spec?: string;
-}): OpenClawConfig {
+}): OperatorConfig {
   return {
     plugins: {
       installs: {
@@ -246,7 +246,7 @@ function createClawHubInstallConfig(params: {
   };
 }
 
-function createEnabledDemoClawHubInstallConfig(): OpenClawConfig {
+function createEnabledDemoClawHubInstallConfig(): OperatorConfig {
   const installPath = createInstalledPackageDir({
     name: "demo",
     version: "1.2.3",
@@ -280,7 +280,7 @@ function createGitInstallConfig(params: {
   spec: string;
   installPath: string;
   commit?: string;
-}): OpenClawConfig {
+}): OperatorConfig {
   return {
     plugins: {
       installs: {
@@ -300,7 +300,7 @@ function createBundledPathInstallConfig(params: {
   installPath: string;
   sourcePath?: string;
   spec?: string;
-}): OpenClawConfig {
+}): OperatorConfig {
   return {
     plugins: {
       load: { paths: params.loadPaths },
@@ -593,7 +593,7 @@ describe("updateNpmInstalledPlugins", () => {
   });
 
   it("does not treat inherited prototype names as install records", async () => {
-    const config: OpenClawConfig = { plugins: { installs: {} } };
+    const config: OperatorConfig = { plugins: { installs: {} } };
 
     const result = await updateNpmInstalledPlugins({
       config,
@@ -1349,7 +1349,7 @@ describe("updateNpmInstalledPlugins", () => {
       shasum: "same",
     });
     installPluginFromNpmSpecMock.mockRejectedValue(new Error("installer should not run"));
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       plugins: {
         installs: {
           "lossless-claw": {
@@ -1543,7 +1543,7 @@ describe("updateNpmInstalledPlugins", () => {
         },
       }),
     );
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       plugins: {
         installs: {
           codex: {
@@ -2295,7 +2295,7 @@ describe("updateNpmInstalledPlugins", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await updateNpmInstalledPlugins({
       config,
@@ -2344,7 +2344,7 @@ describe("updateNpmInstalledPlugins", () => {
             },
           },
         },
-      } satisfies OpenClawConfig,
+      } satisfies OperatorConfig,
     },
     {
       source: "ClawHub",
@@ -2368,7 +2368,7 @@ describe("updateNpmInstalledPlugins", () => {
             },
           },
         },
-      } satisfies OpenClawConfig,
+      } satisfies OperatorConfig,
     },
     {
       source: "marketplace",
@@ -2389,7 +2389,7 @@ describe("updateNpmInstalledPlugins", () => {
             },
           },
         },
-      } satisfies OpenClawConfig,
+      } satisfies OperatorConfig,
     },
   ])("skips disabled $source installs before update network calls", async ({ config }) => {
     installPluginFromNpmSpecMock.mockRejectedValue(new Error("npm installer should not run"));
@@ -2877,7 +2877,7 @@ describe("updateNpmInstalledPlugins", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await updateNpmInstalledPlugins({
       config,
@@ -2927,7 +2927,7 @@ describe("updateNpmInstalledPlugins", () => {
           contextEngine: "demo",
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies OperatorConfig;
 
     const result = await updateNpmInstalledPlugins({
       config,
@@ -4604,7 +4604,7 @@ describe("updateNpmInstalledPlugins", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       pluginIds: ["context-engine"],
     });
 
@@ -5269,7 +5269,7 @@ describe("syncPluginsForUpdateChannel", () => {
       code: "package_not_found",
       error: "Package not found on ClawHub.",
     });
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       channels: {
         "legacy-chat": {
           enabled: true,
@@ -5422,7 +5422,7 @@ describe("syncPluginsForUpdateChannel", () => {
       error: "ClawHub ClawPack integrity mismatch.",
       warning: "WARNING\nSecurity scan: suspicious",
     });
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       channels: {
         "legacy-chat": {
           enabled: true,
@@ -5543,7 +5543,7 @@ describe("syncPluginsForUpdateChannel", () => {
       ok: false,
       error: "package unavailable",
     });
-    const config: OpenClawConfig = {
+    const config: OperatorConfig = {
       channels: {
         "legacy-chat": {
           enabled: true,

@@ -52,14 +52,14 @@ describeControlUiE2e("Control UI native-nav sidebar toggle E2E", () => {
       // document.documentElement exists, so defer until the DOM is parsed.
       await page.addInitScript(() => {
         const nativeWindow = window as Window & {
-          openclawNavMessages?: unknown[];
+          operatorNavMessages?: unknown[];
         };
         nativeWindow.operatorNavMessages = [];
         Object.defineProperty(window, "webkit", {
           configurable: true,
           value: {
             messageHandlers: {
-              openclawNav: {
+              operatorNav: {
                 postMessage(message: unknown) {
                   nativeWindow.operatorNavMessages?.push(message);
                 },
@@ -127,7 +127,7 @@ describeControlUiE2e("Control UI native-nav sidebar toggle E2E", () => {
     await expect
       .poll(() =>
         page.evaluate(() => {
-          const messages = (window as Window & { openclawNavMessages?: unknown[] })
+          const messages = (window as Window & { operatorNavMessages?: unknown[] })
             .operatorNavMessages;
           return messages?.find(
             (message) =>
@@ -139,7 +139,7 @@ describeControlUiE2e("Control UI native-nav sidebar toggle E2E", () => {
       )
       .toMatchObject({ type: "nav-state", collapsed: false });
     const initialWidth = await page.evaluate(() => {
-      const messages = (window as Window & { openclawNavMessages?: unknown[] }).operatorNavMessages;
+      const messages = (window as Window & { operatorNavMessages?: unknown[] }).operatorNavMessages;
       const message = messages?.find(
         (candidate) =>
           typeof candidate === "object" &&
@@ -164,7 +164,7 @@ describeControlUiE2e("Control UI native-nav sidebar toggle E2E", () => {
       .poll(() =>
         page.evaluate(() =>
           (
-            window as Window & { openclawNavMessages?: Array<{ collapsed?: boolean }> }
+            window as Window & { operatorNavMessages?: Array<{ collapsed?: boolean }> }
           ).operatorNavMessages?.some((message) => message.collapsed === true),
         ),
       )

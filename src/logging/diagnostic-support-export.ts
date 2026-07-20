@@ -60,7 +60,7 @@ type DiagnosticSupportExportOptions = {
 type DiagnosticSupportExportManifest = {
   version: typeof DIAGNOSTIC_SUPPORT_EXPORT_VERSION;
   generatedAt: string;
-  openclawVersion: string;
+  operatorVersion: string;
   platform: NodeJS.Platform;
   arch: string;
   node: string;
@@ -707,7 +707,7 @@ async function buildDiagnosticSupportExport(
   ]);
   const diagnostics = {
     generatedAt,
-    openclawVersion: VERSION,
+    operatorVersion: VERSION,
     process: {
       platform: process.platform,
       arch: process.arch,
@@ -765,7 +765,7 @@ async function buildDiagnosticSupportExport(
   const manifest: DiagnosticSupportExportManifest = {
     version: DIAGNOSTIC_SUPPORT_EXPORT_VERSION,
     generatedAt,
-    openclawVersion: VERSION,
+    operatorVersion: VERSION,
     platform: process.platform,
     arch: process.arch,
     node: process.versions.node,

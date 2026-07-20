@@ -51,7 +51,7 @@ const WorkerBundleHashSchema = Type.String({
 /** Build identity presented by a worker before the gateway admits it. */
 export const WorkerAdmissionHandshakeSchema = closedObject({
   bundleHash: WorkerBundleHashSchema,
-  openclawVersion: Type.String({ minLength: 1, maxLength: 128 }),
+  operatorVersion: Type.String({ minLength: 1, maxLength: 128 }),
   protocolFeatures: Type.Array(WorkerProtocolFeatureSchema, {
     maxItems: WORKER_PROTOCOL_MAX_FEATURES,
     uniqueItems: true,

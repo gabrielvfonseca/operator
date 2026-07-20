@@ -7,7 +7,7 @@ import { closeOperatorStateDatabaseForTest } from "../../state/openclaw-state-db
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../../test-utils/openclaw-test-state.js";
+} from "../../test-utils/operator-test-state.ts";
 import { applyPromotionClaimTags, printAvailablePromotionsSection } from "./list.promotions.js";
 import type { ModelRow } from "./list.types.js";
 

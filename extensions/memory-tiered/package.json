@@ -11,7 +11,7 @@
     "redis": "*"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
     "@gabrielvfonseca/operator": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   },

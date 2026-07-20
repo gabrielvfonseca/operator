@@ -5,7 +5,7 @@
   "description": "Operator Voyage embedding provider plugin",
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*"
   },
   "@gabrielvfonseca/operator": {
     "extensions": [

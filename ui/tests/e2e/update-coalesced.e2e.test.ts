@@ -92,13 +92,13 @@ describeControlUiE2e("Control UI coalesced update E2E", () => {
       const nativeWindow = window as unknown as {
         openClawUpdateMessages: unknown[];
         webkit: {
-          messageHandlers: { openclawUpdate: { postMessage: (message: unknown) => void } };
+          messageHandlers: { operatorUpdate: { postMessage: (message: unknown) => void } };
         };
       };
       nativeWindow.openClawUpdateMessages = [];
       nativeWindow.webkit = {
         messageHandlers: {
-          openclawUpdate: {
+          operatorUpdate: {
             postMessage: (message) => nativeWindow.openClawUpdateMessages.push(message),
           },
         },

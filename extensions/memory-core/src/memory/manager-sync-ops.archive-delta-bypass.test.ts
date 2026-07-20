@@ -64,11 +64,11 @@ class SessionDeltaHarness extends MemoryManagerSyncOps {
   }
 
   getDirtySessionFiles(): string[] {
-    return Array.from(this.sessionsDirtyFiles);
+    return Array.from(this.isSessionsDirty);
   }
 
   isSessionsDirty(): boolean {
-    return this.sessionsDirty;
+    return this.isSessionsDirty;
   }
 
   async processPendingSessionDeltas(): Promise<void> {

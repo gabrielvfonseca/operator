@@ -6,7 +6,7 @@ import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-syn
 import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import { openOperatorStateDatabase } from "../state/openclaw-state-db.js";
 import { resolveOperatorStateSqlitePath } from "../state/openclaw-state-db.paths.js";
-import { withOperatorTestState } from "../test-utils/openclaw-test-state.js";
+import { withOperatorTestState } from "../test-utils/operator-test-state.ts";
 import {
   createManagedTaskFlow as createManagedTaskFlowOrNull,
   getTaskFlowById,

@@ -34,7 +34,7 @@ function getNativeLinkPoster(): WebKitMessageHandler["postMessage"] | undefined 
   // Native hosts install this handler before navigation; its absence preserves browser behavior.
   const handler = (
     window as unknown as {
-      webkit?: { messageHandlers?: { openclawLink?: WebKitMessageHandler } };
+      webkit?: { messageHandlers?: { operatorLink?: WebKitMessageHandler } };
     }
   ).webkit?.messageHandlers?.operatorLink;
   return handler?.postMessage.bind(handler);
@@ -43,7 +43,7 @@ function getNativeLinkPoster(): WebKitMessageHandler["postMessage"] | undefined 
 function getNativeUpdateHandler(): WebKitUpdateMessageHandler | undefined {
   return (
     window as unknown as {
-      webkit?: { messageHandlers?: { openclawUpdate?: WebKitUpdateMessageHandler } };
+      webkit?: { messageHandlers?: { operatorUpdate?: WebKitUpdateMessageHandler } };
     }
   ).webkit?.messageHandlers?.operatorUpdate;
 }

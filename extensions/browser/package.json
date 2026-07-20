@@ -12,7 +12,7 @@
     "ws": "8.21.0"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
     "undici": "8.6.0",
     "@operator/typescript-config": "workspace:*"
   },

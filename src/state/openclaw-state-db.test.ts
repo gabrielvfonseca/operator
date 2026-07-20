@@ -22,9 +22,9 @@ import {
   assertOperatorStateDatabaseForMaintenance,
   closeOperatorStateDatabaseForTest,
   detectOperatorStateDatabaseSchemaMigrations,
-  OPENCLAW_SQLITE_BUSY_TIMEOUT_MS,
+  OPERATOR_SQLITE_BUSY_TIMEOUT_MS,
   openOperatorStateDatabase,
-  OPENCLAW_STATE_SCHEMA_VERSION,
+  OPERATOR_STATE_SCHEMA_VERSION,
   repairOperatorStateDatabaseSchema,
   runOperatorStateWriteTransaction,
   withOperatorStateStartupMigrationCheckpointDatabase,
@@ -1319,10 +1319,10 @@ describe("operator state database", () => {
           "idx_audit_events_direction_sequence",
         ]),
       );
-      expect(readSqliteNumberPragma(db, "user_version")).toBe(OPENCLAW_STATE_SCHEMA_VERSION);
+      expect(readSqliteNumberPragma(db, "user_version")).toBe(OPERATOR_STATE_SCHEMA_VERSION);
       expect(
         db.prepare("SELECT schema_version FROM schema_meta WHERE meta_key = 'primary'").get(),
-      ).toEqual({ schema_version: OPENCLAW_STATE_SCHEMA_VERSION });
+      ).toEqual({ schema_version: OPERATOR_STATE_SCHEMA_VERSION });
       expect(() =>
         db
           .prepare(
@@ -1437,7 +1437,7 @@ describe("operator state database", () => {
         .prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'audit_events'")
         .get(),
     ).toEqual({ name: "audit_events" });
-    expect(readSqliteNumberPragma(opened.db, "user_version")).toBe(OPENCLAW_STATE_SCHEMA_VERSION);
+    expect(readSqliteNumberPragma(opened.db, "user_version")).toBe(OPERATOR_STATE_SCHEMA_VERSION);
   });
 
   it("refuses to rebuild a noncanonical audit table with unknown data columns", () => {
@@ -2134,10 +2134,10 @@ describe("operator state database", () => {
       try {
         expect(db.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
         expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
-        expect(readSqliteNumberPragma(db, "user_version")).toBe(OPENCLAW_STATE_SCHEMA_VERSION);
+        expect(readSqliteNumberPragma(db, "user_version")).toBe(OPERATOR_STATE_SCHEMA_VERSION);
         expect(
           db.prepare("SELECT schema_version FROM schema_meta WHERE meta_key = 'primary'").get(),
-        ).toEqual({ schema_version: OPENCLAW_STATE_SCHEMA_VERSION });
+        ).toEqual({ schema_version: OPERATOR_STATE_SCHEMA_VERSION });
         expect(
           db
             .prepare("SELECT agent_id, requester_agent_id FROM task_runs WHERE task_id = ?")
@@ -2169,10 +2169,10 @@ describe("operator state database", () => {
         expect(db.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
         expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
         expect(readSqliteNumberPragma(db, "auto_vacuum")).toBe(2);
-        expect(readSqliteNumberPragma(db, "user_version")).toBe(OPENCLAW_STATE_SCHEMA_VERSION);
+        expect(readSqliteNumberPragma(db, "user_version")).toBe(OPERATOR_STATE_SCHEMA_VERSION);
         expect(
           db.prepare("SELECT schema_version FROM schema_meta WHERE meta_key = 'primary'").get(),
-        ).toEqual({ schema_version: OPENCLAW_STATE_SCHEMA_VERSION });
+        ).toEqual({ schema_version: OPERATOR_STATE_SCHEMA_VERSION });
         expect(collectSqliteSchemaShape(db)).toEqual(expectedShape);
       } finally {
         db.close();
@@ -2810,12 +2810,12 @@ describe("operator state database", () => {
     });
 
     expect(readSqliteNumberPragma(database.db, "busy_timeout")).toBe(
-      OPENCLAW_SQLITE_BUSY_TIMEOUT_MS,
+      OPERATOR_SQLITE_BUSY_TIMEOUT_MS,
     );
     expect(readSqliteNumberPragma(database.db, "foreign_keys")).toBe(1);
     expect(readSqliteNumberPragma(database.db, "synchronous")).toBe(1);
     expect(readSqliteNumberPragma(database.db, "auto_vacuum")).toBe(2);
-    expect(readSqliteNumberPragma(database.db, "user_version")).toBe(OPENCLAW_STATE_SCHEMA_VERSION);
+    expect(readSqliteNumberPragma(database.db, "user_version")).toBe(OPERATOR_STATE_SCHEMA_VERSION);
     expect(readSqliteNumberPragma(database.db, "wal_autocheckpoint")).toBe(1000);
     const journalMode = database.db.prepare("PRAGMA journal_mode").get() as
       | { journal_mode?: string }
@@ -2850,7 +2850,7 @@ describe("operator state database", () => {
         database.db,
         stateDb.selectFrom("schema_meta").select(["role", "schema_version"]),
       ),
-    ).toEqual({ role: "global", schema_version: OPENCLAW_STATE_SCHEMA_VERSION });
+    ).toEqual({ role: "global", schema_version: OPERATOR_STATE_SCHEMA_VERSION });
   });
 
   it("refuses to open newer global schema versions", () => {
@@ -2859,7 +2859,7 @@ describe("operator state database", () => {
     fs.mkdirSync(path.dirname(databasePath), { recursive: true });
     const { DatabaseSync } = requireNodeSqlite();
     const db = new DatabaseSync(databasePath);
-    db.exec(`PRAGMA user_version = ${OPENCLAW_STATE_SCHEMA_VERSION + 1};`);
+    db.exec(`PRAGMA user_version = ${OPERATOR_STATE_SCHEMA_VERSION + 1};`);
     db.close();
 
     expect(() =>
@@ -2867,7 +2867,7 @@ describe("operator state database", () => {
         env: { OPENCLAW_STATE_DIR: stateDir },
       }),
     ).toThrow(
-      `Operator state database ${databasePath} uses newer schema version ${OPENCLAW_STATE_SCHEMA_VERSION + 1}; this Operator build supports ${OPENCLAW_STATE_SCHEMA_VERSION}. Upgrade Operator before opening this database. Do not downgrade Operator or modify the database. To run this older build, use a separate state directory or restore a compatible backup.`,
+      `Operator state database ${databasePath} uses newer schema version ${OPERATOR_STATE_SCHEMA_VERSION + 1}; this Operator build supports ${OPERATOR_STATE_SCHEMA_VERSION}. Upgrade Operator before opening this database. Do not downgrade Operator or modify the database. To run this older build, use a separate state directory or restore a compatible backup.`,
     );
   });
 
@@ -2899,7 +2899,7 @@ describe("operator state database", () => {
     expect(first.db.isOpen).toBe(true);
     expect(second.db.isOpen).toBe(true);
     expect(openOperatorStateDatabase({ path: firstPath })).toBe(first);
-    expect(readSqliteNumberPragma(first.db, "user_version")).toBe(OPENCLAW_STATE_SCHEMA_VERSION);
+    expect(readSqliteNumberPragma(first.db, "user_version")).toBe(OPERATOR_STATE_SCHEMA_VERSION);
   });
 
   it("keys explicit relative paths by resolved database pathname", () => {

@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { saveTaskRegistryStateToSqlite } from "../tasks/task-registry.store.sqlite.js";
 import type { TaskRecord } from "../tasks/task-registry.types.js";
 import { resetTaskRegistryForTests } from "../tasks/task-runtime.test-helpers.js";
-import { withOperatorTestState } from "../test-utils/openclaw-test-state.js";
+import { withOperatorTestState } from "../test-utils/operator-test-state.ts";
 import type { CronRunLogEntry } from "./run-log-types.js";
 import { CronService } from "./service.js";
 import { createNoopLogger } from "./service.test-harness.js";

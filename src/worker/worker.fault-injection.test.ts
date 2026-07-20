@@ -86,14 +86,14 @@ const SSH_ENDPOINT: WorkerSshEndpoint = {
 };
 const HANDSHAKE = {
   bundleHash: BUNDLE_HASH,
-  openclawVersion: "fault-test",
+  operatorVersion: "fault-test",
   protocolFeatures: [...WORKER_PROTOCOL_FEATURES],
 };
 type WorkerEnvironmentServiceOptions = Parameters<typeof createWorkerEnvironmentService>[0];
 const BUNDLE_ARTIFACT = {
   install: "bundle" as const,
   bundleHash: BUNDLE_HASH,
-  openclawVersion: HANDSHAKE.operatorVersion,
+  operatorVersion: HANDSHAKE.operatorVersion,
   protocolFeatures: [...WORKER_PROTOCOL_FEATURES],
   tarballSha256: Array.from({ length: 64 }, () => "b").join(""),
   tarballPath: "/gateway/cache/worker-bundle.tgz",

@@ -3,7 +3,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from "node:ht
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../src/config/types.openclaw.js";
+import type { OperatorConfig } from "../src/config/types.openclaw.js";
 import { createDeferred } from "../src/test-utils/deferred.js";
 import { GatewayChatClient } from "../src/tui/gateway-chat.js";
 import {
@@ -243,7 +243,7 @@ describe("Gateway queued session rotation", () => {
           },
         },
         messages: { queue: { mode: "followup", debounceMs: 0 } },
-      } satisfies OpenClawConfig;
+      } satisfies OperatorConfig;
       const instance = await createOpenClawTestInstance({
         name: "queued-session-rotation",
         gatewayToken: "secret-token",

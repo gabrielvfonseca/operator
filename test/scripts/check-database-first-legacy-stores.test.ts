@@ -573,7 +573,7 @@ describe("check-database-first-legacy-stores", () => {
   it("flags bare fs-safe package root writes to legacy paths", () => {
     const violations = collectDatabaseFirstLegacyStoreViolations(
       `
-        import { root } from "@operator/fs-safe";
+        import { root } from "@openclaw/fs-safe";
         const state = await root(stateDir);
         await state.writeJson("thread-bindings.json", {});
       `,
@@ -648,7 +648,7 @@ describe("check-database-first-legacy-stores", () => {
   it("flags direct fs-safe package store writes to legacy paths", () => {
     const violations = collectDatabaseFirstLegacyStoreViolations(
       `
-        import { fileStore, jsonStore } from "@operator/fs-safe/store";
+        import { fileStore, jsonStore } from "@openclaw/fs-safe/store";
         await fileStore({ rootDir: stateDir }).writeJson("thread-bindings.json", {});
         const options = { filePath: "plugin-binding-approvals.json" };
         await jsonStore(options).write({});
@@ -800,7 +800,7 @@ describe("check-database-first-legacy-stores", () => {
   it("flags direct fs-safe package namespace store writes to legacy paths", () => {
     const violations = collectDatabaseFirstLegacyStoreViolations(
       `
-        import * as fsSafeStore from "@operator/fs-safe/store";
+        import * as fsSafeStore from "@openclaw/fs-safe/store";
         const store = fsSafeStore.fileStoreSync({ rootDir: stateDir });
         store.writeJson("thread-bindings.json", {});
         const bindings = fsSafeStore.jsonStore({ filePath: "plugin-binding-approvals.json" });
@@ -8515,7 +8515,7 @@ describe("check-database-first-legacy-stores", () => {
 
   it("allows current legacy-debt writes after harmless line movement", () => {
     const content = [
-      `import { fsRoot } from "@operator/fs-safe/root";`,
+      `import { fsRoot } from "@openclaw/fs-safe/root";`,
       `const relativePath = ".openclaw-wiki/cache/claims.jsonl";`,
       `const root = await fsRoot(rootDir);`,
       ...Array.from({ length: 8 }, () => ""),

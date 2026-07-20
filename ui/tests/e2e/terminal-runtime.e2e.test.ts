@@ -64,7 +64,7 @@ describeControlUiE2e("Control UI terminal runtime isolation", () => {
         async ({ staleText }) => {
           const runtimeModule = await (
             window as unknown as Window & {
-              openclawTerminalRuntimeModule: Promise<{
+              operatorTerminalRuntimeModule: Promise<{
                 createIsolatedGhosttyTerminal: BrowserTerminalFactory;
               }>;
             }

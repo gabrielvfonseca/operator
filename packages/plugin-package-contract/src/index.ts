@@ -26,7 +26,7 @@ export type ExternalCodePluginValidationResult = {
 /** Required package.json field paths for external code plugin packages. */
 export const EXTERNAL_CODE_PLUGIN_REQUIRED_FIELD_PATHS = [
   "openclaw.compat.pluginApi",
-  "openclaw.build.openclawVersion",
+  "openclaw.build.operatorVersion",
 ] as const;
 
 /** Narrow unknown values to plain records. */
@@ -72,7 +72,7 @@ export function normalizeExternalPluginCompatibility(
     compatibility.minGatewayVersion = minGatewayVersion;
   }
 
-  const builtWithOperatorVersion = normalizeOptionalString(build?.openclawVersion) ?? version;
+  const builtWithOperatorVersion = normalizeOptionalString(build?.operatorVersion) ?? version;
   if (builtWithOperatorVersion) {
     compatibility.builtWithOperatorVersion = builtWithOperatorVersion;
   }
@@ -92,8 +92,8 @@ export function listMissingExternalCodePluginFieldPaths(packageJson: unknown): s
   if (!normalizeOptionalString(compat?.pluginApi)) {
     missing.push("openclaw.compat.pluginApi");
   }
-  if (!normalizeOptionalString(build?.openclawVersion)) {
-    missing.push("openclaw.build.openclawVersion");
+  if (!normalizeOptionalString(build?.operatorVersion)) {
+    missing.push("openclaw.build.operatorVersion");
   }
   return missing;
 }

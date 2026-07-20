@@ -7,7 +7,7 @@ import {
   validateExternalCodePluginPackageJson,
 } from "./index.js";
 
-describe("@operator/plugin-package-contract", () => {
+describe("@gabrielvfonseca/plugin-package-contract", () => {
   it("normalizes the Operator compatibility block for external plugins", () => {
     expect(
       normalizeExternalPluginCompatibility({
@@ -18,7 +18,7 @@ describe("@operator/plugin-package-contract", () => {
             minGatewayVersion: "2026.3.24-beta.2",
           },
           build: {
-            openclawVersion: "2026.3.24-beta.2",
+            operatorVersion: "2026.3.24-beta.2",
             pluginSdkVersion: "0.9.0",
           },
         },
@@ -54,7 +54,7 @@ describe("@operator/plugin-package-contract", () => {
   it("lists the required external code-plugin fields", () => {
     expect(EXTERNAL_CODE_PLUGIN_REQUIRED_FIELD_PATHS).toEqual([
       "openclaw.compat.pluginApi",
-      "openclaw.build.openclawVersion",
+      "openclaw.build.operatorVersion",
     ]);
   });
 
@@ -68,7 +68,7 @@ describe("@operator/plugin-package-contract", () => {
 
     expect(listMissingExternalCodePluginFieldPaths(packageJson)).toEqual([
       "openclaw.compat.pluginApi",
-      "openclaw.build.openclawVersion",
+      "openclaw.build.operatorVersion",
     ]);
     expect(validateExternalCodePluginPackageJson(packageJson).issues).toEqual([
       {
@@ -76,8 +76,8 @@ describe("@operator/plugin-package-contract", () => {
         message: "openclaw.compat.pluginApi is required for external code plugin packages.",
       },
       {
-        fieldPath: "openclaw.build.openclawVersion",
-        message: "openclaw.build.openclawVersion is required for external code plugin packages.",
+        fieldPath: "openclaw.build.operatorVersion",
+        message: "openclaw.build.operatorVersion is required for external code plugin packages.",
       },
     ]);
   });

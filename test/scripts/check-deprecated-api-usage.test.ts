@@ -56,7 +56,7 @@ describe("scripts/check-deprecated-api-usage", () => {
     );
   });
 
-  it("bans the scoped @operator/plugin-sdk spelling of every deprecated specifier", () => {
+  it("bans the scoped @gabrielvfonseca/operator/plugin-sdk spelling of every deprecated specifier", () => {
     const specifiers = new Set(buildDeprecatedPluginSdkModuleSpecifiers());
 
     for (const specifier of specifiers) {
@@ -99,7 +99,7 @@ describe("scripts/check-deprecated-api-usage", () => {
         'import { createChannelReplyPipeline } from "openclaw/plugin-sdk/channel-reply-pipeline";',
         'export { runInboundReplyTurn } from "./message/inbound-reply-dispatch.js";',
         'const facade = await import ("../plugin-sdk/channel-message.js", { with: {} });',
-        'import { formatInboundEnvelope } from "@operator/plugin-sdk/channel-envelope";',
+        'import { formatInboundEnvelope } from "@gabrielvfonseca/operator/plugin-sdk/channel-envelope";',
       ].join("\n"),
       "src/plugin-sdk/channel-message-runtime.ts": 'export * from "./channel-message.js";',
     });
@@ -111,7 +111,7 @@ describe("scripts/check-deprecated-api-usage", () => {
     expect(result.stderr).toContain("src/channels/probe.ts:2: ./message/inbound-reply-dispatch.js");
     expect(result.stderr).toContain("src/channels/probe.ts:3: ../plugin-sdk/channel-message.js");
     expect(result.stderr).toContain(
-      "src/channels/probe.ts:4: @operator/plugin-sdk/channel-envelope",
+      "src/channels/probe.ts:4: @gabrielvfonseca/operator/plugin-sdk/channel-envelope",
     );
     expect(result.stderr).toContain(
       "src/plugin-sdk/channel-message-runtime.ts:1: ./channel-message.js",

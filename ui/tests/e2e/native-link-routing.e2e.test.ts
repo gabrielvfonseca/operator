@@ -72,13 +72,13 @@ describeControlUiE2e("native link routing", () => {
     await context.addInitScript(() => {
       const messages: unknown[] = [];
       const host = window as Window & {
-        openclawNativeLinkMessages?: unknown[];
+        operatorNativeLinkMessages?: unknown[];
         webkit?: unknown;
       };
       host.operatorNativeLinkMessages = messages;
       host.webkit = {
         messageHandlers: {
-          openclawLink: { postMessage: (message: unknown) => messages.push(message) },
+          operatorLink: { postMessage: (message: unknown) => messages.push(message) },
         },
       };
     });
@@ -108,7 +108,7 @@ describeControlUiE2e("native link routing", () => {
       .poll(() =>
         page.evaluate(
           () =>
-            (window as Window & { openclawNativeLinkMessages?: unknown[] })
+            (window as Window & { operatorNativeLinkMessages?: unknown[] })
               .operatorNativeLinkMessages,
         ),
       )
@@ -132,7 +132,7 @@ describeControlUiE2e("native link routing", () => {
       .poll(() =>
         page.evaluate(
           () =>
-            (window as Window & { openclawNativeLinkMessages?: unknown[] })
+            (window as Window & { operatorNativeLinkMessages?: unknown[] })
               .operatorNativeLinkMessages,
         ),
       )
@@ -143,7 +143,7 @@ describeControlUiE2e("native link routing", () => {
       });
     const messageCount = await page.evaluate(
       () =>
-        (window as Window & { openclawNativeLinkMessages?: unknown[] }).operatorNativeLinkMessages
+        (window as Window & { operatorNativeLinkMessages?: unknown[] }).operatorNativeLinkMessages
           ?.length ?? 0,
     );
     await emailLink.evaluate((anchor) => (anchor as HTMLAnchorElement).click());
@@ -151,7 +151,7 @@ describeControlUiE2e("native link routing", () => {
       .poll(() =>
         page.evaluate(
           () =>
-            (window as Window & { openclawNativeLinkMessages?: unknown[] })
+            (window as Window & { operatorNativeLinkMessages?: unknown[] })
               .operatorNativeLinkMessages?.length ?? 0,
         ),
       )
@@ -186,7 +186,7 @@ describeControlUiE2e("native link routing", () => {
       .poll(() =>
         page.evaluate(
           () =>
-            (window as Window & { openclawNativeLinkMessages?: unknown[] })
+            (window as Window & { operatorNativeLinkMessages?: unknown[] })
               .operatorNativeLinkMessages,
         ),
       )
@@ -243,7 +243,7 @@ describeControlUiE2e("native link routing", () => {
       .poll(() =>
         page.evaluate(
           () =>
-            (window as Window & { openclawNativeLinkMessages?: unknown[] })
+            (window as Window & { operatorNativeLinkMessages?: unknown[] })
               .operatorNativeLinkMessages,
         ),
       )

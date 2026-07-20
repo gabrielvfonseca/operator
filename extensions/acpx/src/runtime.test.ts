@@ -199,7 +199,7 @@ describe("AcpxRuntime fresh reset wrapper", () => {
       save: vi.fn(async () => {}),
     };
     const { runtime } = makeRuntime(baseStore, {
-      openclawToolsMcpBridgeEnabled: true,
+      operatorToolsMcpBridgeEnabled: true,
       mcpServers: [
         {
           name: "openclaw-tools",
@@ -242,7 +242,7 @@ describe("AcpxRuntime fresh reset wrapper", () => {
       save: vi.fn(async () => {}),
     };
     const { runtime } = makeRuntime(baseStore, {
-      openclawToolsMcpBridgeEnabled: true,
+      operatorToolsMcpBridgeEnabled: true,
       mcpServers: [
         {
           name: "openclaw-tools",
@@ -253,7 +253,7 @@ describe("AcpxRuntime fresh reset wrapper", () => {
       ],
     });
     const exposedRuntime = runtime as unknown as {
-      openclawToolsSessionDelegates: Map<string, unknown>;
+      operatorToolsSessionDelegates: Map<string, unknown>;
       resolveOperatorToolsDelegateForSession(sessionKey: string): unknown;
     };
 
@@ -275,7 +275,7 @@ describe("AcpxRuntime fresh reset wrapper", () => {
       save: vi.fn(async () => {}),
     };
     const { runtime, delegate, bridgeSafeDelegate } = makeRuntime(baseStore, {
-      openclawToolsMcpBridgeEnabled: true,
+      operatorToolsMcpBridgeEnabled: true,
       mcpServers: [
         {
           name: "openclaw-tools",
@@ -435,8 +435,8 @@ describe("AcpxRuntime fresh reset wrapper", () => {
       save: vi.fn(async () => {}),
     };
     const { runtime, delegate } = makeRuntime(baseStore, {
-      openclawGatewayInstanceId: "gateway-test",
-      openclawProcessLeaseStore: leaseStore.store,
+      operatorGatewayInstanceId: "gateway-test",
+      operatorProcessLeaseStore: leaseStore.store,
       openclawWrapperRoot: wrapperRoot,
       agentRegistry: {
         resolve: (agentName: string) => (agentName === "codex" ? wrapperCommand : agentName),
@@ -1288,7 +1288,7 @@ describe("AcpxRuntime fresh reset wrapper", () => {
     };
 
     const { runtime } = makeRuntime(baseStore, {
-      openclawToolsMcpBridgeEnabled: true,
+      operatorToolsMcpBridgeEnabled: true,
       mcpServers: [
         {
           name: "openclaw-tools",
@@ -1299,7 +1299,7 @@ describe("AcpxRuntime fresh reset wrapper", () => {
       ],
     });
     const exposedRuntime = runtime as unknown as {
-      openclawToolsSessionDelegates: Map<string, { close: AcpRuntime["close"] }>;
+      operatorToolsSessionDelegates: Map<string, { close: AcpRuntime["close"] }>;
       resolveOperatorToolsDelegateForSession(sessionKey: string): {
         close: AcpRuntime["close"];
       };
@@ -1386,8 +1386,8 @@ describe("AcpxRuntime fresh reset wrapper", () => {
     };
     const leaseStore = makeLeaseStore();
     const { runtime, delegate, wrappedStore } = makeRuntime(baseStore, {
-      openclawGatewayInstanceId: "gateway-test",
-      openclawProcessLeaseStore: leaseStore.store,
+      operatorGatewayInstanceId: "gateway-test",
+      operatorProcessLeaseStore: leaseStore.store,
       openclawWrapperRoot: "/tmp/openclaw/acpx",
       agentRegistry: {
         resolve: (agentName: string) =>
@@ -1442,8 +1442,8 @@ describe("AcpxRuntime fresh reset wrapper", () => {
     };
     const leaseStore = makeLeaseStore();
     const { runtime, delegate, wrappedStore } = makeRuntime(baseStore, {
-      openclawGatewayInstanceId: "gateway-test",
-      openclawProcessLeaseStore: leaseStore.store,
+      operatorGatewayInstanceId: "gateway-test",
+      operatorProcessLeaseStore: leaseStore.store,
       openclawWrapperRoot: "/tmp/openclaw/acpx",
       agentRegistry: {
         resolve: (agentName: string) =>
@@ -1492,8 +1492,8 @@ describe("AcpxRuntime fresh reset wrapper", () => {
     };
     const leaseStore = makeLeaseStore();
     const { runtime, delegate } = makeRuntime(baseStore, {
-      openclawGatewayInstanceId: "gateway-test",
-      openclawProcessLeaseStore: leaseStore.store,
+      operatorGatewayInstanceId: "gateway-test",
+      operatorProcessLeaseStore: leaseStore.store,
       openclawWrapperRoot: "/tmp/openclaw/acpx",
       agentRegistry: {
         resolve: (agentName: string) =>
@@ -1547,8 +1547,8 @@ describe("AcpxRuntime fresh reset wrapper", () => {
       save: vi.fn(async () => {}),
     };
     const { wrappedStore } = makeRuntime(baseStore, {
-      openclawGatewayInstanceId: "gateway-test",
-      openclawProcessLeaseStore: leaseStore.store,
+      operatorGatewayInstanceId: "gateway-test",
+      operatorProcessLeaseStore: leaseStore.store,
       openclawWrapperRoot: "/tmp/openclaw/acpx",
     });
 
@@ -1590,8 +1590,8 @@ describe("AcpxRuntime fresh reset wrapper", () => {
       save: vi.fn(async () => {}),
     };
     const { wrappedStore } = makeRuntime(baseStore, {
-      openclawGatewayInstanceId: "gateway-test",
-      openclawProcessLeaseStore: leaseStore.store,
+      operatorGatewayInstanceId: "gateway-test",
+      operatorProcessLeaseStore: leaseStore.store,
       openclawWrapperRoot: "/tmp/openclaw/acpx",
     });
 
@@ -1626,8 +1626,8 @@ describe("AcpxRuntime fresh reset wrapper", () => {
     const { runtime, delegate } = makeRuntime(
       baseStore,
       {
-        openclawGatewayInstanceId: "gateway-test",
-        openclawProcessLeaseStore: leaseStore.store,
+        operatorGatewayInstanceId: "gateway-test",
+        operatorProcessLeaseStore: leaseStore.store,
         openclawWrapperRoot: "/tmp/openclaw/acpx",
       },
       {
@@ -1703,8 +1703,8 @@ describe("AcpxRuntime fresh reset wrapper", () => {
     const { runtime, delegate } = makeRuntime(
       baseStore,
       {
-        openclawGatewayInstanceId: "gateway-test",
-        openclawProcessLeaseStore: leaseStore.store,
+        operatorGatewayInstanceId: "gateway-test",
+        operatorProcessLeaseStore: leaseStore.store,
         openclawWrapperRoot: "/tmp/openclaw/acpx",
       },
       {
@@ -1808,7 +1808,7 @@ describe("AcpxRuntime fresh reset wrapper", () => {
     const { runtime, delegate } = makeRuntime(
       baseStore,
       {
-        openclawGatewayInstanceId: "gateway-test",
+        operatorGatewayInstanceId: "gateway-test",
         openclawWrapperRoot: "/tmp/openclaw/acpx",
       },
       {
@@ -1850,7 +1850,7 @@ describe("AcpxRuntime fresh reset wrapper", () => {
       load: vi.fn(async () => ({
         acpxRecordId: "agent:codex:acp:binding:test",
         agentCommand: 'node "/tmp/openclaw/acpx/codex-acp-wrapper.mjs"',
-        openclawGatewayInstanceId: "gateway-test",
+        operatorGatewayInstanceId: "gateway-test",
         openclawLeaseId: "lease-record",
         pid: 920,
       })),
@@ -1860,7 +1860,7 @@ describe("AcpxRuntime fresh reset wrapper", () => {
     const { runtime, delegate } = makeRuntime(
       baseStore,
       {
-        openclawGatewayInstanceId: "gateway-test",
+        operatorGatewayInstanceId: "gateway-test",
         openclawWrapperRoot: "/tmp/openclaw/acpx",
       },
       {

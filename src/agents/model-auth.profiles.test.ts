@@ -6,7 +6,7 @@ import type { Model } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { withEnvAsync } from "../test-utils/env.js";
-import { withOperatorTestState } from "../test-utils/openclaw-test-state.js";
+import { withOperatorTestState } from "../test-utils/operator-test-state.ts";
 import {
   clearRuntimeAuthProfileStoreSnapshots,
   ensureAuthProfileStore,

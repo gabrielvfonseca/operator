@@ -4,7 +4,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { MAX_TIMER_TIMEOUT_MS } from "@operator/normalization-core/number-coercion";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { DOCKER_SELECTED_PLUGIN_BUILD_IDS_ENV } from "../../../../scripts/lib/bundled-plugin-build-entries.mjs";
 import {
@@ -338,7 +338,7 @@ describe("package-operator-for-docker", () => {
     const packageJsonPath = path.join(sourceDir, "package.json");
     const originalPackageJson = `${JSON.stringify(
       {
-        dependencies: { "@operator/ai": "workspace:*", "dep-a": "1.2.3" },
+        dependencies: { "@gabrielvfonseca/ai": "workspace:*", "dep-a": "1.2.3" },
         files: ["dist"],
         name: "operator",
         version: "2026.6.17",
@@ -372,7 +372,7 @@ describe("package-operator-for-docker", () => {
               path.join(destination, "package.json"),
               `${JSON.stringify({
                 dependencies: { "dep-a": "1.2.3" },
-                name: "@operator/ai",
+                name: "@gabrielvfonseca/ai",
                 version: "2026.6.17",
               })}\n`,
             );
@@ -385,8 +385,8 @@ describe("package-operator-for-docker", () => {
         bundleDependencies: string[];
         dependencies: Record<string, string>;
       };
-      expect(packageJson.dependencies["@operator/ai"]).toBe("2026.6.17");
-      expect(packageJson.bundleDependencies).toContain("@operator/ai");
+      expect(packageJson.dependencies["@gabrielvfonseca/ai"]).toBe("2026.6.17");
+      expect(packageJson.bundleDependencies).toContain("@gabrielvfonseca/ai");
       expect(fs.existsSync(path.join(installedAiPath, "original-marker"))).toBe(false);
       expect(fs.existsSync(path.join(installedAiPath, "runtime.js"))).toBe(true);
       const stagedAiPackageJson = JSON.parse(
@@ -433,13 +433,13 @@ describe("package-operator-for-docker", () => {
   it("rejects incomplete AI workspace package sources", async () => {
     const cases = [
       {
-        dependencies: { "@operator/ai": "workspace:*" },
-        expected: "@operator/ai dependency requires the packages/ai workspace",
+        dependencies: { "@gabrielvfonseca/ai": "workspace:*" },
+        expected: "@gabrielvfonseca/ai dependency requires the packages/ai workspace",
         withWorkspace: false,
       },
       {
         dependencies: {},
-        expected: "root package.json must declare @operator/ai as a dependency",
+        expected: "root package.json must declare @gabrielvfonseca/ai as a dependency",
         withWorkspace: true,
       },
     ];

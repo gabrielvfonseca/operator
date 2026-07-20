@@ -85,7 +85,7 @@ describe("sdk-loader", () => {
       );
       writeFileSync(
         path.join(pkgDir, "index.cjs"),
-        "module.exports = { openclawDefaultImporterSentinel: true };",
+        "module.exports = { operatorDefaultImporterSentinel: true };",
       );
 
       const primaryImport = vi.fn(async () => {
@@ -101,7 +101,7 @@ describe("sdk-loader", () => {
         fallbackDir: tmp,
         primaryImport,
         // Intentionally NOT injecting fallbackImport; exercise the default.
-      })) as unknown as { openclawDefaultImporterSentinel?: boolean };
+      })) as unknown as { operatorDefaultImporterSentinel?: boolean };
 
       expect(sdk.operatorDefaultImporterSentinel).toBe(true);
       expect(primaryImport).toHaveBeenCalledTimes(1);

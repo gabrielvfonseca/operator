@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../test-utils/openclaw-test-state.js";
+} from "../test-utils/operator-test-state.ts";
 
 const note = vi.hoisted(() => vi.fn());
 

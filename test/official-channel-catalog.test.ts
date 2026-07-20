@@ -73,7 +73,7 @@ describe("buildOfficialChannelCatalog", () => {
   it("includes publishable official channel plugins and skips non-publishable entries", () => {
     const repoRoot = makeRepoRoot("openclaw-official-channel-catalog-");
     writeJson(path.join(repoRoot, "extensions", "whatsapp", "package.json"), {
-      name: "@operator/whatsapp",
+      name: "@gabrielvfonseca/whatsapp",
       version: "2026.3.23",
       description: "OpenClaw WhatsApp channel plugin",
       openclaw: {
@@ -86,8 +86,8 @@ describe("buildOfficialChannelCatalog", () => {
           blurb: "works with your own number; recommend a separate phone + eSIM.",
         },
         install: {
-          clawhubSpec: "clawhub:@operator/whatsapp",
-          npmSpec: "@operator/whatsapp",
+          clawhubSpec: "clawhub:@gabrielvfonseca/whatsapp",
+          npmSpec: "@gabrielvfonseca/whatsapp",
           localPath: bundledPluginRoot("whatsapp"),
           defaultChoice: "clawhub",
         },
@@ -179,10 +179,10 @@ describe("buildOfficialChannelCatalog", () => {
     });
     expect(
       summarizeCatalogEntry(
-        findCatalogEntry(entries, (entry) => entry.name === "@operator/whatsapp"),
+        findCatalogEntry(entries, (entry) => entry.name === "@gabrielvfonseca/whatsapp"),
       ),
     ).toEqual({
-      name: "@operator/whatsapp",
+      name: "@gabrielvfonseca/whatsapp",
       description: "OpenClaw WhatsApp channel plugin",
       source: "official",
       plugin: undefined,
@@ -197,8 +197,8 @@ describe("buildOfficialChannelCatalog", () => {
         systemImage: "message",
       },
       install: {
-        clawhubSpec: "clawhub:@operator/whatsapp",
-        npmSpec: "@operator/whatsapp",
+        clawhubSpec: "clawhub:@gabrielvfonseca/whatsapp",
+        npmSpec: "@gabrielvfonseca/whatsapp",
         defaultChoice: "clawhub",
         minHostVersion: ">=2026.4.25",
       },
@@ -278,7 +278,7 @@ describe("buildOfficialChannelCatalog", () => {
   it("writes the official catalog under dist", () => {
     const repoRoot = makeRepoRoot("openclaw-official-channel-catalog-write-");
     writeJson(path.join(repoRoot, "extensions", "whatsapp", "package.json"), {
-      name: "@operator/whatsapp",
+      name: "@gabrielvfonseca/whatsapp",
       openclaw: {
         channel: {
           id: "whatsapp",
@@ -288,7 +288,7 @@ describe("buildOfficialChannelCatalog", () => {
           blurb: "wa",
         },
         install: {
-          npmSpec: "@operator/whatsapp",
+          npmSpec: "@gabrielvfonseca/whatsapp",
         },
         release: {
           publishToNpm: true,
@@ -313,7 +313,7 @@ describe("buildOfficialChannelCatalog", () => {
         entry.openclaw?.channel?.id === "whatsapp",
     );
     expect(summarizeCatalogEntry(whatsappEntry)).toEqual({
-      name: "@operator/whatsapp",
+      name: "@gabrielvfonseca/whatsapp",
       description: "OpenClaw WhatsApp channel plugin",
       source: "official",
       plugin: undefined,
@@ -328,8 +328,8 @@ describe("buildOfficialChannelCatalog", () => {
         systemImage: "message",
       },
       install: {
-        clawhubSpec: "clawhub:@operator/whatsapp",
-        npmSpec: "@operator/whatsapp",
+        clawhubSpec: "clawhub:@gabrielvfonseca/whatsapp",
+        npmSpec: "@gabrielvfonseca/whatsapp",
         defaultChoice: "clawhub",
         minHostVersion: ">=2026.4.25",
       },

@@ -26,11 +26,11 @@ import { describe, expect, it, vi } from "vitest";
 import WebSocket from "ws";
 import { defaultCodexAppInventoryCache } from "./app-inventory-cache.js";
 import {
-  buildCodexOperatorPromptContext,
+  buildCodexOpenClawPromptContext,
   buildCodexSystemPromptReport,
   buildCodexWorkspaceBootstrapContext,
   getCodexWorkspaceMemoryToolNames,
-  prependCodexOperatorPromptContext,
+  prependCodexOpenClawPromptContext,
 } from "./attempt-context.js";
 import { withCodexStartupTimeout } from "./attempt-timeouts.js";
 import { prepareCodexAppServerAuthBinding } from "./auth-binding.js";
@@ -381,11 +381,11 @@ async function buildCodexTurnContextForTest(
   ]
     .filter((section) => section?.trim())
     .join("\n\n");
-  const openClawPromptContext = buildCodexOperatorPromptContext({
+  const openClawPromptContext = buildCodexOpenClawPromptContext({
     params,
     workspacePromptContext: workspaceBootstrapContext.promptContext,
   });
-  const codexTurnPromptText = prependCodexOperatorPromptContext(
+  const codexTurnPromptText = prependCodexOpenClawPromptContext(
     params.prompt,
     openClawPromptContext,
   );

@@ -510,7 +510,7 @@ describe("release candidate checklist", () => {
       tarballSha256: "root-sha",
       dependencyTarballs: [
         {
-          packageName: "@operator/ai",
+          packageName: "@gabrielvfonseca/ai",
           packageVersion: "2026.7.1-beta.3",
           tarballName: "openclaw-ai-2026.7.1-beta.3.tgz",
           tarballSha256: "ai-sha",

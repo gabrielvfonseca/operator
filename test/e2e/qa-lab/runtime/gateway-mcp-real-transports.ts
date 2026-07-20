@@ -20,7 +20,7 @@ import {
   MIN_CLIENT_PROTOCOL_VERSION,
 } from "../../../../packages/gateway-protocol/src/version.js";
 import { runGatewaySmoke } from "../../../../scripts/dev/gateway-smoke.js";
-import type { OpenClawConfig } from "../../../../src/config/types.openclaw.js";
+import type { OperatorConfig } from "../../../../src/config/types.openclaw.js";
 import { formatErrorMessage } from "../../../../src/infra/errors.js";
 import { createMcpClientTempState } from "./mcp-client-temp-state.fixture.ts";
 import { createQaScriptEvidenceWriter, type QaScriptEvidenceStatus } from "./script-evidence.ts";
@@ -201,7 +201,7 @@ module.exports = {
   };
 }
 
-function withFixturePlugin(config: OpenClawConfig, pluginDir: string): OpenClawConfig {
+function withFixturePlugin(config: OperatorConfig, pluginDir: string): OperatorConfig {
   const existingPaths = config.plugins?.load?.paths ?? [];
   const existingAllow = config.plugins?.allow ?? [];
   return {
@@ -711,7 +711,7 @@ async function runMcpGatewayStartupRetryProof(options: ProducerOptions): Promise
 
 async function writePluginToolsConfig(root: string, pluginDir: string) {
   const configPath = path.join(root, "openclaw.json");
-  const config = withFixturePlugin({} as OpenClawConfig, pluginDir);
+  const config = withFixturePlugin({} as OperatorConfig, pluginDir);
   await fs.writeFile(configPath, `${JSON.stringify(config, null, 2)}\n`, { mode: 0o600 });
   return configPath;
 }

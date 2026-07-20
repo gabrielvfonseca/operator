@@ -45,7 +45,7 @@ async function resolveDeferredAndDrain(
     async ({ targetMethod, responsePayload }) => {
       const gateway = (
         window as Window & {
-          openclawControlUiE2eGateway?: {
+          operatorControlUiE2eGateway?: {
             resolveDeferred: (method: string, payload?: unknown) => void;
           };
         }

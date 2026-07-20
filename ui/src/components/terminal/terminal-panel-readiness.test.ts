@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { i18n } from "../../i18n/index.ts";
 import { createStorageMock } from "../../test-helpers/storage.ts";
 import type { TerminalGatewayClient } from "./terminal-connection.ts";
-import { OpenClawTerminalPanel } from "./terminal-panel.ts";
+import { OperatorTerminalPanel } from "./terminal-panel.ts";
 import type { createIsolatedGhosttyTerminal } from "./terminal-runtime.ts";
 
 function createTerminalController() {
@@ -30,7 +30,7 @@ function createTerminalController() {
 
 const createTerminal = vi.fn(async () => createTerminalController());
 
-class ReadinessTestTerminalPanel extends OpenClawTerminalPanel {
+class ReadinessTestTerminalPanel extends OperatorTerminalPanel {
   protected override createTerminal =
     createTerminal as unknown as typeof createIsolatedGhosttyTerminal;
 }
@@ -84,7 +84,7 @@ describe("terminal panel readiness", () => {
         (method === "terminal.open" ? open.promise : Promise.resolve({})) as Promise<T>,
       addEventListener: () => () => {},
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);
@@ -129,7 +129,7 @@ describe("terminal panel readiness", () => {
         };
       },
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);
@@ -189,7 +189,7 @@ describe("terminal panel readiness", () => {
         };
       },
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);
@@ -229,7 +229,7 @@ describe("terminal panel readiness", () => {
       },
       addEventListener: () => () => {},
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     (panel as unknown as { catalogReadyTimeoutMs: number }).catalogReadyTimeoutMs = 5;

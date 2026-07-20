@@ -218,7 +218,7 @@ function readInternalSourceReplyMessageSeq(message: unknown): number | undefined
   if (!message || typeof message !== "object" || Array.isArray(message)) {
     return undefined;
   }
-  const marker = (message as { openclawMessageToolMirror?: unknown }).operatorMessageToolMirror;
+  const marker = (message as { operatorMessageToolMirror?: unknown }).operatorMessageToolMirror;
   if (!marker || typeof marker !== "object" || Array.isArray(marker)) {
     return undefined;
   }

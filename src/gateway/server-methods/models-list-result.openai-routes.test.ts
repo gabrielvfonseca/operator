@@ -3,7 +3,7 @@ import type { ModelCatalogEntry } from "../../agents/model-catalog.types.js";
 import type { createOpenAIModelRoutesResolver } from "../../agents/openai-model-routes.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { withEnvAsync } from "../../test-utils/env.js";
-import { withOperatorTestState } from "../../test-utils/openclaw-test-state.js";
+import { withOperatorTestState } from "../../test-utils/operator-test-state.ts";
 import { buildModelsListResult } from "./models-list-result.js";
 import type { GatewayRequestContext } from "./types.js";
 

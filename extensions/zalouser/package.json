@@ -13,7 +13,7 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
     "@gabrielvfonseca/operator": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   },
@@ -58,7 +58,7 @@
       "pluginApi": ">=2026.7.2"
     },
     "build": {
-      "openclawVersion": "2026.7.2"
+      "operatorVersion": "2026.7.2"
     },
     "release": {
       "publishToClawHub": true,

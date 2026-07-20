@@ -13,7 +13,7 @@ import {
 import { tmpdir } from "node:os";
 import path, { join } from "node:path";
 import { runInNewContext } from "node:vm";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, describe, expect, it } from "vitest";
 import { parse } from "yaml";
 import { createTempDirTracker } from "../helpers/temp-dir.js";
@@ -311,7 +311,7 @@ function runRestoreLocalDistFixture(
   }
   for (const [relativePath, contents] of [
     ["app/dist/root.txt", "new-root"],
-    ["app/node_modules/@operator/ai/dist/ai.txt", "new-ai"],
+    ["app/node_modules/@gabrielvfonseca/ai/dist/ai.txt", "new-ai"],
   ] as const) {
     const target = join(imageRoot, relativePath);
     mkdirSync(path.dirname(target), { recursive: true });
@@ -550,7 +550,7 @@ describe("test-install-sh-docker", () => {
       'docker_e2e_docker_cmd cp "${container_id}:/app/dist" "$temp_dir/dist"',
     );
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-    expect(packageHelper).toContain('"${container_id}:/app/node_modules/@operator/ai/dist"');
+    expect(packageHelper).toContain('"${container_id}:/app/node_modules/@gabrielvfonseca/ai/dist"');
     expect(packageHelper).toContain('"$temp_dir/ai-dist"');
     expect(packageHelper).toContain('mv "$temp_dir/ai-dist" "$ai_dist_dir"');
     expect(packageHelper).toContain("cleanup_restore_package_dist() {");
@@ -1265,7 +1265,7 @@ describe("bun global install smoke", () => {
       'docker_e2e_docker_cmd cp "${container_id}:/app/dist" "$temp_dir/dist"',
     );
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-    expect(packageHelper).toContain('"${container_id}:/app/node_modules/@operator/ai/dist"');
+    expect(packageHelper).toContain('"${container_id}:/app/node_modules/@gabrielvfonseca/ai/dist"');
     expect(packageHelper).toContain('"$temp_dir/ai-dist"');
     expect(packageHelper).toContain('mv "$temp_dir/ai-dist" "$ai_dist_dir"');
     expect(packageHelper).toContain("cleanup_restore_package_dist() {");
@@ -1309,11 +1309,11 @@ describe("bun global install smoke", () => {
 
     expect(script).toContain("assert-release-versions");
     expect(script).toContain('"$BUN_INSTALL/install/global/package.json"');
-    expect(script).toContain("package/node_modules/@operator/ai");
+    expect(script).toContain("package/node_modules/@gabrielvfonseca/ai");
     expect(script).toContain("--strip-components=4");
     expect(script).toContain('npm pack --ignore-scripts --silent --pack-destination "$PACK_DIR"');
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-    expect(script).toContain('overrides: { "@operator/ai": `file:${aiPackageTarball}` }');
+    expect(script).toContain('overrides: { "@gabrielvfonseca/ai": `file:${aiPackageTarball}` }');
     expect(script).not.toContain("--registry");
     expect(script).not.toContain("@openclaw:registry");
   });
@@ -1327,10 +1327,13 @@ describe("bun global install smoke", () => {
       JSON.stringify({
         name: "openclaw",
         version: "2026.6.17",
-        dependencies: { "@operator/ai": "2026.6.17" },
+        dependencies: { "@gabrielvfonseca/ai": "2026.6.17" },
       }),
     );
-    writeFileSync(aiManifestPath, JSON.stringify({ name: "@operator/ai", version: "2026.6.17" }));
+    writeFileSync(
+      aiManifestPath,
+      JSON.stringify({ name: "@gabrielvfonseca/ai", version: "2026.6.17" }),
+    );
 
     const matching = spawnSync(
       process.execPath,
@@ -1339,7 +1342,10 @@ describe("bun global install smoke", () => {
     );
     expect(matching).toMatchObject({ status: 0, stdout: "2026.6.17" });
 
-    writeFileSync(aiManifestPath, JSON.stringify({ name: "@operator/ai", version: "2026.6.18" }));
+    writeFileSync(
+      aiManifestPath,
+      JSON.stringify({ name: "@gabrielvfonseca/ai", version: "2026.6.18" }),
+    );
     const mismatched = spawnSync(
       process.execPath,
       [BUN_GLOBAL_ASSERTIONS_PATH, "assert-release-versions", rootManifestPath, aiManifestPath],
@@ -1365,13 +1371,13 @@ describe("bun global install smoke", () => {
         JSON.stringify({
           name: "openclaw",
           version: "2026.6.17",
-          dependencies: { "@operator/ai": "2026.6.17" },
-          bundleDependencies: ["@operator/ai"],
+          dependencies: { "@gabrielvfonseca/ai": "2026.6.17" },
+          bundleDependencies: ["@gabrielvfonseca/ai"],
         }),
       );
       writeFileSync(
         join(aiDir, "package.json"),
-        JSON.stringify({ name: "@operator/ai", version: "2026.6.17" }),
+        JSON.stringify({ name: "@gabrielvfonseca/ai", version: "2026.6.17" }),
       );
       const packed = spawnSync(
         "tar",
@@ -1389,7 +1395,7 @@ if [ "\${1:-}" = "--version" ]; then
   echo "1.3.14"
   exit 0
 fi
-override="$(node -e 'const p=require(process.argv[1]);process.stdout.write(p.overrides["@operator/ai"])' "$BUN_INSTALL/install/global/package.json")"
+override="$(node -e 'const p=require(process.argv[1]);process.stdout.write(p.overrides["@gabrielvfonseca/ai"])' "$BUN_INSTALL/install/global/package.json")"
 case "\${override#file:}" in
   *.tgz) ;;
   *) exit 1 ;;

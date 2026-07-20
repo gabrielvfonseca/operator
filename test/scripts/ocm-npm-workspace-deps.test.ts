@@ -123,12 +123,12 @@ describe("OCM npm workspace dependency adapter", () => {
   it("builds a manifest with the root and local workspace tarballs", () => {
     expect(
       buildInstallManifest("/tmp/openclaw.tgz", [
-        { name: "@operator/ai", tarball: "/tmp/openclaw-ai.tgz" },
+        { name: "@gabrielvfonseca/ai", tarball: "/tmp/openclaw-ai.tgz" },
       ]),
     ).toEqual({
       private: true,
       dependencies: {
-        "@operator/ai": "file:///tmp/openclaw-ai.tgz",
+        "@gabrielvfonseca/ai": "file:///tmp/openclaw-ai.tgz",
         openclaw: "file:///tmp/openclaw.tgz",
       },
     });
@@ -137,7 +137,7 @@ describe("OCM npm workspace dependency adapter", () => {
   it("rewrites packed workspace protocols to the local package version", () => {
     const packageJson = {
       dependencies: {
-        "@operator/ai": "workspace:*",
+        "@gabrielvfonseca/ai": "workspace:*",
         chalk: "5.6.2",
       },
     };
@@ -145,14 +145,14 @@ describe("OCM npm workspace dependency adapter", () => {
     expect(
       rewriteWorkspaceDependencyVersions(packageJson, [
         {
-          name: "@operator/ai",
+          name: "@gabrielvfonseca/ai",
           version: "2026.7.1-beta.3",
           tarball: "/tmp/openclaw-ai.tgz",
         },
       ]),
     ).toBe(1);
     expect(packageJson.dependencies).toEqual({
-      "@operator/ai": "2026.7.1-beta.3",
+      "@gabrielvfonseca/ai": "2026.7.1-beta.3",
       chalk: "5.6.2",
     });
   });
@@ -172,13 +172,13 @@ describe("OCM npm workspace dependency adapter", () => {
         `${JSON.stringify({
           name: "openclaw",
           version: "1.0.0",
-          dependencies: { "@operator/ai": "workspace:*" },
+          dependencies: { "@gabrielvfonseca/ai": "workspace:*" },
         })}\n`,
       );
       writeFileSync(
         join(workspaceDir, "package.json"),
         `${JSON.stringify({
-          name: "@operator/ai",
+          name: "@gabrielvfonseca/ai",
           version: "1.0.0",
           main: "index.js",
         })}\n`,
@@ -216,8 +216,9 @@ describe("OCM npm workspace dependency adapter", () => {
           .version,
       ).toBe("1.0.0");
       expect(
-        JSON.parse(readFileSync(join(installDir, "node_modules/@operator/ai/package.json"), "utf8"))
-          .version,
+        JSON.parse(
+          readFileSync(join(installDir, "node_modules/@gabrielvfonseca/ai/package.json"), "utf8"),
+        ).version,
       ).toBe("1.0.0");
     } finally {
       rmSync(root, { force: true, recursive: true });

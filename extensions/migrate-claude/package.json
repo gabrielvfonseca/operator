@@ -5,7 +5,7 @@
   "description": "Claude to Operator migration provider",
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
     "@gabrielvfonseca/operator": "workspace:*"
   },
   "peerDependencies": {

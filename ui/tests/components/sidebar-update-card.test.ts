@@ -98,7 +98,7 @@ describe("SidebarUpdateCard", () => {
     const postMessage = vi.fn();
     Object.defineProperty(window, "webkit", {
       configurable: true,
-      value: { messageHandlers: { openclawUpdate: { postMessage } } },
+      value: { messageHandlers: { operatorUpdate: { postMessage } } },
     });
     const element = await mount({
       currentVersion: "1.0.0",
@@ -127,7 +127,7 @@ describe("SidebarUpdateCard", () => {
 
     Object.defineProperty(window, "webkit", {
       configurable: true,
-      value: { messageHandlers: { openclawUpdate: { postMessage: vi.fn() } } },
+      value: { messageHandlers: { operatorUpdate: { postMessage: vi.fn() } } },
     });
     window.dispatchEvent(new CustomEvent(NATIVE_UPDATE_AVAILABILITY_CHANGED_EVENT));
     await element.updateComplete;
@@ -152,7 +152,7 @@ describe("SidebarUpdateCard", () => {
 
     Object.defineProperty(window, "webkit", {
       configurable: true,
-      value: { messageHandlers: { openclawUpdate: { postMessage } } },
+      value: { messageHandlers: { operatorUpdate: { postMessage } } },
     });
     element.querySelector<HTMLButtonElement>(".sidebar-update-card__action")?.click();
 
@@ -190,7 +190,7 @@ describe("SidebarUpdateCard", () => {
     const postMessage = vi.fn();
     Object.defineProperty(window, "webkit", {
       configurable: true,
-      value: { messageHandlers: { openclawUpdate: { postMessage } } },
+      value: { messageHandlers: { operatorUpdate: { postMessage } } },
     });
     const element = await mount({
       currentVersion: "1.0.0",
@@ -220,7 +220,7 @@ describe("SidebarUpdateCard", () => {
     const postMessage = vi.fn();
     Object.defineProperty(window, "webkit", {
       configurable: true,
-      value: { messageHandlers: { openclawUpdate: { postMessage } } },
+      value: { messageHandlers: { operatorUpdate: { postMessage } } },
     });
     const element = await mount({
       currentVersion: "1.0.0",

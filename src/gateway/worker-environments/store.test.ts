@@ -30,7 +30,7 @@ const SSH_ENDPOINT: WorkerEnvironmentSshEndpoint = {
 };
 const BOOTSTRAP_RECEIPT: WorkerEnvironmentBootstrapReceipt = {
   bundleHash: "a".repeat(64),
-  openclawVersion: "2026.7.1",
+  operatorVersion: "2026.7.1",
   protocolFeatures: ["workspace-sync-v1", "model-proxy-v1"],
 };
 const CREDENTIAL = ["worker", "credential", "fixture"].join("-");

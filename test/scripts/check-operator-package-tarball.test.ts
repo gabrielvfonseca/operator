@@ -20,7 +20,7 @@ const CHECK_SCRIPT = "scripts/check-operator-package-tarball.mjs";
 const FLAT_PLUGIN_SDK_DECLARATION = "dist/plugin-sdk/provider-entry.d.ts";
 const DEEP_PLUGIN_SDK_DECLARATION = "dist/plugin-sdk/src/plugin-sdk/provider-entry.d.ts";
 const AI_RUNTIME_PACKAGE_JSON = JSON.stringify({
-  name: "@operator/ai",
+  name: "@gabrielvfonseca/ai",
   version: "2026.6.11",
   exports: {
     ".": { import: "./dist/index.mjs" },
@@ -543,11 +543,11 @@ describe("check-operator-package-tarball", () => {
 
         expect(result.status).not.toBe(0);
         expect(result.stderr).toContain(
-          "package.json dependencies.@operator/ai must not use workspace protocol workspace:*",
+          "package.json dependencies.@gabrielvfonseca/ai must not use workspace protocol workspace:*",
         );
       },
       "2026.6.11",
-      { packageJson: { dependencies: { "@operator/ai": "workspace:*" } } },
+      { packageJson: { dependencies: { "@gabrielvfonseca/ai": "workspace:*" } } },
     );
   });
 
@@ -560,11 +560,11 @@ describe("check-operator-package-tarball", () => {
 
         expect(result.status).not.toBe(0);
         expect(result.stderr).toContain(
-          "npm-shrinkwrap.json packages root dependencies.@operator/ai must not use workspace protocol workspace:*",
+          "npm-shrinkwrap.json packages root dependencies.@gabrielvfonseca/ai must not use workspace protocol workspace:*",
         );
       },
       "2026.6.11",
-      { shrinkwrapRootPackage: { dependencies: { "@operator/ai": "workspace:*" } } },
+      { shrinkwrapRootPackage: { dependencies: { "@gabrielvfonseca/ai": "workspace:*" } } },
     );
   });
 
@@ -579,7 +579,7 @@ describe("check-operator-package-tarball", () => {
         expect(result.stdout).toContain("Operator package tarball integrity passed.");
       },
       "2026.6.11",
-      { packageJson: { dependencies: { "@operator/ai": "2026.6.11" } } },
+      { packageJson: { dependencies: { "@gabrielvfonseca/ai": "2026.6.11" } } },
     );
   });
 
@@ -596,14 +596,14 @@ describe("check-operator-package-tarball", () => {
 
         expect(result.status).not.toBe(0);
         expect(result.stderr).toContain(
-          "package.json dependencies.@operator/ai must be listed in bundleDependencies because it is private to the Operator workspace",
+          "package.json dependencies.@gabrielvfonseca/ai must be listed in bundleDependencies because it is private to the Operator workspace",
         );
         expect(result.stderr).toContain(
-          "package.json dependencies.@operator/ai must be bundled in node_modules/@operator/ai",
+          "package.json dependencies.@gabrielvfonseca/ai must be bundled in node_modules/@gabrielvfonseca/ai",
         );
       },
       "2026.6.11",
-      { packageJson: { dependencies: { "@operator/ai": "2026.6.11" } } },
+      { packageJson: { dependencies: { "@gabrielvfonseca/ai": "2026.6.11" } } },
     );
   });
 
@@ -612,7 +612,7 @@ describe("check-operator-package-tarball", () => {
       ["dist/index.js"],
       {
         "dist/index.js": "export {};\n",
-        "node_modules/@operator/ai/package.json": AI_RUNTIME_PACKAGE_JSON,
+        "node_modules/@gabrielvfonseca/ai/package.json": AI_RUNTIME_PACKAGE_JSON,
       },
       (tarball) => {
         const result = spawnSync(
@@ -623,20 +623,20 @@ describe("check-operator-package-tarball", () => {
 
         expect(result.status).not.toBe(0);
         expect(result.stderr).toContain(
-          "bundled @operator/ai is missing required runtime entry dist/index.mjs",
+          "bundled @gabrielvfonseca/ai is missing required runtime entry dist/index.mjs",
         );
         expect(result.stderr).toContain(
-          "bundled @operator/ai is missing required runtime entry dist/providers.mjs",
+          "bundled @gabrielvfonseca/ai is missing required runtime entry dist/providers.mjs",
         );
         expect(result.stderr).toContain(
-          "bundled @operator/ai is missing required runtime entry dist/internal/runtime.mjs",
+          "bundled @gabrielvfonseca/ai is missing required runtime entry dist/internal/runtime.mjs",
         );
       },
       "2026.6.11",
       {
         packageJson: {
-          dependencies: { "@operator/ai": "2026.6.11" },
-          bundleDependencies: ["@operator/ai"],
+          dependencies: { "@gabrielvfonseca/ai": "2026.6.11" },
+          bundleDependencies: ["@gabrielvfonseca/ai"],
         },
       },
     );
@@ -647,10 +647,10 @@ describe("check-operator-package-tarball", () => {
       ["dist/index.js"],
       {
         "dist/index.js": "export {};\n",
-        "node_modules/@operator/ai/package.json": AI_RUNTIME_PACKAGE_JSON,
-        "node_modules/@operator/ai/dist/index.mjs": "export {};\n",
-        "node_modules/@operator/ai/dist/providers.mjs": "export {};\n",
-        "node_modules/@operator/ai/dist/internal/runtime.mjs": "export {};\n",
+        "node_modules/@gabrielvfonseca/ai/package.json": AI_RUNTIME_PACKAGE_JSON,
+        "node_modules/@gabrielvfonseca/ai/dist/index.mjs": "export {};\n",
+        "node_modules/@gabrielvfonseca/ai/dist/providers.mjs": "export {};\n",
+        "node_modules/@gabrielvfonseca/ai/dist/internal/runtime.mjs": "export {};\n",
       },
       (tarball) => {
         const result = spawnSync(
@@ -665,8 +665,8 @@ describe("check-operator-package-tarball", () => {
       "2026.6.11",
       {
         packageJson: {
-          dependencies: { "@operator/ai": "2026.6.11" },
-          bundleDependencies: ["@operator/ai"],
+          dependencies: { "@gabrielvfonseca/ai": "2026.6.11" },
+          bundleDependencies: ["@gabrielvfonseca/ai"],
         },
       },
     );
@@ -677,9 +677,9 @@ describe("check-operator-package-tarball", () => {
       ["dist/index.js"],
       {
         "dist/index.js": "export {};\n",
-        "node_modules/@operator/ai/package.json": AI_RUNTIME_PACKAGE_JSON,
-        "node_modules/@operator/ai/dist/index.mjs": "export {};\n",
-        "node_modules/@operator/ai/dist/internal/runtime.mjs": "export {};\n",
+        "node_modules/@gabrielvfonseca/ai/package.json": AI_RUNTIME_PACKAGE_JSON,
+        "node_modules/@gabrielvfonseca/ai/dist/index.mjs": "export {};\n",
+        "node_modules/@gabrielvfonseca/ai/dist/internal/runtime.mjs": "export {};\n",
       },
       (tarball) => {
         const result = spawnSync(
@@ -690,14 +690,14 @@ describe("check-operator-package-tarball", () => {
 
         expect(result.status).not.toBe(0);
         expect(result.stderr).toContain(
-          "bundled @operator/ai is missing required runtime entry dist/providers.mjs",
+          "bundled @gabrielvfonseca/ai is missing required runtime entry dist/providers.mjs",
         );
       },
       "2026.6.11",
       {
         packageJson: {
-          dependencies: { "@operator/ai": "2026.6.11" },
-          bundleDependencies: ["@operator/ai"],
+          dependencies: { "@gabrielvfonseca/ai": "2026.6.11" },
+          bundleDependencies: ["@gabrielvfonseca/ai"],
         },
       },
     );
@@ -708,8 +708,8 @@ describe("check-operator-package-tarball", () => {
       ["dist/index.js"],
       {
         "dist/index.js": "export {};\n",
-        "node_modules/@operator/ai/package.json": JSON.stringify({
-          name: "@operator/ai",
+        "node_modules/@gabrielvfonseca/ai/package.json": JSON.stringify({
+          name: "@gabrielvfonseca/ai",
           version: "2026.6.11",
           exports: {
             ".": "./dist/index.mjs",
@@ -717,9 +717,9 @@ describe("check-operator-package-tarball", () => {
             "./internal/*": "./dist/internal/*.mjs",
           },
         }),
-        "node_modules/@operator/ai/dist/index.mjs": "export {};\n",
-        "node_modules/@operator/ai/dist/providers.mjs": "export {};\n",
-        "node_modules/@operator/ai/dist/internal/runtime.mjs": "export {};\n",
+        "node_modules/@gabrielvfonseca/ai/dist/index.mjs": "export {};\n",
+        "node_modules/@gabrielvfonseca/ai/dist/providers.mjs": "export {};\n",
+        "node_modules/@gabrielvfonseca/ai/dist/internal/runtime.mjs": "export {};\n",
       },
       (tarball) => {
         const result = spawnSync(
@@ -730,14 +730,14 @@ describe("check-operator-package-tarball", () => {
 
         expect(result.status).not.toBe(0);
         expect(result.stderr).toContain(
-          "bundled @operator/ai runtime specifier @operator/ai/providers is not resolvable",
+          "bundled @gabrielvfonseca/ai runtime specifier @gabrielvfonseca/ai/providers is not resolvable",
         );
       },
       "2026.6.11",
       {
         packageJson: {
-          dependencies: { "@operator/ai": "2026.6.11" },
-          bundleDependencies: ["@operator/ai"],
+          dependencies: { "@gabrielvfonseca/ai": "2026.6.11" },
+          bundleDependencies: ["@gabrielvfonseca/ai"],
         },
       },
     );
@@ -748,10 +748,11 @@ describe("check-operator-package-tarball", () => {
       ["dist/index.js"],
       {
         "dist/index.js": "export {};\n",
-        "node_modules/@operator/ai/package.json": AI_RUNTIME_PACKAGE_JSON,
-        "node_modules/@operator/ai/dist/index.mjs": "export {};\n",
-        "node_modules/@operator/ai/dist/providers.mjs": "export {};\n",
-        "node_modules/@operator/ai/dist/internal/runtime.mjs": 'export * from "./missing.mjs";\n',
+        "node_modules/@gabrielvfonseca/ai/package.json": AI_RUNTIME_PACKAGE_JSON,
+        "node_modules/@gabrielvfonseca/ai/dist/index.mjs": "export {};\n",
+        "node_modules/@gabrielvfonseca/ai/dist/providers.mjs": "export {};\n",
+        "node_modules/@gabrielvfonseca/ai/dist/internal/runtime.mjs":
+          'export * from "./missing.mjs";\n',
       },
       (tarball) => {
         const result = spawnSync(
@@ -762,14 +763,14 @@ describe("check-operator-package-tarball", () => {
 
         expect(result.status).not.toBe(0);
         expect(result.stderr).toContain(
-          "bundled @operator/ai dist/internal/runtime.mjs imports missing dist/internal/missing.mjs",
+          "bundled @gabrielvfonseca/ai dist/internal/runtime.mjs imports missing dist/internal/missing.mjs",
         );
       },
       "2026.6.11",
       {
         packageJson: {
-          dependencies: { "@operator/ai": "2026.6.11" },
-          bundleDependencies: ["@operator/ai"],
+          dependencies: { "@gabrielvfonseca/ai": "2026.6.11" },
+          bundleDependencies: ["@gabrielvfonseca/ai"],
         },
       },
     );

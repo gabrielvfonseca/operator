@@ -17,7 +17,7 @@ export {
 } from "../../../src/plugin-sdk/plugin-runtime.js";
 export type {
   LazyPluginServiceHandle,
-  OpenClawPluginApi,
+  OperatorPluginApi,
   OpenClawPluginConfigSchema,
   PluginConversationBinding,
   PluginConversationBindingRequestParams,

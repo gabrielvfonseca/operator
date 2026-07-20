@@ -148,7 +148,7 @@ describe("worker turn launcher", () => {
       provisionOperationId: "provision-worker-turn",
       bootstrapReceipt: {
         bundleHash: BUNDLE_HASH,
-        openclawVersion: "2026.7.2",
+        operatorVersion: "2026.7.2",
         protocolFeatures: [],
       },
       ownerEpoch: OWNER_EPOCH,

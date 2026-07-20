@@ -3143,7 +3143,7 @@ describe("grouped chat rendering", () => {
       {
         role: "assistant",
         content: [{ type: "text", text: "mirrored text\n...(truncated)..." }],
-        openclawMessageToolMirror: { toolName: "message", toolCallId: "call-1" },
+        operatorMessageToolMirror: { toolName: "message", toolCallId: "call-1" },
         __openclaw: { id: "msg-tool-result", seq: 2, truncated: true },
       },
       {

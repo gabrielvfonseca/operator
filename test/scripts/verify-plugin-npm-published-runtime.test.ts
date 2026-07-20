@@ -233,7 +233,7 @@ describe("collectPluginNpmPublishedRuntimeErrors", () => {
     expect(
       collectPluginNpmPublishedRuntimeErrors({
         packageJson: {
-          name: "@operator/whatsapp",
+          name: "@gabrielvfonseca/whatsapp",
           version: "2026.5.3",
           openclaw: {
             extensions: ["./src/index.ts"],

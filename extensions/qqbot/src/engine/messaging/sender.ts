@@ -57,11 +57,11 @@ export { UploadDailyLimitExceededError } from "../api/media-chunked.js";
 // ============ Plugin User-Agent ============
 
 let pluginVersion = "unknown";
-let openclawVersion = "unknown";
+let operatorVersion = "unknown";
 
 /** Build the User-Agent string from the current plugin and framework versions. */
 function buildUserAgent(): string {
-  return `QQBotPlugin/${pluginVersion} (Node/${process.versions.node}; ${os.platform()}; Operator/${openclawVersion})`;
+  return `QQBotPlugin/${pluginVersion} (Node/${process.versions.node}; ${os.platform()}; Operator/${operatorVersion})`;
 }
 
 /** Return the current User-Agent string. */
@@ -73,19 +73,19 @@ export function getPluginUserAgent(): string {
  * Initialize sender with the plugin version.
  * Must be called once during startup before any API calls.
  */
-export function initSender(options: { pluginVersion?: string; openclawVersion?: string }): void {
+export function initSender(options: { pluginVersion?: string; operatorVersion?: string }): void {
   if (options.pluginVersion) {
     pluginVersion = options.pluginVersion;
   }
   if (options.operatorVersion) {
-    openclawVersion = options.operatorVersion;
+    operatorVersion = options.operatorVersion;
   }
 }
 
 /** Update the Operator framework version in the User-Agent (called after runtime injection). */
 export function setOperatorVersion(version: string): void {
   if (version) {
-    openclawVersion = version;
+    operatorVersion = version;
   }
 }
 

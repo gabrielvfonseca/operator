@@ -16,7 +16,7 @@ import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   type OperatorTestState,
   withOperatorTestState,
-} from "../../test-utils/openclaw-test-state.js";
+} from "../../test-utils/operator-test-state.ts";
 import {
   clearSessionAuthProfileOverride,
   resolveSessionAuthProfileOverride,

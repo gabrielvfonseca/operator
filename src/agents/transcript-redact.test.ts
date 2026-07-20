@@ -121,7 +121,7 @@ describe("redactTranscriptMessage", () => {
           type: "thinking",
           thinking: "secret sk-abcdef1234567890xyz",
           thinkingSignature,
-          openclawReasoningReplay: {
+          operatorReasoningReplay: {
             ...OPENAI_REASONING_REPLAY_METADATA,
             secret: "sk-abcdef1234567890xyz",
           },
@@ -135,7 +135,7 @@ describe("redactTranscriptMessage", () => {
             encrypted_content: CIPHERTEXT_WITH_TOKEN_SHAPED_BYTES,
             summary: [{ type: "summary_text", text: "secret sk-abcdef1234567890xyz" }],
           }),
-          openclawReasoningReplay: {
+          operatorReasoningReplay: {
             ...OPENAI_REASONING_REPLAY_METADATA,
             model: "sk-abcdef1234567890xyz",
           },
@@ -159,7 +159,7 @@ describe("redactTranscriptMessage", () => {
       content?: unknown[];
       __operator_replay: Record<string, unknown>;
     };
-    const blockMetadata = (block as unknown as { openclawReasoningReplay: Record<string, unknown> })
+    const blockMetadata = (block as unknown as { operatorReasoningReplay: Record<string, unknown> })
       .operatorReasoningReplay;
     const rejectedSignature = expectDefined(
       (msgContent(result) as Array<{ thinkingSignature: string }>)[1],

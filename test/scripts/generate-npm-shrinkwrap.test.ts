@@ -33,7 +33,7 @@ describe("generate-npm-shrinkwrap", () => {
   it("omits workspace packages that are published beside the package", () => {
     const normalized = packageJsonForShrinkwrap(
       {
-        dependencies: { "@operator/ai": "workspace:2026.6.11", chalk: "5.6.2" },
+        dependencies: { "@gabrielvfonseca/ai": "workspace:2026.6.11", chalk: "5.6.2" },
         devDependencies: { local: "workspace:*" },
         peerDependencies: { host: "workspace:^1.2.3" },
       },

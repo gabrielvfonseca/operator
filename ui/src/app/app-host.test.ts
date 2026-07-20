@@ -95,7 +95,7 @@ type ShellSettingsSearchLoadState = {
 type TestWebKitWindow = Window & {
   webkit?: {
     messageHandlers: {
-      openclawNav: { postMessage: (message: unknown) => void };
+      operatorNav: { postMessage: (message: unknown) => void };
     };
   };
 };
@@ -519,7 +519,7 @@ describe("OpenClaw shell keyboard shortcuts", () => {
   it("deduplicates native nav state reports", () => {
     const postMessage = vi.fn();
     (window as TestWebKitWindow).webkit = {
-      messageHandlers: { openclawNav: { postMessage } },
+      messageHandlers: { operatorNav: { postMessage } },
     };
     const snapshot = { navCollapsed: false, navWidth: 280 };
     const shell = document.createElement("openclaw-app-shell") as unknown as ShellNavigationState;

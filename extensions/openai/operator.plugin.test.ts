@@ -108,7 +108,9 @@ function expectWizardFields(
 
 describe("OpenAI plugin manifest", () => {
   it("keeps runtime dependencies in the package manifest", () => {
-    expect(packageJson.devDependencies?.["@operator/plugin-sdk"]).toBe("workspace:*");
+    expect(packageJson.devDependencies?.["@gabrielvfonseca/operator/plugin-sdk"]).toBe(
+      "workspace:*",
+    );
     expect(packageJson.dependencies?.ws).toBe("8.21.0");
   });
 

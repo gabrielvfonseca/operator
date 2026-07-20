@@ -120,7 +120,7 @@ function main(argv = process.argv.slice(2)): void {
           {
             private: true,
             dependencies: {
-              "@operator/ai": pathToFileURL(aiTarballPath).href,
+              "@gabrielvfonseca/ai": pathToFileURL(aiTarballPath).href,
               operator: pathToFileURL(realpathSync(args.tarballPath)).href,
             },
           },

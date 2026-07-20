@@ -5,7 +5,7 @@
   "description": "Operator NovitaAI provider plugin",
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   },
   "@gabrielvfonseca/operator": {

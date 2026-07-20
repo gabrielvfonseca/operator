@@ -279,7 +279,7 @@ describe("openai transport stream", () => {
     });
     const thinkingBlock = output.content[0] as {
       thinkingSignature?: string;
-      openclawReasoningReplay?: unknown;
+      operatorReasoningReplay?: unknown;
     };
     const replayItem = JSON.parse(thinkingBlock.thinkingSignature ?? "{}") as Record<
       string,

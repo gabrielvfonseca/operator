@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from "vite
 import { i18n } from "../../i18n/index.ts";
 import { createStorageMock } from "../../test-helpers/storage.ts";
 import type { TerminalGatewayClient } from "./terminal-connection.ts";
-import { OpenClawTerminalPanel } from "./terminal-panel.ts";
+import { OperatorTerminalPanel } from "./terminal-panel.ts";
 
 type CreateOptions = {
   parent: HTMLElement;
@@ -42,7 +42,7 @@ type CreateGhosttyTerminalMock = Mock<
 const createGhosttyTerminalMock: CreateGhosttyTerminalMock = vi.fn();
 const TERMINAL_PANEL_ELEMENT_NAME = `test-openclaw-terminal-panel-upload-${crypto.randomUUID()}`;
 
-class TestTerminalPanel extends OpenClawTerminalPanel {
+class TestTerminalPanel extends OperatorTerminalPanel {
   protected override createTerminal = createGhosttyTerminalMock as unknown as TerminalFactory;
 }
 
@@ -76,7 +76,7 @@ function deferred<T>() {
   return { promise, resolve, reject };
 }
 
-describe("OpenClawTerminalPanel upload lifecycle", () => {
+describe("OperatorTerminalPanel upload lifecycle", () => {
   beforeEach(async () => {
     vi.stubGlobal("localStorage", createStorageMock());
     vi.stubGlobal("sessionStorage", createStorageMock());
@@ -108,7 +108,7 @@ describe("OpenClawTerminalPanel upload lifecycle", () => {
       },
       addEventListener: () => () => {},
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);
@@ -170,7 +170,7 @@ describe("OpenClawTerminalPanel upload lifecycle", () => {
       },
       addEventListener: () => () => {},
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);
@@ -249,7 +249,7 @@ describe("OpenClawTerminalPanel upload lifecycle", () => {
       },
       addEventListener: () => () => {},
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);
@@ -310,7 +310,7 @@ describe("OpenClawTerminalPanel upload lifecycle", () => {
       },
       addEventListener: () => () => {},
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);

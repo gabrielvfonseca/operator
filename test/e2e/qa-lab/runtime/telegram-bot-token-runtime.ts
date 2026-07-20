@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
 import { monitorTelegramProvider } from "../../../../extensions/telegram/runtime-api.js";
 import { formatErrorMessage } from "../../../../src/infra/errors.js";
@@ -159,7 +159,7 @@ export async function runTelegramBotTokenRuntime(
       throw new Error(`Telegram runtime requested exit ${code}`);
     },
   };
-  const config: OpenClawConfig = {
+  const config: OperatorConfig = {
     channels: { telegram: { enabled: true } },
   };
   const previousStateDir = process.env.OPENCLAW_STATE_DIR;

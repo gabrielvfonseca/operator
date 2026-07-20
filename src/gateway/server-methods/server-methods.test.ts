@@ -937,7 +937,7 @@ describe("sanitizeChatHistoryMessages", () => {
             type: "thinking",
             thinking: "Need a tool.",
             thinkingSignature: "large-provider-payload",
-            openclawReasoningReplay: {
+            operatorReasoningReplay: {
               v: 1,
               source: "openai-responses",
               provider: "openai",
@@ -1541,7 +1541,7 @@ describe("projectRecentChatDisplayMessages", () => {
       {
         role: "assistant",
         content: [{ type: "text", text: "visible via message tool" }],
-        openclawMessageToolMirror: {
+        operatorMessageToolMirror: {
           toolName: "message",
           toolCallId: "call-message",
           sourceReplySink: "internal-ui",
@@ -1954,7 +1954,7 @@ describe("projectRecentChatDisplayMessages", () => {
         model: "delivery-mirror",
         content: [{ type: "text", text: "Yo Peter. I’m here." }],
         idempotencyKey: "channel-final:message-1:0",
-        openclawDeliveryMirror: { kind: "channel-final", sourceMessageId: "message-1" },
+        operatorDeliveryMirror: { kind: "channel-final", sourceMessageId: "message-1" },
         timestamp: 3,
       },
     ]);
@@ -1997,7 +1997,7 @@ describe("projectRecentChatDisplayMessages", () => {
         model: "delivery-mirror",
         content: [{ type: "text", text: "Repeated reply" }],
         idempotencyKey: "channel-final:message-2:0",
-        openclawDeliveryMirror: { kind: "channel-final", sourceMessageId: "message-2" },
+        operatorDeliveryMirror: { kind: "channel-final", sourceMessageId: "message-2" },
         timestamp: 3,
       },
     ]);
@@ -2018,7 +2018,7 @@ describe("projectRecentChatDisplayMessages", () => {
       model: "delivery-mirror",
       content: [{ type: "text", text: "Repeated reply" }],
       idempotencyKey: `channel-final:${sourceMessageId}:0`,
-      openclawDeliveryMirror: { kind: "channel-final", sourceMessageId },
+      operatorDeliveryMirror: { kind: "channel-final", sourceMessageId },
       timestamp,
     });
 
@@ -2045,7 +2045,7 @@ describe("projectRecentChatDisplayMessages", () => {
         model: "delivery-mirror",
         content: [{ type: "text", text: "Repeated reply" }],
         idempotencyKey: "channel-final:message-unmarked:0",
-        openclawDeliveryMirror: { kind: "channel-final", sourceMessageId: "message-unmarked" },
+        operatorDeliveryMirror: { kind: "channel-final", sourceMessageId: "message-unmarked" },
         timestamp: 2,
       },
     ]);
@@ -2071,7 +2071,7 @@ describe("projectRecentChatDisplayMessages", () => {
         model: "delivery-mirror",
         content: [{ type: "text", text: "Forwarded status" }],
         idempotencyKey: "channel-final:message-forwarded:0",
-        openclawDeliveryMirror: {
+        operatorDeliveryMirror: {
           kind: "channel-final",
           sourceMessageId: "message-forwarded",
         },

@@ -7,7 +7,7 @@ import { clearRuntimeAuthProfileStoreSnapshots } from "../agents/auth-profiles/s
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../test-utils/openclaw-test-state.js";
+} from "../test-utils/operator-test-state.ts";
 import { maybeRepairLegacyOAuthSidecarProfiles } from "./doctor-auth-oauth-sidecar.js";
 import { testing } from "./doctor-auth-oauth-sidecar.test-support.js";
 import type { DoctorPrompter } from "./doctor-prompter.js";

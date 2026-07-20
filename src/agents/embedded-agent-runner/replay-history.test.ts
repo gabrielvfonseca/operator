@@ -4,8 +4,8 @@ import { describe, expect, it } from "vitest";
 import {
   INTERNAL_RUNTIME_CONTEXT_BEGIN,
   INTERNAL_RUNTIME_CONTEXT_END,
-  OPENCLAW_NEXT_TURN_RUNTIME_CONTEXT_HEADER,
-  OPENCLAW_RUNTIME_CONTEXT_NOTICE,
+  OPERATOR_NEXT_TURN_RUNTIME_CONTEXT_HEADER,
+  OPERATOR_RUNTIME_CONTEXT_NOTICE,
 } from "../internal-runtime-context.js";
 import { normalizeAssistantReplayContent } from "./replay-history.js";
 
@@ -286,8 +286,8 @@ describe("normalizeAssistantReplayContent", () => {
             INTERNAL_RUNTIME_CONTEXT_BEGIN,
             "keep this internal",
             INTERNAL_RUNTIME_CONTEXT_END,
-            OPENCLAW_NEXT_TURN_RUNTIME_CONTEXT_HEADER,
-            OPENCLAW_RUNTIME_CONTEXT_NOTICE,
+            OPERATOR_NEXT_TURN_RUNTIME_CONTEXT_HEADER,
+            OPERATOR_RUNTIME_CONTEXT_NOTICE,
             "",
             "Visible after",
           ].join("\n"),

@@ -351,7 +351,7 @@ describe("openai transport stream", () => {
                   id: "rs_prior",
                   encrypted_content: "ciphertext",
                 }),
-                openclawReasoningReplay: testing.buildOpenAIResponsesReasoningReplayMetadata(
+                operatorReasoningReplay: testing.buildOpenAIResponsesReasoningReplayMetadata(
                   model,
                   {
                     authProfileId: "openai:oauth",
@@ -572,7 +572,7 @@ describe("openai transport stream", () => {
                   id: "rs_prior",
                   encrypted_content: "ciphertext",
                 }),
-                openclawReasoningReplay: testing.buildOpenAIResponsesReasoningReplayMetadata(
+                operatorReasoningReplay: testing.buildOpenAIResponsesReasoningReplayMetadata(
                   model,
                   {
                     authProfileId: "openai:oauth",
@@ -641,7 +641,7 @@ describe("openai transport stream", () => {
                   id: "rs_prior",
                   encrypted_content: "ciphertext",
                 }),
-                openclawReasoningReplay: testing.buildOpenAIResponsesReasoningReplayMetadata(
+                operatorReasoningReplay: testing.buildOpenAIResponsesReasoningReplayMetadata(
                   model,
                   {
                     authProfileId: "openai:old-oauth",

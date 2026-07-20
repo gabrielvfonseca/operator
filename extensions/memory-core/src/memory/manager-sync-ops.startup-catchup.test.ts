@@ -168,7 +168,7 @@ class SessionStartupCatchupHarness extends MemoryManagerSyncOps {
   }
 
   getDirtyArchiveFiles(): string[] {
-    return Array.from(this.sessionsDirtyFiles);
+    return Array.from(this.isSessionsDirty);
   }
 
   getPendingSessionTargets(): MemorySyncParams["sessions"] {
@@ -209,7 +209,7 @@ class SessionStartupCatchupHarness extends MemoryManagerSyncOps {
   }
 
   isSessionsDirty(): boolean {
-    return this.sessionsDirty;
+    return this.isSessionsDirty;
   }
 
   startTranscriptListener(): void {

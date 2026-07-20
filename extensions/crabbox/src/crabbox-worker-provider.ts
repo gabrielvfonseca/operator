@@ -69,7 +69,7 @@ class InvalidInspectResultError extends Error {}
 
 type CrabboxWorkerProviderDependencies = {
   isExecutable?: (candidate: string) => boolean;
-  openclawRoot?: string;
+  operatorRoot?: string;
   pathEnv?: string;
   platform?: NodeJS.Platform;
   runCommand?: CrabboxCommandRunner;
@@ -513,7 +513,7 @@ export function createCrabboxWorkerProvider(
       new Promise((resolve) => {
         setTimeout(resolve, milliseconds);
       }));
-  const openclawRoot = dependencies.operatorRoot ?? process.cwd();
+  const operatorRoot = dependencies.operatorRoot ?? process.cwd();
   let defaultBinary: string | undefined;
   const resolveBinary = (explicit?: string) => {
     if (explicit) {
@@ -522,7 +522,7 @@ export function createCrabboxWorkerProvider(
     defaultBinary ??= resolveCrabboxBinary({
       explicit,
       isExecutable: dependencies.isExecutable,
-      openclawRoot,
+      operatorRoot,
       pathEnv: dependencies.pathEnv ?? process.env.PATH,
       platform: dependencies.platform,
     });

@@ -20,7 +20,7 @@ const REMOTE_TARBALL = `/home/worker/.operator-worker/.incoming/${BUNDLE_HASH}.t
 const HOST_KEY = ["ssh-ed25519", "AAAA"].join(" ");
 const RECEIPT_JSON = JSON.stringify({
   bundleHash: BUNDLE_HASH,
-  openclawVersion: VERSION,
+  operatorVersion: VERSION,
   protocolFeatures: ["admission-v1"],
 });
 
@@ -35,7 +35,7 @@ const SSH: WorkerSshEndpoint = {
 const BUNDLE: WorkerInstallationArtifact = {
   install: "bundle",
   bundleHash: BUNDLE_HASH,
-  openclawVersion: VERSION,
+  operatorVersion: VERSION,
   protocolFeatures: ["admission-v1"],
   tarballSha256: TARBALL_SHA256,
   tarballPath: "/gateway/cache/worker.tgz",
@@ -110,7 +110,7 @@ describe("bootstrapWorker", () => {
       ),
     ).resolves.toEqual({
       bundleHash: BUNDLE_HASH,
-      openclawVersion: VERSION,
+      operatorVersion: VERSION,
       protocolFeatures: ["admission-v1"],
     });
 
@@ -158,7 +158,7 @@ describe("bootstrapWorker", () => {
       ),
     ).resolves.toEqual({
       bundleHash: BUNDLE_HASH,
-      openclawVersion: VERSION,
+      operatorVersion: VERSION,
       protocolFeatures: ["admission-v1"],
     });
 
@@ -217,14 +217,14 @@ describe("bootstrapWorker", () => {
     const artifact: WorkerInstallationArtifact = {
       install: "npm",
       bundleHash: BUNDLE_HASH,
-      openclawVersion: VERSION,
+      operatorVersion: VERSION,
       protocolFeatures: [],
       packageIntegrity: NPM_INTEGRITY,
       packageSpec: `openclaw@${VERSION}`,
     };
     const npmReceipt = JSON.stringify({
       bundleHash: BUNDLE_HASH,
-      openclawVersion: VERSION,
+      operatorVersion: VERSION,
       protocolFeatures: [],
     });
     const npmRunner = fakeRunner([
@@ -255,7 +255,7 @@ describe("bootstrapWorker", () => {
     const artifact: WorkerInstallationArtifact = {
       install: "npm",
       bundleHash: BUNDLE_HASH,
-      openclawVersion: VERSION,
+      operatorVersion: VERSION,
       protocolFeatures: [],
       packageIntegrity: NPM_INTEGRITY,
       packageSpec: "openclaw@latest",
@@ -272,7 +272,7 @@ describe("bootstrapWorker", () => {
     const artifact: WorkerInstallationArtifact = {
       install: "npm",
       bundleHash: BUNDLE_HASH,
-      openclawVersion: "latest",
+      operatorVersion: "latest",
       protocolFeatures: [],
       packageIntegrity: NPM_INTEGRITY,
       packageSpec: "openclaw@latest",
@@ -329,7 +329,7 @@ describe("bootstrapWorker", () => {
   it("rejects a stale remote receipt instead of synthesizing the expected fields", async () => {
     const staleReceipt = JSON.stringify({
       bundleHash: BUNDLE_HASH,
-      openclawVersion: "2026.7.10",
+      operatorVersion: "2026.7.10",
       protocolFeatures: ["admission-v1"],
     });
     const runner = fakeRunner([result({ stdout: tagged("current", staleReceipt) })]);
@@ -405,12 +405,12 @@ describe("bootstrapWorker", () => {
         const artifact = await createWorkerBundleProducer({
           packageRoot,
           cacheDir: path.join(root, "cache"),
-          openclawVersion: VERSION,
+          operatorVersion: VERSION,
           protocolFeatures: ["admission-v1"],
         }).prepare();
         const receiptJson = JSON.stringify({
           bundleHash: artifact.bundleHash,
-          openclawVersion: VERSION,
+          operatorVersion: VERSION,
           protocolFeatures: ["admission-v1"],
         });
         const staleStaging = path.join(
@@ -526,19 +526,19 @@ describe("bootstrapWorker", () => {
         const bundle = await createWorkerBundleProducer({
           packageRoot,
           cacheDir: path.join(root, "cache"),
-          openclawVersion: VERSION,
+          operatorVersion: VERSION,
         }).prepare();
         const artifact: WorkerInstallationArtifact = {
           install: "npm",
           bundleHash: bundle.bundleHash,
-          openclawVersion: VERSION,
+          operatorVersion: VERSION,
           protocolFeatures: [],
           packageIntegrity: NPM_INTEGRITY,
           packageSpec: `openclaw@${VERSION}`,
         };
         const receiptJson = JSON.stringify({
           bundleHash: bundle.bundleHash,
-          openclawVersion: VERSION,
+          operatorVersion: VERSION,
           protocolFeatures: [],
         });
         const installRoot = path.join(remoteHome, ".operator-worker", bundle.bundleHash);

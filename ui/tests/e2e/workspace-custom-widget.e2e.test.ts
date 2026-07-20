@@ -138,7 +138,7 @@ async function routeWidgetAssets(page: Page, html: string): Promise<void> {
     const widgetsIndex = segments.indexOf("widgets");
     const bridgeToken = widgetsIndex >= 0 ? segments[widgetsIndex + 1] : null;
     const bootstrap = bridgeToken
-      ? `<script>(()=>{const channel=new MessageChannel();const listeners=new Set();const port=channel.port1;port.onmessage=(event)=>{for(const listener of listeners)listener(event)};port.start();Object.defineProperty(window,"openclawWorkspaceBridge",{configurable:false,writable:false,value:Object.freeze({postMessage:(message)=>port.postMessage(message),addEventListener:(type,listener)=>{if(type==="message")listeners.add(listener)},removeEventListener:(type,listener)=>{if(type==="message")listeners.delete(listener)}})});window.parent.postMessage({v:1,type:"workspace:bridge:init",token:"${bridgeToken}"},"*",[channel.port2])})();</script>`
+      ? `<script>(()=>{const channel=new MessageChannel();const listeners=new Set();const port=channel.port1;port.onmessage=(event)=>{for(const listener of listeners)listener(event)};port.start();Object.defineProperty(window,"operatorWorkspaceBridge",{configurable:false,writable:false,value:Object.freeze({postMessage:(message)=>port.postMessage(message),addEventListener:(type,listener)=>{if(type==="message")listeners.add(listener)},removeEventListener:(type,listener)=>{if(type==="message")listeners.delete(listener)}})});window.parent.postMessage({v:1,type:"workspace:bridge:init",token:"${bridgeToken}"},"*",[channel.port2])})();</script>`
       : "";
     const doctype = html.match(/^\uFEFF?(?:\s|<!--[\s\S]*?-->)*<!doctype[^>]*>/i)?.[0] ?? "";
     const body = `${doctype}${bootstrap}${html.slice(doctype.length)}`;
@@ -373,7 +373,7 @@ describeControlUiE2e("Control UI custom-widget host mocked Gateway E2E", () => {
       await frame.locator("#value").evaluate((node) => {
         type SpoofObservationWindow = Window & {
           openclawSawSpoofed?: boolean;
-          openclawSpoofObserver?: MutationObserver;
+          operatorSpoofObserver?: MutationObserver;
         };
         const targetWindow = window as SpoofObservationWindow;
         const valueNode = node as HTMLElement;
@@ -415,7 +415,7 @@ describeControlUiE2e("Control UI custom-widget host mocked Gateway E2E", () => {
           addEventListener: (type: "message", listener: (event: MessageEvent) => void) => void;
           removeEventListener: (type: "message", listener: (event: MessageEvent) => void) => void;
         };
-        const bridge = (window as Window & { openclawWorkspaceBridge?: WidgetBridge })
+        const bridge = (window as Window & { operatorWorkspaceBridge?: WidgetBridge })
           .operatorWorkspaceBridge;
         if (!bridge) {
           throw new Error("workspace bridge unavailable");
@@ -443,7 +443,7 @@ describeControlUiE2e("Control UI custom-widget host mocked Gateway E2E", () => {
       const sawSpoofed = await frame.locator("#value").evaluate((node) => {
         type SpoofObservationWindow = Window & {
           openclawSawSpoofed?: boolean;
-          openclawSpoofObserver?: MutationObserver;
+          operatorSpoofObserver?: MutationObserver;
         };
         const targetWindow = window as SpoofObservationWindow;
         targetWindow.operatorSpoofObserver?.disconnect();

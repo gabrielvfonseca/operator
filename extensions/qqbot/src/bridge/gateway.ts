@@ -35,7 +35,7 @@ import {
 const pluginVersion = resolveQQBotPluginVersion(import.meta.url);
 initSender({
   pluginVersion,
-  openclawVersion: resolveRuntimeServiceVersion(),
+  operatorVersion: resolveRuntimeServiceVersion(),
 });
 
 // ============ Public types ============

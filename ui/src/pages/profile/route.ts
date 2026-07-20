@@ -1,4 +1,4 @@
-import { definePage } from "@operator/uirouter";
+import { definePage } from "@openclaw/uirouter";
 import { html } from "lit";
 import type { ApplicationContext } from "../../app/context.ts";
 

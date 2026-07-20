@@ -5,8 +5,8 @@ import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-r
 import { parseStrictPositiveInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import { uniqueStrings } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
-  OPERATOR_CRABLINE_DEFAULT_CHANNEL,
-  resolveOperatorCrablineChannelDriverSelection,
+  OPENCLAW_CRABLINE_DEFAULT_CHANNEL,
+  resolveOpenClawCrablineChannelDriverSelection,
 } from "@openclaw/crabline";
 import {
   buildQaAgenticParityComparison,
@@ -800,7 +800,7 @@ export async function runQaProfileCommand(opts: QaProfileCommandOptions) {
         ? "qa-channel"
         : (scenario.execution.channel ??
           (profileReport.channelDriver === "crabline"
-            ? OPERATOR_CRABLINE_DEFAULT_CHANNEL
+            ? OPENCLAW_CRABLINE_DEFAULT_CHANNEL
             : undefined));
     return scenarioMatchesQaProviderLane({
       scenario,
@@ -1023,14 +1023,14 @@ export async function runQaSuiteCommand(opts: QaSuiteCommandOptions) {
   const channelDriverChannels =
     channelDriver === "crabline"
       ? resolveQaSuiteScenarioChannels({
-          defaultChannel: OPERATOR_CRABLINE_DEFAULT_CHANNEL,
+          defaultChannel: OPENCLAW_CRABLINE_DEFAULT_CHANNEL,
           explicitChannel: opts.channel,
           scenarios: channelDriverScenarios,
         })
       : [];
   if (runner === "multipass" && channelDriverChannels.length > 1) {
     resolveQaSuiteScenarioChannel({
-      defaultChannel: OPERATOR_CRABLINE_DEFAULT_CHANNEL,
+      defaultChannel: OPENCLAW_CRABLINE_DEFAULT_CHANNEL,
       explicitChannel: opts.channel,
       scenarios: channelDriverScenarios,
     });
@@ -1038,7 +1038,7 @@ export async function runQaSuiteCommand(opts: QaSuiteCommandOptions) {
   const [singleChannelDriverChannel] = channelDriverChannels;
   const channelDriverSelection =
     channelDriver === "crabline" && channelDriverChannels.length === 1 && singleChannelDriverChannel
-      ? resolveOperatorCrablineChannelDriverSelection({
+      ? resolveOpenClawCrablineChannelDriverSelection({
           channel: singleChannelDriverChannel,
         })
       : undefined;

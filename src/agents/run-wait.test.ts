@@ -124,7 +124,7 @@ describe("readLatestAssistantReply", () => {
         {
           role: "assistant",
           content: [{ type: "text", text: "already delivered through message tool" }],
-          openclawMessageToolMirror: {
+          operatorMessageToolMirror: {
             toolName: "message",
             toolCallId: "call-message-send",
           },
@@ -575,7 +575,7 @@ describe("waitForAgentRunAndReadUpdatedAssistantReply", () => {
           {
             role: "assistant",
             content: [{ type: "text", text: "already delivered source reply" }],
-            openclawMessageToolMirror: {
+            operatorMessageToolMirror: {
               toolName: "message",
               toolCallId: "call-message-send",
             },
@@ -617,7 +617,7 @@ describe("waitForAgentRunAndReadUpdatedAssistantReply", () => {
         {
           role: "assistant",
           content: [{ type: "text", text: "source reply awaiting delivery" }],
-          openclawMessageToolMirror: {
+          operatorMessageToolMirror: {
             toolName: "message",
             toolCallId: "call-message-send",
             sourceReplySink: "internal-ui",
@@ -657,7 +657,7 @@ describe("waitForAgentRunAndReadUpdatedAssistantReply", () => {
         {
           role: "assistant",
           content: [{ type: "text", text: "source reply awaiting delivery" }],
-          openclawMessageToolMirror: {
+          operatorMessageToolMirror: {
             toolName: "message",
             toolCallId: "call-message-send",
             sourceReplySink: "internal-ui",
@@ -702,7 +702,7 @@ describe("waitForAgentRunAndReadUpdatedAssistantReply", () => {
         {
           role: "assistant",
           content: [{ type: "text", text: "stale source reply" }],
-          openclawMessageToolMirror: {
+          operatorMessageToolMirror: {
             toolName: "message",
             toolCallId: "call-message-before-request",
             sourceReplySink: "internal-ui",
@@ -746,7 +746,7 @@ describe("waitForAgentRunAndReadUpdatedAssistantReply", () => {
         {
           role: "assistant",
           content: [{ type: "text", text: "already delivered source reply" }],
-          openclawMessageToolMirror: {
+          operatorMessageToolMirror: {
             toolName: "message",
             toolCallId: "call-message-send",
           },
@@ -778,7 +778,7 @@ describe("waitForAgentRunAndReadUpdatedAssistantReply", () => {
         {
           role: "assistant",
           content: [{ type: "text", text: "older delivered reply" }],
-          openclawMessageToolMirror: {
+          operatorMessageToolMirror: {
             toolName: "message",
             toolCallId: "call-older-message-send",
           },

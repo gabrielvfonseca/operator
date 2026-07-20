@@ -567,7 +567,7 @@ function writeProviderPluginScaffold(params: { rootDir: string; id: string; name
         pluginApi: `>=${VERSION}`,
       },
       build: {
-        openclawVersion: VERSION,
+        operatorVersion: VERSION,
       },
       release: {
         publishToClawHub: true,
@@ -682,9 +682,9 @@ describe(${idLiteral}, () => {
       registerProvider(provider: ProviderPlugin) {
         providers.push(provider);
       },
-    } as Partial<OpenClawPluginApi>;
+    } as Partial<OperatorPluginApi>;
 
-    entry.register(api as OpenClawPluginApi);
+    entry.register(api as OperatorPluginApi);
 
     expect(providers.map((provider) => provider.id)).toEqual([${idLiteral}]);
     expect(providers[0]?.label).toBe(${nameLiteral});

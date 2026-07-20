@@ -1,7 +1,7 @@
 import type {
   createTerminalDefaultColorQueryResponder,
   GhosttyTerminalController,
-} from "@operator/libterminal/browser";
+} from "@openclaw/libterminal/browser";
 // Dockable operator terminal panel for the Control UI shell.
 //
 // Renders a VS Code-style shell dock (bottom by default, or right) with session
@@ -533,7 +533,7 @@ export class OperatorTerminalPanel extends OperatorLitElement {
       () => tabRef.current?.gatewaySessionId,
     );
     const { createTerminalDefaultColorQueryResponder } = await import(
-      "@operator/libterminal/browser"
+      "@openclaw/libterminal/browser"
     );
     const defaultColorQueries = createTerminalDefaultColorQueryResponder({
       getColors: () => terminalDynamicColors(this.themeMode),

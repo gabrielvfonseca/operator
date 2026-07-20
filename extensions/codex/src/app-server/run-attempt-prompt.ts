@@ -7,7 +7,7 @@ import {
 } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   buildCodexSystemPromptReport,
-  prependCodexOperatorPromptContext,
+  prependCodexOpenClawPromptContext,
   readContextEngineThreadBootstrapProjection,
   resolveCodexDeliveryHintPreservedInputRange,
   resolveContextEngineBootstrapProjectionDecision,
@@ -247,7 +247,7 @@ export async function prepareCodexAttemptPrompt(context: CodexAttemptContext) {
     prompt: string;
     promptInputRange?: { start: number; end: number };
   }) => {
-    const turnPromptText = prependCodexOperatorPromptContext(
+    const turnPromptText = prependCodexOpenClawPromptContext(
       promptBuildResult.prompt,
       openClawPromptContext,
       {

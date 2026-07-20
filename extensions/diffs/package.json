@@ -15,7 +15,7 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   },
   "@gabrielvfonseca/operator": {
@@ -35,7 +35,7 @@
       "build": "node ../../scripts/build-diffs-viewer-runtime.mjs curated"
     },
     "build": {
-      "openclawVersion": "2026.7.2",
+      "operatorVersion": "2026.7.2",
       "staticAssets": [
         {
           "source": "./assets/viewer-runtime.js",

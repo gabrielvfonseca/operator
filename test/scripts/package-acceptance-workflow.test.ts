@@ -3783,13 +3783,13 @@ describe("package artifact reuse", () => {
     );
     expect(npmWorkflow).toContain("tarballSha256");
     expect(npmWorkflow).toContain("dependencyTarballs");
-    expect(npmWorkflow).toContain('packageName: "@operator/ai"');
+    expect(npmWorkflow).toContain('packageName: "@gabrielvfonseca/ai"');
     expect(npmWorkflow).toContain("AI_TARBALL_SHA256");
     expect(npmWorkflow).toContain("does not match openclaw");
-    expect(npmWorkflow).toContain("Frozen target does not depend on @operator/ai");
+    expect(npmWorkflow).toContain("Frozen target does not depend on @gabrielvfonseca/ai");
     expect(npmWorkflow).toContain("dependencyTarballs: process.env.AI_TARBALL_NAME");
     expect(npmWorkflow).toContain('verify_args=("$TARBALL_PATH" "$PACKAGE_VERSION")');
-    expect(npmWorkflow).toContain("Frozen target without an @operator/ai dependency");
+    expect(npmWorkflow).toContain("Frozen target without an @gabrielvfonseca/ai dependency");
     const npmTelegramWorkflow = readFileSync(NPM_TELEGRAM_WORKFLOW, "utf8");
     expect(npmTelegramWorkflow).toContain("preflight-manifest.json");
     expect(npmTelegramWorkflow).toContain("OPENCLAW_NPM_TELEGRAM_PACKAGE_DIR");
@@ -4192,7 +4192,7 @@ describe("package artifact reuse", () => {
     );
     expect(clawHubWorkflow).toContain(
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-      'family: ${{ contains(fromJson(\'["@operator/acpx","@operator/diffs","@operator/feishu","@operator/qqbot"]\'), matrix.plugin.packageName) && \'bundle-plugin\' || \'\' }}',
+      'family: ${{ contains(fromJson(\'["@operator/acpx","@operator/diffs","@gabrielvfonseca/feishu","@operator/qqbot"]\'), matrix.plugin.packageName) && \'bundle-plugin\' || \'\' }}',
     );
     expect(clawHubWorkflow).toContain("dry_run:");
     expect(clawHubWorkflow).toContain("default: false");

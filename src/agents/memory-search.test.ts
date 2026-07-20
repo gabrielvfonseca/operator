@@ -14,7 +14,7 @@ import {
 } from "../plugins/memory-embedding-providers.js";
 import { MAX_TIMER_TIMEOUT_MS } from "../shared/number-coercion.js";
 import { resolveOperatorAgentSqlitePath } from "../state/openclaw-agent-db.paths.js";
-import { resolveMemorySearchConfig, resolveMemorySearchSyncConfig } from "./memory-search.js";
+import { resolveMemorySearchConfig } from "./memory-search.js";
 
 const asConfig = (cfg: OperatorConfig): OperatorConfig => ({
   ...cfg,
@@ -203,7 +203,7 @@ describe("memory search config", () => {
         ],
       },
     });
-    const resolved = resolveMemorySearchSyncConfig(cfg, "main");
+    const resolved = resolveMemorySearchConfig(cfg, "main");
     expect(resolved).toBeNull();
   });
 
@@ -345,7 +345,7 @@ describe("memory search config", () => {
       },
     });
 
-    expect(resolveMemorySearchSyncConfig(cfg, "main")).toEqual({
+    expect(resolveMemorySearchConfig(cfg, "main")).toEqual({
       onSessionStart: false,
       onSearch: true,
       watch: false,
@@ -374,7 +374,7 @@ describe("memory search config", () => {
       },
     });
 
-    expect(resolveMemorySearchSyncConfig(cfg, "main")?.embeddingBatchTimeoutSeconds).toBe(600);
+    expect(resolveMemorySearchConfig(cfg, "main")?.embeddingBatchTimeoutSeconds).toBe(600);
   });
 
   it("merges defaults and overrides", () => {

@@ -49,9 +49,9 @@ type AcpLoadedSessionRecord = Awaited<ReturnType<AcpSessionStore["load"]>>;
 type BaseAcpxRuntimeTestOptions = ConstructorParameters<typeof BaseAcpxRuntime>[1];
 type OperatorAcpxRuntimeOptions = AcpRuntimeOptions & {
   openclawWrapperRoot?: string;
-  openclawGatewayInstanceId?: string;
-  openclawProcessLeaseStore?: AcpxProcessLeaseStore;
-  openclawToolsMcpBridgeEnabled?: boolean;
+  operatorGatewayInstanceId?: string;
+  operatorProcessLeaseStore?: AcpxProcessLeaseStore;
+  operatorToolsMcpBridgeEnabled?: boolean;
 };
 type AcpxRuntimeTestOptions = Record<string, unknown> & {
   openclawProcessCleanup?: AcpxProcessCleanupDeps;
@@ -70,7 +70,7 @@ type ResetAwareSessionStore = AcpSessionStore & {
 
 type OperatorLeaseSessionMetadata = {
   openclawLeaseId: string;
-  openclawGatewayInstanceId: string;
+  operatorGatewayInstanceId: string;
 };
 
 function withOperatorManagedTurnTimeout<T extends object>(input: T): T & { timeoutMs: 0 } {
@@ -89,7 +89,7 @@ function withOperatorLeaseSessionMetadata<T extends object>(
   return {
     ...record,
     openclawLeaseId: metadata.operatorLeaseId,
-    openclawGatewayInstanceId: metadata.operatorGatewayInstanceId,
+    operatorGatewayInstanceId: metadata.operatorGatewayInstanceId,
   };
 }
 
@@ -209,9 +209,9 @@ function readOperatorGatewayInstanceIdFromRecord(record: unknown): string | unde
   if (typeof record !== "object" || record === null) {
     return undefined;
   }
-  const { openclawGatewayInstanceId } = record as { openclawGatewayInstanceId?: unknown };
-  return typeof openclawGatewayInstanceId === "string"
-    ? openclawGatewayInstanceId.trim() || undefined
+  const { operatorGatewayInstanceId } = record as { operatorGatewayInstanceId?: unknown };
+  return typeof operatorGatewayInstanceId === "string"
+    ? operatorGatewayInstanceId.trim() || undefined
     : undefined;
 }
 
@@ -276,7 +276,7 @@ function createResetAwareSessionStore(
       }
       return withOperatorLeaseSessionMetadata(record, {
         openclawLeaseId: lease.leaseId,
-        openclawGatewayInstanceId: lease.gatewayInstanceId,
+        operatorGatewayInstanceId: lease.gatewayInstanceId,
       });
     },
     async save(record: AcpSessionRecord): Promise<void> {
@@ -314,7 +314,7 @@ function createResetAwareSessionStore(
           },
           {
             openclawLeaseId: launch.leaseId,
-            openclawGatewayInstanceId: launch.gatewayInstanceId,
+            operatorGatewayInstanceId: launch.gatewayInstanceId,
           },
         );
       }

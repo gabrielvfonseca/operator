@@ -143,10 +143,10 @@ async function resolveQaFlowChannelGroups(
   }
   // Package-only live lanes mount the QA harness without its dev tree. Load
   // Crabline only for Crabline-owned runs so unrelated transports stay isolated.
-  const { OPERATOR_CRABLINE_DEFAULT_CHANNEL, resolveOperatorCrablineChannelDriverSelection } =
+  const { OPENCLAW_CRABLINE_DEFAULT_CHANNEL, resolveOpenClawCrablineChannelDriverSelection } =
     await import("@openclaw/crabline");
   const channels = resolveQaSuiteScenarioChannels({
-    defaultChannel: OPERATOR_CRABLINE_DEFAULT_CHANNEL,
+    defaultChannel: OPENCLAW_CRABLINE_DEFAULT_CHANNEL,
     explicitChannel: runParams.channelDriverSelection?.channel,
     scenarios: [...scenarios],
   });
@@ -157,7 +157,7 @@ async function resolveQaFlowChannelGroups(
         channel: singleChannel,
         channelDriverSelection:
           runParams.channelDriverSelection ??
-          resolveOperatorCrablineChannelDriverSelection({ channel: singleChannel }),
+          resolveOpenClawCrablineChannelDriverSelection({ channel: singleChannel }),
         scenarios: [...scenarios],
       },
     ];
@@ -166,10 +166,10 @@ async function resolveQaFlowChannelGroups(
   // launch one flow partition per channel and aggregate them at this owner.
   return channels.map((channel) => ({
     channel,
-    channelDriverSelection: resolveOperatorCrablineChannelDriverSelection({ channel }),
+    channelDriverSelection: resolveOpenClawCrablineChannelDriverSelection({ channel }),
     scenarios: scenarios.filter(
       (scenario) =>
-        (normalizeQaSuiteScenarioChannel(scenario) ?? OPERATOR_CRABLINE_DEFAULT_CHANNEL) ===
+        (normalizeQaSuiteScenarioChannel(scenario) ?? OPENCLAW_CRABLINE_DEFAULT_CHANNEL) ===
         channel,
     ),
   }));

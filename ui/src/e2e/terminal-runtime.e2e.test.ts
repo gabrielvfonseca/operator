@@ -56,7 +56,7 @@ describeControlUiE2e("Control UI terminal runtime isolation", () => {
     try {
       await page.goto(server.baseUrl);
       await page.addScriptTag({
-        content: `globalThis.openclawTerminalRuntimeModule = import(${JSON.stringify(moduleUrl)});`,
+        content: `globalThis.operatorTerminalRuntimeModule = import(${JSON.stringify(moduleUrl)});`,
         type: "module",
       });
       const sentinel = "CLOSE_RESET_SENTINEL";
@@ -64,11 +64,11 @@ describeControlUiE2e("Control UI terminal runtime isolation", () => {
         async ({ staleText }) => {
           const runtimeModule = await (
             window as unknown as Window & {
-              openclawTerminalRuntimeModule: Promise<{
+              operatorTerminalRuntimeModule: Promise<{
                 createIsolatedGhosttyTerminal: BrowserTerminalFactory;
               }>;
             }
-          ).openclawTerminalRuntimeModule;
+          ).operatorTerminalRuntimeModule;
           const createTerminal = async () => {
             const host = document.createElement("div");
             host.style.height = "400px";

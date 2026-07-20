@@ -324,7 +324,7 @@ describe("plugin npm package manifest staging", () => {
         "local-runtime-dep": "file:./deps/local-runtime-dep",
       },
       devDependencies: {
-        "@operator/plugin-sdk": "workspace:*",
+        "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
       },
       openclaw: {
         extensions: ["./index.ts"],

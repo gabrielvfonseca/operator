@@ -1,5 +1,5 @@
 // OpenClaw SDK module implements transport behavior.
-import { GatewayClient } from "@operator/gateway-client";
+import { GatewayClient } from "@gabrielvfonseca/gateway-client";
 import { EventHub } from "./event-hub.js";
 import type {
   ConnectableOpenClawTransport,

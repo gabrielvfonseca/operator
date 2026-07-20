@@ -800,7 +800,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
       expect(nextTurn.messageId).not.toBe(first.messageId);
       const messages = (await loadFixtureMessages()).flatMap((entry) =>
         entry.message ? [entry.message] : [],
-      ) as Array<{ openclawDeliveryMirror?: unknown }>;
+      ) as Array<{ operatorDeliveryMirror?: unknown }>;
       expect(messages).toHaveLength(2);
       expect(messages[0]?.operatorDeliveryMirror).toEqual({
         kind: "channel-final",
@@ -899,7 +899,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
         api: OPERATOR_TRANSCRIPT_ARTIFACT_API,
         provider: OPERATOR_TRANSCRIPT_ARTIFACT_PROVIDER,
         model: OPERATOR_DELIVERY_MIRROR_MODEL,
-        openclawDeliveryMirror: {
+        operatorDeliveryMirror: {
           kind: "channel-final-suppressed",
           reason: "stale-foreground",
           sourceMessageId: "message-1",

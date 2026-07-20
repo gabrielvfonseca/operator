@@ -516,10 +516,10 @@ function mockNpmViewAndInstallMany(packages: MockNpmPackage[]) {
         prunePluginLocalOperatorPeerLinks(npmRoot);
         for (const packageName of Object.keys(manifest.dependencies ?? {})) {
           if (packageName === "@gabrielvfonseca/operator") {
-            const openclawRoot = path.join(npmRoot, "node_modules", "@gabrielvfonseca/operator");
-            fs.mkdirSync(openclawRoot, { recursive: true });
+            const operatorRoot = path.join(npmRoot, "node_modules", "@gabrielvfonseca/operator");
+            fs.mkdirSync(operatorRoot, { recursive: true });
             fs.writeFileSync(
-              path.join(openclawRoot, "package.json"),
+              path.join(operatorRoot, "package.json"),
               JSON.stringify({ name: "@gabrielvfonseca/operator", version: "0.0.0-test" }),
               "utf8",
             );
@@ -547,10 +547,10 @@ function mockNpmViewAndInstallMany(packages: MockNpmPackage[]) {
             version: pkg.installedVersion ?? pkg.version,
           });
           if (pkg.materializesRootOperator) {
-            const openclawRoot = path.join(npmRoot, "node_modules", "@gabrielvfonseca/operator");
-            fs.mkdirSync(openclawRoot, { recursive: true });
+            const operatorRoot = path.join(npmRoot, "node_modules", "@gabrielvfonseca/operator");
+            fs.mkdirSync(operatorRoot, { recursive: true });
             fs.writeFileSync(
-              path.join(openclawRoot, "package.json"),
+              path.join(operatorRoot, "package.json"),
               JSON.stringify({ name: "@gabrielvfonseca/operator", version: "2026.5.3" }),
               "utf8",
             );

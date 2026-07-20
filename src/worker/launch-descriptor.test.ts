@@ -20,7 +20,7 @@ function launchDescriptor(): WorkerLaunchDescriptor {
       rpcSetVersion: WORKER_RPC_SET_VERSION,
       handshake: {
         bundleHash: "a".repeat(64),
-        openclawVersion: "2026.7.12",
+        operatorVersion: "2026.7.12",
         protocolFeatures: [...WORKER_PROTOCOL_FEATURES],
       },
     },

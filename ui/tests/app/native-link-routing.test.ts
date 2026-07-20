@@ -23,7 +23,7 @@ afterEach(() => {
 function installBridge() {
   const messages: NativeMessage[] = [];
   const postMessage = vi.fn((message: NativeMessage) => messages.push(message));
-  vi.stubGlobal("webkit", { messageHandlers: { openclawLink: { postMessage } } });
+  vi.stubGlobal("webkit", { messageHandlers: { operatorLink: { postMessage } } });
   return { messages, postMessage };
 }
 

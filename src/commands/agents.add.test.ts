@@ -7,8 +7,8 @@ import { resolveAuthProfileOrder } from "../agents/auth-profiles/order.js";
 import { loadPersistedAuthProfileStore } from "../agents/auth-profiles/persisted.js";
 import { saveAuthProfileStore } from "../agents/auth-profiles/store.js";
 import { formatCliCommand } from "../cli/command-format.js";
-import { closeOpenClawAgentDatabasesForTest } from "../state/operator-agent-db.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/operator-state-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/operator-state-db.js";
 import { createSuiteTempRootTracker } from "../test-helpers/temp-dir.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import { baseConfigSnapshot, createTestRuntime } from "./test-runtime-config-helpers.js";
@@ -124,8 +124,8 @@ describe("agents add command", () => {
   });
 
   afterAll(async () => {
-    closeOpenClawAgentDatabasesForTest();
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorAgentDatabasesForTest();
+    closeOperatorStateDatabaseForTest();
     await suiteTempDirs.cleanup();
   });
 

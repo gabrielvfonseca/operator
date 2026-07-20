@@ -196,31 +196,31 @@ export const sharedVitestConfig = {
         replacement: path.join(repoRoot, "extensions", "slack", "api.ts"),
       },
       {
-        find: "@operator/whatsapp/api.js",
+        find: "@gabrielvfonseca/whatsapp/api.js",
         replacement: path.join(repoRoot, "extensions", "whatsapp", "api.ts"),
       },
       {
-        find: "@operator/gateway-client/browser",
+        find: "@gabrielvfonseca/gateway-client/browser",
         replacement: path.join(repoRoot, "packages", "gateway-client", "src", "browser.ts"),
       },
       {
-        find: "@operator/gateway-client/readiness",
+        find: "@gabrielvfonseca/gateway-client/readiness",
         replacement: path.join(repoRoot, "packages", "gateway-client", "src", "readiness.ts"),
       },
       {
-        find: "@operator/gateway-client/timeouts",
+        find: "@gabrielvfonseca/gateway-client/timeouts",
         replacement: path.join(repoRoot, "packages", "gateway-client", "src", "timeouts.ts"),
       },
       {
-        find: "@operator/gateway-client",
+        find: "@gabrielvfonseca/gateway-client",
         replacement: path.join(repoRoot, "packages", "gateway-client", "src", "index.ts"),
       },
       {
-        find: "@operator/gateway-protocol/client-info",
+        find: "@gabrielvfonseca/gateway-protocol/client-info",
         replacement: path.join(repoRoot, "packages", "gateway-protocol", "src", "client-info.ts"),
       },
       {
-        find: "@operator/gateway-protocol/connect-error-details",
+        find: "@gabrielvfonseca/gateway-protocol/connect-error-details",
         replacement: path.join(
           repoRoot,
           "packages",
@@ -230,15 +230,15 @@ export const sharedVitestConfig = {
         ),
       },
       {
-        find: "@operator/gateway-protocol/frame-guards",
+        find: "@gabrielvfonseca/gateway-protocol/frame-guards",
         replacement: path.join(repoRoot, "packages", "gateway-protocol", "src", "frame-guards.ts"),
       },
       {
-        find: "@operator/gateway-protocol/schema",
+        find: "@gabrielvfonseca/gateway-protocol/schema",
         replacement: path.join(repoRoot, "packages", "gateway-protocol", "src", "schema.ts"),
       },
       {
-        find: "@operator/gateway-protocol/startup-unavailable",
+        find: "@gabrielvfonseca/gateway-protocol/startup-unavailable",
         replacement: path.join(
           repoRoot,
           "packages",
@@ -248,11 +248,11 @@ export const sharedVitestConfig = {
         ),
       },
       {
-        find: "@operator/gateway-protocol/version",
+        find: "@gabrielvfonseca/gateway-protocol/version",
         replacement: path.join(repoRoot, "packages", "gateway-protocol", "src", "version.ts"),
       },
       {
-        find: "@operator/gateway-protocol",
+        find: "@gabrielvfonseca/gateway-protocol",
         replacement: path.join(repoRoot, "packages", "gateway-protocol", "src", "index.ts"),
       },
       {
@@ -260,23 +260,23 @@ export const sharedVitestConfig = {
         replacement: path.join(repoRoot, "packages", "ai", "src", "internal", "$1.ts"),
       },
       {
-        find: "@operator/ai/diagnostics",
+        find: "@gabrielvfonseca/ai/diagnostics",
         replacement: path.join(repoRoot, "packages", "ai", "src", "utils", "diagnostics.ts"),
       },
       {
-        find: "@operator/ai/event-stream",
+        find: "@gabrielvfonseca/ai/event-stream",
         replacement: path.join(repoRoot, "packages", "ai", "src", "utils", "event-stream.ts"),
       },
       {
-        find: "@operator/ai/providers",
+        find: "@gabrielvfonseca/ai/providers",
         replacement: path.join(repoRoot, "packages", "ai", "src", "providers.ts"),
       },
       {
-        find: "@operator/ai/types",
+        find: "@gabrielvfonseca/ai/types",
         replacement: path.join(repoRoot, "packages", "ai", "src", "types.ts"),
       },
       {
-        find: "@operator/ai/validation",
+        find: "@gabrielvfonseca/ai/validation",
         replacement: path.join(repoRoot, "packages", "ai", "src", "validation.ts"),
       },
       {
@@ -284,7 +284,7 @@ export const sharedVitestConfig = {
         replacement: path.join(repoRoot, "packages", "ai", "src", "$1.ts"),
       },
       {
-        find: "@operator/ai",
+        find: "@gabrielvfonseca/ai",
         replacement: path.join(repoRoot, "packages", "ai", "src", "index.ts"),
       },
       {
@@ -372,15 +372,15 @@ export const sharedVitestConfig = {
         replacement: path.join(repoRoot, "packages", "model-catalog-core", "src", "index.ts"),
       },
       {
-        find: "@operator/net-policy/ip",
+        find: "@gabrielvfonseca/net-policy/ip",
         replacement: path.join(repoRoot, "packages", "net-policy", "src", "ip.ts"),
       },
       {
-        find: "@operator/net-policy/ipv4",
+        find: "@gabrielvfonseca/net-policy/ipv4",
         replacement: path.join(repoRoot, "packages", "net-policy", "src", "ipv4.ts"),
       },
       {
-        find: "@operator/net-policy/redact-sensitive-url",
+        find: "@gabrielvfonseca/net-policy/redact-sensitive-url",
         replacement: path.join(
           repoRoot,
           "packages",
@@ -390,23 +390,23 @@ export const sharedVitestConfig = {
         ),
       },
       {
-        find: "@operator/net-policy/url-protocol",
+        find: "@gabrielvfonseca/net-policy/url-protocol",
         replacement: path.join(repoRoot, "packages", "net-policy", "src", "url-protocol.ts"),
       },
       {
-        find: "@operator/net-policy/url-userinfo",
+        find: "@gabrielvfonseca/net-policy/url-userinfo",
         replacement: path.join(repoRoot, "packages", "net-policy", "src", "url-userinfo.ts"),
       },
       {
-        find: "@operator/net-policy",
+        find: "@gabrielvfonseca/net-policy",
         replacement: path.join(repoRoot, "packages", "net-policy", "src", "index.ts"),
       },
       {
-        find: "@operator/normalization-core/agent-id",
+        find: "@gabrielvfonseca/normalization-core/agent-id",
         replacement: path.join(repoRoot, "packages", "normalization-core", "src", "agent-id.ts"),
       },
       {
-        find: "@operator/normalization-core/boolean-coercion",
+        find: "@gabrielvfonseca/normalization-core/boolean-coercion",
         replacement: path.join(
           repoRoot,
           "packages",
@@ -416,7 +416,7 @@ export const sharedVitestConfig = {
         ),
       },
       {
-        find: "@operator/normalization-core/error-coercion",
+        find: "@gabrielvfonseca/normalization-core/error-coercion",
         replacement: path.join(
           repoRoot,
           "packages",
@@ -426,7 +426,7 @@ export const sharedVitestConfig = {
         ),
       },
       {
-        find: "@operator/normalization-core/number-coercion",
+        find: "@gabrielvfonseca/normalization-core/number-coercion",
         replacement: path.join(
           repoRoot,
           "packages",
@@ -436,7 +436,7 @@ export const sharedVitestConfig = {
         ),
       },
       {
-        find: "@operator/normalization-core/record-coerce",
+        find: "@gabrielvfonseca/normalization-core/record-coerce",
         replacement: path.join(
           repoRoot,
           "packages",
@@ -446,11 +446,11 @@ export const sharedVitestConfig = {
         ),
       },
       {
-        find: "@operator/normalization-core/result",
+        find: "@gabrielvfonseca/normalization-core/result",
         replacement: path.join(repoRoot, "packages", "normalization-core", "src", "result.ts"),
       },
       {
-        find: "@operator/normalization-core/string-coerce",
+        find: "@gabrielvfonseca/normalization-core/string-coerce",
         replacement: path.join(
           repoRoot,
           "packages",
@@ -460,7 +460,7 @@ export const sharedVitestConfig = {
         ),
       },
       {
-        find: "@operator/normalization-core/string-normalization",
+        find: "@gabrielvfonseca/normalization-core/string-normalization",
         replacement: path.join(
           repoRoot,
           "packages",
@@ -470,7 +470,7 @@ export const sharedVitestConfig = {
         ),
       },
       {
-        find: "@operator/normalization-core/utf16-slice",
+        find: "@gabrielvfonseca/normalization-core/utf16-slice",
         replacement: path.join(repoRoot, "packages", "normalization-core", "src", "utf16-slice.ts"),
       },
       {
@@ -497,7 +497,7 @@ export const sharedVitestConfig = {
         replacement: path.join(repoRoot, "src", "plugin-sdk", `${subpath}.ts`),
       })),
       ...pluginSdkSubpaths.map((subpath) => ({
-        find: `@operator/plugin-sdk/${subpath}`,
+        find: `@gabrielvfonseca/operator/plugin-sdk/${subpath}`,
         replacement: path.join(repoRoot, "packages", "plugin-sdk", "src", `${subpath}.ts`),
       })),
       {

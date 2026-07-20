@@ -50,7 +50,7 @@ describe("syncPluginVersions", () => {
           pluginApi: ">=2026.3.30",
         },
         build: {
-          openclawVersion: "2026.3.30",
+          operatorVersion: "2026.3.30",
         },
       },
     });
@@ -70,7 +70,7 @@ describe("syncPluginVersions", () => {
           pluginApi?: string;
         };
         build?: {
-          openclawVersion?: string;
+          operatorVersion?: string;
         };
       };
     };

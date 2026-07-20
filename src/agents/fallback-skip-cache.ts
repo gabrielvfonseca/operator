@@ -68,8 +68,8 @@ const GLOBAL_PRUNE_INTERVAL_MS = 5_000;
 
 function getState(): SkipCacheState {
   const globalStore = globalThis as typeof globalThis & {
-    openclawFallbackSkipCache?: SkipBySession;
-    openclawFallbackSkipCacheState?: SkipCacheState;
+    operatorFallbackSkipCache?: SkipBySession;
+    operatorFallbackSkipCacheState?: SkipCacheState;
   };
   if (!globalStore.operatorFallbackSkipCacheState) {
     // Reuse the existing buckets map if a prior version of this module already

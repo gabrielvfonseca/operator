@@ -74,18 +74,18 @@ const PACKAGE_DEPENDENCY_SECTIONS = [
   "peerDependencies",
   "devDependencies",
 ];
-const REQUIRED_BUNDLED_WORKSPACE_DEPENDENCIES = ["@operator/ai"];
+const REQUIRED_BUNDLED_WORKSPACE_DEPENDENCIES = ["@gabrielvfonseca/ai"];
 // Strict Docker artifacts bundle this private runtime rather than resolving it
 // from npm. Keep the concrete load-bearing entries explicit instead of
 // reimplementing Node's conditional package-exports resolver here.
 const REQUIRED_BUNDLED_WORKSPACE_RUNTIME_ENTRIES = new Map([
   [
-    "@operator/ai",
+    "@gabrielvfonseca/ai",
     [
-      { specifier: "@operator/ai", entry: "dist/index.mjs" },
-      { specifier: "@operator/ai/providers", entry: "dist/providers.mjs" },
+      { specifier: "@gabrielvfonseca/ai", entry: "dist/index.mjs" },
+      { specifier: "@gabrielvfonseca/ai/providers", entry: "dist/providers.mjs" },
       {
-        specifier: "@operator/ai/internal/runtime",
+        specifier: "@gabrielvfonseca/ai/internal/runtime",
         entry: "dist/internal/runtime.mjs",
       },
     ],

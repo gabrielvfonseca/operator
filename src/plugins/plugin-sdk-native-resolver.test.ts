@@ -6,7 +6,7 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { beforeAll, describe, expect, it } from "vitest";
-import { installOpenClawPluginSdkNativeResolver } from "./plugin-sdk-native-resolver.js";
+import { installOperatorPluginSdkNativeResolver } from "./plugin-sdk-native-resolver.js";
 
 type NativeEsmLazyImportProbe = {
   status: number | null;
@@ -103,7 +103,7 @@ function addFakePluginSdkDistExport(root: string, subpath: string): string {
   return distPath;
 }
 
-describe("installOpenClawPluginSdkNativeResolver", () => {
+describe("installOperatorPluginSdkNativeResolver", () => {
   it("resolves installed plugin SDK imports to the dev source root", () => {
     const stableRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sdk-native-stable-"));
     const devRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sdk-native-dev-source-"));
@@ -116,7 +116,7 @@ describe("installOpenClawPluginSdkNativeResolver", () => {
     process.env.OPENCLAW_DEV_SOURCE_ROOT = devRoot;
 
     try {
-      const installedAliases = installOpenClawPluginSdkNativeResolver({
+      const installedAliases = installOperatorPluginSdkNativeResolver({
         modulePath: loaderModulePath,
         pluginModulePath: externalPluginEntry,
       });
@@ -144,7 +144,7 @@ describe("installOpenClawPluginSdkNativeResolver", () => {
     fs.mkdirSync(path.join(devRoot, "extensions"), { recursive: true });
     const externalPluginEntry = writeExternalPluginEntry(path.join(stableRoot, "external-plugin"));
 
-    const installedAliases = installOpenClawPluginSdkNativeResolver({
+    const installedAliases = installOperatorPluginSdkNativeResolver({
       modulePath: loaderModulePath,
       pluginModulePath: externalPluginEntry,
       devSourceRoot: devRoot,
@@ -167,7 +167,7 @@ describe("installOpenClawPluginSdkNativeResolver", () => {
     const externalPluginEntry = writeExternalPluginEntry(path.join(stableRoot, "external-plugin"));
     const requireFromPlugin = createRequire(externalPluginEntry);
 
-    installOpenClawPluginSdkNativeResolver({
+    installOperatorPluginSdkNativeResolver({
       modulePath: loaderModulePath,
       pluginModulePath: externalPluginEntry,
     });
@@ -175,7 +175,7 @@ describe("installOpenClawPluginSdkNativeResolver", () => {
       fs.realpathSync(path.join(stableRoot, "dist", "plugin-sdk", "agent-runtime.js")),
     );
 
-    installOpenClawPluginSdkNativeResolver({
+    installOperatorPluginSdkNativeResolver({
       modulePath: loaderModulePath,
       pluginModulePath: externalPluginEntry,
       devSourceRoot: devRoot,
@@ -197,7 +197,7 @@ describe("installOpenClawPluginSdkNativeResolver", () => {
     const externalPluginEntry = writeExternalPluginEntry(path.join(stableRoot, "external-plugin"));
     const requireFromPlugin = createRequire(externalPluginEntry);
 
-    installOpenClawPluginSdkNativeResolver({
+    installOperatorPluginSdkNativeResolver({
       modulePath: loaderModulePath,
       pluginModulePath: externalPluginEntry,
     });
@@ -205,7 +205,7 @@ describe("installOpenClawPluginSdkNativeResolver", () => {
       fs.realpathSync(stableExtraPath),
     );
 
-    installOpenClawPluginSdkNativeResolver({
+    installOperatorPluginSdkNativeResolver({
       modulePath: loaderModulePath,
       pluginModulePath: externalPluginEntry,
       devSourceRoot: devRoot,
@@ -222,7 +222,7 @@ describe("installOpenClawPluginSdkNativeResolver", () => {
     fs.writeFileSync(sourceChannelOutboundPath, "export const sourceOnly = true;\n", "utf8");
     const externalPluginEntry = writeExternalPluginEntry(path.join(root, "external-plugin"));
 
-    const installedAliases = installOpenClawPluginSdkNativeResolver({
+    const installedAliases = installOperatorPluginSdkNativeResolver({
       modulePath: loaderModulePath,
       pluginModulePath: externalPluginEntry,
       pluginSdkResolution: "src",
@@ -246,7 +246,7 @@ describe("installOpenClawPluginSdkNativeResolver", () => {
     }
 
     try {
-      const installedAliases = installOpenClawPluginSdkNativeResolver({
+      const installedAliases = installOperatorPluginSdkNativeResolver({
         modulePath: loaderModulePath,
         pluginModulePath: externalPluginEntry,
         pluginSdkResolution: "dist",
@@ -283,7 +283,7 @@ describe("installOpenClawPluginSdkNativeResolver", () => {
         'import fs from "node:fs";',
         'import path from "node:path";',
         'import { pathToFileURL } from "node:url";',
-        `import { installOpenClawPluginSdkNativeResolver } from ${JSON.stringify(resolverModuleUrl)};`,
+        `import { installOperatorPluginSdkNativeResolver } from ${JSON.stringify(resolverModuleUrl)};`,
         `const root = ${JSON.stringify(root)};`,
         "const writeJson = (targetPath, value) => {",
         "  fs.mkdirSync(path.dirname(targetPath), { recursive: true });",
@@ -321,7 +321,7 @@ describe("installOpenClawPluginSdkNativeResolver", () => {
         '  "import { defineChannelMessageAdapter } from \\"operator/plugin-sdk/channel-outbound\\"; export const lazy = defineChannelMessageAdapter();\\n",',
         '  "utf8",',
         ");",
-        "installOpenClawPluginSdkNativeResolver({",
+        "installOperatorPluginSdkNativeResolver({",
         "  modulePath: loaderModulePath,",
         "  pluginModulePath: entryPath,",
         '  pluginSdkResolution: "dist",',
@@ -362,7 +362,7 @@ describe("installOpenClawPluginSdkNativeResolver", () => {
     fs.mkdirSync(path.dirname(unrelatedEntry), { recursive: true });
     fs.writeFileSync(unrelatedEntry, "export default {};\n", "utf8");
 
-    installOpenClawPluginSdkNativeResolver({
+    installOperatorPluginSdkNativeResolver({
       modulePath: loaderModulePath,
       pluginModulePath: externalPluginEntry,
       pluginSdkResolution: "dist",
@@ -412,7 +412,7 @@ describe("installOpenClawPluginSdkNativeResolver", () => {
     fs.mkdirSync(path.dirname(coreSourceParent), { recursive: true });
     fs.writeFileSync(coreSourceParent, "export default {};\n", "utf8");
 
-    const installedAliases = installOpenClawPluginSdkNativeResolver({
+    const installedAliases = installOperatorPluginSdkNativeResolver({
       modulePath: loaderModulePath,
       pluginModulePath: externalPluginEntry,
       pluginSdkResolution: "dist",
@@ -489,7 +489,7 @@ describe("installOpenClawPluginSdkNativeResolver", () => {
     fs.writeFileSync(sourceOnlyPath, "export const sourceOnly = true;\n", "utf8");
     const externalPluginEntry = writeExternalPluginEntry(path.join(root, "external-plugin"));
 
-    const installedAliases = installOpenClawPluginSdkNativeResolver({
+    const installedAliases = installOperatorPluginSdkNativeResolver({
       modulePath: loaderModulePath,
       pluginModulePath: externalPluginEntry,
       pluginSdkResolution: "src",
@@ -528,27 +528,27 @@ describe("installOpenClawPluginSdkNativeResolver", () => {
     fs.writeFileSync(runtimeBrowserEntry, "export default {};\n", "utf8");
     fs.writeFileSync(otherEntry, "export default {};\n", "utf8");
 
-    const installedAliases = installOpenClawPluginSdkNativeResolver({
+    const installedAliases = installOperatorPluginSdkNativeResolver({
       modulePath: loaderModulePath,
       pluginModulePath: ollamaEntry,
       pluginSdkResolution: "dist",
     });
-    installOpenClawPluginSdkNativeResolver({
+    installOperatorPluginSdkNativeResolver({
       modulePath: loaderModulePath,
       pluginModulePath: runtimeOllamaEntry,
       pluginSdkResolution: "dist",
     });
-    installOpenClawPluginSdkNativeResolver({
+    installOperatorPluginSdkNativeResolver({
       modulePath: loaderModulePath,
       pluginModulePath: browserEntry,
       pluginSdkResolution: "dist",
     });
-    installOpenClawPluginSdkNativeResolver({
+    installOperatorPluginSdkNativeResolver({
       modulePath: loaderModulePath,
       pluginModulePath: runtimeBrowserEntry,
       pluginSdkResolution: "dist",
     });
-    installOpenClawPluginSdkNativeResolver({
+    installOperatorPluginSdkNativeResolver({
       modulePath: loaderModulePath,
       pluginModulePath: otherEntry,
       pluginSdkResolution: "dist",

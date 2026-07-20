@@ -44,7 +44,7 @@ describe("prepareOperatorNpmShrinkwrap", () => {
     const prepared = prepareOperatorNpmShrinkwrap({
       aiIntegrity: "sha512-test",
       aiManifest: {
-        name: "@operator/ai",
+        name: "@gabrielvfonseca/ai",
         version: "2026.7.1-beta.5",
         license: "MIT",
         engines: { node: ">=22.19.0" },
@@ -58,12 +58,12 @@ describe("prepareOperatorNpmShrinkwrap", () => {
     });
 
     expect(prepared.packages?.[""]?.dependencies).toEqual({
-      "@operator/ai": "2026.7.1-beta.5",
+      "@gabrielvfonseca/ai": "2026.7.1-beta.5",
       openai: "6.45.0",
     });
-    expect(prepared.packages?.["node_modules/@operator/ai"]).toEqual({
+    expect(prepared.packages?.["node_modules/@gabrielvfonseca/ai"]).toEqual({
       version: "2026.7.1-beta.5",
-      resolved: "https://registry.npmjs.org/@operator/ai/-/ai-2026.7.1-beta.5.tgz",
+      resolved: "https://registry.npmjs.org/@gabrielvfonseca/ai/-/ai-2026.7.1-beta.5.tgz",
       integrity: "sha512-test",
       license: "MIT",
       dependencies: AI_DEPENDENCIES,
@@ -73,7 +73,7 @@ describe("prepareOperatorNpmShrinkwrap", () => {
       assertPreparedOperatorNpmShrinkwrap({
         aiIntegrity: "sha512-test",
         aiManifest: {
-          name: "@operator/ai",
+          name: "@gabrielvfonseca/ai",
           version: "2026.7.1-beta.5",
           license: "MIT",
           engines: { node: ">=22.19.0" },
@@ -82,7 +82,7 @@ describe("prepareOperatorNpmShrinkwrap", () => {
         rootManifest: {
           name: "operator",
           version: "2026.7.1-beta.5",
-          dependencies: { "@operator/ai": "2026.7.1-beta.5" },
+          dependencies: { "@gabrielvfonseca/ai": "2026.7.1-beta.5" },
         },
         shrinkwrap: prepared,
       }),
@@ -94,7 +94,7 @@ describe("prepareOperatorNpmShrinkwrap", () => {
       prepareOperatorNpmShrinkwrap({
         aiIntegrity: "sha512-test",
         aiManifest: {
-          name: "@operator/ai",
+          name: "@gabrielvfonseca/ai",
           version: "2026.7.1-beta.4",
           dependencies: AI_DEPENDENCIES,
         },
@@ -112,7 +112,7 @@ describe("prepareOperatorNpmShrinkwrap", () => {
       prepareOperatorNpmShrinkwrap({
         aiIntegrity: "sha512-test",
         aiManifest: {
-          name: "@operator/ai",
+          name: "@gabrielvfonseca/ai",
           version: "2026.7.1-beta.5",
           dependencies: AI_DEPENDENCIES,
         },
@@ -130,7 +130,7 @@ describe("prepareOperatorNpmShrinkwrap", () => {
       prepareOperatorNpmShrinkwrap({
         aiIntegrity: "sha512-test",
         aiManifest: {
-          name: "@operator/ai",
+          name: "@gabrielvfonseca/ai",
           version: "2026.7.1-beta.5",
           dependencies: AI_DEPENDENCIES,
         },
@@ -146,23 +146,23 @@ describe("prepareOperatorNpmShrinkwrap", () => {
       assertPreparedOperatorNpmShrinkwrap({
         aiIntegrity: "sha512-test",
         aiManifest: {
-          name: "@operator/ai",
+          name: "@gabrielvfonseca/ai",
           version: "2026.7.1-beta.5",
           dependencies: AI_DEPENDENCIES,
         },
         rootManifest: {
           name: "operator",
           version: "2026.7.1-beta.5",
-          dependencies: { "@operator/ai": "2026.7.1-beta.5" },
+          dependencies: { "@gabrielvfonseca/ai": "2026.7.1-beta.5" },
         },
         shrinkwrap: createShrinkwrap(),
       }),
-    ).toThrow("does not lock the exact @operator/ai tarball");
+    ).toThrow("does not lock the exact @gabrielvfonseca/ai tarball");
 
     const prepared = prepareOperatorNpmShrinkwrap({
       aiIntegrity: "sha512-test",
       aiManifest: {
-        name: "@operator/ai",
+        name: "@gabrielvfonseca/ai",
         version: "2026.7.1-beta.5",
         dependencies: AI_DEPENDENCIES,
       },
@@ -176,7 +176,7 @@ describe("prepareOperatorNpmShrinkwrap", () => {
       assertPreparedOperatorNpmShrinkwrap({
         aiIntegrity: "sha512-test",
         aiManifest: {
-          name: "@operator/ai",
+          name: "@gabrielvfonseca/ai",
           version: "2026.7.1-beta.5",
           dependencies: AI_DEPENDENCIES,
         },
@@ -186,7 +186,7 @@ describe("prepareOperatorNpmShrinkwrap", () => {
         },
         shrinkwrap: prepared,
       }),
-    ).toThrow("packed Operator manifest must depend on exact @operator/ai");
+    ).toThrow("packed Operator manifest must depend on exact @gabrielvfonseca/ai");
   });
 
   it("validates semver ranges and rejects unsupported dependency specs", () => {
@@ -198,7 +198,7 @@ describe("prepareOperatorNpmShrinkwrap", () => {
       prepareOperatorNpmShrinkwrap({
         aiIntegrity: "sha512-test",
         aiManifest: {
-          name: "@operator/ai",
+          name: "@gabrielvfonseca/ai",
           version: "2026.7.1-beta.5",
           dependencies: {
             ranged: "^2.4.0",
@@ -216,7 +216,7 @@ describe("prepareOperatorNpmShrinkwrap", () => {
       prepareOperatorNpmShrinkwrap({
         aiIntegrity: "sha512-test",
         aiManifest: {
-          name: "@operator/ai",
+          name: "@gabrielvfonseca/ai",
           version: "2026.7.1-beta.5",
           dependencies: { aliased: "npm:@scope/real-package@~3.2.0" },
         },
@@ -233,7 +233,7 @@ describe("prepareOperatorNpmShrinkwrap", () => {
       prepareOperatorNpmShrinkwrap({
         aiIntegrity: "sha512-test",
         aiManifest: {
-          name: "@operator/ai",
+          name: "@gabrielvfonseca/ai",
           version: "2026.7.1-beta.5",
           dependencies: { ranged: "^2.4.0" },
         },
@@ -249,7 +249,7 @@ describe("prepareOperatorNpmShrinkwrap", () => {
       prepareOperatorNpmShrinkwrap({
         aiIntegrity: "sha512-test",
         aiManifest: {
-          name: "@operator/ai",
+          name: "@gabrielvfonseca/ai",
           version: "2026.7.1-beta.5",
           dependencies: { ranged: "workspace:*" },
         },

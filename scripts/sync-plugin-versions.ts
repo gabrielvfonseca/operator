@@ -15,7 +15,7 @@ type PackageJson = {
       pluginApi?: string;
     };
     build?: {
-      openclawVersion?: string;
+      operatorVersion?: string;
     };
   };
 };

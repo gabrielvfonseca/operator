@@ -111,7 +111,7 @@ function sanitizeHistoryContentBlock(block: unknown): {
       delete entry.thinkingSignature;
       truncated = true;
     }
-    if ("openclawReasoningReplay" in entry) {
+    if ("operatorReasoningReplay" in entry) {
       delete entry.operatorReasoningReplay;
       truncated = true;
     }

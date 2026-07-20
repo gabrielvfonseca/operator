@@ -620,7 +620,7 @@ test -d "$OPENCLAW_PLUGINS_TMP_DIR"
       name: "openclaw",
       version: "2026.7.1-beta.3",
       dependencies: {
-        "@operator/ai": "2026.7.1-beta.3",
+        "@gabrielvfonseca/ai": "2026.7.1-beta.3",
         zod: "4.3.6",
       },
       optionalDependencies: {
@@ -656,7 +656,7 @@ test -d "$OPENCLAW_PLUGINS_TMP_DIR"
 
       expect(response.statusCode).toBe(200);
       expect(metadata.versions["2026.7.1-beta.3"].dependencies).toEqual({
-        "@operator/ai": "2026.7.1-beta.3",
+        "@gabrielvfonseca/ai": "2026.7.1-beta.3",
         zod: "4.3.6",
       });
       expect(metadata.versions["2026.7.1-beta.3"].optionalDependencies).toEqual({

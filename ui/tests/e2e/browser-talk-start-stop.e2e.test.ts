@@ -93,7 +93,7 @@ async function installTalkBrowserFixtures(page: Page) {
       configurable: true,
       value: MockAudioContext,
     });
-    Object.defineProperty(window, "openclawTalkE2eState", {
+    Object.defineProperty(window, "operatorTalkE2eState", {
       configurable: true,
       value: state,
     });
@@ -185,7 +185,7 @@ describeControlUiE2e("Control UI browser Talk", () => {
             () =>
               (
                 window as Window & {
-                  openclawTalkE2eState?: { constraints: unknown[] };
+                  operatorTalkE2eState?: { constraints: unknown[] };
                 }
               ).operatorTalkE2eState?.constraints,
           ),
@@ -254,7 +254,7 @@ describeControlUiE2e("Control UI browser Talk", () => {
       await page.evaluate(() => {
         const state = (
           window as Window & {
-            openclawTalkE2eState?: {
+            operatorTalkE2eState?: {
               inputProcessor?: {
                 onaudioprocess?: (event: {
                   inputBuffer: { getChannelData: () => Float32Array };
@@ -295,7 +295,7 @@ describeControlUiE2e("Control UI browser Talk", () => {
           page.evaluate(() => {
             const state = (
               window as Window & {
-                openclawTalkE2eState?: { audioContextsClosed: number; tracksStopped: number };
+                operatorTalkE2eState?: { audioContextsClosed: number; tracksStopped: number };
               }
             ).operatorTalkE2eState;
             return state
@@ -354,7 +354,7 @@ describeControlUiE2e("Control UI browser Talk", () => {
       await page.evaluate(() => {
         const state = (
           window as Window & {
-            openclawTalkE2eState?: {
+            operatorTalkE2eState?: {
               inputProcessor?: {
                 onaudioprocess?: (event: {
                   inputBuffer: { getChannelData: () => Float32Array };
@@ -471,7 +471,7 @@ describeControlUiE2e("Control UI browser Talk", () => {
             () =>
               (
                 window as Window & {
-                  openclawTalkE2eState?: { constraints: unknown[] };
+                  operatorTalkE2eState?: { constraints: unknown[] };
                 }
               ).operatorTalkE2eState?.constraints.length,
           ),

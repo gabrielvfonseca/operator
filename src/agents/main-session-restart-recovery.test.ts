@@ -2202,7 +2202,7 @@ describe("main-session-restart-recovery", () => {
         role: "assistant",
         content: [{ type: "text", text: "delivered answer" }],
         stopReason: "stop",
-        openclawDeliveryMirror: {
+        operatorDeliveryMirror: {
           kind: "message-tool-source-reply",
           final: true,
           sourceTurnId: "discord-message-1",
@@ -3586,7 +3586,7 @@ describe("main-session-restart-recovery", () => {
         role: "assistant",
         content: [{ type: "text", text: "not this turn's terminal answer" }],
         stopReason: "stop",
-        openclawDeliveryMirror: {
+        operatorDeliveryMirror: {
           kind: "message-tool-source-reply",
           final,
           sourceTurnId,

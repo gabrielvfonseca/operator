@@ -18,9 +18,7 @@ export {
 export type { AnyAgentTool } from "../../../../src/agents/tools/common.js";
 export {
   resolveMemorySearchConfig,
-  resolveMemorySearchSyncConfig,
   type ResolvedMemorySearchConfig,
-  type ResolvedMemorySearchSyncConfig,
 } from "../../../../src/agents/memory-search.js";
 
 // Session and reply helpers.
@@ -99,7 +97,7 @@ export type {
 export { installProcessWarningFilter } from "../../../../src/infra/warning-filter.js";
 export { redactSensitiveText } from "../../../../src/logging/redact.js";
 export { createSubsystemLogger } from "../../../../src/logging/subsystem.js";
-export { detectMime } from "@operator/media-core/mime";
+export { detectMime } from "@gabrielvfonseca/media-core/mime";
 
 // Memory plugin helpers.
 export {

@@ -36,7 +36,7 @@ const BUNDLE_HASH = "a".repeat(64);
 const BUNDLE_ARTIFACT: WorkerInstallationArtifact = {
   install: "bundle",
   bundleHash: BUNDLE_HASH,
-  openclawVersion: "2026.7.2",
+  operatorVersion: "2026.7.2",
   protocolFeatures: [],
   tarballSha256: "b".repeat(64),
   tarballPath: "/gateway/cache/worker-bundle.tgz",
@@ -44,14 +44,14 @@ const BUNDLE_ARTIFACT: WorkerInstallationArtifact = {
 const NPM_ARTIFACT: WorkerInstallationArtifact = {
   install: "npm",
   bundleHash: BUNDLE_HASH,
-  openclawVersion: "2026.7.2",
+  operatorVersion: "2026.7.2",
   packageIntegrity: `sha512-${Buffer.alloc(64).toString("base64")}`,
   protocolFeatures: [],
   packageSpec: "openclaw@2026.7.2",
 };
 const BOOTSTRAP_RECEIPT = {
   bundleHash: BUNDLE_HASH,
-  openclawVersion: "2026.7.2",
+  operatorVersion: "2026.7.2",
   protocolFeatures: [],
 };
 const CREDENTIAL = ["worker", "credential", "fixture"].join("-");
@@ -99,7 +99,7 @@ describe("worker environment service", () => {
     );
     bootstrapWorker = vi.fn(async ({ installation }) => ({
       bundleHash: installation.bundleHash,
-      openclawVersion: installation.operatorVersion,
+      operatorVersion: installation.operatorVersion,
       protocolFeatures: [...installation.protocolFeatures],
     }));
   });
@@ -1415,7 +1415,7 @@ describe("worker environment service", () => {
       await resolveIdentity(SSH_ENDPOINT.keyRef);
       return {
         bundleHash: installation.bundleHash,
-        openclawVersion: installation.operatorVersion,
+        operatorVersion: installation.operatorVersion,
         protocolFeatures: [...installation.protocolFeatures],
       };
     });

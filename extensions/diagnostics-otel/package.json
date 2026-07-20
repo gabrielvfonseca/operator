@@ -21,7 +21,7 @@
     "@opentelemetry/semantic-conventions": "1.41.1"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   },
   "@gabrielvfonseca/operator": {
@@ -38,7 +38,7 @@
       "pluginApi": ">=2026.7.2"
     },
     "build": {
-      "openclawVersion": "2026.7.2"
+      "operatorVersion": "2026.7.2"
     },
     "release": {
       "publishToClawHub": true,

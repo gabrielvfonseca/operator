@@ -62,7 +62,7 @@ node --import tsx "$ROOT_DIR/scripts/e2e/lib/docker-artifact-proof/write-identit
   --container "target=$CONTAINER_NAME" \
   --detail "target:installedPackageRoot=$PACKAGE_ROOT" \
   --detail "target:installedPackageVersion=$PACKAGE_VERSION" \
-  --detail "target:openclawVersion=$INSTALLED_VERSION" \
+  --detail "target:operatorVersion=$INSTALLED_VERSION" \
   --detail "target:helpCommand=passed"
 
 echo "Package artifact container proof passed."

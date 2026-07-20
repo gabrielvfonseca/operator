@@ -8,7 +8,7 @@
     "@clack/prompts": "1.6.0"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   },
   "@gabrielvfonseca/operator": {

@@ -9,7 +9,7 @@
     "linkedom": "0.18.12"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*"
   },
   "@gabrielvfonseca/operator": {
     "extensions": [

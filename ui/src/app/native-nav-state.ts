@@ -10,7 +10,7 @@ type WebKitMessageHandler = {
 type WebKitBridgeWindow = Window & {
   webkit?: {
     messageHandlers?: {
-      openclawNav?: WebKitMessageHandler;
+      operatorNav?: WebKitMessageHandler;
     };
   };
 };

@@ -70,13 +70,13 @@ function deferred<T>() {
   return { promise, resolve, reject };
 }
 
-import { OpenClawTerminalPanel } from "./terminal-panel.ts";
+import { OperatorTerminalPanel } from "./terminal-panel.ts";
 
 const TERMINAL_PANEL_ELEMENT_NAME = `test-openclaw-terminal-panel-${crypto.randomUUID()}`;
 
 // The full non-isolated UI suite can import the production panel before this
 // test. Override its factory instead of relying on a module mock import order.
-class TestTerminalPanel extends OpenClawTerminalPanel {
+class TestTerminalPanel extends OperatorTerminalPanel {
   protected override createTerminal = createGhosttyTerminalMock as unknown as TerminalFactory;
 }
 
@@ -98,7 +98,7 @@ async function startPanelWithPendingOpen() {
     },
     addEventListener: () => () => {},
   };
-  const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+  const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
   panel.client = client;
   panel.available = true;
   document.body.append(panel);
@@ -109,7 +109,7 @@ async function startPanelWithPendingOpen() {
   return { createOptions: createOptions!, open, requests };
 }
 
-describe("OpenClawTerminalPanel", () => {
+describe("OperatorTerminalPanel", () => {
   beforeEach(async () => {
     vi.stubGlobal("localStorage", createStorageMock());
     vi.stubGlobal("sessionStorage", createStorageMock());
@@ -137,7 +137,7 @@ describe("OpenClawTerminalPanel", () => {
 
     class LazyUpgradeTerminalPanel extends TestTerminalPanel {}
     customElements.define(tagName, LazyUpgradeTerminalPanel);
-    const panel = element as unknown as OpenClawTerminalPanel;
+    const panel = element as unknown as OperatorTerminalPanel;
     await panel.updateComplete;
     await vi.waitFor(() => expect((panel as unknown as { open: boolean }).open).toBe(true));
   });
@@ -163,7 +163,7 @@ describe("OpenClawTerminalPanel", () => {
       },
       addEventListener: () => () => {},
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.agentId = "ops";
     panel.available = true;
@@ -179,9 +179,9 @@ describe("OpenClawTerminalPanel", () => {
     });
     expect(createOptions?.terminalOptions?.fontFamily).toContain("MesloLGLDZ Nerd Font Mono");
     expect(getComputedStyle(createOptions!.parent).caretColor).toBe("rgba(0, 0, 0, 0)");
-    const styleResults = Array.isArray(OpenClawTerminalPanel.styles)
-      ? OpenClawTerminalPanel.styles
-      : [OpenClawTerminalPanel.styles];
+    const styleResults = Array.isArray(OperatorTerminalPanel.styles)
+      ? OperatorTerminalPanel.styles
+      : [OperatorTerminalPanel.styles];
     const styles = styleResults.map((style) => style.cssText).join("\n");
     expect(styles).toMatch(/\.tabstrip-new\s*\{[^}]*align-self:\s*center/u);
     await vi.waitFor(() => {
@@ -218,7 +218,7 @@ describe("OpenClawTerminalPanel", () => {
         (method === "terminal.open" ? terminalOpenResult("session-1") : {}) as T,
       addEventListener: () => () => {},
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);
@@ -262,7 +262,7 @@ describe("OpenClawTerminalPanel", () => {
         return () => {};
       },
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);
@@ -340,7 +340,7 @@ describe("OpenClawTerminalPanel", () => {
     open.reject(new Error("terminal open refused"));
 
     await vi.waitFor(() => {
-      const panel = document.querySelector(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+      const panel = document.querySelector(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
       expect(panel.renderRoot.querySelector(".tp-error")?.textContent).toContain(
         "terminal open refused",
       );
@@ -386,7 +386,7 @@ describe("OpenClawTerminalPanel", () => {
       },
       addEventListener: () => () => {},
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);
@@ -468,7 +468,7 @@ describe("OpenClawTerminalPanel", () => {
       },
       addEventListener: () => () => {},
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);
@@ -538,7 +538,7 @@ describe("OpenClawTerminalPanel", () => {
       },
       addEventListener: () => () => {},
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);
@@ -602,7 +602,7 @@ describe("OpenClawTerminalPanel", () => {
       },
       addEventListener: () => () => {},
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);
@@ -644,7 +644,7 @@ describe("OpenClawTerminalPanel", () => {
       },
       addEventListener: () => () => {},
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);
@@ -681,7 +681,7 @@ describe("OpenClawTerminalPanel", () => {
       },
       addEventListener: () => () => {},
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     panel.fullscreen = true;
@@ -741,7 +741,7 @@ describe("OpenClawTerminalPanel", () => {
         };
       },
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);
@@ -806,7 +806,7 @@ describe("OpenClawTerminalPanel", () => {
       },
       addEventListener: () => () => {},
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = oldClient;
     panel.available = true;
     document.body.append(panel);
@@ -843,7 +843,7 @@ describe("OpenClawTerminalPanel", () => {
       },
       addEventListener: () => () => {},
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);
@@ -883,7 +883,7 @@ describe("OpenClawTerminalPanel", () => {
         (method === "terminal.open" ? terminalOpenResult("session-1") : {}) as T,
       addEventListener: () => () => {},
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);
@@ -905,7 +905,7 @@ describe("OpenClawTerminalPanel", () => {
   });
 
   it("removes a tab host even when controller disposal throws", () => {
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     const host = document.createElement("div");
     document.body.append(host);
     const dispose = vi.fn(() => {
@@ -936,7 +936,7 @@ describe("OpenClawTerminalPanel", () => {
         };
       },
     };
-    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OpenClawTerminalPanel;
+    const panel = document.createElement(TERMINAL_PANEL_ELEMENT_NAME) as OperatorTerminalPanel;
     panel.client = client;
     panel.available = true;
     document.body.append(panel);

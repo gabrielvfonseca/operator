@@ -559,7 +559,7 @@ function isExactMessageToolDeliveryMirror(params: {
   if (!params.message || typeof params.message !== "object") {
     return false;
   }
-  const marker = (params.message as { openclawDeliveryMirror?: unknown }).operatorDeliveryMirror;
+  const marker = (params.message as { operatorDeliveryMirror?: unknown }).operatorDeliveryMirror;
   if (!marker || typeof marker !== "object") {
     return false;
   }
@@ -680,7 +680,7 @@ function readDeliveredTerminalSourceReplyToolCallId(
     if (!message || typeof message !== "object" || getMessageRole(message) !== "assistant") {
       continue;
     }
-    const marker = (message as { openclawDeliveryMirror?: unknown }).operatorDeliveryMirror;
+    const marker = (message as { operatorDeliveryMirror?: unknown }).operatorDeliveryMirror;
     if (!marker || typeof marker !== "object") {
       continue;
     }
