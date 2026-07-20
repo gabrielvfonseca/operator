@@ -36,7 +36,6 @@ const ANSI_CONTROL_SEQUENCE_PATTERN =
   "[\\u001B\\u009B][[\\]()#;?]*(?:\\d{1,4}(?:[;:]\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]";
 const ANSI_COMPAT_SEQUENCE_AT_INDEX_REGEX = new RegExp(
   `${ANSI_OSC_SEQUENCE_PATTERN}|${ANSI_CONTROL_SEQUENCE_PATTERN}`,
-  "y",
 );
 const graphemeSegmenter =
   typeof Intl !== "undefined" && "Segmenter" in Intl
@@ -77,9 +76,8 @@ function stripAnsiInternal(
 
     const csi = scanAnsiCsiAt(input, index);
     if (!csi) {
-      ANSI_COMPAT_SEQUENCE_AT_INDEX_REGEX.lastIndex = index;
       const compatibilityMatch = options.compatibilityGrammar
-        ? ANSI_COMPAT_SEQUENCE_AT_INDEX_REGEX.exec(input)
+        ? ANSI_COMPAT_SEQUENCE_AT_INDEX_REGEX.exec(input.slice(index))
         : null;
       if (compatibilityMatch) {
         output.push(input.slice(copyStart, index));
@@ -91,9 +89,8 @@ function stripAnsiInternal(
       continue;
     }
 
-    ANSI_COMPAT_SEQUENCE_AT_INDEX_REGEX.lastIndex = index;
     const compatibilityMatch = options.compatibilityGrammar
-      ? ANSI_COMPAT_SEQUENCE_AT_INDEX_REGEX.exec(input)
+      ? ANSI_COMPAT_SEQUENCE_AT_INDEX_REGEX.exec(input.slice(index))
       : null;
     if (!csi.ended && options.preserveIncompleteCsi) {
       break;
@@ -221,7 +218,7 @@ function isFullWidthCodePoint(codePoint: number): boolean {
   );
 }
 
-const rgiEmojiPattern = /^\p{RGI_Emoji}$/v;
+const rgiEmojiPattern = /^\p{Emoji_Presentation}$/u;
 const emojiPresentationPattern = /\p{Emoji_Presentation}/u;
 const regionalIndicatorPattern = /\p{Regional_Indicator}/u;
 const unqualifiedKeycapPattern = /^[#*0-9]\u20E3$/u;

@@ -1,4 +1,4 @@
-export const configs = {
+const configs = {
   base: "./base.json",
   core: "./core.json",
   extensions: "./extensions.json",
