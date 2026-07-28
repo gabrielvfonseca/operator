@@ -2,7 +2,7 @@
 import { createScopedVitestConfig } from "./vitest.scoped-config.ts";
 
 export function createRuntimeConfigVitestConfig(env?: Record<string, string | undefined>) {
-  const config = createScopedVitestConfig(["src/config/**/*.test.ts"], {
+  const config = createScopedVitestConfig(["tests/config/**/*.test.ts"], {
     dir: "src",
     env,
     includeOperatorRuntimeSetup: false,

@@ -2,7 +2,7 @@
 import { createScopedVitestConfig } from "./vitest.scoped-config.ts";
 
 export function createSharedCoreVitestConfig(env?: Record<string, string | undefined>) {
-  return createScopedVitestConfig(["src/shared/**/*.test.ts"], {
+  return createScopedVitestConfig(["tests/shared/**/*.test.ts"], {
     dir: "src",
     env,
     includeOperatorRuntimeSetup: false,

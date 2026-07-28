@@ -27,7 +27,7 @@ export default defineConfig({
         [...(baseTest.setupFiles ?? []), "test/setup-operator-runtime.ts"].map(resolveRepoRootPath),
       ),
     ],
-    include: ["src/**/*.live.test.ts", "test/**/*.live.test.ts", BUNDLED_PLUGIN_LIVE_TEST_GLOB],
+    include: ["tests/**/*.live.test.ts", "test/**/*.live.test.ts", BUNDLED_PLUGIN_LIVE_TEST_GLOB],
     exclude,
   },
 });

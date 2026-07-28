@@ -1,0 +1,60 @@
+import fs from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import {
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
+  type OperatorStateDatabase,
+} from "../../../src/state/openclaw-state-db.js";
+import {
+  createDispatchEnvironmentFixtures,
+  REQUEST,
+  seedActivePlacement,
+} from "../../../src/gateway/worker-environments/placement-dispatch-test-fixtures.js";
+import { forceAbandonWorkerEnvironment } from "../../../src/gateway/worker-environments/placement-force-abandon.js";
+import { createWorkerSessionPlacementStore } from "../../../src/gateway/worker-environments/placement-store.js";
+
+describe("forced worker environment abandonment", () => {
+  let root: string;
+  let database: OperatorStateDatabase;
+
+  beforeEach(async () => {
+    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "operator-force-worker-"));
+    database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: root } });
+  });
+
+  afterEach(async () => {
+    closeOperatorStateDatabaseForTest();
+    await fs.rm(root, { recursive: true, force: true });
+  });
+
+  it("records result loss and releases a pending worker claim before teardown", async () => {
+    const store = createWorkerSessionPlacementStore({ database, now: () => 1_000 });
+    const { environmentId } = createDispatchEnvironmentFixtures();
+    const active = seedActivePlacement(store, { environmentId, ownerEpoch: 2 });
+    if (active.state !== "active") {
+      throw new Error("active placement fixture was not active");
+    }
+    const claim = store.claimTurn({
+      ...REQUEST,
+      claimId: "forced-claim",
+      runId: "forced-run",
+      owner: { kind: "worker", environmentId, ownerEpoch: 2 },
+    });
+    store.markWorkspaceResultPending(claim);
+
+    await forceAbandonWorkerEnvironment({
+      placements: store,
+      environmentId,
+      resolveWorkspacePath: async () => root,
+    });
+
+    expect(store.get(REQUEST.sessionId)).toMatchObject({
+      state: "failed",
+      turnClaim: null,
+      recoveryError: "Cloud worker result abandoned by forced operator teardown",
+    });
+    expect(store.listPendingWorkspaceResults()).toEqual([]);
+  });
+});

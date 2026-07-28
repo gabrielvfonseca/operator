@@ -1,0 +1,35 @@
+import { describe, expect, it } from "vitest";
+import type { BundledPluginSource } from "../../src/plugins/bundled-sources.js";
+import { isOperatorTrustedPluginInstallSpec } from "../../src/plugins/install-provenance.js";
+
+const bundledSources = new Map<string, BundledPluginSource>([
+  [
+    "discord",
+    {
+      pluginId: "discord",
+      localPath: "/opt/openclaw/extensions/discord",
+      npmSpec: "@gabrielvfonseca/discord",
+    },
+  ],
+]);
+
+describe("plugin install provenance", () => {
+  it.each([
+    "discord",
+    "@gabrielvfonseca/discord",
+    "npm:@gabrielvfonseca/discord",
+    "/opt/openclaw/extensions/discord",
+    "brave",
+    "npm:@gabrielvfonseca/brave-plugin",
+    "clawhub:operator-demo",
+  ])("trusts Operator-owned install source %s", (spec) => {
+    expect(isOperatorTrustedPluginInstallSpec(spec, bundledSources)).toBe(true);
+  });
+
+  it.each(["npm:discord", "npm:@example/plugin", "/tmp/example-plugin"])(
+    "keeps arbitrary install source %s untrusted",
+    (spec) => {
+      expect(isOperatorTrustedPluginInstallSpec(spec, bundledSources)).toBe(false);
+    },
+  );
+});

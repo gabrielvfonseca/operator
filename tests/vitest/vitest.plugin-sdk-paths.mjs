@@ -2,39 +2,39 @@
 const normalizeRepoPath = (value) => value.replaceAll("\\", "/");
 
 const pluginSdkLightEntries = [
-  { source: "src/plugin-sdk/acp-runtime.ts", test: "src/plugin-sdk/acp-runtime.test.ts" },
-  { source: "src/plugin-sdk/allow-from.ts", test: "src/plugin-sdk/allow-from.test.ts" },
+  { source: "tests/plugin-sdk/acp-runtime.ts", test: "tests/plugin-sdk/acp-runtime.test.ts" },
+  { source: "tests/plugin-sdk/allow-from.ts", test: "tests/plugin-sdk/allow-from.test.ts" },
   {
-    source: "src/plugin-sdk/keyed-async-queue.ts",
-    test: "src/plugin-sdk/keyed-async-queue.test.ts",
+    source: "tests/plugin-sdk/keyed-async-queue.ts",
+    test: "tests/plugin-sdk/keyed-async-queue.test.ts",
   },
-  { source: "src/plugin-sdk/lazy-value.ts", test: "src/plugin-sdk/lazy-value.test.ts" },
+  { source: "tests/plugin-sdk/lazy-value.ts", test: "tests/plugin-sdk/lazy-value.test.ts" },
   {
-    source: "src/plugin-sdk/memory-host-events.ts",
-    test: "src/plugin-sdk/memory-host-events.test.ts",
-  },
-  {
-    source: "src/plugin-sdk/persistent-dedupe.ts",
-    test: "src/plugin-sdk/memory-host-events.test.ts",
-  },
-  { source: "src/plugin-sdk/provider-entry.ts", test: "src/plugin-sdk/provider-entry.test.ts" },
-  {
-    source: "src/plugin-sdk/provider-model-shared.ts",
-    test: "src/plugin-sdk/provider-model-shared.test.ts",
-  },
-  { source: "src/plugin-sdk/provider-tools.ts", test: "src/plugin-sdk/provider-tools.test.ts" },
-  {
-    source: "src/plugin-sdk/status-helpers.ts",
-    test: "src/plugin-sdk/status-helpers.test.ts",
-  },
-  { source: "src/plugin-sdk/temp-path.ts", test: "src/plugin-sdk/temp-path.test.ts" },
-  {
-    source: "src/plugin-sdk/text-chunking.ts",
-    test: "src/plugin-sdk/text-chunking.test.ts",
+    source: "tests/plugin-sdk/memory-host-events.ts",
+    test: "tests/plugin-sdk/memory-host-events.test.ts",
   },
   {
-    source: "src/plugin-sdk/webhook-targets.ts",
-    test: "src/plugin-sdk/webhook-targets.test.ts",
+    source: "tests/plugin-sdk/persistent-dedupe.ts",
+    test: "tests/plugin-sdk/memory-host-events.test.ts",
+  },
+  { source: "tests/plugin-sdk/provider-entry.ts", test: "tests/plugin-sdk/provider-entry.test.ts" },
+  {
+    source: "tests/plugin-sdk/provider-model-shared.ts",
+    test: "tests/plugin-sdk/provider-model-shared.test.ts",
+  },
+  { source: "tests/plugin-sdk/provider-tools.ts", test: "tests/plugin-sdk/provider-tools.test.ts" },
+  {
+    source: "tests/plugin-sdk/status-helpers.ts",
+    test: "tests/plugin-sdk/status-helpers.test.ts",
+  },
+  { source: "tests/plugin-sdk/temp-path.ts", test: "tests/plugin-sdk/temp-path.test.ts" },
+  {
+    source: "tests/plugin-sdk/text-chunking.ts",
+    test: "tests/plugin-sdk/text-chunking.test.ts",
+  },
+  {
+    source: "tests/plugin-sdk/webhook-targets.ts",
+    test: "tests/plugin-sdk/webhook-targets.test.ts",
   },
 ];
 

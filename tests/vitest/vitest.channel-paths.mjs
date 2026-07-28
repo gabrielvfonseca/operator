@@ -5,7 +5,7 @@ import { splitChannelExtensionTestRoots } from "./vitest.extension-channel-split
 
 const normalizeRepoPath = (value) => value.split(path.sep).join("/");
 
-const channelTestRoots = ["src/channels", ...splitChannelExtensionTestRoots];
+const channelTestRoots = ["tests/channels", ...splitChannelExtensionTestRoots];
 
 const splitChannelExtensionTestRootSet = new Set(splitChannelExtensionTestRoots);
 

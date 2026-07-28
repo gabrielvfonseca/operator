@@ -2,24 +2,24 @@
 import { createScopedVitestConfig } from "./vitest.scoped-config.ts";
 
 const gatewayServerBackedHttpTests = [
-  "src/gateway/embeddings-http.test.ts",
-  "src/gateway/models-http.test.ts",
-  "src/gateway/openai-http.test.ts",
-  "src/gateway/openresponses-http.test.ts",
-  "src/gateway/probe.auth.integration.test.ts",
+  "tests/gateway/embeddings-http.test.ts",
+  "tests/gateway/models-http.test.ts",
+  "tests/gateway/openai-http.test.ts",
+  "tests/gateway/openresponses-http.test.ts",
+  "tests/gateway/probe.auth.integration.test.ts",
 ];
 
 export function createGatewayServerVitestConfig(env?: Record<string, string | undefined>) {
   return createScopedVitestConfig(
-    ["src/gateway/**/*server*.test.ts", ...gatewayServerBackedHttpTests],
+    ["tests/gateway/**/*server*.test.ts", ...gatewayServerBackedHttpTests],
     {
-      dir: "src/gateway",
+      dir: "tests/gateway",
       env,
       exclude: [
-        "src/gateway/server-methods/**/*.test.ts",
-        "src/gateway/gateway.test.ts",
-        "src/gateway/server.startup-matrix-migration.integration.test.ts",
-        "src/gateway/sessions-history-http.test.ts",
+        "tests/gateway/server-methods/**/*.test.ts",
+        "tests/gateway/gateway.test.ts",
+        "tests/gateway/server.startup-matrix-migration.integration.test.ts",
+        "tests/gateway/sessions-history-http.test.ts",
       ],
       fileParallelism: false,
       // Gateway child projects share one include file; preserve this project's ownership.

@@ -1,0 +1,36 @@
+import { readFileSync } from "node:fs";
+import { describe, expect, it } from "vitest";
+import { writeClaudeMcpConfig } from "../../src/cli/attach-cli.js";
+
+const MCP_CONFIG = {
+  mcpServers: {
+    operator: {
+      type: "http",
+      url: "http://127.0.0.1:54321/mcp",
+      headers: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
+        Authorization: "Bearer ${OPERATOR_MCP_TOKEN}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
+        "x-session-key": "${OPERATOR_MCP_SESSION_KEY}",
+      },
+    },
+  },
+};
+
+describe("writeClaudeMcpConfig", () => {
+  it("writes the gateway mcpConfig verbatim to a .mcp.json (placeholders preserved for Claude env substitution)", () => {
+    const { path, cleanup } = writeClaudeMcpConfig(MCP_CONFIG);
+    try {
+      expect(path.endsWith(".mcp.json")).toBe(true);
+      expect(JSON.parse(readFileSync(path, "utf8"))).toEqual(MCP_CONFIG);
+    } finally {
+      cleanup();
+    }
+  });
+
+  it("cleanup removes the temp config", () => {
+    const { path, cleanup } = writeClaudeMcpConfig(MCP_CONFIG);
+    cleanup();
+    expect(() => readFileSync(path, "utf8")).toThrow();
+  });
+});

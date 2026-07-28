@@ -2,86 +2,86 @@
 const normalizeRepoPath = (value) => value.replaceAll("\\", "/");
 
 const commandsLightEntries = [
-  { source: "src/commands/cleanup-utils.ts", test: "src/commands/cleanup-utils.test.ts" },
-  { test: "src/commands/auth-choice.test.ts" },
+  { source: "tests/commands/cleanup-utils.ts", test: "tests/commands/cleanup-utils.test.ts" },
+  { test: "tests/commands/auth-choice.test.ts" },
   {
-    source: "src/commands/dashboard.links.ts",
-    test: "src/commands/dashboard.links.test.ts",
+    source: "tests/commands/dashboard.links.ts",
+    test: "tests/commands/dashboard.links.test.ts",
   },
   {
-    source: "src/commands/dashboard.ts",
-    test: "src/commands/dashboard.test.ts",
+    source: "tests/commands/dashboard.ts",
+    test: "tests/commands/dashboard.test.ts",
   },
-  { test: "src/commands/daemon-install-helpers.test.ts" },
-  { source: "src/commands/doctor-browser.ts", test: "src/commands/doctor-browser.test.ts" },
+  { test: "tests/commands/daemon-install-helpers.test.ts" },
+  { source: "tests/commands/doctor-browser.ts", test: "tests/commands/doctor-browser.test.ts" },
   {
-    source: "src/commands/doctor-gateway-auth-token.ts",
-    test: "src/commands/doctor-gateway-auth-token.test.ts",
-  },
-  {
-    source: "src/commands/doctor/shared/channel-plugin-blockers.ts",
-    test: "src/commands/doctor/shared/channel-plugin-blockers.test.ts",
+    source: "tests/commands/doctor-gateway-auth-token.ts",
+    test: "tests/commands/doctor-gateway-auth-token.test.ts",
   },
   {
-    source: "src/commands/doctor/shared/missing-configured-plugin-install.ts",
-    test: "src/commands/doctor/shared/missing-configured-plugin-install.test.ts",
+    source: "tests/commands/doctor/shared/channel-plugin-blockers.ts",
+    test: "tests/commands/doctor/shared/channel-plugin-blockers.test.ts",
   },
   {
-    source: "src/commands/doctor/shared/preview-warnings.ts",
-    test: "src/commands/doctor/shared/preview-warnings.test.ts",
+    source: "tests/commands/doctor/shared/missing-configured-plugin-install.ts",
+    test: "tests/commands/doctor/shared/missing-configured-plugin-install.test.ts",
   },
   {
-    source: "src/commands/doctor/shared/release-configured-plugin-installs.ts",
-    test: "src/commands/doctor/shared/release-configured-plugin-installs.test.ts",
+    source: "tests/commands/doctor/shared/preview-warnings.ts",
+    test: "tests/commands/doctor/shared/preview-warnings.test.ts",
   },
   {
-    source: "src/commands/doctor/shared/stale-plugin-config.ts",
-    test: "src/commands/doctor/shared/stale-plugin-config.test.ts",
+    source: "tests/commands/doctor/shared/release-configured-plugin-installs.ts",
+    test: "tests/commands/doctor/shared/release-configured-plugin-installs.test.ts",
   },
   {
-    source: "src/commands/doctor/shared/stale-oauth-profile-shadows.ts",
-    test: "src/commands/doctor/shared/stale-oauth-profile-shadows.test.ts",
+    source: "tests/commands/doctor/shared/stale-plugin-config.ts",
+    test: "tests/commands/doctor/shared/stale-plugin-config.test.ts",
   },
   {
-    source: "src/commands/gateway-status/helpers.ts",
-    test: "src/commands/gateway-status/helpers.test.ts",
-  },
-  { test: "src/commands/models/auth.test.ts" },
-  { test: "src/commands/models/list.auth-index.test.ts" },
-  { test: "src/commands/models/list.list-command.forward-compat.test.ts" },
-  {
-    source: "src/commands/models/list.status-command.ts",
-    test: "src/commands/models/list.status.test.ts",
+    source: "tests/commands/doctor/shared/stale-oauth-profile-shadows.ts",
+    test: "tests/commands/doctor/shared/stale-oauth-profile-shadows.test.ts",
   },
   {
-    source: "src/commands/sandbox-formatters.ts",
-    test: "src/commands/sandbox-formatters.test.ts",
+    source: "tests/commands/gateway-status/helpers.ts",
+    test: "tests/commands/gateway-status/helpers.test.ts",
+  },
+  { test: "tests/commands/models/auth.test.ts" },
+  { test: "tests/commands/models/list.auth-index.test.ts" },
+  { test: "tests/commands/models/list.list-command.forward-compat.test.ts" },
+  {
+    source: "tests/commands/models/list.status-command.ts",
+    test: "tests/commands/models/list.status.test.ts",
   },
   {
-    source: "src/commands/status-json-command.ts",
-    test: "src/commands/status-json-command.test.ts",
+    source: "tests/commands/sandbox-formatters.ts",
+    test: "tests/commands/sandbox-formatters.test.ts",
   },
   {
-    source: "src/commands/status-json-payload.ts",
-    test: "src/commands/status-json-payload.test.ts",
+    source: "tests/commands/status-json-command.ts",
+    test: "tests/commands/status-json-command.test.ts",
   },
   {
-    source: "src/commands/status-json-runtime.ts",
-    test: "src/commands/status-json-runtime.test.ts",
+    source: "tests/commands/status-json-payload.ts",
+    test: "tests/commands/status-json-payload.test.ts",
   },
   {
-    source: "src/commands/status-overview-rows.ts",
-    test: "src/commands/status-overview-rows.test.ts",
+    source: "tests/commands/status-json-runtime.ts",
+    test: "tests/commands/status-json-runtime.test.ts",
   },
   {
-    source: "src/commands/status-overview-surface.ts",
-    test: "src/commands/status-overview-surface.test.ts",
+    source: "tests/commands/status-overview-rows.ts",
+    test: "tests/commands/status-overview-rows.test.ts",
   },
   {
-    source: "src/commands/status-overview-values.ts",
-    test: "src/commands/status-overview-values.test.ts",
+    source: "tests/commands/status-overview-surface.ts",
+    test: "tests/commands/status-overview-surface.test.ts",
   },
-  { source: "src/commands/text-format.ts", test: "src/commands/text-format.test.ts" },
+  {
+    source: "tests/commands/status-overview-values.ts",
+    test: "tests/commands/status-overview-values.test.ts",
+  },
+  { source: "tests/commands/text-format.ts", test: "tests/commands/text-format.test.ts" },
 ];
 
 const commandsLightIncludePatternByFile = new Map(

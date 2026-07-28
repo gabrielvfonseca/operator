@@ -1,0 +1,115 @@
+import fs from "node:fs";
+import path from "node:path";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import type { OperatorConfig } from "../../src/config/types.operator.js";
+import { reconcileNodePairingOnConnect } from "../../src/gateway/node-connect-reconcile.js";
+import { resetPluginLoaderTestStateForTest } from "../../src/plugins/loader.test-fixtures.js";
+import { testing as runtimeRegistryLoaderTesting } from "../../src/plugins/runtime/runtime-registry-loader.js";
+import { listRegisteredNodeHostCapsAndCommands } from "../../src/node-host/plugin-node-host.js";
+import { prepareNodeHostRuntime } from "../../src/node-host/runtime.js";
+
+const LINUX_NODE_COMMANDS = [
+  "camera.clip",
+  "camera.list",
+  "camera.snap",
+  "location.get",
+  "system.notify",
+] as const;
+
+function resetPluginState(): void {
+  resetPluginLoaderTestStateForTest();
+  runtimeRegistryLoaderTesting.resetPluginRegistryLoadedForTests();
+}
+
+afterEach(() => {
+  vi.restoreAllMocks();
+  vi.unstubAllEnvs();
+  resetPluginState();
+});
+
+describe("linux-node node-host integration", () => {
+  it("loads and advertises enabled commands through the node-host runtime", async () => {
+    resetPluginState();
+    const platformDescriptor = Object.getOwnPropertyDescriptor(process, "platform");
+    if (!platformDescriptor) {
+      throw new Error("process.platform descriptor unavailable");
+    }
+    Object.defineProperty(process, "platform", { ...platformDescriptor, value: "linux" });
+
+    const fakeBinDir = path.resolve(".artifacts", "linux-node-test-bin");
+    const originalAccessSync = fs.accessSync.bind(fs);
+    vi.spyOn(fs, "accessSync").mockImplementation((candidate, mode) => {
+      if (path.dirname(path.resolve(String(candidate))) === fakeBinDir) {
+        return;
+      }
+      return originalAccessSync(candidate, mode);
+    });
+    vi.stubEnv("PATH", `${fakeBinDir}${path.delimiter}${process.env.PATH ?? ""}`);
+    vi.stubEnv("OPERATOR_BUNDLED_PLUGINS_DIR", path.resolve("extensions"));
+    vi.stubEnv("OPERATOR_TEST_TRUST_BUNDLED_PLUGINS_DIR", "1");
+    vi.stubEnv("OPERATOR_DISABLE_BUNDLED_PLUGINS", undefined);
+
+    const config: OperatorConfig = {
+      gateway: {
+        nodes: {
+          allowCommands: ["camera.snap", "camera.clip"],
+        },
+      },
+      nodeHost: { skills: { enabled: false } },
+      plugins: {
+        allow: ["linux-node"],
+        entries: {
+          "linux-node": {
+            enabled: true,
+            config: {
+              notify: { enabled: true },
+              camera: { enabled: true },
+              location: { enabled: true },
+            },
+          },
+        },
+      },
+    };
+
+    try {
+      const prepared = await prepareNodeHostRuntime({ config, env: process.env });
+      const registered = listRegisteredNodeHostCapsAndCommands({ config, env: process.env });
+
+      expect(registered.commands).toEqual(LINUX_NODE_COMMANDS);
+      expect(registered.caps).toEqual(["camera", "location"]);
+      expect(prepared.manifest.commands).toEqual(expect.arrayContaining([...LINUX_NODE_COMMANDS]));
+
+      const requestPairing = vi.fn();
+      const reconciliation = await reconcileNodePairingOnConnect({
+        cfg: config,
+        connectParams: {
+          minProtocol: 1,
+          maxProtocol: 1,
+          client: {
+            id: "node-host",
+            version: "test",
+            platform: "linux",
+            deviceFamily: "Linux",
+            mode: "node",
+          },
+          caps: registered.caps,
+          commands: registered.commands,
+        },
+        pairedNode: {
+          nodeId: "node-host",
+          createdAtMs: 1,
+          approvedAtMs: 1,
+          caps: registered.caps,
+          commands: registered.commands,
+        },
+        requestPairing,
+      });
+
+      expect(reconciliation.declaredCommands).toEqual(LINUX_NODE_COMMANDS);
+      expect(reconciliation.effectiveCommands).toEqual(LINUX_NODE_COMMANDS);
+      expect(requestPairing).not.toHaveBeenCalled();
+    } finally {
+      Object.defineProperty(process, "platform", platformDescriptor);
+    }
+  });
+});

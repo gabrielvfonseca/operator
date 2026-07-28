@@ -2,10 +2,10 @@
 import { createScopedVitestConfig } from "./vitest.scoped-config.ts";
 
 export function createPluginsVitestConfig(env?: Record<string, string | undefined>) {
-  return createScopedVitestConfig(["src/plugins/**/*.test.ts"], {
-    dir: "src/plugins",
+  return createScopedVitestConfig(["tests/plugins/**/*.test.ts"], {
+    dir: "tests/plugins",
     env,
-    exclude: ["src/plugins/contracts/**", "src/plugins/loader.test.ts"],
+    exclude: ["tests/plugins/contracts/**", "tests/plugins/loader.test.ts"],
     fileParallelism: false,
     isolate: false,
     name: "plugins",

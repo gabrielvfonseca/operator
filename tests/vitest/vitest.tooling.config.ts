@@ -13,7 +13,7 @@ export function loadIncludePatternsFromEnv(
 
 export function createToolingVitestConfig(env?: Record<string, string | undefined>) {
   return createScopedVitestConfig(
-    loadIncludePatternsFromEnv(env) ?? ["test/**/*.test.ts", "src/scripts/**/*.test.ts"],
+    loadIncludePatternsFromEnv(env) ?? ["test/**/*.test.ts", "tests/scripts/**/*.test.ts"],
     {
       env,
       exclude: [...boundaryTestFiles, ...toolingDockerTestFiles, ...toolingIsolatedTestFiles],

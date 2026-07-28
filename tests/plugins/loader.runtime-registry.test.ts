@@ -1,0 +1,69 @@
+// Verifies plugin loader runtime registry behavior.
+import { afterEach, describe, expect, it } from "vitest";
+import {
+  clearPluginRegistryLoadCache,
+  loadOperatorPlugins,
+  resolveRuntimePluginRegistry,
+} from "../../src/plugins/loader.js";
+import { resetPluginLoaderTestStateForTest } from "../../src/plugins/loader.test-fixtures.js";
+import {
+  getMemoryEmbeddingProvider,
+  registerMemoryEmbeddingProvider,
+} from "../../src/plugins/memory-embedding-providers.js";
+import { buildMemoryPromptSection, registerMemoryCapability } from "../../src/plugins/memory-state.js";
+import { createEmptyPluginRegistry } from "../../src/plugins/registry.js";
+import { setActivePluginRegistry } from "../../src/plugins/runtime.js";
+
+afterEach(() => {
+  resetPluginLoaderTestStateForTest();
+});
+
+function requireMemoryEmbeddingProvider(providerId: string) {
+  const provider = getMemoryEmbeddingProvider(providerId);
+  if (!provider) {
+    throw new Error(`expected ${providerId} memory embedding provider`);
+  }
+  return provider;
+}
+
+describe("resolveRuntimePluginRegistry", () => {
+  it("falls back to the current active runtime when no explicit load context is provided", () => {
+    const registry = createEmptyPluginRegistry();
+    setActivePluginRegistry(registry, "startup-registry");
+
+    expect(resolveRuntimePluginRegistry()).toBe(registry);
+  });
+});
+
+describe("clearPluginRegistryLoadCache", () => {
+  it("preserves plugin-owned runtime registries while invalidating load snapshots", () => {
+    registerMemoryEmbeddingProvider({
+      id: "still-live",
+      create: async () => ({ provider: null }),
+    });
+    registerMemoryCapability("memory-core", {
+      promptBuilder: () => ["still live"],
+    });
+
+    clearPluginRegistryLoadCache();
+
+    expect(buildMemoryPromptSection({ availableTools: new Set() })).toEqual(["still live"]);
+    expect(requireMemoryEmbeddingProvider("still-live").id).toBe("still-live");
+  });
+
+  it("invalidates full-workspace load snapshots", () => {
+    const loadOptions = {
+      config: {
+        plugins: {
+          allow: ["demo"],
+        },
+      },
+      workspaceDir: "/tmp/workspace-a",
+    };
+    const registry = loadOperatorPlugins(loadOptions);
+
+    clearPluginRegistryLoadCache();
+
+    expect(loadOperatorPlugins(loadOptions)).not.toBe(registry);
+  });
+});

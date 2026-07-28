@@ -1,0 +1,47 @@
+// Channel setup prompt tests cover prompt choices and validation.
+import { describe, expect, it, vi } from "vitest";
+import type { ChannelSetupDmPolicy } from "../../src/channels/plugins/setup-wizard-types.js";
+import type { OperatorConfig } from "../../src/config/types.operator.js";
+import { withEnvAsync } from "../../src/test-utils/env.js";
+import type { WizardPrompter } from "../../src/wizard/prompts.js";
+import { maybeConfigureDmPolicies } from "../../src/flows/channel-setup.prompts.js";
+
+describe("maybeConfigureDmPolicies", () => {
+  it("localizes DM policy guidance and options", async () => {
+    const note = vi.fn<WizardPrompter["note"]>(async () => {});
+    const select = vi.fn(async () => "pairing") as unknown as WizardPrompter["select"];
+    const prompter = {
+      confirm: vi.fn(async () => true),
+      note,
+      select,
+    } as unknown as WizardPrompter;
+    const policy: ChannelSetupDmPolicy = {
+      label: "Telegram",
+      channel: "telegram" as ChannelSetupDmPolicy["channel"],
+      policyKey: "channels.telegram.dmPolicy",
+      allowFromKey: "channels.telegram.allowFrom",
+      getCurrent: () => "pairing",
+      setPolicy: (cfg: OperatorConfig) => cfg,
+    };
+
+    await withEnvAsync({ OPERATOR_LOCALE: "zh-CN" }, async () => {
+      await maybeConfigureDmPolicies({
+        cfg: {},
+        selection: ["telegram" as never],
+        prompter,
+        resolveAdapter: () => ({ dmPolicy: policy }) as never,
+      });
+    });
+
+    expect(note.mock.calls[0]?.[0]).toContain("默认：配对");
+    expect(note.mock.calls[0]?.[1]).toBe("Telegram DM 访问");
+    expect(select).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: "Telegram DM 策略",
+        options: expect.arrayContaining([
+          expect.objectContaining({ label: "配对（推荐）", value: "pairing" }),
+        ]),
+      }),
+    );
+  });
+});

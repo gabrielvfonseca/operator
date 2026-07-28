@@ -1,0 +1,54 @@
+import { afterAll, afterEach, describe, expect, it } from "vitest";
+import { cleanupTempDirs, makeTempDir } from "../../test/helpers/temp-dir.js";
+import {
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
+} from "../../src/state/openclaw-state-db.js";
+import { listAuditEvents } from "../../src/audit/audit-event-store.js";
+import type { AuditEventInput } from "../../src/audit/audit-event-types.js";
+import { createAuditEventWriter } from "../../src/audit/audit-event-writer.js";
+
+const tempDirs: string[] = [];
+
+function input(): AuditEventInput {
+  return {
+    sourceId: "run-1:1:started",
+    sourceSequence: 1,
+    occurredAt: Date.now(),
+    kind: "agent_run",
+    action: "agent.run.started",
+    status: "started",
+    actorType: "agent",
+    actorId: "main",
+    agentId: "main",
+    runId: "run-1",
+  };
+}
+
+afterEach(() => {
+  closeOperatorStateDatabaseForTest();
+});
+
+afterAll(() => {
+  cleanupTempDirs(tempDirs);
+});
+
+describe("audit event worker", () => {
+  it("returns immediately under SQLite contention and flushes before stop", async () => {
+    const stateDir = makeTempDir(tempDirs, "operator-audit-writer-");
+    const database = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const errors: string[] = [];
+    const writer = createAuditEventWriter({ stateDir, onError: (error) => errors.push(error) });
+    await writer.ready;
+    const { db } = openOperatorStateDatabase(database);
+    db.exec("BEGIN IMMEDIATE");
+    const startedAt = performance.now();
+    expect(writer.record(input())).toBe(true);
+    expect(performance.now() - startedAt).toBeLessThan(250);
+    db.exec("ROLLBACK");
+
+    await writer.stop();
+    expect(errors).toEqual([]);
+    expect(listAuditEvents({ database, limit: 10 }).events).toHaveLength(1);
+  });
+});

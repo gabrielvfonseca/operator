@@ -4,7 +4,7 @@ import { autoReplyTopLevelReplyTestInclude } from "./vitest.test-shards.mjs";
 
 export function createAutoReplyTopLevelVitestConfig(env?: Record<string, string | undefined>) {
   return createScopedVitestConfig([...autoReplyTopLevelReplyTestInclude], {
-    dir: "src/auto-reply",
+    dir: "tests/auto-reply",
     env,
     name: "auto-reply-top-level",
   });

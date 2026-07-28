@@ -4,7 +4,7 @@ import { autoReplyCoreTestExclude, autoReplyCoreTestInclude } from "./vitest.tes
 
 export function createAutoReplyCoreVitestConfig(env?: Record<string, string | undefined>) {
   return createScopedVitestConfig([...autoReplyCoreTestInclude], {
-    dir: "src/auto-reply",
+    dir: "tests/auto-reply",
     env,
     exclude: [...autoReplyCoreTestExclude],
     name: "auto-reply-core",
