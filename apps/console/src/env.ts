@@ -31,8 +31,7 @@ declare global {
 
 const injected =
   typeof globalThis !== "undefined"
-    ? (globalThis as { OPENCLAW_CONTROL_UI_BUILD_INFO?: unknown })
-        .OPENCLAW_CONTROL_UI_BUILD_INFO
+    ? (globalThis as { OPENCLAW_CONTROL_UI_BUILD_INFO?: unknown }).OPENCLAW_CONTROL_UI_BUILD_INFO
     : undefined;
 
 export const CONSOLE_BUILD_INFO: ControlUiBuildInfo = normalize(injected);

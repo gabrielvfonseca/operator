@@ -1,7 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { applyThemeToElement, readLegacyThemeSettings, resolveTheme } from "@operator/design-system";
+
+import applyThemeToElement from "./applyThemeToElement";
+import readLegacyThemeSettings from "./readLegacyThemeSettings";
+import resolveTheme from "./resolveTheme";
 
 /**
  * Applies the persisted Control UI theme to <html> before paint.
@@ -13,21 +16,15 @@ export function useThemeSync(): void {
   React.useEffect(() => {
     const element = document.documentElement;
     const legacy = readLegacyThemeSettings(globalThis.localStorage);
-    const prefersLight =
-      globalThis.matchMedia?.("(prefers-color-scheme: light)").matches ?? false;
+    const prefersLight = globalThis.matchMedia?.("(prefers-color-scheme: light)").matches ?? false;
     const resolved = resolveTheme(legacy?.theme, legacy?.themeMode, prefersLight);
-    applyThemeToElement(element, resolved);
 
-    const media = globalThis.matchMedia?.("(prefers-color-scheme: light)");
-    if (!media) {
-      return;
+    if (resolved?.theme && resolved?.themeMode) {
+      applyThemeToElement(element, resolved.theme, resolved.themeMode);
     }
-    const onChange = (event: MediaQueryListEvent) => {
-      const current = readLegacyThemeSettings(globalThis.localStorage);
-      const next = resolveTheme(current?.theme, current?.themeMode, event.matches);
-      applyThemeToElement(element, next);
-    };
-    media.addEventListener("change", onChange);
-    return () => media.removeEventListener("change", onChange);
-  }, []);
+  });
+
+  return () => {
+    // Cleanup if needed
+  };
 }

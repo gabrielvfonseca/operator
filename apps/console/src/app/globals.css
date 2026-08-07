@@ -1,11 +1,10 @@
 @import "tailwindcss";
-@import "@operator/design-system/styles.css";
-
-/* Tailwind v4: map the design-system CSS variables to Tailwind theme tokens
-   so utilities like `bg-background`, `text-foreground`, `border-border`,
-   `bg-primary`, `text-muted-foreground` are generated. `inline` keeps the
+/* Tailwind v4 theme tokens */
+`
+bg-primary`, `text-muted-foreground` are generated. `inline` keeps the
    values as var() references (no color-space conversion), matching the
-   legacy shadcn setup. */
+   legacy shadcn setup. *
+/
 @theme inline {
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -63,7 +62,6 @@ body {
 
 body {
   font-family:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 }

@@ -28,10 +28,7 @@ interface PongMessage {
   server?: { version?: string };
 }
 
-type GatewayMessage =
-  | HelloMessage
-  | PongMessage
-  | { type: string; server?: { version?: string } };
+type GatewayMessage = HelloMessage | PongMessage | { type: string; server?: { version?: string } };
 
 interface PendingRequest {
   resolve: (value: unknown) => void;
@@ -301,7 +298,9 @@ export class GatewayClient {
         return;
       }
       if (!this.handshakeDone) {
-        reject(new GatewayError({ code: "UNAVAILABLE", message: "gateway handshake not complete" }));
+        reject(
+          new GatewayError({ code: "UNAVAILABLE", message: "gateway handshake not complete" }),
+        );
         return;
       }
       const id = randomId();
