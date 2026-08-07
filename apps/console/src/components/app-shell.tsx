@@ -1,7 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button } from "@operator/design-system";
 import { useThemeSync } from "@/lib/use-theme-sync.ts";
 import { useGatewayStatus } from "@/lib/gateway-client.tsx";
 
@@ -107,8 +106,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <span className="text-sm text-muted-foreground">Control UI</span>
           <div className="flex items-center gap-3">
             <span className="text-xs text-muted-foreground">
-              Gateway:{" "}
-              {gateway.connected ? gateway.version ?? "connected" : "disconnected"}
+              Gateway: {gateway.connected ? (gateway.version ?? "connected") : "disconnected"}
             </span>
             <Button variant="outline" size="sm">
               Settings

@@ -3,8 +3,6 @@
 import * as React from "react";
 import { PageHeader, LoadingState, ErrorState } from "@/components/page.tsx";
 import { useGatewayRequest } from "@/lib/gateway-client.tsx";
-import { Card, CardContent, CardHeader, CardTitle, EmptyState } from "@operator/design-system";
-
 export type ConfigViewConfig = {
   title: string;
   description?: string;

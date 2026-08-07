@@ -3,8 +3,6 @@
 import * as React from "react";
 import { PageHeader, LoadingState, ErrorState } from "@/components/page.tsx";
 import { useGatewayRequest, GatewayError } from "@/lib/gateway-client.tsx";
-import { EmptyState } from "@operator/design-system";
-
 export type ResourceColumn = {
   key: string;
   label: string;
@@ -35,7 +33,11 @@ function readPath(value: unknown, path?: string): unknown {
   }
   return path
     .split(".")
-    .reduce<unknown>((acc, key) => (acc && typeof acc === "object" ? (acc as Record<string, unknown>)[key] : undefined), value);
+    .reduce<unknown>(
+      (acc, key) =>
+        acc && typeof acc === "object" ? (acc as Record<string, unknown>)[key] : undefined,
+      value,
+    );
 }
 
 export function ResourceListPage({ config }: { config: ResourcePageConfig }) {
