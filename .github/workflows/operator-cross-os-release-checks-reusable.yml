@@ -9,7 +9,7 @@ on:
         default: main
         type: string
       workflow_ref:
-        description: Optional openclaw/operator ref that provides the reusable workflow harness
+        description: Optional operator/operator ref that provides the reusable workflow harness
         required: false
         default: ""
         type: string
@@ -123,7 +123,7 @@ on:
         required: true
         type: string
       workflow_ref:
-        description: Optional openclaw/operator ref that provides the reusable workflow harness
+        description: Optional operator/operator ref that provides the reusable workflow harness
         required: false
         default: ""
         type: string

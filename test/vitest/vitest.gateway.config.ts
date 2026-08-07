@@ -10,13 +10,13 @@ const gatewayProjectConfigs = [
 ] as const;
 
 export function createGatewayVitestConfig(env?: Record<string, string | undefined>) {
-  return createScopedVitestConfig(["src/gateway/**/*.test.ts"], {
-    dir: "src/gateway",
+  return createScopedVitestConfig(["tests/gateway/**/*.test.ts"], {
+    dir: "tests/gateway",
     env,
     exclude: [
-      "src/gateway/gateway.test.ts",
-      "src/gateway/server.startup-matrix-migration.integration.test.ts",
-      "src/gateway/sessions-history-http.test.ts",
+      "tests/gateway/gateway.test.ts",
+      "tests/gateway/server.startup-matrix-migration.integration.test.ts",
+      "tests/gateway/sessions-history-http.test.ts",
     ],
     name: "gateway",
   });

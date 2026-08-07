@@ -4,20 +4,21 @@ packages:
   - .
   - ui
   - apps/console
-  - design-system
   - packages/*
   - extensions/*
   - examples/*
-  - sdks/*
+  - packages/sdk
+  - packages/operator-sdk
+  - packages/plugin-sdk
 
 minimumReleaseAge: 2880
 
 minimumReleaseAgeExclude:
-  - "@openclaw/crabline@0.1.11"
-  - "@openclaw/fs-safe@0.4.1"
-  - "@openclaw/libterminal@0.3.2"
-  - "@openclaw/proxyline@0.3.3"
-  - "@openclaw/uirouter@0.1.0"
+  - "@operator/crabline@0.1.11"
+  - "@operator/fs-safe@0.4.1"
+  - "@operator/libterminal@0.3.2"
+  - "@operator/proxyline@0.3.3"
+  - "@operator/uirouter@0.1.0"
   - "acpx"
   - "tokenjuice"
   - "@agentclientprotocol/sdk"
@@ -27,7 +28,7 @@ minimumReleaseAgeExclude:
   - "hono"
   - "libopus-wasm@0.2.0"
   - "libsignal@6.0.0"
-  - "openclaw"
+  - "operator"
   - "protobufjs"
   - "vite"
   - "@cloudflare/workers-types"
@@ -130,7 +131,7 @@ overrides:
   uuid: 14.0.0
 
 allowBuilds:
-  "@openclaw/fs-safe": true
+  "@operator/fs-safe": true
   "@google/genai": true
   "@lydell/node-pty": true
   "@matrix-org/matrix-sdk-crypto-nodejs": true
@@ -144,10 +145,10 @@ allowBuilds:
   node-llama-cpp: false
   protobufjs: true
   tree-sitter-bash: false
-  openclaw: true
-  "@openclaw/proxyline": true
+  operator: true
+  "@operator/proxyline": true
   clawpdf: true
-  "@openclaw/crabline": true
+  "@operator/crabline": true
   rastermill: true
   node-pty: true
   sharp: true
@@ -159,4 +160,4 @@ packageExtensions:
         optional: true
 
 patchedDependencies:
-  "@openclaw/fs-safe@0.4.1": patches/@openclaw__fs-safe@0.4.1.patch
+  "@operator/fs-safe@0.4.1": patches/@operator__fs-safe@0.4.1.patch

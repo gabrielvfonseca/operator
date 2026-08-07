@@ -241,7 +241,7 @@ jobs:
           fi
 
           source_json="$(gh release view "${WINDOWS_NODE_TAG}" \
-            --repo openclaw/operator-windows-node \
+            --repo operator/operator-windows-node \
             --json tagName,isDraft,isPrerelease,assets,url)"
           if [[ "$(printf '%s' "${source_json}" | jq -r '.tagName')" != "${WINDOWS_NODE_TAG}" ]]; then
             echo "Windows source release tag does not match ${WINDOWS_NODE_TAG}." >&2
@@ -1973,7 +1973,7 @@ jobs:
             clawhub_bootstrap_line="$(jq -r '.proofLines.bootstrap' "${clawhub_runtime_state_path}")"
             windows_line=""
             if [[ -n "${windows_node_run_id// }" ]]; then
-              windows_line="- Windows Hub promotion: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${windows_node_run_id} from openclaw/operator-windows-node@${WINDOWS_NODE_TAG}"
+              windows_line="- Windows Hub promotion: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${windows_node_run_id} from operator/operator-windows-node@${WINDOWS_NODE_TAG}"
             fi
             android_line=""
             if [[ -n "${android_release_run_id// }" ]]; then
@@ -2008,11 +2008,11 @@ jobs:
           const section = [
             "### Release verification",
             "",
-            `- npm package: https://www.npmjs.com/package/openclaw/v/${process.env.RELEASE_VERSION}`,
+            `- npm package: https://www.npmjs.com/package/operator/v/${process.env.RELEASE_VERSION}`,
             `- registry tarball: ${process.env.RELEASE_TARBALL}`,
             `- integrity: \`${process.env.RELEASE_INTEGRITY}\``,
             `- release SHA: \`${process.env.RELEASE_SHA}\``,
-            `- full release CI report: https://github.com/openclaw/releases/blob/main/evidence/${process.env.RELEASE_VERSION}/release-evidence.md`,
+            `- full release CI report: https://github.com/operator/releases/blob/main/evidence/${process.env.RELEASE_VERSION}/release-evidence.md`,
             `- release publish: https://github.com/${process.env.RELEASE_REPO}/actions/runs/${process.env.RELEASE_PUBLISH_RUN_ID}`,
             `- npm preflight: https://github.com/${process.env.RELEASE_REPO}/actions/runs/${process.env.PREFLIGHT_RUN_ID}`,
             `- full release validation: https://github.com/${process.env.RELEASE_REPO}/actions/runs/${process.env.FULL_RELEASE_VALIDATION_RUN_ID}`,

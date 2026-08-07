@@ -202,7 +202,7 @@ jobs:
           install_dir="${RUNNER_TEMP}/crabbox"
           mkdir -p "$install_dir" "$HOME/.local/bin"
           git init "$install_dir/src"
-          git -C "$install_dir/src" remote add origin https://github.com/openclaw/crabbox.git
+          git -C "$install_dir/src" remote add origin https://github.com/operator/crabbox.git
           git -C "$install_dir/src" fetch --depth 1 origin "$CRABBOX_REF"
           git -C "$install_dir/src" checkout --detach FETCH_HEAD
           go build -C "$install_dir/src" -o "$HOME/.local/bin/crabbox" ./cmd/crabbox

@@ -43,12 +43,12 @@ on:
         default: false
         type: boolean
       publish_reports:
-        description: Publish completed reports to openclaw/clawgrit-reports
+        description: Publish completed reports to operator/clawgrit-reports
         required: false
         default: true
         type: boolean
       kova_ref:
-        description: openclaw/Kova Git ref to install
+        description: operator/Kova Git ref to install
         required: false
         default: f3d037b5b8aacd6adf8ef1dd2ea4c1d778ec7c6c
         type: string
@@ -69,7 +69,7 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
   OCM_VERSION: v0.2.25
   OCM_LINUX_X64_SHA256: 57530199d21eb5bfa29695749928b40fd2869484c7edff69b7c65bfc84f2f1aa
-  KOVA_REPOSITORY: openclaw/Kova
+  KOVA_REPOSITORY: operator/Kova
   PERFORMANCE_MODEL_ID: gpt-5.6-luna
   # Release matrices cold-build the candidate runtime before measurement.
   KOVA_SCENARIO_TIMEOUT_MS: ${{ inputs.profile == 'release' && '900000' || '300000' }}
@@ -625,7 +625,7 @@ jobs:
           reports_root=".artifacts/clawgrit-baseline"
           mkdir -p "$reports_root"
           git -C "$reports_root" init -b main
-          git -C "$reports_root" remote add origin "https://github.com/openclaw/clawgrit-reports.git"
+          git -C "$reports_root" remote add origin "https://github.com/operator/clawgrit-reports.git"
           if ! git -C "$reports_root" fetch --filter=blob:none --depth=1 origin main; then
             echo "No previous source performance baseline could be fetched." >> "$GITHUB_STEP_SUMMARY"
             exit 0
@@ -674,7 +674,7 @@ jobs:
 
           - Tested ref: ${TESTED_REF}
           - Tested SHA: ${TESTED_SHA}
-          - Required scripts: test:gateway:cpu-scenarios, test:extensions:memory, openclaw, scripts/bench-cli-startup.ts, scripts/profile-extension-memory.mjs
+          - Required scripts: test:gateway:cpu-scenarios, test:extensions:memory, operator, scripts/bench-cli-startup.ts, scripts/profile-extension-memory.mjs
           EOF
             cat "$SOURCE_PERF_DIR/index.md" >> "$GITHUB_STEP_SUMMARY"
             exit 0
@@ -1044,9 +1044,9 @@ jobs:
 
           git -C "$reports_root" init -b main
           git -C "$reports_root" config core.hooksPath /dev/null
-          git -C "$reports_root" remote add origin "https://github.com/openclaw/clawgrit-reports.git"
+          git -C "$reports_root" remote add origin "https://github.com/operator/clawgrit-reports.git"
           if ! timeout 120s git -C "$reports_root" fetch --depth=1 origin main; then
-            echo "::${annotation}::Unable to fetch openclaw/clawgrit-reports before publishing."
+            echo "::${annotation}::Unable to fetch operator/clawgrit-reports before publishing."
             exit 1
           fi
           git -C "$reports_root" checkout -B main FETCH_HEAD
@@ -1058,7 +1058,7 @@ jobs:
           fi
           run_slug="${GITHUB_RUN_ID}-${PRODUCER_ATTEMPT}"
           dest_rel="operator-performance/${ref_slug}/${run_slug}/${LANE_ID}"
-          report_url="https://github.com/openclaw/clawgrit-reports/tree/main/${dest_rel}"
+          report_url="https://github.com/operator/clawgrit-reports/tree/main/${dest_rel}"
           if git -C "$reports_root" cat-file -e "HEAD:${dest_rel}/report.json" 2>/dev/null; then
             {
               echo "### Clawgrit report already published"
@@ -1177,7 +1177,7 @@ jobs:
             echo "::${annotation}::Prepared report metadata failed validation."
             exit 1
           fi
-          if [[ "$REPORT_URL" != "https://github.com/openclaw/clawgrit-reports/tree/main/${DEST_REL}" ]]; then
+          if [[ "$REPORT_URL" != "https://github.com/operator/clawgrit-reports/tree/main/${DEST_REL}" ]]; then
             echo "::${annotation}::Prepared report URL failed validation."
             exit 1
           fi
@@ -1200,12 +1200,12 @@ jobs:
               echo "### Clawgrit report publish failed"
               echo
               echo "Kova artifacts were uploaded, but publishing the clawgrit report failed after $1 attempts."
-              echo "Check the ClawSweeper GitHub App installation and contents permission for openclaw/clawgrit-reports."
+              echo "Check the ClawSweeper GitHub App installation and contents permission for operator/clawgrit-reports."
             } >> "$GITHUB_STEP_SUMMARY"
             echo "::${annotation}::Kova artifacts uploaded, but clawgrit report publish failed after $1 attempts."
           }
 
-          if [[ "$(git_local config --local --get core.hooksPath)" != "/dev/null" || "$(git_local remote get-url origin)" != "https://github.com/openclaw/clawgrit-reports.git" ]]; then
+          if [[ "$(git_local config --local --get core.hooksPath)" != "/dev/null" || "$(git_local remote get-url origin)" != "https://github.com/operator/clawgrit-reports.git" ]]; then
             echo "::${annotation}::Prepared reports checkout failed integrity validation."
             exit 1
           fi
@@ -1221,7 +1221,7 @@ jobs:
             sleep $((attempt * 2))
             if ! timeout 120s git -C "$reports_root" -c core.hooksPath=/dev/null fetch --depth=1 origin main; then
               if [[ "$attempt" != "5" ]]; then
-                echo "::warning::Unable to refresh openclaw/clawgrit-reports after publish attempt ${attempt}; retrying."
+                echo "::warning::Unable to refresh operator/clawgrit-reports after publish attempt ${attempt}; retrying."
                 continue
               fi
             else

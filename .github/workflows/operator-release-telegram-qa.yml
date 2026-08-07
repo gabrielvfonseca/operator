@@ -1139,8 +1139,8 @@ jobs:
           sudo install -d -o "$runner_uid" -g "$runner_gid" -m 0711 "$runtime_root/tmp"
           # Frozen candidates prefer /tmp/operator before TMPDIR. Make that shared path
           # unavailable to the runner so they use the isolated runtime fallback instead.
-          sudo rm -rf -- /tmp/openclaw
-          sudo install -d -o root -g root -m 0700 /tmp/openclaw
+          sudo rm -rf -- /tmp/operator
+          sudo install -d -o root -g root -m 0700 /tmp/operator
           sudo install \
             -d \
             -o "$runner_uid" \

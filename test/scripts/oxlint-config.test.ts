@@ -155,7 +155,7 @@ describe("oxlint config", () => {
       "src/auto-reply/reply/export-html/template.js",
       "vendor/",
       "**/.cache/**",
-      "**/.openclaw-runtime-deps-copy-*/**",
+      "**/.operator-runtime-deps-copy-*/**",
       "**/build/**",
       "**/coverage/**",
       "**/dist/**",
@@ -192,7 +192,7 @@ describe("oxlint config", () => {
           "packages/media-core/**/*.ts",
           "packages/media-generation-core/**/*.ts",
           "packages/plugin-package-contract/**/*.ts",
-          "sdks/operator-sdk/**/*.ts",
+          "packages/operator-sdk/**/*.ts",
         ],
         rules: {
           "typescript/no-non-null-assertion": "error",

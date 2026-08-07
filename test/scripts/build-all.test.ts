@@ -45,7 +45,7 @@ function withBuildCacheFixture(
     };
   }) => void,
 ) {
-  const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-build-cache-"));
+  const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-build-cache-"));
   try {
     const inputPath = path.join(rootDir, "src/input.ts");
     const outputPath = path.join(rootDir, "dist/output.js");
@@ -146,7 +146,7 @@ describe("resolveBuildAllStep", () => {
 
   it("routes pnpm steps through the npm_execpath pnpm runner on Windows", () => {
     const step = getBuildAllStep("plugins:assets:build");
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-pnpm-runner-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-pnpm-runner-"));
     const npmExecPath = path.join(tempDir, "pnpm.cjs");
     fs.writeFileSync(npmExecPath, "console.log('pnpm');\n");
 
@@ -561,7 +561,7 @@ describe("resolveBuildAllSteps", () => {
       expect.arrayContaining([
         "dist/plugin-sdk/webhook-path.js",
         "dist/plugin-sdk/.boundary-entry-shims.stamp",
-        "sdks/plugin-sdk/dist/src/plugin-sdk/provider-entry.d.ts",
+        "packages/plugin-sdk/dist/src/plugin-sdk/provider-entry.d.ts",
       ]),
     );
     expect(step.cache?.outputs).not.toContainEqual(

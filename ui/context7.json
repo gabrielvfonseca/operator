@@ -1,1 +1,5 @@
-{"name": "context7-mcp-server", "version": "1.0.0", "config": {"enabled": true, "port": 8080, "host": "localhost"}}
+{
+  "name": "context7-mcp-server",
+  "version": "1.0.0",
+  "config": { "enabled": true, "port": 8080, "host": "localhost" }
+}

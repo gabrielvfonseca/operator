@@ -1,5 +1,5 @@
 #content > h1:first-of-type {
-  display: none !important;
+  display: none;
 }
 
 .nav-tabs {
@@ -480,7 +480,7 @@ html.dark .nav-tabs-underline {
   display: grid;
   gap: 3px;
   min-width: 0;
-  border-bottom: 0 !important;
+  border-bottom: 0;
   text-decoration: none;
 }
 

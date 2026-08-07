@@ -92,7 +92,7 @@ function resolveEntryPath(rootDir: string, entry: string | undefined): string {
       return path.resolve(rootDir, extensionResolution.entries[0]);
     }
   }
-  return path.resolve(rootDir, "src/index.ts");
+  return path.resolve(rootDir, "tests/index.ts");
 }
 
 function readPackageManifest(rootDir: string): JsonObject {
@@ -234,7 +234,7 @@ export function validateToolPluginProject(params: {
     existingManifest: params.manifest,
   });
   if (JSON.stringify(params.manifest) !== JSON.stringify(expectedManifest)) {
-    errors.push("operator.plugin.json generated metadata is stale. Run openclaw plugins build.");
+    errors.push("operator.plugin.json generated metadata is stale. Run operator plugins build.");
   }
   if (params.manifest.id !== params.metadata.id) {
     errors.push(
@@ -299,7 +299,7 @@ export async function runPluginsBuildCommand(opts: PluginsBuildOptions): Promise
       JSON.stringify(currentManifest) !== JSON.stringify(manifest) ||
       JSON.stringify(currentPackage) !== JSON.stringify(nextPackageManifest)
     ) {
-      defaultRuntime.error("Generated plugin metadata is out of date. Run openclaw plugins build.");
+      defaultRuntime.error("Generated plugin metadata is out of date. Run operator plugins build.");
       return defaultRuntime.exit(1);
     }
     defaultRuntime.log("Plugin metadata is up to date.");
@@ -414,7 +414,7 @@ function buildScaffoldTsconfig(type: PluginScaffoldType): JsonObject {
       outDir: "dist",
       skipLibCheck: true,
     },
-    include: type === "provider" ? ["src/index.ts"] : ["src/**/*.ts"],
+    include: type === "provider" ? ["tests/index.ts"] : ["tests/**/*.ts"],
   };
 }
 
@@ -426,7 +426,7 @@ function writeScaffoldVitestConfig(rootDir: string): void {
 export default defineConfig({
   test: {
     environment: "node",
-    include: ["src/**/*.test.ts"],
+    include: ["tests/**/*.test.ts"],
   },
 });
 `,
@@ -441,8 +441,8 @@ function writeToolPluginScaffold(params: { rootDir: string; id: string; name: st
     private: true,
     scripts: {
       build: "tsc -p tsconfig.json",
-      "plugin:build": "npm run build && openclaw plugins build --entry ./dist/index.js",
-      "plugin:validate": "npm run build && openclaw plugins validate --entry ./dist/index.js",
+      "plugin:build": "npm run build && operator plugins build --entry ./dist/index.js",
+      "plugin:validate": "npm run build && operator plugins validate --entry ./dist/index.js",
       test: "vitest run --config ./vitest.config.ts",
     },
     files: ["dist", "operator.plugin.json", "README.md"],
@@ -509,8 +509,8 @@ npm test
 `;
 
   writeJsonFile(path.join(params.rootDir, "package.json"), packageManifest);
-  fs.writeFileSync(path.join(params.rootDir, "src/index.ts"), indexSource);
-  fs.writeFileSync(path.join(params.rootDir, "src/index.test.ts"), testSource);
+  fs.writeFileSync(path.join(params.rootDir, "tests/index.ts"), indexSource);
+  fs.writeFileSync(path.join(params.rootDir, "tests/index.test.ts"), testSource);
   fs.writeFileSync(path.join(params.rootDir, "README.md"), readmeSource);
   writeJsonFile(path.join(params.rootDir, PLUGIN_MANIFEST_FILENAME), {
     id: params.id,
@@ -709,7 +709,7 @@ npm run validate
 
 ## Provider Setup
 
-The generated provider uses an OpenAI-compatible API shape, \`${envVar}\` for API-key auth, and \`https://api.example.com/v1\` as a placeholder base URL. Update \`src/index.ts\` with your provider's real base URL, model list, docs route, and credential copy before publishing.
+The generated provider uses an OpenAI-compatible API shape, \`${envVar}\` for API-key auth, and \`https://api.example.com/v1\` as a placeholder base URL. Update \`tests/index.ts\` with your provider's real base URL, model list, docs route, and credential copy before publishing.
 
 ## First Publish
 
@@ -753,14 +753,14 @@ jobs:
       actions: read
       contents: read
       id-token: write
-    uses: openclaw/clawhub/.github/workflows/package-publish.yml@${CLAWHUB_PACKAGE_PUBLISH_WORKFLOW_REF}
+    uses: operator/clawhub/.github/workflows/package-publish.yml@${CLAWHUB_PACKAGE_PUBLISH_WORKFLOW_REF}
     with:
       dry_run: \${{ inputs.dry_run }}
 `;
 
   writeJsonFile(path.join(params.rootDir, "package.json"), packageManifest);
-  fs.writeFileSync(path.join(params.rootDir, "src/index.ts"), indexSource);
-  fs.writeFileSync(path.join(params.rootDir, "src/index.test.ts"), testSource);
+  fs.writeFileSync(path.join(params.rootDir, "tests/index.ts"), indexSource);
+  fs.writeFileSync(path.join(params.rootDir, "tests/index.test.ts"), testSource);
   fs.writeFileSync(path.join(params.rootDir, "README.md"), readmeSource);
   fs.mkdirSync(path.join(params.rootDir, ".github/workflows"), { recursive: true });
   fs.writeFileSync(

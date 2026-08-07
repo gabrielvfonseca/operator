@@ -24,7 +24,7 @@ import {
 import { loadVitestExperimentalConfig } from "./vitest.performance-config.ts";
 import { shouldPrintVitestThrottle } from "./vitest.system-load.ts";
 
-export type OpenClawVitestPool = "forks" | "threads";
+export type OperatorVitestPool = "forks" | "threads";
 
 export type { LocalVitestScheduling };
 
@@ -44,7 +44,7 @@ function detectVitestHostInfo(): Required<VitestHostInfo> {
 export function resolveLocalVitestMaxWorkers(
   env: Record<string, string | undefined> = process.env,
   system: VitestHostInfo = detectVitestHostInfo(),
-  pool: OpenClawVitestPool = resolveDefaultVitestPool(env),
+  pool: OperatorVitestPool = resolveDefaultVitestPool(env),
 ): number {
   return resolveLocalVitestMaxWorkersImpl(env, system, pool);
 }
@@ -52,14 +52,14 @@ export function resolveLocalVitestMaxWorkers(
 export function resolveLocalVitestScheduling(
   env: Record<string, string | undefined> = process.env,
   system: VitestHostInfo = detectVitestHostInfo(),
-  pool: OpenClawVitestPool = resolveDefaultVitestPool(env),
+  pool: OperatorVitestPool = resolveDefaultVitestPool(env),
 ): LocalVitestScheduling {
   return resolveLocalVitestSchedulingImpl(env, system, pool);
 }
 
 export function resolveDefaultVitestPool(
   _env: Record<string, string | undefined> = process.env,
-): OpenClawVitestPool {
+): OperatorVitestPool {
   return "threads";
 }
 
@@ -141,9 +141,9 @@ const workerConfig = resolveSharedVitestWorkerConfig({
   isWindows,
   localScheduling,
 });
-const dependencyModuleDirectories = ["/node_modules/", "/openclaw-pnpm-node-modules/"];
+const dependencyModuleDirectories = ["/node_modules/", "/operator-pnpm-node-modules/"];
 const dependencyExternalPatterns = [
-  /\/openclaw-pnpm-node-modules\/(?!.*\/?vite\w*\/dist\/client\/env\.mjs$).*\.(?:cjs\.js|mjs)$/u,
+  /\/operator-pnpm-node-modules\/(?!.*\/?vite\w*\/dist\/client\/env\.mjs$).*\.(?:cjs\.js|mjs)$/u,
 ];
 const sourcePluginSdkSubpaths = [
   ...new Set([...pluginSdkSubpaths, ...privateLocalOnlyPluginSdkSubpaths]),
@@ -176,7 +176,7 @@ export const sharedVitestConfig = {
         ),
       },
       {
-        find: "openclaw/extension-api",
+        find: "operator/extension-api",
         replacement: path.join(repoRoot, "src", "extensionAPI.ts"),
       },
       {
@@ -256,7 +256,7 @@ export const sharedVitestConfig = {
         replacement: path.join(repoRoot, "packages", "gateway-protocol", "src", "index.ts"),
       },
       {
-        find: /^@openclaw\/ai\/internal\/(.+)$/,
+        find: /^@operator\/ai\/internal\/(.+)$/,
         replacement: path.join(repoRoot, "packages", "ai", "src", "internal", "$1.ts"),
       },
       {
@@ -280,7 +280,7 @@ export const sharedVitestConfig = {
         replacement: path.join(repoRoot, "packages", "ai", "src", "validation.ts"),
       },
       {
-        find: /^@openclaw\/ai\/(.+)$/,
+        find: /^@operator\/ai\/(.+)$/,
         replacement: path.join(repoRoot, "packages", "ai", "src", "$1.ts"),
       },
       {
@@ -474,7 +474,7 @@ export const sharedVitestConfig = {
         replacement: path.join(repoRoot, "packages", "normalization-core", "src", "utf16-slice.ts"),
       },
       {
-        find: /^@openclaw\/normalization-core$/u,
+        find: /^@operator\/normalization-core$/u,
         replacement: path.join(repoRoot, "packages", "normalization-core", "src", "index.ts"),
       },
       sourcePackageAlias("markdown-core", "code-spans"),
@@ -493,7 +493,7 @@ export const sharedVitestConfig = {
       sourcePackageAlias("workboard-contract"),
       ...sourcePackageAliasesFromExports("acp-core", acpCorePackageJson.exports),
       ...sourcePluginSdkSubpaths.map((subpath) => ({
-        find: `openclaw/plugin-sdk/${subpath}`,
+        find: `operator/plugin-sdk/${subpath}`,
         replacement: path.join(repoRoot, "src", "plugin-sdk", `${subpath}.ts`),
       })),
       ...pluginSdkSubpaths.map((subpath) => ({
@@ -501,7 +501,7 @@ export const sharedVitestConfig = {
         replacement: path.join(repoRoot, "packages", "plugin-sdk", "src", `${subpath}.ts`),
       })),
       {
-        find: "openclaw/plugin-sdk",
+        find: "operator/plugin-sdk",
         replacement: path.join(repoRoot, "src", "plugin-sdk", "index.ts"),
       },
       ...pluginSdkSubpaths.map((subpath) => ({
@@ -545,16 +545,16 @@ export const sharedVitestConfig = {
       "test/setup.env.ts",
       "test/setup.shared.ts",
       "test/setup.extensions.ts",
-      "test/setup-openclaw-runtime.ts",
+      "test/setup-operator-runtime.ts",
       ...vitestConfigFiles,
       "test/vitest/**/*.{ts,mjs}",
     ].map(resolveRepoRootPath),
     include: [
-      "src/**/*.test.ts",
+      "tests/**/*.test.ts",
       BUNDLED_PLUGIN_TEST_GLOB,
       "packages/**/*.test.ts",
       "test/**/*.test.ts",
-      "ui/src/pages/chat/tool-stream.node.test.ts",
+      "ui/tests/src/pages/chat/tool-stream.node.test.ts",
     ],
     setupFiles: [resolveRepoRootPath("test/setup.ts")],
     exclude: [
@@ -564,7 +564,7 @@ export const sharedVitestConfig = {
       "apps/macos/.build/**",
       "**/node_modules/**",
       "**/vendor/**",
-      "dist/OpenClaw.app/**",
+      "dist/Operator.app/**",
       "**/._*",
       "**/*.live.test.ts",
       "**/*.e2e.test.ts",
@@ -578,54 +578,54 @@ export const sharedVitestConfig = {
         "apps/**",
         "ui/**",
         "test/**",
-        "src/**/*.test.ts",
-        "src/entry.ts",
-        "src/index.ts",
-        "src/runtime.ts",
-        "src/logging.ts",
-        "src/cli/**",
-        "src/commands/**",
-        "src/daemon/**",
-        "src/hooks/**",
-        "src/macos/**",
-        "src/acp/**",
-        "src/agents/**",
-        "src/channels/**",
-        "src/gateway/**",
-        "src/line/**",
-        "src/media-understanding/**",
-        "src/node-host/**",
-        "src/plugins/**",
-        "src/providers/**",
-        "src/secrets/**",
-        "src/agents/model-scan.ts",
-        "src/agents/embedded-agent-runner.ts",
-        "src/agents/sandbox-paths.ts",
-        "src/agents/sandbox.ts",
-        "src/agents/agent-tool-definition-adapter.ts",
-        "src/agents/tools/discord-actions*.ts",
-        "src/infra/state-migrations.ts",
-        "src/infra/update-check.ts",
-        "src/infra/ports-inspect.ts",
-        "src/infra/outbound/outbound-session.ts",
-        "src/gateway/control-ui.ts",
-        "src/gateway/server-channels.ts",
-        "src/gateway/server-methods/config.ts",
-        "src/gateway/server-methods/send.ts",
-        "src/gateway/server-methods/skills.ts",
-        "src/gateway/server-methods/talk.ts",
-        "src/gateway/server-methods/web.ts",
-        "src/gateway/server-methods/wizard.ts",
-        "src/gateway/call.ts",
-        "src/process/exec.ts",
-        "src/tui/**",
-        "src/wizard/**",
-        "src/browser/**",
-        "src/webchat/**",
-        "src/gateway/server.ts",
-        "src/gateway/client.ts",
-        "packages/gateway-protocol/src/**",
-        "src/infra/tailscale.ts",
+        "tests/**/*.test.ts",
+        "tests/entry.ts",
+        "tests/index.ts",
+        "tests/runtime.ts",
+        "tests/logging.ts",
+        "tests/cli/**",
+        "tests/commands/**",
+        "tests/daemon/**",
+        "tests/hooks/**",
+        "tests/macos/**",
+        "tests/acp/**",
+        "tests/agents/**",
+        "tests/channels/**",
+        "tests/gateway/**",
+        "tests/line/**",
+        "tests/media-understanding/**",
+        "tests/node-host/**",
+        "tests/plugins/**",
+        "tests/providers/**",
+        "tests/secrets/**",
+        "tests/agents/model-scan.ts",
+        "tests/agents/embedded-agent-runner.ts",
+        "tests/agents/sandbox-paths.ts",
+        "tests/agents/sandbox.ts",
+        "tests/agents/agent-tool-definition-adapter.ts",
+        "tests/agents/tools/discord-actions*.ts",
+        "tests/infra/state-migrations.ts",
+        "tests/infra/update-check.ts",
+        "tests/infra/ports-inspect.ts",
+        "tests/infra/outbound/outbound-session.ts",
+        "tests/gateway/control-ui.ts",
+        "tests/gateway/server-channels.ts",
+        "tests/gateway/server-methods/config.ts",
+        "tests/gateway/server-methods/send.ts",
+        "tests/gateway/server-methods/skills.ts",
+        "tests/gateway/server-methods/talk.ts",
+        "tests/gateway/server-methods/web.ts",
+        "tests/gateway/server-methods/wizard.ts",
+        "tests/gateway/call.ts",
+        "tests/process/exec.ts",
+        "tests/tui/**",
+        "tests/wizard/**",
+        "tests/browser/**",
+        "tests/webchat/**",
+        "tests/gateway/server.ts",
+        "tests/gateway/client.ts",
+        "packages/gateway-protocol/tests/src/**",
+        "tests/infra/tailscale.ts",
       ],
     },
     ...loadVitestExperimentalConfig(),

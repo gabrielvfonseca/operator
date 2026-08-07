@@ -45,9 +45,9 @@ describe("plugin npm runtime build planning", () => {
       expectDistRelativePaths(plan.runtimeExtensions);
       expectDistRelativePaths(plan.runtimeBuildOutputs);
       expect(plan.packageFiles).toContain("dist/**");
-      expect(plan.packagePeerMetadata.peerDependencies.operator).toBe(
-        plan.packageJson.operator.compat.pluginApi,
-      );
+       expect(plan.packagePeerMetadata.peerDependencies.operator).toBe(
+         (plan.packageJson.operator ?? plan.packageJson['@gabrielvfonseca/operator'])?.compat?.pluginApi,
+       );
       expect(plan.packagePeerMetadata.peerDependenciesMeta.operator.optional).toBe(true);
     }
   });
@@ -187,10 +187,11 @@ describe("plugin npm runtime build planning", () => {
       }),
     );
 
-    expect(plan.entry["setup-api"]).toBe(
-      path.join(repoRoot, "extensions", "tencent", "setup-api.ts"),
-    );
-    expect(plan.runtimeSetupEntry).toBe("./dist/setup-api.js");
-    expect(plan.runtimeBuildOutputs).toContain("./dist/setup-api.js");
+     expect(plan.entry["setup-api"]).toBe(
+       path.join(repoRoot, "extensions", "tencent", "setup-api.ts"),
+     );
+     const extension = plan.runtimeFormat === "cjs" ? ".cjs" : ".js";
+     expect(plan.runtimeSetupEntry).toBe(`./dist/setup-api${extension}`);
+     expect(plan.runtimeBuildOutputs).toContain(`./dist/setup-api${extension}`);
   });
 });

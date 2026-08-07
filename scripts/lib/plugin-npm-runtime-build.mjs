@@ -23,9 +23,10 @@ function readJsonFile(filePath) {
 
 /** Return whether a plugin package publishes through an artifact release workflow. */
 function isPublishablePluginPackage(packageJson) {
+  const operatorConfig = packageJson.operator ?? packageJson["@gabrielvfonseca/operator"];
   return (
-    packageJson.operator?.release?.publishToNpm === true ||
-    packageJson.operator?.release?.publishToClawHub === true
+    operatorConfig?.release?.publishToNpm === true ||
+    operatorConfig?.release?.publishToClawHub === true
   );
 }
 
@@ -38,7 +39,8 @@ function isTypeScriptEntry(entry) {
 }
 
 function resolveRuntimeBuildFormat(packageJson) {
-  return packageJson.operator?.build?.runtimeFormat === "cjs" ? "cjs" : "esm";
+  const operatorConfig = packageJson.operator ?? packageJson["@gabrielvfonseca/operator"];
+  return operatorConfig?.build?.runtimeFormat === "cjs" ? "cjs" : "esm";
 }
 
 function runtimeBuildExtension(runtimeFormat) {
@@ -78,7 +80,7 @@ function getRecord(value) {
 function createNeverBundleDependencyMatcher(packageJson) {
   const externalDependencies = collectExternalDependencyNames(packageJson);
   return (id) => {
-    if (id === "@gabrielvfonseca/operator" || id.startsWith("openclaw/")) {
+    if (id === "@gabrielvfonseca/operator" || id.startsWith("operator/")) {
       return true;
     }
     for (const dependency of externalDependencies) {
@@ -197,6 +199,16 @@ function normalizeOperatorPeerRange(value) {
     : `>=${normalized}`;
 }
 
+function normalizeOpenclawPeerRange(value) {
+  const normalized = normalizePackageEntry(value);
+  if (!normalized) {
+    return "";
+  }
+  return /^[<>=~^*]|^(?:workspace|npm|file|link|portal|catalog):/u.test(normalized)
+    ? normalized
+    : `>=${normalized}`;
+}
+
 function resolveOperatorPeerRange(packageJson, rootPackageJson) {
   return (
     normalizeOperatorPeerRange(packageJson.operator?.compat?.pluginApi) ||
@@ -207,26 +219,47 @@ function resolveOperatorPeerRange(packageJson, rootPackageJson) {
   );
 }
 
+function resolveOpenclawPeerRange(packageJson, rootPackageJson) {
+  const operatorConfig = packageJson.operator ?? packageJson["@gabrielvfonseca/operator"];
+
+  // Original logic adapted for operator:
+  // Check operator.compat.pluginApi, then peerDependencies.operator,
+  // then operator.build.operatorVersion, then root package version, then package version
+  return (
+    normalizeOpenclawPeerRange(operatorConfig?.compat?.pluginApi) ||
+    normalizeOpenclawPeerRange(
+      packageJson.peerDependencies?.operator ??
+        packageJson.peerDependencies?.["@gabrielvfonseca/operator"],
+    ) ||
+    normalizeOpenclawPeerRange(operatorConfig?.build?.operatorVersion) ||
+    normalizeOpenclawPeerRange(rootPackageJson?.version) ||
+    normalizeOpenclawPeerRange(packageJson.version)
+  );
+}
+
 /** Resolve package peer dependency metadata for the Operator plugin API. */
 function resolvePluginNpmRuntimePackagePeerMetadata(plan) {
-  const openclawPeerRange = resolveOperatorPeerRange(plan.packageJson, plan.rootPackageJson);
-  if (!openclawPeerRange) {
+  const operatorPeerRange = resolveOpenclawPeerRange(plan.packageJson, plan.rootPackageJson);
+  if (!operatorPeerRange) {
     throw new Error(
-      `cannot infer openclaw peerDependency range for ${plan.pluginDir}; set operator.compat.pluginApi or package version`,
+      `cannot infer operator peerDependency range for ${plan.pluginDir}; set operator.compat.pluginApi or package version`,
     );
   }
   const existingPeerDependencies = getStringRecord(plan.packageJson.peerDependencies);
   const existingPeerDependenciesMeta = getRecord(plan.packageJson.peerDependenciesMeta);
-  const existingOperatorMeta = getRecord(existingPeerDependenciesMeta.operator);
+  const existingOpenclawMeta = getRecord(
+    existingPeerDependenciesMeta.operator ??
+      existingPeerDependenciesMeta["@gabrielvfonseca/operator"],
+  );
   return {
     peerDependencies: {
       ...existingPeerDependencies,
-      operator: openclawPeerRange,
+      operator: operatorPeerRange,
     },
     peerDependenciesMeta: {
       ...existingPeerDependenciesMeta,
       operator: {
-        ...existingOperatorMeta,
+        ...existingOpenclawMeta,
         optional: true,
       },
     },
@@ -242,6 +275,16 @@ export function resolvePluginNpmRuntimeBuildPlan(params) {
     return null;
   }
   const packageJson = readJsonFile(packageJsonPath);
+
+  // Debug: log what we read
+  console.log("DEBUG resolvePluginNpmRuntimeBuildPlan package.json for:", packageDir);
+  console.log("  packageJson.name:", packageJson.name);
+  console.log("  packageJson.operator:", packageJson.operator);
+  console.log(
+    "  packageJson['@gabrielvfonseca/operator']:",
+    packageJson["@gabrielvfonseca/operator"],
+  );
+
   const rootPackageJsonPath = path.join(repoRoot, "package.json");
   const rootPackageJson = fs.existsSync(rootPackageJsonPath)
     ? readJsonFile(rootPackageJsonPath)
@@ -281,15 +324,22 @@ export function resolvePluginNpmRuntimeBuildPlan(params) {
     entry,
     outDir: path.join(packageDir, "dist"),
     runtimeFormat,
-    runtimeExtensions: (Array.isArray(packageJson.operator?.extensions)
-      ? packageJson.operator.extensions
+    runtimeExtensions: (Array.isArray(
+      (packageJson.operator ?? packageJson["@gabrielvfonseca/operator"])?.extensions,
+    )
+      ? (packageJson.operator ?? packageJson["@gabrielvfonseca/operator"]).extensions
       : []
     )
       .map(normalizePackageEntry)
       .filter(Boolean)
       .map((runtimeEntry) => toPackageRuntimeEntry(runtimeEntry, runtimeFormat)),
-    runtimeSetupEntry: normalizePackageEntry(packageJson.operator?.setupEntry)
-      ? toPackageRuntimeEntry(packageJson.operator.setupEntry, runtimeFormat)
+    runtimeSetupEntry: normalizePackageEntry(
+      (packageJson.operator ?? packageJson["@gabrielvfonseca/operator"])?.setupEntry,
+    )
+      ? toPackageRuntimeEntry(
+          (packageJson.operator ?? packageJson["@gabrielvfonseca/operator"]).setupEntry,
+          runtimeFormat,
+        )
       : undefined,
   };
   return {

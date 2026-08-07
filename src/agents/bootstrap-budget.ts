@@ -73,7 +73,7 @@ function formatWarningCause(cause: BootstrapTruncationCause): string {
 }
 
 function isAgentsBootstrapName(name: string | undefined): boolean {
-  return name?.toLowerCase() === "AGENTS.MD";
+  return name?.toLowerCase() === "agents.md";
 }
 
 function normalizeSeenSignatures(signatures?: string[]): string[] {

@@ -61,7 +61,7 @@ jobs:
   # KEEP THIS WORKFLOW SHORT AND DETERMINISTIC OR IT CAN GET STUCK AND JEOPARDIZE THE RELEASE.
   # RELEASE-TIME LIVE OR END-TO-END VALIDATION BELONGS IN operator-release-checks.yml.
   # SECURITY NOTE: TOKEN-BASED npm dist-tag mutation moved to
-  # openclaw/releases/.github/workflows/operator-npm-dist-tags.yml
+  # operator/releases/.github/workflows/operator-npm-dist-tags.yml
   # so this source workflow can stay focused on OIDC publish only.
   preflight_operator_npm:
     if: ${{ inputs.preflight_only }}

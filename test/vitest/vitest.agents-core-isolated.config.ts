@@ -4,7 +4,7 @@ import { createScopedVitestConfig } from "./vitest.scoped-config.ts";
 
 export function createAgentsCoreIsolatedVitestConfig(env?: Record<string, string | undefined>) {
   return createScopedVitestConfig(agentsCoreIsolatedTestFiles, {
-    dir: "src/agents",
+    dir: "tests/agents",
     env,
     isolate: true,
     name: "agents-core-isolated",

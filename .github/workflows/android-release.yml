@@ -231,7 +231,7 @@ jobs:
         if: ${{ steps.release_source.outputs.fallback_base_tag == '' }}
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
-          repository: openclaw/apps-signing
+          repository: operator/apps-signing
           ref: main
           path: apps/android/build/release-signing/apps-signing
           token: ${{ steps.apps-signing-token.outputs.token }}

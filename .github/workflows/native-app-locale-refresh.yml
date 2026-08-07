@@ -293,7 +293,7 @@ jobs:
             apps/.i18n/native
             apps/.i18n/native-source.json
             apps/.i18n/apple-translation-contradictions.json
-            apps/android/app/src/main/java/ai/openclaw/app/i18n/NativeStringResources.kt
+            apps/android/app/src/main/java/ai/operator/app/i18n/NativeStringResources.kt
             apps/android/app/src/main/res/values*/assistant.xml
             apps/android/app/src/main/res/values*/strings.xml
             apps/ios/Resources/Localizable.xcstrings

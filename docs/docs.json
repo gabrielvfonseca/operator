@@ -54,7 +54,7 @@
   "redirects": [
     {
       "source": "/cli/crestodian",
-      "destination": "/cli/openclaw"
+      "destination": "/cli/operator"
     },
     {
       "source": "/channels/bluebubbles",
@@ -442,15 +442,15 @@
     },
     {
       "source": "/clawd",
-      "destination": "/start/openclaw"
+      "destination": "/start/operator"
     },
     {
       "source": "/start/clawd",
-      "destination": "/start/openclaw"
+      "destination": "/start/operator"
     },
     {
       "source": "/start/clawd/",
-      "destination": "/start/openclaw"
+      "destination": "/start/operator"
     },
     {
       "source": "/start/pairing",
@@ -1035,11 +1035,7 @@
             "groups": [
               {
                 "group": "Overview",
-                "pages": [
-                  "index",
-                  "start/showcase",
-                  "concepts/features"
-                ]
+                "pages": ["index", "start/showcase", "concepts/features"]
               },
               {
                 "group": "First steps",
@@ -1053,7 +1049,7 @@
               {
                 "group": "Guides",
                 "pages": [
-                  "start/openclaw",
+                  "start/operator",
                   "start/wizard-cli-reference",
                   "start/wizard-cli-automation"
                 ]
@@ -1065,11 +1061,7 @@
             "groups": [
               {
                 "group": "Install overview",
-                "pages": [
-                  "install/index",
-                  "install/installer",
-                  "install/node"
-                ]
+                "pages": ["install/index", "install/installer", "install/node"]
               },
               {
                 "group": "Maintenance",
@@ -1122,10 +1114,7 @@
               },
               {
                 "group": "Advanced setup",
-                "pages": [
-                  "start/setup",
-                  "operator-agent-runtime"
-                ]
+                "pages": ["start/setup", "operator-agent-runtime"]
               }
             ]
           },
@@ -1134,10 +1123,7 @@
             "groups": [
               {
                 "group": "Overview",
-                "pages": [
-                  "channels/index",
-                  "announcements/bluebubbles-imessage"
-                ]
+                "pages": ["channels/index", "announcements/bluebubbles-imessage"]
               },
               {
                 "group": "Mainstream messaging",
@@ -1278,9 +1264,7 @@
             "groups": [
               {
                 "group": "Overview",
-                "pages": [
-                  "tools/index"
-                ]
+                "pages": ["tools/index"]
               },
               {
                 "group": "Plugins",
@@ -1427,11 +1411,7 @@
             "groups": [
               {
                 "group": "Overview",
-                "pages": [
-                  "clawhub/index",
-                  "clawhub/quickstart",
-                  "clawhub/how-it-works"
-                ]
+                "pages": ["clawhub/index", "clawhub/quickstart", "clawhub/how-it-works"]
               },
               {
                 "group": "Using ClawHub",
@@ -1461,18 +1441,11 @@
             "groups": [
               {
                 "group": "Overview",
-                "pages": [
-                  "providers/index",
-                  "providers/models"
-                ]
+                "pages": ["providers/index", "providers/models"]
               },
               {
                 "group": "Concepts and configuration",
-                "pages": [
-                  "concepts/models",
-                  "concepts/model-providers",
-                  "concepts/model-failover"
-                ]
+                "pages": ["concepts/models", "concepts/model-providers", "concepts/model-failover"]
               },
               {
                 "group": "Providers",
@@ -1684,22 +1657,13 @@
                   },
                   {
                     "group": "Networking and discovery",
-                    "pages": [
-                      "network",
-                      "gateway/pairing",
-                      "gateway/discovery",
-                      "gateway/bonjour"
-                    ]
+                    "pages": ["network", "gateway/pairing", "gateway/discovery", "gateway/bonjour"]
                   }
                 ]
               },
               {
                 "group": "Remote access",
-                "pages": [
-                  "gateway/remote",
-                  "gateway/remote-gateway-readme",
-                  "gateway/tailscale"
-                ]
+                "pages": ["gateway/remote", "gateway/remote-gateway-readme", "gateway/tailscale"]
               },
               {
                 "group": "Security",
@@ -1762,7 +1726,7 @@
                     "group": "Gateway and service",
                     "pages": [
                       "cli/backup",
-                      "cli/openclaw",
+                      "cli/operator",
                       "cli/daemon",
                       "cli/doctor",
                       "cli/fleet",
@@ -1824,11 +1788,7 @@
                   },
                   {
                     "group": "Configuration",
-                    "pages": [
-                      "cli/config",
-                      "cli/configure",
-                      "cli/webhooks"
-                    ]
+                    "pages": ["cli/config", "cli/configure", "cli/webhooks"]
                   },
                   {
                     "group": "Plugins and skills",
@@ -1842,11 +1802,7 @@
                   },
                   {
                     "group": "Interfaces",
-                    "pages": [
-                      "cli/attach",
-                      "cli/dashboard",
-                      "cli/tui"
-                    ]
+                    "pages": ["cli/attach", "cli/dashboard", "cli/tui"]
                   },
                   {
                     "group": "Utility",
@@ -1874,10 +1830,7 @@
               },
               {
                 "group": "Codex harness",
-                "pages": [
-                  "plugins/codex-harness-reference",
-                  "plugins/codex-harness-runtime"
-                ]
+                "pages": ["plugins/codex-harness-reference", "plugins/codex-harness-runtime"]
               },
               {
                 "group": "Plugin reference",
@@ -1957,20 +1910,14 @@
               },
               {
                 "group": "Project",
-                "pages": [
-                  "reference/credits"
-                ]
+                "pages": ["reference/credits"]
               },
               {
                 "group": "Release and CI",
                 "pages": [
                   {
                     "group": "Release notes",
-                    "pages": [
-                      "releases/index",
-                      "releases/2026.7.1",
-                      "releases/2026.6.11"
-                    ]
+                    "pages": ["releases/index", "releases/2026.7.1", "releases/2026.6.11"]
                   },
                   "maturity/scorecard",
                   "maturity/taxonomy",
@@ -1989,43 +1936,23 @@
             "groups": [
               {
                 "group": "Start here",
-                "pages": [
-                  "help/index",
-                  "help/troubleshooting",
-                  "help/debugging"
-                ]
+                "pages": ["help/index", "help/troubleshooting", "help/debugging"]
               },
               {
                 "group": "FAQ",
-                "pages": [
-                  "help/faq",
-                  "help/faq-first-run",
-                  "help/faq-models"
-                ]
+                "pages": ["help/faq", "help/faq-first-run", "help/faq-models"]
               },
               {
                 "group": "Testing",
-                "pages": [
-                  "help/testing",
-                  "help/testing-updates-plugins",
-                  "help/testing-live"
-                ]
+                "pages": ["help/testing", "help/testing-updates-plugins", "help/testing-live"]
               },
               {
                 "group": "Diagnostics",
-                "pages": [
-                  "help/environment",
-                  "diagnostics/flags",
-                  "debug/node-issue"
-                ]
+                "pages": ["help/environment", "diagnostics/flags", "debug/node-issue"]
               },
               {
                 "group": "Community and meta",
-                "pages": [
-                  "start/lore",
-                  "start/hubs",
-                  "start/docs-directory"
-                ]
+                "pages": ["start/lore", "start/hubs", "start/docs-directory"]
               }
             ]
           }

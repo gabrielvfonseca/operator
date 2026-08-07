@@ -380,7 +380,7 @@ jobs:
             --concurrency "${QA_PARITY_CONCURRENCY}" \
             --model "${OPERATOR_CI_OPENAI_MODEL}" \
             --alt-model "${OPERATOR_CI_OPENAI_FALLBACK_MODEL}" \
-            --runtime-pair openclaw,codex \
+            --runtime-pair operator,codex \
             --fast \
             --allow-failures \
             --output-dir "${output_dir}/runtime-suite"

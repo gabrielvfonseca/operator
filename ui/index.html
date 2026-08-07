@@ -6,14 +6,14 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content"
     />
-    <title>OpenClaw Control</title>
+    <title>Operator Control</title>
     <meta name="color-scheme" content="dark light" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <script>
-      (function () {
+      (() => {
         var THEMES = { claw: 1, knot: 1, dash: 1 };
         var MODES = { system: 1, light: 1, dark: 1 };
         var LEGACY = {
@@ -28,15 +28,15 @@
           var keys = Object.keys(localStorage);
           var raw;
           for (var i = 0; i < keys.length; i++) {
-            if (keys[i].indexOf("openclaw.control.settings.v1") === 0) {
+            if (keys[i].indexOf("operator.control.settings.v1") === 0) {
               raw = localStorage.getItem(keys[i]);
               if (raw) break;
             }
           }
           if (!raw) return;
           var s = JSON.parse(raw);
-          var t = s && s.theme;
-          var m = s && s.themeMode;
+          var t = s?.theme;
+          var m = s?.themeMode;
           if (typeof t !== "string") t = "";
           if (typeof m !== "string") m = "";
           var legacy = LEGACY[t];
@@ -66,7 +66,7 @@
       })();
     </script>
     <style>
-      body.openclaw-mount-fallback-active {
+      body.operator-mount-fallback-active {
         margin: 0;
         min-width: 320px;
         color: #eef4f8;
@@ -81,7 +81,7 @@
           sans-serif;
       }
 
-      body.openclaw-mount-fallback-active openclaw-app {
+      body.operator-mount-fallback-active operator-app {
         display: none;
       }
 
@@ -182,7 +182,7 @@
         outline-offset: 3px;
       }
 
-      html[data-theme-mode="light"] body.openclaw-mount-fallback-active {
+      html[data-theme-mode="light"] body.operator-mount-fallback-active {
         color: #151b21;
         background: #f5f7fa;
       }
@@ -205,29 +205,29 @@
     </style>
   </head>
   <body>
-    <openclaw-app></openclaw-app>
+    <operator-app></operator-app>
     <section
-      id="openclaw-mount-fallback"
+      id="operator-mount-fallback"
       class="mount-fallback"
-      data-openclaw-mount-timeout-ms="12000"
+      data-operator-mount-timeout-ms="12000"
       role="alert"
-      aria-labelledby="openclaw-mount-fallback-title"
+      aria-labelledby="operator-mount-fallback-title"
       hidden
     >
       <div class="mount-fallback__panel" tabindex="-1">
-        <p class="mount-fallback__eyebrow">OpenClaw Control UI</p>
-        <h1 id="openclaw-mount-fallback-title">Control UI did not start</h1>
-        <p id="openclaw-mount-fallback-summary">
+        <p class="mount-fallback__eyebrow">Operator Control UI</p>
+        <h1 id="operator-mount-fallback-title">Control UI did not start</h1>
+        <p id="operator-mount-fallback-summary">
           The browser loaded the static page, but the app bundle did not start. The gateway may be
-          restarting, or this page may reference assets from a different OpenClaw version.
+          restarting, or this page may reference assets from a different Operator version.
         </p>
         <ul>
-          <li>OpenClaw will retry the current app bundle automatically.</li>
+          <li>Operator will retry the current app bundle automatically.</li>
           <li>If this persists, reload or try a clean browser profile.</li>
           <li>
             See
             <a
-              href="https://docs.openclaw.ai/web/control-ui#blank-control-ui-page"
+              href="https://docs.operator.ai/web/control-ui#blank-control-ui-page"
               target="_blank"
               rel="noopener noreferrer"
               >Control UI troubleshooting</a
@@ -237,29 +237,29 @@
         <div class="mount-fallback__actions">
           <button
             type="button"
-            id="openclaw-mount-retry"
+            id="operator-mount-retry"
             class="mount-fallback__button mount-fallback__button--primary"
           >
             Try again
           </button>
-          <button type="button" id="openclaw-mount-wait" class="mount-fallback__button">
+          <button type="button" id="operator-mount-wait" class="mount-fallback__button">
             Keep waiting
           </button>
         </div>
       </div>
     </section>
     <script>
-      (function () {
-        var tagName = "openclaw-app";
+      (() => {
+        var tagName = "operator-app";
         var app = document.querySelector(tagName);
-        var fallback = document.getElementById("openclaw-mount-fallback");
+        var fallback = document.getElementById("operator-mount-fallback");
         if (!app || !fallback) return;
 
         var panel = fallback.querySelector(".mount-fallback__panel");
-        var summary = document.getElementById("openclaw-mount-fallback-summary");
-        var retry = document.getElementById("openclaw-mount-retry");
-        var wait = document.getElementById("openclaw-mount-wait");
-        var rawDelay = Number(fallback.getAttribute("data-openclaw-mount-timeout-ms"));
+        var summary = document.getElementById("operator-mount-fallback-summary");
+        var retry = document.getElementById("operator-mount-retry");
+        var wait = document.getElementById("operator-mount-wait");
+        var rawDelay = Number(fallback.getAttribute("data-operator-mount-timeout-ms"));
         var delay = Number.isFinite(rawDelay) && rawDelay > 0 ? rawDelay : 12000;
         var maxRecoveryAttempts = 6;
         var timer;
@@ -270,9 +270,9 @@
 
         try {
           var initialUrl = new URL(window.location.href);
-          recoveryNavigation = initialUrl.searchParams.has("openclaw_mount_recovery");
+          recoveryNavigation = initialUrl.searchParams.has("operator_mount_recovery");
           if (recoveryNavigation) {
-            initialUrl.searchParams.delete("openclaw_mount_recovery");
+            initialUrl.searchParams.delete("operator_mount_recovery");
             window.history.replaceState(null, "", initialUrl.href);
           }
         } catch (e) {}
@@ -292,7 +292,7 @@
 
         function hideFallback() {
           fallback.hidden = true;
-          document.body.classList.remove("openclaw-mount-fallback-active");
+          document.body.classList.remove("operator-mount-fallback-active");
         }
 
         function setSummary(text) {
@@ -302,7 +302,7 @@
         function scheduleRecovery() {
           window.clearTimeout(recoveryTimer);
           if (appMounted() || recoveryAttempt >= maxRecoveryAttempts) return;
-          var retryDelay = Math.min(delay, 1000 * Math.pow(2, recoveryAttempt));
+          var retryDelay = Math.min(delay, 1000 * 2 ** recoveryAttempt);
           recoveryTimer = window.setTimeout(retryCurrentDocument, retryDelay);
         }
 
@@ -316,7 +316,7 @@
             return;
           }
           setSummary(
-            "The gateway is not reachable yet. OpenClaw will keep retrying while it restarts.",
+            "The gateway is not reachable yet. Operator will keep retrying while it restarts.",
           );
           scheduleRecovery();
         }
@@ -338,9 +338,9 @@
           }
           recoveryInFlight = true;
           recoveryAttempt += 1;
-          documentUrl.searchParams.set("openclaw_mount_recovery", String(Date.now()));
+          documentUrl.searchParams.set("operator_mount_recovery", String(Date.now()));
           var recoveryController = new AbortController();
-          var requestTimer = window.setTimeout(function () {
+          var requestTimer = window.setTimeout(() => {
             recoveryController.abort();
           }, delay);
           window
@@ -349,14 +349,14 @@
               credentials: "same-origin",
               signal: recoveryController.signal,
             })
-            .then(function (response) {
+            .then((response) => {
               if (!response.ok) throw new Error("gateway unavailable");
               window.location.replace(documentUrl.href);
             })
-            .catch(function () {
+            .catch(() => {
               finishRecoveryAttempt();
             })
-            .finally(function () {
+            .finally(() => {
               window.clearTimeout(requestTimer);
             });
         }
@@ -365,7 +365,7 @@
           if (appMounted()) return;
           retryCurrentDocument();
           fallback.hidden = false;
-          document.body.classList.add("openclaw-mount-fallback-active");
+          document.body.classList.add("operator-mount-fallback-active");
           if (panel && typeof panel.focus === "function") {
             try {
               panel.focus({ preventScroll: true });
@@ -384,22 +384,22 @@
 
         if (window.customElements && typeof window.customElements.whenDefined === "function") {
           window.customElements.whenDefined(tagName).then(
-            function () {
+            () => {
               window.clearTimeout(timer);
               window.clearTimeout(recoveryTimer);
               hideFallback();
             },
-            function () {},
+            () => {},
           );
         }
 
         if (retry) {
-          retry.addEventListener("click", function () {
+          retry.addEventListener("click", () => {
             window.location.reload();
           });
         }
         if (wait) {
-          wait.addEventListener("click", function () {
+          wait.addEventListener("click", () => {
             hideFallback();
             recoveryAttempt = 0;
             retryCurrentDocument();

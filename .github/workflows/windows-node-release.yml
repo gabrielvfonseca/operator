@@ -89,7 +89,7 @@ jobs:
             throw "Target Operator release contains unexpected OperatorCompanion assets before upload: $($unexpectedTargetCompanionAssets -join ', ')"
           }
 
-          $sourceRelease = gh release view $env:WINDOWS_NODE_TAG --repo openclaw/operator-windows-node --json tagName,isDraft,isPrerelease,assets,url | ConvertFrom-Json
+          $sourceRelease = gh release view $env:WINDOWS_NODE_TAG --repo operator/operator-windows-node --json tagName,isDraft,isPrerelease,assets,url | ConvertFrom-Json
           if ($sourceRelease.tagName -ne $env:WINDOWS_NODE_TAG) {
             throw "Windows source release tag mismatch: expected $env:WINDOWS_NODE_TAG, got $($sourceRelease.tagName)"
           }
@@ -125,7 +125,7 @@ jobs:
           )
           $downloadArgs = @(
             $env:WINDOWS_NODE_TAG,
-            "--repo", "openclaw/operator-windows-node",
+            "--repo", "operator/operator-windows-node",
             "--dir", "dist"
           )
           foreach ($pattern in $installerPatterns) {
@@ -276,7 +276,7 @@ jobs:
           ## Windows Hub installers promoted
 
           Operator release: $env:RELEASE_TAG
-          Source release: openclaw/operator-windows-node@$env:WINDOWS_NODE_TAG
+          Source release: operator/operator-windows-node@$env:WINDOWS_NODE_TAG
           "@ >> $env:GITHUB_STEP_SUMMARY
           Get-ChildItem -LiteralPath dist -File |
             Sort-Object Name |

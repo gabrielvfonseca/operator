@@ -85,7 +85,7 @@ jobs:
             -e OPERATOR_NO_PROMPT=1 \
             -v "$PWD/scripts/install-cli.sh:/tmp/install-cli.sh:ro" \
             node:24-bookworm-slim \
-            bash -lc 'apt-get update -y && apt-get install -y curl && bash /tmp/install-cli.sh --prefix /tmp/operator --no-onboard --version latest && /tmp/openclaw/bin/operator --version'
+            bash -lc 'apt-get update -y && apt-get install -y curl && bash /tmp/install-cli.sh --prefix /tmp/operator --no-onboard --version latest && /tmp/operator/bin/operator --version'
 
   macos-installer:
     runs-on: macos-15
@@ -139,13 +139,13 @@ jobs:
         if: env.OPERATOR_GH_TOKEN != ''
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
-          path: openclaw
+          path: operator
 
       - name: Checkout operator.ai
         if: env.OPERATOR_GH_TOKEN != ''
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
-          repository: openclaw/operator.ai
+          repository: operator/operator.ai
           ref: main
           token: ${{ env.OPERATOR_GH_TOKEN }}
           path: operator.ai
@@ -153,9 +153,9 @@ jobs:
       - name: Sync installer scripts
         if: env.OPERATOR_GH_TOKEN != ''
         run: |
-          cp openclaw/scripts/install.sh operator.ai/public/install.sh
-          cp openclaw/scripts/install-cli.sh operator.ai/public/install-cli.sh
-          cp openclaw/scripts/install.ps1 operator.ai/public/install.ps1
+          cp operator/scripts/install.sh operator.ai/public/install.sh
+          cp operator/scripts/install-cli.sh operator.ai/public/install-cli.sh
+          cp operator/scripts/install.ps1 operator.ai/public/install.ps1
           rm -f operator.ai/public/install.cmd
           chmod +x operator.ai/public/install.sh operator.ai/public/install-cli.sh
 

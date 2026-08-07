@@ -402,8 +402,8 @@ jobs:
             if (contracts.includes("tools")) {
               return ["dynamic-tool"];
             }
-            const openclawPackage = packageJson?.operator ?? {};
-            if (openclawPackage.extensions || openclawPackage.runtimeExtensions) {
+            const operatorPackage = packageJson?.operator ?? {};
+            if (operatorPackage.extensions || operatorPackage.runtimeExtensions) {
               return ["plugin-runtime"];
             }
             return ["plugin-metadata"];

@@ -1,14 +1,14 @@
 // Full-suite Vitest shard definitions used by test-projects and CI planning.
 export const autoReplyCoreTestInclude = [
-  "src/auto-reply/*.test.ts",
-  "src/auto-reply/usage-bar/*.test.ts",
+  "tests/auto-reply/*.test.ts",
+  "tests/auto-reply/usage-bar/*.test.ts",
 ];
 
-export const autoReplyCoreTestExclude = ["src/auto-reply/reply*.test.ts"];
+export const autoReplyCoreTestExclude = ["tests/auto-reply/reply*.test.ts"];
 
-export const autoReplyTopLevelReplyTestInclude = ["src/auto-reply/reply*.test.ts"];
+export const autoReplyTopLevelReplyTestInclude = ["tests/auto-reply/reply*.test.ts"];
 
-export const autoReplyReplySubtreeTestInclude = ["src/auto-reply/reply/**/*.test.ts"];
+export const autoReplyReplySubtreeTestInclude = ["tests/auto-reply/reply/**/*.test.ts"];
 
 export const fullSuiteVitestShards = [
   {

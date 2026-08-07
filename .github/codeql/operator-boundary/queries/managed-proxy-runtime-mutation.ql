@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity error
  * @precision high
- * @id js/openclaw/managed-proxy-runtime-mutation
+ * @id js/operator/managed-proxy-runtime-mutation
  * @tags maintainability
  *       security
  *       external/cwe/cwe-441

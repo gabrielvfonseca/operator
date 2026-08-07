@@ -14,7 +14,7 @@
       "docs/**",
       "skills/**",
       "apps/**",
-      "openclaw.mjs",
+      "operator.mjs",
       "package.json",
       "pnpm-workspace.yaml",
       "!**/dist",
@@ -29,11 +29,12 @@
       "!docs/_layouts",
       "!**/a2ui.bundle.js",
       "!src/auto-reply/reply/export-html/template.js",
-      "!**/.openclaw-runtime-deps-copy-*",
+      "!**/.operator-runtime-deps-copy-*",
       "!**/*.md",
       "!**/*.mdx",
       "!**/*.MD"
-    ]
+    ],
+    "maxSize": 2097152
   },
   "formatter": {
     "enabled": true,
@@ -69,7 +70,6 @@
       },
       "a11y": {
         "useKeyWithClickEvents": "off",
-        "noSvgWithoutTitle": "off",
         "useSemanticElements": "off"
       },
       "security": {
@@ -94,14 +94,7 @@
   },
   "overrides": [
     {
-      "includes": ["**/openclaw.plugin.json", "**/operator.plugin.json"],
-      "linter": {
-        "rules": {
-          "suspicious": {
-            "noDuplicateObjectKeys": "off"
-          }
-        }
-      }
+      "includes": ["**/operator.plugin.json", "**/operator.plugin.json"]
     }
   ]
 }

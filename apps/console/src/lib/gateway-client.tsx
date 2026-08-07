@@ -75,7 +75,7 @@ const REQUEST_TIMEOUT_MS = 30_000;
 // independently during the incremental migration.
 const PROTOCOL_VERSION = 4;
 const MIN_CLIENT_PROTOCOL_VERSION = 4;
-const CLIENT_ID = "openclaw-control-ui";
+const CLIENT_ID = "operator-control-ui";
 const CLIENT_MODE = "ui";
 
 export class GatewayClient {

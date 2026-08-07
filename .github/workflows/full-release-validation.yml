@@ -100,7 +100,7 @@ on:
         default: ""
         type: string
       dispatch_release_evidence:
-        description: Dispatch the validated run to openclaw/releases after child proof succeeds
+        description: Dispatch the validated run to operator/releases after child proof succeeds
         required: false
         default: false
         type: boolean
@@ -1901,10 +1901,10 @@ jobs:
             {
               echo "### Release evidence dispatch failed"
               echo
-              echo "Child workflow validation remains authoritative. Backfill durable evidence from \`openclaw/releases\`:"
+              echo "Child workflow validation remains authoritative. Backfill durable evidence from \`operator/releases\`:"
               echo
               echo "\`\`\`bash"
-              echo "gh workflow run operator-release-evidence-from-full-validation.yml --repo openclaw/releases --ref main -f full_validation_run_id=${GITHUB_RUN_ID_VALUE} -f release_id=${release_id} -f release_ref=${TARGET_REF} -f package_spec=${evidence_package_spec}"
+              echo "gh workflow run operator-release-evidence-from-full-validation.yml --repo operator/releases --ref main -f full_validation_run_id=${GITHUB_RUN_ID_VALUE} -f release_id=${release_id} -f release_ref=${TARGET_REF} -f package_spec=${evidence_package_spec}"
               echo "\`\`\`"
             } >> "$GITHUB_STEP_SUMMARY"
           fi

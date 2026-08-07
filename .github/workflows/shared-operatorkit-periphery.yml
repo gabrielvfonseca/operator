@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: shared-openclawkit-periphery-${{ github.event.pull_request.number || github.sha }}
+  group: shared-operatorkit-periphery-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
 env:
@@ -65,7 +65,7 @@ jobs:
               "apps/ios/",
               "apps/macos/",
               "apps/shared/OperatorKit/",
-              ".github/workflows/shared-openclawkit-periphery.yml",
+              ".github/workflows/shared-operatorkit-periphery.yml",
               "scripts/periphery-intersection.mjs",
               "scripts/ios-configure-signing.sh",
               "scripts/ios-write-swift-filelist.mjs",

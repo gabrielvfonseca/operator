@@ -4,7 +4,7 @@ import { createScopedVitestConfig } from "./vitest.scoped-config.ts";
 
 export function createAgentsEmbeddedVitestConfig(env?: Record<string, string | undefined>) {
   return createScopedVitestConfig(agentsEmbeddedTestPatterns, {
-    dir: "src/agents",
+    dir: "tests/agents",
     env,
     name: "agents-embedded-agent",
   });

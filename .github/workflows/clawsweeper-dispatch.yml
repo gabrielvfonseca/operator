@@ -196,7 +196,7 @@ jobs:
             --input - <<< "$payload"; then
             echo "Dispatched GitHub activity to ClawSweeper."
           else
-            echo "::warning::Skipping GitHub activity dispatch because the configured credential could not dispatch to openclaw/clawsweeper."
+            echo "::warning::Skipping GitHub activity dispatch because the configured credential could not dispatch to operator/clawsweeper."
           fi
 
       - name: Dispatch exact ClawSweeper review
@@ -227,7 +227,7 @@ jobs:
             --input - <<< "$payload"; then
             echo "Dispatched ClawSweeper review."
           else
-            echo "::warning::Skipping ClawSweeper dispatch because the configured credential could not dispatch to openclaw/clawsweeper."
+            echo "::warning::Skipping ClawSweeper dispatch because the configured credential could not dispatch to operator/clawsweeper."
           fi
 
       - name: Acknowledge and dispatch ClawSweeper comment
@@ -309,7 +309,7 @@ jobs:
             --input - <<< "$payload"; then
             echo "Dispatched ClawSweeper comment router."
           else
-            echo "::warning::Skipping ClawSweeper comment dispatch because the configured credential could not dispatch to openclaw/clawsweeper."
+            echo "::warning::Skipping ClawSweeper comment dispatch because the configured credential could not dispatch to operator/clawsweeper."
           fi
 
       - name: Dispatch ClawSweeper commit review
@@ -343,5 +343,5 @@ jobs:
             --input - <<< "$payload"; then
             echo "Dispatched ClawSweeper commit review."
           else
-            echo "::warning::Skipping ClawSweeper commit dispatch because the configured credential could not dispatch to openclaw/clawsweeper."
+            echo "::warning::Skipping ClawSweeper commit dispatch because the configured credential could not dispatch to operator/clawsweeper."
           fi
