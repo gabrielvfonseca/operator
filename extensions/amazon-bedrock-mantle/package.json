@@ -4,7 +4,7 @@
   "description": "Operator Amazon Bedrock Mantle provider plugin for OpenAI-compatible model routing.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gabrielvfonseca/operator"
+    "url": "https://github.com/gabrielvfonseca/openclaw"
   },
   "type": "module",
   "dependencies": {
@@ -12,10 +12,10 @@
     "@aws/bedrock-token-generator": "1.1.0"
   },
   "devDependencies": {
-    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   },
-  "@gabrielvfonseca/operator": {
+  "@gabrielvfonseca/openclaw": {
     "extensions": [
       "./index.ts"
     ],

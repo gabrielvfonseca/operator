@@ -4,26 +4,26 @@
   "description": "Operator tokenjuice exec output compaction plugin",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gabrielvfonseca/operator"
+    "url": "https://github.com/gabrielvfonseca/openclaw"
   },
   "type": "module",
   "dependencies": {
     "tokenjuice": "0.8.1"
   },
   "peerDependencies": {
-    "@gabrielvfonseca/operator": ">=2026.7.2"
+    "@gabrielvfonseca/openclaw": ">=2026.7.2"
   },
   "peerDependenciesMeta": {
-    "@gabrielvfonseca/operator": {
+    "@gabrielvfonseca/openclaw": {
       "optional": true
     }
   },
   "devDependencies": {
-    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
-    "@gabrielvfonseca/operator": "workspace:*",
+    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/openclaw": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   },
-  "@gabrielvfonseca/operator": {
+  "@gabrielvfonseca/openclaw": {
     "extensions": [
       "./index.ts"
     ],

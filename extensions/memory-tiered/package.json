@@ -11,12 +11,12 @@
     "redis": "*"
   },
   "devDependencies": {
-    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
-    "@gabrielvfonseca/operator": "workspace:*",
+    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/openclaw": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   },
   "peerDependencies": {
-    "@gabrielvfonseca/operator": ">=2026.7.2"
+    "@gabrielvfonseca/openclaw": ">=2026.7.2"
   },
   "peerDependenciesMeta": {
     "openclaw": {

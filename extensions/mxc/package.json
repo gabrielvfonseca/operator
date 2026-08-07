@@ -4,18 +4,18 @@
   "description": "Operator MXC sandbox execution plugin for MXC-capable hosts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gabrielvfonseca/operator"
+    "url": "https://github.com/gabrielvfonseca/openclaw"
   },
   "type": "module",
   "devDependencies": {
-    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   },
   "dependencies": {
     "@microsoft/mxc-sdk": "0.7.0",
     "zod": "4.4.3"
   },
-  "@gabrielvfonseca/operator": {
+  "@gabrielvfonseca/openclaw": {
     "extensions": [
       "./index.ts"
     ],

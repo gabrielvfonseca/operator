@@ -5,9 +5,9 @@
   "description": "Operator SenseAudio media-understanding provider",
   "type": "module",
   "devDependencies": {
-    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*"
   },
-  "@gabrielvfonseca/operator": {
+  "@gabrielvfonseca/openclaw": {
     "extensions": [
       "./index.ts"
     ]

@@ -9,7 +9,7 @@
     "@noble/hashes": "2.2.0",
     "zod": "4.4.3"
   },
-  "@gabrielvfonseca/operator": {
+  "@gabrielvfonseca/openclaw": {
     "extensions": [
       "./index.ts"
     ],
@@ -29,7 +29,7 @@
     }
   },
   "devDependencies": {
-    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   }
 }

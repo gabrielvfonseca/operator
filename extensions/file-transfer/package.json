@@ -8,9 +8,9 @@
     "typebox": "1.3.3"
   },
   "devDependencies": {
-    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*"
   },
-  "@gabrielvfonseca/operator": {
+  "@gabrielvfonseca/openclaw": {
     "extensions": [
       "./index.ts"
     ]

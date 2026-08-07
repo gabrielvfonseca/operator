@@ -5,18 +5,18 @@
   "description": "Claude to Operator migration provider",
   "type": "module",
   "devDependencies": {
-    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
-    "@gabrielvfonseca/operator": "workspace:*"
+    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/openclaw": "workspace:*"
   },
   "peerDependencies": {
-    "@gabrielvfonseca/operator": ">=2026.7.2"
+    "@gabrielvfonseca/openclaw": ">=2026.7.2"
   },
   "peerDependenciesMeta": {
-    "@gabrielvfonseca/operator": {
+    "@gabrielvfonseca/openclaw": {
       "optional": true
     }
   },
-  "@gabrielvfonseca/operator": {
+  "@gabrielvfonseca/openclaw": {
     "extensions": [
       "./index.ts"
     ]

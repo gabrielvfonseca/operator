@@ -9,9 +9,9 @@
     "ws": "8.21.0"
   },
   "devDependencies": {
-    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*"
   },
-  "@gabrielvfonseca/operator": {
+  "@gabrielvfonseca/openclaw": {
     "extensions": [
       "./index.ts"
     ]

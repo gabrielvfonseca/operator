@@ -4,7 +4,7 @@
   "description": "Operator ACP runtime backend with plugin-owned session and transport management.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gabrielvfonseca/operator"
+    "url": "https://github.com/gabrielvfonseca/openclaw"
   },
   "type": "module",
   "dependencies": {
@@ -14,10 +14,10 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   },
-  "@gabrielvfonseca/operator": {
+  "@gabrielvfonseca/openclaw": {
     "extensions": [
       "./index.ts"
     ],

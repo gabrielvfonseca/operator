@@ -5,7 +5,7 @@
   "description": "Operator video generation runtime package",
   "type": "module",
   "devDependencies": {
-    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   }
 }
