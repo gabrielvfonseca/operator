@@ -455,7 +455,7 @@ function formatSuiteCommand(matches: readonly QaScenarioSearchMatch[]) {
   const selectedDriver = channels.length === 1 && channel !== "qa-channel" ? "live" : undefined;
   const driverArg = selectedDriver ? ` --channel-driver ${selectedDriver}` : "";
   const channelArg = driverArg && channel ? ` --channel ${channel}` : "";
-  return `pnpm openclaw qa suite${driverArg}${channelArg} ${scenarioArgs}`;
+  return `pnpm operator qa suite${driverArg}${channelArg} ${scenarioArgs}`;
 }
 
 function scenarioMatchCommandGroups(matches: readonly QaScenarioSearchMatch[]) {

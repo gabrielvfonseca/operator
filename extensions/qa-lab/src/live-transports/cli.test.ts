@@ -11,7 +11,7 @@ const { listQaRunnerCliContributions, runLiveTransportQaSuiteCommand, runTelegra
   }),
 );
 
-vi.mock("openclaw/plugin-sdk/qa-runner-runtime", () => ({ listQaRunnerCliContributions }));
+vi.mock("operator/plugin-sdk/qa-runner-runtime", () => ({ listQaRunnerCliContributions }));
 vi.mock("./shared/live-transport-suite.runtime.js", () => ({ runLiveTransportQaSuiteCommand }));
 vi.mock("./telegram/cli.runtime.js", () => ({ runQaTelegramCommand: runTelegram }));
 

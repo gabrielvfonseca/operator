@@ -176,7 +176,7 @@ export async function createSlackQaTransportAdapter(
     async sendInbound(input) {
       heartbeat.throwIfFailed();
       logicalConversationId = input.conversation.id;
-      const text = input.text.replaceAll("@openclaw", `<@${sutIdentity.userId}>`);
+      const text = input.text.replaceAll("@operator", `<@${sutIdentity.userId}>`);
       const nativeThreadTs = input.threadId ? nativeMessageIds.get(input.threadId) : undefined;
       const sent = await sendSlackChannelMessage({
         channelId: runtimeEnv.channelId,

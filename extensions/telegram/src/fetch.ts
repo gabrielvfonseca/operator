@@ -45,7 +45,7 @@ const TELEGRAM_FALLBACK_IPS: readonly string[] = ["149.154.167.220"];
 // strict enough that (a) idle sockets are closed even when the pool is still
 // actively used and (b) the pool itself cannot grow unbounded under transient
 // concurrency spikes. These values are a defence-in-depth layer; the primary
-// fix for the leak observed in openclaw#68128 is the transport lifecycle that
+// fix for the leak observed in operator#68128 is the transport lifecycle that
 // calls `close()` on abandoned dispatchers.
 const TELEGRAM_DISPATCHER_KEEP_ALIVE_TIMEOUT_MS = 30_000;
 const TELEGRAM_DISPATCHER_KEEP_ALIVE_MAX_TIMEOUT_MS = 600_000;

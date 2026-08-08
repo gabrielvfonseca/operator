@@ -74,7 +74,7 @@ For traces, logs, OTLP push, and OpenTelemetry GenAI semantic attributes, see [O
     ```yaml
     # prometheus.yml
     scrape_configs:
-      - job_name: openclaw
+      - job_name: operator
         scrape_interval: 30s
         metrics_path: /api/diagnostics/prometheus
         authorization:

@@ -1105,7 +1105,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
         .click();
       await page.evaluate(() => {
         const originalSetItem = sessionStorage.setItem.bind(sessionStorage);
-        Storage.prototype.setItem = function (key: string, value: string) {
+        Storage.prototype.setItem = (key: string, value: string) => {
           if (
             key.startsWith("operator.new-session.cloud-recovery.v1:") ||
             key.startsWith("operator.control-ui-e2e.")
@@ -1529,7 +1529,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
         .click();
       await page.evaluate(() => {
         const originalSetItem = sessionStorage.setItem.bind(sessionStorage);
-        Storage.prototype.setItem = function (key: string, value: string) {
+        Storage.prototype.setItem = (key: string, value: string) => {
           if (key.startsWith("operator.new-session.cloud-recovery.v1:")) {
             originalSetItem(key, value);
             return;

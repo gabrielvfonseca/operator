@@ -123,7 +123,7 @@ describe("e2e helper numeric env limits", () => {
   });
 
   it("rejects oversized ClickClack fixture request bodies", async () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-clickclack-fixture-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-clickclack-fixture-"));
     const port = await allocatePort();
     const child = spawn(process.execPath, [clickclackFixturePath], {
       env: {

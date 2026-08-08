@@ -186,13 +186,13 @@ describe("tool display details", () => {
           name: "web_search",
           args: {
             objective: "Find the Operator repository on GitHub",
-            search_queries: ["openclaw github", "openclaw repository"],
+            search_queries: ["operator github", "operator repository"],
             count: 5,
           },
         }),
       ),
     ).toBe(
-      'for "Find the Operator repository on GitHub", "openclaw github", "openclaw repository" (top 5)',
+      'for "Find the Operator repository on GitHub", "operator github", "operator repository" (top 5)',
     );
   });
 
@@ -252,7 +252,7 @@ describe("tool display details", () => {
       formatToolDetail(
         resolveToolDisplay({
           name: "bash",
-          args: { command: "git fetch", workdir: "/Users/peter/mantis-workspace/openclaw" },
+          args: { command: "git fetch", workdir: "/Users/peter/mantis-workspace/operator" },
           detailMode: "explain",
         }),
       ),
@@ -262,7 +262,7 @@ describe("tool display details", () => {
       formatToolDetail(
         resolveToolDisplay({
           name: "bash",
-          args: { command: "git status", workdir: "/Users/peter/Projects/openclaw" },
+          args: { command: "git status", workdir: "/Users/peter/Projects/operator" },
           detailMode: "explain",
         }),
       ),
@@ -287,7 +287,7 @@ describe("tool display details", () => {
       formatToolSummary(
         resolveToolDisplay({
           name: "bash",
-          args: { command: "git fetch", workdir: "/Users/peter/mantis-workspace/openclaw" },
+          args: { command: "git fetch", workdir: "/Users/peter/mantis-workspace/operator" },
           detailMode: "explain",
         }),
       ),

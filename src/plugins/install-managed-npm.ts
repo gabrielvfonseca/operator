@@ -198,7 +198,7 @@ export async function installPluginFromManagedNpmRoot(
         logger,
       });
       if (repairedOperatorPeer) {
-        logger.info?.(`Repaired stale openclaw peer dependency in ${npmRoot}`);
+        logger.info?.(`Repaired stale operator peer dependency in ${npmRoot}`);
       }
     }
     const managedOverrides = await readOperatorManagedNpmRootOverrides();
@@ -472,7 +472,7 @@ export async function installPluginFromManagedNpmRoot(
         logger,
       });
       if (repairedOperatorPeer) {
-        logger.info?.(`Repaired stale openclaw peer dependency in ${npmRoot} after npm install`);
+        logger.info?.(`Repaired stale operator peer dependency in ${npmRoot} after npm install`);
       }
     }
     try {
@@ -483,7 +483,7 @@ export async function installPluginFromManagedNpmRoot(
     } catch (error) {
       return await rollbackFailedManagedNpmInstall({
         ok: false,
-        error: `Failed to repair openclaw peer links after npm install: ${String(error)}`,
+        error: `Failed to repair operator peer links after npm install: ${String(error)}`,
       });
     }
     if (installedPackageNeedsOperatorPeerLinkRepair(installRoot)) {

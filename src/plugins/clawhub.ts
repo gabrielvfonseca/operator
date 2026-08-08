@@ -197,9 +197,9 @@ function isTrustedSourceLinkedOfficialPackage(pkg: NonNullable<ClawHubPackageDet
     pkg.channel === "official" &&
     pkg.isOfficial &&
     pkg.verification?.tier === "source-linked" &&
-    (sourceRepo === "openclaw/openclaw" ||
-      sourceRepo === "github.com/openclaw/openclaw" ||
-      sourceRepo === "https://github.com/openclaw/openclaw")
+    (sourceRepo === "operator/operator" ||
+      sourceRepo === "github.com/operator/operator" ||
+      sourceRepo === "https://github.com/operator/operator")
   );
 }
 
@@ -1114,7 +1114,7 @@ function validateClawHubPluginPackage(params: {
   if (pkg.family === "skill") {
     const installRef = pkg.ownerHandle ? `@${pkg.ownerHandle}/${pkg.name}` : pkg.name;
     return buildClawHubInstallFailure(
-      `"${pkg.name}" is a skill. Use "openclaw skills install ${installRef}" instead.`,
+      `"${pkg.name}" is a skill. Use "operator skills install ${installRef}" instead.`,
       CLAWHUB_INSTALL_ERROR_CODE.SKILL_PACKAGE,
     );
   }

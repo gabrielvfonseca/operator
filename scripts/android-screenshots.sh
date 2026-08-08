@@ -21,7 +21,7 @@ EOF
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ANDROID_DIR="${ROOT_DIR}/apps/android"
-DEFAULT_SCREENSHOT_AVD="OpenClaw_Screenshots_API36"
+DEFAULT_SCREENSHOT_AVD="Operator_Screenshots_API36"
 DEFAULT_SCREENSHOT_DEVICE_PROFILE="pixel_2"
 case "$(uname -m)" in
   arm64|aarch64) DEFAULT_SCREENSHOT_ABI="arm64-v8a" ;;
@@ -391,7 +391,7 @@ boot_emulator() {
 
   ensure_screenshot_avd "$avd"
   emulator="$(emulator_bin)"
-  EMULATOR_LOG="$(mktemp "${TMPDIR:-/tmp}/openclaw-android-screenshot-emulator.XXXXXX.log")"
+  EMULATOR_LOG="$(mktemp "${TMPDIR:-/tmp}/operator-android-screenshot-emulator.XXXXXX.log")"
   echo "No connected Android device found. Booting AVD '${avd}'." >&2
   emulator_args=(-avd "$avd" -no-window -no-audio -no-boot-anim)
   if [[ -n "${ANDROID_SCREENSHOT_EMULATOR_ARGS:-}" ]]; then
@@ -454,11 +454,11 @@ scene_ready_text() {
     home) printf '%s\n' "Overview" ;;
     chat) printf '%s\n' "Ready when you are" ;;
     voice) printf '%s\n' "Ready to talk" ;;
-    settings) printf '%s\n' "OpenClaw mobile" ;;
+    settings) printf '%s\n' "Operator mobile" ;;
     voice-wake) printf '%s\n' "Wake listener" ;;
     # Connected fixtures can push Add Gateway below the composed viewport, so
     # wait for the gateway detail's always-visible subtitle instead.
-    gateway) printf '%s\n' "Connection between this phone and OpenClaw." ;;
+    gateway) printf '%s\n' "Connection between this phone and Operator." ;;
     *)
       echo "Unknown Android screenshot scene: $1" >&2
       return 1
@@ -594,21 +594,21 @@ elif [[ "$SKIP_BUILD" != "1" ]]; then
   )
 fi
 
-"$ADB_BIN" -s "$ADB_SERIAL" shell pm clear ai.openclaw.app >/dev/null
-"$ADB_BIN" -s "$ADB_SERIAL" shell pm grant ai.openclaw.app android.permission.RECORD_AUDIO >/dev/null
+"$ADB_BIN" -s "$ADB_SERIAL" shell pm clear ai.operator.app >/dev/null
+"$ADB_BIN" -s "$ADB_SERIAL" shell pm grant ai.operator.app android.permission.RECORD_AUDIO >/dev/null
 "$ADB_BIN" -s "$ADB_SERIAL" logcat -c >/dev/null 2>&1 || true
 
 for scene in "${SCENES[@]}"; do
-  output_path="${OUTPUT_DIR}/openclaw-${scene}.jpg"
-  raw_path="${OUTPUT_DIR}/openclaw-${scene}.raw.png"
-  artifact_path="${ARTIFACT_DIR}/screenshots/openclaw-${scene}.jpg"
-  ui_dump_path="${ARTIFACT_DIR}/ui-dumps/openclaw-${scene}.xml"
-  activity_start_path="${ARTIFACT_DIR}/activity-start/openclaw-${scene}.txt"
-  "$ADB_BIN" -s "$ADB_SERIAL" shell am force-stop ai.openclaw.app >/dev/null
+  output_path="${OUTPUT_DIR}/operator-${scene}.jpg"
+  raw_path="${OUTPUT_DIR}/operator-${scene}.raw.png"
+  artifact_path="${ARTIFACT_DIR}/screenshots/operator-${scene}.jpg"
+  ui_dump_path="${ARTIFACT_DIR}/ui-dumps/operator-${scene}.xml"
+  activity_start_path="${ARTIFACT_DIR}/activity-start/operator-${scene}.txt"
+  "$ADB_BIN" -s "$ADB_SERIAL" shell am force-stop ai.operator.app >/dev/null
   "$ADB_BIN" -s "$ADB_SERIAL" shell am start -W \
-    -n ai.openclaw.app/.MainActivity \
-    --ez openclaw.screenshotMode true \
-    --es openclaw.screenshotScene "$scene" >"$activity_start_path"
+    -n ai.operator.app/.MainActivity \
+    --ez operator.screenshotMode true \
+    --es operator.screenshotScene "$scene" >"$activity_start_path"
   wait_for_scene_ready "$ADB_BIN" "$ADB_SERIAL" "$scene" "$ui_dump_path"
   sleep "${ANDROID_SCREENSHOT_SETTLE_SECONDS:-0.5}"
   "$ADB_BIN" -s "$ADB_SERIAL" exec-out screencap -p >"$raw_path"

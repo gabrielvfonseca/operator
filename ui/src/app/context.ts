@@ -1,5 +1,5 @@
 import { createContext } from "@lit/context";
-import type { RouteLocation } from "@openclaw/uirouter";
+import type { RouteLocation } from "@operator/uirouter";
 import type { SidebarNavRoute } from "../app-navigation.ts";
 import type { RouteId } from "../app-route-paths.ts";
 import type { AgentIdentityCapability } from "../lib/agents/identity.ts";

@@ -13,7 +13,7 @@ import {
   cleanupTrackedTempDirs,
   makeTrackedTempDir,
 } from "../../../../src/plugins/test-helpers/fs-fixtures.js";
-import { runOperatorStateWriteTransaction } from "../../../../src/state/openclaw-state-db.js";
+import { runOperatorStateWriteTransaction } from "../../../../src/state/operator-state-db.js";
 import {
   DISABLE_PLUGIN_REGISTRY_MIGRATION_ENV,
   migratePluginRegistryForInstall,

@@ -6,7 +6,7 @@ import type {
 
 /**
  * Provider config input type — partial config without required `models`.
- * Replaces the deprecated `openclaw/plugin-sdk/config-types` import.
+ * Replaces the deprecated `operator/plugin-sdk/config-types` import.
  */
 type OllamaProviderConfigInput = Omit<Partial<ModelProviderConfig>, "models"> & {
   models?: ModelDefinitionConfig[];

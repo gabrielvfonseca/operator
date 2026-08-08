@@ -73,7 +73,7 @@ pub fn install(app: &AppHandle, channel: InstallChannel) -> Result<(), String> {
     if matches!(channel, InstallChannel::Dev) {
         command
             .args(["--install-method", "git", "--git-dir"])
-            .arg(prefix.join("dev/openclaw"));
+            .arg(prefix.join("dev/operator"));
     }
     command
         .stdin(Stdio::null())

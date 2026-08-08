@@ -398,7 +398,7 @@ describe("worker npm installation artifact", () => {
         operatorVersion: "1.2.3",
         packageIntegrity,
         protocolFeatures: ["admission"],
-        packageSpec: "openclaw@1.2.3",
+        packageSpec: "operator@1.2.3",
       });
     });
   });

@@ -6,11 +6,11 @@ import { sliceUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice"
 import { formatCliCommand } from "../cli/command-format.js";
 import { resolveStateDir } from "../config/paths.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
-import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../state/openclaw-state-db.js";
+} from "../state/operator-state-db.js";
 import { resolveRuntimeServiceVersion } from "../version.js";
 import { formatErrorMessage } from "./errors.js";
 import {
@@ -89,7 +89,7 @@ export function formatDoctorNonInteractiveHint(
   env: Record<string, string | undefined> = process.env as Record<string, string | undefined>,
 ): string {
   return `Recommended follow-up: run ${formatCliCommand(
-    "openclaw doctor --non-interactive",
+    "operator doctor --non-interactive",
     env,
   )} in a terminal or approvals-capable Operator surface.`;
 }

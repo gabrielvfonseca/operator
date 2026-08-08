@@ -200,7 +200,7 @@ ${ACPX_CMD} codex sessions close oc-codex-<conversationId>
 - `kilocode`
 - `kimi`
 - `kiro`
-- `openclaw`
+- `operator`
 - `opencode`
 - `qwen`
 

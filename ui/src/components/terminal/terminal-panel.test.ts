@@ -72,7 +72,7 @@ function deferred<T>() {
 
 import { OperatorTerminalPanel } from "./terminal-panel.ts";
 
-const TERMINAL_PANEL_ELEMENT_NAME = `test-openclaw-terminal-panel-${crypto.randomUUID()}`;
+const TERMINAL_PANEL_ELEMENT_NAME = `test-operator-terminal-panel-${crypto.randomUUID()}`;
 
 // The full non-isolated UI suite can import the production panel before this
 // test. Override its factory instead of relying on a module mock import order.
@@ -127,7 +127,7 @@ describe("OperatorTerminalPanel", () => {
 
   it("restores persisted open state when a mounted tag upgrades lazily", async () => {
     localStorage.setItem(
-      "openclaw.terminal.panel.v1",
+      "operator.terminal.panel.v1",
       JSON.stringify({ open: true, dock: "bottom", height: 320, width: 520 }),
     );
     const tagName = `test-lazy-terminal-panel-${crypto.randomUUID()}`;
@@ -349,7 +349,7 @@ describe("OperatorTerminalPanel", () => {
   });
 
   it("reattaches persisted sessions before opening a catalog tab", async () => {
-    sessionStorage.setItem("openclaw.terminal.sessions.v1", JSON.stringify(["persisted-1"]));
+    sessionStorage.setItem("operator.terminal.sessions.v1", JSON.stringify(["persisted-1"]));
     createGhosttyTerminalMock
       .mockResolvedValueOnce(createTerminalController())
       .mockResolvedValueOnce(createTerminalController());
@@ -392,7 +392,7 @@ describe("OperatorTerminalPanel", () => {
     document.body.append(panel);
     const catalog = { catalogId: "codex", hostId: "node:mac", threadId: "thread" };
 
-    panel.handleToggleRequest(new CustomEvent("openclaw:terminal-toggle", { detail: { catalog } }));
+    panel.handleToggleRequest(new CustomEvent("operator:terminal-toggle", { detail: { catalog } }));
 
     await vi.waitFor(() => {
       expect(requests.filter((entry) => entry.method === "terminal.attach")).toHaveLength(1);
@@ -401,7 +401,7 @@ describe("OperatorTerminalPanel", () => {
     expect(requests.findIndex((entry) => entry.method === "terminal.attach")).toBeLessThan(
       requests.findIndex((entry) => entry.method === "terminal.open"),
     );
-    expect(sessionStorage.getItem("openclaw.terminal.sessions.v1")).toBe(
+    expect(sessionStorage.getItem("operator.terminal.sessions.v1")).toBe(
       JSON.stringify(["persisted-1"]),
     );
   });
@@ -510,7 +510,7 @@ describe("OperatorTerminalPanel", () => {
     expect(new TextDecoder().decode(controllers[1].write.mock.calls[0]?.[0])).toBe(
       "detached history",
     );
-    expect(sessionStorage.getItem("openclaw.terminal.sessions.v1")).toBe(
+    expect(sessionStorage.getItem("operator.terminal.sessions.v1")).toBe(
       JSON.stringify(["current-1", "detached-1"]),
     );
   });
@@ -608,7 +608,7 @@ describe("OperatorTerminalPanel", () => {
     document.body.append(panel);
     panel.toggle();
     await vi.waitFor(() => {
-      expect(sessionStorage.getItem("openclaw.terminal.sessions.v1")).toBe(
+      expect(sessionStorage.getItem("operator.terminal.sessions.v1")).toBe(
         JSON.stringify(["current-1"]),
       );
     });
@@ -620,7 +620,7 @@ describe("OperatorTerminalPanel", () => {
     await panel.updateComplete;
 
     expect(panel.renderRoot.textContent).toContain("Could not attach terminal session");
-    expect(sessionStorage.getItem("openclaw.terminal.sessions.v1")).toBe(
+    expect(sessionStorage.getItem("operator.terminal.sessions.v1")).toBe(
       JSON.stringify(["current-1"]),
     );
   });
@@ -652,7 +652,7 @@ describe("OperatorTerminalPanel", () => {
     await vi.waitFor(() => expect(createGhosttyTerminalMock).toHaveBeenCalledOnce());
     const catalog = { catalogId: "codex", hostId: "node:mac", threadId: "thread" };
 
-    panel.handleToggleRequest(new CustomEvent("openclaw:terminal-toggle", { detail: { catalog } }));
+    panel.handleToggleRequest(new CustomEvent("operator:terminal-toggle", { detail: { catalog } }));
     firstBoot.resolve(createTerminalController());
 
     await vi.waitFor(() => {
@@ -767,7 +767,7 @@ describe("OperatorTerminalPanel", () => {
       });
     });
     expect(controllers[0].dispose).toHaveBeenCalledOnce();
-    expect(sessionStorage.getItem("openclaw.terminal.sessions.v1")).toBe("[]");
+    expect(sessionStorage.getItem("operator.terminal.sessions.v1")).toBe("[]");
 
     panel.toggle();
     await vi.waitFor(() => {
@@ -813,7 +813,7 @@ describe("OperatorTerminalPanel", () => {
     panel.toggle();
 
     await vi.waitFor(() => {
-      expect(sessionStorage.getItem("openclaw.terminal.sessions.v1")).toContain("old-session");
+      expect(sessionStorage.getItem("operator.terminal.sessions.v1")).toContain("old-session");
     });
     panel.client = newClient;
     await panel.updateComplete;
@@ -942,7 +942,7 @@ describe("OperatorTerminalPanel", () => {
     document.body.append(panel);
     panel.toggle();
     await vi.waitFor(() => {
-      expect(sessionStorage.getItem("openclaw.terminal.sessions.v1")).toContain("session-1");
+      expect(sessionStorage.getItem("operator.terminal.sessions.v1")).toContain("session-1");
     });
 
     listener?.({

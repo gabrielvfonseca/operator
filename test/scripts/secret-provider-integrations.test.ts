@@ -16,7 +16,7 @@ function expectedTaskkillPath(): string {
 }
 
 function makeTempDir(): string {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-secret-provider-proof-"));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "operator-secret-provider-proof-"));
   tempDirs.push(root);
   return root;
 }
@@ -73,7 +73,7 @@ function isProcessAlive(pid: number): boolean {
   }
 }
 
-function writeStallingOpenClaw(
+function writeStallingOperator(
   root: string,
   options: {
     gatewayDescendantMarkerPath?: string;
@@ -90,7 +90,7 @@ function writeStallingOpenClaw(
         )}, "x"), 5);`,
       ].join("\n")
     : "";
-  const scriptPath = path.join(root, "fake-openclaw.mjs");
+  const scriptPath = path.join(root, "fake-operator.mjs");
   fs.writeFileSync(
     scriptPath,
     [
@@ -120,7 +120,7 @@ function writeStallingOpenClaw(
       "  process.exit(0);",
       "}",
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-      "console.error(`unexpected fake openclaw args: ${args.join(' ')}`);",
+      "console.error(`unexpected fake operator args: ${args.join(' ')}`);",
       "process.exit(2);",
       "",
     ].join("\n"),
@@ -129,8 +129,8 @@ function writeStallingOpenClaw(
   return scriptPath;
 }
 
-function writeLeakingStartupOpenClaw(root: string): string {
-  const scriptPath = path.join(root, "fake-leaking-openclaw.mjs");
+function writeLeakingStartupOperator(root: string): string {
+  const scriptPath = path.join(root, "fake-leaking-operator.mjs");
   fs.writeFileSync(
     scriptPath,
     [
@@ -149,8 +149,8 @@ function writeLeakingStartupOpenClaw(root: string): string {
   return scriptPath;
 }
 
-function writeSignaledStartupOpenClaw(root: string): string {
-  const scriptPath = path.join(root, "fake-signaled-openclaw.mjs");
+function writeSignaledStartupOperator(root: string): string {
+  const scriptPath = path.join(root, "fake-signaled-operator.mjs");
   fs.writeFileSync(
     scriptPath,
     [
@@ -172,8 +172,8 @@ function writeSignaledStartupOpenClaw(root: string): string {
   return scriptPath;
 }
 
-function writeNoisySecretsConfigureOpenClaw(root: string): string {
-  const scriptPath = path.join(root, "fake-noisy-secrets-configure-openclaw.mjs");
+function writeNoisySecretsConfigureOperator(root: string): string {
+  const scriptPath = path.join(root, "fake-noisy-secrets-configure-operator.mjs");
   fs.writeFileSync(
     scriptPath,
     [
@@ -193,7 +193,7 @@ function writeNoisySecretsConfigureOpenClaw(root: string): string {
 
 function runProofHarness(
   root: string,
-  fakeOpenClaw: string,
+  fakeOperator: string,
   mode: "start" | "startup-fails" | "status",
   envOverrides: NodeJS.ProcessEnv = {},
 ) {
@@ -202,7 +202,7 @@ function runProofHarness(
     encoding: "utf8",
     env: {
       ...process.env,
-      OPENCLAW_ENTRY: fakeOpenClaw,
+      OPENCLAW_ENTRY: fakeOperator,
       OPENCLAW_SECRET_PROOF_READY_MS: "60",
       OPENCLAW_SECRET_PROOF_RPC_MS: "1000",
       ...envOverrides,
@@ -218,32 +218,32 @@ afterEach(() => {
 });
 
 describe("secret provider integration proof harness", () => {
-  it("runs pnpm-backed OpenClaw commands through the repo pnpm runner", async () => {
+  it("runs pnpm-backed Operator commands through the repo pnpm runner", async () => {
     const root = makeTempDir();
     const fakePnpm = path.join(root, "pnpm.cjs");
     fs.writeFileSync(fakePnpm, "#!/usr/bin/env node\n", { mode: 0o755 });
     const proof = await import(`${pathToFileURL(proofScriptPath).href}?case=${Date.now()}`);
 
-    const command = await proof.resolveOpenClawCommand(
+    const command = await proof.resolveOperatorCommand(
       ["gateway", "status"],
       { ...process.env, OPENCLAW_SECRET_PROOF_SENTINEL: "1" },
       {
         nodeExecPath: "/opt/node/bin/node",
         npmExecPath: fakePnpm,
-        runner: { pnpm: true, baseArgs: ["openclaw"], label: "pnpm openclaw" },
+        runner: { pnpm: true, baseArgs: ["operator"], label: "pnpm operator" },
       },
     );
 
     expect(command.command).toBe("/opt/node/bin/node");
-    expect(command.args).toEqual([fakePnpm, "openclaw", "gateway", "status"]);
+    expect(command.args).toEqual([fakePnpm, "operator", "gateway", "status"]);
     expect(command.options.env.OPENCLAW_SECRET_PROOF_SENTINEL).toBe("1");
     expect(command.options.shell).toBe(false);
   });
 
   it("keeps stalled startup health probes inside the ready deadline", async () => {
     const root = makeTempDir();
-    const fakeOpenClaw = writeStallingOpenClaw(root);
-    const result = runProofHarness(root, fakeOpenClaw, "start");
+    const fakeOperator = writeStallingOperator(root);
+    const result = runProofHarness(root, fakeOperator, "start");
 
     expect(result.error).toBeUndefined();
     expect(result.status).toBe(0);
@@ -254,8 +254,8 @@ describe("secret provider integration proof harness", () => {
 
   it("fails fast when startup exits by signal", () => {
     const root = makeTempDir();
-    const fakeOpenClaw = writeSignaledStartupOpenClaw(root);
-    const result = runProofHarness(root, fakeOpenClaw, "start", {
+    const fakeOperator = writeSignaledStartupOperator(root);
+    const result = runProofHarness(root, fakeOperator, "start", {
       OPENCLAW_SECRET_PROOF_READY_MS: "2000",
     });
 
@@ -269,10 +269,10 @@ describe("secret provider integration proof harness", () => {
   it("kills a stalled startup gateway before returning a readiness failure", async () => {
     const root = makeTempDir();
     const markerPath = path.join(root, "gateway-marker.txt");
-    const fakeOpenClaw = writeStallingOpenClaw(root, {
+    const fakeOperator = writeStallingOperator(root, {
       gatewayDescendantMarkerPath: markerPath,
     });
-    const result = runProofHarness(root, fakeOpenClaw, "start", {
+    const result = runProofHarness(root, fakeOperator, "start", {
       OPENCLAW_SECRET_PROOF_TEARDOWN_GRACE_MS: "100",
     });
 
@@ -411,11 +411,11 @@ describe("secret provider integration proof harness", () => {
 
   it.runIf(process.platform !== "win32")("bounds captured PTY configure output", async () => {
     const root = makeTempDir();
-    const fakeOpenClaw = writeNoisySecretsConfigureOpenClaw(root);
+    const fakeOperator = writeNoisySecretsConfigureOperator(root);
     const previousLimit = process.env.OPENCLAW_SECRET_PROOF_OUTPUT_BYTES;
     const previousEntry = process.env.OPENCLAW_ENTRY;
     process.env.OPENCLAW_SECRET_PROOF_OUTPUT_BYTES = "128";
-    process.env.OPENCLAW_ENTRY = fakeOpenClaw;
+    process.env.OPENCLAW_ENTRY = fakeOperator;
     try {
       const proof = await import(
         `${pathToFileURL(proofScriptPath).href}?case=pty-output-${Date.now()}`
@@ -425,7 +425,7 @@ describe("secret provider integration proof harness", () => {
         .runPtySecretsConfigurePreset({
           env: {
             ...process.env,
-            OPENCLAW_ENTRY: fakeOpenClaw,
+            OPENCLAW_ENTRY: fakeOperator,
           },
         })
         .catch((caught: unknown) => caught);
@@ -454,7 +454,7 @@ describe("secret provider integration proof harness", () => {
     "cleans PTY configure descendants before timeout failure",
     async () => {
       const root = makeTempDir();
-      const fakeOpenClaw = path.join(root, "fake-openclaw-pty-timeout.mjs");
+      const fakeOperator = path.join(root, "fake-operator-pty-timeout.mjs");
       const descendantPidPath = path.join(root, "descendant.pid");
       const readyPath = path.join(root, "ready");
       let descendantPid = 0;
@@ -467,7 +467,7 @@ describe("secret provider integration proof harness", () => {
         "setInterval(() => {}, 1000);",
       ].join("\n");
       fs.writeFileSync(
-        fakeOpenClaw,
+        fakeOperator,
         [
           "#!/usr/bin/env node",
           "import childProcess from 'node:child_process';",
@@ -482,7 +482,7 @@ describe("secret provider integration proof harness", () => {
         ].join("\n"),
         { mode: 0o755 },
       );
-      process.env.OPENCLAW_ENTRY = fakeOpenClaw;
+      process.env.OPENCLAW_ENTRY = fakeOperator;
       const proof = await import(
         `${pathToFileURL(proofScriptPath).href}?case=pty-timeout-${Date.now()}`
       );
@@ -492,7 +492,7 @@ describe("secret provider integration proof harness", () => {
           {
             env: {
               ...process.env,
-              OPENCLAW_ENTRY: fakeOpenClaw,
+              OPENCLAW_ENTRY: fakeOperator,
             },
           },
           { timeoutKillGraceMs: 50, timeoutMs: 500 },
@@ -606,7 +606,7 @@ describe("secret provider integration proof harness", () => {
 
     try {
       await expect(
-        proof.cleanupEnv("/tmp/openclaw-secret-provider-proof-stuck", {
+        proof.cleanupEnv("/tmp/operator-secret-provider-proof-stuck", {
           attempts: 3,
           retryDelayMs: 1,
         }),
@@ -972,8 +972,8 @@ describe("secret provider integration proof harness", () => {
 
   it("detects startup secret leaks after the retained output cap", () => {
     const root = makeTempDir();
-    const fakeOpenClaw = writeLeakingStartupOpenClaw(root);
-    const result = runProofHarness(root, fakeOpenClaw, "startup-fails", {
+    const fakeOperator = writeLeakingStartupOperator(root);
+    const result = runProofHarness(root, fakeOperator, "startup-fails", {
       OPENCLAW_SECRET_PROOF_OUTPUT_BYTES: "128",
     });
 
@@ -986,8 +986,8 @@ describe("secret provider integration proof harness", () => {
 
   it("keeps stalled managed status probes inside the ready deadline", async () => {
     const root = makeTempDir();
-    const fakeOpenClaw = writeStallingOpenClaw(root);
-    const result = runProofHarness(root, fakeOpenClaw, "status");
+    const fakeOperator = writeStallingOperator(root);
+    const result = runProofHarness(root, fakeOperator, "status");
 
     expect(result.error).toBeUndefined();
     expect(result.status).toBe(0);

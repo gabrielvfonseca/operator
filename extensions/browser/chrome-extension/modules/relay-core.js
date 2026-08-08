@@ -20,7 +20,7 @@ const CHROME_GROUP_COLORS = {
 };
 
 /**
- * Parse a pairing string printed by `openclaw browser extension pair`.
+ * Parse a pairing string printed by `operator browser extension pair`.
  * Shape: ws://127.0.0.1:<port>/extension#<token>
  * Returns { relayUrl, token } or null when malformed.
  */

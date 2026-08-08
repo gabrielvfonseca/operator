@@ -1,4 +1,4 @@
-import { createRouter, definePage, type RouteLocation } from "@openclaw/uirouter";
+import { createRouter, definePage, type RouteLocation } from "@operator/uirouter";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { RouterOutletController, selectRenderedRouteMatch } from "./router-outlet-controller.ts";
 

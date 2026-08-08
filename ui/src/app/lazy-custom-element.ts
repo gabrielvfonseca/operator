@@ -84,7 +84,7 @@ export function ensureOptionalElementForHost(
       host.requestUpdate();
     })
     .catch((error: unknown) => {
-      console.error(`[openclaw] failed to load ${element.label}`, error);
+      console.error(`[operator] failed to load ${element.label}`, error);
       throw error;
     })
     .finally(() => {

@@ -24,8 +24,8 @@ function makeLease(index: number): AcpxProcessLease {
     leaseId: `lease-${index}`,
     gatewayInstanceId: "gateway-test",
     sessionKey: `agent:codex:acp:${index}`,
-    wrapperRoot: "/tmp/openclaw/acpx",
-    wrapperPath: "/tmp/openclaw/acpx/codex-acp-wrapper.mjs",
+    wrapperRoot: "/tmp/operator/acpx",
+    wrapperPath: "/tmp/operator/acpx/codex-acp-wrapper.mjs",
     rootPid: 1000 + index,
     commandHash: `hash-${index}`,
     startedAt: index,
@@ -82,7 +82,7 @@ describe("createAcpxProcessLeaseStore", () => {
 describe("withAcpxLeaseEnvironment", () => {
   it("adds lease environment and wrapper args on POSIX", () => {
     const command = withAcpxLeaseEnvironment({
-      command: "node /tmp/openclaw/acpx/codex-acp-wrapper.mjs",
+      command: "node /tmp/operator/acpx/codex-acp-wrapper.mjs",
       leaseId: "lease-test",
       gatewayInstanceId: "gateway-test",
       platform: "darwin",
@@ -93,7 +93,7 @@ describe("withAcpxLeaseEnvironment", () => {
         "env",
         `${OPERATOR_ACPX_LEASE_ID_ENV}=lease-test`,
         `${OPERATOR_GATEWAY_INSTANCE_ID_ENV}=gateway-test`,
-        "node /tmp/openclaw/acpx/codex-acp-wrapper.mjs",
+        "node /tmp/operator/acpx/codex-acp-wrapper.mjs",
         OPERATOR_ACPX_LEASE_ID_ARG,
         "lease-test",
         OPERATOR_GATEWAY_INSTANCE_ID_ARG,
@@ -104,7 +104,7 @@ describe("withAcpxLeaseEnvironment", () => {
 
   it("keeps Windows logs keyed by lease id with wrapper args", () => {
     const command = withAcpxLeaseEnvironment({
-      command: "node C:/openclaw/acpx/codex-acp-wrapper.mjs",
+      command: "node C:/operator/acpx/codex-acp-wrapper.mjs",
       leaseId: "lease-test",
       gatewayInstanceId: "gateway-test",
       platform: "win32",
@@ -112,7 +112,7 @@ describe("withAcpxLeaseEnvironment", () => {
 
     expect(command).toBe(
       [
-        "node C:/openclaw/acpx/codex-acp-wrapper.mjs",
+        "node C:/operator/acpx/codex-acp-wrapper.mjs",
         OPERATOR_ACPX_LEASE_ID_ARG,
         "lease-test",
         OPERATOR_GATEWAY_INSTANCE_ID_ARG,

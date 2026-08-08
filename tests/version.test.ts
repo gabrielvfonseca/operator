@@ -103,7 +103,7 @@ describe("version resolution", () => {
     });
   });
 
-  it("ignores non-openclaw package and blank build-info versions", async () => {
+  it("ignores non-operator package and blank build-info versions", async () => {
     await withVersionFixtureDir(async (root) => {
       await writeJsonFixture(root, "package.json", { name: "other-package", version: "9.9.9" });
       await writeJsonFixture(root, "build-info.json", { version: "  " });

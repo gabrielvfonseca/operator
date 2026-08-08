@@ -17,7 +17,7 @@ import { resolveThinkingProfile } from "./thinking-policy.js";
 const PROVIDER_ID = "vllm";
 
 async function loadProviderSetup() {
-  return await import("openclaw/plugin-sdk/provider-setup");
+  return await import("operator/plugin-sdk/provider-setup");
 }
 
 export default definePluginEntry({
@@ -90,7 +90,7 @@ export default definePluginEntry({
       },
       buildUnknownModelHint: () =>
         "vLLM requires authentication to be registered as a provider. " +
-        'Set VLLM_API_KEY (any value works) or run "openclaw configure". ' +
+        'Set VLLM_API_KEY (any value works) or run "operator configure". ' +
         "See: https://docs.operator.ai/providers/vllm",
       resolveThinkingProfile,
       wrapStreamFn: wrapVllmProviderStream,

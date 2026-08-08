@@ -723,7 +723,7 @@ describe("discordOutbound", () => {
           text: "delivered",
           channelData: {
             discord: {
-              __openclawInboundEventDelivery: {
+              __operatorInboundEventDelivery: {
                 sessionKey: "agent:main:discord:channel:c1",
                 inboundEventKind: "room_event",
               },

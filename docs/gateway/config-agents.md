@@ -33,7 +33,7 @@ Optional repository root shown in the system prompt's Runtime line. If unset, Op
 
 ```json5
 {
-  agents: { defaults: { repoRoot: "~/Projects/openclaw" } },
+  agents: { defaults: { repoRoot: "~/Projects/operator" } },
 }
 ```
 
@@ -480,7 +480,7 @@ Time format in system prompt. Default: `auto` (OS preference).
 
 - `id`: `"auto"`, `"@gabrielvfonseca/operator"`, a registered plugin harness id, or a supported CLI backend alias. The bundled Codex plugin registers `codex`; the bundled Anthropic plugin provides the `claude-cli` CLI backend.
 - `id: "auto"` lets registered plugin harnesses claim effective routes that declare or otherwise satisfy their support contract, and uses Operator when no harness matches. An explicit plugin runtime such as `id: "codex"` requires that harness and a compatible effective route; it fails closed if either is unavailable or if execution fails.
-- `id: "pi"` is accepted only as a deprecated alias for `openclaw` to preserve shipped configs from v2026.5.22 and earlier. New config should use `openclaw`.
+- `id: "pi"` is accepted only as a deprecated alias for `operator` to preserve shipped configs from v2026.5.22 and earlier. New config should use `operator`.
 - Runtime precedence is exact model policy first (`agents.list[].models["provider/model"]`, `agents.defaults.models["provider/model"]`, or `models.providers.<provider>.models[]`), then `agents.list[]` / `agents.defaults.models["provider/*"]`, then provider-wide policy at `models.providers.<provider>.agentRuntime`.
 - Whole-agent runtime keys are legacy. `agents.defaults.agentRuntime`, `agents.list[].agentRuntime`, session runtime pins, and `OPERATOR_AGENT_RUNTIME` are ignored by runtime selection. Run `operator doctor --fix` to remove stale values.
 - Eligible exact official HTTPS OpenAI Responses/ChatGPT routes with no authored request override may use the Codex harness implicitly. Provider/model `agentRuntime.id: "codex"` makes Codex a fail-closed requirement but does not make an incompatible route compatible.
@@ -1063,7 +1063,7 @@ for provider examples and precedence.
           emoji: "🦥",
           avatar: "avatars/samantha.png",
         },
-        groupChat: { mentionPatterns: ["@openclaw"] },
+        groupChat: { mentionPatterns: ["@operator"] },
         sandbox: { mode: "off" },
         runtime: {
           type: "acp",
@@ -1071,7 +1071,7 @@ for provider examples and precedence.
             agent: "codex",
             backend: "acpx",
             mode: "persistent", // persistent | oneshot
-            cwd: "/workspace/openclaw",
+            cwd: "/workspace/operator",
           },
         },
         subagents: { allowAgents: ["*"] },

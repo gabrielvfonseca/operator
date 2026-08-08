@@ -165,7 +165,7 @@ describe("Agent-specific sandbox config", () => {
         list: [
           {
             id: "main",
-            workspace: "~/openclaw",
+            workspace: "~/operator",
             sandbox: {
               mode: "off",
             },
@@ -232,7 +232,7 @@ describe("Agent-specific sandbox config", () => {
         list: [
           {
             id: "main",
-            workspace: "~/openclaw",
+            workspace: "~/operator",
           },
         ],
       },
@@ -317,7 +317,7 @@ describe("Agent-specific sandbox config", () => {
             list: [
               {
                 id: "main",
-                workspace: "~/openclaw",
+                workspace: "~/operator",
                 sandbox: {
                   mode: "off",
                 },

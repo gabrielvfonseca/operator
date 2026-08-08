@@ -301,7 +301,7 @@ export function mcpManualItems(params: {
     add(
       "oauth-login",
       `Hermes MCP server "${name}" requires OAuth login in Operator.`,
-      `Run "openclaw mcp login ${name}" after migration.`,
+      `Run "operator mcp login ${name}" after migration.`,
     );
   }
   if (
@@ -314,7 +314,7 @@ export function mcpManualItems(params: {
     add(
       "oauth-client",
       `Hermes MCP server "${name}" uses pre-registered OAuth client settings that were not copied into Operator config.`,
-      `Run "openclaw mcp login ${name}" and configure supported OAuth metadata manually.`,
+      `Run "operator mcp login ${name}" and configure supported OAuth metadata manually.`,
     );
   }
 

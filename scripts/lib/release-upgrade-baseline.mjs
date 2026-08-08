@@ -48,14 +48,14 @@ export function resolveDefaultReleaseUpgradeBaseline(candidateVersion, published
   const versions = normalizePublishedVersions(publishedVersions);
   const older = versions.find((version) => compareOperatorVersions(version, candidate.version) < 0);
   if (older) {
-    return `openclaw@${older}`;
+    return `operator@${older}`;
   }
 
   const same = versions.find(
     (version) => compareOperatorVersions(version, candidate.version) === 0,
   );
   if (same) {
-    return `openclaw@${same}`;
+    return `operator@${same}`;
   }
 
   throw new Error(`no published Operator baseline is <= candidate ${candidate.version}`);
@@ -98,7 +98,7 @@ function readPublishedVersions(args) {
   );
   const parsed = JSON.parse(raw);
   if (!Array.isArray(parsed)) {
-    throw new Error("npm returned a non-array openclaw versions payload");
+    throw new Error("npm returned a non-array operator versions payload");
   }
   return parsed;
 }

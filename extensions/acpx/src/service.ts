@@ -98,7 +98,7 @@ function createLazyDefaultRuntime(params: AcpxRuntimeFactoryParams): AcpxRuntime
         cwd: params.pluginConfig.cwd,
         operatorGatewayInstanceId: params.gatewayInstanceId,
         operatorProcessLeaseStore: params.processLeaseStore,
-        openclawWrapperRoot: params.wrapperRoot,
+        operatorWrapperRoot: params.wrapperRoot,
         sessionStore: module.createFileSessionStore({
           stateDir: params.pluginConfig.stateDir,
         }),

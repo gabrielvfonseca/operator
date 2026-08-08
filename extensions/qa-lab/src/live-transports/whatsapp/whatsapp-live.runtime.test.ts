@@ -1059,7 +1059,7 @@ describe("WhatsApp QA live runtime", () => {
       expect(scenario.requiresGroupJid).toBe(true);
       expect(run.target).toBe("group");
       expect(run.configMode).toBe("open");
-      expect(run.input).toContain("openclawqa");
+      expect(run.input).toContain("operatorqa");
     }
   });
 
@@ -1123,7 +1123,7 @@ describe("WhatsApp QA live runtime", () => {
         const latestProbe = sentTextCalls.findLast(
           ({ text }) =>
             /\bWHATSAPP_QA_ACTIVATION_ALWAYS_[A-Z0-9]+\b/u.test(text) &&
-            !/\bopenclawqa\b/iu.test(text),
+            !/\boperatorqa\b/iu.test(text),
         );
         if (latestProbe) {
           expect(
@@ -1203,7 +1203,7 @@ describe("WhatsApp QA live runtime", () => {
       /\bWHATSAPP_QA_ACTIVATION_ALWAYS_[A-Z0-9]+\b/u.test(text),
     );
     expect(alwaysProbe?.to).toBe(groupJid);
-    expect(alwaysProbe?.text).not.toMatch(/\bopenclawqa\b/i);
+    expect(alwaysProbe?.text).not.toMatch(/\boperatorqa\b/i);
     expect(alwaysModeReplyMatched).toBe(true);
     const restoreIndex = sentTextCalls.findIndex(
       ({ text, to }) => to === groupJid && text.trim() === "/activation mention",
@@ -1213,7 +1213,7 @@ describe("WhatsApp QA live runtime", () => {
       .slice(restoreIndex + 1)
       .find(({ text }) => /\bWHATSAPP_QA_ACTIVATION_QUIET_[A-Z0-9]+\b/u.test(text));
     expect(restoredQuietProbe?.to).toBe(groupJid);
-    expect(restoredQuietProbe?.text).not.toMatch(/\bopenclawqa\b/i);
+    expect(restoredQuietProbe?.text).not.toMatch(/\boperatorqa\b/i);
     expect(restoredQuietObservationReads).toBeGreaterThan(0);
   });
 
@@ -1287,7 +1287,7 @@ describe("WhatsApp QA live runtime", () => {
     }
 
     expect(run.target).toBe("group");
-    expect(run.input).toMatch(/\bopenclawqa\b/iu);
+    expect(run.input).toMatch(/\boperatorqa\b/iu);
     expect(run.input).toMatch(/\bWHATSAPP_QA_REPLY_TO_BOT_SEED_[A-Z0-9]+\b/u);
     expect(run.afterReply).toEqual(expect.any(Function));
 
@@ -1370,7 +1370,7 @@ describe("WhatsApp QA live runtime", () => {
     const quotedSend = sendTextCalls.find((call) => call.options?.quotedMessageKey);
     expect(quotedSend?.to).toBe(groupJid);
     expect(quotedSend?.text).toMatch(/\bWHATSAPP_QA_REPLY_TO_BOT_TRIGGER_[A-Z0-9]+\b/u);
-    expect(quotedSend?.text).not.toMatch(/\bopenclawqa\b/i);
+    expect(quotedSend?.text).not.toMatch(/\boperatorqa\b/i);
     expect(quotedSend?.text).not.toMatch(/@\d/u);
     expect(quotedSend?.options?.quotedMessageKey).toMatchObject({
       fromMe: false,
@@ -1415,8 +1415,8 @@ describe("WhatsApp QA live runtime", () => {
         target: "group",
       },
     ]);
-    expect(runs[0]?.run.input).not.toContain("openclawqa");
-    expect(runs[1]?.run.input).toMatch(/^openclawqa\b/u);
+    expect(runs[0]?.run.input).not.toContain("operatorqa");
+    expect(runs[1]?.run.input).toMatch(/^operatorqa\b/u);
 
     for (const { run } of runs) {
       expect(() =>
@@ -2129,14 +2129,14 @@ describe("WhatsApp QA live runtime", () => {
     if (scenarioRun.kind === "approval") {
       throw new Error("whatsapp-mention-gating unexpectedly built an approval scenario run");
     }
-    expect(scenarioRun.input).toContain("openclawqa reply with only this exact marker");
+    expect(scenarioRun.input).toContain("operatorqa reply with only this exact marker");
     expect(scenarioRun.input).not.toContain("visible reply tool check");
 
     const cfg = buildWhatsAppQaConfigFixture({
       groupJid: "120363000000000000@g.us",
     });
     expect(cfg.messages?.groupChat?.visibleReplies).toBe("automatic");
-    expect(cfg.messages?.groupChat?.mentionPatterns).toContain("\\bopenclawqa\\b");
+    expect(cfg.messages?.groupChat?.mentionPatterns).toContain("\\boperatorqa\\b");
   });
   it("classifies WhatsApp driver connection closures as retryable", () => {
     expect(testing.isTransientWhatsAppQaDriverError(new Error("Connection Closed"))).toBe(true);

@@ -52,7 +52,7 @@ describeControlUiE2e("Control UI logs auto-follow mocked Gateway E2E", () => {
       methodResponses: {
         "logs.tail": {
           cursor: logLines.length,
-          file: "/tmp/openclaw.log",
+          file: "/tmp/operator.log",
           lines: logLines,
           reset: true,
         },

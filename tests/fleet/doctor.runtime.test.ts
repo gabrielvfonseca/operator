@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { createSuiteTempRootTracker } from "../../src/test-helpers/temp-dir.js";
 import { cellAuthSecretDir, cellOwnerId } from "../../src/fleet/cell-profile.js";
 import type {

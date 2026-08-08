@@ -2,8 +2,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
+import type { OperatorConfig } from "operator/plugin-sdk/config-contracts";
+import type { RuntimeEnv } from "operator/plugin-sdk/runtime-env";
 import { monitorTelegramProvider } from "../../../../extensions/telegram/runtime-api.js";
 import { formatErrorMessage } from "../../../../src/infra/errors.js";
 import { createQaScriptEvidenceWriter } from "./script-evidence.js";

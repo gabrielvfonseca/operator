@@ -85,7 +85,7 @@ export function buildBrowserDoctorReport(params: {
         ? {}
         : {
             fixHint:
-              "Install the Operator Chrome extension (openclaw browser extension path), run openclaw browser extension pair, and paste the pairing string into the extension popup.",
+              "Install the Operator Chrome extension (operator browser extension path), run operator browser extension pair, and paste the pairing string into the extension popup.",
           }),
     });
   } else {
@@ -148,7 +148,7 @@ export function buildBrowserDoctorReport(params: {
       ...(status.cdpHttp || !status.running
         ? {}
         : {
-            fixHint: "Run openclaw browser start or inspect browser.cdpUrl/CDP port reachability.",
+            fixHint: "Run operator browser start or inspect browser.cdpUrl/CDP port reachability.",
           }),
     });
 

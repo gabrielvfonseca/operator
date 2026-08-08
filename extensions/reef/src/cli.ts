@@ -104,7 +104,7 @@ async function loadConfiguredManager(output: ReefCliOutput): Promise<{
 }> {
   const config = currentReefConfig();
   if (!config?.handle) {
-    return await fail(output, "Reef is not configured. Run `openclaw reef register` first.");
+    return await fail(output, "Reef is not configured. Run `operator reef register` first.");
   }
   const stateDir = resolveStateDir(config.stateDir);
   const keys = await loadOrCreateKeys(stateDir, false);
@@ -310,7 +310,7 @@ async function runRegister(output: ReefCliOutput, options: RegisterOptions): Pro
   emit(output, { status: "registered", handle, relayUrl, stateDir, fingerprint: printed }, [
     `Registered @${handle} on ${relayUrl}.`,
     `Safety fingerprint (share out of band): ${printed}`,
-    "Restart the gateway to connect: openclaw gateway restart",
+    "Restart the gateway to connect: operator gateway restart",
   ]);
 }
 

@@ -32,7 +32,7 @@ describe("Plugin SDK API baseline", () => {
       "workspace",
       "@gabrielvfonseca/operator",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "fs-safe",
       "dist",
       "secret-file.d.ts",
@@ -41,19 +41,19 @@ describe("Plugin SDK API baseline", () => {
       repoRoot,
       "node_modules",
       ".pnpm",
-      "@openclaw+fs-safe@1.0.0",
+      "@operator+fs-safe@1.0.0",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "fs-safe",
       "dist",
       "secret-file.d.ts",
     );
 
     expect(normalizePluginSdkApiSourcePath(repoRoot, linkedDependencyPath)).toBe(
-      "node_modules/@openclaw/fs-safe/dist/secret-file.d.ts",
+      "node_modules/@operator/fs-safe/dist/secret-file.d.ts",
     );
     expect(normalizePluginSdkApiSourcePath(repoRoot, pnpmDependencyPath)).toBe(
-      "node_modules/@openclaw/fs-safe/dist/secret-file.d.ts",
+      "node_modules/@operator/fs-safe/dist/secret-file.d.ts",
     );
   });
 
@@ -88,7 +88,7 @@ describe("Plugin SDK API baseline", () => {
     expect(rendered.baseline.modules.find((entry) => entry.entrypoint === "infra-runtime")).toEqual(
       expect.objectContaining({
         category: null,
-        importSpecifier: "openclaw/plugin-sdk/infra-runtime",
+        importSpecifier: "operator/plugin-sdk/infra-runtime",
       }),
     );
     expect(findDeclaration("OAuthProviderInterface")).toContain("readonly id: OAuthProviderId;");

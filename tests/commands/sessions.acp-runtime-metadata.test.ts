@@ -5,13 +5,13 @@ import type { OperatorConfig } from "../../src/config/types.operator.js";
 import { parseAgentSessionKey } from "../../src/routing/session-key.js";
 
 /**
- * Catalog #18 — `openclaw sessions --json` reports `agentRuntime.id: "@gabrielvfonseca/operator"` for
+ * Catalog #18 — `operator sessions --json` reports `agentRuntime.id: "@gabrielvfonseca/operator"` for
  * ACP sessions because the old metadata resolver only consulted agent-config
  * policies (env / agent / defaults / implicit fallback to "@gabrielvfonseca/operator"). The session
  * key clearly carries the ACP runtime indicator (the `:acp:` segment), but
  * `sessions.ts:294` used to ignore it.
  *
- * Empirical observation from a deployed openclaw container against a copilot
+ * Empirical observation from a deployed operator container against a copilot
  * agent that has no explicit `agentRuntime.id` policy:
  *
  *   {

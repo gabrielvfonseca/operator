@@ -511,7 +511,7 @@ async function expectSkippedUnavailableProvider(params: {
 }
 
 // Issue-backed Anthropic/OpenAI-compatible insufficient_quota payload under HTTP 400:
-// https://github.com/openclaw/openclaw/issues/23440
+// https://github.com/operator/operator/issues/23440
 const INSUFFICIENT_QUOTA_PAYLOAD =
   '{"type":"error","error":{"type":"insufficient_quota","message":"Your account has insufficient quota balance to run this request."}}';
 
@@ -1578,7 +1578,7 @@ describe("runWithModelFallback", () => {
     const lockError = new SessionWriteLockTimeoutError({
       timeoutMs: 10_000,
       owner: "pid=37121",
-      lockPath: "/tmp/openclaw/session.jsonl.lock",
+      lockPath: "/tmp/operator/session.jsonl.lock",
     });
     const run = vi.fn().mockRejectedValue(lockError);
 
@@ -1663,7 +1663,7 @@ describe("runWithModelFallback", () => {
     const lockError = new SessionWriteLockTimeoutError({
       timeoutMs: 10_000,
       owner: "pid=37121",
-      lockPath: "/tmp/openclaw/session.jsonl.lock",
+      lockPath: "/tmp/operator/session.jsonl.lock",
     });
     const providerError = {
       status: 429,

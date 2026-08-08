@@ -10,7 +10,7 @@ import {
   resolveGatewayWindowsTaskName,
 } from "../daemon/constants.js";
 import { forceKillChildProcessTree } from "../process/child-process-tree.js";
-import { resolveOperatorStateSqlitePath } from "../state/openclaw-state-db.paths.js";
+import { resolveOperatorStateSqlitePath } from "../state/operator-state-db.paths.js";
 import { SUPERVISOR_HINT_ENV_VARS, type RespawnSupervisor } from "./supervisor-markers.js";
 import type { UpdateChannel } from "./update-channels.js";
 import {

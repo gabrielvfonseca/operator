@@ -4,7 +4,7 @@ import { executeSqliteQuerySync } from "../../infra/kysely-sync.js";
 import {
   runOperatorAgentWriteTransaction,
   type OperatorAgentDatabase,
-} from "../../state/openclaw-agent-db.js";
+} from "../../state/operator-agent-db.js";
 import type { TranscriptEvent } from "./session-accessor.sqlite-contract.js";
 import {
   collectSessionEntryLookupKeys,

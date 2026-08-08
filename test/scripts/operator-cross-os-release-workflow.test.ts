@@ -1,4 +1,4 @@
-// operator Cross Os Release Workflow tests cover operator cross os release workflow script behavior.
+// Openclaw Cross Os Release Workflow tests cover operator cross os release workflow script behavior.
 import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
@@ -471,7 +471,7 @@ describe("cross-OS release checks workflow", () => {
         encoding: "utf8",
         env: {
           ...process.env,
-          OPERATOR_RELEASE_CHECKS_SCRIPT: SCRIPT_PATH,
+          OPENCLAW_RELEASE_CHECKS_SCRIPT: SCRIPT_PATH,
         },
       },
     );

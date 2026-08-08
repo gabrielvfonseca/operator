@@ -320,9 +320,9 @@ describe("sanitizeUserFacingText", () => {
   it("strips internal tool trace warning lines from error-context delivery text", () => {
     const input = [
       "Visible intro.",
-      "⚠️ 🛠️ `run openclaw definitely-not-a-real-subcommand (agent)` failed",
-      "⚠️ 🛠️ gh search issues --repo openclaw/openclaw --state open --no-search-pages.jsonl /tmp/operator_open_unlabeled_current.json (agent) failed",
-      "⚠️ 🛠️ gh search issues --repo openclaw/openclaw --state open (agent) failed: command timed out",
+      "⚠️ 🛠️ `run operator definitely-not-a-real-subcommand (agent)` failed",
+      "⚠️ 🛠️ gh search issues --repo operator/operator --state open --no-search-pages.jsonl /tmp/operator_open_unlabeled_current.json (agent) failed",
+      "⚠️ 🛠️ gh search issues --repo operator/operator --state open (agent) failed: command timed out",
       "🛠️ run git status",
       "📖 Read: lines 1-40 from secret.md",
       "Visible outro.",
@@ -343,7 +343,7 @@ describe("sanitizeUserFacingText", () => {
     const input = [
       "Example:",
       "```",
-      "⚠️ 🛠️ `run openclaw definitely-not-a-real-subcommand (agent)` failed",
+      "⚠️ 🛠️ `run operator definitely-not-a-real-subcommand (agent)` failed",
       "```",
     ].join("\n");
 

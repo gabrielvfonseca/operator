@@ -1192,7 +1192,7 @@ async function sendMediaQueue(queue: SendQueueItem[], ctx: StreamingMediaContext
 /**
  * 是否对私聊走 QQ 官方 C2C `stream_messages` 流式 API。
  * - `streaming.nativeTransport: true` 启用；仅 C2C 场景生效。
- * - 旧的 `streaming: true` 布尔与 `c2cStreamApi` 键由 `openclaw doctor --fix` 迁移。
+ * - 旧的 `streaming: true` 布尔与 `c2cStreamApi` 键由 `operator doctor --fix` 迁移。
  */
 export function shouldUseOfficialC2cStream(
   account: GatewayAccount,

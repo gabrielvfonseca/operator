@@ -282,7 +282,7 @@ export function registerBrowserCli(
     .action(() => {
       browser.outputHelp();
       defaultRuntime.error(
-        danger(`Missing subcommand. Try: "${formatCliCommand("openclaw browser status")}"`),
+        danger(`Missing subcommand. Try: "${formatCliCommand("operator browser status")}"`),
       );
       defaultRuntime.exit(1);
     });

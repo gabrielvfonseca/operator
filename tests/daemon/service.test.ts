@@ -279,7 +279,7 @@ describe("startGatewayService", () => {
       readCommand: vi.fn(async () => ({
         programArguments: [
           "/private/tmp/operator-ai-install-cli-pr118/tools/node/bin/node",
-          "/tmp/operator-ai-install-cli-pr118/lib/node_modules/openclaw/dist/index.js",
+          "/tmp/operator-ai-install-cli-pr118/lib/node_modules/operator/dist/index.js",
           "gateway",
         ],
         environment: {},

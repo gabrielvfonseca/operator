@@ -182,7 +182,7 @@ export const WHATSAPP_QA_CAPABILITY_SCENARIOS: WhatsAppQaScenarioDefinition[] = 
         },
         configMode: "allowlist",
         expectReply: true,
-        input: `openclawqa reply with only this exact marker before group outbound media checks: ${token}`,
+        input: `operatorqa reply with only this exact marker before group outbound media checks: ${token}`,
         matchText: token,
         target: "group",
       };
@@ -225,7 +225,7 @@ export const WHATSAPP_QA_CAPABILITY_SCENARIOS: WhatsAppQaScenarioDefinition[] = 
         },
         configMode: "allowlist",
         expectReply: true,
-        input: `openclawqa reply with only this exact marker before group outbound audio check: ${token}`,
+        input: `operatorqa reply with only this exact marker before group outbound audio check: ${token}`,
         matchText: token,
         target: "group",
       };
@@ -260,7 +260,7 @@ export const WHATSAPP_QA_CAPABILITY_SCENARIOS: WhatsAppQaScenarioDefinition[] = 
         },
         configMode: "allowlist",
         expectReply: true,
-        input: `openclawqa reply with only this exact marker before group outbound poll check: ${token}`,
+        input: `operatorqa reply with only this exact marker before group outbound poll check: ${token}`,
         matchText: token,
         target: "group",
       };

@@ -43,7 +43,7 @@ export const legacyConfigRules: LegacyConfigRule[] = [
   {
     path: ["models", "providers", OLLAMA_CLOUD_PROVIDER_ID],
     message:
-      'models.providers.ollama-cloud.baseUrl="https://ai.ollama.com" is retired; use "https://ollama.com". Run "openclaw doctor --fix".',
+      'models.providers.ollama-cloud.baseUrl="https://ai.ollama.com" is retired; use "https://ollama.com". Run "operator doctor --fix".',
     match: (value) => findRetiredOllamaCloudBaseUrl(value) !== null,
   },
 ];

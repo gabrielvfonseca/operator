@@ -238,15 +238,15 @@ describe("package-operator-for-docker", () => {
       skipDts: string | undefined;
       timeoutMs: number | undefined;
     }> = [];
-    const previousTimeout = process.env.OPERATOR_DOCKER_PACKAGE_BUILD_TIMEOUT_MS;
-    const previousSkipDts = process.env.OPERATOR_RUN_NODE_SKIP_DTS_BUILD;
-    const previousPackageExtensions = process.env.OPERATOR_EXTENSIONS;
-    const previousDockerBuildExtensions = process.env.OPERATOR_DOCKER_BUILD_EXTENSIONS;
+    const previousTimeout = process.env.OPENCLAW_DOCKER_PACKAGE_BUILD_TIMEOUT_MS;
+    const previousSkipDts = process.env.OPENCLAW_RUN_NODE_SKIP_DTS_BUILD;
+    const previousPackageExtensions = process.env.OPENCLAW_EXTENSIONS;
+    const previousDockerBuildExtensions = process.env.OPENCLAW_DOCKER_BUILD_EXTENSIONS;
     const previousInternalPluginIds = process.env[DOCKER_SELECTED_PLUGIN_BUILD_IDS_ENV];
-    process.env.OPERATOR_DOCKER_PACKAGE_BUILD_TIMEOUT_MS = "1234";
-    process.env.OPERATOR_RUN_NODE_SKIP_DTS_BUILD = "1";
-    process.env.OPERATOR_EXTENSIONS = "clickclack";
-    process.env.OPERATOR_DOCKER_BUILD_EXTENSIONS = "slack";
+    process.env.OPENCLAW_DOCKER_PACKAGE_BUILD_TIMEOUT_MS = "1234";
+    process.env.OPENCLAW_RUN_NODE_SKIP_DTS_BUILD = "1";
+    process.env.OPENCLAW_EXTENSIONS = "clickclack";
+    process.env.OPENCLAW_DOCKER_BUILD_EXTENSIONS = "slack";
     process.env[DOCKER_SELECTED_PLUGIN_BUILD_IDS_ENV] = "msteams";
 
     try {
@@ -261,29 +261,29 @@ describe("package-operator-for-docker", () => {
             command,
             args,
             cwd,
-            noPnpm: options.env?.OPERATOR_BUILD_ALL_NO_PNPM,
-            packageExtensions: options.env?.OPERATOR_EXTENSIONS,
-            dockerBuildExtensions: options.env?.OPERATOR_DOCKER_BUILD_EXTENSIONS,
+            noPnpm: options.env?.OPENCLAW_BUILD_ALL_NO_PNPM,
+            packageExtensions: options.env?.OPENCLAW_EXTENSIONS,
+            dockerBuildExtensions: options.env?.OPENCLAW_DOCKER_BUILD_EXTENSIONS,
             internalDockerBuildPluginIds: options.env?.[DOCKER_SELECTED_PLUGIN_BUILD_IDS_ENV],
-            skipDts: options.env?.OPERATOR_RUN_NODE_SKIP_DTS_BUILD,
+            skipDts: options.env?.OPENCLAW_RUN_NODE_SKIP_DTS_BUILD,
             timeoutMs: options.timeoutMs,
           });
         },
       });
     } finally {
       if (previousTimeout === undefined) {
-        delete process.env.OPERATOR_DOCKER_PACKAGE_BUILD_TIMEOUT_MS;
+        delete process.env.OPENCLAW_DOCKER_PACKAGE_BUILD_TIMEOUT_MS;
       } else {
-        process.env.OPERATOR_DOCKER_PACKAGE_BUILD_TIMEOUT_MS = previousTimeout;
+        process.env.OPENCLAW_DOCKER_PACKAGE_BUILD_TIMEOUT_MS = previousTimeout;
       }
       if (previousSkipDts === undefined) {
-        delete process.env.OPERATOR_RUN_NODE_SKIP_DTS_BUILD;
+        delete process.env.OPENCLAW_RUN_NODE_SKIP_DTS_BUILD;
       } else {
-        process.env.OPERATOR_RUN_NODE_SKIP_DTS_BUILD = previousSkipDts;
+        process.env.OPENCLAW_RUN_NODE_SKIP_DTS_BUILD = previousSkipDts;
       }
       for (const [envName, previousValue] of [
-        ["OPERATOR_EXTENSIONS", previousPackageExtensions],
-        ["OPERATOR_DOCKER_BUILD_EXTENSIONS", previousDockerBuildExtensions],
+        ["OPENCLAW_EXTENSIONS", previousPackageExtensions],
+        ["OPENCLAW_DOCKER_BUILD_EXTENSIONS", previousDockerBuildExtensions],
         [DOCKER_SELECTED_PLUGIN_BUILD_IDS_ENV, previousInternalPluginIds],
       ] as const) {
         if (previousValue === undefined) {
@@ -310,24 +310,24 @@ describe("package-operator-for-docker", () => {
   });
 
   it("rejects loose package artifact timeout env values", async () => {
-    const previousTimeout = process.env.OPERATOR_DOCKER_PACKAGE_BUILD_TIMEOUT_MS;
+    const previousTimeout = process.env.OPENCLAW_DOCKER_PACKAGE_BUILD_TIMEOUT_MS;
     try {
       for (const value of ["1e3", "123.9", "9007199254740993", "0"]) {
-        process.env.OPERATOR_DOCKER_PACKAGE_BUILD_TIMEOUT_MS = value;
+        process.env.OPENCLAW_DOCKER_PACKAGE_BUILD_TIMEOUT_MS = value;
 
         await expect(
           buildPackageArtifacts("/repo", {
             runImpl: async () => undefined,
           }),
         ).rejects.toThrow(
-          "OPERATOR_DOCKER_PACKAGE_BUILD_TIMEOUT_MS must be a positive timeout in milliseconds",
+          "OPENCLAW_DOCKER_PACKAGE_BUILD_TIMEOUT_MS must be a positive timeout in milliseconds",
         );
       }
     } finally {
       if (previousTimeout === undefined) {
-        delete process.env.OPERATOR_DOCKER_PACKAGE_BUILD_TIMEOUT_MS;
+        delete process.env.OPENCLAW_DOCKER_PACKAGE_BUILD_TIMEOUT_MS;
       } else {
-        process.env.OPERATOR_DOCKER_PACKAGE_BUILD_TIMEOUT_MS = previousTimeout;
+        process.env.OPENCLAW_DOCKER_PACKAGE_BUILD_TIMEOUT_MS = previousTimeout;
       }
     }
   });
@@ -755,13 +755,13 @@ describe("package-operator-for-docker", () => {
         "const { spawn } = require('node:child_process');",
         "const fs = require('node:fs');",
         `const child = spawn(process.execPath, ['-e', ${JSON.stringify(childScript)}], { stdio: 'ignore' });`,
-        "fs.writeFileSync(process.env.OPERATOR_TEST_CHILD_PID, String(child.pid));",
+        "fs.writeFileSync(process.env.OPENCLAW_TEST_CHILD_PID, String(child.pid));",
         "process.on('SIGTERM', () => {});",
         "setInterval(() => {}, 1000);",
       ].join("");
 
       const runPromise = runCommandForTest(process.execPath, ["-e", parentScript], process.cwd(), {
-        env: { ...process.env, OPERATOR_TEST_CHILD_PID: childPidPath },
+        env: { ...process.env, OPENCLAW_TEST_CHILD_PID: childPidPath },
         killAfterMs: 25,
         timeoutMs: 500,
       });
@@ -830,13 +830,13 @@ describe("package-operator-for-docker", () => {
         "const { spawn } = require('node:child_process');",
         "const fs = require('node:fs');",
         `const child = spawn(process.execPath, ['-e', ${JSON.stringify(childScript)}], { stdio: 'ignore' });`,
-        "fs.writeFileSync(process.env.OPERATOR_TEST_CHILD_PID, String(child.pid));",
+        "fs.writeFileSync(process.env.OPENCLAW_TEST_CHILD_PID, String(child.pid));",
         "setInterval(() => {}, 1000);",
       ].join("");
 
       await expect(
         runCommandForTest(process.execPath, ["-e", parentScript], process.cwd(), {
-          env: { ...process.env, OPERATOR_TEST_CHILD_PID: childPidPath },
+          env: { ...process.env, OPENCLAW_TEST_CHILD_PID: childPidPath },
           killAfterMs: 25,
           timeoutMs: 500,
         }),
@@ -917,7 +917,7 @@ describe("package-operator-for-docker", () => {
         "const { spawn } = require('node:child_process');",
         "const fs = require('node:fs');",
         `const child = spawn(process.execPath, ['-e', ${JSON.stringify(childScript)}], { stdio: 'ignore' });`,
-        "fs.writeFileSync(process.env.OPERATOR_TEST_CHILD_PID, String(child.pid));",
+        "fs.writeFileSync(process.env.OPENCLAW_TEST_CHILD_PID, String(child.pid));",
         "setInterval(() => {}, 1000);",
       ].join("");
       const runnerScript = [
@@ -926,7 +926,7 @@ describe("package-operator-for-docker", () => {
       ].join("\n");
       const runner = spawn(process.execPath, ["--input-type=module", "-e", runnerScript], {
         cwd: process.cwd(),
-        env: { ...process.env, OPERATOR_TEST_CHILD_PID: childPidPath },
+        env: { ...process.env, OPENCLAW_TEST_CHILD_PID: childPidPath },
         stdio: ["ignore", "ignore", "pipe"],
       });
       runnerPid = runner.pid ?? 0;

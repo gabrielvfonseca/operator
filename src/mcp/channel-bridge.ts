@@ -372,7 +372,7 @@ export class OperatorChannelBridge {
       inputPreview: params.inputPreview,
     });
     if (this.verbose) {
-      process.stderr.write(`openclaw mcp: pending Claude permission ${params.requestId}\n`);
+      process.stderr.write(`operator mcp: pending Claude permission ${params.requestId}\n`);
     }
   }
 
@@ -398,10 +398,10 @@ export class OperatorChannelBridge {
       }
       // Always surface a single low-noise record so swallowed delivery failures
       // remain observable; the spammy error detail stays behind --verbose.
-      process.stderr.write(`openclaw mcp: notification ${notification.method} failed\n`);
+      process.stderr.write(`operator mcp: notification ${notification.method} failed\n`);
       if (this.verbose) {
         process.stderr.write(
-          `openclaw mcp: notification ${notification.method} error: ${String(error)}\n`,
+          `operator mcp: notification ${notification.method} error: ${String(error)}\n`,
         );
       }
     }
@@ -527,10 +527,10 @@ export class OperatorChannelBridge {
     } catch (error) {
       // Always surface a single low-noise record so swallowed gateway event
       // failures remain observable; the spammy error detail stays behind --verbose.
-      process.stderr.write(`openclaw mcp: gateway event ${event.event} failed\n`);
+      process.stderr.write(`operator mcp: gateway event ${event.event} failed\n`);
       if (this.verbose) {
         process.stderr.write(
-          `openclaw mcp: gateway event ${event.event} error: ${String(error)}\n`,
+          `operator mcp: gateway event ${event.event} error: ${String(error)}\n`,
         );
       }
     }

@@ -778,7 +778,7 @@ describe("maybeRunCliInContainer", () => {
         },
       ),
     ).toThrow(
-      "openclaw update is not supported with --container; rebuild or restart the container image instead.",
+      "operator update is not supported with --container; rebuild or restart the container image instead.",
     );
     expect(spawnSync).not.toHaveBeenCalled();
   });
@@ -798,7 +798,7 @@ describe("maybeRunCliInContainer", () => {
         },
       ),
     ).toThrow(
-      "openclaw update is not supported with --container; rebuild or restart the container image instead.",
+      "operator update is not supported with --container; rebuild or restart the container image instead.",
     );
     expect(spawnSync).not.toHaveBeenCalled();
   });
@@ -818,7 +818,7 @@ describe("maybeRunCliInContainer", () => {
         },
       ),
     ).toThrow(
-      "openclaw update is not supported with --container; rebuild or restart the container image instead.",
+      "operator update is not supported with --container; rebuild or restart the container image instead.",
     );
     expect(spawnSync).not.toHaveBeenCalled();
   });

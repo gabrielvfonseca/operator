@@ -587,7 +587,7 @@ describe("mattermost inbound user posts", () => {
           id: "post-bare-mention",
           channel_id: "chan-1",
           user_id: "user-1",
-          message: "@openclaw",
+          message: "@operator",
           create_at: 1_714_000_000_001,
         }),
       },
@@ -601,7 +601,7 @@ describe("mattermost inbound user posts", () => {
 
     expect(mockState.dispatchReplyFromConfig).toHaveBeenCalledTimes(1);
     const ctx = mockState.dispatchReplyFromConfig.mock.calls.at(0)?.[0].ctx;
-    expect(ctx?.BodyForAgent).toBe("@openclaw");
+    expect(ctx?.BodyForAgent).toBe("@operator");
     expect(ctx?.MessageSid).toBe("post-bare-mention");
     expect(ctx?.OriginatingChannel).toBe("mattermost");
     expect(ctx?.Provider).toBe("mattermost");

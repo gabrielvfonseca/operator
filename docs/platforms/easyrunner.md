@@ -14,7 +14,7 @@ Compose apps and terminates HTTPS through Caddy.
 ## Before you begin
 
 - An EasyRunner server with a domain routed to it.
-- The official Operator image (`ghcr.io/openclaw/openclaw`) or your own build.
+- The official Operator image (`ghcr.io/operator/operator`) or your own build.
 - A persistent config volume for `/home/node/.operator`.
 - A persistent workspace volume for `/home/node/.operator/workspace`.
 - A strong Gateway token or password.
@@ -31,7 +31,7 @@ Create an EasyRunner app with a Compose file shaped like this:
 ```yaml
 services:
   operator:
-    image: ghcr.io/openclaw/operator:latest
+    image: ghcr.io/operator/operator:latest
     restart: unless-stopped
     environment:
       OPERATOR_GATEWAY_TOKEN: ${OPERATOR_GATEWAY_TOKEN}

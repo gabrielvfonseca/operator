@@ -91,7 +91,7 @@ Why this set matters:
 - Many RAG and memory pipelines expect `/v1/embeddings`.
 - Agent-native clients increasingly prefer `/v1/responses`.
 
-`/v1/models` is agent-first: it returns `openclaw`, `openclaw/default`, and `openclaw/<agentId>` for every configured agent. `openclaw/default` is the stable alias that always maps to the configured default agent. Send `x-operator-model` when you want a backend provider/model override; otherwise the selected agent's normal model and embedding setup stays in control.
+`/v1/models` is agent-first: it returns `operator`, `operator/default`, and `operator/<agentId>` for every configured agent. `operator/default` is the stable alias that always maps to the configured default agent. Send `x-operator-model` when you want a backend provider/model override; otherwise the selected agent's normal model and embedding setup stays in control.
 
 All of these run on the main Gateway port and use the same trusted operator auth boundary as the rest of the Gateway HTTP API.
 
@@ -277,7 +277,7 @@ sudo systemctl enable --now operator-gateway[-<profile>].service
 
 Use the same service body as the user unit, but install it under
 `/etc/systemd/system/operator-gateway[-<profile>].service` and adjust
-`ExecStart=` if your `openclaw` binary lives elsewhere.
+`ExecStart=` if your `operator` binary lives elsewhere.
 
 Do not also let `operator doctor --fix` install a user-level gateway service for the same profile/port. Doctor refuses that automatic install when it finds a system-level Operator gateway service; use `OPERATOR_SERVICE_REPAIR_POLICY=external` when the system unit owns the lifecycle.
 

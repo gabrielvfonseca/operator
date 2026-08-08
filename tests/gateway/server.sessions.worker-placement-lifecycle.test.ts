@@ -1,6 +1,6 @@
 import { afterEach, expect, test } from "vitest";
 import { installSessionPlacementResetGuard } from "../../src/agents/session-placement-admission.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { loadSessionEntry } from "../../src/gateway/session-utils.js";
 import { embeddedRunMock, writeSessionStore } from "../../src/gateway/test-helpers.js";
 import {

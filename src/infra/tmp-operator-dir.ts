@@ -70,7 +70,7 @@ export function resolvePreferredOperatorTmpDir(
   };
 
   const fallback = (): string => {
-    const suffix = uid === undefined ? "@gabrielvfonseca/operator" : `operator-${uid}`;
+    const suffix = uid === undefined ? "operator" : `operator-${uid}`;
     const joiner = platform === "win32" ? path.win32.join : path.join;
     return joiner(tmpdir(), suffix);
   };

@@ -5,8 +5,8 @@ import {
 } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 
 type DescribeImageWithModel =
-  typeof import("openclaw/plugin-sdk/media-runtime").describeImageWithModel;
-type TranscribeFirstAudio = typeof import("openclaw/plugin-sdk/media-runtime").transcribeFirstAudio;
+  typeof import("operator/plugin-sdk/media-runtime").describeImageWithModel;
+type TranscribeFirstAudio = typeof import("operator/plugin-sdk/media-runtime").transcribeFirstAudio;
 
 export async function describeImageWithModel(
   ...args: Parameters<DescribeImageWithModel>

@@ -7,7 +7,7 @@ import { readCronTaskRunHistoryPage } from "../../src/cron/task-run-history.js";
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import { resetTaskRegistryForTests } from "../../src/tasks/task-runtime.test-helpers.js";
 import { withOperatorTestState } from "../../src/test-utils/operator-test-state.ts";
 

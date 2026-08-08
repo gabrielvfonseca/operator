@@ -220,7 +220,7 @@ describe("skills verify CLI", () => {
       baseUrl: "https://clawhub.ai",
     });
     const payload = JSON.parse(mocks.runtimeStdout.at(-1) ?? "{}") as {
-      openclaw?: { resolution?: { source?: string; selector?: string } };
+      operator?: { resolution?: { source?: string; selector?: string } };
     };
     expect(payload.operator?.resolution).toMatchObject({
       source: "registry",
@@ -269,9 +269,9 @@ describe("skills verify CLI", () => {
   });
 
   it("surfaces only server-verified source provenance in verify JSON", async () => {
-    const sourceUrl = "https://github.com/openclaw/skills/tree/main/agentreceipt";
+    const sourceUrl = "https://github.com/operator/skills/tree/main/agentreceipt";
     const verifiedSourceUrl =
-      "https://github.com/openclaw/skills/tree/0123456789abcdef0123456789abcdef01234567/agentreceipt";
+      "https://github.com/operator/skills/tree/0123456789abcdef0123456789abcdef01234567/agentreceipt";
     mocks.fetchClawHubSkillVerificationMock.mockResolvedValueOnce({
       schema: "clawhub.skill.verify.v1",
       ok: true,
@@ -286,7 +286,7 @@ describe("skills verify CLI", () => {
         source: "server-resolved-github-import",
         kind: "github",
         url: sourceUrl,
-        repo: "openclaw/skills",
+        repo: "operator/skills",
         ref: "main",
         commit: "0123456789abcdef0123456789abcdef01234567",
         path: "agentreceipt",
@@ -298,7 +298,7 @@ describe("skills verify CLI", () => {
     await runCommand(["skills", "verify", "agentreceipt"]);
 
     const payload = JSON.parse(mocks.runtimeStdout.at(-1) ?? "{}") as {
-      openclaw?: { verifiedSourceUrl?: string };
+      operator?: { verifiedSourceUrl?: string };
     };
     expect(payload.operator?.verifiedSourceUrl).toBe(verifiedSourceUrl);
     expect(mocks.defaultRuntime.exit).not.toHaveBeenCalled();
@@ -318,7 +318,7 @@ describe("skills verify CLI", () => {
       artifact: { sourceFingerprint: "source-fp" },
       provenance: {
         source: "unavailable",
-        url: "https://github.com/openclaw/skills/tree/unverified/agentreceipt",
+        url: "https://github.com/operator/skills/tree/unverified/agentreceipt",
       },
       security: { status: "clean" },
       signature: { status: "unsigned" },
@@ -327,7 +327,7 @@ describe("skills verify CLI", () => {
     await runCommand(["skills", "verify", "agentreceipt"]);
 
     const payload = JSON.parse(mocks.runtimeStdout.at(-1) ?? "{}") as {
-      openclaw?: { verifiedSourceUrl?: string };
+      operator?: { verifiedSourceUrl?: string };
     };
     expect(payload.operator?.verifiedSourceUrl).toBeUndefined();
     expect(mocks.defaultRuntime.exit).not.toHaveBeenCalled();

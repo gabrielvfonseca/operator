@@ -92,7 +92,7 @@ function createMockCronService(): CronServiceContract {
       enabled: true,
       storePath: "/tmp/operator-test-cron.json",
       storage: "sqlite" as const,
-      sqlitePath: "/tmp/openclaw-test-state/state/operator.sqlite",
+      sqlitePath: "/tmp/operator-test-state/state/operator.sqlite",
       jobs: 0,
       nextWakeAtMs: null,
     })),

@@ -6,7 +6,7 @@ import { requireNodeSqlite } from "../../src/infra/node-sqlite.js";
 import {
   closeOperatorStateDatabaseForTest,
   runOperatorStateWriteTransaction,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import type { PluginCandidate } from "../../src/plugins/discovery.js";
 import { readPersistedInstalledPluginIndexInstallRecords } from "../../src/plugins/installed-plugin-index-records.js";
 import {

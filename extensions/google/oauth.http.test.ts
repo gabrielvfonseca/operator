@@ -9,9 +9,9 @@ import { TOKEN_URL } from "./oauth.shared.js";
 const fetchWithSsrFGuardMock = vi.fn();
 const releaseMock = vi.fn(async () => undefined);
 
-vi.mock("openclaw/plugin-sdk/ssrf-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/ssrf-runtime")>(
-    "openclaw/plugin-sdk/ssrf-runtime",
+vi.mock("operator/plugin-sdk/ssrf-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/ssrf-runtime")>(
+    "operator/plugin-sdk/ssrf-runtime",
   );
   return {
     ...actual,

@@ -67,7 +67,7 @@ describe("OpenAI-compatible models HTTP API (e2e)", () => {
     expect(Array.isArray(json.data)).toBe(true);
     expect((json.data?.length ?? 0) > 0).toBe(true);
     expect(json.data?.map((entry) => entry.id)).toContain("@gabrielvfonseca/operator");
-    expect(json.data?.map((entry) => entry.id)).toContain("openclaw/default");
+    expect(json.data?.map((entry) => entry.id)).toContain("operator/default");
     expect(
       json.data?.every(
         (entry) =>
@@ -81,7 +81,7 @@ describe("OpenAI-compatible models HTTP API (e2e)", () => {
     expect(res.status).toBe(200);
     const json = (await res.json()) as { object?: string; data?: Array<{ id?: string }> };
     expect(json.object).toBe("list");
-    expect(json.data?.map((entry) => entry.id)).toContain("openclaw/default");
+    expect(json.data?.map((entry) => entry.id)).toContain("operator/default");
   });
 
   it("serves /v1/models/{id}", async () => {
@@ -147,7 +147,7 @@ describe("OpenAI-compatible models HTTP API (e2e)", () => {
       expect(res.status).toBe(200);
       const json = (await res.json()) as { object?: string; data?: Array<{ id?: string }> };
       expect(json.object).toBe("list");
-      expect(json.data?.map((entry) => entry.id)).toContain("openclaw/default");
+      expect(json.data?.map((entry) => entry.id)).toContain("operator/default");
     } finally {
       await server.close({ reason: "models token auth compat test done" });
     }

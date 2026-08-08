@@ -355,7 +355,7 @@ export async function resolveQaRuntimeHostVersion(params: {
     }
     const packageRaw = await fs.readFile(packagePath, "utf8");
     const packageJson = JSON.parse(packageRaw) as {
-      openclaw?: {
+      operator?: {
         install?: {
           minHostVersion?: string;
         };

@@ -222,7 +222,7 @@ describe("MCP OAuth provider", () => {
             serverName: "Remote Docs",
             serverUrl: "https://mcp.example.com/mcp",
           }),
-        ).rejects.toThrow("Run openclaw mcp login Remote Docs.");
+        ).rejects.toThrow("Run operator mcp login Remote Docs.");
         expect(authMock).not.toHaveBeenCalled();
       },
       {
@@ -429,13 +429,13 @@ describe("MCP OAuth provider", () => {
           serverUrl: "https://mcp.example.com/mcp",
         });
 
-        await expect(provider.state?.()).rejects.toThrow("Run openclaw mcp login Remote Docs.");
+        await expect(provider.state?.()).rejects.toThrow("Run operator mcp login Remote Docs.");
         await expect(provider.saveCodeVerifier?.("verifier")).rejects.toThrow(
-          "Run openclaw mcp login Remote Docs.",
+          "Run operator mcp login Remote Docs.",
         );
         await expect(
           provider.redirectToAuthorization?.(new URL("https://auth.example.com/authorize")),
-        ).rejects.toThrow("Run openclaw mcp login Remote Docs.");
+        ).rejects.toThrow("Run operator mcp login Remote Docs.");
       },
       {
         prefix: "operator-mcp-oauth-noninteractive-",

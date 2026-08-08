@@ -588,7 +588,7 @@ describe("operator live updater", () => {
     writeFileSync(configPath, "{}\n");
     writeFileSync(
       capture,
-      'import fs from "node:fs"; console.log(JSON.stringify({ argv: process.argv.slice(2), config: JSON.parse(fs.readFileSync(process.env.OPERATOR_CONFIG_PATH, "utf8")), hasToken: Boolean(process.env.OPERATOR_GATEWAY_TOKEN), url: process.env.OPERATOR_GATEWAY_URL ?? null }));\n',
+      'import fs from "node:fs"; console.log(JSON.stringify({ argv: process.argv.slice(2), config: JSON.parse(fs.readFileSync(process.env.OPENCLAW_CONFIG_PATH, "utf8")), hasToken: Boolean(process.env.OPENCLAW_GATEWAY_TOKEN), url: process.env.OPENCLAW_GATEWAY_URL ?? null }));\n',
     );
 
     const result = JSON.parse(
@@ -602,7 +602,7 @@ describe("operator live updater", () => {
           executable: process.execPath,
           invocationPrefix: [capture],
           port: 19001,
-          serviceEnvironment: { OPERATOR_GATEWAY_TOKEN: ["fixture", "value"].join("-") },
+          serviceEnvironment: { OPENCLAW_GATEWAY_TOKEN: ["fixture", "value"].join("-") },
           wrapperPath: null,
         },
       ),
@@ -999,7 +999,7 @@ describe("operator live updater", () => {
     expect(commands.calls).toEqual([
       `${process.execPath} dist/index.js gateway stop`,
       "pnpm install --frozen-lockfile",
-      "bun build",
+      "pnpm build",
       "pnpm operator gateway restart",
       "pnpm operator gateway status --deep --require-rpc --json",
       "pnpm operator health --verbose --json",
@@ -1046,7 +1046,7 @@ describe("operator live updater", () => {
     expect(commands.calls).toEqual([
       `${process.execPath} dist/index.js gateway stop`,
       "pnpm install --frozen-lockfile",
-      "bun build",
+      "pnpm build",
       "pnpm operator gateway restart",
       "pnpm operator gateway status --deep --require-rpc --json",
       "pnpm operator health --verbose --json",
@@ -1163,7 +1163,7 @@ describe("operator live updater", () => {
     expect(output.gatewayLogAudit).toMatchObject({ errorCount: 0 });
     expect(commands.calls).toEqual([
       "pnpm install --frozen-lockfile",
-      "bun build",
+      "pnpm build",
       "pnpm operator gateway restart",
       "pnpm operator gateway status --deep --require-rpc --json",
       "pnpm operator health --verbose --json",
@@ -1423,7 +1423,7 @@ describe("operator live updater", () => {
     expect(commands.calls).toEqual([
       `/bin/launchctl bootout gui/${uid}/ai.operator.gateway`,
       "prove gateway stopped",
-      "bun build",
+      "pnpm build",
       `/bin/launchctl enable gui/${uid}/ai.operator.gateway`,
       `/bin/launchctl bootstrap gui/${uid} ${plistPath}`,
     ]);
@@ -1511,7 +1511,7 @@ describe("operator live updater", () => {
     expect(commands.calls).toEqual([
       "prove gateway stopped",
       "pnpm install --frozen-lockfile",
-      "bun build",
+      "pnpm build",
       `/bin/launchctl bootout gui/${uid}/ai.operator.gateway`,
       "prove gateway stopped",
       "sleep 100",
@@ -1590,7 +1590,7 @@ describe("operator live updater", () => {
     const uid = process.getuid?.() ?? 501;
     expect(commands.calls).toEqual([
       "pnpm install --frozen-lockfile",
-      "bun build",
+      "pnpm build",
       `/bin/launchctl enable gui/${uid}/ai.operator.gateway`,
       `/bin/launchctl bootstrap gui/${uid} ${plistPath}`,
     ]);
@@ -1751,7 +1751,7 @@ describe("operator live updater", () => {
     expect(calls).toEqual([
       `${process.execPath} dist/index.js gateway stop`,
       "pnpm install --frozen-lockfile",
-      "bun build",
+      "pnpm build",
     ]);
   });
 

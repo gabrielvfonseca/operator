@@ -42,7 +42,7 @@ describe("plugin registry runtime config scope", () => {
     expect(api.resolvePath("data/cache.json")).toBe(path.join(pluginRoot, "data", "cache.json"));
     expect(api.resolvePath("./data/cache.json")).toBe(path.join(pluginRoot, "data", "cache.json"));
     expect(api.resolvePath(absolute)).toBe(absolute);
-    expect(api.resolvePath("~/openclaw/plugin.txt")).toBe(resolveUserPath("~/openclaw/plugin.txt"));
+    expect(api.resolvePath("~/operator/plugin.txt")).toBe(resolveUserPath("~/operator/plugin.txt"));
   });
 
   it("adds plugin context to lazy runtime resolution failures", () => {

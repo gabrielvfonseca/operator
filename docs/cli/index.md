@@ -1,12 +1,12 @@
 ---
 summary: "Operator CLI index: command list, global flags, and links to per-command pages"
 read_when:
-  - Finding the right `openclaw` subcommand
+  - Finding the right `operator` subcommand
   - Looking up global flags or output styling rules
 title: "CLI reference"
 ---
 
-`openclaw` is the main CLI entry point. Each core command has a dedicated
+`operator` is the main CLI entry point. Each core command has a dedicated
 reference page or is documented with the command it aliases; this index lists
 the commands, global flags, and output styling rules that apply across the CLI.
 
@@ -21,7 +21,7 @@ Setup commands by intent:
 
 | Area                         | Commands                                                                                                                                                                                                                              |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Setup and onboarding         | [`openclaw`](/cli/openclaw) · [`setup`](/cli/setup) · [`onboard`](/cli/onboard) · [`configure`](/cli/configure) · [`config`](/cli/config) · [`completion`](/cli/completion) · [`doctor`](/cli/doctor) · [`dashboard`](/cli/dashboard) |
+| Setup and onboarding         | [`operator`](/cli/operator) · [`setup`](/cli/setup) · [`onboard`](/cli/onboard) · [`configure`](/cli/configure) · [`config`](/cli/config) · [`completion`](/cli/completion) · [`doctor`](/cli/doctor) · [`dashboard`](/cli/dashboard) |
 | Reset, backup, and migration | [`backup`](/cli/backup) · [`migrate`](/cli/migrate) · [`reset`](/cli/reset) · [`uninstall`](/cli/uninstall) · [`update`](/cli/update)                                                                                                 |
 | Messaging and agents         | [`message`](/cli/message) · [`agent`](/cli/agent) · [`agents`](/cli/agents) · [`attach`](/cli/attach) · [`acp`](/cli/acp) · [`mcp`](/cli/mcp)                                                                                         |
 | Health and sessions          | [`status`](/cli/status) · [`health`](/cli/health) · [`sessions`](/cli/sessions) · [`audit`](/cli/audit)                                                                                                                               |
@@ -83,7 +83,7 @@ independently; run `<command> --help` for the authoritative, current list.
 
 ```
 operator [--dev] [--profile <name>] <command>
-  openclaw
+  operator
   setup
   onboard
   configure

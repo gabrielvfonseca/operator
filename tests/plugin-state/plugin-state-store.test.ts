@@ -3,8 +3,8 @@ import { rmSync, statSync } from "node:fs";
 import path from "node:path";
 import { MAX_DATE_TIMESTAMP_MS } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import { openOperatorStateDatabase } from "../../src/state/openclaw-state-db.js";
-import { resolveOperatorStateSqlitePath } from "../../src/state/openclaw-state-db.paths.js";
+import { openOperatorStateDatabase } from "../../src/state/operator-state-db.js";
+import { resolveOperatorStateSqlitePath } from "../../src/state/operator-state-db.paths.js";
 import {
   createOperatorTestState,
   withOperatorTestState,

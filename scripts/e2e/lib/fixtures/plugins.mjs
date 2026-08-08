@@ -154,7 +154,7 @@ function writePluginMarketplace(args) {
   writeJson(path.join(process.env.HOME, ".claude", "plugins", "known_marketplaces.json"), {
     "claude-fixtures": {
       installLocation: root,
-      source: { type: "github", repo: "openclaw/fixture-marketplace" },
+      source: { type: "github", repo: "operator/fixture-marketplace" },
     },
   });
 }

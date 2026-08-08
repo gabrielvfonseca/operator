@@ -19,7 +19,7 @@ const { warnMock } = vi.hoisted(() => ({
   warnMock: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/runtime-env", { spy: true });
+vi.mock("operator/plugin-sdk/runtime-env", { spy: true });
 
 function warningLines(): string[] {
   return warnMock.mock.calls.map(([line]) => String(line));

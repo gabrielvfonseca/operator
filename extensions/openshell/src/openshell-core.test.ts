@@ -41,9 +41,9 @@ let createOpenShellSandboxBackendManager: typeof import("./backend.js").createOp
 let createOpenShellSandboxBackendFactory: typeof import("./backend.js").createOpenShellSandboxBackendFactory;
 
 async function installOpenShellBackendMocks() {
-  vi.doMock("openclaw/plugin-sdk/sandbox", async () => {
-    const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/sandbox")>(
-      "openclaw/plugin-sdk/sandbox",
+  vi.doMock("operator/plugin-sdk/sandbox", async () => {
+    const actual = await vi.importActual<typeof import("operator/plugin-sdk/sandbox")>(
+      "operator/plugin-sdk/sandbox",
     );
     return {
       ...actual,
@@ -65,7 +65,7 @@ async function installOpenShellBackendMocks() {
 }
 
 function uninstallOpenShellBackendMocks() {
-  vi.doUnmock("openclaw/plugin-sdk/sandbox");
+  vi.doUnmock("operator/plugin-sdk/sandbox");
   vi.doUnmock("./cli.js");
   vi.resetModules();
 }

@@ -9,12 +9,12 @@ import type { OperatorConfig } from "../../src/config/config.js";
 import * as sessionStore from "../../src/config/sessions.js";
 import { loadNodeHostConfig } from "../../src/node-host/config.js";
 import { readChannelPairingStateSnapshot } from "../../src/pairing/pairing-store-sqlite.test-helpers.js";
-import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/operator-state-db.generated.js";
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
   OPERATOR_STATE_SCHEMA_VERSION,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import { createTrackedTempDirs } from "../../src/test-utils/tracked-temp-dirs.js";
 import {
   executeSqliteQuerySync,
@@ -805,7 +805,7 @@ describe("state migrations", () => {
     await expect(fs.readFile(outsideStorePath, "utf8")).resolves.toBe("{}\n");
     await expect(fs.readFile(legacyStorePath, "utf8")).resolves.toContain("legacy-task");
     expect(result.warnings).toContain(
-      `Deferred legacy session migration in final-component symlink store ${targetStorePath}; configure one canonical session.store path, then rerun openclaw doctor --fix`,
+      `Deferred legacy session migration in final-component symlink store ${targetStorePath}; configure one canonical session.store path, then rerun operator doctor --fix`,
     );
   });
 
@@ -1035,8 +1035,8 @@ describe("state migrations", () => {
     >;
     expect(outsideStore["voice:15550001111"]?.sessionId).toBe("outside-voice");
     expect(result.warnings).toEqual([
-      `Deferred session key migration in final-component symlink store ${storePath}; configure one canonical session.store path, then rerun openclaw doctor --fix`,
-      `Deferred legacy session migration in final-component symlink store ${storePath}; configure one canonical session.store path, then rerun openclaw doctor --fix`,
+      `Deferred session key migration in final-component symlink store ${storePath}; configure one canonical session.store path, then rerun operator doctor --fix`,
+      `Deferred legacy session migration in final-component symlink store ${storePath}; configure one canonical session.store path, then rerun operator doctor --fix`,
     ]);
   });
 
@@ -1079,7 +1079,7 @@ describe("state migrations", () => {
     >;
     expect(outsideStore["agent:main:task"]?.acp).toBeDefined();
     expect(result.warnings).toContain(
-      `Deferred ACP metadata migration in final-component symlink store ${configuredStorePath}; configure one canonical session.store path, then rerun openclaw doctor --fix`,
+      `Deferred ACP metadata migration in final-component symlink store ${configuredStorePath}; configure one canonical session.store path, then rerun operator doctor --fix`,
     );
     expect(result.changes).not.toContain(
       "Migrated 1 ACP session metadata row → shared SQLite state",

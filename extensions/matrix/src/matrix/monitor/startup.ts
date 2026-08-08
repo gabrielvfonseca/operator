@@ -109,7 +109,7 @@ export async function runMatrixStartupMaintenance(
     );
     if (deviceHealth.staleOperatorDevices.length > 0) {
       params.logger.warn(
-        `matrix: stale Operator devices detected for ${params.auth.userId}: ${deviceHealth.staleOperatorDevices.map((device) => device.deviceId).join(", ")}. Run 'openclaw matrix devices prune-stale --account ${params.effectiveAccountId}' to keep encrypted-room trust healthy.`,
+        `matrix: stale Operator devices detected for ${params.auth.userId}: ${deviceHealth.staleOperatorDevices.map((device) => device.deviceId).join(", ")}. Run 'operator matrix devices prune-stale --account ${params.effectiveAccountId}' to keep encrypted-room trust healthy.`,
       );
     }
   } catch (err) {
@@ -139,7 +139,7 @@ export async function runMatrixStartupMaintenance(
       startupVerification.kind === "request-failed"
     ) {
       params.logger.info(
-        "matrix: device not verified — run 'openclaw matrix verify device <key>' to enable E2EE",
+        "matrix: device not verified — run 'operator matrix verify device <key>' to enable E2EE",
       );
       if (startupVerification.kind === "pending") {
         params.logger.info(

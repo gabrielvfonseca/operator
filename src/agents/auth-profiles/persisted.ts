@@ -9,7 +9,7 @@ import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normal
 import { resolveOAuthPath } from "../../config/paths.js";
 import { coerceSecretRef } from "../../config/types.secrets.js";
 import { loadJsonFile } from "../../infra/json-file.js";
-import type { OperatorAgentDatabase } from "../../state/openclaw-agent-db.js";
+import type { OperatorAgentDatabase } from "../../state/operator-agent-db.js";
 import { asBoolean } from "../../utils/boolean.js";
 import { AUTH_STORE_VERSION, log } from "./constants.js";
 import { isLegacyOAuthRef } from "./legacy-oauth-ref.js";

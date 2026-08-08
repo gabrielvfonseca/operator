@@ -101,8 +101,8 @@ export type MatrixStreamingConfig = {
   /** Chunking mode: "length" (default) splits by size; "newline" splits on every newline. */
   chunkMode?: "length" | "newline";
   /** Block streaming delivery controls (separate from the preview mode). Default: disabled. */
-  block?: import("openclaw/plugin-sdk/channel-outbound").ChannelStreamingBlockConfig;
-  progress?: import("openclaw/plugin-sdk/channel-outbound").ChannelStreamingProgressConfig;
+  block?: import("operator/plugin-sdk/channel-outbound").ChannelStreamingBlockConfig;
+  progress?: import("operator/plugin-sdk/channel-outbound").ChannelStreamingProgressConfig;
   preview?: {
     /** Show tool/progress activity in the live draft preview. Default: true. */
     toolProgress?: boolean;
@@ -227,7 +227,7 @@ export type MatrixConfig = {
    *   lines in progress mode. `streaming.preview.toolProgress: false` keeps
    *   legacy answer preview edits but hides interim tool/progress lines.
    * Legacy scalar/boolean spellings and the flat `blockStreaming`/`chunkMode`
-   * keys migrate via `openclaw doctor --fix`.
+   * keys migrate via `operator doctor --fix`.
    * Default: `mode: "off"`.
    */
   streaming?: MatrixStreamingConfig;

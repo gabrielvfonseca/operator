@@ -69,7 +69,7 @@ describe("sandbox docker config", () => {
         defaults: {
           sandbox: {
             docker: {
-              binds: ["D:/data/openclaw/src:/src:ro", "D:\\data\\openclaw\\output:/output:rw"],
+              binds: ["D:/data/operator/src:/src:ro", "D:\\data\\operator\\output:/output:rw"],
             },
           },
         },
@@ -78,8 +78,8 @@ describe("sandbox docker config", () => {
     expect(res.ok).toBe(true);
     if (res.ok) {
       expect(res.config.agents?.defaults?.sandbox?.docker?.binds).toEqual([
-        "D:/data/openclaw/src:/src:ro",
-        "D:\\data\\openclaw\\output:/output:rw",
+        "D:/data/operator/src:/src:ro",
+        "D:\\data\\operator\\output:/output:rw",
       ]);
     }
   });
@@ -258,7 +258,7 @@ describe("sandbox browser binds config", () => {
             browser: {
               binds: [
                 "/home/user/.chrome-profile:/data/chrome:rw",
-                "D:/data/openclaw/chrome:/data/chrome-windows:rw",
+                "D:/data/operator/chrome:/data/chrome-windows:rw",
               ],
             },
           },
@@ -269,7 +269,7 @@ describe("sandbox browser binds config", () => {
     if (res.ok) {
       expect(res.config.agents?.defaults?.sandbox?.browser?.binds).toEqual([
         "/home/user/.chrome-profile:/data/chrome:rw",
-        "D:/data/openclaw/chrome:/data/chrome-windows:rw",
+        "D:/data/operator/chrome:/data/chrome-windows:rw",
       ]);
     }
   });

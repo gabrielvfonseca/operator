@@ -748,7 +748,7 @@ describe("loadOperatorPlugins", () => {
             body: memoryPluginBody("memory-lancedb"),
           });
           return withStateDir((stateDir) => {
-            const globalDir = path.join(stateDir, "node_modules", "@openclaw", "memory-lancedb");
+            const globalDir = path.join(stateDir, "node_modules", "@operator", "memory-lancedb");
             mkdirSafe(globalDir);
             const globalPlugin = writePlugin({
               id: "memory-lancedb",
@@ -1036,8 +1036,8 @@ describe("loadOperatorPlugins", () => {
     expect(openAllowWarning).toBeDefined();
     expect(openAllowWarning).toContain('"warn-open-allow-remediation"');
     expect(openAllowWarning).toContain('"plugins": { "allow": [');
-    expect(openAllowWarning).toContain("openclaw plugins list --enabled --verbose");
-    expect(openAllowWarning).toContain("openclaw plugins inspect warn-open-allow-remediation");
+    expect(openAllowWarning).toContain("operator plugins list --enabled --verbose");
+    expect(openAllowWarning).toContain("operator plugins inspect warn-open-allow-remediation");
   });
 
   it("includes actionable plugins.allow remediation hints in the untracked-provenance warning", () => {
@@ -1071,7 +1071,7 @@ describe("loadOperatorPlugins", () => {
       );
       expect(untrackedWarning).toBeDefined();
       expect(untrackedWarning).toContain('"warn-untracked-remediation"');
-      expect(untrackedWarning).toContain("openclaw plugins inspect warn-untracked-remediation");
+      expect(untrackedWarning).toContain("operator plugins inspect warn-untracked-remediation");
       expect(untrackedWarning).toContain("reinstall from a trusted source");
 
       const diagnostic = registry.diagnostics.find(
@@ -1080,7 +1080,7 @@ describe("loadOperatorPlugins", () => {
           entry.message.includes("loaded without install/load-path provenance"),
       );
       expect(diagnostic?.message).toContain('"warn-untracked-remediation"');
-      expect(diagnostic?.message).toContain("openclaw plugins inspect warn-untracked-remediation");
+      expect(diagnostic?.message).toContain("operator plugins inspect warn-untracked-remediation");
       expect(diagnostic?.message).toContain("reinstall from a trusted source");
     });
   });
@@ -1112,8 +1112,8 @@ describe("loadOperatorPlugins", () => {
     expect(message).toContain("plugins.allow is empty");
     expect(message).toContain("(+2 more)");
     expect(message).not.toContain('"plugins": { "allow": [');
-    expect(message).toContain("openclaw plugins list --enabled --verbose");
-    expect(message).toContain("openclaw plugins inspect <id>");
+    expect(message).toContain("operator plugins list --enabled --verbose");
+    expect(message).toContain("operator plugins inspect <id>");
   });
 
   it("handles workspace-discovered plugins according to trust and precedence", () => {
@@ -1688,7 +1688,7 @@ describe("loadOperatorPlugins", () => {
 
   it("supports legacy plugins subscribing to diagnostic events from the root sdk", async () => {
     useNoBundledPlugins();
-    const seenKey = "__openclawLegacyRootDiagnosticSeen";
+    const seenKey = "__operatorLegacyRootDiagnosticSeen";
     delete (globalThis as Record<string, unknown>)[seenKey];
 
     const plugin = writePlugin({

@@ -82,7 +82,7 @@ describeLive("Gemini CLI MCP settings smoke", () => {
         plugins: { enabled: false },
         mcp: {
           servers: {
-            openclawLiveProbe: {
+            operatorLiveProbe: {
               transport: "streamable-http",
               url: probeServer.url,
             },
@@ -101,7 +101,7 @@ describeLive("Gemini CLI MCP settings smoke", () => {
         maxBuffer: 1024 * 1024,
       });
       const output = `${result.stdout}\n${result.stderr}`;
-      expect(output).toContain("openclawLiveProbe");
+      expect(output).toContain("operatorLiveProbe");
       expect(output).toMatch(/\(http\)|type:\s*http|http/i);
       expect(output).not.toContain("transport");
     } finally {

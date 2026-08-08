@@ -27,7 +27,7 @@ describe("legacy rescue pending cleanup", () => {
   it("discards both retired stores only during explicit doctor migration", () => {
     const stateDir = makeStateDir();
     const crestodianPath = writeLegacyApproval(stateDir, "crestodian");
-    const openclawPath = writeLegacyApproval(stateDir, "@gabrielvfonseca/operator");
+    const operatorPath = writeLegacyApproval(stateDir, "@gabrielvfonseca/operator");
 
     const runtimeDetection = detectLegacyRescuePending({ stateDir });
     expect(runtimeDetection.hasLegacy).toBe(false);
@@ -36,7 +36,7 @@ describe("legacy rescue pending cleanup", () => {
       warnings: [],
     });
     expect(fs.existsSync(crestodianPath)).toBe(true);
-    expect(fs.existsSync(openclawPath)).toBe(true);
+    expect(fs.existsSync(operatorPath)).toBe(true);
 
     const doctorDetection = detectLegacyRescuePending({
       stateDir,
@@ -48,7 +48,7 @@ describe("legacy rescue pending cleanup", () => {
     expect(result.warnings).toEqual([]);
     expect(result.changes).toHaveLength(1);
     expect(fs.existsSync(crestodianPath)).toBe(false);
-    expect(fs.existsSync(openclawPath)).toBe(false);
+    expect(fs.existsSync(operatorPath)).toBe(false);
     expect(detectLegacyRescuePending({ stateDir, doctorOnlyStateMigrations: true }).hasLegacy).toBe(
       false,
     );
@@ -56,14 +56,14 @@ describe("legacy rescue pending cleanup", () => {
 
   it("recomputes fixed owner paths instead of trusting detection paths", () => {
     const stateDir = makeStateDir();
-    const openclawPath = writeLegacyApproval(stateDir, "@gabrielvfonseca/operator");
+    const operatorPath = writeLegacyApproval(stateDir, "@gabrielvfonseca/operator");
 
     discardLegacyRescuePending({
       detected: { hasLegacy: true, sourcePaths: [path.join(stateDir, "untrusted")] },
       stateDir,
     });
 
-    expect(fs.existsSync(openclawPath)).toBe(false);
+    expect(fs.existsSync(operatorPath)).toBe(false);
   });
 
   it("refuses to traverse a symlinked owner directory", () => {

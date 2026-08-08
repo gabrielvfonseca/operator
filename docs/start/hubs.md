@@ -23,7 +23,7 @@ Use these hubs to discover every page, including deep dives and reference docs t
 - [Docs directory](/start/docs-directory)
 - [Configuration](/gateway/configuration)
 - [Configuration examples](/gateway/configuration-examples)
-- [Operator assistant](/start/openclaw)
+- [Operator assistant](/start/operator)
 - [Showcase](/start/showcase)
 - [Lore](/start/lore)
 

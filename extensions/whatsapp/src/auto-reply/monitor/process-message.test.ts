@@ -46,7 +46,7 @@ vi.mock("./inbound-dispatch.js", async (importOriginal) => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/plugin-runtime", () => ({
+vi.mock("operator/plugin-sdk/plugin-runtime", () => ({
   getGlobalHookRunner: () => ({
     hasHooks: (hookName: string) => hookName === "message_received",
     runMessageReceived: runMessageReceivedMock,

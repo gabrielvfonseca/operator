@@ -966,7 +966,7 @@ status=done`,
     expect(report.pass).toBe(false);
     expect(report.failedScenarios).toBe(1);
     expect(report.failures).toContain(
-      "Approval turn tool followthrough missing live assistant-message usage (openclaw=0, codex=0).",
+      "Approval turn tool followthrough missing live assistant-message usage (operator=0, codex=0).",
     );
     expect(report.scenarios[0]?.status).toBe("fail");
   });
@@ -1062,7 +1062,7 @@ status=done`,
       }),
     );
 
-    expect(report).toContain("# Operator Runtime Parity Report — openclaw vs codex");
+    expect(report).toContain("# Operator Runtime Parity Report — operator vs codex");
     expect(report).toContain("| Tool-call-shape drift | 1 |");
     expect(report).toContain("### Compaction retry after mutating tool");
     expect(report).toContain("- drift: tool-call-shape");

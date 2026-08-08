@@ -122,7 +122,7 @@ export interface QQBotAccountConfig {
    * - `mode` "partial" (default) enables block streaming; "off" disables it.
    * - `nativeTransport: true` uses QQ's official C2C `stream_messages` API for DMs.
    * Legacy `streaming: true|false` scalars and the `c2cStreamApi` key migrate
-   * via `openclaw doctor --fix`.
+   * via `operator doctor --fix`.
    */
   streaming?: {
     mode?: "off" | "partial";

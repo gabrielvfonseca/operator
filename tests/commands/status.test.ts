@@ -332,11 +332,11 @@ async function createMockStatusScanResult(params: { includePluginCompatibility?:
     tailscaleDns: null,
     tailscaleHttpsUrl: null,
     update: {
-      root: "/tmp/openclaw",
+      root: "/tmp/operator",
       installKind: "git",
       packageManager: "pnpm",
       git: {
-        root: "/tmp/openclaw",
+        root: "/tmp/operator",
         branch: "main",
         upstream: "origin/main",
         dirty: false,
@@ -347,8 +347,8 @@ async function createMockStatusScanResult(params: { includePluginCompatibility?:
       deps: {
         manager: "pnpm",
         status: "ok",
-        lockfilePath: "/tmp/openclaw/pnpm-lock.yaml",
-        markerPath: "/tmp/openclaw/node_modules/.modules.yaml",
+        lockfilePath: "/tmp/operator/pnpm-lock.yaml",
+        markerPath: "/tmp/operator/node_modules/.modules.yaml",
       },
       registry: { latestVersion: "0.0.0" },
     },
@@ -533,7 +533,7 @@ vi.mock("../plugins/memory-runtime.js", () => ({
         files: 2,
         chunks: 3,
         dirty: false,
-        workspaceDir: "/tmp/openclaw",
+        workspaceDir: "/tmp/operator",
         dbPath: "/tmp/memory.sqlite",
         provider: "openai",
         model: "text-embedding-3-small",
@@ -692,9 +692,9 @@ vi.mock("../gateway/call.js", () => ({
 vi.mock("../gateway/agent-list.js", () => ({
   listGatewayAgentsBasic: mocks.listGatewayAgentsBasic,
 }));
-vi.mock("../infra/openclaw-root.js", () => ({
-  resolveOperatorPackageRoot: vi.fn().mockResolvedValue("/tmp/openclaw"),
-  resolveOperatorPackageRootSync: vi.fn(() => "/tmp/openclaw"),
+vi.mock("../infra/operator-root.js", () => ({
+  resolveOperatorPackageRoot: vi.fn().mockResolvedValue("/tmp/operator"),
+  resolveOperatorPackageRootSync: vi.fn(() => "/tmp/operator"),
 }));
 vi.mock("../infra/os-summary.js", () => ({
   resolveOsSummary: () => ({
@@ -706,11 +706,11 @@ vi.mock("../infra/os-summary.js", () => ({
 }));
 vi.mock("../infra/update-check.js", () => ({
   checkUpdateStatus: vi.fn().mockResolvedValue({
-    root: "/tmp/openclaw",
+    root: "/tmp/operator",
     installKind: "git",
     packageManager: "pnpm",
     git: {
-      root: "/tmp/openclaw",
+      root: "/tmp/operator",
       branch: "main",
       upstream: "origin/main",
       dirty: false,
@@ -721,8 +721,8 @@ vi.mock("../infra/update-check.js", () => ({
     deps: {
       manager: "pnpm",
       status: "ok",
-      lockfilePath: "/tmp/openclaw/pnpm-lock.yaml",
-      markerPath: "/tmp/openclaw/node_modules/.modules.yaml",
+      lockfilePath: "/tmp/operator/pnpm-lock.yaml",
+      markerPath: "/tmp/operator/node_modules/.modules.yaml",
     },
     registry: { latestVersion: "0.0.0" },
   }),
@@ -1165,7 +1165,7 @@ describe("statusCommand", () => {
       expectLogsInclude(logs, token);
     }
     expectLogsInclude(logs, "legacy-plugin still uses legacy before_agent_start");
-    expectLogsMatch(logs, /openclaw (?:--profile isolated )?status --all/);
+    expectLogsMatch(logs, /operator (?:--profile isolated )?status --all/);
     expectLogsInclude(logs, "Cache");
     expectLogsInclude(logs, "40% hit");
     expectLogsInclude(logs, "read 2.0k");
@@ -1282,7 +1282,7 @@ describe("statusCommand", () => {
     const joined = await runStatusAndGetJoinedLogs();
     expect(joined).toContain("node → gateway.example.com:19000 · no local gateway");
     expect(joined).not.toContain("Gateway: local · ws://127.0.0.1:18789");
-    expect(joined).toContain("openclaw --profile isolated node status");
+    expect(joined).toContain("operator --profile isolated node status");
     expect(joined).not.toContain("Fix reachability first");
   });
 

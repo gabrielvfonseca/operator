@@ -2,9 +2,9 @@ import CoreText
 import Foundation
 import Testing
 import UIKit
-@testable import operator
+@testable import Operator
 
-struct operatorTypographyTests {
+struct OperatorTypographyTests {
     @Test func `session controls use branded typography`() throws {
         let support = try String(
             contentsOf: Self.sourceURL("Design/CommandCenterSupport.swift"),
@@ -16,15 +16,15 @@ struct operatorTypographyTests {
         #expect(support.contains("TextField(self.editorPlaceholder"))
         #expect(support.contains("Label(\"Move to Group\""))
         #expect(support.contains("Label(\"Delete…\""))
-        #expect(support.contains(".font(operatorType.subhead)"))
-        #expect(support.contains(".font(operatorType.subheadSemiBold)"))
+        #expect(support.contains(".font(OperatorType.subhead)"))
+        #expect(support.contains(".font(OperatorType.subheadSemiBold)"))
         #expect(commandCenter.contains("Toggle(isOn: self.$showArchived)"))
         #expect(commandCenter.contains("Text(\"Show Archived\")"))
-        #expect(commandCenter.contains(".font(operatorType.captionMedium)"))
+        #expect(commandCenter.contains(".font(OperatorType.captionMedium)"))
     }
 
     @Test func `bundled fonts load from app bundle`() {
-        for name in operatorType.registeredPostScriptNames {
+        for name in OperatorType.registeredPostScriptNames {
             #expect(UIFont(name: name, size: 12) != nil, "Missing bundled font: \(name)")
         }
     }
@@ -69,11 +69,11 @@ struct operatorTypographyTests {
         let activityPlist = try String(contentsOf: Self.activityWidgetInfoPlistURL(), encoding: .utf8)
         let watchPlist = try String(contentsOf: Self.watchInfoPlistURL(), encoding: .utf8)
 
-        for targetName in ["operatorActivityWidget", "operatorWatchApp"] {
+        for targetName in ["OperatorActivityWidget", "OperatorWatchApp"] {
             let target = try Self.extract(
                 project,
                 from: "  \(targetName):",
-                to: targetName == "operatorActivityWidget" ? "  operatorWatchApp:" : "  operatorTests:")
+                to: targetName == "OperatorActivityWidget" ? "  OperatorWatchApp:" : "  OperatorTests:")
             #expect(target.contains("- path: Sources/Fonts"))
             #expect(target.contains("UIAppFonts:"))
             for font in Self.bundledFontFiles {
@@ -99,9 +99,9 @@ struct operatorTypographyTests {
         #expect(activityTypeSource.contains("relativeTo: .caption"))
         #expect(!activityTypeSource.contains(".custom(\"RedHatDisplay-Regular\", size: size).weight"))
         #expect(!activityTypeSource.contains(".custom(\"Inter-Regular\", size: size)"))
-        #expect(activitySource.contains("operatorActivityType.subheadSemiBold"))
-        #expect(activitySource.contains("operatorActivityType.subheadBold"))
-        #expect(activitySource.contains("operatorActivityType.caption"))
+        #expect(activitySource.contains("OperatorActivityType.subheadSemiBold"))
+        #expect(activitySource.contains("OperatorActivityType.subheadBold"))
+        #expect(activitySource.contains("OperatorActivityType.caption"))
         #expect(!activitySource.contains(".font(.subheadline"))
         #expect(!activitySource.contains(".font(.caption"))
 
@@ -124,11 +124,11 @@ struct operatorTypographyTests {
     @Test func `UIKit typography refreshes when Dynamic Type changes`() throws {
         let appSource = try String(contentsOf: Self.appSourceURL(), encoding: .utf8)
         let typographySource = try String(
-            contentsOf: Self.sourceURL("Design/operatorTypography.swift"),
+            contentsOf: Self.sourceURL("Design/OperatorTypography.swift"),
             encoding: .utf8)
 
         #expect(appSource.contains("UIContentSizeCategory.didChangeNotification"))
-        #expect(appSource.contains("operatorType.refreshUIKitAppearance(in: Self.connectedWindows())"))
+        #expect(appSource.contains("OperatorType.refreshUIKitAppearance(in: Self.connectedWindows())"))
         #expect(typographySource.contains("static func refreshUIKitAppearance(in windows: [UIWindow])"))
         #expect(typographySource.contains("applyUIKitTypography(fonts, to: window)"))
         #expect(typographySource.contains("maximumPointSize: 13"))
@@ -143,7 +143,7 @@ struct operatorTypographyTests {
 
     @Test func `listed iOS app surfaces enforce branded control typography`() throws {
         let proComponents = try String(
-            contentsOf: Self.sourceURL("Design/operatorProComponents.swift"),
+            contentsOf: Self.sourceURL("Design/OperatorProComponents.swift"),
             encoding: .utf8)
         let quickSetup = try String(contentsOf: Self.sourceURL("Gateway/GatewayQuickSetupSheet.swift"), encoding: .utf8)
         let gatewayProblem = try String(contentsOf: Self.sourceURL("Gateway/GatewayProblemView.swift"), encoding: .utf8)
@@ -188,57 +188,57 @@ struct operatorTypographyTests {
         let automations = try String(
             contentsOf: Self.sourceURL("Design/AgentAutomationDetailScreen.swift"),
             encoding: .utf8)
-        let docs = try String(contentsOf: Self.sourceURL("Design/operatorDocsScreen.swift"), encoding: .utf8)
+        let docs = try String(contentsOf: Self.sourceURL("Design/OperatorDocsScreen.swift"), encoding: .utf8)
         let chatTab = try String(contentsOf: Self.sourceURL("Design/ChatProTab.swift"), encoding: .utf8)
         let chatTypography = try String(
             contentsOf: Self.iosRootURL()
                 .deletingLastPathComponent()
-                .appendingPathComponent("shared/operatorKit/Sources/operatorChatUI/ChatTypography.swift"),
+                .appendingPathComponent("shared/OperatorKit/Sources/OperatorChatUI/ChatTypography.swift"),
             encoding: .utf8)
         let chatMessageViews = try String(
             contentsOf: Self.iosRootURL()
                 .deletingLastPathComponent()
-                .appendingPathComponent("shared/operatorKit/Sources/operatorChatUI/ChatMessageViews.swift"),
+                .appendingPathComponent("shared/OperatorKit/Sources/OperatorChatUI/ChatMessageViews.swift"),
             encoding: .utf8)
         let chatMarkdownRenderer = try String(
             contentsOf: Self.iosRootURL()
                 .deletingLastPathComponent()
-                .appendingPathComponent("shared/operatorKit/Sources/operatorChatUI/ChatMarkdownRenderer.swift"),
+                .appendingPathComponent("shared/OperatorKit/Sources/OperatorChatUI/ChatMarkdownRenderer.swift"),
             encoding: .utf8)
 
-        #expect(automations.contains(".font(operatorType.body)"))
-        #expect(automations.contains(".font(operatorType.headline)"))
-        #expect(automations.contains(".font(operatorType.subheadSemiBold)"))
-        #expect(automations.contains(".font(operatorType.caption)"))
+        #expect(automations.contains(".font(OperatorType.body)"))
+        #expect(automations.contains(".font(OperatorType.headline)"))
+        #expect(automations.contains(".font(OperatorType.subheadSemiBold)"))
+        #expect(automations.contains(".font(OperatorType.caption)"))
         #expect(!automations.contains(".font(.body"))
         #expect(!automations.contains(".font(.headline"))
         #expect(!automations.contains(".font(.caption"))
 
-        #expect(proComponents.contains(".font(operatorType.subheadSemiBold)"))
+        #expect(proComponents.contains(".font(OperatorType.subheadSemiBold)"))
         #expect(proComponents.contains("primaryActionTitle.text"))
         #expect(proComponents.contains("secondaryActionTitle.text"))
 
         #expect(chatTab.contains("Text(\"Export Transcript\")"))
-        #expect(chatTab.contains(".font(operatorType.body)"))
+        #expect(chatTab.contains(".font(OperatorType.body)"))
         #expect(!chatTab.contains("Button(\"Export Transcript\")"))
 
         #expect(!quickSetup.contains("Button(\"Close\")"))
         #expect(quickSetup.contains(".navigationTitle(\"Quick Setup\")"))
         #expect(quickSetup.contains("Text(\"Close\")"))
-        #expect(quickSetup.contains(".font(operatorType.subheadSemiBold)"))
+        #expect(quickSetup.contains(".font(OperatorType.subheadSemiBold)"))
         #expect(quickSetup.contains("let text: LocalizedStringKey"))
         #expect(!quickSetup.contains("Text(verbatim: self.text)"))
 
         #expect(gatewayProblem.contains("Text(\"Connection problem\")"))
         #expect(gatewayProblem.contains("Text(\"Copy request ID\")"))
         #expect(gatewayProblem.contains("Text(\"Copy command\")"))
-        #expect(gatewayProblem.contains(".font(operatorType.subheadSemiBold)"))
+        #expect(gatewayProblem.contains(".font(OperatorType.subheadSemiBold)"))
 
         #expect(onboardingSteps.contains("title: \"Connect Gateway\""))
         #expect(onboardingSteps.contains("Text(\"Scan QR\")"))
         #expect(onboardingSteps.contains("Text(\"Connect Manually\")"))
         #expect(onboardingSteps.contains("Label(\"Go to Chat\", systemImage: \"bubble.left.and.bubble.right.fill\")"))
-        #expect(onboardingSteps.contains(".font(operatorType.subheadSemiBold)"))
+        #expect(onboardingSteps.contains(".font(OperatorType.subheadSemiBold)"))
         #expect(onboardingSteps.contains("let title: LocalizedStringKey"))
         #expect(onboardingSteps.contains("let subtitle: LocalizedStringKey?"))
         #expect(onboardingSteps.contains("let text: LocalizedStringKey"))
@@ -248,7 +248,7 @@ struct operatorTypographyTests {
         #expect(onboardingWizard.contains("Label(\"Resume After Approval\", systemImage: \"arrow.clockwise\")"))
         #expect(onboardingWizard.contains("Label(\"Scan Setup Code Again\", systemImage: \"qrcode.viewfinder\")"))
         #expect(onboardingWizard.contains("Text(\"Apply\")"))
-        #expect(onboardingWizard.contains(".font(operatorType.subheadSemiBold)"))
+        #expect(onboardingWizard.contains(".font(OperatorType.subheadSemiBold)"))
         #expect(onboardingWizard.contains("_ title: LocalizedStringKey"))
         #expect(onboardingWizard.contains("_ placeholder: LocalizedStringKey"))
         #expect(onboardingWizard.contains("if self.developerModeEnabled.wrappedValue {"))
@@ -267,32 +267,32 @@ struct operatorTypographyTests {
             onboardingSecurityPicker,
             from: "Text(\"Secure (TLS)\")",
             to: ".tag(true)")
-        #expect(onboardingUnencryptedOption.contains(".font(operatorType.captionSemiBold)"))
-        #expect(onboardingSecureOption.contains(".font(operatorType.captionSemiBold)"))
+        #expect(onboardingUnencryptedOption.contains(".font(OperatorType.captionSemiBold)"))
+        #expect(onboardingSecureOption.contains(".font(OperatorType.captionSemiBold)"))
 
-        #expect(settingsSections.contains(".font(operatorType.body)"))
+        #expect(settingsSections.contains(".font(OperatorType.body)"))
         #expect(settingsSections.contains("Text(warningText)"))
-        #expect(settingsSections.contains(".font(operatorType.caption)"))
+        #expect(settingsSections.contains(".font(OperatorType.caption)"))
         #expect(approvalDialog.contains("Text(warningText)"))
-        #expect(approvalDialog.contains(".font(operatorType.footnote)"))
+        #expect(approvalDialog.contains(".font(OperatorType.footnote)"))
         #expect(approvalDialog.contains("ScrollView {"))
         #expect(approvalDialog.contains("self.actionFooter"))
         #expect(approvalDialog.contains("exec-approval-review-scroll"))
         #expect(approvalDialog.contains("exec-approval-actions"))
         #expect(approvalDialog.contains("ViewThatFits(in: .horizontal)"))
         #expect(settingsSections.contains("self.settingsToggle(\"Show Talk Control\", isOn: self.$talkButtonEnabled)"))
-        #expect(settingsSections.contains("operatorToggleIndicator(isOn: isOn.wrappedValue)"))
+        #expect(settingsSections.contains("OperatorToggleIndicator(isOn: isOn.wrappedValue)"))
         #expect(settingsSections.contains("TextField(\"Default Share Instruction\""))
-        #expect(settingsSections.contains(".font(operatorType.subhead)"))
+        #expect(settingsSections.contains(".font(OperatorType.subhead)"))
         #expect(settingsSections.contains("private struct AppearanceSettingsScreen"))
         #expect(settingsSections.contains("Section(\"Gateway\")"))
         #expect(settingsSections.contains("SettingsDetailRow(\"Address\", value: .verbatim(self.gatewayAddress))"))
         #expect(settingsSections.contains("func gatewayActionButton"))
         #expect(settingsSections.contains("func settingsToggle"))
-        #expect(settingsSections.contains(".font(operatorType.subheadSemiBold)"))
+        #expect(settingsSections.contains(".font(OperatorType.subheadSemiBold)"))
         #expect(settingsSupport.contains("struct SettingsBuildMetadataStrip"))
-        #expect(settingsSupport.contains(".font(operatorType.caption2SemiBold)"))
-        #expect(settingsSupport.contains(".font(operatorType.monoSmall)"))
+        #expect(settingsSupport.contains(".font(OperatorType.caption2SemiBold)"))
+        #expect(settingsSupport.contains(".font(OperatorType.monoSmall)"))
         #expect(settingsSupport.contains("Text(\"Copy Build Info\")"))
         #expect(settingsSections.contains("Text(\"Use Manual Gateway\")")
             || settingsSections.contains("\"Use Manual Gateway\""))
@@ -321,8 +321,8 @@ struct operatorTypographyTests {
             settingsSecurityPicker,
             from: "Text(\"Secure (TLS)\")",
             to: ".tag(true)")
-        #expect(settingsUnencryptedOption.contains(".font(operatorType.captionSemiBold)"))
-        #expect(settingsSecureOption.contains(".font(operatorType.captionSemiBold)"))
+        #expect(settingsUnencryptedOption.contains(".font(OperatorType.captionSemiBold)"))
+        #expect(settingsSecureOption.contains(".font(OperatorType.captionSemiBold)"))
 
         #expect(!privacyAccess.contains("DisclosureGroup(\"Privacy & Access\")"))
         #expect(privacyAccess.contains("Text(\"Privacy & Access\")"))
@@ -330,7 +330,7 @@ struct operatorTypographyTests {
             contentsOf: Self.sourceURL("Permissions/DevicePermissionRow.swift"),
             encoding: .utf8)
         #expect(permissionRow.contains("Text(actionTitle)"))
-        #expect(permissionRow.contains(".font(operatorType.footnoteSemiBold)"))
+        #expect(permissionRow.contains(".font(OperatorType.footnoteSemiBold)"))
 
         #expect(!skillWorkshop.contains("Button(\"Done\")"))
         #expect(skillWorkshop.contains("Label(\"Refresh\", systemImage: \"arrow.clockwise\")"))
@@ -339,16 +339,16 @@ struct operatorTypographyTests {
         #expect(skillWorkshop.contains("Text(\"Apply\")"))
         #expect(skillWorkshop.contains("Text(\"Reject\")"))
 
-        #expect(skills.contains("Text(\"Gateway warning\").font(operatorType.headline)"))
-        #expect(skills.contains("Text(\"Acknowledge and install\").font(operatorType.subheadSemiBold)"))
-        #expect(skills.contains("prompt: Text(\"Search ClawHub\").font(operatorType.body)"))
+        #expect(skills.contains("Text(\"Gateway warning\").font(OperatorType.headline)"))
+        #expect(skills.contains("Text(\"Acknowledge and install\").font(OperatorType.subheadSemiBold)"))
+        #expect(skills.contains("prompt: Text(\"Search ClawHub\").font(OperatorType.body)"))
 
         for source in [agentDestinations, dreaming, instances, channels, skills, docs] {
-            #expect(source.contains(".font(operatorType.body)"))
+            #expect(source.contains(".font(OperatorType.body)"))
         }
 
-        #expect(chatMessageViews.contains("font: operatorChatTypography.body"))
-        #expect(chatMessageViews.contains("operatorChatTypography.callout.italic()"))
+        #expect(chatMessageViews.contains("font: OperatorChatTypography.body"))
+        #expect(chatMessageViews.contains("OperatorChatTypography.callout.italic()"))
         #expect(!chatMessageViews.contains("font: .body"))
         #expect(!chatMessageViews.contains("Font.body"))
         #expect(!chatMessageViews.contains("Font.callout"))
@@ -454,11 +454,11 @@ struct operatorTypographyTests {
     }
 
     private static func activityWidgetSourceURL() -> URL {
-        self.iosRootURL().appendingPathComponent("ActivityWidget/operatorLiveActivity.swift")
+        self.iosRootURL().appendingPathComponent("ActivityWidget/OperatorLiveActivity.swift")
     }
 
     private static func activityWidgetTypographySourceURL() -> URL {
-        self.iosRootURL().appendingPathComponent("ActivityWidget/operatorActivityTypography.swift")
+        self.iosRootURL().appendingPathComponent("ActivityWidget/OperatorActivityTypography.swift")
     }
 
     private static func watchInboxSourceURL() -> URL {
@@ -470,7 +470,7 @@ struct operatorTypographyTests {
     }
 
     private static func appSourceURL() -> URL {
-        self.sourceURL("operatorApp.swift")
+        self.sourceURL("OperatorApp.swift")
     }
 
     private static func sourceURL(_ relativePath: String) -> URL {
@@ -482,7 +482,7 @@ struct operatorTypographyTests {
             self.sourceURL(""),
             self.iosRootURL()
                 .deletingLastPathComponent()
-                .appendingPathComponent("shared/operatorKit/Sources/operatorChatUI"),
+                .appendingPathComponent("shared/OperatorKit/Sources/OperatorChatUI"),
         ]
         return roots.flatMap { root -> [URL] in
             guard let enumerator = FileManager.default.enumerator(
@@ -498,7 +498,7 @@ struct operatorTypographyTests {
     }
 
     private static func unbrandedTextCallOffenders() throws -> [String] {
-        let fontTokens = ["operatorType", "operatorChatTypography"]
+        let fontTokens = ["OperatorType", "OperatorChatTypography"]
         // Accessibility-only Text is spoken, never rendered, so no branded font applies.
         let allowedFragments = [".navigationTitle(", ".alert(\"", ".tabItem { Label("]
         return try self.swiftSourcesForTypographyAudit().flatMap { url -> [String] in
@@ -707,12 +707,12 @@ struct operatorTypographyTests {
 
     private static func hasAllowedBrandedFontParameter(_ window: String, line: String, in url: URL) -> Bool {
         switch self.relativePath(url) {
-        case "apps/ios/Sources/Design/operatorProComponents.swift":
+        case "apps/ios/Sources/Design/OperatorProComponents.swift":
             line.contains("Text(key)") ||
                 line.contains("Text(verbatim: value)") ||
                 window.contains(".font(self.titleFont)") ||
                 window.contains(".font(self.subtitleFont)")
-        case "apps/shared/operatorKit/Sources/operatorChatUI/ChatMarkdownRenderer.swift":
+        case "apps/shared/OperatorKit/Sources/OperatorChatUI/ChatMarkdownRenderer.swift":
             // Qualified values are composed here, then styled at the prose render boundary.
             line.contains("SwiftUI.Text(") || window.contains(".font(self.font)")
         default:

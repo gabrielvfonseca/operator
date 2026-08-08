@@ -35,7 +35,7 @@ const mockReadWindowsProcessArgsResult = vi.hoisted(() =>
 const mockReadFileSync = vi.hoisted(() => vi.fn());
 
 vi.mock("node:fs", async () => {
-  const { mockNodeBuiltinModule } = await import("openclaw/plugin-sdk/test-node-mocks");
+  const { mockNodeBuiltinModule } = await import("operator/plugin-sdk/test-node-mocks");
   return mockNodeBuiltinModule(
     () => vi.importActual<typeof import("node:fs")>("node:fs"),
     (actual) => ({
@@ -52,7 +52,7 @@ vi.mock("node:fs", async () => {
 });
 
 vi.mock("node:child_process", async () => {
-  const { mockNodeBuiltinModule } = await import("openclaw/plugin-sdk/test-node-mocks");
+  const { mockNodeBuiltinModule } = await import("operator/plugin-sdk/test-node-mocks");
   return mockNodeBuiltinModule(
     () => vi.importActual<typeof import("node:child_process")>("node:child_process"),
     {
@@ -289,14 +289,14 @@ describe.skipIf(isWindows)("restart-stale-pids", () => {
       expect(pids).not.toContain(process.pid);
     });
 
-    it("verifies argv when lsof reports the node process name instead of openclaw", () => {
+    it("verifies argv when lsof reports the node process name instead of operator", () => {
       const stalePid = process.pid + 101;
       mockSpawnSync.mockImplementation((command: unknown) => {
         if (command === "ps") {
           return {
             error: null,
             status: 0,
-            stdout: "node /opt/openclaw/dist/entry.js gateway\n",
+            stdout: "node /opt/operator/dist/entry.js gateway\n",
             stderr: "",
           };
         }
@@ -323,7 +323,7 @@ describe.skipIf(isWindows)("restart-stale-pids", () => {
           return {
             error: null,
             status: 0,
-            stdout: "node /opt/openclaw/dist/entry.js gateway\n",
+            stdout: "node /opt/operator/dist/entry.js gateway\n",
             stderr: "",
           };
         }
@@ -515,7 +515,7 @@ describe.skipIf(isWindows)("restart-stale-pids", () => {
       }
     });
 
-    it("excludes pids whose command does not include 'openclaw'", () => {
+    it("excludes pids whose command does not include 'operator'", () => {
       const otherPid = process.pid + 2;
       mockSpawnSync.mockReturnValue({
         error: null,
@@ -647,7 +647,7 @@ describe.skipIf(isWindows)("restart-stale-pids", () => {
       expect(findGatewayPidsOnPortSync(18789)).toStrictEqual([]);
     });
 
-    it("parses multiple openclaw pids from a single lsof output block", () => {
+    it("parses multiple operator pids from a single lsof output block", () => {
       const pid1 = process.pid + 10;
       const pid2 = process.pid + 11;
       mockSpawnSync.mockReturnValue({
@@ -664,9 +664,9 @@ describe.skipIf(isWindows)("restart-stale-pids", () => {
       expect(result).toContain(pid2);
     });
 
-    it("returns [] when status 0 but only non-openclaw pids present", () => {
+    it("returns [] when status 0 but only non-operator pids present", () => {
       // Port may be bound by an unrelated process. findGatewayPidsOnPortSync
-      // only tracks openclaw processes — non-openclaw listeners are ignored.
+      // only tracks operator processes — non-operator listeners are ignored.
       const otherPid = process.pid + 50;
       mockSpawnSync.mockReturnValue({
         error: null,
@@ -756,14 +756,14 @@ describe.skipIf(isWindows)("restart-stale-pids", () => {
       expect(getCallCount()).toBe(3);
     });
 
-    it("lsof status 1 with non-empty openclaw stdout is treated as busy, not free (Linux container edge case)", () => {
+    it("lsof status 1 with non-empty operator stdout is treated as busy, not free (Linux container edge case)", () => {
       // On Linux containers with restricted /proc (AppArmor, seccomp, user namespaces),
       // lsof can exit 1 AND still emit output for processes it could read.
-      // status 1 + non-empty openclaw stdout must not be treated as port-free.
+      // status 1 + non-empty operator stdout must not be treated as port-free.
       const stalePid = process.pid + 601;
       const getCallCount = installInitialBusyPoll(stalePid, (call) => {
         if (call === 2) {
-          // status 1 + openclaw pid in stdout — container-restricted lsof reports partial results
+          // status 1 + operator pid in stdout — container-restricted lsof reports partial results
           return createOperatorBusyResult(stalePid, {
             status: 1,
             stderr: "lsof: WARNING: can't stat() fuse",
@@ -1279,12 +1279,12 @@ describe.skipIf(isWindows)("restart-stale-pids", () => {
   // parsePidsFromLsofOutput — branch-coverage for mid-loop && short-circuits
   // -------------------------------------------------------------------------
   describe("parsePidsFromLsofOutput — branch coverage (lines 67-69)", () => {
-    it("skips a mid-loop entry when the command does not include 'openclaw'", () => {
+    it("skips a mid-loop entry when the command does not include 'operator'", () => {
       // Exercises the false branch of currentCmd.toLowerCase().includes("@gabrielvfonseca/operator")
-      // inside the mid-loop flush: a non-openclaw cmd between two entries must not
-      // be pushed, but the following openclaw entry still must be.
+      // inside the mid-loop flush: a non-operator cmd between two entries must not
+      // be pushed, but the following operator entry still must be.
       const stalePid = process.pid + 700;
-      // Mixed output: non-openclaw entry first, then openclaw entry
+      // Mixed output: non-operator entry first, then operator entry
       const stdout = `p${process.pid + 699}\ncnginx\np${stalePid}\ncoperator-gateway\n`;
       mockSpawnSync.mockReturnValue({ error: null, status: 0, stdout, stderr: "" });
       const result = findGatewayPidsOnPortSync(18789);
@@ -1308,7 +1308,7 @@ describe.skipIf(isWindows)("restart-stale-pids", () => {
       // 'p' line (e.g. 'p0' or 'pNaN') must not corrupt
       // currentPid and must not end up in the returned pids array.
       const stalePid = process.pid + 703;
-      // p0 is invalid (not > 0); the following valid openclaw entry must still be found.
+      // p0 is invalid (not > 0); the following valid operator entry must still be found.
       const stdout = `p0\ncoperator-gateway\np${stalePid}\ncoperator-gateway\n`;
       mockSpawnSync.mockReturnValue({ error: null, status: 0, stdout, stderr: "" });
       const result = findGatewayPidsOnPortSync(18789);
@@ -1335,7 +1335,7 @@ describe.skipIf(isWindows)("restart-stale-pids", () => {
   // pollPortOnce branch — status 1 + non-empty stdout
   // -------------------------------------------------------------------------
   describe("pollPortOnce — status 1 + non-empty stdout", () => {
-    it("keeps polling when status 1 includes a non-openclaw listener record", () => {
+    it("keeps polling when status 1 includes a non-operator listener record", () => {
       const stalePid = process.pid + 800;
       const getCallCount = installInitialBusyPoll(stalePid, (call) => {
         if (call === 2) {

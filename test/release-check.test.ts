@@ -2,7 +2,7 @@
 import { chmodSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve as resolvePath, win32 } from "node:path";
-import { bundledDistPluginFile, bundledPluginFile } from "openclaw/plugin-sdk/test-fixtures";
+import { bundledDistPluginFile, bundledPluginFile } from "operator/plugin-sdk/test-fixtures";
 import { describe, expect, it } from "vitest";
 import { listBundledPluginPackArtifacts } from "../scripts/lib/bundled-plugin-build-entries.mjs";
 import {
@@ -17,7 +17,7 @@ import {
   WORKSPACE_TEMPLATE_PACK_PATHS,
   createWorkspaceBootstrapSmokeEnv,
 } from "../scripts/lib/workspace-bootstrap-smoke.mjs";
-import { collectInstalledRootDependencyManifestErrors } from "../scripts/openclaw-npm-postpublish-verify.ts";
+import { collectInstalledRootDependencyManifestErrors } from "../scripts/operator-npm-postpublish-verify.ts";
 import {
   collectAppcastSparkleVersionErrors,
   collectBundledExtensionManifestErrors,
@@ -278,7 +278,7 @@ describe("resolveReleaseNpmCommand", () => {
         existsSync: () => false,
         platform: "win32",
       }),
-    ).toThrow("OpenClaw refuses to shell out to bare npm on Windows");
+    ).toThrow("Operator refuses to shell out to bare npm on Windows");
   });
 });
 
@@ -323,14 +323,14 @@ describe("collectBundledExtensionManifestErrors", () => {
         {
           id: "broken",
           packageJson: {
-            openclaw: {
+            operator: {
               install: { npmSpec: "   " },
             },
           },
         },
       ]),
     ).toEqual([
-      "bundled extension 'broken' manifest invalid | openclaw.install.npmSpec must be a non-empty string",
+      "bundled extension 'broken' manifest invalid | operator.install.npmSpec must be a non-empty string",
     ]);
   });
 
@@ -340,14 +340,14 @@ describe("collectBundledExtensionManifestErrors", () => {
         {
           id: "broken",
           packageJson: {
-            openclaw: {
+            operator: {
               install: { npmSpec: "@operator/broken", minHostVersion: "2026.3.14" },
             },
           },
         },
       ]),
     ).toEqual([
-      "bundled extension 'broken' manifest invalid | openclaw.install.minHostVersion must use a semver floor in the form \">=x.y.z[-prerelease][+build]\"",
+      "bundled extension 'broken' manifest invalid | operator.install.minHostVersion must use a semver floor in the form \">=x.y.z[-prerelease][+build]\"",
     ]);
   });
 
@@ -357,7 +357,7 @@ describe("collectBundledExtensionManifestErrors", () => {
         {
           id: "irc",
           packageJson: {
-            openclaw: {
+            operator: {
               install: { minHostVersion: ">=2026.3.14" },
             },
           },
@@ -372,13 +372,13 @@ describe("collectBundledExtensionManifestErrors", () => {
         {
           id: "broken",
           packageJson: {
-            openclaw: {
+            operator: {
               install: 123,
             },
           },
         },
       ]),
-    ).toEqual(["bundled extension 'broken' manifest invalid | openclaw.install must be an object"]);
+    ).toEqual(["bundled extension 'broken' manifest invalid | operator.install must be an object"]);
   });
 });
 
@@ -393,13 +393,13 @@ describe("bundled plugin package dependency checks", () => {
   });
 
   it("does not require root deps for root chunks sourced from the owning installed plugin", () => {
-    const tempRoot = mkdtempSync(join(tmpdir(), "openclaw-root-owned-installed-"));
+    const tempRoot = mkdtempSync(join(tmpdir(), "operator-root-owned-installed-"));
 
     try {
       mkdirSync(join(tempRoot, "dist", "extensions", "memory-lancedb"), { recursive: true });
       writeFileSync(
         join(tempRoot, "package.json"),
-        `{"name":"openclaw","dependencies":{}}\n`,
+        `{"name":"operator","dependencies":{}}\n`,
         "utf8",
       );
       writeFileSync(
@@ -420,13 +420,13 @@ describe("bundled plugin package dependency checks", () => {
   });
 
   it("still requires root deps for root-owned installed chunks", () => {
-    const tempRoot = mkdtempSync(join(tmpdir(), "openclaw-root-owned-installed-missing-"));
+    const tempRoot = mkdtempSync(join(tmpdir(), "operator-root-owned-installed-missing-"));
 
     try {
       mkdirSync(join(tempRoot, "dist", "extensions", "memory-lancedb"), { recursive: true });
       writeFileSync(
         join(tempRoot, "package.json"),
-        `{"name":"openclaw","dependencies":{}}\n`,
+        `{"name":"operator","dependencies":{}}\n`,
         "utf8",
       );
       writeFileSync(
@@ -454,7 +454,7 @@ describe("bundled plugin package dependency checks", () => {
 // statSync().mode never reports execute bits, so these tests are meaningless there.
 describe.skipIf(process.platform === "win32")("collectSkillShellScriptExecutableErrors", () => {
   it("flags non-executable shell scripts under skills/*/scripts", () => {
-    const root = mkdtempSync(join(tmpdir(), "openclaw-release-check-"));
+    const root = mkdtempSync(join(tmpdir(), "operator-release-check-"));
     const scriptPath = join(root, "skills", "openai-whisper-api", "scripts", "transcribe.sh");
     mkdirSync(join(root, "skills", "openai-whisper-api", "scripts"), { recursive: true });
     writeFileSync(scriptPath, "#!/usr/bin/env bash\necho test\n", "utf8");
@@ -470,7 +470,7 @@ describe.skipIf(process.platform === "win32")("collectSkillShellScriptExecutable
   });
 
   it("accepts executable shell scripts", () => {
-    const root = mkdtempSync(join(tmpdir(), "openclaw-release-check-"));
+    const root = mkdtempSync(join(tmpdir(), "operator-release-check-"));
     const scriptPath = join(root, "skills", "openai-whisper-api", "scripts", "transcribe.sh");
     mkdirSync(join(root, "skills", "openai-whisper-api", "scripts"), { recursive: true });
     writeFileSync(scriptPath, "#!/usr/bin/env bash\necho test\n", "utf8");
@@ -491,12 +491,12 @@ describe("collectForbiddenPackPaths", () => {
         "dist/index.js",
         bundledDistPluginFile("discord", "node_modules/@discordjs/voice/index.js"),
         bundledPluginFile("tlon", "node_modules/.bin/tlon"),
-        "node_modules/.bin/openclaw",
+        "node_modules/.bin/operator",
       ]),
     ).toEqual([
       bundledDistPluginFile("discord", "node_modules/@discordjs/voice/index.js"),
       bundledPluginFile("tlon", "node_modules/.bin/tlon"),
-      "node_modules/.bin/openclaw",
+      "node_modules/.bin/operator",
     ]);
   });
 
@@ -546,11 +546,11 @@ describe("collectForbiddenPackPaths", () => {
         "dist/index.js",
         "dist/extensions/clickclack/index.js",
         "dist/extensions/slack/setup-entry.js",
-        "dist/extensions/msteams/openclaw.plugin.json",
+        "dist/extensions/msteams/operator.plugin.json",
       ]),
     ).toEqual([
       "dist/extensions/clickclack/index.js",
-      "dist/extensions/msteams/openclaw.plugin.json",
+      "dist/extensions/msteams/operator.plugin.json",
       "dist/extensions/slack/setup-entry.js",
     ]);
   });
@@ -581,14 +581,14 @@ describe("collectForbiddenPackPaths", () => {
     expect(
       collectForbiddenPackPaths([
         "dist/index.js",
-        "dist/extensions/browser/.OpenClaw-Install-Stage/package.json",
-        "dist/extensions/codex/.openclaw-runtime-deps-backup-node_modules-old/zod/index.js",
-        "dist/extensions/discord/.openclaw-runtime-deps-stamp.json",
+        "dist/extensions/browser/.Operator-Install-Stage/package.json",
+        "dist/extensions/codex/.operator-runtime-deps-backup-node_modules-old/zod/index.js",
+        "dist/extensions/discord/.operator-runtime-deps-stamp.json",
       ]),
     ).toEqual([
-      "dist/extensions/browser/.OpenClaw-Install-Stage/package.json",
-      "dist/extensions/codex/.openclaw-runtime-deps-backup-node_modules-old/zod/index.js",
-      "dist/extensions/discord/.openclaw-runtime-deps-stamp.json",
+      "dist/extensions/browser/.Operator-Install-Stage/package.json",
+      "dist/extensions/codex/.operator-runtime-deps-backup-node_modules-old/zod/index.js",
+      "dist/extensions/discord/.operator-runtime-deps-stamp.json",
     ]);
   });
 
@@ -624,7 +624,7 @@ describe("collectForbiddenPackPaths", () => {
   });
 
   it("blocks root dist chunks that still reference private qa lab sources", () => {
-    const tempRoot = mkdtempSync(join(tmpdir(), "openclaw-release-private-qa-"));
+    const tempRoot = mkdtempSync(join(tmpdir(), "operator-release-private-qa-"));
 
     try {
       mkdirSync(join(tempRoot, "dist"), { recursive: true });
@@ -644,7 +644,7 @@ describe("collectForbiddenPackPaths", () => {
   });
 
   it("blocks private QA paths in the generated dist inventory", () => {
-    const tempRoot = mkdtempSync(join(tmpdir(), "openclaw-release-inventory-"));
+    const tempRoot = mkdtempSync(join(tmpdir(), "operator-release-inventory-"));
 
     try {
       mkdirSync(join(tempRoot, "dist"), { recursive: true });
@@ -663,7 +663,7 @@ describe("collectForbiddenPackPaths", () => {
   });
 
   it("blocks root plugin SDK declarations that still reference private test helpers", () => {
-    const tempRoot = mkdtempSync(join(tmpdir(), "openclaw-release-private-sdk-"));
+    const tempRoot = mkdtempSync(join(tmpdir(), "operator-release-private-sdk-"));
 
     try {
       mkdirSync(join(tempRoot, "dist", "plugin-sdk"), { recursive: true });
@@ -712,7 +712,7 @@ describe("collectMissingPackPaths", () => {
       "dist/task-registry-control.runtime.js",
       "dist/telegram-ingress-worker.runtime.js",
       bundledDistPluginFile("telegram", "runtime-api.js"),
-      bundledDistPluginFile("telegram", "openclaw.plugin.json"),
+      bundledDistPluginFile("telegram", "operator.plugin.json"),
       bundledDistPluginFile("telegram", "package.json"),
     ]) {
       expect(missing).toContain(path);
@@ -756,7 +756,7 @@ describe("collectMissingPackPaths", () => {
   it("runs postpublish package integrity checks against the packed install before publish", () => {
     const root = mkdtempSync(join(tmpdir(), "release-check-packed-install-"));
     try {
-      const packageRoot = join(root, "openclaw");
+      const packageRoot = join(root, "operator");
       const distDir = join(packageRoot, "dist");
       mkdirSync(distDir, { recursive: true });
       for (const relativePath of [
@@ -773,14 +773,14 @@ describe("collectMissingPackPaths", () => {
       }
       writeFileSync(
         join(packageRoot, "package.json"),
-        `${JSON.stringify({ name: "openclaw", version: "2026.5.14-beta.3", dependencies: {} })}\n`,
+        `${JSON.stringify({ name: "operator", version: "2026.5.14-beta.3", dependencies: {} })}\n`,
       );
       writeFileSync(join(distDir, "typescript-compiler.js"), "x".repeat(6 * 1024 * 1024 + 1));
 
       expect(
         collectPackedInstalledPackageVerificationErrors({
           expectedVersion: "2026.5.14-beta.3",
-          installedBinaryVersion: "openclaw 2026.5.14-beta.3",
+          installedBinaryVersion: "operator 2026.5.14-beta.3",
           packageRoot,
         }),
       ).toEqual([
@@ -795,12 +795,12 @@ describe("collectMissingPackPaths", () => {
   it("rejects packed plugin SDK root aliases that depend on minified export letters", () => {
     const root = mkdtempSync(join(tmpdir(), "release-check-packed-root-alias-"));
     try {
-      const packageRoot = join(root, "openclaw");
+      const packageRoot = join(root, "operator");
       const pluginSdkDir = join(packageRoot, "dist", "plugin-sdk");
       mkdirSync(pluginSdkDir, { recursive: true });
       writeFileSync(
         join(packageRoot, "package.json"),
-        `${JSON.stringify({ name: "openclaw", version: "2026.5.14-beta.3", dependencies: {} })}\n`,
+        `${JSON.stringify({ name: "operator", version: "2026.5.14-beta.3", dependencies: {} })}\n`,
       );
       writeFileSync(
         join(pluginSdkDir, "root-alias.cjs"),
@@ -861,11 +861,11 @@ describe("createPackedPluginSdkTypescriptSmokeProject", () => {
     const root = mkdtempSync(join(tmpdir(), "release-check-plugin-sdk-types-"));
     try {
       const consumerDir = join(root, "consumer");
-      const packageRoot = join(root, "openclaw");
+      const packageRoot = join(root, "operator");
       createPackedPluginSdkTypescriptSmokeProject({
         consumerDir,
         packageSpec: `file:${packageRoot}`,
-        aiPackageSpec: "file:/tmp/openclaw-ai.tgz",
+        aiPackageSpec: "file:/tmp/operator-ai.tgz",
       });
 
       const packageJson = JSON.parse(readFileSync(join(consumerDir, "package.json"), "utf8")) as {
@@ -880,18 +880,18 @@ describe("createPackedPluginSdkTypescriptSmokeProject", () => {
         "utf8",
       );
 
-      expect(packageJson.dependencies?.openclaw).toBe(`file:${packageRoot}`);
-      expect(packageJson.dependencies?.["@gabrielvfonseca/ai"]).toBe("file:/tmp/openclaw-ai.tgz");
+      expect(packageJson.dependencies?.operator).toBe(`file:${packageRoot}`);
+      expect(packageJson.dependencies?.["@gabrielvfonseca/ai"]).toBe("file:/tmp/operator-ai.tgz");
       expect(tsconfig.compilerOptions?.skipLibCheck).toBe(true);
       expect(source).toBe(fixtureSource);
-      expect(source).toContain('"openclaw/plugin-sdk"');
-      expect(source).toContain('"openclaw/plugin-sdk/provider-entry"');
-      expect(source).toContain('"openclaw/plugin-sdk/channel-entry-contract"');
-      expect(source).toContain('"openclaw/plugin-sdk/config-contracts"');
-      expect(source).toContain('"openclaw/plugin-sdk/runtime-env"');
+      expect(source).toContain('"operator/plugin-sdk"');
+      expect(source).toContain('"operator/plugin-sdk/provider-entry"');
+      expect(source).toContain('"operator/plugin-sdk/channel-entry-contract"');
+      expect(source).toContain('"operator/plugin-sdk/config-contracts"');
+      expect(source).toContain('"operator/plugin-sdk/runtime-env"');
       expect(source).toContain("type PublicPluginSdkModules = [");
       expect(source).not.toContain("TelegramAccountConfig");
-      expect(source).not.toContain("openclaw/plugin-sdk/channel-contract-testing");
+      expect(source).not.toContain("operator/plugin-sdk/channel-contract-testing");
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
@@ -901,23 +901,23 @@ describe("createPackedPluginSdkTypescriptSmokeProject", () => {
 describe("collectPackUnpackedSizeErrors", () => {
   it("accepts pack results within the unpacked size budget", () => {
     expect(
-      collectPackUnpackedSizeErrors([makePackResult("openclaw-2026.3.14.tgz", 120_354_302)]),
+      collectPackUnpackedSizeErrors([makePackResult("operator-2026.3.14.tgz", 120_354_302)]),
     ).toStrictEqual([]);
   });
 
   it("flags oversized pack results that risk low-memory startup failures", () => {
     expect(
-      collectPackUnpackedSizeErrors([makePackResult("openclaw-2026.3.12.tgz", 224_002_564)]),
+      collectPackUnpackedSizeErrors([makePackResult("operator-2026.3.12.tgz", 224_002_564)]),
     ).toEqual([
-      "openclaw-2026.3.12.tgz unpackedSize 224002564 bytes (213.6 MiB) exceeds budget 211812352 bytes (202.0 MiB). Investigate duplicate channel shims, copied extension trees, or other accidental pack bloat before release.",
+      "operator-2026.3.12.tgz unpackedSize 224002564 bytes (213.6 MiB) exceeds budget 211812352 bytes (202.0 MiB). Investigate duplicate channel shims, copied extension trees, or other accidental pack bloat before release.",
     ]);
   });
 
   it("fails closed when npm pack output omits unpackedSize for every result", () => {
     expect(
       collectPackUnpackedSizeErrors([
-        { filename: "openclaw-2026.3.14.tgz" },
-        { filename: "openclaw-extra.tgz", unpackedSize: Number.NaN },
+        { filename: "operator-2026.3.14.tgz" },
+        { filename: "operator-extra.tgz", unpackedSize: Number.NaN },
       ]),
     ).toEqual([
       "npm pack --dry-run produced no unpackedSize data; pack size budget was not verified.",
@@ -928,28 +928,28 @@ describe("collectPackUnpackedSizeErrors", () => {
 describe("resolvePackedTarballPath", () => {
   it("resolves one local npm pack tarball filename inside the pack destination", () => {
     expect(
-      resolvePackedTarballPath("/tmp/openclaw-pack", [{ filename: "openclaw-2026.6.17.tgz" }]),
-    ).toBe(resolvePath("/tmp/openclaw-pack", "openclaw-2026.6.17.tgz"));
+      resolvePackedTarballPath("/tmp/operator-pack", [{ filename: "operator-2026.6.17.tgz" }]),
+    ).toBe(resolvePath("/tmp/operator-pack", "operator-2026.6.17.tgz"));
     expect(
-      resolvePackedTarballPath("/tmp/openclaw-pack", [
-        { filename: "/tmp/openclaw-pack/openclaw-2026.6.17.tgz" },
+      resolvePackedTarballPath("/tmp/operator-pack", [
+        { filename: "/tmp/operator-pack/operator-2026.6.17.tgz" },
       ]),
-    ).toBe(resolvePath("/tmp/openclaw-pack", "openclaw-2026.6.17.tgz"));
+    ).toBe(resolvePath("/tmp/operator-pack", "operator-2026.6.17.tgz"));
   });
 
   it("rejects path-like npm pack tarball filenames", () => {
     const unsafeFilenames = [
-      "../openclaw.tgz",
-      "nested/openclaw.tgz",
-      "nested\\openclaw.tgz",
-      "/tmp/openclaw.tgz",
-      "C:\\temp\\openclaw.tgz",
-      "openclaw\u0000.tgz",
-      "openclaw.tar.gz",
+      "../operator.tgz",
+      "nested/operator.tgz",
+      "nested\\operator.tgz",
+      "/tmp/operator.tgz",
+      "C:\\temp\\operator.tgz",
+      "operator\u0000.tgz",
+      "operator.tar.gz",
     ];
 
     for (const filename of unsafeFilenames) {
-      expect(() => resolvePackedTarballPath("/tmp/openclaw-pack", [{ filename }])).toThrow(
+      expect(() => resolvePackedTarballPath("/tmp/operator-pack", [{ filename }])).toThrow(
         "release-check: npm pack reported unsafe tarball filename",
       );
     }

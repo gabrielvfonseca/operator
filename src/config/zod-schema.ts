@@ -70,7 +70,7 @@ const GatewayRemoteConfigSchema = z.strictObject(GatewayRemoteSchemaShape).optio
 
 const TailscaleServiceNameSchema = z.string().regex(/^svc:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/, {
   message:
-    'Tailscale serviceName must use the "svc:<dns-label>" format, for example "svc:openclaw"',
+    'Tailscale serviceName must use the "svc:<dns-label>" format, for example "svc:operator"',
 });
 
 const LegacyCanvasHostSchema = z

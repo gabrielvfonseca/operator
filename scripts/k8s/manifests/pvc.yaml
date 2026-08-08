@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: operator-home-pvc
   labels:
-    app: openclaw
+    app: operator
 spec:
   accessModes:
     - ReadWriteOnce

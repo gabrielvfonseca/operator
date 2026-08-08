@@ -127,9 +127,9 @@ describe("docker build cache layout", () => {
     expect(dockerfile).not.toContain(
       "cp -a /tmp/operator-prefix/lib/node_modules/. /app/node_modules/",
     );
-    expect(dockerfile).toContain("cp -a /tmp/operator-prefix/lib/node_modules/openclaw/. /app/");
-    expect(dockerfile).toContain("rm -rf /app/node_modules/openclaw");
-    expect(dockerfile).toContain("ln -sf /app /app/node_modules/openclaw");
+    expect(dockerfile).toContain("cp -a /tmp/operator-prefix/lib/node_modules/operator/. /app/");
+    expect(dockerfile).toContain("rm -rf /app/node_modules/operator");
+    expect(dockerfile).toContain("ln -sf /app /app/node_modules/operator");
   });
 
   it("copies manifests before install in the qr-import image", async () => {

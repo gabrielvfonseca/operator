@@ -129,11 +129,11 @@ vi.mock("@opentelemetry/exporter-logs-otlp-proto", () => ({
   },
 }));
 
-vi.mock("openclaw/plugin-sdk/runtime-env", () => ({
+vi.mock("operator/plugin-sdk/runtime-env", () => ({
   registerUnhandledRejectionHandler: unhandledRejectionHandlerState.register,
 }));
 
-vi.mock("openclaw/plugin-sdk/fetch-runtime", () => ({
+vi.mock("operator/plugin-sdk/fetch-runtime", () => ({
   createNodeProxyAgent: createNodeProxyAgentMock,
 }));
 
@@ -553,7 +553,7 @@ afterAll(() => {
   vi.doUnmock("@opentelemetry/sdk-logs");
   vi.doUnmock("@opentelemetry/sdk-metrics");
   vi.doUnmock("@opentelemetry/sdk-trace-base");
-  vi.doUnmock("openclaw/plugin-sdk/fetch-runtime");
+  vi.doUnmock("operator/plugin-sdk/fetch-runtime");
   vi.doUnmock("@opentelemetry/resources");
   vi.doUnmock("@opentelemetry/semantic-conventions");
   vi.resetModules();
@@ -1943,7 +1943,7 @@ describe("diagnostics-otel service", () => {
       logsExporter: "stdout",
       captureContent: true,
     });
-    ctx.config.diagnostics!.otel!.serviceName = "rovoclaw-openclaw";
+    ctx.config.diagnostics!.otel!.serviceName = "rovoclaw-operator";
     const stdout = captureStdoutWrites();
 
     try {
@@ -1970,7 +1970,7 @@ describe("diagnostics-otel service", () => {
       const record = parseSingleStdoutDiagnosticLogLine(stdout.writes);
       expect(record.ts).toMatch(/^\d{4}-\d{2}-\d{2}T/);
       expect(record.signal).toBe("operator.diagnostic.log");
-      expect(record["service.name"]).toBe("rovoclaw-openclaw");
+      expect(record["service.name"]).toBe("rovoclaw-operator");
       expect(record.severityText).toBe("WARN");
       expect(record.severityNumber).toBe(13);
       expect(String(record.body)).not.toContain("sk-1234567890abcdef1234567890abcdef");
@@ -2194,10 +2194,10 @@ describe("diagnostics-otel service", () => {
       message: boundaryMessage,
       attributes,
       code: {
-        filepath: "/Users/alice/openclaw/src/private.ts",
+        filepath: "/Users/alice/operator/src/private.ts",
         line: 42,
         functionName: "handler",
-        location: "/Users/alice/openclaw/src/private.ts:42",
+        location: "/Users/alice/operator/src/private.ts:42",
       },
     } as Parameters<typeof emitDiagnosticEvent>[0]);
     await flushDiagnosticEvents();
@@ -2345,7 +2345,7 @@ describe("diagnostics-otel service", () => {
     await service.stop?.(ctx);
   });
 
-  test("advertises explicit duration buckets on the openclaw run/harness/context histograms", async () => {
+  test("advertises explicit duration buckets on the operator run/harness/context histograms", async () => {
     const service = createDiagnosticsOtelService();
     const ctx = createOtelContext(OTEL_TEST_ENDPOINT, { metrics: true });
     const priorSdkBoundaries = [

@@ -19,11 +19,11 @@ const workspaceSourceAliases = [
     replacement: path.resolve(repoRoot, "packages/gateway-client/src/browser.ts"),
   },
   {
-    find: /^@openclaw\/gateway-protocol\/(.+)$/u,
+    find: /^@operator\/gateway-protocol\/(.+)$/u,
     replacement: path.resolve(repoRoot, "packages/gateway-protocol/src/$1.ts"),
   },
   {
-    find: /^@openclaw\/(gateway-protocol|retry)$/u,
+    find: /^@operator\/(gateway-protocol|retry)$/u,
     replacement: path.resolve(repoRoot, "packages/$1/src/index.ts"),
   },
   {
@@ -31,11 +31,11 @@ const workspaceSourceAliases = [
     replacement: path.resolve(here, "src/lib/browser-redact.ts"),
   },
   {
-    find: "openclaw/plugin-sdk/test-fixtures",
+    find: "operator/plugin-sdk/test-fixtures",
     replacement: path.resolve(repoRoot, "src/plugin-sdk/test-fixtures.ts"),
   },
   {
-    find: /^@openclaw\/model-catalog-core\/(.+)$/u,
+    find: /^@operator\/model-catalog-core\/(.+)$/u,
     replacement: path.resolve(repoRoot, "packages/model-catalog-core/src/$1.ts"),
   },
   {
@@ -43,7 +43,7 @@ const workspaceSourceAliases = [
     replacement: path.resolve(repoRoot, "packages/model-catalog-core/src/index.ts"),
   },
   {
-    find: /^@openclaw\/normalization-core\/(.+)$/u,
+    find: /^@operator\/normalization-core\/(.+)$/u,
     replacement: path.resolve(repoRoot, "packages/normalization-core/src/$1"),
   },
   {
@@ -51,7 +51,7 @@ const workspaceSourceAliases = [
     replacement: path.resolve(repoRoot, "packages/normalization-core/src/index.ts"),
   },
   {
-    find: /^@openclaw\/media-core\/(.+)$/u,
+    find: /^@operator\/media-core\/(.+)$/u,
     replacement: path.resolve(repoRoot, "packages/media-core/src/$1"),
   },
   {
@@ -63,7 +63,7 @@ const workspaceSourceAliases = [
     replacement: path.resolve(repoRoot, "packages/workboard-contract/src/index.ts"),
   },
   {
-    find: /^@openclaw\/net-policy\/(.+)$/u,
+    find: /^@operator\/net-policy\/(.+)$/u,
     replacement: path.resolve(repoRoot, "packages/net-policy/src/$1"),
   },
   {
@@ -134,7 +134,11 @@ export default defineConfig({
           deps: jsdomOptimizedDeps,
           name: "unit",
           include: ["tests/**/*.test.ts"],
-          exclude: ["tests/**/*.browser.test.ts", "tests/**/*.e2e.test.ts", "tests/**/*.node.test.ts"],
+          exclude: [
+            "tests/**/*.browser.test.ts",
+            "tests/**/*.e2e.test.ts",
+            "tests/**/*.node.test.ts",
+          ],
           environment: "jsdom",
           setupFiles: ["./tests/helpers/lit-warnings.setup.ts"],
         },

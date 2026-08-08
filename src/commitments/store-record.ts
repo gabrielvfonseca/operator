@@ -2,7 +2,7 @@ import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 // Maps commitment records to the canonical shared SQLite table.
 import type { Insertable, Selectable, Updateable } from "kysely";
-import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import type { CommitmentRecord } from "./types.js";
 
 export type CommitmentsDatabase = Pick<OperatorStateKyselyDatabase, "commitments">;

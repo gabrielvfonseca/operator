@@ -1,3 +1,5 @@
 "use client";
 import { redirect } from "next/navigation";
-export default function Page() { redirect("/settings/channels"); }
+export default function Page() {
+  redirect("/settings/channels");
+}

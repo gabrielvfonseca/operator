@@ -778,7 +778,7 @@ describe("getReplyFromConfig message hooks", () => {
 
   it("continues dispatching when media understanding fails before reply routing", async () => {
     mocks.applyMediaUnderstanding.mockRejectedValueOnce(
-      new Error("Cannot find module '/tmp/openclaw/dist/media-understanding/apply.runtime-old.js'"),
+      new Error("Cannot find module '/tmp/operator/dist/media-understanding/apply.runtime-old.js'"),
     );
 
     const reply = await getReplyFromConfig(buildCtx(), undefined, withFastReplyConfig({}));
@@ -802,7 +802,7 @@ describe("getReplyFromConfig message hooks", () => {
 
   it("continues dispatching URL messages when link understanding fails before reply routing", async () => {
     mocks.applyLinkUnderstanding.mockRejectedValueOnce(
-      new Error("Cannot find module '/tmp/openclaw/dist/link-understanding/apply.runtime-old.js'"),
+      new Error("Cannot find module '/tmp/operator/dist/link-understanding/apply.runtime-old.js'"),
     );
 
     const reply = await getReplyFromConfig(

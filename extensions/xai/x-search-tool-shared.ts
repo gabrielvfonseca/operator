@@ -8,7 +8,7 @@ export function buildMissingXSearchApiKeyPayload() {
   return {
     error: "missing_xai_api_key",
     message:
-      "x_search needs xAI credentials. Run `openclaw onboard --auth-choice xai-oauth` to sign in with Grok, run `openclaw onboard --auth-choice xai-api-key`, set `XAI_API_KEY` in the Gateway environment, or configure `plugins.entries.xai.config.webSearch.apiKey`.",
+      "x_search needs xAI credentials. Run `operator onboard --auth-choice xai-oauth` to sign in with Grok, run `operator onboard --auth-choice xai-api-key`, set `XAI_API_KEY` in the Gateway environment, or configure `plugins.entries.xai.config.webSearch.apiKey`.",
     docs: "https://docs.operator.ai/tools/web",
   };
 }

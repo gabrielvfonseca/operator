@@ -14,7 +14,7 @@ describe("buildCliAgentSystemPrompt", () => {
 
   it("uses config-backed sub-agent delegation mode", () => {
     const prompt = buildCliAgentSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       config: {
         agents: {
           defaults: {
@@ -38,7 +38,7 @@ describe("buildCliAgentSystemPrompt", () => {
 
   it("uses CLI backend tool fallback instead of Operator tool assumptions", () => {
     const prompt = buildCliAgentSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       tools: [],
       modelDisplay: "test/model",
     });
@@ -53,7 +53,7 @@ describe("buildCliAgentSystemPrompt", () => {
 
   it("describes bundled exec as synchronous node execution", () => {
     const prompt = buildCliAgentSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       tools: [{ name: "exec" } as never],
       modelDisplay: "test/model",
     });
@@ -78,11 +78,11 @@ describe("buildCliAgentSystemPrompt", () => {
     // CLI-backend runs must gate the first reply on a pending BOOTSTRAP.md the
     // same way the embedded runner does, not just inject the file as context.
     const prompt = buildCliAgentSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       tools: [],
       contextFiles: [
         {
-          path: "/tmp/openclaw/BOOTSTRAP.md",
+          path: "/tmp/operator/BOOTSTRAP.md",
           content: "Figure out who you are, then delete this file.",
         },
       ],
@@ -98,7 +98,7 @@ describe("buildCliAgentSystemPrompt", () => {
 
   it("renders limited bootstrap guidance when the run cannot complete bootstrap", () => {
     const prompt = buildCliAgentSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       tools: [],
       bootstrapMode: "limited",
       modelDisplay: "test/model",
@@ -110,7 +110,7 @@ describe("buildCliAgentSystemPrompt", () => {
 
   it("omits the bootstrap gate when bootstrap mode is not provided", () => {
     const prompt = buildCliAgentSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       tools: [],
       modelDisplay: "test/model",
     });
@@ -138,7 +138,7 @@ describe("buildCliAgentSystemPrompt", () => {
     });
 
     const prompt = buildCliAgentSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       tools: [{ name: "exec" } as never],
       modelDisplay: "test/model",
     });
@@ -149,7 +149,7 @@ describe("buildCliAgentSystemPrompt", () => {
 
   it("includes session identity in runtime when provided", () => {
     const prompt = buildCliAgentSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       tools: [],
       modelDisplay: "test/model",
       agentId: "main",
@@ -164,7 +164,7 @@ describe("buildCliAgentSystemPrompt", () => {
 
   it("includes Telegram channel context for CLI final replies without core rich guidance", () => {
     const prompt = buildCliAgentSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       tools: [],
       modelDisplay: "anthropic/claude-opus-4-8",
       runtimeChannel: "telegram",
@@ -179,7 +179,7 @@ describe("buildCliAgentSystemPrompt", () => {
 
   it("requires an explicit message target when the CLI turn policy requires one", () => {
     const prompt = buildCliAgentSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       tools: [{ name: "message" } as never],
       modelDisplay: "test/model",
       sourceReplyDeliveryMode: "message_tool_only",

@@ -81,7 +81,7 @@ function messageOperatorId(message: unknown): string | null {
   if (!message || typeof message !== "object" || Array.isArray(message)) {
     return null;
   }
-  const meta = (message as Record<string, unknown>)["__openclaw"];
+  const meta = (message as Record<string, unknown>)["__operator"];
   if (!meta || typeof meta !== "object" || Array.isArray(meta)) {
     return null;
   }

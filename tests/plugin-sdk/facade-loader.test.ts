@@ -18,7 +18,7 @@ import { createPluginSdkTestHarness } from "../../src/plugin-sdk/test-helpers.js
 const { createTempDirSync } = createPluginSdkTestHarness();
 const originalBundledPluginsDir = process.env.OPERATOR_BUNDLED_PLUGINS_DIR;
 const originalDisableBundledPlugins = process.env.OPERATOR_DISABLE_BUNDLED_PLUGINS;
-const FACADE_LOADER_GLOBAL = "__openclawTestLoadBundledPluginPublicSurfaceModuleSync";
+const FACADE_LOADER_GLOBAL = "__operatorTestLoadBundledPluginPublicSurfaceModuleSync";
 type FacadeLoaderSourceTransformFactory = NonNullable<
   Parameters<typeof setFacadeLoaderSourceTransformFactoryForTest>[0]
 >;

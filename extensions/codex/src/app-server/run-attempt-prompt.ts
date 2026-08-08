@@ -7,7 +7,7 @@ import {
 } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   buildCodexSystemPromptReport,
-  prependCodexOpenClawPromptContext,
+  prependCodexOperatorPromptContext,
   readContextEngineThreadBootstrapProjection,
   resolveCodexDeliveryHintPreservedInputRange,
   resolveContextEngineBootstrapProjectionDecision,
@@ -247,7 +247,7 @@ export async function prepareCodexAttemptPrompt(context: CodexAttemptContext) {
     prompt: string;
     promptInputRange?: { start: number; end: number };
   }) => {
-    const turnPromptText = prependCodexOpenClawPromptContext(
+    const turnPromptText = prependCodexOperatorPromptContext(
       promptBuildResult.prompt,
       openClawPromptContext,
       {
@@ -317,7 +317,7 @@ export async function prepareCodexAttemptPrompt(context: CodexAttemptContext) {
         return false;
       }
       const record = message as unknown as Record<string, unknown>;
-      const meta = record["__openclaw"];
+      const meta = record["__operator"];
       const mirrorIdentity =
         meta && typeof meta === "object" && !Array.isArray(meta)
           ? (meta as Record<string, unknown>).mirrorIdentity

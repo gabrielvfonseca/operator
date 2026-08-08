@@ -2016,7 +2016,7 @@ function remoteGitBootstrapForChangedGate(changedGateBase) {
     'rm -rf -- "$operator_changed_gate_bundle" || exit 2;',
     "rm -rf .git || exit 2;",
     "git init -q || exit 2;",
-    "git remote add origin https://github.com/openclaw/operator.git 2>/dev/null || git remote set-url origin https://github.com/openclaw/operator.git || exit 2;",
+    "git remote add origin https://github.com/operator/operator.git 2>/dev/null || git remote set-url origin https://github.com/operator/operator.git || exit 2;",
     'git fetch -q --depth=2 origin "$operator_changed_gate_base:refs/remotes/origin/main" || exit 2;',
     'if [ ! -f "$operator_changed_gate_bundle_tmp" ]; then echo "changed-gate bundle disappeared before import" >&2; exit 2; fi;',
     "operator_changed_gate_target=refs/remotes/origin/main;",
@@ -2136,13 +2136,13 @@ function isHydratedNativeWindowsProvider(providerName) {
 
 function remoteWindowsHydratedNodeModulesBootstrap() {
   return [
-    "$openclawModulesDir = $env:PNPM_CONFIG_MODULES_DIR",
-    "if ($openclawModulesDir) {",
-    'if (-not (Test-Path $openclawModulesDir)) { throw "PNPM_CONFIG_MODULES_DIR does not exist: $openclawModulesDir" }',
-    '$openclawWorkspaceModules = Join-Path (Get-Location).Path "node_modules"',
-    '$openclawSelfModules = Join-Path $openclawModulesDir "node_modules"',
-    'if (-not (Test-Path $openclawSelfModules)) { cmd /c mklink /J "$openclawSelfModules" "$openclawModulesDir" | Out-Host; if ($LASTEXITCODE -ne 0) { throw "failed to link hydrated pnpm node_modules" } }',
-    'if (-not (Test-Path $openclawWorkspaceModules)) { cmd /c mklink /J "$openclawWorkspaceModules" "$openclawModulesDir" | Out-Host; if ($LASTEXITCODE -ne 0) { throw "failed to link workspace node_modules" } }',
+    "$operatorModulesDir = $env:PNPM_CONFIG_MODULES_DIR",
+    "if ($operatorModulesDir) {",
+    'if (-not (Test-Path $operatorModulesDir)) { throw "PNPM_CONFIG_MODULES_DIR does not exist: $operatorModulesDir" }',
+    '$operatorWorkspaceModules = Join-Path (Get-Location).Path "node_modules"',
+    '$operatorSelfModules = Join-Path $operatorModulesDir "node_modules"',
+    'if (-not (Test-Path $operatorSelfModules)) { cmd /c mklink /J "$operatorSelfModules" "$operatorModulesDir" | Out-Host; if ($LASTEXITCODE -ne 0) { throw "failed to link hydrated pnpm node_modules" } }',
+    'if (-not (Test-Path $operatorWorkspaceModules)) { cmd /c mklink /J "$operatorWorkspaceModules" "$operatorModulesDir" | Out-Host; if ($LASTEXITCODE -ne 0) { throw "failed to link workspace node_modules" } }',
     "}",
   ].join("; ");
 }
@@ -3384,7 +3384,7 @@ if (canonicalProvider === "blacksmith-testbox") {
         `[crabbox] provider=blacksmith-testbox requires Crabbox >= ${formatVersionTuple(minimumBlacksmithCrabboxVersion)} for current Testbox sync, queue, and cleanup behavior.`,
         `[crabbox] selected binary reported version=${version.text || "unknown"}.`,
         // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-        "[crabbox] if using ../crabbox, rebuild it: version=$(git -C ../crabbox describe --tags --always --dirty | sed 's/^v//') && go build -C ../crabbox -trimpath -ldflags \"-s -w -X github.com/openclaw/crabbox/internal/cli.version=${version}\" -o bin/crabbox ./cmd/crabbox",
+        "[crabbox] if using ../crabbox, rebuild it: version=$(git -C ../crabbox describe --tags --always --dirty | sed 's/^v//') && go build -C ../crabbox -trimpath -ldflags \"-s -w -X github.com/operator/crabbox/internal/cli.version=${version}\" -o bin/crabbox ./cmd/crabbox",
       ].join("\n"),
     );
     process.exit(2);

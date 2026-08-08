@@ -372,14 +372,14 @@ function expectPluginSdkAliasTargets(
     pluginEntryPath?: string;
   },
 ) {
-  expect(fs.realpathSync(aliases["openclaw/plugin-sdk"] ?? "")).toBe(
+  expect(fs.realpathSync(aliases["operator/plugin-sdk"] ?? "")).toBe(
     fs.realpathSync(params.rootAliasPath),
   );
   expect(fs.realpathSync(aliases["@gabrielvfonseca/plugin-sdk"] ?? "")).toBe(
     fs.realpathSync(params.rootAliasPath),
   );
   if (params.channelRuntimePath) {
-    expect(fs.realpathSync(aliases["openclaw/plugin-sdk/channel-runtime"] ?? "")).toBe(
+    expect(fs.realpathSync(aliases["operator/plugin-sdk/channel-runtime"] ?? "")).toBe(
       fs.realpathSync(params.channelRuntimePath),
     );
     expect(fs.realpathSync(aliases["@gabrielvfonseca/plugin-sdk/channel-runtime"] ?? "")).toBe(
@@ -387,7 +387,7 @@ function expectPluginSdkAliasTargets(
     );
   }
   if (params.pluginEntryPath) {
-    expect(fs.realpathSync(aliases["openclaw/plugin-sdk/plugin-entry"] ?? "")).toBe(
+    expect(fs.realpathSync(aliases["operator/plugin-sdk/plugin-entry"] ?? "")).toBe(
       fs.realpathSync(params.pluginEntryPath),
     );
     expect(fs.realpathSync(aliases["@gabrielvfonseca/plugin-sdk/plugin-entry"] ?? "")).toBe(
@@ -409,7 +409,7 @@ function expectExtensionApiAliasResolution(params: {
       buildPluginLoaderAliasMap(
         params.modulePath(params.fixture.root),
         params.argv1?.(params.fixture.root) ?? "",
-      )["openclaw/extension-api"] ?? null,
+      )["operator/extension-api"] ?? null,
   );
   expectResolvedFixturePath({
     resolved,
@@ -434,8 +434,8 @@ function listPluginSdkExportedSubpaths(params: {
       params.devSourceRoot,
     ),
   )
-    .filter((key) => key.startsWith("openclaw/plugin-sdk/"))
-    .map((key) => key.slice("openclaw/plugin-sdk/".length))
+    .filter((key) => key.startsWith("operator/plugin-sdk/"))
+    .map((key) => key.slice("operator/plugin-sdk/".length))
     .toSorted();
 }
 
@@ -459,7 +459,7 @@ function expectCwdFallbackPluginSdkAliasResolution(params: {
       { NODE_ENV: undefined },
       () =>
         buildPluginLoaderAliasMap("/tmp/tsx-cache/operator-loader.js", "")[
-          "openclaw/plugin-sdk/channel-runtime"
+          "operator/plugin-sdk/channel-runtime"
         ] ?? null,
     ),
   );
@@ -570,7 +570,7 @@ describe("plugin sdk alias helpers", () => {
       env ?? {},
       () =>
         buildPluginLoaderAliasMap(modulePath(fixture.root), argv1?.(fixture.root) ?? "")[
-          "openclaw/plugin-sdk"
+          "operator/plugin-sdk"
         ] ?? null,
     );
     expect(resolved).toBe(expected === "dist" ? distRootAlias : sourceRootAlias);
@@ -622,7 +622,7 @@ describe("plugin sdk alias helpers", () => {
 
     const aliases = buildPluginLoaderAliasMap(entry, undefined, undefined, "dist", devFixture.root);
 
-    expect(fs.realpathSync(aliases["openclaw/extension-api"] ?? "")).toBe(
+    expect(fs.realpathSync(aliases["operator/extension-api"] ?? "")).toBe(
       fs.realpathSync(devFixture.distFile),
     );
   });
@@ -648,7 +648,7 @@ describe("plugin sdk alias helpers", () => {
       env ?? {},
       () =>
         buildPluginLoaderAliasMap(path.join(fixture.root, "src", "plugins", "loader.ts"), "")[
-          "openclaw/plugin-sdk"
+          "operator/plugin-sdk"
         ],
     );
     expect(resolved).toBe(expectedFirst === "dist" ? distRootAlias : sourceRootAlias);
@@ -741,13 +741,13 @@ describe("plugin sdk alias helpers", () => {
     );
 
     expect(subpaths).toEqual(["core", "qa-runner-runtime"]);
-    expect(fs.realpathSync(aliases["openclaw/plugin-sdk"] ?? "")).toBe(
+    expect(fs.realpathSync(aliases["operator/plugin-sdk"] ?? "")).toBe(
       fs.realpathSync(sourceRootAlias),
     );
-    expect(fs.realpathSync(aliases["openclaw/plugin-sdk/qa-runner-runtime"] ?? "")).toBe(
+    expect(fs.realpathSync(aliases["operator/plugin-sdk/qa-runner-runtime"] ?? "")).toBe(
       fs.realpathSync(sourceQaRunnerPath),
     );
-    expect(aliases["openclaw/plugin-sdk/qa-runtime"]).toBeUndefined();
+    expect(aliases["operator/plugin-sdk/qa-runtime"]).toBeUndefined();
   });
 
   it("adds non-QA private Codex helper subpaths only for trusted Codex plugins", () => {
@@ -1003,19 +1003,19 @@ describe("plugin sdk alias helpers", () => {
       buildPluginLoaderAliasMap(sourcePluginEntry),
     );
 
-    expect(fs.realpathSync(aliases["openclaw/plugin-sdk"] ?? "")).toBe(
+    expect(fs.realpathSync(aliases["operator/plugin-sdk"] ?? "")).toBe(
       fs.realpathSync(sourceRootAlias),
     );
-    expect(fs.realpathSync(aliases["openclaw/plugin-sdk/qa-runtime"] ?? "")).toBe(
+    expect(fs.realpathSync(aliases["operator/plugin-sdk/qa-runtime"] ?? "")).toBe(
       fs.realpathSync(sourceQaRuntimePath),
     );
-    expect(fs.realpathSync(aliases["openclaw/plugin-sdk/qa-channel"] ?? "")).toBe(
+    expect(fs.realpathSync(aliases["operator/plugin-sdk/qa-channel"] ?? "")).toBe(
       fs.realpathSync(sourceQaChannelPath),
     );
-    expect(fs.realpathSync(aliases["openclaw/plugin-sdk/qa-channel-protocol"] ?? "")).toBe(
+    expect(fs.realpathSync(aliases["operator/plugin-sdk/qa-channel-protocol"] ?? "")).toBe(
       fs.realpathSync(sourceQaChannelProtocolPath),
     );
-    expect(fs.realpathSync(aliases["openclaw/plugin-sdk/qa-lab"] ?? "")).toBe(
+    expect(fs.realpathSync(aliases["operator/plugin-sdk/qa-lab"] ?? "")).toBe(
       fs.realpathSync(distQaLabPath),
     );
   });
@@ -1192,37 +1192,37 @@ describe("plugin sdk alias helpers", () => {
       ),
     );
 
-    expect(fs.realpathSync(aliases["openclaw/plugin-sdk"] ?? "")).toBe(
+    expect(fs.realpathSync(aliases["operator/plugin-sdk"] ?? "")).toBe(
       fs.realpathSync(sourceRootAlias),
     );
-    expect(fs.realpathSync(aliases["openclaw/plugin-sdk/codex-mcp-projection"] ?? "")).toBe(
+    expect(fs.realpathSync(aliases["operator/plugin-sdk/codex-mcp-projection"] ?? "")).toBe(
       fs.realpathSync(sourceCodexMcpProjectionPath),
     );
-    expect(fs.realpathSync(aliases["openclaw/plugin-sdk/codex-native-task-runtime"] ?? "")).toBe(
+    expect(fs.realpathSync(aliases["operator/plugin-sdk/codex-native-task-runtime"] ?? "")).toBe(
       fs.realpathSync(sourceCodexNativeTaskRuntimePath),
     );
     expect(
-      fs.realpathSync(installedAliases["openclaw/plugin-sdk/codex-mcp-projection"] ?? ""),
+      fs.realpathSync(installedAliases["operator/plugin-sdk/codex-mcp-projection"] ?? ""),
     ).toBe(fs.realpathSync(distCodexMcpProjectionPath));
     expect(
-      fs.realpathSync(installedAliases["openclaw/plugin-sdk/codex-native-task-runtime"] ?? ""),
+      fs.realpathSync(installedAliases["operator/plugin-sdk/codex-native-task-runtime"] ?? ""),
     ).toBe(fs.realpathSync(distCodexNativeTaskRuntimePath));
-    expect(fs.realpathSync(devRootAliases["openclaw/plugin-sdk"] ?? "")).toBe(
+    expect(fs.realpathSync(devRootAliases["operator/plugin-sdk"] ?? "")).toBe(
       fs.realpathSync(devRootAlias),
     );
-    expect(fs.realpathSync(devRootAliases["openclaw/plugin-sdk/codex-mcp-projection"] ?? "")).toBe(
+    expect(fs.realpathSync(devRootAliases["operator/plugin-sdk/codex-mcp-projection"] ?? "")).toBe(
       fs.realpathSync(devCodexMcpProjectionPath),
     );
     expect(
-      fs.realpathSync(devRootAliases["openclaw/plugin-sdk/codex-native-task-runtime"] ?? ""),
+      fs.realpathSync(devRootAliases["operator/plugin-sdk/codex-native-task-runtime"] ?? ""),
     ).toBe(fs.realpathSync(devCodexNativeTaskRuntimePath));
-    expect(aliases["openclaw/plugin-sdk/qa-runtime"]).toBeUndefined();
-    expect(otherAliases["openclaw/plugin-sdk/codex-mcp-projection"]).toBeUndefined();
-    expect(otherAliases["openclaw/plugin-sdk/codex-native-task-runtime"]).toBeUndefined();
-    expect(installedOtherAliases["openclaw/plugin-sdk/codex-mcp-projection"]).toBeUndefined();
-    expect(installedOtherAliases["openclaw/plugin-sdk/codex-native-task-runtime"]).toBeUndefined();
-    expect(shadowCodexAliases["openclaw/plugin-sdk/codex-mcp-projection"]).toBeUndefined();
-    expect(shadowCodexAliases["openclaw/plugin-sdk/codex-native-task-runtime"]).toBeUndefined();
+    expect(aliases["operator/plugin-sdk/qa-runtime"]).toBeUndefined();
+    expect(otherAliases["operator/plugin-sdk/codex-mcp-projection"]).toBeUndefined();
+    expect(otherAliases["operator/plugin-sdk/codex-native-task-runtime"]).toBeUndefined();
+    expect(installedOtherAliases["operator/plugin-sdk/codex-mcp-projection"]).toBeUndefined();
+    expect(installedOtherAliases["operator/plugin-sdk/codex-native-task-runtime"]).toBeUndefined();
+    expect(shadowCodexAliases["operator/plugin-sdk/codex-mcp-projection"]).toBeUndefined();
+    expect(shadowCodexAliases["operator/plugin-sdk/codex-native-task-runtime"]).toBeUndefined();
   });
 
   it("aliases the SSRF internal helper only for bundled local IPC owner plugins", async () => {
@@ -1358,27 +1358,27 @@ describe("plugin sdk alias helpers", () => {
     expect(sourceSubpaths).toEqual(["core", "ssrf-runtime-internal"]);
     expect(sourceBrowserSubpaths).toEqual(["core", "ssrf-runtime-internal"]);
     expect(privateQaOtherSubpaths).toEqual(["core"]);
-    expect(fs.realpathSync(sourceAliases["openclaw/plugin-sdk/ssrf-runtime-internal"] ?? "")).toBe(
+    expect(fs.realpathSync(sourceAliases["operator/plugin-sdk/ssrf-runtime-internal"] ?? "")).toBe(
       fs.realpathSync(sourceSsrFInternalPath),
     );
     expect(
-      fs.realpathSync(sourceBrowserAliases["openclaw/plugin-sdk/ssrf-runtime-internal"] ?? ""),
+      fs.realpathSync(sourceBrowserAliases["operator/plugin-sdk/ssrf-runtime-internal"] ?? ""),
     ).toBe(fs.realpathSync(sourceSsrFInternalPath));
-    expect(fs.realpathSync(distAliases["openclaw/plugin-sdk/ssrf-runtime-internal"] ?? "")).toBe(
+    expect(fs.realpathSync(distAliases["operator/plugin-sdk/ssrf-runtime-internal"] ?? "")).toBe(
       fs.realpathSync(distSsrFInternalPath),
     );
     expect(
-      fs.realpathSync(distBrowserAliases["openclaw/plugin-sdk/ssrf-runtime-internal"] ?? ""),
+      fs.realpathSync(distBrowserAliases["operator/plugin-sdk/ssrf-runtime-internal"] ?? ""),
     ).toBe(fs.realpathSync(distSsrFInternalPath));
     expect(
-      fs.realpathSync(distRuntimeAliases["openclaw/plugin-sdk/ssrf-runtime-internal"] ?? ""),
+      fs.realpathSync(distRuntimeAliases["operator/plugin-sdk/ssrf-runtime-internal"] ?? ""),
     ).toBe(fs.realpathSync(distSsrFInternalPath));
     expect(
-      fs.realpathSync(distRuntimeBrowserAliases["openclaw/plugin-sdk/ssrf-runtime-internal"] ?? ""),
+      fs.realpathSync(distRuntimeBrowserAliases["operator/plugin-sdk/ssrf-runtime-internal"] ?? ""),
     ).toBe(fs.realpathSync(distSsrFInternalPath));
-    expect(otherAliases["openclaw/plugin-sdk/ssrf-runtime-internal"]).toBeUndefined();
-    expect(privateQaOtherAliases["openclaw/plugin-sdk/ssrf-runtime-internal"]).toBeUndefined();
-    expect(installedAliases["openclaw/plugin-sdk/ssrf-runtime-internal"]).toBeUndefined();
+    expect(otherAliases["operator/plugin-sdk/ssrf-runtime-internal"]).toBeUndefined();
+    expect(privateQaOtherAliases["operator/plugin-sdk/ssrf-runtime-internal"]).toBeUndefined();
+    expect(installedAliases["operator/plugin-sdk/ssrf-runtime-internal"]).toBeUndefined();
 
     const createJiti = await getCreateJiti();
     const sourceLoaderBaseUrl = pathToFileURL(
@@ -1972,7 +1972,7 @@ describe("plugin sdk alias helpers", () => {
       buildPluginLoaderAliasMap(sourcePluginEntry, undefined, undefined, "dist"),
     );
 
-    expect(fs.realpathSync(distAliases["openclaw/plugin-sdk/provider-entry"] ?? "")).toBe(
+    expect(fs.realpathSync(distAliases["operator/plugin-sdk/provider-entry"] ?? "")).toBe(
       fs.realpathSync(sourceProviderEntryPath),
     );
   });
@@ -1997,7 +1997,7 @@ describe("plugin sdk alias helpers", () => {
     });
   });
 
-  it("resolves plugin-sdk aliases for user-installed plugins via the running openclaw argv hint", () => {
+  it("resolves plugin-sdk aliases for user-installed plugins via the running operator argv hint", () => {
     const {
       externalPluginEntry,
       externalPluginRoot,
@@ -2031,17 +2031,17 @@ describe("plugin sdk alias helpers", () => {
     } = createUserInstalledPluginSdkAliasFixture();
 
     // Simulate loader.ts passing its own import.meta.url as the moduleUrl hint.
-    // This covers installations where argv1 does not resolve to the openclaw root
+    // This covers installations where argv1 does not resolve to the operator root
     // (e.g. single-binary distributions or custom process launchers).
     // Use operator.mjs which is created by createPluginSdkAliasFixture (bin+marker mode).
     // Use fixture.root as cwd so process.cwd() fallback also resolves to fixture, not the
-    // real openclaw repo root in the test runner environment.
+    // real operator repo root in the test runner environment.
     const loaderModuleUrl = pathToFileURL(path.join(fixture.root, "operator.mjs")).href;
 
     // Use externalPluginRoot as cwd so process.cwd() fallback cannot accidentally
     // resolve to the fixture root — only the moduleUrl hint can bridge the gap.
     // Pass "" for argv1: undefined would trigger the STARTUP_ARGV1 default (the vitest
-    // runner binary, inside the openclaw repo), which resolves before moduleUrl is checked.
+    // runner binary, inside the operator repo), which resolves before moduleUrl is checked.
     // An empty string is falsy so resolveTrustedOperatorRootFromArgvHint returns null,
     // meaning only the moduleUrl hint can bridge the gap.
     const aliases = withCwd(externalPluginRoot, () =>
@@ -2094,7 +2094,7 @@ describe("plugin sdk alias helpers", () => {
     expect("alias" in options).toBe(false);
   });
 
-  it("preserves configured jiti native modules while adding openclaw", () => {
+  it("preserves configured jiti native modules while adding operator", () => {
     const options = withEnv(
       { JITI_NATIVE_MODULES: JSON.stringify(["native-addon", "@gabrielvfonseca/operator"]) },
       () => buildPluginLoaderJitiOptions({}),
@@ -2270,10 +2270,10 @@ describe("plugin sdk alias helpers", () => {
 
     expect(distAgain).toBe(dist);
     expect(auto).not.toBe(dist);
-    expect(fs.realpathSync(auto.aliasMap["openclaw/plugin-sdk"] ?? "")).toBe(
+    expect(fs.realpathSync(auto.aliasMap["operator/plugin-sdk"] ?? "")).toBe(
       fs.realpathSync(sourceRootAlias),
     );
-    expect(fs.realpathSync(dist.aliasMap["openclaw/plugin-sdk"] ?? "")).toBe(
+    expect(fs.realpathSync(dist.aliasMap["operator/plugin-sdk"] ?? "")).toBe(
       fs.realpathSync(distRootAlias),
     );
   });
@@ -2324,7 +2324,7 @@ export const syntheticRuntimeMarker = {
 
     const withAlias = createJiti(sourceLoaderBaseUrl, {
       ...buildPluginLoaderJitiOptions({
-        "openclaw/plugin-sdk/channel-outbound": copiedChannelRuntimeShim,
+        "operator/plugin-sdk/channel-outbound": copiedChannelRuntimeShim,
         "@gabrielvfonseca/plugin-sdk/channel-outbound": copiedChannelRuntimeShim,
       }),
       tryNative: false,
@@ -2563,7 +2563,7 @@ describe("buildPluginLoaderAliasMap memoization", () => {
     const aliasB = buildPluginLoaderAliasMap(entryB);
 
     expect(aliasA).not.toBe(aliasB);
-    expect(aliasA["openclaw/plugin-sdk"]).not.toBe(aliasB["openclaw/plugin-sdk"]);
+    expect(aliasA["operator/plugin-sdk"]).not.toBe(aliasB["operator/plugin-sdk"]);
   });
 
   it("returns different references when pluginSdkResolution differs", () => {
@@ -2619,10 +2619,10 @@ describe("buildPluginLoaderAliasMap memoization", () => {
     );
 
     expect(devAliases).not.toBe(stableAliases);
-    expect(fs.realpathSync(stableAliases["openclaw/plugin-sdk"] ?? "")).toBe(
+    expect(fs.realpathSync(stableAliases["operator/plugin-sdk"] ?? "")).toBe(
       fs.realpathSync(stableRootAlias),
     );
-    expect(fs.realpathSync(devAliases["openclaw/plugin-sdk"] ?? "")).toBe(
+    expect(fs.realpathSync(devAliases["operator/plugin-sdk"] ?? "")).toBe(
       fs.realpathSync(devRootAlias),
     );
   });
@@ -2647,8 +2647,8 @@ describe("buildPluginLoaderAliasMap memoization", () => {
     );
 
     expect(publicAliases).not.toBe(privateAliases);
-    expect(publicAliases["openclaw/plugin-sdk/qa-runtime"]).toBeUndefined();
-    expect(fs.realpathSync(privateAliases["openclaw/plugin-sdk/qa-runtime"] ?? "")).toBe(
+    expect(publicAliases["operator/plugin-sdk/qa-runtime"]).toBeUndefined();
+    expect(fs.realpathSync(privateAliases["operator/plugin-sdk/qa-runtime"] ?? "")).toBe(
       fs.realpathSync(sourceQaRuntimePath),
     );
   });
@@ -2669,10 +2669,10 @@ describe("buildPluginLoaderAliasMap memoization", () => {
     );
 
     expect(developmentAliases).not.toBe(productionAliases);
-    expect(fs.realpathSync(developmentAliases["openclaw/plugin-sdk"] ?? "")).toBe(
+    expect(fs.realpathSync(developmentAliases["operator/plugin-sdk"] ?? "")).toBe(
       fs.realpathSync(sourceRootAlias),
     );
-    expect(fs.realpathSync(productionAliases["openclaw/plugin-sdk"] ?? "")).toBe(
+    expect(fs.realpathSync(productionAliases["operator/plugin-sdk"] ?? "")).toBe(
       fs.realpathSync(distRootAlias),
     );
   });
@@ -2705,7 +2705,7 @@ describe("buildPluginLoaderJitiOptions", () => {
 
     const options = withEnv({ TMPDIR: tmpDir }, () =>
       buildPluginLoaderJitiOptions(
-        { "openclaw/plugin-sdk": path.join(root, "dist", "plugin-sdk", "root-alias.cjs") },
+        { "operator/plugin-sdk": path.join(root, "dist", "plugin-sdk", "root-alias.cjs") },
         { modulePath: path.join(root, "dist", "plugins", "loader.js") },
       ),
     );
@@ -2718,8 +2718,8 @@ describe("buildPluginLoaderJitiOptions", () => {
   it("pre-normalizes and marks alias maps for source transforms", () => {
     const marker = Symbol.for("pathe:normalizedAlias");
     const aliasMap = {
-      "openclaw/plugin-sdk/core": "/repo/src/plugin-sdk/core.ts",
-      "openclaw/plugin-sdk": "/repo/src/plugin-sdk/root-alias.cjs",
+      "operator/plugin-sdk/core": "/repo/src/plugin-sdk/core.ts",
+      "operator/plugin-sdk": "/repo/src/plugin-sdk/root-alias.cjs",
       "@gabrielvfonseca/plugin-sdk": "/repo/src/plugin-sdk/root-alias.cjs",
     };
 

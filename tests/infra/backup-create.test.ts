@@ -9,12 +9,12 @@ import { describe, expect, it, vi } from "vitest";
 import { saveAuthProfileStore } from "../../src/agents/auth-profiles/store.js";
 import { backupVerifyCommand } from "../../src/commands/backup-verify.js";
 import type { RuntimeEnv } from "../../src/runtime.js";
-import { closeOperatorAgentDatabasesForTest } from "../../src/state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../src/state/operator-agent-db.js";
 import {
   closeOperatorStateDatabase,
   openOperatorStateDatabase,
-} from "../../src/state/openclaw-state-db.js";
-import { resolveOperatorStateSqlitePath } from "../../src/state/openclaw-state-db.paths.js";
+} from "../../src/state/operator-state-db.js";
+import { resolveOperatorStateSqlitePath } from "../../src/state/operator-state-db.paths.js";
 import { withOperatorTestState } from "../../src/test-utils/operator-test-state.ts";
 import {
   createBackupArchive,
@@ -124,7 +124,7 @@ describe("formatBackupCreateSummary", () => {
           {
             kind: "workspace",
             sourcePath: "/workspace",
-            displayPath: "~/Projects/openclaw",
+            displayPath: "~/Projects/operator",
             reason: "covered",
             coveredBy: "~/.operator",
           },
@@ -135,7 +135,7 @@ describe("formatBackupCreateSummary", () => {
         "Included 1 path:",
         "- state: ~/.operator",
         "Skipped 1 path:",
-        "- workspace: ~/Projects/openclaw (covered by ~/.operator)",
+        "- workspace: ~/Projects/operator (covered by ~/.operator)",
         "Created /tmp/operator-backup.tar.gz",
         "Archive verification: passed",
       ],
@@ -1557,7 +1557,7 @@ describe("createBackupArchive", () => {
             entry.endsWith("/state/plugins/dedicated/empty.sqlite"),
           );
           expect(emptyDbEntries).toHaveLength(1);
-          expect(entries.some((entry) => entry.includes("/openclaw-state-db-"))).toBe(false);
+          expect(entries.some((entry) => entry.includes("/operator-state-db-"))).toBe(false);
 
           await tar.x({ file: result.archivePath, gzip: true, cwd: extractDir });
           const sqlite = requireNodeSqlite();

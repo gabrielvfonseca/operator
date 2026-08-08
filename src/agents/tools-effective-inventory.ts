@@ -43,7 +43,7 @@ function policyDeniesTool(policy: { deny?: string[] } | undefined, toolName: str
   return (
     listIncludesTool(policy?.deny, toolName) ||
     listIncludesTool(policy?.deny, "group:ui") ||
-    listIncludesTool(policy?.deny, "group:openclaw")
+    listIncludesTool(policy?.deny, "group:operator")
   );
 }
 

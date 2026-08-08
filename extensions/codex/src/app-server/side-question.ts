@@ -907,7 +907,7 @@ async function createCodexSideToolBridge(input: {
   const messageToolProvider = resolveCodexMessageToolProvider(input.params);
   let tools: AnyAgentTool[] = [];
   if (supportsModelTools(runtimeModel)) {
-    const createOperatorCodingTools = (await import("openclaw/plugin-sdk/agent-harness"))
+    const createOperatorCodingTools = (await import("operator/plugin-sdk/agent-harness"))
       .createOperatorCodingTools;
     const sandboxSessionKey =
       input.params.sandboxSessionKey?.trim() ||

@@ -18,7 +18,7 @@ export {
 export type {
   LazyPluginServiceHandle,
   OperatorPluginApi,
-  OpenClawPluginConfigSchema,
+  OperatorPluginConfigSchema,
   PluginConversationBinding,
   PluginConversationBindingRequestParams,
   PluginConversationBindingRequestResult,

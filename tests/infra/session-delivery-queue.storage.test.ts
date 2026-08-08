@@ -1,6 +1,6 @@
 // Covers session delivery queue persistence state transitions.
 import { describe, expect, it } from "vitest";
-import { openOperatorStateDatabase } from "../../src/state/openclaw-state-db.js";
+import { openOperatorStateDatabase } from "../../src/state/operator-state-db.js";
 import { withTempDir } from "../../src/test-helpers/temp-dir.js";
 import {
   advanceSessionDeliveryAgentRun,

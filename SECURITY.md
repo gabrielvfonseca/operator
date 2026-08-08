@@ -12,12 +12,12 @@ Security work is shared across a number of Operator maintainers, including engin
 
 Report vulnerabilities directly to the repository where the issue lives:
 
-- **Core CLI and gateway** — [openclaw/openclaw](https://github.com/gabrielvfonseca/operator)
-- **macOS desktop app** — [openclaw/openclaw](https://github.com/gabrielvfonseca/operator) (apps/macos)
-- **iOS app** — [openclaw/openclaw](https://github.com/gabrielvfonseca/operator) (apps/ios)
-- **Android app** — [openclaw/openclaw](https://github.com/gabrielvfonseca/operator) (apps/android)
-- **ClawHub** — [openclaw/clawhub](https://github.com/openclaw/clawhub)
-- **Trust and threat model** — [openclaw/trust](https://github.com/openclaw/trust)
+- **Core CLI and gateway** — [operator/operator](https://github.com/gabrielvfonseca/operator)
+- **macOS desktop app** — [operator/operator](https://github.com/gabrielvfonseca/operator) (apps/macos)
+- **iOS app** — [operator/operator](https://github.com/gabrielvfonseca/operator) (apps/ios)
+- **Android app** — [operator/operator](https://github.com/gabrielvfonseca/operator) (apps/android)
+- **ClawHub** — [operator/clawhub](https://github.com/operator/clawhub)
+- **Trust and threat model** — [operator/trust](https://github.com/operator/trust)
 
 For issues that don't fit a specific repo, or if you're unsure, email **[security@operator.ai](mailto:security@operator.ai)** and we'll route it.
 
@@ -261,8 +261,8 @@ Plugins/extensions are loaded **in-process** with the Gateway and are treated as
 
 Operator uses a dedicated temp root for local media handoff and sandbox-adjacent temp artifacts:
 
-- Preferred temp root: `/tmp/openclaw` (when available and safe on the host).
-- Fallback temp root: `os.tmpdir()/openclaw` (or `operator-<uid>` on multi-user hosts).
+- Preferred temp root: `/tmp/operator` (when available and safe on the host).
+- Fallback temp root: `os.tmpdir()/operator` (or `operator-<uid>` on multi-user hosts).
 
 Security boundary notes:
 
@@ -341,7 +341,7 @@ Example secure Docker run:
 ```bash
 docker run --read-only --cap-drop=ALL \
   -v operator-data:/app/data \
-  openclaw/operator:latest
+  operator/operator:latest
 ```
 
 ## Security Scanning

@@ -372,7 +372,7 @@ describeControlUiE2e("Control UI custom-widget host mocked Gateway E2E", () => {
       // legitimate value and never shows the injected marker.
       await frame.locator("#value").evaluate((node) => {
         type SpoofObservationWindow = Window & {
-          openclawSawSpoofed?: boolean;
+          operatorSawSpoofed?: boolean;
           operatorSpoofObserver?: MutationObserver;
         };
         const targetWindow = window as SpoofObservationWindow;
@@ -442,7 +442,7 @@ describeControlUiE2e("Control UI custom-widget host mocked Gateway E2E", () => {
       });
       const sawSpoofed = await frame.locator("#value").evaluate((node) => {
         type SpoofObservationWindow = Window & {
-          openclawSawSpoofed?: boolean;
+          operatorSawSpoofed?: boolean;
           operatorSpoofObserver?: MutationObserver;
         };
         const targetWindow = window as SpoofObservationWindow;

@@ -9,7 +9,7 @@ const { fetchWithSsrFGuardMock } = vi.hoisted(() => ({
 
 const PROVIDER_RESPONSE_MAX_BYTES = 16 * 1024 * 1024;
 
-vi.mock("openclaw/plugin-sdk/ssrf-runtime", () => ({
+vi.mock("operator/plugin-sdk/ssrf-runtime", () => ({
   fetchWithSsrFGuard: fetchWithSsrFGuardMock,
 }));
 

@@ -1,5 +1,5 @@
 // Agent-facing memory tools for the tiered memory plugin.
-import type { AgentToolResult } from "openclaw/plugin-sdk/agent-core";
+import type { AgentToolResult } from "operator/plugin-sdk/agent-core";
 import type { ProceduralClient } from "./procedural.js";
 import type { SemanticClient } from "./semantic.js";
 import type { WorkingMemoryClient } from "./working.js";

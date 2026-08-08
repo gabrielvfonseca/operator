@@ -4,12 +4,12 @@ import fs from "node:fs";
 import path from "node:path";
 import type { Insertable, Selectable } from "kysely";
 import { resolveStateDir } from "../config/paths.js";
-import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
-import type { OperatorStateDatabaseOptions } from "../state/openclaw-state-db.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { OperatorStateDatabaseOptions } from "../state/operator-state-db.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../state/openclaw-state-db.js";
+} from "../state/operator-state-db.js";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
@@ -75,7 +75,7 @@ function assertNodeHostLegacyStateMigrated(env: NodeJS.ProcessEnv = process.env)
     return;
   }
   throw new Error(
-    `retired node-host state remains at ${sourcePath}; stop the node host and run \`openclaw doctor --fix\``,
+    `retired node-host state remains at ${sourcePath}; stop the node host and run \`operator doctor --fix\``,
   );
 }
 

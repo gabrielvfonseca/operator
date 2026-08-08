@@ -53,7 +53,7 @@ All three support Node **22.22.3+, 24.15+, or 25.9+**; Node 24 is the default ta
 </Tabs>
 
 <Note>
-If install succeeds but `openclaw` is not found in a new terminal, see [Node.js troubleshooting](/install/node#troubleshooting).
+If install succeeds but `operator` is not found in a new terminal, see [Node.js troubleshooting](/install/node#troubleshooting).
 </Note>
 
 ---
@@ -81,11 +81,11 @@ Recommended for most interactive installs on macOS/Linux/WSL.
   </Step>
   <Step title="Install Operator">
     - `npm` method (default): global npm install
-    - `git` method: clone/update repo, install deps with pnpm, build, then install wrapper at `~/.local/bin/openclaw`
+    - `git` method: clone/update repo, install deps with pnpm, build, then install wrapper at `~/.local/bin/operator`
 
   </Step>
   <Step title="Post-install tasks">
-    - Resolves the just-installed `openclaw` binary for follow-up commands
+    - Resolves the just-installed `operator` binary for follow-up commands
     - For an unconfigured install, starts onboarding before doctor or gateway probes. With `--no-onboard` or no TTY, it prints the command to finish setup later.
     - For a configured install, refreshes and restarts a loaded gateway service best-effort and runs doctor. Upgrades update plugins when possible, or print the manual command in a headless prompt-enabled run.
     - When `--verify` runs, it checks the installed version and checks gateway health only after configuration exists.
@@ -149,7 +149,7 @@ The script exits with code `2` for invalid method selection or invalid `--instal
 | `--git \| --github`                     | Shortcut for git method                                                 |
 | `--version <version\|dist-tag\|spec>`   | npm version, dist-tag, or package spec (default: `latest`)              |
 | `--beta`                                | Use beta dist-tag if available, else fall back to `latest`              |
-| `--git-dir \| --dir <path>`             | Checkout directory (default: `~/openclaw`)                              |
+| `--git-dir \| --dir <path>`             | Checkout directory (default: `~/operator`)                              |
 | `--no-git-update`                       | Skip `git pull` for existing checkout                                   |
 | `--no-prompt`                           | Disable prompts                                                         |
 | `--no-onboard`                          | Skip onboarding                                                         |
@@ -205,8 +205,8 @@ by default, plus git-checkout installs under the same prefix flow.
     If Git is missing, attempts install via apt/dnf/yum/apk on Linux or Homebrew on macOS.
   </Step>
   <Step title="Install Operator under prefix">
-    - `npm` method (default): installs under the prefix with npm, then writes wrapper to `<prefix>/bin/openclaw`
-    - `git` method: clones/updates a checkout (default `~/openclaw`) and still writes the wrapper to `<prefix>/bin/openclaw`
+    - `npm` method (default): installs under the prefix with npm, then writes wrapper to `<prefix>/bin/operator`
+    - `git` method: clones/updates a checkout (default `~/operator`) and still writes the wrapper to `<prefix>/bin/operator`
 
   </Step>
   <Step title="Refresh loaded gateway service">
@@ -231,12 +231,12 @@ by default, plus git-checkout installs under the same prefix flow.
   </Tab>
   <Tab title="Git install">
     ```bash
-    curl -fsSL --proto '=https' --tlsv1.2 https://operator.ai/install-cli.sh | bash -s -- --install-method git --git-dir ~/openclaw
+    curl -fsSL --proto '=https' --tlsv1.2 https://operator.ai/install-cli.sh | bash -s -- --install-method git --git-dir ~/operator
     ```
   </Tab>
   <Tab title="Automation JSON output">
     ```bash
-    curl -fsSL --proto '=https' --tlsv1.2 https://operator.ai/install-cli.sh | bash -s -- --json --prefix /opt/openclaw
+    curl -fsSL --proto '=https' --tlsv1.2 https://operator.ai/install-cli.sh | bash -s -- --json --prefix /opt/operator
     ```
   </Tab>
   <Tab title="Run onboarding">
@@ -255,7 +255,7 @@ by default, plus git-checkout installs under the same prefix flow.
 | `--install-method \| --method npm\|git` | Choose install method (default: `npm`)                                          |
 | `--npm`                                 | Shortcut for npm method                                                         |
 | `--git \| --github`                     | Shortcut for git method                                                         |
-| `--git-dir \| --dir <path>`             | Git checkout directory (default: `~/openclaw`)                                  |
+| `--git-dir \| --dir <path>`             | Git checkout directory (default: `~/operator`)                                  |
 | `--version <ver>`                       | Operator version or dist-tag (default: `latest`)                                |
 | `--node-version <ver>`                  | Node version (default: `24.15.0`; `22.22.3` on Linux ARMv7)                     |
 | `--json`                                | Emit NDJSON events                                                              |
@@ -284,7 +284,7 @@ by default, plus git-checkout installs under the same prefix flow.
 </AccordionGroup>
 
 <Note>
-`openclaw@main` and other GitHub source specs are not valid `--version` targets for npm installs. Use `--install-method git --version main` instead.
+`operator@main` and other GitHub source specs are not valid `--version` targets for npm installs. Use `--install-method git --version main` instead.
 </Note>
 
 ---
@@ -338,7 +338,7 @@ by default, plus git-checkout installs under the same prefix flow.
   </Tab>
   <Tab title="Custom git directory">
     ```powershell
-    & ([scriptblock]::Create((iwr -useb https://operator.ai/install.ps1))) -InstallMethod git -GitDir "C:\openclaw"
+    & ([scriptblock]::Create((iwr -useb https://operator.ai/install.ps1))) -InstallMethod git -GitDir "C:\operator"
     ```
   </Tab>
   <Tab title="Dry run">
@@ -355,7 +355,7 @@ by default, plus git-checkout installs under the same prefix flow.
 | --------------------------- | ---------------------------------------------------------- |
 | `-InstallMethod npm\|git`   | Install method (default: `npm`)                            |
 | `-Tag <tag\|version\|spec>` | npm dist-tag, version, or package spec (default: `latest`) |
-| `-GitDir <path>`            | Checkout directory (default: `%USERPROFILE%\openclaw`)     |
+| `-GitDir <path>`            | Checkout directory (default: `%USERPROFILE%\operator`)     |
 | `-NoOnboard`                | Skip onboarding                                            |
 | `-NoGitUpdate`              | Skip `git pull`                                            |
 | `-DryRun`                   | Print actions only                                         |
@@ -399,7 +399,7 @@ Use non-interactive flags/env vars for predictable runs.
   </Tab>
   <Tab title="install-cli.sh (JSON)">
     ```bash
-    curl -fsSL --proto '=https' --tlsv1.2 https://operator.ai/install-cli.sh | bash -s -- --json --prefix /opt/openclaw
+    curl -fsSL --proto '=https' --tlsv1.2 https://operator.ai/install-cli.sh | bash -s -- --json --prefix /opt/operator
     ```
   </Tab>
   <Tab title="install.ps1 (skip onboarding)">

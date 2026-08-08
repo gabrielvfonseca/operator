@@ -304,7 +304,7 @@ describe("bonjour-discovery", () => {
               `"transport=gateway"`,
               `"sshPort=22"`,
               `"tailnetDns=peters-mac-studio-1.sheep-coho.ts.net"`,
-              `"cliPath=/opt/homebrew/bin/openclaw"`,
+              `"cliPath=/opt/homebrew/bin/operator"`,
               "",
             ].join(" "),
             stderr: "",
@@ -335,7 +335,7 @@ describe("bonjour-discovery", () => {
     expect(beacon.tailnetDns).toBe("peters-mac-studio-1.sheep-coho.ts.net");
     expect(beacon.gatewayPort).toBe(18789);
     expect(beacon.sshPort).toBe(22);
-    expect(beacon.cliPath).toBe("/opt/homebrew/bin/openclaw");
+    expect(beacon.cliPath).toBe("/opt/homebrew/bin/operator");
 
     expect(calls.map((c) => c.argv.slice(0, 2).join(" "))).toContain("tailscale status");
     expect(calls.map((c) => c.argv[0])).toContain("dig");

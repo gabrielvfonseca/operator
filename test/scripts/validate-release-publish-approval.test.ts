@@ -34,7 +34,7 @@ function runApprovalScript(
       EXPECTED_WORKFLOW_BRANCH: env.EXPECTED_WORKFLOW_BRANCH ?? "release/2026.6.21",
       EXPECTED_RUN_ATTEMPT: env.EXPECTED_RUN_ATTEMPT ?? "",
       APPROVAL_PATH: env.APPROVAL_PATH ?? "",
-      GITHUB_REPOSITORY: env.GITHUB_REPOSITORY ?? "openclaw/openclaw",
+      GITHUB_REPOSITORY: env.GITHUB_REPOSITORY ?? "operator/operator",
       RELEASE_APPROVAL_KIND: env.RELEASE_APPROVAL_KIND ?? "android",
       RELEASE_PACKAGES: env.RELEASE_PACKAGES ?? "",
       RELEASE_TAG: env.RELEASE_TAG ?? "v2026.6.21",
@@ -46,14 +46,14 @@ function runApprovalScript(
 }
 
 function writeApproval(overrides: Record<string, unknown> = {}) {
-  const tempRoot = tempRoots.make("openclaw-release-approval-");
+  const tempRoot = tempRoots.make("operator-release-approval-");
   const approvalPath = path.join(tempRoot, "approval.json");
   fs.writeFileSync(
     approvalPath,
     `${JSON.stringify({
       version: 1,
-      repository: "openclaw/openclaw",
-      workflow: "OpenClaw Release Publish",
+      repository: "operator/operator",
+      workflow: "Operator Release Publish",
       parentRunId: "123",
       workflowBranch: "release/2026.6.21",
       releaseTag: "v2026.6.21",
@@ -70,22 +70,22 @@ function approvalRun(overrides: Record<string, unknown> = {}) {
     event: "workflow_dispatch",
     headBranch: "release/2026.6.21",
     status: "in_progress",
-    url: "https://github.com/openclaw/openclaw/actions/runs/123",
-    workflowName: "OpenClaw Release Publish",
+    url: "https://github.com/operator/operator/actions/runs/123",
+    workflowName: "Operator Release Publish",
     ...overrides,
   };
 }
 
 function writeClawHubApproval(overrides: Record<string, unknown> = {}) {
-  const tempRoot = tempRoots.make("openclaw-clawhub-bootstrap-approval-");
+  const tempRoot = tempRoots.make("operator-clawhub-bootstrap-approval-");
   const approvalPath = path.join(tempRoot, "approval.json");
   fs.writeFileSync(
     approvalPath,
     `${JSON.stringify({
       version: 2,
       kind: "clawhub-bootstrap",
-      repository: "openclaw/openclaw",
-      workflow: "OpenClaw Release Publish",
+      repository: "operator/operator",
+      workflow: "Operator Release Publish",
       parentRunId: "123",
       parentRunAttempt: 2,
       workflowBranch: "main",
@@ -106,7 +106,7 @@ describe("scripts/validate-release-publish-approval.mjs", () => {
 
     expect(result.status).toBe(0);
     expect(result.stdout).toContain(
-      "Using release publish approval run 123: https://github.com/openclaw/openclaw/actions/runs/123",
+      "Using release publish approval run 123: https://github.com/operator/operator/actions/runs/123",
     );
     expect(result.stderr).toBe("");
   });
@@ -289,7 +289,7 @@ describe("scripts/validate-release-publish-approval.mjs", () => {
 
       expect(result.status).toBe(0);
       expect(result.stdout).toContain(
-        `Using completed release publish run 123 (${conclusion}) for direct recovery: https://github.com/openclaw/openclaw/actions/runs/123`,
+        `Using completed release publish run 123 (${conclusion}) for direct recovery: https://github.com/operator/operator/actions/runs/123`,
       );
       expect(result.stderr).toBe("");
     }

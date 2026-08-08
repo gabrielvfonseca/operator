@@ -767,7 +767,7 @@ describe("clearAuthProfileCooldown", () => {
 });
 
 describe("markAuthProfileFailure — active windows do not extend on retry", () => {
-  // Regression for https://github.com/openclaw/openclaw/issues/23516
+  // Regression for https://github.com/operator/operator/issues/23516
   // When all providers are at saturation backoff (60 min) and retries fire every 30 min,
   // each retry was resetting cooldownUntil to now+60m, preventing recovery.
   type WindowStats = ProfileUsageStats;
@@ -1407,7 +1407,7 @@ describe("markAuthProfileFailure — WHAM-aware Codex cooldowns", () => {
     expect(headers.Authorization).toBe("Bearer codex-access-token");
     expect(headers["ChatGPT-Account-Id"]).toBe("acct_test_123");
     expect(headers.originator).toBe("@gabrielvfonseca/operator");
-    expect(headers["User-Agent"]).toMatch(/^openclaw\//);
+    expect(headers["User-Agent"]).toMatch(/^operator\//);
     const stats = store.usageStats?.["openai:default"];
     expect(stats?.lastProbeAt).toBe(now);
     if (exactBlocked) {

@@ -931,7 +931,7 @@ struct TalkModeManagerTests {
             ],
             [
                 "role": "assistant",
-                "__openclaw": ["idempotencyKey": "current-run"],
+                "__operator": ["idempotencyKey": "current-run"],
                 "content": [["type": "text", "text": "current answer"]],
             ],
         ]

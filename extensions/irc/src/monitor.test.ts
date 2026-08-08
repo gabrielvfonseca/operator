@@ -177,7 +177,7 @@ describe("irc monitor reconnect", () => {
           nick: "bot",
           username: "bot",
           realname: "Operator",
-          channels: ["#openclaw"],
+          channels: ["#operator"],
         },
       },
     } as CoreConfig;
@@ -204,8 +204,8 @@ describe("irc monitor inbound target", () => {
   it.each([
     {
       label: "channel",
-      serverTarget: "#openclaw",
-      expected: { isGroup: true, target: "#openclaw", rawTarget: "#openclaw" },
+      serverTarget: "#operator",
+      expected: { isGroup: true, target: "#operator", rawTarget: "#operator" },
     },
     {
       label: "DM",

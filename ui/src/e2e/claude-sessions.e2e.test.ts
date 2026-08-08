@@ -497,7 +497,7 @@ suite("Claude native session catalog", () => {
     await expect
       .poll(() =>
         page
-          .locator("openclaw-chat-pane")
+          .locator("operator-chat-pane")
           .evaluate(
             (element) =>
               (element as HTMLElement & { catalogMessages: unknown[] }).catalogMessages.length,
@@ -559,7 +559,7 @@ suite("Claude native session catalog", () => {
     const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
     await page.clock.install();
     const historyMessage = (seq: number, prefix: string) => ({
-      __openclaw: { seq },
+      __operator: { seq },
       content: [
         {
           type: "text",
@@ -627,7 +627,7 @@ suite("Claude native session catalog", () => {
     await expect
       .poll(() =>
         page
-          .locator("openclaw-chat-pane")
+          .locator("operator-chat-pane")
           .evaluate(
             (element) =>
               (element as HTMLElement & { state: { chatMessages: unknown[] } }).state.chatMessages
@@ -657,7 +657,7 @@ suite("Claude native session catalog", () => {
   it("keeps a focused message action mounted while its row scrolls out of view", async () => {
     const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
     const messages = Array.from({ length: 200 }, (_, index) => ({
-      __openclaw: { seq: index + 1 },
+      __operator: { seq: index + 1 },
       content: [
         {
           type: "text",

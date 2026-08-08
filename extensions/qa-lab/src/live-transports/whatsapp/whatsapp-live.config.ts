@@ -340,7 +340,7 @@ export function buildWhatsAppQaConfig(
                     mentionPatterns: [
                       ...new Set([
                         ...(baseCfg.messages?.groupChat?.mentionPatterns ?? []),
-                        "\\bopenclawqa\\b",
+                        "\\boperatorqa\\b",
                       ]),
                     ],
                   },

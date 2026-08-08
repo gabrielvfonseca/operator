@@ -76,7 +76,7 @@ describe("Nix integration (U3, U5, U9)", () => {
         resolveConfigPathCandidate(
           envWith({ OPERATOR_CONFIG_PATH: undefined, OPERATOR_STATE_DIR: undefined }),
         ),
-      ).toMatch(/\.operator[\\/]openclaw\.json$/);
+      ).toMatch(/\.operator[\\/]operator\.json$/);
     });
 
     it("CONFIG_PATH respects OPERATOR_CONFIG_PATH override", () => {

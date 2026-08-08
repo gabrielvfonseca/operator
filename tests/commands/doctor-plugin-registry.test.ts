@@ -319,7 +319,7 @@ describe("maybeRepairPluginRegistryState", () => {
       checkId: "core/doctor/plugin-registry",
       severity: "warning",
       path: registryPath,
-      fixHint: "Run `openclaw doctor --fix` to rebuild the plugin registry from enabled plugins.",
+      fixHint: "Run `operator doctor --fix` to rebuild the plugin registry from enabled plugins.",
     });
     expect(pluginRegistryIssueToRepairEffect(expectDefined(issue, "issue test invariant"))).toEqual(
       {
@@ -855,7 +855,7 @@ describe("maybeRepairPluginRegistryState", () => {
     expect(packageLock.dependencies).toHaveProperty("other-plugin");
   });
 
-  it("repairs managed npm openclaw peer links during registry repair", async () => {
+  it("repairs managed npm operator peer links during registry repair", async () => {
     const stateDir = makeTempDir();
     const managed = createManagedNpmPlugin({
       stateDir,
@@ -889,7 +889,7 @@ describe("maybeRepairPluginRegistryState", () => {
     expect(vi.mocked(note).mock.calls.join("\n")).toContain("Repaired Operator host peer link");
   });
 
-  it("warns about broken managed npm openclaw peer links without repairing them", async () => {
+  it("warns about broken managed npm operator peer links without repairing them", async () => {
     const stateDir = makeTempDir();
     const managed = createManagedNpmPlugin({
       stateDir,
@@ -921,7 +921,7 @@ describe("maybeRepairPluginRegistryState", () => {
     const notes = vi.mocked(note).mock.calls.join("\n");
     expect(notes).toContain("Managed npm Operator host peer links need repair");
     expect(notes).toContain("codex-plugin");
-    expect(notes).toContain("openclaw doctor --fix");
+    expect(notes).toContain("operator doctor --fix");
     expect(fs.existsSync(linkPath)).toBe(false);
   });
 });

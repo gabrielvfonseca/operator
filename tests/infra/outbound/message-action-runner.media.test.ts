@@ -921,7 +921,7 @@ describe("runMessageAction media behavior", () => {
 
   describe("reply hydration", () => {
     // The reply action accepts attachments via the same media/path/filePath
-    // params as send. Before openclaw#79864 the runner only hydrated
+    // params as send. Before operator#79864 the runner only hydrated
     // sendAttachment/setGroupIcon/upload-file, so a channel plugin's reply
     // handler saw the raw path and could forward it directly to its CLI —
     // bypassing localRoots, sandbox, and size checks. These tests pin the
@@ -1491,7 +1491,7 @@ describe("runMessageAction media behavior", () => {
           throw new Error("expected send result");
         }
         expect(result.sendResult?.mediaUrl).toBe(path.resolve(tmpFile));
-        const hostTmpOutsideOperator = path.join(os.tmpdir(), "outside-openclaw", "test-media.png");
+        const hostTmpOutsideOperator = path.join(os.tmpdir(), "outside-operator", "test-media.png");
         await expect(
           runMessageAction({
             cfg: workspaceConfig,

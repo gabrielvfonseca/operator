@@ -11,19 +11,19 @@
     "redis": "*"
   },
   "devDependencies": {
-    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*",
-    "@gabrielvfonseca/openclaw": "workspace:*",
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   },
   "peerDependencies": {
-    "@gabrielvfonseca/openclaw": ">=2026.7.2"
+    "@gabrielvfonseca/operator": ">=2026.7.2"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "operator": {
       "optional": true
     }
   },
-  "openclaw": {
+  "operator": {
     "extensions": [
       "./index.ts"
     ]

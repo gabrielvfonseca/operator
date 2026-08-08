@@ -27,7 +27,7 @@ const PUBLIC_CONTRACT_REFERENCE_FILES = [
   "docs/plugins/architecture.md",
   "src/plugins/contracts/plugin-sdk-subpaths.test.ts",
 ] as const;
-const PLUGIN_SDK_SUBPATH_PATTERN = /openclaw\/plugin-sdk\/([a-z0-9][a-z0-9-]*)\b/g;
+const PLUGIN_SDK_SUBPATH_PATTERN = /operator\/plugin-sdk\/([a-z0-9][a-z0-9-]*)\b/g;
 const BUNDLED_PLUGIN_FACADE_LOADER_PATTERN =
   /\bload(?:Activated)?BundledPluginPublicSurfaceModuleSync\b/;
 const PRIVATE_BUNDLED_SDK_SURFACE_PATTERN =
@@ -37,15 +37,15 @@ const GENERIC_CORE_PLUGIN_OWNER_NAME_PATTERN =
   /\b(?:imessage|discord|feishu|googlechat|matrix|mattermost|msteams|slack|telegram|whatsapp|zalo|zalouser)\b/gi;
 const PACKAGE_CONTRACT_SCAN_TIMEOUT_MS = 240_000;
 const DEPRECATED_EXTENSION_SDK_SPECIFIERS = new Set([
-  "openclaw/plugin-sdk",
+  "operator/plugin-sdk",
   // Bundled code uses the canonical channel-config-schema subpath; the
   // primitives/legacy shells stay export-compatible for third parties only.
-  "openclaw/plugin-sdk/channel-config-primitives",
-  "openclaw/plugin-sdk/channel-config-schema-legacy",
-  "openclaw/plugin-sdk/compat",
-  "openclaw/plugin-sdk/test-utils",
+  "operator/plugin-sdk/channel-config-primitives",
+  "operator/plugin-sdk/channel-config-schema-legacy",
+  "operator/plugin-sdk/compat",
+  "operator/plugin-sdk/test-utils",
 ]);
-const DEPRECATED_TEST_ALIAS_SPECIFIERS = new Set(["openclaw/plugin-sdk/test-utils"]);
+const DEPRECATED_TEST_ALIAS_SPECIFIERS = new Set(["operator/plugin-sdk/test-utils"]);
 const DEPRECATED_TEST_ALIAS_ALLOWED_REFERENCE_FILES = new Set([
   "src/plugin-sdk/test-utils.ts",
   "src/plugins/compat/registry.ts",
@@ -394,9 +394,9 @@ function collectExtensionTestHelperImportLeaks(): Array<{ file: string; specifie
 function collectDeprecatedExtensionSdkImports(): Array<{ file: string; specifier: string }> {
   const leaks: Array<{ file: string; specifier: string }> = [];
   const importPatterns = [
-    /\b(?:import|export)\b[\s\S]*?\bfrom\s*["'](openclaw\/plugin-sdk(?:\/[a-z0-9][a-z0-9-]*)?)["']/g,
-    /\bimport\s*\(\s*["'](openclaw\/plugin-sdk(?:\/[a-z0-9][a-z0-9-]*)?)["']\s*\)/g,
-    /\bvi\.(?:mock|doMock)\s*\(\s*["'](openclaw\/plugin-sdk(?:\/[a-z0-9][a-z0-9-]*)?)["']/g,
+    /\b(?:import|export)\b[\s\S]*?\bfrom\s*["'](operator\/plugin-sdk(?:\/[a-z0-9][a-z0-9-]*)?)["']/g,
+    /\bimport\s*\(\s*["'](operator\/plugin-sdk(?:\/[a-z0-9][a-z0-9-]*)?)["']\s*\)/g,
+    /\bvi\.(?:mock|doMock)\s*\(\s*["'](operator\/plugin-sdk(?:\/[a-z0-9][a-z0-9-]*)?)["']/g,
   ];
   for (const file of collectExtensionFiles(resolve(REPO_ROOT, "extensions"))) {
     const repoRelativePath = toRepoRelativePath(file);
@@ -481,9 +481,9 @@ function collectCodeFiles(dir: string): string[] {
 function collectDeprecatedTestAliasImports(): string[] {
   const leaks: Array<{ file: string; specifier: string }> = [];
   const importPatterns = [
-    /\b(?:import|export)\b[\s\S]*?\bfrom\s*["'](openclaw\/plugin-sdk\/test-utils)["']/g,
-    /\bimport\s*\(\s*["'](openclaw\/plugin-sdk\/test-utils)["']\s*\)/g,
-    /\bvi\.(?:mock|doMock)\s*\(\s*["'](openclaw\/plugin-sdk\/test-utils)["']/g,
+    /\b(?:import|export)\b[\s\S]*?\bfrom\s*["'](operator\/plugin-sdk\/test-utils)["']/g,
+    /\bimport\s*\(\s*["'](operator\/plugin-sdk\/test-utils)["']\s*\)/g,
+    /\bvi\.(?:mock|doMock)\s*\(\s*["'](operator\/plugin-sdk\/test-utils)["']/g,
   ];
   for (const root of ["src", "test", "extensions", "packages"]) {
     for (const file of collectCodeFiles(resolve(REPO_ROOT, root))) {
@@ -628,7 +628,7 @@ function collectCrossOwnerReservedSdkImports(): Array<{
   const leaks: Array<{ file: string; specifier: string; owner?: string }> = [];
   const reserved = new Set<string>(reservedBundledPluginSdkEntrypoints);
   const importPattern =
-    /\b(?:import|export)\b[\s\S]*?\bfrom\s*["']openclaw\/plugin-sdk\/([a-z0-9][a-z0-9-]*)["']/g;
+    /\b(?:import|export)\b[\s\S]*?\bfrom\s*["']operator\/plugin-sdk\/([a-z0-9][a-z0-9-]*)["']/g;
 
   for (const file of collectExtensionFiles(resolve(REPO_ROOT, "extensions"))) {
     const repoRelativePath = toRepoRelativePath(file);
@@ -645,7 +645,7 @@ function collectCrossOwnerReservedSdkImports(): Array<{
       }
       leaks.push({
         file: repoRelativePath,
-        specifier: `openclaw/plugin-sdk/${subpath}`,
+        specifier: `operator/plugin-sdk/${subpath}`,
         owner,
       });
     }
@@ -657,9 +657,9 @@ function collectReservedSdkSubpathImports(): string[] {
   const imports = new Set<string>();
   const reserved = new Set<string>(reservedBundledPluginSdkEntrypoints);
   const importPatterns = [
-    /\b(?:import|export)\b[\s\S]*?\bfrom\s*["']openclaw\/plugin-sdk\/([a-z0-9][a-z0-9-]*)["']/g,
-    /\bimport\s*\(\s*["']openclaw\/plugin-sdk\/([a-z0-9][a-z0-9-]*)["']\s*\)/g,
-    /\bvi\.(?:mock|doMock)\s*\(\s*["']openclaw\/plugin-sdk\/([a-z0-9][a-z0-9-]*)["']/g,
+    /\b(?:import|export)\b[\s\S]*?\bfrom\s*["']operator\/plugin-sdk\/([a-z0-9][a-z0-9-]*)["']/g,
+    /\bimport\s*\(\s*["']operator\/plugin-sdk\/([a-z0-9][a-z0-9-]*)["']\s*\)/g,
+    /\bvi\.(?:mock|doMock)\s*\(\s*["']operator\/plugin-sdk\/([a-z0-9][a-z0-9-]*)["']/g,
   ];
 
   for (const root of ["src", "test", "extensions", "packages", "scripts"]) {
@@ -687,9 +687,9 @@ function hasWildcardReexport(entrypoint: string): boolean {
 function collectExtensionProductionSdkSubpathImports(subpaths: ReadonlySet<string>): string[] {
   const imports = new Set<string>();
   const importPatterns = [
-    /\b(?:import|export)\b[\s\S]*?\bfrom\s*["']openclaw\/plugin-sdk\/([a-z0-9][a-z0-9-]*)["']/g,
-    /\bimport\s*\(\s*["']openclaw\/plugin-sdk\/([a-z0-9][a-z0-9-]*)["']\s*\)/g,
-    /\bvi\.(?:mock|doMock)\s*\(\s*["']openclaw\/plugin-sdk\/([a-z0-9][a-z0-9-]*)["']/g,
+    /\b(?:import|export)\b[\s\S]*?\bfrom\s*["']operator\/plugin-sdk\/([a-z0-9][a-z0-9-]*)["']/g,
+    /\bimport\s*\(\s*["']operator\/plugin-sdk\/([a-z0-9][a-z0-9-]*)["']\s*\)/g,
+    /\bvi\.(?:mock|doMock)\s*\(\s*["']operator\/plugin-sdk\/([a-z0-9][a-z0-9-]*)["']/g,
   ];
 
   for (const file of collectExtensionFiles(resolve(REPO_ROOT, "extensions"))) {
@@ -702,7 +702,7 @@ function collectExtensionProductionSdkSubpathImports(subpaths: ReadonlySet<strin
       for (const match of source.matchAll(importPattern)) {
         const subpath = match[1];
         if (subpath && subpaths.has(subpath)) {
-          imports.add(`${repoRelativePath}: openclaw/plugin-sdk/${subpath}`);
+          imports.add(`${repoRelativePath}: operator/plugin-sdk/${subpath}`);
         }
       }
     }
@@ -863,7 +863,7 @@ describe("plugin-sdk package contract guardrails", () => {
         continue;
       }
       failures.push(
-        `${reference.file} references openclaw/plugin-sdk/${reference.subpath}, but ${reference.subpath} is missing from ${missingFrom.join(" and ")}`,
+        `${reference.file} references operator/plugin-sdk/${reference.subpath}, but ${reference.subpath} is missing from ${missingFrom.join(" and ")}`,
       );
     }
 

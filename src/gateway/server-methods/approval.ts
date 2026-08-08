@@ -17,7 +17,7 @@ import type {
 } from "../../infra/exec-approvals.js";
 import type { PluginApprovalRequestPayload } from "../../infra/plugin-approvals.js";
 import type { SystemAgentApprovalRequestPayload } from "../../infra/system-agent-approvals.js";
-import type { OperatorStateDatabaseOptions } from "../../state/openclaw-state-db.js";
+import type { OperatorStateDatabaseOptions } from "../../state/operator-state-db.js";
 import { normalizeControlUiBasePath } from "../control-ui-shared.js";
 import type { ExecApprovalManager, ExecApprovalRecord } from "../exec-approval-manager.js";
 import {

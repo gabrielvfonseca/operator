@@ -44,7 +44,7 @@ launcher scripts).
 | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--no-restart`                                   | Skip restarting the Gateway service after a successful update. Package-manager updates that do restart verify the restarted service reports the expected version before the command succeeds.                                                                                                                                                |
 | `--channel <stable\|extended-stable\|beta\|dev>` | Set the update channel and persist it after core update success. Extended-stable is package-only.                                                                                                                                                                                                                                            |
-| `--tag <dist-tag\|version\|spec>`                | Override the package target for this update only. It cannot be combined with an effective `extended-stable` channel, whose verified exact target is mandatory. For other package installs, `main` maps to `github:openclaw/openclaw#main`; GitHub/git source specs are packed into a temporary tarball before the staged global npm install. |
+| `--tag <dist-tag\|version\|spec>`                | Override the package target for this update only. It cannot be combined with an effective `extended-stable` channel, whose verified exact target is mandatory. For other package installs, `main` maps to `github:operator/operator#main`; GitHub/git source specs are packed into a temporary tarball before the staged global npm install. |
 | `--dry-run`                                      | Preview planned actions (channel/tag/target/restart flow) without writing config, installing, syncing plugins, or restarting.                                                                                                                                                                                                                |
 | `--json`                                         | Print machine-readable `UpdateRunResult` JSON. Includes `postUpdate.plugins.warnings` when a managed plugin needs repair, beta-channel plugin fallback details, and `postUpdate.plugins.integrityDrifts` when npm plugin artifact drift is detected during post-update sync.                                                                 |
 | `--timeout <seconds>`                            | Per-step timeout. Default `1800`.                                                                                                                                                                                                                                                                                                            |
@@ -58,7 +58,7 @@ file log level (`logging.level: "debug"`/`"trace"`) are independent knobs; see
 [Gateway logging](/gateway/logging).
 
 <Note>
-In Nix mode (`OPERATOR_NIX_MODE=1`), mutating `operator update` runs are disabled. Update the Nix source or flake input for this install instead; for nix-openclaw, use the agent-first [Quick Start](https://github.com/openclaw/nix-openclaw#quick-start). `operator update status` and `operator update --dry-run` remain read-only.
+In Nix mode (`OPERATOR_NIX_MODE=1`), mutating `operator update` runs are disabled. Update the Nix source or flake input for this install instead; for nix-operator, use the agent-first [Quick Start](https://github.com/operator/nix-operator#quick-start). `operator update status` and `operator update --dry-run` remain read-only.
 </Note>
 
 <Warning>
@@ -135,8 +135,8 @@ checkout offers to create one.
 Switching channels explicitly (`--channel ...`) also keeps the install method
 aligned:
 
-- `dev` -> ensures a git checkout (default `~/openclaw`, or
-  `$OPERATOR_HOME/openclaw` when `OPERATOR_HOME` is set; override with
+- `dev` -> ensures a git checkout (default `~/operator`, or
+  `$OPERATOR_HOME/operator` when `OPERATOR_HOME` is set; override with
   `OPERATOR_GIT_DIR`), updates it, and installs the global CLI from that
   checkout.
 - `stable` -> installs from npm using `latest`.

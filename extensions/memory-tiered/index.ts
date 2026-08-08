@@ -1,8 +1,8 @@
 // Memory Tiered plugin entry. Replaces the SQLite/Markdown memory-core slot
 // with the real 3-tier orchestrator: working (Redis), semantic (Qdrant),
 // and procedural (Neo4j + Temporal), exposed via agent tools.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolveLivePluginConfigObject } from "openclaw/plugin-sdk/plugin-config-runtime";
+import type { OperatorConfig } from "operator/plugin-sdk/config-contracts";
+import { resolveLivePluginConfigObject } from "operator/plugin-sdk/plugin-config-runtime";
 import {
   definePluginEntry,
   type OperatorPluginApi,

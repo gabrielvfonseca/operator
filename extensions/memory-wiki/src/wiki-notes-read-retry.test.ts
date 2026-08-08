@@ -19,8 +19,8 @@ const securityRuntimeMock = vi.hoisted(() => ({
   readTextFailureInjected: false,
 }));
 
-vi.mock("openclaw/plugin-sdk/security-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/security-runtime")>();
+vi.mock("operator/plugin-sdk/security-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/security-runtime")>();
   return {
     ...actual,
     root: async (...args: Parameters<typeof actual.root>) => {

@@ -8,7 +8,7 @@ title: "Gateway on macOS"
 ---
 
 Operator.app does not bundle Node or the Gateway runtime. The macOS app
-expects an **external** `openclaw` CLI install, does not spawn the Gateway as
+expects an **external** `operator` CLI install, does not spawn the Gateway as
 a child process, and manages a per-user launchd service to keep the Gateway
 running (or attaches to an already-running local Gateway).
 
@@ -16,7 +16,7 @@ running (or attaches to an already-running local Gateway).
 
 On a fresh Mac, choose **This Mac** during onboarding. The app runs its
 signed, bundled installer script before the Gateway wizard: it installs a
-user-space Node runtime and the matching `openclaw` CLI under `~/.operator`,
+user-space Node runtime and the matching `operator` CLI under `~/.operator`,
 then installs and starts the per-user launchd service. This path needs no
 Terminal, Homebrew, or administrator access.
 
@@ -27,10 +27,10 @@ Operator package.
 ## Manual recovery
 
 Node 24.15+ is recommended for a manual install; Node 22.22.3+ also works. Install
-`openclaw` globally:
+`operator` globally:
 
 ```bash
-npm install -g openclaw@<version>
+npm install -g operator@<version>
 ```
 
 Use **Retry setup** after a failed automatic setup. If that still fails,
@@ -58,7 +58,7 @@ Behavior:
 
 Logging:
 
-- launchd stdout: `~/Library/Logs/openclaw/gateway.log` (profiles use
+- launchd stdout: `~/Library/Logs/operator/gateway.log` (profiles use
   `gateway-<profile>.log`)
 - launchd stderr: suppressed
 - If the host loops with repeated `EADDRINUSE` or fast restarts, check for

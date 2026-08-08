@@ -13,7 +13,7 @@ vi.mock("node:sqlite", () => ({
     return { close };
   }),
 }));
-vi.mock("openclaw/plugin-sdk/plugin-state-runtime", () => ({
+vi.mock("operator/plugin-sdk/plugin-state-runtime", () => ({
   configureSqliteConnectionPragmas,
 }));
 

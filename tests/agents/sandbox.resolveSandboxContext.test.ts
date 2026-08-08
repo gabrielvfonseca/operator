@@ -470,7 +470,7 @@ describe("resolveSandboxContext", () => {
             workspaceAccess: "rw",
             ssh: {
               target: "ssh.example.test",
-              workspaceRoot: "/remote/openclaw",
+              workspaceRoot: "/remote/operator",
             },
           },
         },
@@ -485,7 +485,7 @@ describe("resolveSandboxContext", () => {
 
     expect(result?.workspaceDir).toBe(workspaceDir);
     expect(result?.containerWorkdir).toMatch(
-      /^\/remote\/openclaw\/operator-ssh-agent-main-main-[a-f0-9]{8}\/workspace$/,
+      /^\/remote\/operator\/operator-ssh-agent-main-main-[a-f0-9]{8}\/workspace$/,
     );
     expect(result?.containerWorkdir).not.toBe("/workspace");
     expect(result?.skillsWorkspaceDir).toContain(

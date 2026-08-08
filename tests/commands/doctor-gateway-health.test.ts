@@ -105,9 +105,9 @@ describe("checkGatewayHealth", () => {
     const mismatchOutput = mismatchNotes.join("\n");
     expect(mismatchOutput).toContain("the running Gateway is Operator 2026.4.23");
     expect(mismatchOutput).not.toContain("That usually means");
-    expect(mismatchOutput).toContain("Check `openclaw --version`, `which openclaw`");
+    expect(mismatchOutput).toContain("Check `operator --version`, `which operator`");
     expect(mismatchOutput).toContain(
-      "If this mismatch is unexpected, update PATH so `openclaw` points to the version you want",
+      "If this mismatch is unexpected, update PATH so `operator` points to the version you want",
     );
   });
 
@@ -279,7 +279,7 @@ describe("probeGatewayMemoryStatus", () => {
         ok: false,
         checked: false,
         error:
-          "memory embedding readiness not checked; run `openclaw memory status --deep` to probe",
+          "memory embedding readiness not checked; run `operator memory status --deep` to probe",
       },
     });
 

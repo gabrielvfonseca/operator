@@ -1,4 +1,4 @@
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import { createLazyRuntimeModule } from "operator/plugin-sdk/lazy-runtime";
 // Memory Core plugin entrypoint registers its Operator integration.
 import {
   jsonResult,
@@ -6,14 +6,14 @@ import {
   resolveSessionAgentIds,
   type MemoryPluginRuntime,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/memory-core-host-runtime-core";
-import { resolveMemoryBackendConfig } from "openclaw/plugin-sdk/memory-core-host-runtime-files";
+} from "operator/plugin-sdk/memory-core-host-runtime-core";
+import { resolveMemoryBackendConfig } from "operator/plugin-sdk/memory-core-host-runtime-files";
 import {
   definePluginEntry,
   type AnyAgentTool,
   type OperatorPluginToolContext,
-} from "openclaw/plugin-sdk/plugin-entry";
-import type { OpenKeyedStoreOptions } from "openclaw/plugin-sdk/plugin-state-runtime";
+} from "operator/plugin-sdk/plugin-entry";
+import type { OpenKeyedStoreOptions } from "operator/plugin-sdk/plugin-state-runtime";
 import type { TSchema } from "typebox";
 import { configureMemoryCoreDreamingState } from "./src/dreaming-state.js";
 import { registerShortTermPromotionDreaming } from "./src/dreaming.js";

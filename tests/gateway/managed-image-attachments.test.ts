@@ -12,7 +12,7 @@ import {
 import { useAutoCleanupTempDirTracker } from "../../test/helpers/temp-dir.js";
 import { createPinnedLookup } from "../../src/infra/net/ssrf.js";
 import { setMediaStoreNetworkDepsForTest } from "../../src/media/store.test-support.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { withEnvAsync } from "../../src/test-utils/env.js";
 import {
   insertManagedImageRecord,

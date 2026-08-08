@@ -132,7 +132,7 @@ describe("security audit sandbox docker config", () => {
                 sandbox: {
                   mode: "all",
                   docker: {
-                    binds: ["D:/data/openclaw/src:/src:ro"],
+                    binds: ["D:/data/operator/src:/src:ro"],
                   },
                 },
               },

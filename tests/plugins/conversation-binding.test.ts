@@ -6,12 +6,12 @@ import type {
   SessionBindingAdapter,
   SessionBindingRecord,
 } from "../../src/infra/outbound/session-binding-service.js";
-import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/operator-state-db.generated.js";
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import { resetPluginConversationBindingStateForTest } from "../../src/plugins/conversation-binding.test-fixtures.js";
 import { createEmptyPluginRegistry } from "../../src/plugins/registry-empty.js";
 import type { PluginRegistry } from "../../src/plugins/registry.js";
@@ -821,8 +821,8 @@ describe("plugin conversation binding approvals", () => {
     const data = {
       kind: "codex-app-server-session",
       version: 1,
-      sessionFile: "/tmp/openclaw/session.jsonl",
-      workspaceDir: "/workspace/openclaw",
+      sessionFile: "/tmp/operator/session.jsonl",
+      workspaceDir: "/workspace/operator",
     };
     const binding = await requestResolvedBinding(
       createCodexBindRequest({

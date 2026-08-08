@@ -175,7 +175,7 @@ async function captureExpectedRuntimeArtifact(
     before,
     startOptions: appServer.start,
     spawnIdentity,
-    runtimeIdentity: { serverVersion: "0.143.0", userAgent: "openclaw/0.143.0 (macOS; test)" },
+    runtimeIdentity: { serverVersion: "0.143.0", userAgent: "operator/0.143.0 (macOS; test)" },
   });
 }
 
@@ -185,7 +185,7 @@ async function answerInitialize(harness: ClientHarness): Promise<void> {
     timeout: HARNESS_REQUEST_TIMEOUT_MS,
   });
   const initialize = JSON.parse(harness.writes[0] ?? "{}") as { id?: number };
-  harness.send({ id: initialize.id, result: { userAgent: "openclaw/0.143.0 (macOS; test)" } });
+  harness.send({ id: initialize.id, result: { userAgent: "operator/0.143.0 (macOS; test)" } });
 }
 
 async function waitForRequest(

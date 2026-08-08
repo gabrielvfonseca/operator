@@ -81,11 +81,11 @@ function normalizeTokenCount(value: number): number {
   return Number.isFinite(value) ? Math.max(0, value) : 0;
 }
 
-function deltaPercent(openclawTotalTokens: number, codexTotalTokens: number): number {
-  if (openclawTotalTokens === 0) {
+function deltaPercent(operatorTotalTokens: number, codexTotalTokens: number): number {
+  if (operatorTotalTokens === 0) {
     return codexTotalTokens === 0 ? 0 : 100;
   }
-  return ((codexTotalTokens - openclawTotalTokens) / openclawTotalTokens) * 100;
+  return ((codexTotalTokens - operatorTotalTokens) / operatorTotalTokens) * 100;
 }
 
 function percentile(values: readonly number[], p: number): number {
@@ -126,7 +126,7 @@ function buildRow(params: {
   thresholdPercent: number;
   usageSource: TokenEfficiencyRow["usageSource"];
 }): TokenEfficiencyRow {
-  const openclaw = runtimeUsage(params.result.cells.operator);
+  const operator = runtimeUsage(params.result.cells.operator);
   const codex = runtimeUsage(params.result.cells.codex);
   const delta = deltaPercent(operator.totalTokens, codex.totalTokens);
   const flagged = params.usageSource === "live-usage" && delta > params.thresholdPercent;
@@ -139,7 +139,7 @@ function buildRow(params: {
   return {
     scenarioId: params.result.scenarioId,
     usageSource: params.usageSource,
-    openclaw,
+    operator,
     codex,
     deltaPercent: delta,
     classification,
@@ -149,22 +149,22 @@ function buildRow(params: {
 }
 
 function buildAggregate(rows: readonly TokenEfficiencyRow[]): TokenEfficiencyReport["aggregate"] {
-  const openclawTotals = rows.map((row) => row.operator.totalTokens);
+  const operatorTotals = rows.map((row) => row.operator.totalTokens);
   const codexTotals = rows.map((row) => row.codex.totalTokens);
-  const openclawTotalTokens = openclawTotals.reduce((sum, value) => sum + value, 0);
+  const operatorTotalTokens = operatorTotals.reduce((sum, value) => sum + value, 0);
   const codexTotalTokens = codexTotals.reduce((sum, value) => sum + value, 0);
   return {
     operator: {
-      totalTokens: openclawTotalTokens,
-      p50PerScenario: percentile(openclawTotals, 50),
-      p90PerScenario: percentile(openclawTotals, 90),
+      totalTokens: operatorTotalTokens,
+      p50PerScenario: percentile(operatorTotals, 50),
+      p90PerScenario: percentile(operatorTotals, 90),
     },
     codex: {
       totalTokens: codexTotalTokens,
       p50PerScenario: percentile(codexTotals, 50),
       p90PerScenario: percentile(codexTotals, 90),
     },
-    deltaPercent: deltaPercent(openclawTotalTokens, codexTotalTokens),
+    deltaPercent: deltaPercent(operatorTotalTokens, codexTotalTokens),
     flaggedScenarios: rows.filter((row) => row.flagged).map((row) => row.scenarioId),
     savingsScenarios: rows
       .filter((row) => row.classification === "savings")
@@ -175,7 +175,7 @@ function buildAggregate(rows: readonly TokenEfficiencyRow[]): TokenEfficiencyRep
 function liveEvidenceFailures(row: TokenEfficiencyRow): string[] {
   const failures: string[] = [];
   if (row.operator.totalTokens <= 0) {
-    failures.push(`${row.scenarioId} openclaw live usage totalTokens=${row.operator.totalTokens}`);
+    failures.push(`${row.scenarioId} operator live usage totalTokens=${row.operator.totalTokens}`);
   }
   if (row.codex.totalTokens <= 0) {
     failures.push(`${row.scenarioId} codex live usage totalTokens=${row.codex.totalTokens}`);
@@ -335,7 +335,7 @@ export function renderTokenEfficiencyMarkdownReport(report: TokenEfficiencyRepor
     "",
     "| Runtime | Total tokens | p50 per scenario | p90 per scenario |",
     "| --- | ---: | ---: | ---: |",
-    `| openclaw | ${report.aggregate.operator.totalTokens} | ${report.aggregate.operator.p50PerScenario} | ${report.aggregate.operator.p90PerScenario} |`,
+    `| operator | ${report.aggregate.operator.totalTokens} | ${report.aggregate.operator.p50PerScenario} | ${report.aggregate.operator.p90PerScenario} |`,
     `| codex | ${report.aggregate.codex.totalTokens} | ${report.aggregate.codex.p50PerScenario} | ${report.aggregate.codex.p90PerScenario} |`,
     `| delta | ${formatPercent(report.aggregate.deltaPercent)} |  |  |`,
     "",

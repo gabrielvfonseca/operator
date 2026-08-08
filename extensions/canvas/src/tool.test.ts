@@ -27,14 +27,14 @@ const mocks = vi.hoisted(() => ({
   resolveNodeIdFromList: vi.fn(() => "node-1"),
 }));
 
-vi.mock("openclaw/plugin-sdk/agent-harness-runtime", () => ({
+vi.mock("operator/plugin-sdk/agent-harness-runtime", () => ({
   callGatewayTool: mocks.callGatewayTool,
   listNodes: mocks.listNodes,
   resolveNodeIdFromList: mocks.resolveNodeIdFromList,
 }));
 
-vi.mock("openclaw/plugin-sdk/channel-actions", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("openclaw/plugin-sdk/channel-actions")>()),
+vi.mock("operator/plugin-sdk/channel-actions", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("operator/plugin-sdk/channel-actions")>()),
   imageResultFromFile: mocks.imageResultFromFile,
 }));
 

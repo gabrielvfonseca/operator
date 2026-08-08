@@ -6,11 +6,11 @@ import path from "node:path";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../../src/infra/kysely-sync.js";
 import { DEFAULT_ACCOUNT_ID } from "../../src/routing/session-key.js";
-import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/operator-state-db.generated.js";
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 
 const pairingMocks = vi.hoisted(() => ({
   getPairingAdapter: vi.fn<

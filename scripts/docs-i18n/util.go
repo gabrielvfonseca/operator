@@ -103,7 +103,7 @@ func isWhitespace(b byte) bool {
 
 func validateNoTranslationTranscriptArtifacts(source, translated string) error {
 	sourceLower := strings.ToLower(source)
-	for _, token := range []string{"<openclaw_docs_i18n_input>", "</openclaw_docs_i18n_input>"} {
+	for _, token := range []string{"<operator_docs_i18n_input>", "</operator_docs_i18n_input>"} {
 		if strings.Contains(strings.ToLower(translated), token) && !strings.Contains(sourceLower, token) {
 			return fmt.Errorf("agent transcript artifact leaked into translation: %q", token)
 		}

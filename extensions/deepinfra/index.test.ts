@@ -10,7 +10,7 @@ import deepinfraPlugin from "./index.js";
 import { DEEPINFRA_MODEL_CATALOG } from "./provider-models.js";
 
 const DEEPINFRA_MODELS_URL =
-  "https://api.deepinfra.com/v1/openai/models?sort_by=openclaw&filter=with_meta";
+  "https://api.deepinfra.com/v1/openai/models?sort_by=operator&filter=with_meta";
 
 function buildSyntheticDeepInfraEntries(count: number) {
   return Array.from({ length: count }, (_unused, index) => ({

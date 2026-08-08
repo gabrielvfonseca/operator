@@ -370,7 +370,7 @@ describeControlUiE2e("Control UI Workboard status persistence E2E", () => {
         path: path.join(artifactDir, "workboard-edit-reopen.png"),
       });
       await page
-        .locator('openclaw-modal-dialog[label="Edit card"] .workboard-modal__actions')
+        .locator('operator-modal-dialog[label="Edit card"] .workboard-modal__actions')
         .last()
         .getByRole("button", { name: "Cancel" })
         .click();

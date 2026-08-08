@@ -1260,7 +1260,7 @@ describe("gateway agent handler", () => {
     vi.setSystemTime(new Date("2026-05-07T12:00:00.000Z"));
     const staleEntry = {
       sessionId: "old-session-id",
-      sessionFile: "/tmp/openclaw/agents/main/sessions/old-session-id.jsonl",
+      sessionFile: "/tmp/operator/agents/main/sessions/old-session-id.jsonl",
       updatedAt: 0,
       sessionStartedAt: 0,
     };
@@ -1293,7 +1293,7 @@ describe("gateway agent handler", () => {
     vi.setSystemTime(now);
     const missingTranscriptEntry = {
       sessionId: "failed-missing-session-id",
-      sessionFile: "/tmp/openclaw/missing/failed-missing-session-id.jsonl",
+      sessionFile: "/tmp/operator/missing/failed-missing-session-id.jsonl",
       status: "failed",
       updatedAt: now,
       sessionStartedAt: now,

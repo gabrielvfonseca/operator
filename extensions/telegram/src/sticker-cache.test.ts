@@ -10,7 +10,7 @@ import { clearTelegramRuntimeForTest } from "./runtime.test-support.js";
 import type { TelegramRuntime } from "./runtime.types.js";
 import * as stickerCache from "./sticker-cache-store.js";
 
-vi.mock("openclaw/plugin-sdk/state-paths", () => ({
+vi.mock("operator/plugin-sdk/state-paths", () => ({
   resolveStateDir: () => "/tmp/operator-test-sticker-cache",
 }));
 

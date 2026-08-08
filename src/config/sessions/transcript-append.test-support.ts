@@ -12,7 +12,7 @@ import {
 import { redactTranscriptMessage } from "../../agents/transcript-redact.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { redactSecrets } from "../../logging/redact.js";
-import { isTranscriptOnlyOperatorAssistantMessage } from "../../shared/transcript-only-openclaw-assistant.js";
+import { isTranscriptOnlyOperatorAssistantMessage } from "../../shared/transcript-only-operator-assistant.js";
 import { createSessionTranscriptHeader } from "./transcript-header.js";
 import { serializeJsonlEntry, serializeJsonlLine, writeJsonlLines } from "./transcript-jsonl.js";
 import {

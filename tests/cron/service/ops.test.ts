@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { runOperatorStateWriteTransaction } from "../../../src/state/openclaw-state-db.js";
+import { runOperatorStateWriteTransaction } from "../../../src/state/operator-state-db.js";
 import * as taskExecutor from "../../../src/tasks/task-executor.js";
 import { findTaskByRunId, listTaskRecordsUnsorted } from "../../../src/tasks/task-registry.js";
 import { resetTaskRegistryForTests } from "../../../src/tasks/task-runtime.test-helpers.js";

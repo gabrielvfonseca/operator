@@ -5,7 +5,7 @@
   "description": "Operator image generation runtime package",
   "type": "module",
   "devDependencies": {
-    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   }
 }

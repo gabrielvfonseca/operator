@@ -132,7 +132,7 @@ describe("buildSlackSlashCommandMatcher", () => {
     const matcher = buildSlackSlashCommandMatcher("@gabrielvfonseca/operator");
 
     expect(matcher.test("@gabrielvfonseca/operator")).toBe(true);
-    expect(matcher.test("/openclaw")).toBe(true);
+    expect(matcher.test("/operator")).toBe(true);
   });
 
   it("does not match similar names", () => {

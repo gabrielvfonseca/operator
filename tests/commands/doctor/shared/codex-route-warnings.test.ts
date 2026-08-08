@@ -71,7 +71,7 @@ describe("collectCodexRouteWarnings", () => {
       [
         "- Legacy `codex/*` and `openai-codex/*` model refs should be rewritten to `openai/*`.",
         "- agents.defaults.model: openai-codex/gpt-5.5 should become openai/gpt-5.5.",
-        "- Run `openclaw doctor --fix`: it rewrites configured model refs and stale sessions to `openai/*`, moves Codex intent to provider/model runtime policy, and clears old whole-agent runtime pins.",
+        "- Run `operator doctor --fix`: it rewrites configured model refs and stale sessions to `openai/*`, moves Codex intent to provider/model runtime policy, and clears old whole-agent runtime pins.",
       ].join("\n"),
     ]);
   });
@@ -153,7 +153,7 @@ describe("collectCodexRouteWarnings", () => {
       [
         "- Legacy `codex/*` and `openai-codex/*` model refs should be rewritten to `openai/*`.",
         '- agents.defaults.model: openai-codex/gpt-5.5 should become openai/gpt-5.5; current runtime is "codex".',
-        "- Run `openclaw doctor --fix`: it rewrites configured model refs and stale sessions to `openai/*`, moves Codex intent to provider/model runtime policy, and clears old whole-agent runtime pins.",
+        "- Run `operator doctor --fix`: it rewrites configured model refs and stale sessions to `openai/*`, moves Codex intent to provider/model runtime policy, and clears old whole-agent runtime pins.",
       ].join("\n"),
     ]);
   });
@@ -176,7 +176,7 @@ describe("collectCodexRouteWarnings", () => {
       [
         "- Legacy `codex/*` and `openai-codex/*` model refs should be rewritten to `openai/*`.",
         "- agents.defaults.model: openai-codex/gpt-5.5 should become openai/gpt-5.5.",
-        "- Run `openclaw doctor --fix`: it rewrites configured model refs and stale sessions to `openai/*`, moves Codex intent to provider/model runtime policy, and clears old whole-agent runtime pins.",
+        "- Run `operator doctor --fix`: it rewrites configured model refs and stale sessions to `openai/*`, moves Codex intent to provider/model runtime policy, and clears old whole-agent runtime pins.",
       ].join("\n"),
     ]);
   });
@@ -245,7 +245,7 @@ describe("collectCodexRouteWarnings", () => {
       [
         "- Codex runtime is selected, but the Codex plugin is disabled.",
         "- agents.defaults.model.primary: gpt-5.5 resolves to openai/gpt-5.5 with Codex runtime while the Codex plugin is disabled by config.",
-        "- Run `openclaw doctor --fix`: it enables plugins.entries.codex, or set the affected OpenAI models to an Operator runtime policy.",
+        "- Run `operator doctor --fix`: it enables plugins.entries.codex, or set the affected OpenAI models to an Operator runtime policy.",
       ].join("\n"),
     ]);
   });
@@ -262,7 +262,7 @@ describe("collectCodexRouteWarnings", () => {
       [
         "- Codex runtime is selected, but the Codex plugin is disabled.",
         "- agents.defaults.model.primary: openai/gpt-5.6 resolves to openai/gpt-5.6 with Codex runtime while the Codex plugin is disabled by config.",
-        "- Run `openclaw doctor --fix`: it enables plugins.entries.codex, or set the affected OpenAI models to an Operator runtime policy.",
+        "- Run `operator doctor --fix`: it enables plugins.entries.codex, or set the affected OpenAI models to an Operator runtime policy.",
       ].join("\n"),
     ]);
   });
@@ -281,7 +281,7 @@ describe("collectCodexRouteWarnings", () => {
       [
         "- Codex runtime is selected, but the Codex plugin is disabled.",
         "- agents.defaults.model.primary: openai/gpt-5.3-codex-spark resolves to openai/gpt-5.3-codex-spark with Codex runtime while the Codex plugin is disabled by config.",
-        "- Run `openclaw doctor --fix`: it enables plugins.entries.codex, or set the affected OpenAI models to an Operator runtime policy.",
+        "- Run `operator doctor --fix`: it enables plugins.entries.codex, or set the affected OpenAI models to an Operator runtime policy.",
       ].join("\n"),
     ]);
   });
@@ -307,7 +307,7 @@ describe("collectCodexRouteWarnings", () => {
       [
         "- Codex runtime is selected, but the Codex plugin is disabled.",
         "- agents.defaults.model.primary: openai/gpt-5.4-nano resolves to openai/gpt-5.4-nano with Codex runtime while the Codex plugin is disabled by config.",
-        "- Run `openclaw doctor --fix`: it enables plugins.entries.codex, or set the affected OpenAI models to an Operator runtime policy.",
+        "- Run `operator doctor --fix`: it enables plugins.entries.codex, or set the affected OpenAI models to an Operator runtime policy.",
       ].join("\n"),
     ]);
   });
@@ -332,7 +332,7 @@ describe("collectCodexRouteWarnings", () => {
         "- Codex runtime uses native server-side compaction and ignores Operator compaction summarizer overrides.",
         "- agents.defaults.compaction.model: openai/gpt-5.4 is ignored while this agent uses Codex runtime.",
         "- agents.defaults.compaction.provider: custom-summary is ignored while this agent uses Codex runtime.",
-        "- Run `openclaw doctor --fix`: it removes unsupported Codex compaction overrides.",
+        "- Run `operator doctor --fix`: it removes unsupported Codex compaction overrides.",
       ].join("\n"),
     ]);
   });
@@ -356,7 +356,7 @@ describe("collectCodexRouteWarnings", () => {
         "- Codex runtime uses native server-side compaction and ignores Operator compaction summarizer overrides.",
         "- agents.defaults.compaction.model: openai/gpt-5.4 is ignored while this agent uses Codex runtime.",
         "- agents.defaults.compaction.provider: custom-summary is ignored while this agent uses Codex runtime.",
-        "- Run `openclaw doctor --fix`: it removes unsupported Codex compaction overrides.",
+        "- Run `operator doctor --fix`: it removes unsupported Codex compaction overrides.",
       ].join("\n"),
     ]);
   });
@@ -382,7 +382,7 @@ describe("collectCodexRouteWarnings", () => {
         "- Codex runtime uses native server-side compaction and ignores Operator compaction summarizer overrides.",
         "- agents.defaults.compaction.model: openai/gpt-5.4 is ignored while this agent uses Codex runtime.",
         "- agents.defaults.compaction.provider: custom-summary is ignored while this agent uses Codex runtime.",
-        "- Run `openclaw doctor --fix`: it removes unsupported Codex compaction overrides.",
+        "- Run `operator doctor --fix`: it removes unsupported Codex compaction overrides.",
       ].join("\n"),
     ]);
   });
@@ -1290,7 +1290,7 @@ describe("collectCodexRouteWarnings", () => {
       [
         "- Legacy `codex/*` and `openai-codex/*` model refs should be rewritten to `openai/*`.",
         "- hooks.gmail.model: openai-codex/gpt-5.4 should become openai/gpt-5.4.",
-        "- Run `openclaw doctor --fix`: it rewrites configured model refs and stale sessions to `openai/*`, moves Codex intent to provider/model runtime policy, and clears old whole-agent runtime pins.",
+        "- Run `operator doctor --fix`: it rewrites configured model refs and stale sessions to `openai/*`, moves Codex intent to provider/model runtime policy, and clears old whole-agent runtime pins.",
       ].join("\n"),
     ]);
   });
@@ -1772,13 +1772,13 @@ describe("collectCodexRouteWarnings", () => {
       [
         "- Legacy `codex/*` and `openai-codex/*` model refs should be rewritten to `openai/*`.",
         "- hooks.gmail.model: openai-codex/gpt-5.4 should become openai/gpt-5.4.",
-        "- Run `openclaw doctor --fix`: it rewrites configured model refs and stale sessions to `openai/*`, moves Codex intent to provider/model runtime policy, and clears old whole-agent runtime pins.",
+        "- Run `operator doctor --fix`: it rewrites configured model refs and stale sessions to `openai/*`, moves Codex intent to provider/model runtime policy, and clears old whole-agent runtime pins.",
       ].join("\n"),
       [
         "- Codex runtime uses native server-side compaction and ignores Operator compaction summarizer overrides.",
         "- agents.defaults.compaction.model: openai/gpt-5.4 is ignored while this agent uses Codex runtime.",
         "- agents.defaults.compaction.provider: custom-summary is ignored while this agent uses Codex runtime.",
-        "- Run `openclaw doctor --fix`: it removes unsupported Codex compaction overrides.",
+        "- Run `operator doctor --fix`: it removes unsupported Codex compaction overrides.",
       ].join("\n"),
     ]);
 
@@ -1904,7 +1904,7 @@ describe("collectCodexRouteWarnings", () => {
       [
         "- Codex runtime uses native server-side compaction and ignores Operator compaction summarizer overrides.",
         "- agents.list.codex.compaction.model: openai/gpt-5.4 is ignored while this agent uses Codex runtime.",
-        "- Run `openclaw doctor --fix`: it removes unsupported Codex compaction overrides.",
+        "- Run `operator doctor --fix`: it removes unsupported Codex compaction overrides.",
       ].join("\n"),
     ]);
   });
@@ -3919,7 +3919,7 @@ describe("collectCodexRouteWarnings", () => {
       [
         "- Legacy `codex/*` and `openai-codex/*` model refs should be rewritten to `openai/*`.",
         "- agents.defaults.heartbeat.model: openai-codex/gpt-5.4 should become openai/gpt-5.4.",
-        "- Run `openclaw doctor --fix`: it rewrites configured model refs and stale sessions to `openai/*`, moves Codex intent to provider/model runtime policy, and clears old whole-agent runtime pins.",
+        "- Run `operator doctor --fix`: it rewrites configured model refs and stale sessions to `openai/*`, moves Codex intent to provider/model runtime policy, and clears old whole-agent runtime pins.",
       ].join("\n"),
     ]);
   });
@@ -4000,7 +4000,7 @@ describe("collectCodexRouteWarnings", () => {
       [
         "- Legacy `codex/*` and `openai-codex/*` model refs should be rewritten to `openai/*`.",
         "- hooks.gmail.model: openai-codex/gpt-5.4 should become openai/gpt-5.4.",
-        "- Run `openclaw doctor --fix`: it rewrites configured model refs and stale sessions to `openai/*`, moves Codex intent to provider/model runtime policy, and clears old whole-agent runtime pins.",
+        "- Run `operator doctor --fix`: it rewrites configured model refs and stale sessions to `openai/*`, moves Codex intent to provider/model runtime policy, and clears old whole-agent runtime pins.",
       ].join("\n"),
     ]);
   });

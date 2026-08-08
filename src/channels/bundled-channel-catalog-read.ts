@@ -8,7 +8,7 @@ import path from "node:path";
 import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { tryReadJsonSync } from "../infra/json-files.js";
-import { resolveOperatorPackageRootSync } from "../infra/openclaw-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
 import { resolveBundledPluginsDir } from "../plugins/bundled-dir.js";
 import type { PluginPackageChannel } from "../plugins/manifest.js";
 

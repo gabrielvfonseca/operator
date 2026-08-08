@@ -45,8 +45,8 @@ vi.mock("./runtime.js", () => ({
   }),
 }));
 
-vi.mock("openclaw/plugin-sdk/media-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/media-runtime")>();
+vi.mock("operator/plugin-sdk/media-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/media-runtime")>();
   return {
     ...actual,
     runFfmpeg: runFfmpegMock,
@@ -126,7 +126,7 @@ describe("sendMediaFeishu msg_type routing", () => {
     vi.doUnmock("./accounts.js");
     vi.doUnmock("./targets.js");
     vi.doUnmock("./runtime.js");
-    vi.doUnmock("openclaw/plugin-sdk/media-runtime");
+    vi.doUnmock("operator/plugin-sdk/media-runtime");
     vi.resetModules();
   });
 
@@ -521,7 +521,7 @@ describe("sendMediaFeishu msg_type routing", () => {
       contentType: "application/pdf",
     });
 
-    const roots = ["/allowed/workspace", "/tmp/openclaw"];
+    const roots = ["/allowed/workspace", "/tmp/operator"];
     await sendMediaFeishu({
       cfg: emptyConfig,
       to: "user:ou_target",

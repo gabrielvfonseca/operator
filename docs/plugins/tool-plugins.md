@@ -24,7 +24,7 @@ or [Provider Plugins](/plugins/sdk-provider-plugins) instead.
 - `typebox` in `dependencies` (not just `devDependencies` - the generated
   plugin imports it at runtime).
 - `operator >=2026.5.17`, the first version that exports
-  `openclaw/plugin-sdk/tool-plugin`.
+  `operator/plugin-sdk/tool-plugin`.
 - A package root that ships `dist/`, `operator.plugin.json`, and
   `package.json`.
 
@@ -76,7 +76,7 @@ TypeBox schemas.
 
 ```typescript
 import { Type } from "typebox";
-import { defineToolPlugin } from "openclaw/plugin-sdk/tool-plugin";
+import { defineToolPlugin } from "operator/plugin-sdk/tool-plugin";
 
 export default defineToolPlugin({
   id: "stock-quotes",

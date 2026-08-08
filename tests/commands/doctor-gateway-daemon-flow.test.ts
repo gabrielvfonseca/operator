@@ -413,7 +413,7 @@ describe("maybeRepairGatewayDaemon", () => {
         {
           pid: 4242,
           command: "node",
-          commandLine: "/tmp/newer-openclaw/bin/openclaw logs --follow",
+          commandLine: "/tmp/newer-operator/bin/operator logs --follow",
           address: "TCP 127.0.0.1:50123->127.0.0.1:18789 (ESTABLISHED)",
           direction: "client",
         },
@@ -445,7 +445,7 @@ describe("maybeRepairGatewayDaemon", () => {
         {
           pid: 5151,
           command: "node",
-          commandLine: "/tmp/newer-openclaw/bin/openclaw logs --follow",
+          commandLine: "/tmp/newer-operator/bin/operator logs --follow",
           address: "TCP 127.0.0.1:50123->127.0.0.1:18789 (ESTABLISHED)",
           direction: "client",
         },
@@ -529,7 +529,7 @@ describe("maybeRepairGatewayDaemon", () => {
     expect(service.install).not.toHaveBeenCalled();
     expect(service.restart).not.toHaveBeenCalled();
     expect(note).toHaveBeenCalledWith(
-      `Run ${formatCliCommand("openclaw gateway install")} when you want to install the gateway service.`,
+      `Run ${formatCliCommand("operator gateway install")} when you want to install the gateway service.`,
       "Gateway",
     );
   });
@@ -612,7 +612,7 @@ describe("maybeRepairGatewayDaemon", () => {
         "System-level Operator gateway service detected while the user gateway service is not installed.",
         "- operator-gateway.service (unit: /etc/systemd/system/operator-gateway.service)",
         "Operator will not install a second user-level gateway service automatically.",
-        "Run `openclaw gateway status --deep` or `openclaw doctor --deep` to inspect duplicate services.",
+        "Run `operator gateway status --deep` or `operator doctor --deep` to inspect duplicate services.",
         `Set ${SERVICE_REPAIR_POLICY_ENV}=external if a system supervisor owns the gateway lifecycle.`,
       ].join("\n"),
       "Gateway",

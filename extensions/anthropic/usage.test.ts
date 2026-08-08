@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { fetchAnthropicUsage, resolveAnthropicUsageAuth } from "./usage.js";
 
-vi.mock("openclaw/plugin-sdk/provider-auth", async (importActual) => {
-  const actual = await importActual<typeof import("openclaw/plugin-sdk/provider-auth")>();
+vi.mock("operator/plugin-sdk/provider-auth", async (importActual) => {
+  const actual = await importActual<typeof import("operator/plugin-sdk/provider-auth")>();
   return {
     ...actual,
     readClaudeCliCredentialsCached: vi.fn(() => ({

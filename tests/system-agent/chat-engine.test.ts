@@ -367,7 +367,7 @@ describe("SystemAgentChatEngine", () => {
     expect(pending.text).toContain("Approval pending");
     expect(runAgentTurn).not.toHaveBeenCalled();
     expect(runConfigSet).toHaveBeenCalledOnce();
-    expect(applied?.text).toContain("[openclaw] done: config.set");
+    expect(applied?.text).toContain("[operator] done: config.set");
     expect(engine.hasPendingProposal()).toBe(false);
   });
 
@@ -383,7 +383,7 @@ describe("SystemAgentChatEngine", () => {
     const reply = await engine.handle("yes");
     expect(runConfigSet).toHaveBeenCalledOnce();
     expect(reply.action).toBe("none");
-    expect(reply.text).toContain("[openclaw] done: config.set");
+    expect(reply.text).toContain("[operator] done: config.set");
     expect(engine.hasPendingProposal()).toBe(false);
   });
 
@@ -461,7 +461,7 @@ describe("SystemAgentChatEngine", () => {
     expect(reply.handoff).toBeUndefined();
     expect(reply.sensitive).toBeUndefined();
     expect(reply.text).toContain("replace the inference route powering this session");
-    expect(reply.text).toContain("Exit Operator and run `openclaw onboard`");
+    expect(reply.text).toContain("Exit Operator and run `operator onboard`");
   });
 
   it("keeps the current inference route when model provider setup is declined", async () => {
@@ -795,7 +795,7 @@ describe("SystemAgentChatEngine", () => {
     const reply = await engine.handle("connect telegram");
 
     expect(reply.text).toContain("Sensitive input is not accepted");
-    expect(reply.text).toContain("openclaw channels add --channel telegram");
+    expect(reply.text).toContain("operator channels add --channel telegram");
     expect(reply.sensitive).toBeUndefined();
 
     const handoff = await engine.handle("open channel wizard");
@@ -830,7 +830,7 @@ describe("SystemAgentChatEngine", () => {
       const cliReply = await cli.handle(command);
       expect(cliReply.action).toBe("none");
       expect(cliReply.handoff).toBeUndefined();
-      expect(cliReply.text).toContain("run `openclaw onboard`");
+      expect(cliReply.text).toContain("run `operator onboard`");
     }
 
     const gateway = new SystemAgentChatEngine({ ...common, surface: "gateway" });
@@ -1079,7 +1079,7 @@ describe("SystemAgentChatEngine", () => {
     expect(reply.action).toBe("none");
     expect(reply.handoff).toBeUndefined();
     expect(reply.text).toContain("Opening the menu wizard");
-    expect(reply.text).toContain("run `openclaw onboard`");
+    expect(reply.text).toContain("run `operator onboard`");
   });
 
   it("starts the channel wizard from an agent-loop directive", async () => {
@@ -1230,7 +1230,7 @@ describe("SystemAgentChatEngine", () => {
     const reply = await engine.handle("yes, apply that exact port change");
 
     expect(runConfigSet).toHaveBeenCalledOnce();
-    expect(reply.text).toContain("[openclaw] done: config.set");
+    expect(reply.text).toContain("[operator] done: config.set");
   });
 
   it("arms an agent turn when the classifier approves in the user's own words", async () => {
@@ -1474,7 +1474,7 @@ describe("SystemAgentChatEngine", () => {
 
     const applied = await engine.handle("yes");
     expect(runConfigSet).toHaveBeenCalledOnce();
-    expect(applied.text).toContain("[openclaw] done: config.set");
+    expect(applied.text).toContain("[operator] done: config.set");
   });
 
   it("redacts sensitive config-set values from the AI-visible history", async () => {
@@ -1707,7 +1707,7 @@ describe("SystemAgentChatEngine", () => {
     expect(runInvalidConfigSet).toHaveBeenCalledOnce();
     expect(reply.text).toContain("failed validation");
     expect(reply.text).toContain("The write was applied");
-    expect(reply.text).toContain("openclaw doctor --fix");
+    expect(reply.text).toContain("operator doctor --fix");
   });
 
   it("warns when an applied write leaves no config to verify", async () => {
@@ -1732,7 +1732,7 @@ describe("SystemAgentChatEngine", () => {
     expect(reply.text).toContain("The write was applied");
     expect(reply.text).toContain("post-write verification is unavailable");
     expect(reply.text).toContain("operator.json was not found");
-    expect(reply.text).toContain("openclaw doctor --fix");
+    expect(reply.text).toContain("operator doctor --fix");
   });
 
   it("warns when the applied write cannot be read back for verification", async () => {
@@ -1760,7 +1760,7 @@ describe("SystemAgentChatEngine", () => {
     expect(reply.text).toContain("The write was applied");
     expect(reply.text).toContain("post-write verification is unavailable");
     expect(reply.text).toContain("operator.json could not be read");
-    expect(reply.text).toContain("openclaw doctor --fix");
+    expect(reply.text).toContain("operator doctor --fix");
   });
 
   it("stays quiet when the post-write validation passes", async () => {
@@ -1918,7 +1918,7 @@ function fakeOverviewLoader(
       gateway: { url: "ws://127.0.0.1:18789", source: "local", reachable: false },
       references: {
         docsUrl: "https://docs.operator.ai",
-        sourceUrl: "https://github.com/openclaw/openclaw",
+        sourceUrl: "https://github.com/operator/operator",
       },
     }) as never;
 }

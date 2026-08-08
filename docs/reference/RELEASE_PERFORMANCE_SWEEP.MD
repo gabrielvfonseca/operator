@@ -24,7 +24,7 @@ Two audits are combined here:
 - **Install footprint sweep:** fresh `npm install --ignore-scripts` installs
   into temporary packages, with `du -sk node_modules` for size and a
   `node_modules` walk for package-instance counts.
-- **npm package size sweep:** `npm pack openclaw@<version> --dry-run --json`
+- **npm package size sweep:** `npm pack operator@<version> --dry-run --json`
   for published releases, recording compressed tarball size, unpacked size, and
   file count.
 
@@ -83,7 +83,7 @@ graph instead of removing the capabilities themselves.
     instances fell from **372** to **301**.
   </Card>
   <Card title="Nested tree" icon="unplug">
-    Nested `openclaw/node_modules` fell from **656.1MiB** to **259.7MiB** in
+    Nested `operator/node_modules` fell from **656.1MiB** to **259.7MiB** in
     the same local install audit.
   </Card>
   <Card title="Native optional cones" icon="cpu">
@@ -146,8 +146,8 @@ Compared with the previous stable release:
 | Install size from latest release `2026.5.27`    |  767.1MiB |     361.7MiB | 52.8% lower |
 | Dependencies from monthly high `2026.2.26`      |       645 |          300 | 53.5% lower |
 | Dependencies from latest release `2026.5.27`    |       371 |          300 | 19.1% lower |
-| Nested `openclaw/node_modules` from `2026.5.22` |   911.8MB |     259.7MiB | 71.5% lower |
-| Nested `openclaw/node_modules` from `2026.5.27` |  656.1MiB |     259.7MiB | 60.4% lower |
+| Nested `operator/node_modules` from `2026.5.22` |   911.8MB |     259.7MiB | 71.5% lower |
+| Nested `operator/node_modules` from `2026.5.27` |  656.1MiB |     259.7MiB | 60.4% lower |
 
 ### npm package size
 
@@ -235,7 +235,7 @@ targeted CLI or gateway regressions.
 Dependency samples use one stable release per month, plus the
 `2026.5.22` shrinkwrap-introduction event and the latest `2026.5.28` release.
 
-| Point              | Installed deps | Fresh install | Operator package | Nested `openclaw/node_modules` | Root shrinkwrap | Canvas install behavior                   |
+| Point              | Installed deps | Fresh install | Operator package | Nested `operator/node_modules` | Root shrinkwrap | Canvas install behavior                   |
 | ------------------ | -------------: | ------------: | ---------------: | -----------------------------: | --------------- | ----------------------------------------- |
 | Jan `2026.1.30`    |            605 |       438.4MB |           45.8MB |                          2.4MB | no              | top-level wrapper + `darwin-arm64`        |
 | Feb `2026.2.26`    |            645 |       575.7MB |          110.1MB |                          3.5MB | no              | top-level wrapper + `darwin-arm64`        |
@@ -250,8 +250,8 @@ Dependency samples use one stable release per month, plus the
 
 `2026.5.20` shipped with no root shrinkwrap and no large nested Operator
 dependency tree. `2026.5.22` introduced root shrinkwrap and installed 911.8MB
-under nested `openclaw/node_modules`. `2026.5.28` keeps shrinkwrap and still
-installs 259.7MiB under nested `openclaw/node_modules`, but no longer installs
+under nested `operator/node_modules`. `2026.5.28` keeps shrinkwrap and still
+installs 259.7MiB under nested `operator/node_modules`, but no longer installs
 any `@napi-rs/canvas` packages in the local fresh-install audit.
 
 Published tarball inspection verifies the boundary:

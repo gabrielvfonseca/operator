@@ -272,15 +272,15 @@ export function attachGatewayWsConnectionHandler(params: AttachGatewayWsConnecti
     const { remoteAddr, remotePort, localAddr, localPort, endpoint } = resolveSocketAddress(socket);
     const preauthBudgetKey = (
       socket as WebSocket & {
-        __openclawPreauthBudgetClaimed?: boolean;
-        __openclawPreauthBudgetKey?: string;
+        __operatorPreauthBudgetClaimed?: boolean;
+        __operatorPreauthBudgetKey?: string;
       }
-    )["__openclawPreauthBudgetKey"];
+    )["__operatorPreauthBudgetKey"];
     (
       socket as WebSocket & {
-        __openclawPreauthBudgetClaimed?: boolean;
+        __operatorPreauthBudgetClaimed?: boolean;
       }
-    )["__openclawPreauthBudgetClaimed"] = true;
+    )["__operatorPreauthBudgetClaimed"] = true;
     const headerValue = (value: string | string[] | undefined) =>
       Array.isArray(value) ? value[0] : value;
     const requestHost = headerValue(upgradeReq.headers.host);
@@ -466,7 +466,7 @@ export function attachGatewayWsConnectionHandler(params: AttachGatewayWsConnecti
       lastHandshakePhase === "ws_upgrade_started" &&
       !hasReceivedPreauthFrame &&
       lastFrameType === undefined &&
-      normalizeLowercaseStringOrEmpty(requestUserAgent).startsWith("openclaw/") &&
+      normalizeLowercaseStringOrEmpty(requestUserAgent).startsWith("operator/") &&
       isLoopbackAddress(remoteAddr);
 
     socket.once("close", (code, reason) => {

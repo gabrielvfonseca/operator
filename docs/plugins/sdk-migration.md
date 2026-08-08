@@ -19,14 +19,14 @@ change, this guide gets it onto the current contracts.
 Two wide-open import surfaces used to let plugins reach almost anything from a
 single entry point:
 
-- **`openclaw/plugin-sdk/compat`** - re-exported dozens of helpers to keep
+- **`operator/plugin-sdk/compat`** - re-exported dozens of helpers to keep
   older hook-based plugins working while the new architecture was built.
-- **`openclaw/plugin-sdk/infra-runtime`** - a broad barrel mixing system
+- **`operator/plugin-sdk/infra-runtime`** - a broad barrel mixing system
   events, heartbeat state, delivery queues, fetch/proxy helpers, file helpers,
   approval types, and unrelated utilities.
-- **`openclaw/plugin-sdk/config-runtime`** - a broad config barrel still
+- **`operator/plugin-sdk/config-runtime`** - a broad config barrel still
   carrying deprecated direct load/write helpers during the migration window.
-- **`openclaw/extension-api`** - a bridge giving plugins direct access to
+- **`operator/extension-api`** - a bridge giving plugins direct access to
   host-side helpers like the embedded agent runner.
 - **`api.registerEmbeddedExtensionFactory(...)`** - a removed embedded-runner-only
   hook that observed embedded-runner events such as `tool_result`. Use agent
@@ -56,7 +56,7 @@ registration behavior.
   create.
 - **Unclear API surface** - no way to tell stable exports from internal ones.
 
-Each `openclaw/plugin-sdk/<subpath>` is now a small, self-contained module with
+Each `operator/plugin-sdk/<subpath>` is now a small, self-contained module with
 a documented contract.
 
 Legacy provider convenience seams for bundled channels are gone too -
@@ -147,20 +147,20 @@ SDK.
     must receive config from their boundary, and long-lived runtime modules
     allow zero ambient `loadConfig()` calls.
 
-    New plugin code should avoid the broad `openclaw/plugin-sdk/config-runtime`
+    New plugin code should avoid the broad `operator/plugin-sdk/config-runtime`
     barrel. Use the narrow subpath for the job:
 
     | Need | Import |
     | --- | --- |
-    | Config types such as `OperatorConfig` | `openclaw/plugin-sdk/config-contracts` |
-    | Already-loaded config assertions, plugin-entry config lookup, and config merging | `openclaw/plugin-sdk/plugin-config-runtime` |
-    | Current runtime snapshot reads | `openclaw/plugin-sdk/runtime-config-snapshot` |
-    | Config writes | `openclaw/plugin-sdk/config-mutation` |
-    | Session store helpers | `openclaw/plugin-sdk/session-store-runtime` |
-    | Markdown table config | `openclaw/plugin-sdk/markdown-table-runtime` |
-    | Group policy runtime helpers | `openclaw/plugin-sdk/runtime-group-policy` |
-    | Secret input resolution | `openclaw/plugin-sdk/secret-input-runtime` |
-    | Model/session overrides | `openclaw/plugin-sdk/model-session-runtime` |
+    | Config types such as `OperatorConfig` | `operator/plugin-sdk/config-contracts` |
+    | Already-loaded config assertions, plugin-entry config lookup, and config merging | `operator/plugin-sdk/plugin-config-runtime` |
+    | Current runtime snapshot reads | `operator/plugin-sdk/runtime-config-snapshot` |
+    | Config writes | `operator/plugin-sdk/config-mutation` |
+    | Session store helpers | `operator/plugin-sdk/session-store-runtime` |
+    | Markdown table config | `operator/plugin-sdk/markdown-table-runtime` |
+    | Group policy runtime helpers | `operator/plugin-sdk/runtime-group-policy` |
+    | Secret input resolution | `operator/plugin-sdk/secret-input-runtime` |
+    | Model/session overrides | `operator/plugin-sdk/model-session-runtime` |
 
     Bundled plugins and their tests are scanner-guarded against the broad
     barrel so imports and mocks stay local to the behavior they need. The
@@ -218,7 +218,7 @@ SDK.
     - `plugin.auth` remains for channel login/logout flows only; core no
       longer reads approval auth hooks there.
     - Register channel-owned runtime objects (clients, tokens, Bolt apps)
-      through `openclaw/plugin-sdk/channel-runtime-context`.
+      through `operator/plugin-sdk/channel-runtime-context`.
     - Do not send plugin-owned reroute notices from native approval handlers;
       core owns routed-elsewhere notices from actual delivery results.
     - When passing `channelRuntime` into `createChannelManager(...)`, provide a
@@ -231,7 +231,7 @@ SDK.
   </Step>
 
   <Step title="Audit Windows wrapper fallback behavior">
-    If your plugin uses `openclaw/plugin-sdk/windows-spawn`, unresolved Windows
+    If your plugin uses `operator/plugin-sdk/windows-spawn`, unresolved Windows
     `.cmd`/`.bat` wrappers now fail closed unless you explicitly pass
     `allowShellFallback: true`:
 
@@ -258,7 +258,7 @@ SDK.
     grep -r "plugin-sdk/compat" my-plugin/
     grep -r "plugin-sdk/infra-runtime" my-plugin/
     grep -r "plugin-sdk/config-runtime" my-plugin/
-    grep -r "openclaw/extension-api" my-plugin/
+    grep -r "operator/extension-api" my-plugin/
     ```
   </Step>
 
@@ -271,12 +271,12 @@ SDK.
       createChannelReplyPipeline,
       createPluginRuntimeStore,
       resolveControlCommandGate,
-    } from "openclaw/plugin-sdk/compat";
+    } from "operator/plugin-sdk/compat";
 
     // After (modern focused imports)
-    import { createChannelReplyPipeline } from "openclaw/plugin-sdk/channel-reply-pipeline";
-    import { createPluginRuntimeStore } from "openclaw/plugin-sdk/runtime-store";
-    import { resolveControlCommandGate } from "openclaw/plugin-sdk/command-auth";
+    import { createChannelReplyPipeline } from "operator/plugin-sdk/channel-reply-pipeline";
+    import { createPluginRuntimeStore } from "operator/plugin-sdk/runtime-store";
+    import { resolveControlCommandGate } from "operator/plugin-sdk/command-auth";
     ```
 
     For host-side helpers, use the injected plugin runtime instead of
@@ -284,7 +284,7 @@ SDK.
 
     ```typescript
     // Before (deprecated extension-api bridge)
-    import { runEmbeddedAgent } from "openclaw/extension-api";
+    import { runEmbeddedAgent } from "operator/extension-api";
     const result = await runEmbeddedAgent({ sessionId, prompt });
 
     // After (injected runtime)
@@ -306,31 +306,31 @@ SDK.
   </Step>
 
   <Step title="Replace broad infra-runtime imports">
-    `openclaw/plugin-sdk/infra-runtime` still exists for external
+    `operator/plugin-sdk/infra-runtime` still exists for external
     compatibility, but new code should import the focused surface it actually
     needs:
 
     | Need | Import |
     | --- | --- |
-    | System event queue helpers | `openclaw/plugin-sdk/system-event-runtime` |
-    | Heartbeat wake, event, and visibility helpers | `openclaw/plugin-sdk/heartbeat-runtime` |
-    | Pending delivery queue drain | `openclaw/plugin-sdk/delivery-queue-runtime` |
-    | Channel activity telemetry | `openclaw/plugin-sdk/channel-activity-runtime` |
-    | In-memory and persistent-backed dedupe caches | `openclaw/plugin-sdk/dedupe-runtime` |
-    | Safe local-file/media path helpers | `openclaw/plugin-sdk/file-access-runtime` |
-    | Dispatcher-aware fetch | `openclaw/plugin-sdk/runtime-fetch` |
-    | Proxy and guarded fetch helpers | `openclaw/plugin-sdk/fetch-runtime` |
-    | SSRF dispatcher policy types | `openclaw/plugin-sdk/ssrf-dispatcher` |
-    | Approval request/resolution types | `openclaw/plugin-sdk/approval-runtime` |
-    | Approval reply payload and command helpers | `openclaw/plugin-sdk/approval-reply-runtime` |
-    | Error formatting helpers | `openclaw/plugin-sdk/error-runtime` |
-    | Transport readiness waits | `openclaw/plugin-sdk/transport-ready-runtime` |
-    | Secure token helpers | `openclaw/plugin-sdk/secure-random-runtime` |
-    | Bounded async task concurrency | `openclaw/plugin-sdk/concurrency-runtime` |
-    | Required-value assertions for provable invariants | `openclaw/plugin-sdk/expect-runtime` |
-    | Numeric coercion | `openclaw/plugin-sdk/number-runtime` |
-    | Process-local async lock | `openclaw/plugin-sdk/async-lock-runtime` |
-    | File locks | `openclaw/plugin-sdk/file-lock` |
+    | System event queue helpers | `operator/plugin-sdk/system-event-runtime` |
+    | Heartbeat wake, event, and visibility helpers | `operator/plugin-sdk/heartbeat-runtime` |
+    | Pending delivery queue drain | `operator/plugin-sdk/delivery-queue-runtime` |
+    | Channel activity telemetry | `operator/plugin-sdk/channel-activity-runtime` |
+    | In-memory and persistent-backed dedupe caches | `operator/plugin-sdk/dedupe-runtime` |
+    | Safe local-file/media path helpers | `operator/plugin-sdk/file-access-runtime` |
+    | Dispatcher-aware fetch | `operator/plugin-sdk/runtime-fetch` |
+    | Proxy and guarded fetch helpers | `operator/plugin-sdk/fetch-runtime` |
+    | SSRF dispatcher policy types | `operator/plugin-sdk/ssrf-dispatcher` |
+    | Approval request/resolution types | `operator/plugin-sdk/approval-runtime` |
+    | Approval reply payload and command helpers | `operator/plugin-sdk/approval-reply-runtime` |
+    | Error formatting helpers | `operator/plugin-sdk/error-runtime` |
+    | Transport readiness waits | `operator/plugin-sdk/transport-ready-runtime` |
+    | Secure token helpers | `operator/plugin-sdk/secure-random-runtime` |
+    | Bounded async task concurrency | `operator/plugin-sdk/concurrency-runtime` |
+    | Required-value assertions for provable invariants | `operator/plugin-sdk/expect-runtime` |
+    | Numeric coercion | `operator/plugin-sdk/number-runtime` |
+    | Process-local async lock | `operator/plugin-sdk/async-lock-runtime` |
+    | File locks | `operator/plugin-sdk/file-lock` |
 
     Bundled plugins are scanner-guarded against `infra-runtime`, so repo code
     cannot regress to the broad barrel.
@@ -338,7 +338,7 @@ SDK.
   </Step>
 
   <Step title="Migrate channel route helpers">
-    New channel route code uses `openclaw/plugin-sdk/channel-route`. The older
+    New channel route code uses `operator/plugin-sdk/channel-route`. The older
     route-key and comparable-target names remain as compatibility aliases:
 
     | Old helper | Modern helper |
@@ -571,7 +571,7 @@ contract should own it.
 
 ### Private testing barrel
 
-`openclaw/plugin-sdk/testing` was repo-local and excluded from shipped package
+`operator/plugin-sdk/testing` was repo-local and excluded from shipped package
 artifacts, so it was removed before its 2026-07-28 `removeAfter` date. Repository
 tests use focused subpaths such as `plugin-sdk/plugin-test-runtime`,
 `plugin-sdk/channel-test-helpers`, `plugin-sdk/channel-target-testing`,
@@ -585,19 +585,19 @@ major release. Every entry maps the old API to its canonical replacement.
 
 <AccordionGroup>
   <Accordion title="command-auth help builders -> command-status">
-    **Old (`openclaw/plugin-sdk/command-auth`)**: `buildCommandsMessage`,
+    **Old (`operator/plugin-sdk/command-auth`)**: `buildCommandsMessage`,
     `buildCommandsMessagePaginated`, `buildHelpMessage`.
 
-    **New (`openclaw/plugin-sdk/command-status`)**: same signatures, same
+    **New (`operator/plugin-sdk/command-status`)**: same signatures, same
     exports - just imported from the narrower subpath. `command-auth`
     re-exports them as compat stubs.
 
     ```typescript
     // Before
-    import { buildHelpMessage } from "openclaw/plugin-sdk/command-auth";
+    import { buildHelpMessage } from "operator/plugin-sdk/command-auth";
 
     // After
-    import { buildHelpMessage } from "openclaw/plugin-sdk/command-status";
+    import { buildHelpMessage } from "operator/plugin-sdk/command-status";
     ```
 
   </Accordion>
@@ -605,8 +605,8 @@ major release. Every entry maps the old API to its canonical replacement.
   <Accordion title="Mention gating helpers -> resolveInboundMentionDecision">
     **Old**: `resolveMentionGating(params)` and
     `resolveMentionGatingWithBypass(params)` from
-    `openclaw/plugin-sdk/channel-inbound` or
-    `openclaw/plugin-sdk/channel-mention-gating`.
+    `operator/plugin-sdk/channel-inbound` or
+    `operator/plugin-sdk/channel-mention-gating`.
 
     **New**: `resolveInboundMentionDecision({ facts, policy })` - one decision
     object instead of two split call shapes.
@@ -618,12 +618,12 @@ major release. Every entry maps the old API to its canonical replacement.
   </Accordion>
 
   <Accordion title="Channel runtime shim and channel actions helpers">
-    `openclaw/plugin-sdk/channel-runtime` is a compatibility shim for older
+    `operator/plugin-sdk/channel-runtime` is a compatibility shim for older
     channel plugins. Do not import it from new code; use
-    `openclaw/plugin-sdk/channel-runtime-context` for registering runtime
+    `operator/plugin-sdk/channel-runtime-context` for registering runtime
     objects.
 
-    `channelActions*` helpers in `openclaw/plugin-sdk/channel-actions` are
+    `channelActions*` helpers in `operator/plugin-sdk/channel-actions` are
     deprecated alongside raw "actions" channel exports. Expose capabilities
     through the semantic `presentation` surface instead - channel plugins
     declare what they render (cards, buttons, selects) rather than which raw
@@ -632,7 +632,7 @@ major release. Every entry maps the old API to its canonical replacement.
   </Accordion>
 
   <Accordion title="Web search provider tool() helper -> createTool() on the plugin">
-    **Old**: `tool()` factory from `openclaw/plugin-sdk/provider-web-search`.
+    **Old**: `tool()` factory from `operator/plugin-sdk/provider-web-search`.
 
     **New**: implement `createTool(...)` directly on the provider plugin.
     Operator no longer needs the SDK helper to register the tool wrapper.
@@ -851,7 +851,7 @@ major release. Every entry maps the old API to its canonical replacement.
     active sessions.
 
     Official plugins released with `v2026.7.1-beta.5` imported the four
-    deprecated helpers above. `openclaw/plugin-sdk/session-store-runtime` keeps
+    deprecated helpers above. `operator/plugin-sdk/session-store-runtime` keeps
     that exact bridge through 2026-10-12; new plugins must use the replacements.
     `resolveStorePath(...)` remains a supported SDK helper and is not part of
     this deprecation.
@@ -894,14 +894,14 @@ major release. Every entry maps the old API to its canonical replacement.
   </Accordion>
 
   <Accordion title="OperatorSchemaType alias -> OperatorConfig">
-    `OperatorSchemaType` re-exported from `openclaw/plugin-sdk` is now a
+    `OperatorSchemaType` re-exported from `operator/plugin-sdk` is now a
     one-line alias for `OperatorConfig`. Prefer the canonical name.
 
     ```typescript
     // Before
-    import type { OperatorSchemaType } from "openclaw/plugin-sdk";
+    import type { OperatorSchemaType } from "operator/plugin-sdk";
     // After
-    import type { OperatorConfig } from "openclaw/plugin-sdk/config-schema";
+    import type { OperatorConfig } from "operator/plugin-sdk/config-schema";
     ```
 
   </Accordion>
@@ -918,7 +918,7 @@ deprecation comments in that barrel before upgrading.
 ## Talk and realtime voice migration
 
 Realtime voice, telephony, meeting, and browser Talk code shares one Talk
-session controller exported by `openclaw/plugin-sdk/realtime-voice`. The
+session controller exported by `operator/plugin-sdk/realtime-voice`. The
 controller owns the common Talk event envelope, active turn state, capture
 state, output-audio state, recent event history, and stale-turn rejection.
 Provider plugins own vendor-specific realtime sessions; surface plugins own

@@ -1,6 +1,6 @@
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { createSuiteTempRootTracker } from "../../src/test-helpers/temp-dir.js";
 import {
   acquireFleetCellOperation,
@@ -37,7 +37,7 @@ describe("fleet cell registry", () => {
     return {
       tenantId,
       createdAtMs: 1,
-      image: "ghcr.io/openclaw/operator:latest",
+      image: "ghcr.io/operator/operator:latest",
       runtime: "docker",
       containerName: `operator-cell-${tenantId}`,
       dataDir: path.join(root, "fleet", "cells", tenantId),
@@ -61,8 +61,8 @@ describe("fleet cell registry", () => {
     expect(listFleetCells(env).map((cell) => cell.tenantId)).toEqual(["alpha", "zulu"]);
     expect(getFleetCell(env, "zulu")).toEqual(zulu);
 
-    updateFleetCellImage(env, "zulu", "ghcr.io/openclaw/operator:v2");
-    expect(getFleetCell(env, "zulu")?.image).toBe("ghcr.io/openclaw/operator:v2");
+    updateFleetCellImage(env, "zulu", "ghcr.io/operator/operator:v2");
+    expect(getFleetCell(env, "zulu")?.image).toBe("ghcr.io/operator/operator:v2");
 
     deleteFleetCell(env, "alpha");
     expect(getFleetCell(env, "alpha")).toBeUndefined();
@@ -74,7 +74,7 @@ describe("fleet cell registry", () => {
     expect(() =>
       reserveFleetCell(env, {
         ...params("alpha", 19_301),
-        image: "ghcr.io/openclaw/operator:other",
+        image: "ghcr.io/operator/operator:other",
       }),
     ).toThrow("Fleet cell already exists: alpha");
     expect(getFleetCell(env, "alpha")).toEqual(original);

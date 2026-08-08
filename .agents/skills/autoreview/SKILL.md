@@ -103,7 +103,7 @@ export AUTOREVIEW_HARNESS=".claude/skills/autoreview/scripts/test-review-harness
 ```
 
 ```bash
-# Source checkout of openclaw/agent-skills:
+# Source checkout of operator/agent-skills:
 export AUTOREVIEW="skills/autoreview/scripts/autoreview"
 export AUTOREVIEW_HARNESS="skills/autoreview/scripts/test-review-harness"
 ```
@@ -132,7 +132,7 @@ $AUTOREVIEW_HARNESS = ".claude\skills\autoreview\scripts\test-review-harness.ps1
 ```
 
 ```powershell
-# Source checkout of openclaw/agent-skills:
+# Source checkout of operator/agent-skills:
 $AUTOREVIEW = "skills\autoreview\scripts\autoreview"
 $AUTOREVIEW_HARNESS = "skills\autoreview\scripts\test-review-harness.ps1"
 ```

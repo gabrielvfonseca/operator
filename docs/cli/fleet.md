@@ -12,7 +12,7 @@ title: "Fleet"
 
 Fleet is **experimental**. Command names, flags, output shapes, and the container profile can change between releases without a deprecation window.
 
-Fleet supports Docker and Podman. The default image is `ghcr.io/openclaw/operator:latest`.
+Fleet supports Docker and Podman. The default image is `ghcr.io/operator/operator:latest`.
 
 Fleet is tested on Linux and macOS hosts. Windows hosts are currently untested.
 
@@ -69,7 +69,7 @@ Environment keys use letters, digits, and underscores and cannot start with a di
 
 | Option                    | Default                               | Description                                                                                    |
 | ------------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `--image <ref>`           | `ghcr.io/openclaw/operator:latest`    | Container image for the cell.                                                                  |
+| `--image <ref>`           | `ghcr.io/operator/operator:latest`    | Container image for the cell.                                                                  |
 | `--runtime <runtime>`     | `docker`                              | Container CLI: `docker` or `podman`.                                                           |
 | `--port <number>`         | Automatically allocated from `19100`  | Loopback host port. An explicitly selected port must not belong to another registered cell.    |
 | `--memory <value>`        | `2g`                                  | Container memory limit in Docker/Podman syntax.                                                |
@@ -92,7 +92,7 @@ When Fleet starts a new cell, create waits up to about a minute for its Gateway 
 
 ### Pinning by digest
 
-Create and upgrade accept digest-pinned image references such as `--image ghcr.io/openclaw/openclaw@sha256:<digest>`. Fleet passes the image reference through verbatim to Docker or Podman, which lets an operator keep a cell on immutable image bytes instead of a moving tag.
+Create and upgrade accept digest-pinned image references such as `--image ghcr.io/operator/operator@sha256:<digest>`. Fleet passes the image reference through verbatim to Docker or Podman, which lets an operator keep a cell on immutable image bytes instead of a moving tag.
 
 The create result includes the tenant ID, container name, host port, Gateway token, and local URL. Even in JSON output, treat the result as secret-bearing because it contains the token.
 
@@ -193,7 +193,7 @@ operator fleet upgrade acme
 Move the cell to another image:
 
 ```bash
-operator fleet upgrade acme --image ghcr.io/openclaw/operator:<version>
+operator fleet upgrade acme --image ghcr.io/operator/operator:<version>
 ```
 
 Upgrade pulls the target image, inspects the existing container and per-cell network, stops and removes the container, then recreates and starts it. The replacement preserves the same host port, data directories, per-cell bridge network, runtime profile, resource limits, restart policy, Fleet-managed environment, and values originally supplied with `--env`. Mounted state survives container replacement; image-default environment can change with the target image.
@@ -269,7 +269,7 @@ Cell state and auth-profile encryption keys use separate per-tenant host paths u
 <state-dir>/fleet/auth-profile-secrets/<tenant>/
 ```
 
-The first directory is mounted at `/home/node/.operator`. The second is mounted at `/home/node/.config/openclaw`, matching the official Docker setup's encryption-key mount. The encryption key is therefore not exposed beneath the ordinary state mount or included when only the cell-state directory is backed up or shared. Both directories survive normal removal and upgrade; `fleet rm --purge-data --force` deletes both after separate containment checks.
+The first directory is mounted at `/home/node/.operator`. The second is mounted at `/home/node/.config/operator`, matching the official Docker setup's encryption-key mount. The encryption key is therefore not exposed beneath the ordinary state mount or included when only the cell-state directory is backed up or shared. Both directories survive normal removal and upgrade; `fleet rm --purge-data --force` deletes both after separate containment checks.
 
 Before first start, Fleet initializes the cell config with `gateway.mode=local`, token auth, the LAN container bind, and Control UI origins for the allocated host port. The token value is not written to that config; it remains in the container environment.
 
@@ -318,7 +318,7 @@ By default, `fleet create` generates a cryptographically random 32-character hex
 
 `--gateway-token` places a custom token in the local process arguments, which may be retained in shell history or visible in process listings. Prefer the generated token unless an existing secret-management workflow requires a supplied value.
 
-The token and every value passed with `--env` live in the container environment. Fleet writes them to a short-lived mode-`0600` environment file, passes only that file's path to Docker or Podman, and removes it after the runtime command finishes. Values explicitly typed in `operator fleet create --gateway-token ...` or `--env KEY=VALUE` can still be visible in the outer `openclaw` process arguments and shell history.
+The token and every value passed with `--env` live in the container environment. Fleet writes them to a short-lived mode-`0600` environment file, passes only that file's path to Docker or Podman, and removes it after the runtime command finishes. Values explicitly typed in `operator fleet create --gateway-token ...` or `--env KEY=VALUE` can still be visible in the outer `operator` process arguments and shell history.
 
 Container environment values are not hidden from the trusted host operator: Docker or Podman administrators can read them with container inspection. Fleet's "shown once" note describes normal CLI output, not resistance to a host administrator.
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../../../src/config/types.openclaw.js";
+import type { OperatorConfig } from "../../../src/config/types.operator.js";
 import { detectSkillWorkshopToolPolicyDiagnostic } from "../../../src/skills/workshop/tool-policy-diagnostic.js";
 
 function detect(config: OperatorConfig, workshopEnabled = true) {

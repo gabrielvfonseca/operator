@@ -55,7 +55,7 @@ Codex-specific marketplace flow.
 After installing `cua-driver`, either ask it for the Operator command:
 
 ```bash
-cua-driver mcp-config --client openclaw
+cua-driver mcp-config --client operator
 ```
 
 or register the stdio server directly:

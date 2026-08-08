@@ -41,7 +41,7 @@ function createStubTransport(baseUrl = "http://127.0.0.1:43123") {
       },
       messages: {
         groupChat: {
-          mentionPatterns: ["\\b@?openclaw\\b"],
+          mentionPatterns: ["\\b@?operator\\b"],
         },
       },
     }),

@@ -3531,7 +3531,7 @@ describe("prepareCliRunContext", () => {
     }
   });
 
-  it("serves only the openclaw MCP server for ring-zero runs", async () => {
+  it("serves only the operator MCP server for ring-zero runs", async () => {
     const { dir, sessionFile } = createSessionFile();
     try {
       const getActiveMcpLoopbackRuntime = vi.fn(() => undefined);
@@ -3584,7 +3584,7 @@ describe("prepareCliRunContext", () => {
         systemAgentTool: { surface: "cli" },
         cliToolAvailability: {
           native: [],
-          mcp: ["mcp__operator__openclaw"],
+          mcp: ["mcp__operator__operator"],
         },
       };
       const context = await prepareCliRunContext(params);
@@ -3602,7 +3602,7 @@ describe("prepareCliRunContext", () => {
       expect(resolveExecutionArgs).not.toHaveBeenCalled();
       expect(context.params.cliToolAvailability).toEqual({
         native: [],
-        mcp: ["mcp__operator__openclaw"],
+        mcp: ["mcp__operator__operator"],
       });
       const mcpConfigPath = expectDefined(
         args[args.indexOf("--mcp-config") + 1],
@@ -4191,7 +4191,7 @@ describe("prepareCliRunContext", () => {
 
   it("renders CLI skills from sandbox-readable paths instead of persisted host snapshots", async () => {
     const { dir, sessionFile } = createSessionFile();
-    const hostSkillDir = "/home/tzdai/.npm-global/lib/node_modules/openclaw/skills/gog";
+    const hostSkillDir = "/home/tzdai/.npm-global/lib/node_modules/operator/skills/gog";
     const hostSkillPath = `${hostSkillDir}/SKILL.md`;
     const materializedWorkspace = path.join(dir, "state", "sandbox-skills");
     const materializedSkillDir = path.join(materializedWorkspace, "skills", "gog");

@@ -1959,7 +1959,7 @@ describe("createImageGenerateTool", () => {
       ],
     });
     vi.spyOn(mediaStore, "saveMediaBuffer").mockResolvedValueOnce({
-      path: "/home/openclaw/.operator/media/tool-image-generation/kodo_sawaki_zazen---3337a0ed-898a-4572-8950-0d288719f4f8.jpg",
+      path: "/home/operator/.operator/media/tool-image-generation/kodo_sawaki_zazen---3337a0ed-898a-4572-8950-0d288719f4f8.jpg",
       id: "kodo_sawaki_zazen---3337a0ed-898a-4572-8950-0d288719f4f8.jpg",
       size: 8,
       contentType: "image/jpeg",
@@ -1981,12 +1981,12 @@ describe("createImageGenerateTool", () => {
     const text = resultText(result);
 
     expect(text).toContain(
-      'path="/home/openclaw/.operator/media/tool-image-generation/kodo_sawaki_zazen---3337a0ed-898a-4572-8950-0d288719f4f8.jpg"',
+      'path="/home/operator/.operator/media/tool-image-generation/kodo_sawaki_zazen---3337a0ed-898a-4572-8950-0d288719f4f8.jpg"',
     );
     const details = resultDetails(result);
     const media = requireRecord(details.media, "media details");
     expect(media.mediaUrls).toEqual([
-      "/home/openclaw/.operator/media/tool-image-generation/kodo_sawaki_zazen---3337a0ed-898a-4572-8950-0d288719f4f8.jpg",
+      "/home/operator/.operator/media/tool-image-generation/kodo_sawaki_zazen---3337a0ed-898a-4572-8950-0d288719f4f8.jpg",
     ]);
   });
 

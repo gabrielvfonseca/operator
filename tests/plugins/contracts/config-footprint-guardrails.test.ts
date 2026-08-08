@@ -208,9 +208,9 @@ describe("config footprint guardrails", () => {
       expect(source).not.toContain(schemaName);
     }
     expect(bundledSource).toContain("Bundled-channel config schemas");
-    expect(bundledSource).toContain("openclaw/plugin-sdk/channel-config-schema");
+    expect(bundledSource).toContain("operator/plugin-sdk/channel-config-schema");
     expect(legacySource).toContain("Compatibility surface for bundled channel schemas");
-    expect(legacySource).toContain("openclaw/plugin-sdk/bundled-channel-config-schema");
+    expect(legacySource).toContain("operator/plugin-sdk/bundled-channel-config-schema");
     expect(legacySource).toContain('export * from "./bundled-channel-config-schema.js";');
     // Non-canonical facades are re-export shells over the canonical
     // channel-config-schema module; only bundled provider schemas bypass it.

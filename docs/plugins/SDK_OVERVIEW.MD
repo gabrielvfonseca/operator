@@ -12,7 +12,7 @@ The plugin SDK is the typed contract between plugins and core. This page is the
 reference for **what to import** and **what you can register**.
 
 <Note>
-  This page is for plugin authors using `openclaw/plugin-sdk/*` inside
+  This page is for plugin authors using `operator/plugin-sdk/*` inside
   Operator. For external apps, scripts, dashboards, CI jobs, and IDE extensions
   that want to run agents through the Gateway, use
   [Gateway integrations for external apps](/gateway/external-apps) instead.
@@ -27,13 +27,13 @@ Looking for a how-to guide instead? Start with [Building plugins](/plugins/build
 Always import from a specific subpath:
 
 ```typescript
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
-import { defineChannelPluginEntry } from "openclaw/plugin-sdk/channel-core";
+import { definePluginEntry } from "operator/plugin-sdk/plugin-entry";
+import { defineChannelPluginEntry } from "operator/plugin-sdk/channel-core";
 ```
 
 Each subpath is a small, self-contained module. This keeps startup fast and
 prevents circular dependency issues. For channel-specific entry/build helpers,
-prefer `openclaw/plugin-sdk/channel-core`; keep `openclaw/plugin-sdk/core` for
+prefer `operator/plugin-sdk/channel-core`; keep `operator/plugin-sdk/core` for
 the broader umbrella surface and shared helpers such as
 `buildChannelConfigSchema`.
 
@@ -47,7 +47,7 @@ pattern for new plugins.
 
 <Warning>
   Do not import provider- or channel-branded convenience seams (for example
-  `openclaw/plugin-sdk/slack`, `.../discord`, `.../signal`, `.../whatsapp`).
+  `operator/plugin-sdk/slack`, `.../discord`, `.../signal`, `.../whatsapp`).
   Bundled plugins compose generic SDK subpaths inside their own `api.ts` /
   `runtime-api.ts` barrels; core consumers should either use those plugin-local
   barrels or add a narrow generic SDK contract when a need is truly
@@ -58,7 +58,7 @@ map when they have tracked owner usage. They exist for bundled-plugin
 maintenance only and are not recommended import paths for new third-party
 plugins.
 
-`openclaw/plugin-sdk/discord` and `openclaw/plugin-sdk/telegram-account` are
+`operator/plugin-sdk/discord` and `operator/plugin-sdk/telegram-account` are
 also kept as deprecated compatibility facades for tracked owner usage. Do not
 copy those import paths into new plugins; use injected runtime helpers and
 generic channel SDK subpaths instead.
@@ -554,7 +554,7 @@ For an end-to-end authoring guide, see
 - `registerMemoryCapability` is the preferred exclusive memory-plugin API.
 - `registerMemoryCapability` may also expose `publicArtifacts.listArtifacts(...)`
   so companion plugins can consume exported memory artifacts through
-  `openclaw/plugin-sdk/memory-host-core` instead of reaching into a specific
+  `operator/plugin-sdk/memory-host-core` instead of reaching into a specific
   memory plugin's private layout.
 - `registerMemoryPromptSection`, `registerMemoryFlushPlan`, and
   `registerMemoryRuntime` are legacy-compatible exclusive memory-plugin APIs.
@@ -641,7 +641,7 @@ my-plugin/
 ```
 
 <Warning>
-  Never import your own plugin through `openclaw/plugin-sdk/<your-plugin>`
+  Never import your own plugin through `operator/plugin-sdk/<your-plugin>`
   from production code. Route internal imports through `./api.ts` or
   `./runtime-api.ts`. The SDK path is the external contract only.
 </Warning>
@@ -666,9 +666,9 @@ subpath yet. Bundled examples:
   plus onboarding/config helpers.
 
 <Warning>
-  Extension production code should also avoid `openclaw/plugin-sdk/<other-plugin>`
+  Extension production code should also avoid `operator/plugin-sdk/<other-plugin>`
   imports. If a helper is truly shared, promote it to a neutral SDK subpath
-  such as `openclaw/plugin-sdk/speech`, `.../provider-model-shared`, or another
+  such as `operator/plugin-sdk/speech`, `.../provider-model-shared`, or another
   capability-oriented surface instead of coupling two plugins together.
 </Warning>
 

@@ -15,7 +15,7 @@ function usage() {
       "    --description-file <path>",
       "    --vulnerable-version-range <range>",
       "    --patched-versions <range-or-null>",
-      "    [--package openclaw] [--ecosystem npm] [--cvss <vector>]",
+      "    [--package operator] [--ecosystem npm] [--cvss <vector>]",
     ].join("\n"),
   );
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Installs a prepared OpenClaw npm tarball in Docker, runs OpenAI onboarding,
+# Installs a prepared Operator npm tarball in Docker, runs OpenAI onboarding,
 # and verifies the Codex plugin plus @openai/codex dependency are downloaded on demand.
 set -euo pipefail
 
@@ -7,7 +7,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
 source "$ROOT_DIR/scripts/lib/docker-e2e-package.sh"
 
-IMAGE_NAME="$(docker_e2e_resolve_image "openclaw-codex-on-demand-e2e" OPENCLAW_CODEX_ON_DEMAND_E2E_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "operator-codex-on-demand-e2e" OPENCLAW_CODEX_ON_DEMAND_E2E_IMAGE)"
 DOCKER_TARGET="${OPENCLAW_CODEX_ON_DEMAND_DOCKER_TARGET:-bare}"
 HOST_BUILD="${OPENCLAW_CODEX_ON_DEMAND_HOST_BUILD:-1}"
 PACKAGE_TGZ="${OPENCLAW_CURRENT_PACKAGE_TGZ:-}"
@@ -56,39 +56,39 @@ if ! docker_e2e_run_with_harness \
   -i "$IMAGE_NAME" bash -s >"$run_log" 2>&1 <<'EOF'; then
 set -euo pipefail
 
-source scripts/lib/openclaw-e2e-instance.sh
-openclaw_e2e_eval_test_state_from_b64 "${OPENCLAW_TEST_STATE_SCRIPT_B64:?missing OPENCLAW_TEST_STATE_SCRIPT_B64}"
+source scripts/lib/operator-e2e-instance.sh
+operator_e2e_eval_test_state_from_b64 "${OPENCLAW_TEST_STATE_SCRIPT_B64:?missing OPENCLAW_TEST_STATE_SCRIPT_B64}"
 export NPM_CONFIG_PREFIX="$HOME/.npm-global"
 export npm_config_prefix="$NPM_CONFIG_PREFIX"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export NPM_CONFIG_CACHE="${NPM_CONFIG_CACHE:-$XDG_CACHE_HOME/npm}"
 export npm_config_cache="$NPM_CONFIG_CACHE"
 export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
-export OPENAI_API_KEY="sk-openclaw-codex-on-demand-e2e"
+export OPENAI_API_KEY="sk-operator-codex-on-demand-e2e"
 
 dump_debug_logs() {
   local status="$1"
   echo "Codex on-demand scenario failed with exit code $status" >&2
-  openclaw_e2e_dump_logs \
-    /tmp/openclaw-install.log \
-    /tmp/openclaw-onboard.json \
-    /tmp/openclaw-plugins-list.json \
-    /tmp/openclaw-codex-inspect.json
+  operator_e2e_dump_logs \
+    /tmp/operator-install.log \
+    /tmp/operator-onboard.json \
+    /tmp/operator-plugins-list.json \
+    /tmp/operator-codex-inspect.json
 }
 trap 'status=$?; dump_debug_logs "$status"; exit "$status"' ERR
 
 mkdir -p "$NPM_CONFIG_PREFIX" "$XDG_CACHE_HOME" "$NPM_CONFIG_CACHE"
 chmod 700 "$XDG_CACHE_HOME" "$NPM_CONFIG_CACHE" || true
 
-openclaw_e2e_install_package /tmp/openclaw-install.log
-command -v openclaw >/dev/null
-openclaw_e2e_enable_openclaw_cli_timeout
+operator_e2e_install_package /tmp/operator-install.log
+command -v operator >/dev/null
+operator_e2e_enable_operator_cli_timeout
 
-openclaw_e2e_assert_dep_absent "@openclaw/codex" "$HOME/.openclaw" "$NPM_CONFIG_PREFIX"
-openclaw_e2e_assert_dep_absent "@openai/codex" "$HOME/.openclaw" "$NPM_CONFIG_PREFIX"
+operator_e2e_assert_dep_absent "@operator/codex" "$HOME/.operator" "$NPM_CONFIG_PREFIX"
+operator_e2e_assert_dep_absent "@openai/codex" "$HOME/.operator" "$NPM_CONFIG_PREFIX"
 
 echo "Running non-interactive OpenAI onboarding; Codex should install on demand..."
-openclaw onboard --non-interactive --accept-risk \
+operator onboard --non-interactive --accept-risk \
   --mode local \
   --auth-choice openai-api-key \
   --secret-input-mode ref \
@@ -97,10 +97,10 @@ openclaw onboard --non-interactive --accept-risk \
   --skip-channels \
   --skip-skills \
   --skip-health \
-  --json >/tmp/openclaw-onboard.json
+  --json >/tmp/operator-onboard.json
 
-openclaw plugins list --json >/tmp/openclaw-plugins-list.json
-openclaw plugins inspect codex --runtime --json >/tmp/openclaw-codex-inspect.json
+operator plugins list --json >/tmp/operator-plugins-list.json
+operator plugins inspect codex --runtime --json >/tmp/operator-codex-inspect.json
 node scripts/e2e/lib/codex-on-demand/assertions.mjs
 
 echo "Codex on-demand Docker E2E passed"

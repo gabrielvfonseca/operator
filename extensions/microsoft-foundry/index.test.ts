@@ -51,17 +51,17 @@ vi.mock("node:child_process", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/process-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/process-runtime")>();
+vi.mock("operator/plugin-sdk/process-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/process-runtime")>();
   return {
     ...actual,
     runExec: execFileMock,
   };
 });
 
-vi.mock("openclaw/plugin-sdk/provider-auth", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/provider-auth")>(
-    "openclaw/plugin-sdk/provider-auth",
+vi.mock("operator/plugin-sdk/provider-auth", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/provider-auth")>(
+    "operator/plugin-sdk/provider-auth",
   );
   return {
     ...actual,
@@ -1596,7 +1596,7 @@ describe("microsoft-foundry plugin", () => {
     expect(provider?.models[0]?.compat?.maxTokensField).toBe("max_completion_tokens");
   });
 
-  it("emits only persisted-schema thinkingLevelMap level keys for Entra ID reasoning onboarding (openclaw#91011)", () => {
+  it("emits only persisted-schema thinkingLevelMap level keys for Entra ID reasoning onboarding (operator#91011)", () => {
     // The persisted ModelDefinitionSchema only accepts these ModelThinkingLevel keys; if the writer
     // emits one outside the set, updateConfig rolls the Entra ID onboarding write back.
     const allowedThinkingLevels = new Set([

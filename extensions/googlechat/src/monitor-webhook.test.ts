@@ -10,11 +10,11 @@ const resolveWebhookTargetWithAuthOrReject = vi.hoisted(() => vi.fn());
 const withResolvedWebhookRequestPipeline = vi.hoisted(() => vi.fn());
 const verifyGoogleChatRequest = vi.hoisted(() => vi.fn());
 
-vi.mock("openclaw/plugin-sdk/webhook-request-guards", () => ({
+vi.mock("operator/plugin-sdk/webhook-request-guards", () => ({
   readJsonWebhookBodyOrReject,
 }));
 
-vi.mock("openclaw/plugin-sdk/webhook-targets", () => ({
+vi.mock("operator/plugin-sdk/webhook-targets", () => ({
   resolveWebhookTargetWithAuthOrReject,
   withResolvedWebhookRequestPipeline,
 }));
@@ -119,8 +119,8 @@ describe("googlechat monitor webhook", () => {
   });
 
   afterAll(() => {
-    vi.doUnmock("openclaw/plugin-sdk/webhook-request-guards");
-    vi.doUnmock("openclaw/plugin-sdk/webhook-targets");
+    vi.doUnmock("operator/plugin-sdk/webhook-request-guards");
+    vi.doUnmock("operator/plugin-sdk/webhook-targets");
     vi.doUnmock("./auth.js");
     vi.resetModules();
   });

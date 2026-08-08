@@ -53,7 +53,7 @@ For the default account, you can instead set `RAFT_PROFILE` in the Gateway
 environment:
 
 ```bash
-RAFT_PROFILE=openclaw
+RAFT_PROFILE=operator
 ```
 
 Use a named account when one Gateway connects to more than one Raft External Agent:

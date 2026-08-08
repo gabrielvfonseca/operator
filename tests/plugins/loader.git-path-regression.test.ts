@@ -76,7 +76,7 @@ export const copiedRuntimeMarker = {
         tryNative: false,
         extensions: [".ts", ".tsx", ".mts", ".cts", ".mtsx", ".ctsx", ".js", ".mjs", ".cjs", ".json"],
         alias: {
-          "openclaw/plugin-sdk/channel-outbound": ${JSON.stringify(copiedChannelRuntimeShim)},
+          "operator/plugin-sdk/channel-outbound": ${JSON.stringify(copiedChannelRuntimeShim)},
         },
       });
       const mod = withAlias(${JSON.stringify(copiedChannelRuntime)});

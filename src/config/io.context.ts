@@ -264,7 +264,7 @@ export function createConfigIoContext(options: ConfigIoFactoryOptions = {}): Con
       return { migrated: true };
     } catch (error) {
       throw new Error(
-        `Config write blocked: shipped plugins.installs records in ${configPath} could not be migrated into the plugin index. Fix state directory permissions or run openclaw plugins registry --refresh, then retry. ${formatErrorMessage(error)}`,
+        `Config write blocked: shipped plugins.installs records in ${configPath} could not be migrated into the plugin index. Fix state directory permissions or run operator plugins registry --refresh, then retry. ${formatErrorMessage(error)}`,
         { cause: error },
       );
     }

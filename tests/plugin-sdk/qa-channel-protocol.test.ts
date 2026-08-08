@@ -46,7 +46,7 @@ describe("qa-channel protocol", () => {
             ["X-API-Key", "secret"],
             ["Accept", "application/json"],
           ],
-          argv: ["gh", "api", "--token", "secret-token", "repos/openclaw/openclaw"],
+          argv: ["gh", "api", "--token", "secret-token", "repos/operator/operator"],
           hyphenArgv: ["cmd", "--access-token", "abc123", "--ok"],
           values: ["ok", { password: "hunter2" }],
         },

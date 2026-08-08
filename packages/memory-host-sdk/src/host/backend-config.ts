@@ -23,7 +23,7 @@ import {
   splitShellArgs,
 } from "./config-utils.js";
 import { isPathInside } from "./fs-utils.js";
-import { parseDurationMs } from "./openclaw-runtime-config.js";
+import { parseDurationMs } from "./operator-runtime-config.js";
 
 function escapeQmdExactFilePattern(fileName: string): string {
   return fileName.replace(/[\\*?[\]{}()!+@]/g, "\\$&");

@@ -144,7 +144,7 @@ export async function startExtensionRelayServer(params: {
         res.end(
           JSON.stringify({
             error:
-              "Operator Chrome extension is not connected. Install the extension and pair it with `openclaw browser extension pair`.",
+              "Operator Chrome extension is not connected. Install the extension and pair it with `operator browser extension pair`.",
           }),
         );
         return;

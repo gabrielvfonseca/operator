@@ -117,11 +117,11 @@ Important lanes:
 Useful published-upgrade survivor variants:
 
 ```bash
-OPERATOR_UPGRADE_SURVIVOR_BASELINE_SPEC=openclaw@2026.4.23 \
+OPERATOR_UPGRADE_SURVIVOR_BASELINE_SPEC=operator@2026.4.23 \
 OPERATOR_UPGRADE_SURVIVOR_SCENARIO=versioned-runtime-deps \
 pnpm test:docker:published-upgrade-survivor
 
-OPERATOR_UPGRADE_SURVIVOR_BASELINE_SPEC=openclaw@latest \
+OPERATOR_UPGRADE_SURVIVOR_BASELINE_SPEC=operator@latest \
 OPERATOR_UPGRADE_SURVIVOR_SCENARIO=bootstrap-persona \
 pnpm test:docker:published-upgrade-survivor
 ```
@@ -157,8 +157,8 @@ older trusted releases.
 
 Candidate sources:
 
-- `source=npm`: validate `openclaw@extended-stable`, `openclaw@beta`,
-  `openclaw@latest`, or an exact published version.
+- `source=npm`: validate `operator@extended-stable`, `operator@beta`,
+  `operator@latest`, or an exact published version.
 - `source=ref`: pack a trusted branch, tag, or commit with the selected current
   harness.
 - `source=url`: validate a public HTTPS tarball with required `package_sha256`.
@@ -174,7 +174,7 @@ Candidate sources:
 
 Full Release Validation uses `source=artifact` by default, built from the
 resolved release SHA. For post-publish proof, pass
-`package_acceptance_package_spec=openclaw@YYYY.M.PATCH` so the same upgrade matrix
+`package_acceptance_package_spec=operator@YYYY.M.PATCH` so the same upgrade matrix
 targets the shipped npm package instead.
 
 Release checks call Package Acceptance with the package/update/restart/plugin set:
@@ -220,7 +220,7 @@ gh workflow run package-acceptance.yml \
   --ref main \
   -f workflow_ref=main \
   -f source=npm \
-  -f package_spec=openclaw@beta \
+  -f package_spec=operator@beta \
   -f suite_profile=package \
   -f published_upgrade_survivor_baselines="last-stable-4 2026.4.23 2026.5.2 2026.4.15" \
   -f published_upgrade_survivor_scenarios=reported-issues \
@@ -228,7 +228,7 @@ gh workflow run package-acceptance.yml \
 ```
 
 For a published extended-stable canary, set
-`package_spec=openclaw@extended-stable`. Package Acceptance resolves that
+`package_spec=operator@extended-stable`. Package Acceptance resolves that
 selector into an exact tarball before the Docker lanes run.
 
 Use `suite_profile=product` when the release question includes MCP channels,

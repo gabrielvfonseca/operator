@@ -1139,7 +1139,7 @@ The two files serve different jobs:
 | File                   | Use it for                                                                                                                       |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | `operator.plugin.json` | Discovery, config validation, auth-choice metadata, and UI hints that must exist before plugin code runs                         |
-| `package.json`         | npm metadata, dependency installation, and the `openclaw` block used for entrypoints, install gating, setup, or catalog metadata |
+| `package.json`         | npm metadata, dependency installation, and the `operator` block used for entrypoints, install gating, setup, or catalog metadata |
 
 If you are unsure where a piece of metadata belongs, use this rule:
 
@@ -1148,7 +1148,7 @@ If you are unsure where a piece of metadata belongs, use this rule:
 
 ### package.json fields that affect discovery
 
-Some pre-runtime plugin metadata intentionally lives in `package.json` under the `openclaw` block instead of `operator.plugin.json`. `operator.bundle` and `operator.bundle.json` are not Operator plugin contracts; native plugins must use `operator.plugin.json` plus the supported `package.json#openclaw` fields below.
+Some pre-runtime plugin metadata intentionally lives in `package.json` under the `operator` block instead of `operator.plugin.json`. `operator.bundle` and `operator.bundle.json` are not Operator plugin contracts; native plugins must use `operator.plugin.json` plus the supported `package.json#operator` fields below.
 
 Important examples:
 

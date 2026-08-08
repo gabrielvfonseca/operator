@@ -8,7 +8,7 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } 
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
-} from "../../../src/state/openclaw-state-db.js";
+} from "../../../src/state/operator-state-db.js";
 import { SkillUploadRequestError } from "../../../src/skills/lifecycle/upload-store.js";
 import {
   deleteExpiredSkillUploadUnlessLeased,
@@ -41,7 +41,7 @@ const ACTIVE_UPLOAD_LIMIT = 32;
 let tempDirs: string[] = [];
 
 async function makeTempDir(): Promise<string> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-skill-upload-store-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-skill-upload-store-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -53,7 +53,7 @@ async function makeStore(options?: {
   ttlMs?: number;
 }) {
   const root = await makeTempDir();
-  const databasePath = path.join(root, "openclaw.sqlite");
+  const databasePath = path.join(root, "operator.sqlite");
   return {
     root,
     databasePath,
@@ -146,9 +146,9 @@ describe("skill upload store", () => {
   let activeLimitRoot: string | undefined;
 
   beforeAll(async () => {
-    activeLimitRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-skill-upload-limit-"));
+    activeLimitRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-skill-upload-limit-"));
     const store = createSkillUploadStore({
-      path: path.join(activeLimitRoot, "openclaw.sqlite"),
+      path: path.join(activeLimitRoot, "operator.sqlite"),
       tempRootDir: activeLimitRoot,
     });
     for (let i = 0; i < ACTIVE_UPLOAD_LIMIT; i += 1) {

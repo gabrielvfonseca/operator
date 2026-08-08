@@ -752,7 +752,7 @@ describe("diagnostic support export", () => {
 
   it("redacts Windows USERPROFILE paths when HOME is unset", () => {
     const userProfile = "C:\\Users\\support-user";
-    const stateDir = `${userProfile}\\AppData\\Roaming\\openclaw`;
+    const stateDir = `${userProfile}\\AppData\\Roaming\\operator`;
     const redaction = {
       env: {
         USERPROFILE: userProfile,
@@ -780,11 +780,11 @@ describe("diagnostic support export", () => {
           command: {
             programArguments: [
               "node",
-              `${userProfile}\\openclaw\\dist\\index.js`,
+              `${userProfile}\\operator\\dist\\index.js`,
               "--config",
               `${stateDir}\\operator.json`,
             ],
-            sourcePath: "c:\\users\\support-user\\AppData\\Local\\openclaw\\gateway-service.json",
+            sourcePath: "c:\\users\\support-user\\AppData\\Local\\operator\\gateway-service.json",
           },
         },
       },
@@ -792,9 +792,9 @@ describe("diagnostic support export", () => {
     );
     const serialized = JSON.stringify(status);
     expect(serialized).not.toContain("support-user");
-    expect(serialized).toContain("~\\\\openclaw\\\\dist\\\\index.js");
+    expect(serialized).toContain("~\\\\operator\\\\dist\\\\index.js");
     expect(serialized).toContain("$OPERATOR_STATE_DIR\\\\operator.json");
-    expect(serialized).toContain("~\\\\AppData\\\\Local\\\\openclaw\\\\gateway-service.json");
+    expect(serialized).toContain("~\\\\AppData\\\\Local\\\\operator\\\\gateway-service.json");
   });
 
   it("keeps writing when status and health snapshots fail", async () => {

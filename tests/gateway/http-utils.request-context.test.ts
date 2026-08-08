@@ -146,7 +146,7 @@ describe("resolveGatewayRequestContext", () => {
     expect(() =>
       resolveGatewayRequestContext({
         req: createReq(),
-        model: "openclaw/missing-agent",
+        model: "operator/missing-agent",
         sessionPrefix: "openai",
         defaultMessageChannel: "webchat",
       }),

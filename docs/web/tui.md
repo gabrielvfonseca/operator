@@ -45,7 +45,7 @@ operator tui --local
 - `operator chat` and `operator terminal` are aliases for `operator tui --local`.
 - `--local` cannot be combined with `--url`, `--token`, or `--password`.
 - Local mode uses the embedded agent runtime directly. Most local tools work, but Gateway-only features are unavailable.
-- Bare `openclaw` (no subcommand) picks a target automatically: an unconfigured install runs inference onboarding; invalid config opens classic doctor guidance; a reachable configured Gateway opens this TUI shell in gateway mode; otherwise a configured local model opens it in local mode.
+- Bare `operator` (no subcommand) picks a target automatically: an unconfigured install runs inference onboarding; invalid config opens classic doctor guidance; a reachable configured Gateway opens this TUI shell in gateway mode; otherwise a configured local model opens it in local mode.
 
 ## What you see
 
@@ -164,7 +164,7 @@ operator setup -m "set default model openai/gpt-5.2" --yes   # apply a config wr
 
 - Persistent config writes need approval: either confirm interactively or pass `--yes`.
 - `--json` prints the startup overview as JSON instead of starting the chat.
-- From inside Operator, an `open-tui` request (for example, asking to talk to a normal agent) exits Operator and opens the regular agent TUI; use `/openclaw` there to come back.
+- From inside Operator, an `open-tui` request (for example, asking to talk to a normal agent) exits Operator and opens the regular agent TUI; use `/operator` there to come back.
 
 Use local mode when the current config already validates and you want the embedded agent to inspect it on the same machine, compare it against the docs, and help repair drift without depending on a running Gateway.
 

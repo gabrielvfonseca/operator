@@ -5,12 +5,12 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { replaceSessionEntry } from "../../src/config/sessions/session-accessor.js";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../../src/infra/kysely-sync.js";
-import type { DB as OperatorAgentKyselyDatabase } from "../../../src/state/openclaw-agent-db.generated.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../../../src/state/operator-agent-db.generated.js";
 import {
   closeOperatorAgentDatabasesForTest,
   openOperatorAgentDatabase,
-} from "../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import {
   appendSqliteTrajectoryRuntimeEvents,
   loadSqliteTrajectoryRuntimeEvents,

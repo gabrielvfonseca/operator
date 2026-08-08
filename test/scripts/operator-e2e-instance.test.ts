@@ -1,4 +1,4 @@
-// operator E2E Instance tests cover operator e2e instance script behavior.
+// Openclaw E2E Instance tests cover operator e2e instance script behavior.
 import { execFileSync, spawnSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
@@ -29,7 +29,7 @@ function runHelper(payload: string) {
         `source ${shellQuote(helperPath)}`,
         `operator_e2e_eval_test_state_from_b64 ${shellQuote(payload)}`,
         // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-        'printf "value=%s" "${OPERATOR_E2E_INSTANCE_TEST:-unset}"',
+        'printf "value=%s" "${OPENCLAW_E2E_INSTANCE_TEST:-unset}"',
       ].join("; "),
     ],
     { encoding: "utf8" },
@@ -104,7 +104,7 @@ function writeFakeTimeout(filePath: string, supportsKillAfter: boolean): void {
     'if [ "${1:-}" = "--kill-after=1s" ]; then',
     `  exit ${supportsKillAfter ? 0 : 1}`,
     "fi",
-    'printf "%s\\n" "$*" >"$OPERATOR_TEST_TIMEOUT_ARGS"',
+    'printf "%s\\n" "$*" >"$OPENCLAW_TEST_TIMEOUT_ARGS"',
     'while [ "$#" -gt 0 ]; do',
     '  case "$1" in',
     "    --)",
@@ -128,7 +128,7 @@ function writeFakeTimeout(filePath: string, supportsKillAfter: boolean): void {
 }
 
 function writeFakeNpm(filePath: string): void {
-  writeBashExecutable(filePath, ['printf "%s\\n" "$*" >"$OPERATOR_TEST_NPM_ARGS"']);
+  writeBashExecutable(filePath, ['printf "%s\\n" "$*" >"$OPENCLAW_TEST_NPM_ARGS"']);
 }
 
 function expectNpmInstallObserved(argsPath: string, expectedArgs: string, prefix: string): void {
@@ -143,7 +143,7 @@ function expectNpmInstallObserved(argsPath: string, expectedArgs: string, prefix
 
 describe("scripts/lib/operator-e2e-instance.sh", () => {
   it("sources decoded test-state scripts", () => {
-    const result = runHelper(base64('export OPERATOR_E2E_INSTANCE_TEST="ok"\n'));
+    const result = runHelper(base64('export OPENCLAW_E2E_INSTANCE_TEST="ok"\n'));
 
     expect(result.status).toBe(0);
     expect(result.stdout).toBe("value=ok");
@@ -167,15 +167,15 @@ describe("scripts/lib/operator-e2e-instance.sh", () => {
 
   it("reads positive integer env values without treating decimal input as durations", () => {
     const fallback = runSourcedHelper(
-      'printf "%s" "$(operator_e2e_read_positive_int_env OPERATOR_E2E_SAMPLE_SECONDS 180)"',
+      'printf "%s" "$(operator_e2e_read_positive_int_env OPENCLAW_E2E_SAMPLE_SECONDS 180)"',
     );
     const leadingZero = runSourcedHelper(
-      'printf "%s" "$(operator_e2e_read_positive_int_env OPERATOR_E2E_SAMPLE_SECONDS 180)"',
-      { OPERATOR_E2E_SAMPLE_SECONDS: "008" },
+      'printf "%s" "$(operator_e2e_read_positive_int_env OPENCLAW_E2E_SAMPLE_SECONDS 180)"',
+      { OPENCLAW_E2E_SAMPLE_SECONDS: "008" },
     );
     const duration = runSourcedHelper(
-      "operator_e2e_read_positive_int_env OPERATOR_E2E_SAMPLE_SECONDS 180",
-      { OPERATOR_E2E_SAMPLE_SECONDS: "30s" },
+      "operator_e2e_read_positive_int_env OPENCLAW_E2E_SAMPLE_SECONDS 180",
+      { OPENCLAW_E2E_SAMPLE_SECONDS: "30s" },
     );
 
     expectShellSuccess(fallback);
@@ -183,20 +183,20 @@ describe("scripts/lib/operator-e2e-instance.sh", () => {
     expectShellSuccess(leadingZero);
     expect(leadingZero.stdout).toBe("008");
     expect(duration.status).toBe(2);
-    expect(duration.stderr).toContain("invalid OPERATOR_E2E_SAMPLE_SECONDS: 30s");
+    expect(duration.stderr).toContain("invalid OPENCLAW_E2E_SAMPLE_SECONDS: 30s");
   });
 
   it("reads non-negative integer env values without accepting shell-style sizes", () => {
     const fallback = runSourcedHelper(
-      'printf "%s" "$(operator_e2e_read_nonnegative_int_env OPERATOR_E2E_SAMPLE_BYTES 262144)"',
+      'printf "%s" "$(operator_e2e_read_nonnegative_int_env OPENCLAW_E2E_SAMPLE_BYTES 262144)"',
     );
     const zero = runSourcedHelper(
-      'printf "%s" "$(operator_e2e_read_nonnegative_int_env OPERATOR_E2E_SAMPLE_BYTES 262144)"',
-      { OPERATOR_E2E_SAMPLE_BYTES: "0" },
+      'printf "%s" "$(operator_e2e_read_nonnegative_int_env OPENCLAW_E2E_SAMPLE_BYTES 262144)"',
+      { OPENCLAW_E2E_SAMPLE_BYTES: "0" },
     );
     const size = runSourcedHelper(
-      "operator_e2e_read_nonnegative_int_env OPERATOR_E2E_SAMPLE_BYTES 262144",
-      { OPERATOR_E2E_SAMPLE_BYTES: "64kb" },
+      "operator_e2e_read_nonnegative_int_env OPENCLAW_E2E_SAMPLE_BYTES 262144",
+      { OPENCLAW_E2E_SAMPLE_BYTES: "64kb" },
     );
 
     expectShellSuccess(fallback);
@@ -204,7 +204,7 @@ describe("scripts/lib/operator-e2e-instance.sh", () => {
     expectShellSuccess(zero);
     expect(zero.stdout).toBe("0");
     expect(size.status).toBe(2);
-    expect(size.stderr).toContain("invalid OPERATOR_E2E_SAMPLE_BYTES: 64kb");
+    expect(size.stderr).toContain("invalid OPENCLAW_E2E_SAMPLE_BYTES: 64kb");
   });
 
   it("probes default and explicit mock OpenAI base URLs", () => {
@@ -359,11 +359,11 @@ describe("scripts/lib/operator-e2e-instance.sh", () => {
           encoding: "utf8",
           env: shellTestEnv({
             PATH: `${tempDir}${path.delimiter}${hostPath}`,
-            OPERATOR_CURRENT_PACKAGE_TGZ: packagePath,
-            OPERATOR_E2E_NPM_INSTALL_TIMEOUT: "42s",
-            OPERATOR_TEST_TIMEOUT_ARGS: timeoutArgsPath,
-            OPERATOR_TEST_NPM_ARGS: npmArgsPath,
-            OPERATOR_TEST_NPM_BIN: path.join(tempDir, "npm"),
+            OPENCLAW_CURRENT_PACKAGE_TGZ: packagePath,
+            OPENCLAW_E2E_NPM_INSTALL_TIMEOUT: "42s",
+            OPENCLAW_TEST_TIMEOUT_ARGS: timeoutArgsPath,
+            OPENCLAW_TEST_NPM_ARGS: npmArgsPath,
+            OPENCLAW_TEST_NPM_BIN: path.join(tempDir, "npm"),
           }),
         },
       );
@@ -409,11 +409,11 @@ describe("scripts/lib/operator-e2e-instance.sh", () => {
           encoding: "utf8",
           env: shellTestEnv({
             PATH: `${tempDir}${path.delimiter}${hostPath}`,
-            OPERATOR_CURRENT_PACKAGE_TGZ: packagePath,
-            OPERATOR_E2E_NPM_INSTALL_TIMEOUT: "42s",
-            OPERATOR_TEST_TIMEOUT_ARGS: timeoutArgsPath,
-            OPERATOR_TEST_NPM_ARGS: npmArgsPath,
-            OPERATOR_TEST_NPM_BIN: path.join(tempDir, "npm"),
+            OPENCLAW_CURRENT_PACKAGE_TGZ: packagePath,
+            OPENCLAW_E2E_NPM_INSTALL_TIMEOUT: "42s",
+            OPENCLAW_TEST_TIMEOUT_ARGS: timeoutArgsPath,
+            OPENCLAW_TEST_NPM_ARGS: npmArgsPath,
+            OPENCLAW_TEST_NPM_BIN: path.join(tempDir, "npm"),
           }),
         },
       );
@@ -458,11 +458,11 @@ describe("scripts/lib/operator-e2e-instance.sh", () => {
           encoding: "utf8",
           env: shellTestEnv({
             PATH: tempDir,
-            OPERATOR_CURRENT_PACKAGE_TGZ: packagePath,
-            OPERATOR_E2E_NPM_INSTALL_TIMEOUT: "42s",
-            OPERATOR_TEST_TIMEOUT_ARGS: timeoutArgsPath,
-            OPERATOR_TEST_NPM_ARGS: npmArgsPath,
-            OPERATOR_TEST_NPM_BIN: path.join(tempDir, "npm"),
+            OPENCLAW_CURRENT_PACKAGE_TGZ: packagePath,
+            OPENCLAW_E2E_NPM_INSTALL_TIMEOUT: "42s",
+            OPENCLAW_TEST_TIMEOUT_ARGS: timeoutArgsPath,
+            OPENCLAW_TEST_NPM_ARGS: npmArgsPath,
+            OPENCLAW_TEST_NPM_BIN: path.join(tempDir, "npm"),
           }),
         },
       );
@@ -506,9 +506,9 @@ describe("scripts/lib/operator-e2e-instance.sh", () => {
           encoding: "utf8",
           env: shellTestEnv({
             PATH: tempDir,
-            OPERATOR_CURRENT_PACKAGE_TGZ: packagePath,
-            OPERATOR_E2E_NPM_INSTALL_TIMEOUT: "42s",
-            OPERATOR_TEST_NPM_ARGS: npmArgsPath,
+            OPENCLAW_CURRENT_PACKAGE_TGZ: packagePath,
+            OPENCLAW_E2E_NPM_INSTALL_TIMEOUT: "42s",
+            OPENCLAW_TEST_NPM_ARGS: npmArgsPath,
           }),
         },
       );
@@ -555,10 +555,10 @@ describe("scripts/lib/operator-e2e-instance.sh", () => {
           encoding: "utf8",
           env: shellTestEnv({
             PATH: `${tempDir}${path.delimiter}${hostPath}`,
-            OPERATOR_CURRENT_PACKAGE_TGZ: packagePath,
-            OPERATOR_E2E_LOG_TAIL_BYTES: "80",
-            OPERATOR_E2E_NPM_INSTALL_TIMEOUT: "42s",
-            OPERATOR_TEST_TIMEOUT_ARGS: timeoutArgsPath,
+            OPENCLAW_CURRENT_PACKAGE_TGZ: packagePath,
+            OPENCLAW_E2E_LOG_TAIL_BYTES: "80",
+            OPENCLAW_E2E_NPM_INSTALL_TIMEOUT: "42s",
+            OPENCLAW_TEST_TIMEOUT_ARGS: timeoutArgsPath,
           }),
         },
       );
@@ -574,8 +574,8 @@ describe("scripts/lib/operator-e2e-instance.sh", () => {
   });
 
   it.each([
-    ["bytes", "OPERATOR_E2E_LOG_TAIL_BYTES", "64kb"],
-    ["lines", "OPERATOR_E2E_LOG_TAIL_LINES", "25 lines"],
+    ["bytes", "OPENCLAW_E2E_LOG_TAIL_BYTES", "64kb"],
+    ["lines", "OPENCLAW_E2E_LOG_TAIL_LINES", "25 lines"],
   ])("rejects invalid E2E log tail %s before invoking tail", (_label, envName, value) => {
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-e2e-instance-log-tail-"));
     try {
@@ -657,7 +657,7 @@ describe("scripts/lib/operator-e2e-instance.sh", () => {
         const script = `
 set -euo pipefail
 source ${shellQuote(helperPath)}
-export OPERATOR_E2E_TIMEOUT_KILL_GRACE_MS=100
+export OPENCLAW_E2E_TIMEOUT_KILL_GRACE_MS=100
 operator_e2e_maybe_timeout 30s node ${shellQuote(childPath)} ${shellQuote(pidPath)} ${shellQuote(watchdogPidPath)} &
 wrapper_pid="$!"
 for ((i = 0; i < 100; i += 1)); do
@@ -702,11 +702,11 @@ exit 1
       const forbiddenToolLog = path.join(tempDir, "process-tools.log");
       fs.writeFileSync(forbiddenToolLog, "");
       writeBashExecutable(path.join(tempDir, "pkill"), [
-        'printf "pkill %s\\n" "$*" >>"$OPERATOR_TEST_FORBIDDEN_PROCESS_TOOL_LOG"',
+        'printf "pkill %s\\n" "$*" >>"$OPENCLAW_TEST_FORBIDDEN_PROCESS_TOOL_LOG"',
         "exit 42",
       ]);
       writeBashExecutable(path.join(tempDir, "pgrep"), [
-        'printf "pgrep %s\\n" "$*" >>"$OPERATOR_TEST_FORBIDDEN_PROCESS_TOOL_LOG"',
+        'printf "pgrep %s\\n" "$*" >>"$OPENCLAW_TEST_FORBIDDEN_PROCESS_TOOL_LOG"',
         "exit 42",
       ]);
 
@@ -721,14 +721,14 @@ if kill -0 "$tracked_pid" 2>/dev/null; then
   echo "tracked gateway process still alive" >&2
   exit 1
 fi
-[ ! -s "$OPERATOR_TEST_FORBIDDEN_PROCESS_TOOL_LOG" ]
+[ ! -s "$OPENCLAW_TEST_FORBIDDEN_PROCESS_TOOL_LOG" ]
 `;
 
       const result = spawnSync("/bin/bash", ["-c", script], {
         encoding: "utf8",
         env: shellTestEnv({
           PATH: `${tempDir}:${hostPath}`,
-          OPERATOR_TEST_FORBIDDEN_PROCESS_TOOL_LOG: forbiddenToolLog,
+          OPENCLAW_TEST_FORBIDDEN_PROCESS_TOOL_LOG: forbiddenToolLog,
         }),
         timeout: 5_000,
       });
@@ -1010,11 +1010,11 @@ exit 1
           "set -euo pipefail",
           // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           'if [ "${1:-}" = "--kill-after=1s" ]; then exit 0; fi',
-          'printf "%s\\n" "$*" >"$OPERATOR_TEST_TIMEOUT_ARGS"',
+          'printf "%s\\n" "$*" >"$OPENCLAW_TEST_TIMEOUT_ARGS"',
           'while [ "$#" -gt 0 ] && [ "$1" != "fixture-command" ]; do shift; done',
           '[ "$#" -gt 0 ] || exit 127',
           "shift",
-          'exec "$OPERATOR_TEST_COMMAND_BIN" "$@"',
+          'exec "$OPENCLAW_TEST_COMMAND_BIN" "$@"',
           "",
         ].join("\n"),
       );
@@ -1023,7 +1023,7 @@ exit 1
         [
           "#!/usr/bin/env bash",
           "set -euo pipefail",
-          'printf "%s\\n" "$*" >"$OPERATOR_TEST_COMMAND_ARGS"',
+          'printf "%s\\n" "$*" >"$OPENCLAW_TEST_COMMAND_ARGS"',
           'printf "fixture output\\n"',
           "",
         ].join("\n"),
@@ -1039,18 +1039,18 @@ exit 1
             "set -euo pipefail",
             `source ${shellQuote(helperPath)}`,
             `operator_e2e_run_logged ${shellQuote(logLabel)} fixture-command one two`,
-            `printf "%s" "$OPERATOR_E2E_LAST_LOG_PATH" > ${shellQuote(logPathFile)}`,
+            `printf "%s" "$OPENCLAW_E2E_LAST_LOG_PATH" > ${shellQuote(logPathFile)}`,
           ].join("; "),
         ],
         {
           encoding: "utf8",
           env: shellTestEnv({
             PATH: `${tempDir}:${hostPath}`,
-            OPERATOR_E2E_LOG_DIR: logDir,
-            OPERATOR_E2E_COMMAND_TIMEOUT: "17s",
-            OPERATOR_TEST_TIMEOUT_ARGS: timeoutArgsPath,
-            OPERATOR_TEST_COMMAND_ARGS: commandArgsPath,
-            OPERATOR_TEST_COMMAND_BIN: path.join(tempDir, "fixture-command"),
+            OPENCLAW_E2E_LOG_DIR: logDir,
+            OPENCLAW_E2E_COMMAND_TIMEOUT: "17s",
+            OPENCLAW_TEST_TIMEOUT_ARGS: timeoutArgsPath,
+            OPENCLAW_TEST_COMMAND_ARGS: commandArgsPath,
+            OPENCLAW_TEST_COMMAND_BIN: path.join(tempDir, "fixture-command"),
           }),
         },
       );
@@ -1097,10 +1097,10 @@ exit 1
           encoding: "utf8",
           env: shellTestEnv({
             PATH: `${tempDir}${path.delimiter}${hostPath}`,
-            OPERATOR_E2E_COMMAND_TIMEOUT: "17s",
-            OPERATOR_E2E_LOG_DIR: logDir,
-            OPERATOR_E2E_LOG_TAIL_BYTES: "80",
-            OPERATOR_TEST_TIMEOUT_ARGS: timeoutArgsPath,
+            OPENCLAW_E2E_COMMAND_TIMEOUT: "17s",
+            OPENCLAW_E2E_LOG_DIR: logDir,
+            OPENCLAW_E2E_LOG_TAIL_BYTES: "80",
+            OPENCLAW_TEST_TIMEOUT_ARGS: timeoutArgsPath,
           }),
         },
       );
@@ -1137,7 +1137,7 @@ exit 1
             "operator_e2e_install_trash_shim",
             "operator_e2e_install_trash_shim",
             `printf "%s" "$PATH" > ${shellQuote(pathFile)}`,
-            `printf "%s" "$OPERATOR_E2E_BIN_DIR" > ${shellQuote(binDirFile)}`,
+            `printf "%s" "$OPENCLAW_E2E_BIN_DIR" > ${shellQuote(binDirFile)}`,
             "command -v trash >/dev/null",
           ].join("; "),
         ],
@@ -1145,7 +1145,7 @@ exit 1
           encoding: "utf8",
           env: shellTestEnv({
             HOME: homeDir,
-            OPERATOR_STATE_DIR: stateDir,
+            OPENCLAW_STATE_DIR: stateDir,
             PATH: hostPath,
           }),
         },
@@ -1175,11 +1175,11 @@ exit 1
           "set -euo pipefail",
           // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           'if [ "${1:-}" = "--kill-after=1s" ]; then exit 0; fi',
-          'printf "%s\\n" "$*" >"$OPERATOR_TEST_TIMEOUT_ARGS"',
+          'printf "%s\\n" "$*" >"$OPENCLAW_TEST_TIMEOUT_ARGS"',
           `while [ "$#" -gt 0 ] && [ "$1" != ${shellQuote(path.join(tempDir, "operator"))} ]; do shift; done`,
           '[ "$#" -gt 0 ] || exit 127',
           "shift",
-          'exec "$OPERATOR_TEST_OPERATOR_BIN" "$@"',
+          'exec "$OPENCLAW_TEST_OPENCLAW_BIN" "$@"',
           "",
         ].join("\n"),
       );
@@ -1188,7 +1188,7 @@ exit 1
         [
           "#!/usr/bin/env bash",
           "set -euo pipefail",
-          'printf "%s\\n" "$*" >"$OPERATOR_TEST_COMMAND_ARGS"',
+          'printf "%s\\n" "$*" >"$OPENCLAW_TEST_COMMAND_ARGS"',
           "",
         ].join("\n"),
       );
@@ -1211,10 +1211,10 @@ exit 1
           encoding: "utf8",
           env: shellTestEnv({
             PATH: `${tempDir}:${hostPath}`,
-            OPERATOR_E2E_COMMAND_TIMEOUT: "23s",
-            OPERATOR_TEST_TIMEOUT_ARGS: timeoutArgsPath,
-            OPERATOR_TEST_COMMAND_ARGS: commandArgsPath,
-            OPERATOR_TEST_OPERATOR_BIN: path.join(tempDir, "operator"),
+            OPENCLAW_E2E_COMMAND_TIMEOUT: "23s",
+            OPENCLAW_TEST_TIMEOUT_ARGS: timeoutArgsPath,
+            OPENCLAW_TEST_COMMAND_ARGS: commandArgsPath,
+            OPENCLAW_TEST_OPENCLAW_BIN: path.join(tempDir, "operator"),
           }),
         },
       );
@@ -1242,11 +1242,11 @@ exit 1
           "set -euo pipefail",
           // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           'if [ "${1:-}" = "--kill-after=1s" ]; then exit 0; fi',
-          'printf "%s\\n" "$*" >"$OPERATOR_TEST_TIMEOUT_ARGS"',
+          'printf "%s\\n" "$*" >"$OPENCLAW_TEST_TIMEOUT_ARGS"',
           'while [ "$#" -gt 0 ] && [ "$1" != "script" ]; do shift; done',
           '[ "$#" -gt 0 ] || exit 127',
           "shift",
-          'exec "$OPERATOR_TEST_SCRIPT_BIN" "$@"',
+          'exec "$OPENCLAW_TEST_SCRIPT_BIN" "$@"',
           "",
         ].join("\n"),
       );
@@ -1257,7 +1257,7 @@ exit 1
           "set -euo pipefail",
           // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           'if [ "${1:-}" = "--version" ]; then exit 0; fi',
-          'printf "%s\\n" "$*" >"$OPERATOR_TEST_SCRIPT_ARGS"',
+          'printf "%s\\n" "$*" >"$OPENCLAW_TEST_SCRIPT_ARGS"',
           "",
         ].join("\n"),
       );
@@ -1278,10 +1278,10 @@ exit 1
           encoding: "utf8",
           env: shellTestEnv({
             PATH: `${tempDir}:${hostPath}`,
-            OPERATOR_E2E_COMMAND_TIMEOUT: "31s",
-            OPERATOR_TEST_TIMEOUT_ARGS: timeoutArgsPath,
-            OPERATOR_TEST_SCRIPT_ARGS: scriptArgsPath,
-            OPERATOR_TEST_SCRIPT_BIN: path.join(tempDir, "script"),
+            OPENCLAW_E2E_COMMAND_TIMEOUT: "31s",
+            OPENCLAW_TEST_TIMEOUT_ARGS: timeoutArgsPath,
+            OPENCLAW_TEST_SCRIPT_ARGS: scriptArgsPath,
+            OPENCLAW_TEST_SCRIPT_BIN: path.join(tempDir, "script"),
           }),
         },
       );

@@ -12,8 +12,8 @@ import type { CachedCopilotToken } from "./token-cache.js";
 import { resolveCopilotApiToken } from "./token.js";
 import { fetchCopilotUsage } from "./usage.js";
 
-vi.mock("openclaw/plugin-sdk/provider-model-shared", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("openclaw/plugin-sdk/provider-model-shared")>()),
+vi.mock("operator/plugin-sdk/provider-model-shared", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("operator/plugin-sdk/provider-model-shared")>()),
   normalizeModelCompat: (model: Record<string, unknown>) => model,
   resolveProviderEndpoint: (baseUrl: string) => ({
     baseUrl,
@@ -27,12 +27,12 @@ const jsonStoreMocks = vi.hoisted(() => ({
   saveJsonFile: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/json-store", () => ({
+vi.mock("operator/plugin-sdk/json-store", () => ({
   loadJsonFile: jsonStoreMocks.loadJsonFile,
   saveJsonFile: jsonStoreMocks.saveJsonFile,
 }));
 
-vi.mock("openclaw/plugin-sdk/state-paths", () => ({
+vi.mock("operator/plugin-sdk/state-paths", () => ({
   resolveStateDir: () => "/tmp/operator-state",
 }));
 

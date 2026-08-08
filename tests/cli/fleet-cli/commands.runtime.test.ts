@@ -108,7 +108,7 @@ describe("fleet command output", () => {
       tenant: "acme",
       containerName: "operator-cell-acme",
       port: 19_100,
-      image: "ghcr.io/openclaw/operator:latest",
+      image: "ghcr.io/operator/operator:latest",
       runtime: "docker" as const,
       started: true,
       token: "gw-token",

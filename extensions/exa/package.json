@@ -4,14 +4,14 @@
   "description": "Operator Exa plugin.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gabrielvfonseca/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "devDependencies": {
-    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   },
-  "@gabrielvfonseca/openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],

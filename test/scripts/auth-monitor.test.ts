@@ -5,8 +5,8 @@ import { describe, expect, it } from "vitest";
 const AUTH_MONITOR_PATH = "scripts/auth-monitor.sh";
 const MOBILE_REAUTH_PATH = "scripts/mobile-reauth.sh";
 const SETUP_AUTH_SYSTEM_PATH = "scripts/setup-auth-system.sh";
-const AUTH_MONITOR_SERVICE_PATH = "scripts/systemd/openclaw-auth-monitor.service";
-const AUTH_MONITOR_TIMER_PATH = "scripts/systemd/openclaw-auth-monitor.timer";
+const AUTH_MONITOR_SERVICE_PATH = "scripts/systemd/operator-auth-monitor.service";
+const AUTH_MONITOR_TIMER_PATH = "scripts/systemd/operator-auth-monitor.timer";
 const TERMUX_WIDGET_PATHS = [
   "scripts/termux-auth-widget.sh",
   "scripts/termux-quick-auth.sh",
@@ -42,13 +42,13 @@ describe("auth monitoring scripts", () => {
     expect(joined).not.toContain(privateHomePath);
     expect(joined).not.toContain(privateHostAlias);
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-    expect(joined).toContain("Run on the OpenClaw host: ${SCRIPT_DIR}/mobile-reauth.sh");
+    expect(joined).toContain("Run on the Operator host: ${SCRIPT_DIR}/mobile-reauth.sh");
     for (const script of TERMUX_WIDGET_PATHS.map(readScript)) {
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-      expect(script).toContain('SERVER="${OPENCLAW_SERVER:-openclaw-host}"');
+      expect(script).toContain('SERVER="${OPENCLAW_SERVER:-operator-host}"');
     }
     expect(readScript("scripts/termux-sync-widget.sh")).toContain(
-      "'$HOME/openclaw/scripts/sync-claude-code-auth.sh'",
+      "'$HOME/operator/scripts/sync-claude-code-auth.sh'",
     );
   });
 
@@ -67,6 +67,6 @@ describe("auth monitoring scripts", () => {
     expect(script).toContain('"$SCRIPT_DIR/claude-auth-status.sh" full');
     expect(script).toContain("https://console.anthropic.com/settings/api-keys");
     expect(script).toContain("claude setup-token");
-    expect(script).toContain("systemctl --user restart openclaw");
+    expect(script).toContain("systemctl --user restart operator");
   });
 });

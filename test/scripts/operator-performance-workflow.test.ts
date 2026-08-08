@@ -1,4 +1,4 @@
-// operator Performance Workflow tests cover operator performance workflow script behavior.
+// Openclaw Performance Workflow tests cover operator performance workflow script behavior.
 import { execFileSync, spawnSync } from "node:child_process";
 import {
   chmodSync,
@@ -196,13 +196,13 @@ describe("Operator performance workflow", () => {
 
   it("builds only the QA and startup artifacts required by source probes", () => {
     const run = findStep("Run Operator source performance probes", "source_performance").run ?? "";
-    const build = "OPERATOR_BUILD_PRIVATE_QA=1 node scripts/build-all.mjs sourcePerformance";
+    const build = "OPENCLAW_BUILD_PRIVATE_QA=1 node scripts/build-all.mjs sourcePerformance";
 
     expect(run).toContain("module.BUILD_ALL_PROFILES?.sourcePerformance");
     expect(run).toContain(build);
-    expect(run).toContain("bun build");
-    expect(run.indexOf(build)).toBeLessThan(run.indexOf("bun test:gateway:cpu-scenarios"));
-    expect(run.indexOf("bun build")).toBeLessThan(run.indexOf("bun test:gateway:cpu-scenarios"));
+    expect(run).toContain("pnpm build");
+    expect(run.indexOf(build)).toBeLessThan(run.indexOf("pnpm test:gateway:cpu-scenarios"));
+    expect(run.indexOf("pnpm build")).toBeLessThan(run.indexOf("pnpm test:gateway:cpu-scenarios"));
   });
 
   it("keeps source gateway health waits within one startup budget", () => {
@@ -882,7 +882,7 @@ esac
     const workflow = readWorkflow();
     const configure = findStep("Configure OCM local workspace dependencies");
 
-    expect(workflow.jobs?.kova?.env).not.toHaveProperty("OPERATOR_OCM_RUNTIME_BUILD_PROFILE");
+    expect(workflow.jobs?.kova?.env).not.toHaveProperty("OPENCLAW_OCM_RUNTIME_BUILD_PROFILE");
     expect(configure.run).toContain(
       'npm_wrapper="$PERFORMANCE_HELPER_DIR/scripts/ocm-npm-workspace-deps.mjs"',
     );
@@ -892,7 +892,7 @@ esac
       'if [[ -f "${GITHUB_WORKSPACE}/packages/ai/package.json" ]]; then',
     );
     expect(configure.run).toContain(
-      "OPERATOR_OCM_WORKSPACE_DEPENDENCY_DIRS=$workspace_dependency_dirs",
+      "OPENCLAW_OCM_WORKSPACE_DEPENDENCY_DIRS=$workspace_dependency_dirs",
     );
   });
 

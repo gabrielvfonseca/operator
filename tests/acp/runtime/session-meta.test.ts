@@ -5,8 +5,8 @@ import type { OperatorConfig } from "../../../src/config/config.js";
 import { loadSessionEntry, replaceSessionEntry } from "../../../src/config/sessions/session-accessor.js";
 import { loadSessionStore } from "../../../src/config/sessions/store-load.js";
 import type { SessionEntry } from "../../../src/config/sessions/types.js";
-import { closeOperatorAgentDatabasesForTest } from "../../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../../src/state/openclaw-state-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../../src/state/operator-state-db.js";
 import { withTempDir } from "../../../src/test-helpers/temp-dir.js";
 import {
   listAcpSessionEntries,

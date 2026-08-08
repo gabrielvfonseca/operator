@@ -14,7 +14,7 @@ import {
 import { CONFIG_DIR } from "../utils.js";
 export { resolveExistingPathsWithinRoot };
 
-const DEFAULT_FALLBACK_BROWSER_TMP_DIR = "/tmp/openclaw";
+const DEFAULT_FALLBACK_BROWSER_TMP_DIR = "/tmp/operator";
 
 function canUseNodeFs(): boolean {
   const getBuiltinModule = (

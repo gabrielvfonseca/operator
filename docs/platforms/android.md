@@ -31,13 +31,13 @@ Choose a [release](https://github.com/gabrielvfonseca/operator/releases) that li
 ```bash
 release_tag=vYYYY.M.PATCH
 gh release download "$release_tag" \
-  --repo openclaw/operator \
+  --repo operator/operator \
   --pattern Operator-Android.apk \
   --pattern Operator-Android-SHA256SUMS.txt
 sha256sum --check Operator-Android-SHA256SUMS.txt
 gh attestation verify Operator-Android.apk \
-  --repo openclaw/operator \
-  --signer-workflow openclaw/openclaw/.github/workflows/android-release.yml \
+  --repo operator/operator \
+  --signer-workflow operator/operator/.github/workflows/android-release.yml \
   --source-ref "refs/tags/${release_tag}" \
   --deny-self-hosted-runners
 ```
@@ -160,7 +160,7 @@ For Tailscale or public hosts, Android requires a secure endpoint:
   - Same Tailscale tailnet using Wide-Area Bonjour / unicast DNS-SD (see below), **or**
   - Manual gateway host/port (fallback)
 - Tailnet/public mobile pairing does **not** use raw tailnet IP `ws://` endpoints. Use Tailscale Serve or another `wss://` URL instead.
-- The `openclaw` CLI available on the gateway machine (or via SSH), to approve pairing requests.
+- The `operator` CLI available on the gateway machine (or via SSH), to approve pairing requests.
 
 ### 1. Start the Gateway
 

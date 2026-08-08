@@ -10,7 +10,7 @@ import {
 } from "../../src/test-helpers/state-dir-env.js";
 
 type EnvSnapshot = {
-  openclaw?: string;
+  operator?: string;
 };
 
 function snapshotCurrentStateDirVars(): EnvSnapshot {

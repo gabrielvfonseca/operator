@@ -1,6 +1,6 @@
 // Skill tool dispatch tests cover policy-filtered tool surfaces.
 import { describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../../../src/config/types.openclaw.js";
+import type { OperatorConfig } from "../../../src/config/types.operator.js";
 
 type CreateOperatorToolsArg = {
   beforeToolCallHookContext?: {
@@ -28,7 +28,7 @@ const hoisted = vi.hoisted(() => {
   };
 });
 
-vi.mock("../../agents/openclaw-tools.runtime.js", () => ({
+vi.mock("../../agents/operator-tools.runtime.js", () => ({
   createOperatorTools: (args: CreateOperatorToolsArg) => hoisted.createOperatorToolsMock(args),
 }));
 
@@ -47,7 +47,7 @@ describe("resolveSkillDispatchTools", () => {
       } as OperatorConfig,
       agentId: "main",
       sessionKey: "agent:main:telegram:group:restricted-room",
-      workspaceDir: "/tmp/openclaw-skill-tool-dispatch-test",
+      workspaceDir: "/tmp/operator-skill-tool-dispatch-test",
       provider: "openai",
       model: "gpt-5.5",
     });
@@ -64,7 +64,7 @@ describe("resolveSkillDispatchTools", () => {
       cfg: {} as OperatorConfig,
       agentId: "main",
       sessionKey: "agent:main:telegram:direct:user-1",
-      workspaceDir: "/tmp/openclaw-skill-tool-dispatch-test",
+      workspaceDir: "/tmp/operator-skill-tool-dispatch-test",
       provider: "openai",
       model: "gpt-5.5",
       skillCommand: {

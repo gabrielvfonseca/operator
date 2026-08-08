@@ -632,7 +632,7 @@ not expose dynamic tools that duplicate Codex-native workspace operations:
 `tool_call`, `tool_describe`, `tool_search`, and `tool_search_code`. Most
 remaining Operator integration tools, such as messaging, media, cron,
 browser, nodes, gateway, and `heartbeat_respond`, are available through
-Codex tool search under the `openclaw` namespace, keeping the initial model
+Codex tool search under the `operator` namespace, keeping the initial model
 context smaller. The restricted-turn shell fallback is the exception for
 `exec` and `process` when a finite allowlist disables native Code Mode;
 runtime allowlists and `codexDynamicToolsExclude` still apply.
@@ -662,7 +662,7 @@ restricted thread and preserve the existing binding for later resume.
 those are turn-control contracts. `sessions_spawn` stays searchable so
 Codex's native `spawn_agent` remains the primary Codex subagent surface,
 while explicit Operator or ACP delegation is still available through the
-`openclaw` dynamic tool namespace. Heartbeat collaboration instructions
+`operator` dynamic tool namespace. Heartbeat collaboration instructions
 tell Codex to search for `heartbeat_respond` before ending a heartbeat turn
 when the tool is not already loaded.
 
@@ -942,8 +942,8 @@ Operator host:
 (
   pattern='openai/gpt-5\.[45]|openai[-]codex|agentRuntime(\.id)?|harnessRuntime|Runtime: OpenAI Codex|legacy OpenAI Codex prefix|resolveSelectedOpenAIRuntimeProvider|candidateProvider[": ]+openai|status[": ]+401|Incorrect API key|No API key|api-key path|API-key path|OAuth'
 
-  if ls /tmp/openclaw/operator-*.log >/dev/null 2>&1; then
-    grep -E -i -n "$pattern" /tmp/openclaw/operator-*.log 2>/dev/null || true
+  if ls /tmp/operator/operator-*.log >/dev/null 2>&1; then
+    grep -E -i -n "$pattern" /tmp/operator/operator-*.log 2>/dev/null || true
   else
     journalctl --user -u operator-gateway --since today --no-pager 2>/dev/null \
       | grep -E -i "$pattern" || true

@@ -681,15 +681,15 @@ Notes:
 
 ## Plugin SDK import paths
 
-Use narrow SDK subpaths instead of the monolithic `openclaw/plugin-sdk` root
+Use narrow SDK subpaths instead of the monolithic `operator/plugin-sdk` root
 barrel when authoring new plugins. Core subpaths:
 
 | Subpath                             | Purpose                                            |
 | ----------------------------------- | -------------------------------------------------- |
-| `openclaw/plugin-sdk/plugin-entry`  | Plugin registration primitives                     |
-| `openclaw/plugin-sdk/channel-core`  | Channel entry/build helpers                        |
-| `openclaw/plugin-sdk/core`          | Generic shared helpers and umbrella contract       |
-| `openclaw/plugin-sdk/config-schema` | Root `operator.json` Zod schema (`OperatorSchema`) |
+| `operator/plugin-sdk/plugin-entry`  | Plugin registration primitives                     |
+| `operator/plugin-sdk/channel-core`  | Channel entry/build helpers                        |
+| `operator/plugin-sdk/core`          | Generic shared helpers and umbrella contract       |
+| `operator/plugin-sdk/config-schema` | Root `operator.json` Zod schema (`OperatorSchema`) |
 
 Channel plugins pick from a family of narrow seams — `channel-setup`,
 `setup-runtime`, `setup-tools`, `channel-pairing`,
@@ -707,10 +707,10 @@ Runtime and config helpers live under matching focused `*-runtime` subpaths
 instead of the broad `config-runtime` compatibility barrel.
 
 <Info>
-`openclaw/plugin-sdk/channel-runtime`, `openclaw/plugin-sdk/channel-lifecycle`,
-small channel helper facades, `openclaw/plugin-sdk/outbound-runtime`,
-`openclaw/plugin-sdk/outbound-send-deps`, `openclaw/plugin-sdk/config-runtime`,
-and `openclaw/plugin-sdk/infra-runtime` are deprecated compatibility shims for
+`operator/plugin-sdk/channel-runtime`, `operator/plugin-sdk/channel-lifecycle`,
+small channel helper facades, `operator/plugin-sdk/outbound-runtime`,
+`operator/plugin-sdk/outbound-send-deps`, `operator/plugin-sdk/config-runtime`,
+and `operator/plugin-sdk/infra-runtime` are deprecated compatibility shims for
 older plugins. New code should import narrower generic primitives instead.
 </Info>
 
@@ -721,7 +721,7 @@ Repo-internal entry points (per bundled plugin package root):
 - `runtime-api.js` — runtime-only barrel
 - `setup-entry.js` — setup plugin entry
 
-External plugins should only import `openclaw/plugin-sdk/*` subpaths. Never
+External plugins should only import `operator/plugin-sdk/*` subpaths. Never
 import another plugin package's `src/*` from core or from another plugin.
 Facade-loaded entry points prefer the active runtime config snapshot when one
 exists, then fall back to the resolved config file on disk.
@@ -785,7 +785,7 @@ Recommended split:
 
 Plugins that derive directory entries from config should keep that logic in the
 plugin and reuse the shared helpers from
-`openclaw/plugin-sdk/directory-runtime`.
+`operator/plugin-sdk/directory-runtime`.
 
 Use this when a channel needs config-backed peers/groups such as:
 
@@ -1067,8 +1067,8 @@ Use this when your plugin needs to replace or extend the default context
 pipeline rather than just add memory search or hooks.
 
 ```ts
-import { buildMemorySystemPromptAddition } from "openclaw/plugin-sdk/core";
-import { resolveSessionAgentId } from "openclaw/plugin-sdk/memory-host-core";
+import { buildMemorySystemPromptAddition } from "operator/plugin-sdk/core";
+import { resolveSessionAgentId } from "operator/plugin-sdk/memory-host-core";
 
 export default function (api) {
   api.registerContextEngine("lossless-claw", (ctx) => ({
@@ -1115,8 +1115,8 @@ implemented and delegate it explicitly:
 import {
   buildMemorySystemPromptAddition,
   delegateCompactionToRuntime,
-} from "openclaw/plugin-sdk/core";
-import { resolveSessionAgentId } from "openclaw/plugin-sdk/memory-host-core";
+} from "operator/plugin-sdk/core";
+import { resolveSessionAgentId } from "operator/plugin-sdk/memory-host-core";
 
 export default function (api) {
   api.registerContextEngine("my-memory-engine", (ctx) => ({

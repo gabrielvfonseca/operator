@@ -3,7 +3,7 @@ title: "Agent runtime architecture"
 summary: "How Operator structures the built-in agent runtime: code layout, boundaries, resource manifests, and runtime selection."
 ---
 
-Operator owns the built-in agent runtime. Runtime code lives under `src/agents/`, model/provider transport lives under `src/llm/`, and plugin-facing contracts are exposed through `openclaw/plugin-sdk/*` barrels.
+Operator owns the built-in agent runtime. Runtime code lives under `src/agents/`, model/provider transport lives under `src/llm/`, and plugin-facing contracts are exposed through `operator/plugin-sdk/*` barrels.
 
 ## Runtime Layout
 
@@ -20,7 +20,7 @@ Operator owns the built-in agent runtime. Runtime code lives under `src/agents/`
 
 ## Boundaries
 
-Core calls the built-in runtime through Operator modules and SDK barrels; no external agent framework packages remain. Plugins use documented `openclaw/plugin-sdk/*` entrypoints and do not import `src/**` internals.
+Core calls the built-in runtime through Operator modules and SDK barrels; no external agent framework packages remain. Plugins use documented `operator/plugin-sdk/*` entrypoints and do not import `src/**` internals.
 
 `@earendil-works/pi-tui` remains a third-party dependency: a terminal component toolkit used by the local TUI and session tool renderers. Internalizing it would be a separate vendoring effort.
 
@@ -43,11 +43,11 @@ Resource types not listed in a manifest fall back to discovery of conventional `
 
 ## Runtime Selection
 
-- The built-in runtime id is `openclaw`. The legacy alias `pi` normalizes to `openclaw`; `codex-app-server` normalizes to `codex`.
+- The built-in runtime id is `operator`. The legacy alias `pi` normalizes to `operator`; `codex-app-server` normalizes to `codex`.
 - Plugin harnesses register additional runtime ids (for example `codex`).
 - Runtime policy is model/provider-scoped `agentRuntime.id` config (model entry wins over provider entry). Unset or `default` resolves to `auto`.
 - `auto` selects a registered plugin harness that supports the effective provider route, otherwise the built-in Operator runtime. A provider or model prefix alone never selects a harness.
-- OpenAI may select `codex` implicitly only for an exact official HTTPS Platform Responses or ChatGPT Responses route with no authored request override. Completions adapters, custom endpoints, and routes with authored request behavior stay on `openclaw`; plaintext official HTTP endpoints are rejected. See [OpenAI implicit agent runtime](/providers/openai#implicit-agent-runtime).
+- OpenAI may select `codex` implicitly only for an exact official HTTPS Platform Responses or ChatGPT Responses route with no authored request override. Completions adapters, custom endpoints, and routes with authored request behavior stay on `operator`; plaintext official HTTP endpoints are rejected. See [OpenAI implicit agent runtime](/providers/openai#implicit-agent-runtime).
 
 ## Related
 

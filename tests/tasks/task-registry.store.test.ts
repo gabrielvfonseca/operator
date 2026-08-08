@@ -14,12 +14,12 @@ import { readSqliteNumberPragma } from "../../src/infra/sqlite-pragma.test-suppo
 import { resetLogger, setLoggerOverride } from "../../src/logging/logger.js";
 import { loggingState } from "../../src/logging/state.js";
 import { createWarnLogCapture } from "../../src/logging/test-helpers/warn-log-capture.js";
-import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/operator-state-db.generated.js";
 import {
   closeOperatorStateDatabase,
   openOperatorStateDatabase,
-} from "../../src/state/openclaw-state-db.js";
-import { resolveOperatorStateSqlitePath } from "../../src/state/openclaw-state-db.paths.js";
+} from "../../src/state/operator-state-db.js";
+import { resolveOperatorStateSqlitePath } from "../../src/state/operator-state-db.paths.js";
 import { captureEnv } from "../../src/test-utils/env.js";
 import { withOperatorTestState } from "../../src/test-utils/operator-test-state.ts";
 import { createManagedTaskFlow as createManagedTaskFlowOrNull } from "../../src/tasks/task-flow-registry.js";

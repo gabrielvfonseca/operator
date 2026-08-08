@@ -3,9 +3,9 @@ import { clearLiveCatalogCacheForTests } from "@gabrielvfonseca/operator/plugin-
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const isProviderApiKeyConfiguredMock = vi.hoisted(() => vi.fn<(p: unknown) => boolean>());
-vi.mock("openclaw/plugin-sdk/provider-auth", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/provider-auth")>(
-    "openclaw/plugin-sdk/provider-auth",
+vi.mock("operator/plugin-sdk/provider-auth", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/provider-auth")>(
+    "operator/plugin-sdk/provider-auth",
   );
   return {
     ...actual,
@@ -22,7 +22,7 @@ import {
 } from "./provider-models.js";
 
 const DEEPINFRA_MODELS_URL =
-  "https://api.deepinfra.com/v1/openai/models?sort_by=openclaw&filter=with_meta";
+  "https://api.deepinfra.com/v1/openai/models?sort_by=operator&filter=with_meta";
 
 beforeEach(() => {
   clearLiveCatalogCacheForTests();
@@ -118,9 +118,9 @@ function requireFirstFetchCall(mockFetch: ReturnType<typeof vi.fn>): [unknown, u
 }
 
 describe("DEEPINFRA_MODELS_URL", () => {
-  it("points at /v1/openai/models with the openclaw sort + filter=with_meta gate", () => {
+  it("points at /v1/openai/models with the operator sort + filter=with_meta gate", () => {
     expect(DEEPINFRA_MODELS_URL).toBe(
-      "https://api.deepinfra.com/v1/openai/models?sort_by=openclaw&filter=with_meta",
+      "https://api.deepinfra.com/v1/openai/models?sort_by=operator&filter=with_meta",
     );
   });
 });

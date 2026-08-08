@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REMOTE_URL="${operator_REF_REMOTE:-https://github.com/operator/operator.git}"
+REMOTE_URL="${OPENCLAW_REF_REMOTE:-https://github.com/operator/operator.git}"
 REF=""
 EXPECTED_SHA=""
 FALLBACK_OK=0
@@ -11,7 +11,7 @@ usage() {
   cat >&2 <<'EOF'
 Usage: resolve-operator-ref.sh --ref <ref> [--expected-sha <sha>] [--fallback-ok] [--github-output <file>]
 
-Fast-resolves operator branch and tag refs with git ls-remote. Full commit SHAs
+Fast-resolves Operator branch and tag refs with git ls-remote. Full commit SHAs
 are returned as fallback refs so callers can decide whether to run deeper
 reachability validation.
 EOF
@@ -217,5 +217,5 @@ if [[ "$FALLBACK_OK" -eq 1 ]]; then
   exit 0
 fi
 
-echo "Failed to resolve operator ref: ${REF}" >&2
+echo "Failed to resolve Operator ref: ${REF}" >&2
 exit 1

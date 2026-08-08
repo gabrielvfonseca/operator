@@ -16,10 +16,10 @@ import type { TelegramRuntime } from "./runtime.types.js";
 
 type TelegramBotRuntimeForTest = typeof import("./bot.runtime.js");
 type DispatchReplyWithBufferedBlockDispatcherFn =
-  typeof import("openclaw/plugin-sdk/reply-runtime").dispatchReplyWithBufferedBlockDispatcher;
+  typeof import("operator/plugin-sdk/reply-runtime").dispatchReplyWithBufferedBlockDispatcher;
 type DispatchReplyHarnessParams = Parameters<DispatchReplyWithBufferedBlockDispatcherFn>[0];
 type ReadRemoteMediaBufferFn =
-  typeof import("openclaw/plugin-sdk/media-runtime").readRemoteMediaBuffer;
+  typeof import("operator/plugin-sdk/media-runtime").readRemoteMediaBuffer;
 
 const useSpy: Mock = vi.fn();
 const middlewareUseSpy: Mock = vi.fn();

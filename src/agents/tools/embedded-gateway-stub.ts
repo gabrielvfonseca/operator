@@ -142,7 +142,7 @@ function readChatHistoryMessageSeq(message: unknown): number | undefined {
   if (!message || typeof message !== "object" || Array.isArray(message)) {
     return undefined;
   }
-  const metadata = (message as Record<string, unknown>)["__openclaw"];
+  const metadata = (message as Record<string, unknown>)["__operator"];
   if (!metadata || typeof metadata !== "object" || Array.isArray(metadata)) {
     return undefined;
   }

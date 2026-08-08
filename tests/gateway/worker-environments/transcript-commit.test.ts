@@ -19,7 +19,7 @@ import { onSessionTranscriptUpdate } from "../../../src/sessions/transcript-even
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
-} from "../../../src/state/openclaw-state-db.js";
+} from "../../../src/state/operator-state-db.js";
 import type { WorkerConnectionIdentity } from "../../../src/gateway/worker-environments/connection-identity.js";
 import {
   createWorkerTranscriptCommitStore,

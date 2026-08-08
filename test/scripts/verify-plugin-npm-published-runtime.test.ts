@@ -135,11 +135,11 @@ describe("collectPluginNpmPublishedRuntimeErrors", () => {
         packageJson: {
           name: "@operator/discord",
           version: "2026.5.2",
-          openclaw: {
+          operator: {
             extensions: ["./index.ts"],
           },
         },
-        files: ["package.json", "openclaw.plugin.json", "index.ts"],
+        files: ["package.json", "operator.plugin.json", "index.ts"],
       }),
     ).toEqual([
       "@operator/discord@2026.5.2 requires compiled runtime output for TypeScript entry ./index.ts: expected ./dist/index.js, ./dist/index.mjs, ./dist/index.cjs, ./index.js, ./index.mjs, ./index.cjs",
@@ -152,23 +152,23 @@ describe("collectPluginNpmPublishedRuntimeErrors", () => {
         packageJson: {
           name: "@operator/zalo",
           version: "2026.5.3",
-          openclaw: {
+          operator: {
             extensions: ["./index.ts"],
             runtimeExtensions: ["./dist/index.js"],
           },
         },
-        files: ["package.json", "openclaw.plugin.json", "index.ts", "dist/index.js"],
+        files: ["package.json", "operator.plugin.json", "index.ts", "dist/index.js"],
       }),
     ).toStrictEqual([]);
   });
 
-  it("flags plugin npm packages without an OpenClaw plugin manifest", () => {
+  it("flags plugin npm packages without an Operator plugin manifest", () => {
     expect(
       collectPluginNpmPublishedRuntimeErrors({
         packageJson: {
           name: "@operator/searxng-plugin",
           version: "2026.6.11",
-          openclaw: {
+          operator: {
             extensions: ["./index.ts"],
             runtimeExtensions: ["./dist/index.js"],
           },
@@ -176,7 +176,7 @@ describe("collectPluginNpmPublishedRuntimeErrors", () => {
         files: ["package.json", "dist/index.js"],
       }),
     ).toEqual([
-      "@operator/searxng-plugin@2026.6.11 plugin npm package must include openclaw.plugin.json",
+      "@operator/searxng-plugin@2026.6.11 plugin npm package must include operator.plugin.json",
     ]);
   });
 
@@ -191,7 +191,7 @@ describe("collectPluginNpmPublishedRuntimeErrors", () => {
         files: ["package.json", "README.md"],
       }),
     ).toEqual([
-      "@operator/tavily-plugin@0.0.0 plugin npm package must include openclaw.plugin.json",
+      "@operator/tavily-plugin@0.0.0 plugin npm package must include operator.plugin.json",
     ]);
   });
 
@@ -201,12 +201,12 @@ describe("collectPluginNpmPublishedRuntimeErrors", () => {
         packageJson: {
           name: "@operator/line",
           version: "2026.5.3",
-          openclaw: {
+          operator: {
             extensions: ["./src/index.ts"],
             runtimeExtensions: ["./dist/index.js"],
           },
         },
-        files: ["package.json", "openclaw.plugin.json", "src/index.ts"],
+        files: ["package.json", "operator.plugin.json", "src/index.ts"],
       }),
     ).toEqual(["@operator/line@2026.5.3 runtime extension entry not found: ./dist/index.js"]);
   });
@@ -217,15 +217,15 @@ describe("collectPluginNpmPublishedRuntimeErrors", () => {
         packageJson: {
           name: "@operator/acpx",
           version: "2026.5.3",
-          openclaw: {
+          operator: {
             extensions: ["./index.ts", "./tools.ts"],
             runtimeExtensions: ["./dist/index.js"],
           },
         },
-        files: ["package.json", "openclaw.plugin.json", "dist/index.js"],
+        files: ["package.json", "operator.plugin.json", "dist/index.js"],
       }),
     ).toEqual([
-      "@operator/acpx@2026.5.3 package.json openclaw.runtimeExtensions length (1) must match openclaw.extensions length (2)",
+      "@operator/acpx@2026.5.3 package.json operator.runtimeExtensions length (1) must match operator.extensions length (2)",
     ]);
   });
 
@@ -235,15 +235,15 @@ describe("collectPluginNpmPublishedRuntimeErrors", () => {
         packageJson: {
           name: "@gabrielvfonseca/whatsapp",
           version: "2026.5.3",
-          openclaw: {
+          operator: {
             extensions: ["./src/index.ts"],
             runtimeExtensions: [" "],
           },
         },
-        files: ["package.json", "openclaw.plugin.json", "src/index.ts", "dist/index.js"],
+        files: ["package.json", "operator.plugin.json", "src/index.ts", "dist/index.js"],
       }),
     ).toEqual([
-      "@operator/whatsapp@2026.5.3 package.json openclaw.runtimeExtensions[0] must be a non-empty string",
+      "@operator/whatsapp@2026.5.3 package.json operator.runtimeExtensions[0] must be a non-empty string",
     ]);
   });
 
@@ -253,7 +253,7 @@ describe("collectPluginNpmPublishedRuntimeErrors", () => {
         packageJson: {
           name: "@operator/line",
           version: "2026.5.3",
-          openclaw: {
+          operator: {
             extensions: ["./index.ts"],
             runtimeExtensions: ["./dist/index.js"],
             setupEntry: "./setup-entry.ts",
@@ -261,7 +261,7 @@ describe("collectPluginNpmPublishedRuntimeErrors", () => {
         },
         files: [
           "package.json",
-          "openclaw.plugin.json",
+          "operator.plugin.json",
           "index.ts",
           "dist/index.js",
           "setup-entry.ts",
@@ -278,14 +278,14 @@ describe("collectPluginNpmPublishedRuntimeErrors", () => {
         packageJson: {
           name: "@operator/qqbot",
           version: "2026.5.3",
-          openclaw: {
+          operator: {
             extensions: ["./index.ts"],
             runtimeExtensions: ["./dist/index.js"],
             setupEntry: "./setup-entry.ts",
             runtimeSetupEntry: "./dist/setup-entry.js",
           },
         },
-        files: ["package.json", "openclaw.plugin.json", "dist/index.js", "dist/setup-entry.js"],
+        files: ["package.json", "operator.plugin.json", "dist/index.js", "dist/setup-entry.js"],
       }),
     ).toStrictEqual([]);
   });
@@ -296,14 +296,14 @@ describe("collectPluginNpmPublishedRuntimeErrors", () => {
         packageJson: {
           name: "@operator/matrix",
           version: "2026.5.3",
-          openclaw: {
+          operator: {
             extensions: ["./index.ts"],
             runtimeExtensions: ["./dist/index.js"],
             setupEntry: "./setup-entry.ts",
             runtimeSetupEntry: "./dist/setup-entry.js",
           },
         },
-        files: ["package.json", "openclaw.plugin.json", "dist/index.js"],
+        files: ["package.json", "operator.plugin.json", "dist/index.js"],
       }),
     ).toEqual(["@operator/matrix@2026.5.3 runtime setup entry not found: ./dist/setup-entry.js"]);
   });
@@ -314,16 +314,16 @@ describe("collectPluginNpmPublishedRuntimeErrors", () => {
         packageJson: {
           name: "@operator/twitch",
           version: "2026.5.3",
-          openclaw: {
+          operator: {
             extensions: ["./index.ts"],
             runtimeExtensions: ["./dist/index.js"],
             runtimeSetupEntry: "./dist/setup-entry.js",
           },
         },
-        files: ["package.json", "openclaw.plugin.json", "dist/index.js", "dist/setup-entry.js"],
+        files: ["package.json", "operator.plugin.json", "dist/index.js", "dist/setup-entry.js"],
       }),
     ).toEqual([
-      "@operator/twitch@2026.5.3 package.json openclaw.runtimeSetupEntry requires openclaw.setupEntry",
+      "@operator/twitch@2026.5.3 package.json operator.runtimeSetupEntry requires operator.setupEntry",
     ]);
   });
 });
@@ -333,21 +333,21 @@ describe("resolveNpmPackFilename", () => {
     const noisyOutput = [
       "npm notice",
       "npm notice package: @operator/msteams@2026.5.24-beta.1",
-      "openclaw-msteams-2026.5.24-beta.1.tgz",
+      "operator-msteams-2026.5.24-beta.1.tgz",
       "",
     ].join("\n");
 
-    expect(resolveNpmPackFilename(noisyOutput)).toBe("openclaw-msteams-2026.5.24-beta.1.tgz");
+    expect(resolveNpmPackFilename(noisyOutput)).toBe("operator-msteams-2026.5.24-beta.1.tgz");
   });
 
   it("rejects path-like tarball output instead of reading outside the pack directory", () => {
     const unsafeOutputs = [
-      "../openclaw-msteams.tgz",
-      "nested/openclaw-msteams.tgz",
-      "nested\\openclaw-msteams.tgz",
-      "/tmp/openclaw-msteams.tgz",
-      "C:\\temp\\openclaw-msteams.tgz",
-      "openclaw-msteams\u0000.tgz",
+      "../operator-msteams.tgz",
+      "nested/operator-msteams.tgz",
+      "nested\\operator-msteams.tgz",
+      "/tmp/operator-msteams.tgz",
+      "C:\\temp\\operator-msteams.tgz",
+      "operator-msteams\u0000.tgz",
     ];
 
     for (const output of unsafeOutputs) {

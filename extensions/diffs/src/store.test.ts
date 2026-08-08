@@ -340,7 +340,7 @@ describe("createDiffsHttpHandler", () => {
 
     expect(handled).toBe(true);
     expect(res.statusCode).toBe(200);
-    expect(String(res.body)).toContain("openclawDiffsReady");
+    expect(String(res.body)).toContain("operatorDiffsReady");
     expect(res.getHeader("cache-control")).toBe("public, max-age=31536000, immutable");
   });
 

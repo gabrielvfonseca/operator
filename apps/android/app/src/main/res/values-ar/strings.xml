@@ -57,7 +57,7 @@
     <string name="native_0621d308bb3df463" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"مهمة واحدة مجدولة"</string>
     <string name="native_0623c0abcd81a5e0" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"لا يوجد رد"</string>
     <string name="native_0692ff7848b2cfc2" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"مصفوفة JSON للأمر argv"</string>
-    <string name="native_06ee275ccdbbf862" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"تعذّرت قراءة هذه الصورة. اختر لقطة شاشة واضحة أو صورة لرمز QR من openclaw qr."</string>
+    <string name="native_06ee275ccdbbf862" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"تعذّرت قراءة هذه الصورة. اختر لقطة شاشة واضحة أو صورة لرمز QR من operator qr."</string>
     <string name="native_06fcc3f73af64b5b" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"تعذّر %1$s مقترح ورشة عمل Skills."</string>
     <string name="native_0728ba404eb8f8bd" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"سجّل Gateway الموافقة مرة واحدة."</string>
     <string name="native_073c1634c496cdb6" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"status"</string>
@@ -224,7 +224,7 @@
     <string name="native_261de9be5f4a3b0a" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"لا توجد موافقات معلّقة"</string>
     <string name="native_262121c5372be8af" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"edit"</string>
     <string name="native_262c897a1f408b0b" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"الاتصال بـ Gateway الخاص بك"</string>
-    <string name="native_2682bd813a3bccbc" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"أدخل رمز الإعداد من openclaw qr."</string>
+    <string name="native_2682bd813a3bccbc" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"أدخل رمز الإعداد من operator qr."</string>
     <string name="native_268f14bbfe119c1e" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"التشخيصات"</string>
     <string name="native_26f0dd993530eb2d" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"تجري إعادة المحاولة تلقائيًا"</string>
     <string name="native_2728740a95d465c6" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"%1$s أدوار"</string>
@@ -442,7 +442,7 @@
     <string name="native_4ec30e9d85725d41" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"قائمة السماح"</string>
     <string name="native_4ed379d418bb8629" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"groups"</string>
     <string name="native_4efca0d10c5feb8e" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"حول"</string>
-    <string name="native_4f1bc100d1dccc1e" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"لم يتم العثور على رمز QR للإعداد في هذه الصورة. اختر رمز QR الذي أنشأه openclaw qr، أو أدخل رمز الإعداد يدويًا."</string>
+    <string name="native_4f1bc100d1dccc1e" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"لم يتم العثور على رمز QR للإعداد في هذه الصورة. اختر رمز QR الذي أنشأه operator qr، أو أدخل رمز الإعداد يدويًا."</string>
     <string name="native_4f993457edb69110" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"تصفّح الجلسات"</string>
     <string name="native_4fe3cdd404ea0290" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"permissions"</string>
     <string name="native_5047cfb3b607e7d0" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"وصّل Gateway لتحميل العُقد والأجهزة المقترنة."</string>
@@ -496,10 +496,10 @@
     <string name="native_572739b05d138f8a" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"يتم عرض أحدث جزء من السجل."</string>
     <string name="native_57666930af1af35e" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"استخدام رمز الإعداد"</string>
     <string name="native_57c4b13a4c7335e7" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"sticker"</string>
-    <string name="native_57efc4ebe625cab5" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"استخدم Gateway آمنًا عبر wss:// أو Tailscale Serve، وأنشئ رمز إعداد بوصول كامل في Control UI أو باستخدام openclaw qr، ثم امسحه ضوئيًا أو الصقه أدناه وأعد الاتصال لتمكين الإعدادات والترقيات."</string>
+    <string name="native_57efc4ebe625cab5" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"استخدم Gateway آمنًا عبر wss:// أو Tailscale Serve، وأنشئ رمز إعداد بوصول كامل في Control UI أو باستخدام operator qr، ثم امسحه ضوئيًا أو الصقه أدناه وأعد الاتصال لتمكين الإعدادات والترقيات."</string>
     <string name="native_57fce44d7c6df51a" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"steer"</string>
     <string name="native_57fd7a0cf33f2666" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"محدد"</string>
-    <string name="native_58268edca12a81a1" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"يمكن لـ Android مسح رمز إعداد موجود أو لصقه، لكن هذه البوابة لا تتيح بعد إنشاء رمز الإعداد للتطبيق. أنشئ رمز QR/الرمز على مضيف البوابة باستخدام openclaw qr، ثم امسحه هنا أو الصق رمز الإعداد أدناه."</string>
+    <string name="native_58268edca12a81a1" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"يمكن لـ Android مسح رمز إعداد موجود أو لصقه، لكن هذه البوابة لا تتيح بعد إنشاء رمز الإعداد للتطبيق. أنشئ رمز QR/الرمز على مضيف البوابة باستخدام operator qr، ثم امسحه هنا أو الصق رمز الإعداد أدناه."</string>
     <string name="native_584162ac73e99ee6" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"حالة اللوحة"</string>
     <string name="native_5855b3ac2fcc1b3e" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"إصلاح الاتصال"</string>
     <string name="native_590b0003ccaad929" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"العقدة %1$s"</string>
@@ -701,7 +701,7 @@
     <string name="native_788011833a5a0f22" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"الإشعارات"</string>
     <string name="native_78af93f13a7e5044" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"يتطلب التطبيق والرفض والحجر الصحي نطاق operator.admin. أعد الاتصال باستخدام مصادقة gateway المشتركة أو وافق على ترقية نطاق جهاز operator.admin لتمكين إجراءات دورة الحياة."</string>
     <string name="native_78f25f393aa9bcbf" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"sticker upload"</string>
-    <string name="native_792175fb265c32bc" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"openclaw devices approve %1$s"</string>
+    <string name="native_792175fb265c32bc" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"operator devices approve %1$s"</string>
     <string name="native_7981cbd5763dfcbb" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"لا توجد جلسات مطابقة بعد."</string>
     <string name="native_79a68a0d42388125" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"تفاصيل سجل Gateway قابلة للقراءة."</string>
     <string name="native_79a7ab236717f90d" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"راجع مقترحات Skills المُنشأة قبل أن تصبح مهارات فعّالة."</string>
@@ -786,7 +786,7 @@
     <string name="native_8a20f46d5276b474" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"%1$s مقترنة"</string>
     <string name="native_8a51ea11834daf37" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"سيؤدي هذا إلى تطبيق \"%1$s\" وتحديث حالة ورشة Skills من Gateway."</string>
     <string name="native_8a6ec210c09d2e1d" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Gateway غير متصل"</string>
-    <string name="native_8a91d3fbc8c93e75" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"openclaw devices list"</string>
+    <string name="native_8a91d3fbc8c93e75" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"operator devices list"</string>
     <string name="native_8ad740f465465253" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"حالة اتصال عقدة Operator"</string>
     <string name="native_8b0f09e8f3b1c389" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"تبقى التنبيهات على هذا الهاتف."</string>
     <string name="native_8b8f03b41e1c066b" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"يمكن لـ Operator تلقي التنبيهات المحددة."</string>
@@ -800,7 +800,7 @@
     <string name="native_8cb2bab2ce6a17b2" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"على كمبيوتر Gateway، شغّل:"</string>
     <string name="native_8cb650539ec84aa5" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"البحث في الجلسات"</string>
     <string name="native_8d0839802b4d6aca" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"تحديث السجلات"</string>
-    <string name="native_8d20273207a2fe99" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"openclaw nodes approve %1$s"</string>
+    <string name="native_8d20273207a2fe99" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"operator nodes approve %1$s"</string>
     <string name="native_8d57374bc09c8756" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"ملاحظة صوتية · %1$s"</string>
     <string name="native_8d59829c1e15afe1" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"الاستخدام"</string>
     <string name="native_8d99e5d18d734856" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"السياق %1$s%%"</string>
@@ -989,7 +989,7 @@
     <string name="native_adb7eb8a03ad699c" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"%1$sد"</string>
     <string name="native_adca3171c270301a" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"يمكن لتسجيل الدخول إلى Gateway هذا عرض العقد المتصلة، لكنه لا يستطيع الموافقة على إقران هواتف جديدة. أقرن الهواتف الجديدة من جلسة مسؤول Gateway. موافقة إمكانات العقدة منفصلة، ولا تزال تستخدم nodes approve &lt;request id&gt;."</string>
     <string name="native_ade9248e0132b411" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"الوثوق"</string>
-    <string name="native_ae27fa789a03c1db" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"رمز QR هذا ليس رمز إعداد QR خاصًا بـ Operator. أنشئ رمزًا جديدًا باستخدام openclaw qr، ثم حاول مرة أخرى."</string>
+    <string name="native_ae27fa789a03c1db" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"رمز QR هذا ليس رمز إعداد QR خاصًا بـ Operator. أنشئ رمزًا جديدًا باستخدام operator qr، ثم حاول مرة أخرى."</string>
     <string name="native_ae86062126fc1a52" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"يتم الاحتفاظ بالجلسات في \"%1$s\" ونقلها مرة أخرى إلى غير المجمعة."</string>
     <string name="native_aea4a04a80426ed8" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"مرفوض"</string>
     <string name="native_aed306fbb63c0c68" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"تضمين حزم Android وحزم الخلفية."</string>
@@ -1248,7 +1248,7 @@
     <string name="native_dd167905de0defca" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"الإصدار"</string>
     <string name="native_dd9d24965dbedc02" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Cron"</string>
     <string name="native_de2ae3a91cd112dd" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"إزالة عبارة التنبيه"</string>
-    <string name="native_de356e01822d360d" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"لم يتم قبول رمز الإعداد. أنشئ رمزًا جديدًا باستخدام openclaw qr."</string>
+    <string name="native_de356e01822d360d" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"لم يتم قبول رمز الإعداد. أنشئ رمزًا جديدًا باستخدام operator qr."</string>
     <string name="native_de60af1d2f170722" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"14 رسالة · Android"</string>
     <string name="native_de67b9369f9812ea" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"فشل النسخ: %1$s"</string>
     <string name="native_de9f057a471cdb8d" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"دائمًا"</string>
@@ -1258,7 +1258,7 @@
     <string name="native_df796c655f6f5ed4" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"مجموعة جديدة"</string>
     <string name="native_dfe0c2e802b1ff63" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"خطأ في الخادم"</string>
     <string name="native_dfe114ba9a41375d" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Video Generation"</string>
-    <string name="native_e008e2811a85cdb2" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"موافقة Gateway معلّقة. شغّل openclaw devices list على مضيف Gateway، ووافق على هذا الهاتف، ثم أعد المحاولة."</string>
+    <string name="native_e008e2811a85cdb2" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"موافقة Gateway معلّقة. شغّل operator devices list على مضيف Gateway، ووافق على هذا الهاتف، ثم أعد المحاولة."</string>
     <string name="native_e01552d86737c78f" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"تظهر الإدخالات بعد أن تكتب دورة الأحلام ملخصًا سرديًا."</string>
     <string name="native_e0218943388a5872" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"%1$s مللي ثانية"</string>
     <string name="native_e024430c7706c72b" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"مخزن الذاكرة"</string>
@@ -1410,7 +1410,7 @@
     <string name="native_f8c2745155505d39" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"انتهت مهلة انتظار الرد؛ حاول مجددًا أو حدّث الصفحة."</string>
     <string name="native_f8cd133f0ea1031b" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"العثور على المحادثات السابقة"</string>
     <string name="native_f92e2ad582c0e13f" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"جارٍ التحديث"</string>
-    <string name="native_f991ae9cb081e1f3" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"افتح الكاميرا وضع الرمز من openclaw qr داخل الإطار."</string>
+    <string name="native_f991ae9cb081e1f3" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"افتح الكاميرا وضع الرمز من operator qr داخل الإطار."</string>
     <string name="native_f9ea3f1540eaa584" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"لا توجد أجهزة"</string>
     <string name="native_fa0ddca1671f4d61" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"إعادة توجيه الإشعارات"</string>
     <string name="native_fa4f9ee12d15faec" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"تعود جلسة Gateway إلى الاتصال بالإنترنت. يُفترض أن تستقر اختصارات الوكلاء تلقائيًا بعد لحظات."</string>
@@ -1419,7 +1419,7 @@
     <string name="native_faab0dc4735c1cfe" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"التمهيد"</string>
     <string name="native_fad13bdbe9a8cd0f" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"%1$s · %2$s · %3$s"</string>
     <string name="native_fae8fa3bc050ab7e" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"إلغاء الملاحظة الصوتية"</string>
-    <string name="native_fb7ad4cc59155311" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"openclaw gateway"</string>
+    <string name="native_fb7ad4cc59155311" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"operator gateway"</string>
     <string name="native_fbba7592ca9da80e" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"تم إقران Gateway"</string>
     <string name="native_fbf2d2bbaee06fed" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"نستمع إلى دورك التالي."</string>
     <string name="native_fc0646722204f965" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Operator يعمل"</string>
@@ -1434,7 +1434,7 @@
     <string name="native_fdd0d769c49517c2" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"انتهت مهلة الشبكة"</string>
     <string name="native_fe18013d93d22f4f" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"الآن"</string>
     <string name="native_fe4e8d175e15f0a2" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"إعادة تسمية المجموعة…"</string>
-    <string name="native_fed2d83c98a40d55" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"openclaw nodes approve REQUEST_ID"</string>
+    <string name="native_fed2d83c98a40d55" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"operator nodes approve REQUEST_ID"</string>
     <string name="native_ff1cee74414621d8" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"تثبيت"</string>
     <string name="native_ff2670a0df18e148" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"thread list"</string>
     <string name="native_ff332eeb6b2de1da" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"فتح %1$s"</string>

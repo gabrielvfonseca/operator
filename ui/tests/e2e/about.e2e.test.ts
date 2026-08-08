@@ -44,8 +44,8 @@ describeControlUiE2e("Control UI About mocked Gateway E2E", () => {
         configurable: true,
         value: {
           writeText: async (text: string) => {
-            (globalThis as typeof globalThis & { __openclawCopiedCommit?: string })[
-              "__openclawCopiedCommit"
+            (globalThis as typeof globalThis & { __operatorCopiedCommit?: string })[
+              "__operatorCopiedCommit"
             ] = text;
           },
         },
@@ -113,8 +113,8 @@ describeControlUiE2e("Control UI About mocked Gateway E2E", () => {
         .poll(() =>
           page.evaluate(
             () =>
-              (globalThis as typeof globalThis & { __openclawCopiedCommit?: string })[
-                "__openclawCopiedCommit"
+              (globalThis as typeof globalThis & { __operatorCopiedCommit?: string })[
+                "__operatorCopiedCommit"
               ],
           ),
         )

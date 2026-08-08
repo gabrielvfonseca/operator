@@ -767,7 +767,7 @@ export function emitTelegramMessageSentHooks(params: EmitMessageSentHookParams):
 
 export async function deliverReplies(params: {
   replies: ReplyPayload[];
-  cfg?: import("openclaw/plugin-sdk/config-contracts").OperatorConfig;
+  cfg?: import("operator/plugin-sdk/config-contracts").OperatorConfig;
   chatId: string;
   accountId?: string;
   sessionKeyForInternalHooks?: string;

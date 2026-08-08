@@ -28,7 +28,7 @@ import {
 
 describe("resolveGatewayInstallEntrypoint", () => {
   it("prefers dist/index.js over dist/entry.js when both exist", async () => {
-    const root = "/tmp/openclaw-root";
+    const root = "/tmp/operator-root";
     const indexPath = path.join(root, "dist", "index.js");
     const entryPath = path.join(root, "dist", "entry.js");
 
@@ -41,7 +41,7 @@ describe("resolveGatewayInstallEntrypoint", () => {
   });
 
   it("falls back to dist/entry.js when index.js is missing", async () => {
-    const root = "/tmp/openclaw-root";
+    const root = "/tmp/operator-root";
     const entryPath = path.join(root, "dist", "entry.js");
 
     await expect(
@@ -192,7 +192,7 @@ describe("resolvePostUpdateServiceStateReadEnv", () => {
 describe("resolvePostInstallDoctorEnv", () => {
   it("uses the managed service profile paths for post-install doctor", () => {
     const env = resolvePostInstallDoctorEnv({
-      invocationCwd: "/srv/openclaw",
+      invocationCwd: "/srv/operator",
       baseEnv: {
         PATH: "/bin",
         OPERATOR_STATE_DIR: "/wrong/state",
@@ -209,9 +209,9 @@ describe("resolvePostInstallDoctorEnv", () => {
     expect(env.PATH).toBe("/bin");
     expect(env.NODE_DISABLE_COMPILE_CACHE).toBe("1");
     expect(env[DOCTOR_DISABLE_CROSS_STATE_DIR_IMPORTS_ENV]).toBe("1");
-    expect(env.OPERATOR_STATE_DIR).toBe(path.join("/srv/openclaw", "daemon-state"));
+    expect(env.OPERATOR_STATE_DIR).toBe(path.join("/srv/operator", "daemon-state"));
     expect(env.OPERATOR_CONFIG_PATH).toBe(
-      path.join("/srv/openclaw", "daemon-state", "operator.json"),
+      path.join("/srv/operator", "daemon-state", "operator.json"),
     );
     expect(env.OPERATOR_PROFILE).toBe("work");
   });
@@ -236,14 +236,14 @@ describe("resolvePostInstallDoctorEnv", () => {
 describe("collectMissingPluginInstallPayloads", () => {
   it("reports tracked npm install records whose package payload is absent", async () => {
     const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-update-plugin-payload-"));
-    const presentDir = path.join(tmpDir, "state", "npm", "node_modules", "@openclaw", "present");
-    const missingDir = path.join(tmpDir, "state", "npm", "node_modules", "@openclaw", "missing");
+    const presentDir = path.join(tmpDir, "state", "npm", "node_modules", "@operator", "present");
+    const missingDir = path.join(tmpDir, "state", "npm", "node_modules", "@operator", "missing");
     const noPackageJsonDir = path.join(
       tmpDir,
       "state",
       "npm",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "no-package-json",
     );
     try {
@@ -427,7 +427,7 @@ describe("collectMissingPluginInstallPayloads", () => {
 
   it("skips disabled tracked records when requested", async () => {
     const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-update-plugin-payload-"));
-    const missingDir = path.join(tmpDir, "state", "npm", "node_modules", "@openclaw", "missing");
+    const missingDir = path.join(tmpDir, "state", "npm", "node_modules", "@operator", "missing");
     try {
       await expect(
         collectMissingPluginInstallPayloads({
@@ -458,7 +458,7 @@ describe("collectMissingPluginInstallPayloads", () => {
 
   it("keeps disabled trusted official npm records eligible for payload repair when requested", async () => {
     const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-update-plugin-payload-"));
-    const missingDir = path.join(tmpDir, "state", "npm", "node_modules", "@openclaw", "codex");
+    const missingDir = path.join(tmpDir, "state", "npm", "node_modules", "@operator", "codex");
     try {
       await expect(
         collectMissingPluginInstallPayloads({
@@ -572,9 +572,9 @@ describe("formatPostUpdateGatewayRecoveryInstructions", () => {
     const [line] = formatPostUpdateGatewayRecoveryInstructions(result, "linux");
 
     expect(line).toContain("the systemd user service");
-    expect(line).toContain("openclaw gateway restart");
-    expect(line).toContain("openclaw gateway install --force");
-    expect(line).toContain("openclaw gateway status --deep");
+    expect(line).toContain("operator gateway restart");
+    expect(line).toContain("operator gateway install --force");
+    expect(line).toContain("operator gateway status --deep");
     expect(line).not.toContain("Linux reports");
     expect(line).not.toContain("macOS");
     expect(line).not.toContain("LaunchAgent");
@@ -808,7 +808,7 @@ describe("resolvePostCoreUpdateChildStdio", () => {
   it('returns "pipe" on Windows so the child never inherits the parent console handles', () => {
     // On Windows, stdio:"inherit" passes the parent's console HANDLE to the child process.
     // PowerShell/CMD will not return the prompt until every holder of those handles exits,
-    // causing the terminal to hang after `openclaw update` completes (#78445).
+    // causing the terminal to hang after `operator update` completes (#78445).
     expect(resolvePostCoreUpdateChildStdio("win32")).toBe("pipe");
   });
 
@@ -847,8 +847,8 @@ describe("updatePluginsAfterCoreUpdate (invalid config end-to-end)", () => {
         message:
           "Plugin post-update convergence skipped because the config is invalid; refusing to restart the gateway with an unverified plugin set.",
         guidance: [
-          "Run `openclaw doctor` to inspect the config validation errors.",
-          "Once the config parses, rerun `openclaw update repair`.",
+          "Run `operator doctor` to inspect the config validation errors.",
+          "Once the config parses, rerun `operator update repair`.",
         ],
       },
     ]);
@@ -866,8 +866,8 @@ describe("buildInvalidConfigPostCoreUpdateResult", () => {
   it("surfaces actionable repair guidance in both the structural warnings and the message string", () => {
     const built = buildInvalidConfigPostCoreUpdateResult();
     expect(built.guidance).toStrictEqual([
-      "Run `openclaw doctor` to inspect the config validation errors.",
-      "Once the config parses, rerun `openclaw update repair`.",
+      "Run `operator doctor` to inspect the config validation errors.",
+      "Once the config parses, rerun `operator update repair`.",
     ]);
     expect(built.result.warnings).toStrictEqual([
       {

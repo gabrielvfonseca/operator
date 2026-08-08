@@ -2090,7 +2090,7 @@ describe("agentCliCommand", () => {
       expect(agentCommand).not.toHaveBeenCalled();
       expect(runtime.exit).toHaveBeenCalledWith(1);
       const errorMessages = mockMessages(runtime.error);
-      expect(errorMessages.some((m) => m.includes("openclaw sessions compact"))).toBe(true);
+      expect(errorMessages.some((m) => m.includes("operator sessions compact"))).toBe(true);
       expect(errorMessages.some((m) => m.includes("EMBEDDED FALLBACK"))).toBe(false);
     });
   }
@@ -2111,7 +2111,7 @@ describe("agentCliCommand", () => {
     expect(agentCommand).not.toHaveBeenCalled();
     expect(runtime.exit).toHaveBeenCalledWith(1);
     const errorMessages = mockMessages(runtime.error);
-    expect(errorMessages.some((m) => m.includes("openclaw sessions compact"))).toBe(true);
+    expect(errorMessages.some((m) => m.includes("operator sessions compact"))).toBe(true);
     expect(errorMessages.some((m) => m.includes("EMBEDDED FALLBACK"))).toBe(false);
   });
 

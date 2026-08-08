@@ -7,11 +7,11 @@ import { resolveAllAgentSessionStoreTargetsSync } from "../config/sessions.js";
 import { applySessionEntryReplacements } from "../config/sessions/session-accessor.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-sync.js";
-import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../state/openclaw-state-db.js";
+} from "../state/operator-state-db.js";
 
 // Write transactions must run on the same env-scoped handle as their
 // statements; a bare transaction would open the default state DB while the

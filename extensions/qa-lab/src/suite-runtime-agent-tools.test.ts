@@ -53,7 +53,7 @@ import {
 import { createTempDirHarness } from "./temp-dir.test-helper.js";
 
 const { cleanup, makeTempDir } = createTempDirHarness();
-const repoRoot = "/repo/openclaw";
+const repoRoot = "/repo/operator";
 const gatewayTempRoot = "/tmp/operator-qa-runtime";
 
 afterEach(cleanup);

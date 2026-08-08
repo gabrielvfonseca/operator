@@ -19,7 +19,7 @@ the `--baseline` config-only variant). Windows desktop users can also start
 from [Windows Hub](/platforms/windows).
 
 Guided onboarding establishes inference first. It detects available AI access,
-requires a real completion, and only then starts [Operator](/cli/openclaw)
+requires a real completion, and only then starts [Operator](/cli/operator)
 to configure the rest of Operator. Choosing **Skip for now** exits onboarding
 without starting Operator.
 
@@ -181,7 +181,7 @@ config is invalid or contains legacy keys, onboarding asks you to run
 `--flow import` runs a detected migration flow (for example Hermes) in the
 classic wizard instead of fresh setup; see [Migrate](/cli/migrate) and the migration guides under
 [Install](/install/migrating-hermes). `operator onboard --modern` is a
-compatibility alias for [Operator](/cli/openclaw). It uses the same
+compatibility alias for [Operator](/cli/operator). It uses the same
 inference gate as `operator setup`: verified inference starts the
 assistant, while an interactive failure returns to guided inference setup.
 

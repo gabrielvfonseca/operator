@@ -310,13 +310,13 @@ describe("normalizeMessagesForLlmBoundary", () => {
     ) as unknown as Array<Record<string, unknown>>;
 
     expect(output[0]?.content).toBe("Stored ask with index metadata");
-    expect(output[0]?.["__openclaw"]).toEqual({
+    expect(output[0]?.["__operator"]).toEqual({
       seq: 12,
       embeddingInput: "Stored ask with index metadata",
     });
-    expect(output[0]?.["__openclaw"]).toBe(input[0]?.["__openclaw"]);
+    expect(output[0]?.["__operator"]).toBe(input[0]?.["__operator"]);
     expect(input[0]?.content).toEqual([{ type: "text", text: "Stored ask with index metadata" }]);
-    expect(input[0]?.["__openclaw"]).toEqual({
+    expect(input[0]?.["__operator"]).toEqual({
       seq: 12,
       embeddingInput: "Stored ask with index metadata",
     });
@@ -885,7 +885,7 @@ describe("normalizeMessagesForLlmBoundary", () => {
     expect(output[0]).not.toHaveProperty("__operator.beforeAgentRunBlocked.reason");
     expect(JSON.stringify(output)).not.toContain("secret prompt");
     expect(JSON.stringify(output)).not.toContain("matched secret prompt");
-    expect(input[0]).toHaveProperty("__openclaw");
+    expect(input[0]).toHaveProperty("__operator");
   });
 
   it("replaces only the armed prompt with model prompt context", async () => {
@@ -927,7 +927,7 @@ describe("normalizeMessagesForLlmBoundary", () => {
     ]);
     expect(armedRecords[0]?.content).toEqual([{ type: "text", text: "private model prompt" }]);
     expect(armedResult[0]).toHaveProperty(
-      "__openclawTranscriptPromptText",
+      "__operatorTranscriptPromptText",
       "visible transcript prompt",
     );
     expect(captured).toHaveLength(2);

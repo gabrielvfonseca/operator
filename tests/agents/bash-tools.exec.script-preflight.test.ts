@@ -6,7 +6,7 @@
 import { constants as fsConstants } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { __setFsSafeTestHooksForTest } from "@openclaw/fs-safe/test-hooks";
+import { __setFsSafeTestHooksForTest } from "@operator/fs-safe/test-hooks";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { detectUnsafeExecControlShellCommand } from "../../src/infra/exec-control-command-guard.js";
 import { withTempDir } from "../../src/test-utils/temp-dir.js";
@@ -76,15 +76,15 @@ async function expectSymlinkSwapDuringPreflightToAvoidErrors(params: {
 describe("exec interactive Operator channel login guard", () => {
   it("recognizes direct and package-runner channel login commands before execution", async () => {
     await expect(
-      detectUnsafeExecControlShellCommand("openclaw channels login --channel whatsapp"),
+      detectUnsafeExecControlShellCommand("operator channels login --channel whatsapp"),
     ).resolves.toBe("channel-login");
     expect(
       await detectUnsafeExecControlShellCommand(
-        "pnpm exec openclaw channels login --channel whatsapp --verbose",
+        "pnpm exec operator channels login --channel whatsapp --verbose",
       ),
     ).toBe("channel-login");
     await expect(
-      detectUnsafeExecControlShellCommand("openclaw channels status --deep"),
+      detectUnsafeExecControlShellCommand("operator channels status --deep"),
     ).resolves.toBeNull();
   });
 
@@ -93,27 +93,27 @@ describe("exec interactive Operator channel login guard", () => {
 
     await expect(
       tool.execute("call-operator-channel-login", {
-        command: "openclaw channels login --channel whatsapp --verbose",
+        command: "operator channels login --channel whatsapp --verbose",
       }),
     ).rejects.toThrow(/exec cannot run interactive Operator channel login commands/);
     await expect(
       tool.execute("call-wrapped-operator-channel-login", {
-        command: "sudo -u openclaw bash -lc 'openclaw channels login --channel whatsapp'",
+        command: "sudo -u operator bash -lc 'operator channels login --channel whatsapp'",
       }),
     ).rejects.toThrow(/exec cannot run interactive Operator channel login commands/);
     await expect(
       tool.execute("call-clustered-sudo-channel-login", {
-        command: "sudo -EH bash -lc 'openclaw channels login --channel whatsapp'",
+        command: "sudo -EH bash -lc 'operator channels login --channel whatsapp'",
       }),
     ).rejects.toThrow(/exec cannot run interactive Operator channel login commands/);
     await expect(
       tool.execute("call-deep-env-channel-login", {
-        command: "env env env env env env openclaw channels login --channel whatsapp",
+        command: "env env env env env env operator channels login --channel whatsapp",
       }),
     ).rejects.toThrow(/exec cannot run interactive Operator channel login commands/);
     await expect(
       tool.execute("call-env-s-trailing-channel-login", {
-        command: "env -S 'openclaw channels' login --channel whatsapp",
+        command: "env -S 'operator channels' login --channel whatsapp",
       }),
     ).rejects.toThrow(/exec cannot run interactive Operator channel login commands/);
   });

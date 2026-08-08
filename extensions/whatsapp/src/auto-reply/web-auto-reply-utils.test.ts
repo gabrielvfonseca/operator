@@ -126,7 +126,7 @@ function getSessionSnapshotForTest(
 }
 
 describe("isBotMentionedFromTargets", () => {
-  const mentionCfg = { mentionRegexes: [/\bopenclaw\b/i] };
+  const mentionCfg = { mentionRegexes: [/\boperator\b/i] };
 
   function expectMentioned(
     msg: AdmittedWebInboundMessage,
@@ -158,7 +158,7 @@ describe("isBotMentionedFromTargets", () => {
 
   it("falls back to regex when no mentions are present", () => {
     const msg = makeMsg({
-      body: "openclaw can you help?",
+      body: "operator can you help?",
       selfE164: "+15551234567",
       selfJid: "15551234567@s.whatsapp.net",
     });
@@ -166,7 +166,7 @@ describe("isBotMentionedFromTargets", () => {
   });
 
   it("ignores JID mentions in a true 1:1 self-chat (not a group)", () => {
-    const cfg = { mentionRegexes: [/\bopenclaw\b/i], allowFrom: ["+999"] };
+    const cfg = { mentionRegexes: [/\boperator\b/i], allowFrom: ["+999"] };
     const msg = makeMsg({
       // Direct chat with self, not a group — the original "ignore mentions
       // in self-chat" suppression still applies here so that mentioning the
@@ -191,7 +191,7 @@ describe("isBotMentionedFromTargets", () => {
           id: "999@s.whatsapp.net",
         },
       },
-      body: "openclaw ping",
+      body: "operator ping",
       selfE164: "+999",
       selfJid: "999@s.whatsapp.net",
     });
@@ -205,7 +205,7 @@ describe("isBotMentionedFromTargets", () => {
     // including LID-style WhatsApp mentions that resolve to the bot's own
     // E.164. After the fix, group conversations honor the identity-overlap
     // check regardless of allowFrom.
-    const cfg = { mentionRegexes: [/\bopenclaw\b/i], allowFrom: ["+15551234567"] };
+    const cfg = { mentionRegexes: [/\boperator\b/i], allowFrom: ["+15551234567"] };
     const msg = makeMsg({
       // Default `from` is the @g.us group JID from `makeMsg`.
       body: "@216372600647751 can you see this?",
@@ -219,7 +219,7 @@ describe("isBotMentionedFromTargets", () => {
 
   it("honors explicit self-chat overrides without recomputing from allowFrom", () => {
     const cfg = {
-      mentionRegexes: [/\bopenclaw\b/i],
+      mentionRegexes: [/\boperator\b/i],
       allowFrom: ["+15551230000"],
       isSelfChat: true,
     };
@@ -332,13 +332,13 @@ describe("web auto-reply util", () => {
             id: "777@lid",
           },
         },
-        body: "openclaw ping",
+        body: "operator ping",
         selfE164: "+15551234567",
         selfJid: "15551234567@s.whatsapp.net",
       });
-      const result = debugMention(msg, { mentionRegexes: [/\bopenclaw\b/i] });
+      const result = debugMention(msg, { mentionRegexes: [/\boperator\b/i] });
       expect(result.wasMentioned).toBe(true);
-      expect(result.details.bodyClean).toBe("openclaw ping");
+      expect(result.details.bodyClean).toBe("operator ping");
       expect(result.details.normalizedMentionedJids).toBeNull();
     });
 

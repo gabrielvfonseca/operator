@@ -42,7 +42,7 @@ function readGeneratedSigning(): string {
 
 describe.sequential("scripts/ios-configure-signing.sh", () => {
   beforeAll(() => {
-    const fixtureRoot = makeTempDir(tempDirs, "openclaw-ios-configure-signing-");
+    const fixtureRoot = makeTempDir(tempDirs, "operator-ios-configure-signing-");
     const scriptsDir = path.join(fixtureRoot, "scripts");
     const iosDir = path.join(fixtureRoot, "apps", "ios");
     mkdirSync(scriptsDir, { recursive: true });
@@ -58,16 +58,16 @@ describe.sequential("scripts/ios-configure-signing.sh", () => {
     cleanupTempDirs(tempDirs);
   });
 
-  it("uses the canonical app bundle ID for the canonical OpenClaw team", () => {
+  it("uses the canonical app bundle ID for the canonical Operator team", () => {
     const stdout = runConfigureSigning("FWJYW4S8P8");
     const generated = readGeneratedSigning();
 
-    expect(stdout).toContain("team=FWJYW4S8P8 app=ai.openclawfoundation.app");
+    expect(stdout).toContain("team=FWJYW4S8P8 app=ai.operatorfoundation.app");
     expect(generated).toContain("OPENCLAW_DEVELOPMENT_TEAM = FWJYW4S8P8");
-    expect(generated).toContain("OPENCLAW_CODE_SIGN_ENTITLEMENTS = Sources/OpenClaw.entitlements");
-    expect(generated).toContain("OPENCLAW_APP_BUNDLE_ID = ai.openclawfoundation.app");
-    expect(generated).toContain("OPENCLAW_SHARE_BUNDLE_ID = ai.openclawfoundation.app.share");
-    expect(generated).toContain("OPENCLAW_APP_GROUP_ID = group.ai.openclawfoundation.app.shared");
+    expect(generated).toContain("OPENCLAW_CODE_SIGN_ENTITLEMENTS = Sources/Operator.entitlements");
+    expect(generated).toContain("OPENCLAW_APP_BUNDLE_ID = ai.operatorfoundation.app");
+    expect(generated).toContain("OPENCLAW_SHARE_BUNDLE_ID = ai.operatorfoundation.app.share");
+    expect(generated).toContain("OPENCLAW_APP_GROUP_ID = group.ai.operatorfoundation.app.shared");
     expect(generated).toContain("OPENCLAW_ACTIVITY_WIDGET_PROFILE = ");
   });
 
@@ -76,14 +76,14 @@ describe.sequential("scripts/ios-configure-signing.sh", () => {
     const generated = readGeneratedSigning();
 
     expect(stdout).toContain(
-      "canonical_team=FWJYW4S8P8 local_team=Y3YUZP442G app=ai.openclawfoundation.app.test.localuser-y3yuzp442g",
+      "canonical_team=FWJYW4S8P8 local_team=Y3YUZP442G app=ai.operatorfoundation.app.test.localuser-y3yuzp442g",
     );
     expect(generated).toContain("OPENCLAW_DEVELOPMENT_TEAM = Y3YUZP442G");
     expect(generated).toContain(
-      "OPENCLAW_APP_BUNDLE_ID = ai.openclawfoundation.app.test.localuser-y3yuzp442g",
+      "OPENCLAW_APP_BUNDLE_ID = ai.operatorfoundation.app.test.localuser-y3yuzp442g",
     );
     expect(generated).toContain(
-      "OPENCLAW_APP_GROUP_ID = group.ai.openclawfoundation.app.test.localuser-y3yuzp442g.shared",
+      "OPENCLAW_APP_GROUP_ID = group.ai.operatorfoundation.app.test.localuser-y3yuzp442g.shared",
     );
   });
 });

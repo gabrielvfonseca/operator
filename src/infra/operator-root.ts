@@ -1,9 +1,9 @@
 // Resolves the Operator package root from runtime and package metadata.
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { operatorRootFs, operatorRootFsSync } from "./operator-root.fs.runtime.js";
+import { openClawRootFs, openClawRootFsSync } from "./operator-root.fs.runtime.js";
 
-const CORE_PACKAGE_NAMES = new Set(["operator"]);
+const CORE_PACKAGE_NAMES = new Set(["@gabrielvfonseca/operator"]);
 const packageNameCache = new Map<string, string | null>();
 const packageRootCache = new Map<string, string | null>();
 const packageRootsCache = new Map<string, string[]>();
@@ -20,7 +20,7 @@ async function readPackageName(dir: string): Promise<string | null> {
     return packageNameCache.get(packageJsonPath) ?? null;
   }
   try {
-    const name = parsePackageName(await operatorRootFs.readFile(packageJsonPath, "utf-8"));
+    const name = parsePackageName(await openClawRootFs.readFile(packageJsonPath, "utf-8"));
     packageNameCache.set(packageJsonPath, name);
     return name;
   } catch {
@@ -35,7 +35,7 @@ function readPackageNameSync(dir: string): string | null {
     return packageNameCache.get(packageJsonPath) ?? null;
   }
   try {
-    const name = parsePackageName(operatorRootFsSync.readFileSync(packageJsonPath, "utf-8"));
+    const name = parsePackageName(openClawRootFsSync.readFileSync(packageJsonPath, "utf-8"));
     packageNameCache.set(packageJsonPath, name);
     return name;
   } catch {
@@ -97,7 +97,7 @@ function candidateDirsFromArgv1(argv1: string): string[] {
   // that create symlinks in bin/ pointing to the real package location. Prefer
   // the target so a launcher nested under another Operator checkout keeps its own package root.
   try {
-    const resolved = operatorRootFsSync.realpathSync(normalized);
+    const resolved = openClawRootFsSync.realpathSync(normalized);
     if (resolved !== normalized) {
       candidates.push(path.dirname(resolved));
     }

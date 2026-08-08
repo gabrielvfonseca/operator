@@ -173,7 +173,7 @@ Treat `dmPolicy="open"` and `groupPolicy="open"` as last-resort settings; prefer
 
 - **DM allowlist** (`allowFrom` / `channels.discord.allowFrom` / `channels.slack.allowFrom`; legacy: `channels.discord.dm.allowFrom`, `channels.slack.dm.allowFrom`): who can DM the bot. When `dmPolicy="pairing"`, approvals write to `~/.operator/credentials/<channel>-allowFrom.json` (default account) or `<channel>-<accountId>-allowFrom.json` (non-default accounts), merged with config allowlists.
 - **Group allowlist** (channel-specific): which groups/channels/guilds the bot accepts at all.
-  - `channels.whatsapp.groups`, `channels.telegram.groups`, `channels.imessage.groups`: per-group defaults like `requireMention`; when set, also acts as a group allowlist (include `"*"` to keep allow-all behavior). Customize mention triggers with `agents.list[].groupChat.mentionPatterns` (for example `["@openclaw", "@mybot"]`) so `requireMention` gates on your own bot names.
+  - `channels.whatsapp.groups`, `channels.telegram.groups`, `channels.imessage.groups`: per-group defaults like `requireMention`; when set, also acts as a group allowlist (include `"*"` to keep allow-all behavior). Customize mention triggers with `agents.list[].groupChat.mentionPatterns` (for example `["@operator", "@mybot"]`) so `requireMention` gates on your own bot names.
   - `groupPolicy="allowlist"` + `groupAllowFrom`: restrict who can trigger the bot inside a group session (WhatsApp/Telegram/Signal/iMessage/Microsoft Teams).
   - `channels.discord.guilds` / `channels.slack.channels`: per-surface allowlists + mention defaults.
   - Check order: `groupPolicy`/group allowlists first, then mention/reply activation. Replying to a bot message (implicit mention) does **not** bypass `groupAllowFrom`.
@@ -292,7 +292,7 @@ Two built-in tools remain control-plane sensitive:
 - `gateway` reads config with `config.schema.lookup` / `config.get`. It cannot write config, update Operator, or restart the Gateway.
 - `cron` creates scheduled jobs that keep running after the original chat/task ends.
 
-The `gateway` tool stays owner-only because config reads can expose secrets and host topology. Agents request persistent config or lifecycle changes through the `openclaw` delegation tool; Operator maps them to typed operations and requires human approval before applying them. See [Operator setup agent](/cli/openclaw#operations-and-approval).
+The `gateway` tool stays owner-only because config reads can expose secrets and host topology. Agents request persistent config or lifecycle changes through the `operator` delegation tool; Operator maps them to typed operations and requires human approval before applying them. See [Operator setup agent](/cli/operator#operations-and-approval).
 
 For any agent/surface handling untrusted content, deny these by default:
 
@@ -467,7 +467,7 @@ Common patterns: personal agent (full access, no sandbox), family/work agent (sa
 
 Enabling browser control gives the model a real browser. If that profile already has logged-in sessions, the model can access those accounts and data - treat browser profiles as sensitive state.
 
-- Prefer a dedicated profile for the agent (the default `openclaw` profile); avoid your personal daily-driver profile.
+- Prefer a dedicated profile for the agent (the default `operator` profile); avoid your personal daily-driver profile.
 - Keep host browser control disabled for sandboxed agents unless you trust them.
 - The standalone loopback browser control API only honors shared-secret auth (gateway token bearer auth or gateway password) - it does not consume trusted-proxy or Tailscale Serve identity headers.
 - Treat browser downloads as untrusted input; prefer an isolated downloads directory.
@@ -709,7 +709,7 @@ The Control UI needs a secure context (HTTPS or localhost) to generate device id
 ## Deployment and host trust
 
 - Full-disk encryption on the gateway host; prefer a dedicated OS user account for the Gateway if the host is shared.
-- Published package dependency lock: source checkouts use `pnpm-lock.yaml`; the published `openclaw` npm package and Operator-owned npm plugin packages include `npm-shrinkwrap.json` so installs use the reviewed transitive dependency graph from the release instead of resolving a fresh graph at install time. This is a supply-chain hardening and release reproducibility boundary, not a sandbox - see [npm shrinkwrap](/gateway/security/shrinkwrap).
+- Published package dependency lock: source checkouts use `pnpm-lock.yaml`; the published `operator` npm package and Operator-owned npm plugin packages include `npm-shrinkwrap.json` so installs use the reviewed transitive dependency graph from the release instead of resolving a fresh graph at install time. This is a supply-chain hardening and release reproducibility boundary, not a sandbox - see [npm shrinkwrap](/gateway/security/shrinkwrap).
 - Secure file operations: Operator uses `@gabrielvfonseca/fs-safe` for root-bounded file access, atomic writes, archive extraction, temp workspaces, and secret-file helpers. The optional POSIX Python helper defaults **off**; set `OPERATOR_FS_SAFE_PYTHON_MODE=auto` or `require` only when you want the extra fd-relative mutation hardening and can support a Python runtime. Details: [Secure file operations](/gateway/security/secure-file-operations).
 - Shared Slack workspace risk: if everyone in Slack can message the bot, the core risk is delegated tool authority - any allowed sender can induce tool calls (`exec`, browser, network/file tools) within the agent's policy, prompt/content injection from one sender can affect shared state/devices/outputs, and if the shared agent has sensitive credentials/files, any allowed sender can potentially drive exfiltration via tool usage. Use separate agents/gateways with minimal tools for team workflows; keep personal-data agents private.
 - Company-shared agent (acceptable pattern): fine when everyone using the agent is in the same trust boundary (for example one company team) and the agent is strictly business-scoped. Run it on a dedicated machine/VM/container, use a dedicated OS user + dedicated browser/profile/accounts, and do not sign that runtime into personal Apple/Google accounts or personal password-manager/browser profiles. Mixing personal and company identities on the same runtime collapses the separation and increases personal-data exposure risk.
@@ -818,7 +818,7 @@ For phone-number-based channels, consider running the assistant on a separate nu
 
 ### Audit
 
-1. Check Gateway logs: `/tmp/openclaw/operator-YYYY-MM-DD.log` (or `logging.file`).
+1. Check Gateway logs: `/tmp/operator/operator-YYYY-MM-DD.log` (or `logging.file`).
 2. Review the relevant transcript(s): `~/.operator/agents/<agentId>/sessions/*.jsonl`.
 3. Review recent config changes that could have widened access: `gateway.bind`, `gateway.auth`, DM/group policies, `tools.elevated`, plugin changes.
 4. Re-run `operator security audit --deep` and confirm critical findings are resolved.

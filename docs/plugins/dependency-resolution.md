@@ -128,15 +128,15 @@ included. Native-heavy packages (Codex, ACPX, Copilot, llama.cpp,
 memory-lancedb, Tlon) opt out with
 `operator.release.bundleRuntimeDependencies: false`; they still ship a
 shrinkwrap, but npm resolves runtime dependencies during install instead of
-embedding every platform binary in the plugin tarball. The root `openclaw`
+embedding every platform binary in the plugin tarball. The root `operator`
 package does not bundle its full dependency tree.
 
-Plugins that import `openclaw/plugin-sdk/*` declare `openclaw` as a peer
+Plugins that import `operator/plugin-sdk/*` declare `operator` as a peer
 dependency. Operator does not let npm install a separate registry copy of the
 host package into a managed project, because a stale host package can affect
 npm's peer resolution inside that plugin. Managed npm installs skip npm peer
 resolution/materialization, and Operator reasserts plugin-local
-`node_modules/openclaw` links for installed packages that declare the host
+`node_modules/operator` links for installed packages that declare the host
 peer, after install or update.
 
 git installs clone or refresh the repository, then run:
@@ -200,7 +200,7 @@ the repository root does not prepare bundled plugin dependencies.
 
 | Install shape                    | Bundled plugin location               | Dependency owner                                                     |
 | -------------------------------- | ------------------------------------- | -------------------------------------------------------------------- |
-| `npm install -g openclaw`        | Built runtime tree inside the package | Operator package and explicit plugin install/update/doctor flows     |
+| `npm install -g operator`        | Built runtime tree inside the package | Operator package and explicit plugin install/update/doctor flows     |
 | Git checkout plus `pnpm install` | `extensions/<id>` workspace packages  | The pnpm workspace, including each plugin package's own dependencies |
 | `operator plugins install ...`   | Managed npm project/git/ClawHub root  | The plugin install/update flow                                       |
 

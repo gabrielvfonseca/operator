@@ -117,7 +117,7 @@ describe("tool-cards", () => {
         {
           id: "msg:selectable",
           name: "web_search",
-          args: { query: "openclaw" },
+          args: { query: "operator" },
         },
         { expanded: false, onToggleExpanded: toggle },
       ),
@@ -591,8 +591,8 @@ describe("tool-cards", () => {
     expect(
       formatDistinctCollapsedToolSummaryText("heartbeat_respond", "Heartbeat Respond"),
     ).toBeUndefined();
-    expect(formatDistinctCollapsedToolSummaryText("run openclaw doctor", "Bash")).toBe(
-      "run openclaw doctor",
+    expect(formatDistinctCollapsedToolSummaryText("run operator doctor", "Bash")).toBe(
+      "run operator doctor",
     );
   });
 
@@ -642,7 +642,7 @@ describe("tool-cards", () => {
             view: {
               backend: "canvas",
               id: "cv_counter",
-              url: "/__openclaw__/canvas/documents/cv_counter/index.html",
+              url: "/__operator__/canvas/documents/cv_counter/index.html",
               title: "Counter demo",
               preferred_height: 480,
             },
@@ -656,7 +656,7 @@ describe("tool-cards", () => {
             render: "url",
             viewId: "cv_counter",
             title: "Counter demo",
-            url: "/__openclaw__/canvas/documents/cv_counter/index.html",
+            url: "/__operator__/canvas/documents/cv_counter/index.html",
             preferredHeight: 480,
           },
         },
@@ -692,7 +692,7 @@ describe("tool-cards", () => {
         id: "cv_counter",
         preferred_height: 480,
         title: "Counter demo",
-        url: "/__openclaw__/canvas/documents/cv_counter/index.html",
+        url: "/__operator__/canvas/documents/cv_counter/index.html",
       },
     });
   });
@@ -711,7 +711,7 @@ describe("tool-cards", () => {
             surface: "assistant_message",
             render: "url",
             viewId: "qr_preview",
-            url: "/__openclaw__/canvas/documents/qr_preview/index.html",
+            url: "/__operator__/canvas/documents/qr_preview/index.html",
           },
         },
         { expanded: true, onToggleExpanded: vi.fn() },
@@ -740,7 +740,7 @@ describe("tool-cards", () => {
             view: {
               backend: "canvas",
               id: "cv_sidebar",
-              url: "/__openclaw__/canvas/documents/cv_sidebar/index.html",
+              url: "/__operator__/canvas/documents/cv_sidebar/index.html",
               title: "Player",
               preferred_height: 360,
             },
@@ -753,7 +753,7 @@ describe("tool-cards", () => {
             surface: "assistant_message",
             render: "url",
             viewId: "cv_sidebar",
-            url: "/__openclaw__/canvas/documents/cv_sidebar/index.html",
+            url: "/__operator__/canvas/documents/cv_sidebar/index.html",
             title: "Player",
             preferredHeight: 360,
           },
@@ -774,7 +774,7 @@ describe("tool-cards", () => {
     const sidebar = requireFirstMockArg(onOpenSidebar, "sidebar open");
     expect(sidebar.kind).toBe("canvas");
     expect(sidebar.docId).toBe("cv_sidebar");
-    expect(sidebar.entryUrl).toBe("/__openclaw__/canvas/documents/cv_sidebar/index.html");
+    expect(sidebar.entryUrl).toBe("/__operator__/canvas/documents/cv_sidebar/index.html");
   });
 
   it("renders an error summary without a redundant Error badge", () => {

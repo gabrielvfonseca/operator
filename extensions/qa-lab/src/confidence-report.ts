@@ -1094,7 +1094,7 @@ function detectHarnessDrift(params: {
 }
 
 function detectTokenEfficiencyRegression(): boolean {
-  const openclaw = syntheticRuntimeCell("@gabrielvfonseca/operator", {
+  const operator = syntheticRuntimeCell("@gabrielvfonseca/operator", {
     usage: { inputTokens: 100, outputTokens: 20, totalTokens: 120 },
   });
   const codex = syntheticRuntimeCell("codex", {
@@ -1102,7 +1102,7 @@ function detectTokenEfficiencyRegression(): boolean {
   });
   const runtimeParity: RuntimeParityResult = {
     scenarioId: "token-efficiency-regression",
-    cells: { openclaw, codex },
+    cells: { operator, codex },
     drift: "none",
   };
   const report = buildTokenEfficiencyReport({

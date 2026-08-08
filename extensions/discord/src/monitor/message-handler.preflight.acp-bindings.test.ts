@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const ensureConfiguredBindingRouteReadyMock = vi.hoisted(() => vi.fn());
 const resolveConfiguredBindingRouteMock = vi.hoisted(() => vi.fn());
 
-vi.mock("openclaw/plugin-sdk/conversation-binding-runtime", async () => {
+vi.mock("operator/plugin-sdk/conversation-binding-runtime", async () => {
   const { createConfiguredBindingConversationRuntimeModuleMock } = await import(
     "../test-support/configured-binding-runtime.js"
   );
@@ -15,8 +15,8 @@ vi.mock("openclaw/plugin-sdk/conversation-binding-runtime", async () => {
       resolveConfiguredBindingRouteMock,
     },
     () =>
-      vi.importActual<typeof import("openclaw/plugin-sdk/conversation-binding-runtime")>(
-        "openclaw/plugin-sdk/conversation-binding-runtime",
+      vi.importActual<typeof import("operator/plugin-sdk/conversation-binding-runtime")>(
+        "operator/plugin-sdk/conversation-binding-runtime",
       ),
   );
 });
@@ -153,7 +153,7 @@ function createBasePreflightParams(overrides?: Record<string, unknown>) {
       discordConfig: {
         allowBots: true,
       } as NonNullable<
-        import("openclaw/plugin-sdk/config-contracts").OperatorConfig["channels"]
+        import("operator/plugin-sdk/config-contracts").OperatorConfig["channels"]
       >["discord"],
       data: createGuildEvent({
         channelId: CHANNEL_ID,
@@ -167,7 +167,7 @@ function createBasePreflightParams(overrides?: Record<string, unknown>) {
     discordConfig: {
       allowBots: true,
     } as NonNullable<
-      import("openclaw/plugin-sdk/config-contracts").OperatorConfig["channels"]
+      import("operator/plugin-sdk/config-contracts").OperatorConfig["channels"]
     >["discord"],
     ...overrides,
   } satisfies Parameters<typeof preflightDiscordMessage>[0];

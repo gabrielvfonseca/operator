@@ -250,7 +250,7 @@ function settleBridge(message) {
 }
 
 function buildModelScriptSource(code) {
-  return "(async (openclaw, console) => {\n" + code + "\n})(openclaw, console)";
+  return "(async (operator, console) => {\n" + code + "\n})(operator, console)";
 }
 
 function buildControllerSource() {
@@ -304,7 +304,7 @@ function buildControllerSource() {
     "  warn: (...items) => logs.push(items.map(formatLogItem)),\n" +
     "  error: (...items) => logs.push(items.map(formatLogItem)),\n" +
     "});\n" +
-    "const openclaw = Object.freeze({\n" +
+    "const operator = Object.freeze({\n" +
     "  tools: Object.freeze({\n" +
     "    search: (query, options) => bridge('search', [query, options]),\n" +
     "    describe: (id) => bridge('describe', [id]),\n" +
@@ -312,7 +312,7 @@ function buildControllerSource() {
     "  }),\n" +
     "});\n" +
     "return Object.freeze({\n" +
-    "  openclaw,\n" +
+    "  operator,\n" +
     "  console,\n" +
     "  isBridgeIdle,\n" +
     "  waitForBridgeIdle,\n" +

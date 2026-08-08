@@ -827,17 +827,17 @@ describe("installContextEngineLoopHook", () => {
     const transformedMessage = (transformed as AgentMessage[])[0];
 
     expect(afterTurnMessage).toMatchObject({ role: "user", content: "visible prompt" });
-    expect(JSON.stringify(afterTurnMessage)).not.toContain("__openclawTranscriptPromptText");
+    expect(JSON.stringify(afterTurnMessage)).not.toContain("__operatorTranscriptPromptText");
     expect(assembleMessage).toMatchObject({
       role: "user",
       content: "model-only hook context\n\nvisible prompt",
     });
-    expect(JSON.stringify(assembleMessage)).not.toContain("__openclawTranscriptPromptText");
+    expect(JSON.stringify(assembleMessage)).not.toContain("__operatorTranscriptPromptText");
     expect(transformedMessage).toMatchObject({
       role: "user",
       content: "model-only hook context\n\nvisible prompt",
     });
-    expect(JSON.stringify(transformedMessage)).not.toContain("__openclawTranscriptPromptText");
+    expect(JSON.stringify(transformedMessage)).not.toContain("__operatorTranscriptPromptText");
   });
 
   it("calls afterTurn and assemble when new messages are appended after the first call", async () => {

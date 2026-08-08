@@ -7,7 +7,7 @@ import {
   releasePinnedPluginChannelRegistry,
   setActivePluginRegistry,
 } from "../../../src/plugins/runtime.js";
-import { closeOperatorStateDatabaseForTest } from "../../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../../src/state/operator-state-db.js";
 import { createTestRegistry } from "../../../src/test-utils/channel-plugins.js";
 import { createTrackedTempDirs } from "../../../src/test-utils/tracked-temp-dirs.js";
 import {

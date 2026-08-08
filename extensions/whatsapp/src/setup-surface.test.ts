@@ -68,9 +68,9 @@ vi.mock("./creds-files.js", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/setup", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/setup")>(
-    "openclaw/plugin-sdk/setup",
+vi.mock("operator/plugin-sdk/setup", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/setup")>(
+    "operator/plugin-sdk/setup",
   );
   return {
     ...actual,

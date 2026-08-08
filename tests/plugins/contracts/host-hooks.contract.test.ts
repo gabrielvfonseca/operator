@@ -504,7 +504,7 @@ describe("host-hook fixture plugin contract", () => {
 
   it("allows the official npm Codex plugin to keep /codex command ownership", () => {
     const { config, registry } = createPluginRegistryFixture();
-    const codexRoot = path.join("/tmp", ".operator", "npm", "node_modules", "@openclaw", "codex");
+    const codexRoot = path.join("/tmp", ".operator", "npm", "node_modules", "@operator", "codex");
     registerTestPlugin({
       registry,
       config,

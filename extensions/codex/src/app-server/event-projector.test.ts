@@ -480,7 +480,7 @@ describe("CodexAppServerEventProjector", () => {
 
     const result = projector.buildResult(buildEmptyToolTelemetry());
     const userMessage = requireRecord(result.messagesSnapshot[0], "user message");
-    expect(userMessage["__openclaw"]).toMatchObject({
+    expect(userMessage["__operator"]).toMatchObject({
       upstreamUserText: "decorated upstream prompt",
     });
   });
@@ -5650,7 +5650,7 @@ describe("CodexAppServerEventProjector", () => {
       tool: "bash",
       arguments: {
         command:
-          '/bin/bash -lc \'/home/openclaw/.operator/workspace/bin/log_activity.sh "web_search" "Grilled salmon research"\'',
+          '/bin/bash -lc \'/home/operator/.operator/workspace/bin/log_activity.sh "web_search" "Grilled salmon research"\'',
         cwd: "/workspace",
       },
     });

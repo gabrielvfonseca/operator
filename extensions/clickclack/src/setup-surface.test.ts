@@ -221,7 +221,7 @@ describe("ClickClack setup wizard", () => {
       mocks.resolveWorkspaceId.mock.invocationCallOrder[0] ?? Number.POSITIVE_INFINITY,
     );
     expect(note).toHaveBeenCalledWith(
-      "Connected as @openclaw — workspace Default resolved.",
+      "Connected as @operator — workspace Default resolved.",
       "ClickClack connection",
     );
   });

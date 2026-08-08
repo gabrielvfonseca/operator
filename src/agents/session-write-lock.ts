@@ -475,7 +475,7 @@ function isOperatorSessionOwnerArgv(args: string[]): boolean {
   const exe = (normalized[0] ?? "").replace(/\.(bat|cmd|exe)$/i, "");
   if (
     exe === "@gabrielvfonseca/operator" ||
-    exe.endsWith("/openclaw") ||
+    exe.endsWith("/operator") ||
     exe.endsWith("/operator-gateway")
   ) {
     return true;
@@ -484,7 +484,7 @@ function isOperatorSessionOwnerArgv(args: string[]): boolean {
     normalized.some(
       (arg) =>
         arg === "@gabrielvfonseca/operator" ||
-        arg.endsWith("/openclaw") ||
+        arg.endsWith("/operator") ||
         arg === "operator.mjs" ||
         arg.endsWith("/operator.mjs"),
     )

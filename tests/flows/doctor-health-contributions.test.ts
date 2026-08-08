@@ -2583,7 +2583,7 @@ describe("doctor health contributions", () => {
           message: "structured finding needs attention",
           path: "operator.json",
           line: 12,
-          fixHint: "run openclaw doctor --fix",
+          fixHint: "run operator doctor --fix",
         },
       ],
       remainingFindings: [],
@@ -2616,7 +2616,7 @@ describe("doctor health contributions", () => {
     expect(ctx.runtime.log).toHaveBeenCalledWith(
       "[warning] core/doctor/test-structured-findings operator.json:12 - structured finding needs attention",
     );
-    expect(ctx.runtime.log).toHaveBeenCalledWith("  fix: run openclaw doctor --fix");
+    expect(ctx.runtime.log).toHaveBeenCalledWith("  fix: run operator doctor --fix");
   });
 
   it("runs structured-only contributions in dry-run mode when doctor is not repairing", async () => {

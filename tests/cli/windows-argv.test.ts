@@ -11,12 +11,12 @@ describe("normalizeWindowsArgv", () => {
         normalizeWindowsArgv([
           "@gabrielvfonseca/operator",
           "C:\\Program Files\\nodejs\\node.exe",
-          "C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js",
+          "C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\operator\\dist\\index.js",
           "status",
         ]),
       ).toEqual([
         "@gabrielvfonseca/operator",
-        "C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js",
+        "C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\operator\\dist\\index.js",
         "status",
       ]);
     } finally {
@@ -31,14 +31,14 @@ describe("normalizeWindowsArgv", () => {
         normalizeWindowsArgv([
           "@gabrielvfonseca/operator",
           "C:\\Program Files\\nodejs\\node.exe",
-          "C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js",
+          "C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\operator\\dist\\index.js",
           "agent",
           "--message",
           "debug node.exe-wrapper startup",
         ]),
       ).toEqual([
         "@gabrielvfonseca/operator",
-        "C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js",
+        "C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\operator\\dist\\index.js",
         "agent",
         "--message",
         "debug node.exe-wrapper startup",
@@ -55,13 +55,13 @@ describe("normalizeWindowsArgv", () => {
         normalizeWindowsArgv([
           "C:\\Program Files\\nodejs\\node.exe",
           "C:\\Program Files\\nodejs\\node.exe",
-          "C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js",
+          "C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\operator\\dist\\index.js",
           "debug node.exe-wrapper startup",
           "--verbose",
         ]),
       ).toEqual([
         "C:\\Program Files\\nodejs\\node.exe",
-        "C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js",
+        "C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\operator\\dist\\index.js",
         "debug node.exe-wrapper startup",
         "--verbose",
       ]);

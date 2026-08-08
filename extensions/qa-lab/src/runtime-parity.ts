@@ -932,20 +932,20 @@ function classifyRuntimeParityCells(params: {
     return { drift: "tool-result-shape", driftDetails: toolResultShapeDetails };
   }
 
-  const openclawTranscriptLines = params.operator.transcriptBytes.trim().length
+  const operatorTranscriptLines = params.operator.transcriptBytes.trim().length
     ? params.operator.transcriptBytes.trim().split(/\r?\n/u).length
     : 0;
   const codexTranscriptLines = params.codex.transcriptBytes.trim().length
     ? params.codex.transcriptBytes.trim().split(/\r?\n/u).length
     : 0;
   if (
-    openclawTranscriptLines !== codexTranscriptLines ||
+    operatorTranscriptLines !== codexTranscriptLines ||
     (!params.operator.finalText && Boolean(params.codex.finalText)) ||
     (Boolean(params.operator.finalText) && !params.codex.finalText)
   ) {
     return {
       drift: "structural",
-      driftDetails: `transcript/final-text structure differs (${openclawTranscriptLines} lines vs ${codexTranscriptLines})`,
+      driftDetails: `transcript/final-text structure differs (${operatorTranscriptLines} lines vs ${codexTranscriptLines})`,
     };
   }
 
@@ -1135,7 +1135,7 @@ export async function runRuntimeParityScenario(params: {
   runtimeParityUsage?: RuntimeParityUsagePolicy;
   runCell: (runtime: RuntimeId) => Promise<RuntimeParityScenarioExecution>;
 }): Promise<RuntimeParityResult> {
-  const openclaw = await params.runCell("@gabrielvfonseca/operator");
+  const operator = await params.runCell("@gabrielvfonseca/operator");
   const codex = await params.runCell("codex");
   const drift = classifyRuntimeParityCells({
     operator: operator.cell,

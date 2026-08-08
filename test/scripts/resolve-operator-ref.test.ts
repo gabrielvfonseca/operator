@@ -42,7 +42,7 @@ function runResolver(remote: string, args: string[]) {
     env: {
       ...process.env,
       GITHUB_OUTPUT: "",
-      OPERATOR_REF_REMOTE: remote,
+      OPENCLAW_REF_REMOTE: remote,
     },
   });
 }

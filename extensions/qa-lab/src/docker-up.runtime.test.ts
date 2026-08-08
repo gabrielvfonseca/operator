@@ -28,7 +28,7 @@ describe("runQaDockerUp", () => {
     const fetchCalls: string[] = [];
     const responseQueue = [false, true, true];
     const outputDir = await mkdtemp(path.join(os.tmpdir(), "qa-docker-up-"));
-    const repoRoot = path.resolve("/repo/openclaw");
+    const repoRoot = path.resolve("/repo/operator");
     const composeFile = path.join(outputDir, "docker-compose.qa.yml");
 
     try {
@@ -79,7 +79,7 @@ describe("runQaDockerUp", () => {
     const calls: string[] = [];
     const tempRoot = await mkdtemp(path.join(os.tmpdir(), "qa-docker-up-"));
     const outputDir = path.join(tempRoot, "mac path's qa lab");
-    const repoRoot = path.resolve("/repo/openclaw");
+    const repoRoot = path.resolve("/repo/operator");
     const composeFile = path.join(outputDir, "docker-compose.qa.yml");
 
     try {
@@ -105,7 +105,7 @@ describe("runQaDockerUp", () => {
   it("skips UI build and compose --build for prebuilt images", async () => {
     const calls: string[] = [];
     const outputDir = await mkdtemp(path.join(os.tmpdir(), "qa-docker-up-"));
-    const repoRoot = path.resolve("/repo/openclaw");
+    const repoRoot = path.resolve("/repo/operator");
     const composeFile = path.join(outputDir, "docker-compose.qa.yml");
 
     try {
@@ -136,7 +136,7 @@ describe("runQaDockerUp", () => {
   it("falls back to Corepack for the QA UI build when pnpm is unavailable", async () => {
     const calls: string[] = [];
     const outputDir = await mkdtemp(path.join(os.tmpdir(), "qa-docker-up-"));
-    const repoRoot = path.resolve("/repo/openclaw");
+    const repoRoot = path.resolve("/repo/operator");
     const composeFile = path.join(outputDir, "docker-compose.qa.yml");
 
     try {
@@ -177,7 +177,7 @@ describe("runQaDockerUp", () => {
   it("does not hide real QA UI build failures behind the Corepack fallback", async () => {
     const calls: string[] = [];
     const outputDir = await mkdtemp(path.join(os.tmpdir(), "qa-docker-up-"));
-    const repoRoot = path.resolve("/repo/openclaw");
+    const repoRoot = path.resolve("/repo/operator");
 
     try {
       await expect(
@@ -250,7 +250,7 @@ describe("runQaDockerUp", () => {
     try {
       const result = await runQaDockerUp(
         {
-          repoRoot: "/repo/openclaw",
+          repoRoot: "/repo/operator",
           outputDir,
           skipUiBuild: true,
           usePrebuiltImage: true,
@@ -287,7 +287,7 @@ describe("runQaDockerUp", () => {
       await expect(
         runQaDockerUp(
           {
-            repoRoot: "/repo/openclaw",
+            repoRoot: "/repo/operator",
             outputDir,
             gatewayPort: 43124,
             qaLabPort: 43124,
@@ -314,7 +314,7 @@ describe("runQaDockerUp", () => {
       await expect(
         runQaDockerUp(
           {
-            repoRoot: "/repo/openclaw",
+            repoRoot: "/repo/operator",
             outputDir,
             skipUiBuild: true,
             usePrebuiltImage: true,
@@ -341,7 +341,7 @@ describe("runQaDockerUp", () => {
     const fetchCalls: string[] = [];
     const hostGatewayCancel = vi.fn(async () => {});
     const outputDir = await mkdtemp(path.join(os.tmpdir(), "qa-docker-up-"));
-    const repoRoot = path.resolve("/repo/openclaw");
+    const repoRoot = path.resolve("/repo/operator");
     const composeFile = path.join(outputDir, "docker-compose.qa.yml");
 
     try {

@@ -6,7 +6,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { GATEWAY_CLIENT_IDS } from "../../../packages/gateway-protocol/src/client-info.js";
-import { closeOperatorStateDatabaseForTest } from "../../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../../src/state/operator-state-db.js";
 import { ExecApprovalManager } from "../../../src/gateway/exec-approval-manager.js";
 import {
   bindApprovalReviewerDeviceIds,

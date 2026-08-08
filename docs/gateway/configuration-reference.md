@@ -481,7 +481,7 @@ See [Inferred commitments](/concepts/commitments).
   snapshot/ref-driven actions instead of CSS-selector targeting, one-file upload
   hooks, no dialog timeout overrides, no `wait --load networkidle`, and no
   `responsebody`, PDF export, download interception, or batch actions.
-- Local managed `openclaw` profiles auto-assign `cdpPort` and `cdpUrl`; set
+- Local managed `operator` profiles auto-assign `cdpPort` and `cdpUrl`; set
   `cdpUrl` explicitly only for remote CDP profiles or existing-session endpoint
   attach.
 - Local managed profiles can set `executablePath` to override the global
@@ -548,7 +548,7 @@ See [Inferred commitments](/concepts/commitments).
     },
     controlUi: {
       enabled: true,
-      basePath: "/openclaw",
+      basePath: "/operator",
       // root: "dist/control-ui",
       // toolTitles: false, // opt-in AI purpose titles for tool calls (spends utility-model tokens)
       // embedSandbox: "scripts", // strict | scripts | trusted
@@ -625,7 +625,7 @@ See [Inferred commitments](/concepts/commitments).
   lock out a different origin.
 - `tailscale.mode`: `serve` (tailnet only, loopback bind) or `funnel` (public, requires auth).
 - `tailscale.serviceName`: optional Tailscale Service name for Serve mode, such
-  as `svc:openclaw`. When set, Operator passes it to `tailscale serve
+  as `svc:operator`. When set, Operator passes it to `tailscale serve
 --service` so the Control UI can be exposed through a named Service instead
   of the device hostname. The value must use Tailscale's `svc:<dns-label>`
   Service name format; startup reports the derived Service URL.
@@ -706,9 +706,9 @@ See [Multiple Gateways](/gateway/multiple-gateways).
     tls: {
       enabled: false,
       autoGenerate: false,
-      certPath: "/etc/openclaw/tls/server.crt",
-      keyPath: "/etc/openclaw/tls/server.key",
-      caPath: "/etc/openclaw/tls/ca-bundle.crt",
+      certPath: "/etc/operator/tls/server.crt",
+      keyPath: "/etc/operator/tls/server.key",
+      caPath: "/etc/operator/tls/ca-bundle.crt",
     },
   },
 }
@@ -825,7 +825,7 @@ Unknown settings are rejected. Crabbox credentials and backend-specific account 
 
 - `profiles`: named worker profiles with non-empty, whitespace-trimmed ids. Each profile selects a provider registered by a plugin.
 - `provider`: non-empty worker provider id. The examples use the bundled `crabbox` provider and the QA Lab `static-ssh` provider.
-- `install`: worker installation method. `"bundle"` (default) transfers a content-hashed bundle of the gateway's installed build and supports released, development, and unreleased versions. `"npm"` is an opt-in optimization for an unmodified packaged release; it installs `openclaw@<exact gateway version>` from the public npm registry and never installs `latest`.
+- `install`: worker installation method. `"bundle"` (default) transfers a content-hashed bundle of the gateway's installed build and supports released, development, and unreleased versions. `"npm"` is an opt-in optimization for an unmodified packaged release; it installs `operator@<exact gateway version>` from the public npm registry and never installs `latest`.
 - Bundled provider plugins are selected automatically when configured, but explicit disables and `plugins.allow` still apply. Include the provider id (for example, `crabbox`) when an allowlist is configured. External provider plugins must also be installed and explicitly enabled.
 - `settings`: provider-owned bounded JSON. The selected plugin defines and validates its keys; use [SecretRef objects](/gateway/secrets) for secret-bearing values. The static SSH provider requires `host`, `user`, `hostKey`, and `keyRef`; `port` defaults to `22`. `hostKey` must be one OpenSSH public host-key line (`algorithm base64`) obtained from the known host or another trusted channel, with no options prefix.
 - `lifetime.idleTimeoutMinutes`: positive integer minutes stored for later idle-reclamation policy.
@@ -930,7 +930,7 @@ Validation and safety notes:
 {
   hooks: {
     gmail: {
-      account: "openclaw@gmail.com",
+      account: "operator@gmail.com",
       topic: "projects/<project-id>/topics/gog-gmail-watch",
       subscription: "gog-gmail-watch-push",
       pushToken: "shared-push-token",
@@ -1005,7 +1005,7 @@ Validation and safety notes:
 - `full`: include `cliPath` + `sshPort`; LAN multicast advertising still requires the bundled `bonjour` plugin to be enabled.
 - `off`: suppress LAN multicast advertising without changing plugin enablement.
 - The bundled `bonjour` plugin auto-starts on macOS hosts and is opt-in on Linux, Windows, and containerized Gateway deployments.
-- Hostname defaults to the system hostname when it is a valid DNS label, falling back to `openclaw`. Override with `OPERATOR_MDNS_HOSTNAME`.
+- Hostname defaults to the system hostname when it is a valid DNS label, falling back to `operator`. Override with `OPERATOR_MDNS_HOSTNAME`.
 - `OPERATOR_DISABLE_BONJOUR=1` disables mDNS advertising outright, overriding `discovery.mdns.mode`.
 
 ### Wide-area (DNS-SD)
@@ -1251,7 +1251,7 @@ writer is best-effort, not a lossless compliance archive.
 {
   logging: {
     level: "info",
-    file: "/tmp/openclaw/operator.log",
+    file: "/tmp/operator/operator.log",
     consoleLevel: "info",
     consoleStyle: "pretty", // pretty | compact | json
     redactSensitive: "tools", // off | tools
@@ -1260,7 +1260,7 @@ writer is best-effort, not a lossless compliance archive.
 }
 ```
 
-- Default log file: `/tmp/openclaw/operator-YYYY-MM-DD.log`.
+- Default log file: `/tmp/operator/operator-YYYY-MM-DD.log`.
 - Set `logging.file` for a stable path.
 - `consoleLevel` bumps to `debug` when `--verbose`.
 - `maxFileBytes`: maximum active log file size in bytes before rotation (positive integer; default: `104857600` = 100 MB). Operator keeps up to five numbered archives beside the active file.

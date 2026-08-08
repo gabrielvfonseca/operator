@@ -70,7 +70,7 @@ describe("scripts/pr wrappers", () => {
   });
 
   it("refuses to substitute a different canonical wrapper implementation", () => {
-    const dir = mkdtempSync(join(tmpdir(), "openclaw-pr-wrapper-revision-"));
+    const dir = mkdtempSync(join(tmpdir(), "operator-pr-wrapper-revision-"));
     const repo = join(dir, "repo");
     const linked = join(dir, "linked");
     mkdirSync(join(repo, "scripts", "lib"), { recursive: true });
@@ -83,7 +83,7 @@ describe("scripts/pr wrappers", () => {
     const git = (cwd: string, args: string[]) =>
       spawnSync("git", args, { cwd, encoding: "utf8", stdio: "pipe" });
     expect(git(repo, ["init", "-b", "main"]).status).toBe(0);
-    expect(git(repo, ["config", "user.name", "OpenClaw Test"]).status).toBe(0);
+    expect(git(repo, ["config", "user.name", "Operator Test"]).status).toBe(0);
     expect(git(repo, ["config", "user.email", "test@example.invalid"]).status).toBe(0);
     expect(git(repo, ["add", "scripts"]).status).toBe(0);
     expect(git(repo, ["commit", "-m", "test: canonical wrapper"]).status).toBe(0);
@@ -129,7 +129,7 @@ describe("scripts/pr wrappers", () => {
   });
 
   it("runs the local wrapper when it matches origin/main and the canonical checkout is parked elsewhere", () => {
-    const dir = mkdtempSync(join(tmpdir(), "openclaw-pr-wrapper-anchor-"));
+    const dir = mkdtempSync(join(tmpdir(), "operator-pr-wrapper-anchor-"));
     const repo = join(dir, "repo");
     const linked = join(dir, "linked");
     mkdirSync(join(repo, "scripts", "lib"), { recursive: true });
@@ -142,7 +142,7 @@ describe("scripts/pr wrappers", () => {
     const git = (cwd: string, args: string[]) =>
       spawnSync("git", args, { cwd, encoding: "utf8", stdio: "pipe" });
     expect(git(repo, ["init", "-b", "main"]).status).toBe(0);
-    expect(git(repo, ["config", "user.name", "OpenClaw Test"]).status).toBe(0);
+    expect(git(repo, ["config", "user.name", "Operator Test"]).status).toBe(0);
     expect(git(repo, ["config", "user.email", "test@example.invalid"]).status).toBe(0);
     expect(git(repo, ["add", "scripts"]).status).toBe(0);
     expect(git(repo, ["commit", "-m", "test: canonical wrapper"]).status).toBe(0);
@@ -183,7 +183,7 @@ describe("scripts/pr wrappers", () => {
   });
 
   it("verifies local GitHub auth through GraphQL when REST quota is unavailable", () => {
-    const dir = mkdtempSync(join(tmpdir(), "openclaw-pr-auth-"));
+    const dir = mkdtempSync(join(tmpdir(), "operator-pr-auth-"));
     const gh = join(dir, "gh");
     writeFileSync(
       gh,

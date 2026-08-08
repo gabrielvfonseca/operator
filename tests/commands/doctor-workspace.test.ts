@@ -39,7 +39,7 @@ describe("root memory repair", () => {
   let tmpDir = "";
 
   beforeEach(async () => {
-    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-root-memory-"));
+    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-root-memory-"));
     note.mockClear();
   });
 

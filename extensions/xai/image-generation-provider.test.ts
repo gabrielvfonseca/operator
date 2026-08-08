@@ -27,7 +27,7 @@ const {
     // Stub mirroring the xAI attribution policy headers (real wire is locked in provider-attribution.test.ts).
     if (params.provider === "xai") {
       const version = process.env.OPERATOR_VERSION?.trim() || "unknown";
-      headers.set("User-Agent", `openclaw/${version}`);
+      headers.set("User-Agent", `operator/${version}`);
       headers.set("originator", "@gabrielvfonseca/operator");
       headers.set("version", version);
     }
@@ -48,17 +48,17 @@ const {
   sanitizeConfiguredModelProviderRequestMock: vi.fn((request) => request),
 }));
 
-vi.mock("openclaw/plugin-sdk/provider-auth-runtime", () => ({
+vi.mock("operator/plugin-sdk/provider-auth-runtime", () => ({
   resolveApiKeyForProvider: resolveApiKeyForProviderMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/provider-auth", () => ({
+vi.mock("operator/plugin-sdk/provider-auth", () => ({
   isProviderApiKeyConfigured: isProviderApiKeyConfiguredMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/provider-http", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/provider-http")>(
-    "openclaw/plugin-sdk/provider-http",
+vi.mock("operator/plugin-sdk/provider-http", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/provider-http")>(
+    "operator/plugin-sdk/provider-http",
   );
   return {
     assertOkOrThrowHttpError: assertOkOrThrowHttpErrorMock,
@@ -72,7 +72,7 @@ vi.mock("openclaw/plugin-sdk/provider-http", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/string-coerce-runtime", () => ({
+vi.mock("operator/plugin-sdk/string-coerce-runtime", () => ({
   normalizeOptionalString: (v: unknown) => (typeof v === "string" ? v.trim() : undefined),
   normalizeOptionalLowercaseString: (v: unknown) =>
     typeof v === "string" ? v.trim().toLowerCase() : undefined,
@@ -267,7 +267,7 @@ describe("xai image generation provider", () => {
     } as GenerateImageParams);
 
     const request = requirePostJsonCall();
-    expect(request.headers?.get("user-agent")).toBe("openclaw/2026.3.22");
+    expect(request.headers?.get("user-agent")).toBe("operator/2026.3.22");
     expect(request.headers?.get("originator")).toBe("@gabrielvfonseca/operator");
     expect(request.headers?.get("version")).toBe("2026.3.22");
     vi.unstubAllEnvs();

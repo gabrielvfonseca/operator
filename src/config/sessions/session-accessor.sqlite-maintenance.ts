@@ -9,7 +9,7 @@ import {
   openOperatorAgentDatabase,
   runOperatorAgentWriteTransaction,
   type OperatorAgentDatabase,
-} from "../../state/openclaw-agent-db.js";
+} from "../../state/operator-agent-db.js";
 import type { SessionDiskBudgetSweepResult } from "./disk-budget.js";
 import {
   materializeSqliteSessionStateDeletePlans,

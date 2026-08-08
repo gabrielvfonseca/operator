@@ -15,7 +15,7 @@ const MOONSHOT_FIXED_SAMPLING_FIELDS = [
   "presence_penalty",
   "frequency_penalty",
 ] as const;
-const llmRuntimeLoader = createLazyImportLoader(() => import("openclaw/plugin-sdk/llm"));
+const llmRuntimeLoader = createLazyImportLoader(() => import("operator/plugin-sdk/llm"));
 
 async function loadDefaultStreamFn(): Promise<StreamFn> {
   const runtime = await llmRuntimeLoader.load();

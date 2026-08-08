@@ -198,7 +198,7 @@ describe("legacy memory search config migrate", () => {
             models: [
               { id: "gpt-missing" },
               { id: "gpt-auto", agentRuntime: { id: "auto" } },
-              { id: "gpt-openclaw", agentRuntime: { id: "@gabrielvfonseca/operator" } },
+              { id: "gpt-operator", agentRuntime: { id: "@gabrielvfonseca/operator" } },
             ],
           },
         },
@@ -208,7 +208,7 @@ describe("legacy memory search config migrate", () => {
     expect(res.config?.models?.providers?.openai?.models).toEqual([
       { id: "gpt-missing", agentRuntime: { id: "codex" } },
       { id: "gpt-auto", agentRuntime: { id: "codex" } },
-      { id: "gpt-openclaw", agentRuntime: { id: "@gabrielvfonseca/operator" } },
+      { id: "gpt-operator", agentRuntime: { id: "@gabrielvfonseca/operator" } },
     ]);
     expect(res.config?.models?.providers).not.toHaveProperty("codex");
   });
@@ -221,7 +221,7 @@ describe("legacy memory search config migrate", () => {
           codex: {
             models: [
               { id: "gpt-auto", agentRuntime: { id: "auto" } },
-              { id: "gpt-openclaw", agentRuntime: { id: "@gabrielvfonseca/operator" } },
+              { id: "gpt-operator", agentRuntime: { id: "@gabrielvfonseca/operator" } },
             ],
           },
         },
@@ -231,7 +231,7 @@ describe("legacy memory search config migrate", () => {
     expect(res.config?.models?.providers?.openai?.models).toEqual([
       { id: "text-embedding-3-small" },
       { id: "gpt-auto", agentRuntime: { id: "codex" } },
-      { id: "gpt-openclaw", agentRuntime: { id: "@gabrielvfonseca/operator" } },
+      { id: "gpt-operator", agentRuntime: { id: "@gabrielvfonseca/operator" } },
     ]);
     expect(res.config?.models?.providers).not.toHaveProperty("codex");
   });
@@ -1789,7 +1789,7 @@ describe("legacy migrate mention routing", () => {
         groupChat: {
           requireMention: false,
           historyLimit: 12,
-          mentionPatterns: ["@openclaw"],
+          mentionPatterns: ["@operator"],
         },
       },
       channels: {
@@ -1817,7 +1817,7 @@ describe("legacy migrate mention routing", () => {
     });
     expect(res.config?.messages?.groupChat).toEqual({
       historyLimit: 12,
-      mentionPatterns: ["@openclaw"],
+      mentionPatterns: ["@operator"],
     });
     expect(res.changes).toStrictEqual([
       "Moved routing.allowFrom → channels.whatsapp.allowFrom.",

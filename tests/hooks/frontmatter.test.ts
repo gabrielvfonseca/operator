@@ -17,7 +17,7 @@ function requireString(value: string | undefined, label: string): string {
 
 function requireOperatorMetadata(metadata: OperatorHookMetadata | undefined): OperatorHookMetadata {
   if (!metadata) {
-    throw new Error("expected openclaw metadata");
+    throw new Error("expected operator metadata");
   }
   return metadata;
 }
@@ -164,7 +164,7 @@ description: 'single-quoted'
 });
 
 describe("resolveOperatorMetadata", () => {
-  it("extracts openclaw metadata from parsed frontmatter", () => {
+  it("extracts operator metadata from parsed frontmatter", () => {
     const frontmatter = {
       name: "test-hook",
       metadata: JSON.stringify({
@@ -180,7 +180,7 @@ describe("resolveOperatorMetadata", () => {
     };
 
     const result = resolveOperatorMetadata(frontmatter);
-    const openclaw = requireOperatorMetadata(result);
+    const operator = requireOperatorMetadata(result);
     expect(operator.emoji).toBe("🔥");
     expect(operator.events).toEqual(["command:new", "command:reset"]);
     expect(operator.requires?.config).toEqual(["workspace.dir"]);
@@ -193,7 +193,7 @@ describe("resolveOperatorMetadata", () => {
     expect(result).toBeUndefined();
   });
 
-  it("returns undefined when openclaw key is missing", () => {
+  it("returns undefined when operator key is missing", () => {
     const frontmatter = {
       metadata: JSON.stringify({ other: "data" }),
     };
@@ -276,7 +276,7 @@ metadata:
       '"command:reset"',
     );
 
-    const openclaw = requireOperatorMetadata(resolveOperatorMetadata(frontmatter));
+    const operator = requireOperatorMetadata(resolveOperatorMetadata(frontmatter));
     expect(operator.emoji).toBe("💾");
     expect(operator.events).toEqual(["command:new", "command:reset"]);
     expect(operator.requires?.config).toEqual(["workspace.dir"]);
@@ -296,9 +296,9 @@ metadata:
 ---
 `;
     const frontmatter = parseFrontmatter(content);
-    const openclaw = resolveOperatorMetadata(frontmatter);
-    expect(openclaw?.emoji).toBe("disk");
-    expect(openclaw?.events).toEqual(["command:new"]);
+    const operator = resolveOperatorMetadata(frontmatter);
+    expect(operator?.emoji).toBe("disk");
+    expect(operator?.events).toEqual(["command:new"]);
   });
 });
 

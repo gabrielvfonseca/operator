@@ -36,7 +36,7 @@ function createContainer(overrides: Partial<SandboxContainerInfo> = {}): Sandbox
     backendId: "docker",
     runtimeLabel: containerName,
     sessionKey: "test-session",
-    image: "openclaw/sandbox:latest",
+    image: "operator/sandbox:latest",
     configLabelKind: "Image",
     imageMatch: true,
     running: true,
@@ -50,7 +50,7 @@ function createBrowser(overrides: Partial<SandboxBrowserInfo> = {}): SandboxBrow
   return {
     containerName: "operator-browser-test",
     sessionKey: "test-session",
-    image: "openclaw/browser:latest",
+    image: "operator/browser:latest",
     imageMatch: true,
     running: true,
     createdAtMs: NOW - 3600000,

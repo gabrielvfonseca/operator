@@ -95,7 +95,7 @@ git commit -m "Add workspace"
 ## What Operator does
 
 - Runs a messaging-channel gateway (WhatsApp, Telegram, Discord, Signal, iMessage, Slack, and more) plus an embedded agent, so the assistant can read/write chats, fetch context, and run skills via the host machine.
-- The macOS app manages permissions (screen recording, notifications, microphone) and exposes the `openclaw` CLI via its bundled binary.
+- The macOS app manages permissions (screen recording, notifications, microphone) and exposes the `operator` CLI via its bundled binary.
 - Direct chats collapse into the agent's `main` session by default; groups and channels/rooms get their own session keys. See [Channel routing](/channels/channel-routing) for the exact key formats. Heartbeats keep background tasks alive.
 
 ## Core skills (enable in Settings → Skills)
@@ -122,7 +122,7 @@ Example roster for a personal-assistant workspace; swap in whichever skills fit 
 
 ## Usage notes
 
-- Prefer the `openclaw` CLI for scripting; the desktop app handles permissions.
+- Prefer the `operator` CLI for scripting; the desktop app handles permissions.
 - Run installs from the Skills tab; the install button is hidden once a required binary is already present.
 - Keep heartbeats enabled so the assistant can schedule reminders, monitor inboxes, and trigger camera captures.
 - Canvas UI runs full-screen with native overlays. Avoid placing critical controls at the top-left/top-right/bottom edges; add explicit layout gutters instead of relying on safe-area insets.

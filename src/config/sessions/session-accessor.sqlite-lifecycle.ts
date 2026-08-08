@@ -9,7 +9,7 @@ import { emitSessionIdentityMutation } from "../../sessions/session-lifecycle-ev
 import {
   openOperatorAgentDatabase,
   runOperatorAgentWriteTransaction,
-} from "../../state/openclaw-agent-db.js";
+} from "../../state/operator-agent-db.js";
 import { materializeSqliteSessionStateDeletePlans } from "./session-accessor.sqlite-archive.js";
 import type {
   SessionLifecycleArchivedTranscript,

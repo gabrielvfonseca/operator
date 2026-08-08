@@ -41,7 +41,7 @@ function createPluginLoadPathConfig(
 
 describe("bundled plugin load path repair", () => {
   beforeEach(() => {
-    const packageRoot = "/app/node_modules/openclaw";
+    const packageRoot = "/app/node_modules/operator";
     mockBundledSource("feishu", bundledDistPluginRootAt(packageRoot, "feishu"));
   });
 
@@ -112,7 +112,7 @@ describe("bundled plugin load path repair", () => {
     const stalePackageRoot = path.resolve(
       "pnpm-global",
       ".pnpm",
-      "openclaw@2026.3.28_@napi-rs+canvas@0.1.97",
+      "operator@2026.3.28_@napi-rs+canvas@0.1.97",
       "node_modules",
       "@gabrielvfonseca/operator",
     );
@@ -135,7 +135,7 @@ describe("bundled plugin load path repair", () => {
     const stalePackageRoot = path.resolve(
       "pnpm-global",
       ".pnpm",
-      "openclaw@2026.3.28_@napi-rs+canvas@0.1.97",
+      "operator@2026.3.28_@napi-rs+canvas@0.1.97",
       "node_modules",
       "@gabrielvfonseca/operator",
     );
@@ -237,12 +237,12 @@ describe("bundled plugin load path repair", () => {
           pathLabel: "plugins.load.paths",
         },
       ],
-      doctorFixCommand: "openclaw doctor --fix",
+      doctorFixCommand: "operator doctor --fix",
     });
 
     expect(warnings).toEqual([
       `- plugins.load.paths: bundled plugin path "${legacyPath}" still aliases feishu; Operator loads the packaged bundled plugin from "${bundledPath}".`,
-      '- Run "openclaw doctor --fix" to remove these redundant bundled plugin paths.',
+      '- Run "operator doctor --fix" to remove these redundant bundled plugin paths.',
     ]);
   });
 

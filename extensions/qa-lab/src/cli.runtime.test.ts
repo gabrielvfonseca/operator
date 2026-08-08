@@ -761,7 +761,7 @@ describe("qa cli runtime", () => {
       runQaSuiteCommand({
         channelDriver: "live",
         channel: "telegram",
-        runtimePair: "openclaw,codex",
+        runtimePair: "operator,codex",
       }),
     ).rejects.toThrow("--runtime-pair is not supported with a live QA adapter.");
     expect(runQaSuite).not.toHaveBeenCalled();
@@ -929,7 +929,7 @@ describe("qa cli runtime", () => {
       repoRoot: "/tmp/operator-repo",
       providerMode: "mock-openai",
       scenarioIds: ["approval-turn-tool-followthrough"],
-      runtimePair: "openclaw,codex",
+      runtimePair: "operator,codex",
     });
 
     expect(runQaSuite).toHaveBeenCalledWith({
@@ -1165,7 +1165,7 @@ describe("qa cli runtime", () => {
     expect(runQaFlowSuiteFromRuntime).not.toHaveBeenCalled();
     expectWriteContains(
       stdoutWrite,
-      "telegram-status-command\tdefault\tTelegram status command reply\tVerify Telegram status returns model, session, and activation details. refs=openclaw/openclaw#74698",
+      "telegram-status-command\tdefault\tTelegram status command reply\tVerify Telegram status returns model, session, and activation details. refs=operator/operator#74698",
     );
   });
 
@@ -1701,7 +1701,7 @@ describe("qa cli runtime", () => {
   it("keeps runtime-pair tier selection on flow scenarios and reports exclusions", async () => {
     await runQaSuiteCommand({
       repoRoot: "/tmp/operator-repo",
-      runtimePair: "openclaw,codex",
+      runtimePair: "operator,codex",
       runtimeParityTier: ["standard", "live-only"],
     });
 
@@ -1728,7 +1728,7 @@ describe("qa cli runtime", () => {
     await expect(
       runQaSuiteCommand({
         repoRoot: "/tmp/operator-repo",
-        runtimePair: "openclaw,codex",
+        runtimePair: "operator,codex",
         scenarioIds: ["hosted-image-generation-providers-live"],
       }),
     ).rejects.toThrow(
@@ -1754,7 +1754,7 @@ describe("qa cli runtime", () => {
     await expect(
       runQaSuiteCommand({
         repoRoot: "/tmp/operator-repo",
-        runtimePair: "openclaw,codex",
+        runtimePair: "operator,codex",
         runtimeParityTier: ["live-only"],
       }),
     ).rejects.toThrow(
@@ -2045,7 +2045,7 @@ describe("qa cli runtime", () => {
         repoRoot,
         transcripts: path.resolve("qa/scenarios/jsonl-replay"),
         outputDir: "jsonl-output",
-        runtimePair: "openclaw,codex",
+        runtimePair: "operator,codex",
       });
 
       const report = await fs.readFile(
@@ -2059,7 +2059,7 @@ describe("qa cli runtime", () => {
         ),
       ) as { transcripts?: Array<{ userTurnCount?: number }> };
 
-      expect(report).toContain("# Operator JSONL Replay Report - openclaw vs codex");
+      expect(report).toContain("# Operator JSONL Replay Report - operator vs codex");
       expect(report).toContain("| plan-mode-boundaries.jsonl | 3 |  | none, none, none |");
       expect(summary.transcripts).toHaveLength(7);
     } finally {
@@ -2317,7 +2317,7 @@ describe("qa cli runtime", () => {
       runner: "multipass",
       providerMode: "mock-openai",
       scenarioIds: ["approval-turn-tool-followthrough"],
-      runtimePair: "codex,openclaw",
+      runtimePair: "codex,operator",
       allowFailures: true,
     });
 

@@ -682,7 +682,7 @@ describe("validateConfigObjectRawWithPlugins channel metadata", () => {
   });
 
   it("sanitizes the schema owner in validation diagnostics", () => {
-    const unsafeId = `openclaw${String.fromCharCode(10)}${String.fromCharCode(27)}[31m-lark`;
+    const unsafeId = `operator${String.fromCharCode(10)}${String.fromCharCode(27)}[31m-lark`;
     const registry = createExternalFeishuSchemaRegistry();
     const plugin = expectDefined(registry.plugins[0], "external Feishu plugin manifest");
     registry.plugins[0] = {
@@ -731,7 +731,7 @@ describe("validateConfigObjectRawWithPlugins channel metadata", () => {
         }),
       );
       expect(result.issues[0]?.message).not.toContain("Telegram groups");
-      expect(result.issues[0]?.message).not.toContain("openclaw doctor --fix");
+      expect(result.issues[0]?.message).not.toContain("operator doctor --fix");
     }
   });
 });

@@ -520,7 +520,7 @@ describe("bootstrap prompt warnings", () => {
     const contextFiles = [{ path: "AGENTS.MD", content: "Follow AGENTS guidance." }];
     const warningLines = ["AGENTS.MD: 200 raw -> 0 injected"];
     const stableSystemPrompt = buildAgentSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       contextFiles,
     });
     // Legacy injection mutated the system prompt; current warning placement keeps

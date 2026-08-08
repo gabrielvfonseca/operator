@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: operator-config
   labels:
-    app: openclaw
+    app: operator
 data:
   operator.json: |
     {

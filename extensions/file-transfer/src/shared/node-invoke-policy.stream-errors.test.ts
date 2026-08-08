@@ -8,7 +8,7 @@ const { runCommandWithTimeoutMock } = vi.hoisted(() => ({
   runCommandWithTimeoutMock: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/process-runtime", () => ({
+vi.mock("operator/plugin-sdk/process-runtime", () => ({
   runCommandWithTimeout: runCommandWithTimeoutMock,
 }));
 

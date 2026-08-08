@@ -31,10 +31,10 @@ const ALLOWLIST_FILE = "scripts/protocol-event-coverage.allowlist.json";
 const IOS_SCAN_ROOTS = ["apps/ios/Sources", "apps/shared/OperatorKit/Sources"];
 const IOS_SENTINEL_FILE =
   "apps/shared/OperatorKit/Sources/OperatorChatUI/ChatGatewayPayloadCodec.swift";
-const ANDROID_SCAN_ROOT = "apps/android/app/src/main/java/ai/openclaw/app";
+const ANDROID_SCAN_ROOT = "apps/android/app/src/main/java/ai/operator/app";
 const ANDROID_SENTINEL_FILES = [
-  "apps/android/app/src/main/java/ai/openclaw/app/gateway/GatewaySession.kt",
-  "apps/android/app/src/main/java/ai/openclaw/app/chat/ChatController.kt",
+  "apps/android/app/src/main/java/ai/operator/app/gateway/GatewaySession.kt",
+  "apps/android/app/src/main/java/ai/operator/app/chat/ChatController.kt",
 ];
 
 // Minimum plausible catalog size; a partial parse below this means the

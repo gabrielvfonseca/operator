@@ -5,7 +5,7 @@ import { buildElevenLabsSpeechProvider } from "./speech-provider.js";
 
 const fetchWithSsrFGuardMock = vi.hoisted(() => vi.fn());
 
-vi.mock("openclaw/plugin-sdk/ssrf-runtime", () => ({
+vi.mock("operator/plugin-sdk/ssrf-runtime", () => ({
   fetchWithSsrFGuard: async (params: {
     url: string;
     init?: RequestInit;
@@ -35,7 +35,7 @@ describe("elevenlabs speech provider", () => {
   const originalFetch = globalThis.fetch;
 
   afterAll(() => {
-    vi.doUnmock("openclaw/plugin-sdk/ssrf-runtime");
+    vi.doUnmock("operator/plugin-sdk/ssrf-runtime");
     vi.resetModules();
   });
 

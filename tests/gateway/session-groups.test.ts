@@ -5,8 +5,8 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { SessionEntry } from "../../src/config/sessions.js";
 import { loadSessionEntry, replaceSessionEntry } from "../../src/config/sessions/session-accessor.js";
 import type { OperatorConfig } from "../../src/config/types.operator.js";
-import { closeOperatorAgentDatabasesForTest } from "../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import {
   deleteSessionGroup,
   ensureSessionGroupRegistered,

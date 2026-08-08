@@ -169,15 +169,15 @@ See [LICENSE.md](LICENSE.md) for license information.
 
 ## Migration Guide
 
-This repository has been updated to remove all references to the previous "OpenClaw" branding:
+This repository has been updated to remove all references to the previous "Operator" branding:
 
-- **Repository Name**: `operator` (formerly `openclaw`)
+- **Repository Name**: `operator` (formerly `operator`)
 - **Organization**: `gabrielvfonseca` (formerly maintained under different branding)
 - **Documentation**: All guides, docs, and references updated
 - **Community**: Discord and social media channels updated
 - **Sponsors**: Updated sponsor recognition
 - **CI/CD**: GitHub Actions workflows modernized
-- **Docker Image**: `ghcr.io/gabrielvfonseca/operator:latest` (replacing `openclaw/operator:latest`)
+- **Docker Image**: `ghcr.io/gabrielvfonseca/operator:latest` (replacing `operator/operator:latest`)
 
 ### Documentation Files Updated
 
@@ -204,9 +204,9 @@ This repository has been updated to remove all references to the previous "OpenC
 
 ### For Existing Users
 
-If you've used OpenClaw before, here's what has changed:
+If you've used Operator before, here's what has changed:
 
-1. **Installation**: `operator onboard` (replaces OpenClaw setup)
+1. **Installation**: `operator onboard` (replaces Operator setup)
 2. **Configuration**: `operator.json` (standard configuration)
 3. **Documentation**: Use `/start/getting-started` in docs
 4. **Community**: Join the new Discord server
@@ -232,7 +232,7 @@ If you've used OpenClaw before, here's what has changed:
 
 ---
 
-> **Operator** represents a complete evolution from OpenClaw
+> **Operator** represents a complete evolution from Operator
 > with a focus on privacy, performance, and developer experience.
 
 > All legacy branding and references have been removed in favor

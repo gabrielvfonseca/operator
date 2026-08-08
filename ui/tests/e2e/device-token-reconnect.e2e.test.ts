@@ -261,19 +261,18 @@ describeControlUiE2e("Control UI device-token reconnect E2E", () => {
     ]);
     const revoke = await wilfredNodes.gateway.waitForRequest("device.token.revoke");
     expect(revoke.params).toEqual({ deviceId, role: "operator" });
-    const wilfredStoreKey =
-      `operator.device.auth.v1:` + normalizeGatewayCredentialScope(WILFRED_GATEWAY_URL);
     await expect
-      .poll(() =>
-        wilfredNodes.page.evaluate((key) => {
-          const raw = localStorage.getItem(key);
+      .poll(async () => {
+        return await wilfredNodes.page.evaluate(() => {
+          const storageKey = 'operator.device.auth.v1:${normalizeGatewayCredentialScope(WILFRED_GATEWAY_URL)}';
+          const raw = localStorage.getItem(storageKey);
           if (!raw) {
             return undefined;
           }
           const store = JSON.parse(raw) as { tokens?: Record<string, unknown> };
           return store.tokens?.operator;
-        }, wilfredStoreKey),
-      )
+        });
+      })
       .toBeUndefined();
 
     const rositaAfterRevoke = await openGatewayPage({

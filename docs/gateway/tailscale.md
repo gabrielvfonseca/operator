@@ -41,7 +41,7 @@ To expose the Control UI through a named Tailscale Service instead of the device
 {
   gateway: {
     bind: "loopback",
-    tailscale: { mode: "serve", serviceName: "svc:openclaw" },
+    tailscale: { mode: "serve", serviceName: "svc:operator" },
   },
 }
 ```
@@ -118,7 +118,7 @@ Scope of the bypass:
 
 - Tailscale Serve/Funnel requires the `tailscale` CLI installed and logged in.
 - `tailscale.mode: "funnel"` refuses to start unless auth mode is `password`, to avoid public exposure.
-- `gateway.tailscale.serviceName` applies only to Serve mode and is passed to `tailscale serve --service=<name>`. The value must use Tailscale's `svc:<dns-label>` format, for example `svc:openclaw`. Tailscale requires Service hosts to be tagged nodes, and the Service may need admin-console approval before Serve can publish it.
+- `gateway.tailscale.serviceName` applies only to Serve mode and is passed to `tailscale serve --service=<name>`. The value must use Tailscale's `svc:<dns-label>` format, for example `svc:operator`. Tailscale requires Service hosts to be tagged nodes, and the Service may need admin-console approval before Serve can publish it.
 - `gateway.tailscale.resetOnExit` undoes `tailscale serve`/`tailscale funnel` configuration on shutdown.
 - `gateway.tailscale.preserveFunnel: true` keeps an externally configured `tailscale funnel` route alive across gateway restarts. With `mode: "serve"`, Operator checks `tailscale funnel status` before re-applying Serve and skips it when a Funnel route already covers the gateway port. The Operator-managed Funnel password-only policy is unchanged.
 - `gateway.bind: "tailnet"` uses a direct Tailnet bind (no HTTPS, no Serve/Funnel) plus required local `127.0.0.1` when a Tailnet IPv4 is available; otherwise it falls back to loopback only.

@@ -7,23 +7,23 @@ import {
   resolveSessionTranscriptsDirForAgent,
   type OperatorConfig,
   type ResolvedMemorySearchConfig,
-} from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
-import { statSessionEntrySync } from "openclaw/plugin-sdk/memory-core-host-engine-qmd";
+} from "operator/plugin-sdk/memory-core-host-engine-foundation";
+import { statSessionEntrySync } from "operator/plugin-sdk/memory-core-host-engine-qmd";
 import type {
   MemorySource,
   MemorySyncParams,
   MemorySyncProgressUpdate,
-} from "openclaw/plugin-sdk/memory-core-host-engine-storage";
+} from "operator/plugin-sdk/memory-core-host-engine-storage";
 import {
   clearConfigCache,
   clearRuntimeConfigSnapshot,
-} from "openclaw/plugin-sdk/runtime-config-snapshot";
-import { upsertSessionEntry } from "openclaw/plugin-sdk/session-store-runtime";
-import { appendSessionTranscriptMessageByIdentity } from "openclaw/plugin-sdk/session-transcript-runtime";
+} from "operator/plugin-sdk/runtime-config-snapshot";
+import { upsertSessionEntry } from "operator/plugin-sdk/session-store-runtime";
+import { appendSessionTranscriptMessageByIdentity } from "operator/plugin-sdk/session-transcript-runtime";
 import {
   closeOperatorAgentDatabasesForTest,
   formatSqliteSessionFileMarker,
-} from "openclaw/plugin-sdk/sqlite-runtime-testing";
+} from "operator/plugin-sdk/sqlite-runtime-testing";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { MemoryManagerSyncOps } from "./manager-sync-ops.js";
 
@@ -97,7 +97,7 @@ function emitSessionTranscriptUpdate(update: MemorySessionTranscriptUpdate): voi
 class SessionStartupCatchupHarness extends MemoryManagerSyncOps {
   protected readonly cfg = {} as OperatorConfig;
   protected readonly agentId = "main";
-  protected readonly workspaceDir = "/tmp/openclaw-test-workspace";
+  protected readonly workspaceDir = "/tmp/operator-test-workspace";
   protected readonly settings = {
     chunking: {
       overlap: 0,
@@ -275,7 +275,7 @@ describe("session startup catch-up", () => {
   let stateDir = "";
 
   beforeEach(async () => {
-    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-session-startup-"));
+    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-session-startup-"));
     setStartupStateDir(stateDir);
     transcriptUpdateListener = undefined;
   });
@@ -308,7 +308,7 @@ describe("session startup catch-up", () => {
   }
 
   async function configureTestSessionStore(storePath: string): Promise<void> {
-    const configPath = path.join(stateDir, "openclaw.json");
+    const configPath = path.join(stateDir, "operator.json");
     await fs.mkdir(path.dirname(storePath), { recursive: true });
     await fs.writeFile(configPath, JSON.stringify({ session: { store: storePath } }), "utf-8");
     setStartupConfigPath(configPath);
@@ -637,7 +637,7 @@ describe("session startup catch-up", () => {
 
   it("keeps targeted SQLite corpus markers during archive-file sync", async () => {
     const storePath = path.join(stateDir, "agents", "main", "sessions", "sessions.json");
-    const configPath = path.join(stateDir, "openclaw.json");
+    const configPath = path.join(stateDir, "operator.json");
     const sessionId = "sqlite-target";
     const sessionKey = "agent:main:chat:sqlite-target";
     const marker = formatSqliteSessionFileMarker({

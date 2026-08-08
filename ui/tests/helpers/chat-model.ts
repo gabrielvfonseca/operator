@@ -4,7 +4,7 @@ import type {
   ModelCatalogEntry,
   SessionsListResult,
   SessionsPatchResult,
-} from "../api/types.ts";
+} from "../../src/api/types.ts";
 
 const OPENAI_GPT5_MODEL: ModelCatalogEntry = {
   id: "gpt-5",

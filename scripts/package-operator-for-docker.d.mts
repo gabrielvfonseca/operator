@@ -23,7 +23,7 @@ export function prepareBundledAiRuntimePackage(
   ) => Promise<string>,
   options?: Record<string, unknown>,
 ): Promise<() => Promise<void>>;
-export function packoperatorPackageForDocker(
+export function packOperatorPackageForDocker(
   sourceDir: unknown,
   outputDir: unknown,
   options?: Record<string, unknown>,

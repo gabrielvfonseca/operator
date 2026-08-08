@@ -2,8 +2,6 @@
 
 import { PageHeader, LoadingState, ErrorState } from "@/components/page.tsx";
 import { useGatewayRequest } from "@/lib/gateway-client.tsx";
-import { Card, CardContent, CardHeader, CardTitle, Input, Label } from "@operator/design-system";
-
 export default function ProfilePage() {
   const { data, error, loading } = useGatewayRequest<{
     displayName?: string;
@@ -31,7 +29,12 @@ export default function ProfilePage() {
           </div>
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" defaultValue={data?.email ?? ""} placeholder="you@example.com" />
+            <Input
+              id="email"
+              type="email"
+              defaultValue={data?.email ?? ""}
+              placeholder="you@example.com"
+            />
           </div>
         </CardContent>
       </Card>

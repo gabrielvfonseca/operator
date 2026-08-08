@@ -26,11 +26,11 @@ import { describe, expect, it, vi } from "vitest";
 import WebSocket from "ws";
 import { defaultCodexAppInventoryCache } from "./app-inventory-cache.js";
 import {
-  buildCodexOpenClawPromptContext,
+  buildCodexOperatorPromptContext,
   buildCodexSystemPromptReport,
   buildCodexWorkspaceBootstrapContext,
   getCodexWorkspaceMemoryToolNames,
-  prependCodexOpenClawPromptContext,
+  prependCodexOperatorPromptContext,
 } from "./attempt-context.js";
 import { withCodexStartupTimeout } from "./attempt-timeouts.js";
 import { prepareCodexAppServerAuthBinding } from "./auth-binding.js";
@@ -381,11 +381,11 @@ async function buildCodexTurnContextForTest(
   ]
     .filter((section) => section?.trim())
     .join("\n\n");
-  const openClawPromptContext = buildCodexOpenClawPromptContext({
+  const openClawPromptContext = buildCodexOperatorPromptContext({
     params,
     workspacePromptContext: workspaceBootstrapContext.promptContext,
   });
-  const codexTurnPromptText = prependCodexOpenClawPromptContext(
+  const codexTurnPromptText = prependCodexOperatorPromptContext(
     params.prompt,
     openClawPromptContext,
   );
@@ -2307,7 +2307,7 @@ describe("runCodexAppServerAttempt", () => {
     }
     const harness = createStartedThreadHarness();
     const params = createParams(sessionFile, workspaceDir);
-    params.prompt = "make the default webpage openclaw";
+    params.prompt = "make the default webpage operator";
 
     const run = runCodexAppServerAttempt(params);
     await harness.waitForMethod("turn/start");
@@ -2327,7 +2327,7 @@ describe("runCodexAppServerAttempt", () => {
     expect(inputText).toContain("we are fixing the Opik default project");
     expect(inputText).toContain("Opik default project context");
     expect(inputText).toContain("Current user request:");
-    expect(inputText).toContain("make the default webpage openclaw");
+    expect(inputText).toContain("make the default webpage operator");
   });
 
   it("keeps large fresh-thread continuity under the Codex turn/start input limit", async () => {
@@ -3384,7 +3384,7 @@ describe("runCodexAppServerAttempt", () => {
     const sessionFile = path.join(tempDir, "session.jsonl");
     const workspaceDir = path.join(tempDir, "workspace");
     const exactCommand =
-      "cd /Users/phaedrus/Projects/openclaw && /Users/phaedrus/clawd/scripts/clawsweeper-related-scan.py";
+      "cd /Users/phaedrus/Projects/operator && /Users/phaedrus/clawd/scripts/clawsweeper-related-scan.py";
     await fs.mkdir(workspaceDir, { recursive: true });
     await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "Follow AGENTS guidance.");
     await fs.writeFile(path.join(workspaceDir, "SOUL.md"), "Soul voice goes here.");
@@ -6302,10 +6302,10 @@ describe("runCodexAppServerAttempt", () => {
       true,
     );
     expect(payloads[offIndex]?.channelData).toEqual({
-      openclawProgressKind: "fast-mode-auto",
+      operatorProgressKind: "fast-mode-auto",
     });
     expect(payloads[onIndex]?.channelData).toEqual({
-      openclawProgressKind: "fast-mode-auto",
+      operatorProgressKind: "fast-mode-auto",
     });
     const fastEvents = onAgentEvent.mock.calls
       .map(([event]) => event)

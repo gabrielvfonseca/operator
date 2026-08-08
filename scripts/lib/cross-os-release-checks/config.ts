@@ -27,7 +27,7 @@ export type PackageJson = {
   name?: string;
   version?: string;
   scripts?: Record<string, string>;
-  openclaw?: { commit?: string };
+  operator?: { commit?: string };
 };
 export type LaneState = {
   name: string;
@@ -624,7 +624,7 @@ export function isRecoverableWindowsPackagedUpgradeTimeoutError(
   const message = error instanceof Error ? error.message : String(error);
   return (
     /\bCommand timed out:/u.test(message) &&
-    /[/\\]openclaw\.mjs update --tag http:\/\/127\.0\.0\.1:\d+\/openclaw[^/\s]*\.tgz --yes --json(?: --no-restart)? --timeout \d+/u.test(
+    /[/\\]operator\.mjs update --tag http:\/\/127\.0\.0\.1:\d+\/operator[^/\s]*\.tgz --yes --json(?: --no-restart)? --timeout \d+/u.test(
       message,
     )
   );
@@ -656,11 +656,11 @@ export function verifyWindowsPackagedUpgradeFallbackInstall({
 
 export function resolveExplicitBaselineVersion(baselineSpec: string) {
   const trimmed = baselineSpec.trim();
-  if (!trimmed || trimmed === "openclaw@latest") {
+  if (!trimmed || trimmed === "operator@latest") {
     return "";
   }
-  if (trimmed.startsWith("openclaw@")) {
-    return trimmed.slice("openclaw@".length);
+  if (trimmed.startsWith("operator@")) {
+    return trimmed.slice("operator@".length);
   }
   return trimmed;
 }

@@ -7,7 +7,7 @@ const providerAuthRuntimeMocks = vi.hoisted(() => ({
   resolveApiKeyForProvider: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/provider-auth-runtime", () => providerAuthRuntimeMocks);
+vi.mock("operator/plugin-sdk/provider-auth-runtime", () => providerAuthRuntimeMocks);
 
 import plugin from "./index.js";
 import { wrapClawRouterProviderStream } from "./stream.js";
@@ -130,7 +130,7 @@ describe("ClawRouter plugin", () => {
         api: "openai-responses",
         id: "openai/gpt-5.5",
         headers: {
-          "x-clawrouter-client": "managed-openclaw",
+          "x-clawrouter-client": "managed-operator",
           "X-ClawRouter-Project-Id": "fakeco",
         },
       } as never,
@@ -165,7 +165,7 @@ describe("ClawRouter plugin", () => {
     );
 
     expect(calls[0]?.headers).toMatchObject({
-      "x-clawrouter-client": "managed-openclaw",
+      "x-clawrouter-client": "managed-operator",
       "X-ClawRouter-Agent-Id": "main",
       "X-ClawRouter-Project-Id": "fakeco",
       Authorization: "Bearer runtime-proxy-key",

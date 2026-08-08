@@ -13,8 +13,8 @@ import {
 } from "../../../src/config/sessions/session-accessor.js";
 import { formatSqliteSessionFileMarker } from "../../../src/config/sessions/sqlite-marker.js";
 import { onAgentEvent, resetAgentEventsForTest } from "../../../src/infra/agent-events.js";
-import { closeOperatorAgentDatabasesForTest } from "../../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../../src/state/openclaw-state-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../../src/state/operator-state-db.js";
 import {
   createActiveRun,
   createChatAbortContext,

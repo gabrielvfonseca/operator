@@ -15,8 +15,8 @@ describe("defineChannelAliasMigration message generation", () => {
     });
 
     expect(migration.legacyConfigRules.map((rule) => rule.message)).toEqual([
-      'channels.discord.streamMode, channels.discord.streaming (scalar), chunkMode, blockStreaming, draftChunk, and blockStreamingCoalesce are legacy; use channels.discord.streaming.{mode,chunkMode,preview.chunk,block.enabled,block.coalesce}. Run "openclaw doctor --fix".',
-      'channels.discord.accounts.<id>.streamMode, streaming (scalar), chunkMode, blockStreaming, draftChunk, and blockStreamingCoalesce are legacy; use channels.discord.accounts.<id>.streaming.{mode,chunkMode,preview.chunk,block.enabled,block.coalesce}. Run "openclaw doctor --fix".',
+      'channels.discord.streamMode, channels.discord.streaming (scalar), chunkMode, blockStreaming, draftChunk, and blockStreamingCoalesce are legacy; use channels.discord.streaming.{mode,chunkMode,preview.chunk,block.enabled,block.coalesce}. Run "operator doctor --fix".',
+      'channels.discord.accounts.<id>.streamMode, streaming (scalar), chunkMode, blockStreaming, draftChunk, and blockStreamingCoalesce are legacy; use channels.discord.accounts.<id>.streaming.{mode,chunkMode,preview.chunk,block.enabled,block.coalesce}. Run "operator doctor --fix".',
     ]);
     expect(migration.legacyConfigRules.map((rule) => rule.path)).toEqual([
       ["channels", "discord"],
@@ -31,8 +31,8 @@ describe("defineChannelAliasMigration message generation", () => {
     });
 
     expect(migration.legacyConfigRules.map((rule) => rule.message)).toEqual([
-      'channels.slack.streamMode, channels.slack.streaming (scalar), chunkMode, blockStreaming, blockStreamingCoalesce, and nativeStreaming are legacy; use channels.slack.streaming.{mode,chunkMode,block.enabled,block.coalesce,nativeTransport}. Run "openclaw doctor --fix".',
-      'channels.slack.accounts.<id>.streamMode, streaming (scalar), chunkMode, blockStreaming, blockStreamingCoalesce, and nativeStreaming are legacy; use channels.slack.accounts.<id>.streaming.{mode,chunkMode,block.enabled,block.coalesce,nativeTransport}. Run "openclaw doctor --fix".',
+      'channels.slack.streamMode, channels.slack.streaming (scalar), chunkMode, blockStreaming, blockStreamingCoalesce, and nativeStreaming are legacy; use channels.slack.streaming.{mode,chunkMode,block.enabled,block.coalesce,nativeTransport}. Run "operator doctor --fix".',
+      'channels.slack.accounts.<id>.streamMode, streaming (scalar), chunkMode, blockStreaming, blockStreamingCoalesce, and nativeStreaming are legacy; use channels.slack.accounts.<id>.streaming.{mode,chunkMode,block.enabled,block.coalesce,nativeTransport}. Run "operator doctor --fix".',
     ]);
   });
 
@@ -43,8 +43,8 @@ describe("defineChannelAliasMigration message generation", () => {
     });
 
     expect(migration.legacyConfigRules.map((rule) => rule.message)).toEqual([
-      'channels.imessage.chunkMode, blockStreaming, and blockStreamingCoalesce are legacy; use channels.imessage.streaming.{chunkMode,block.enabled,block.coalesce}. Run "openclaw doctor --fix".',
-      'channels.imessage.accounts.<id>.chunkMode, blockStreaming, and blockStreamingCoalesce are legacy; use channels.imessage.accounts.<id>.streaming.{chunkMode,block.enabled,block.coalesce}. Run "openclaw doctor --fix".',
+      'channels.imessage.chunkMode, blockStreaming, and blockStreamingCoalesce are legacy; use channels.imessage.streaming.{chunkMode,block.enabled,block.coalesce}. Run "operator doctor --fix".',
+      'channels.imessage.accounts.<id>.chunkMode, blockStreaming, and blockStreamingCoalesce are legacy; use channels.imessage.accounts.<id>.streaming.{chunkMode,block.enabled,block.coalesce}. Run "operator doctor --fix".',
     ]);
   });
 
@@ -55,7 +55,7 @@ describe("defineChannelAliasMigration message generation", () => {
     });
 
     expect(migration.legacyConfigRules[0]?.message).toBe(
-      'channels.msteams.streamMode, channels.msteams.streaming (scalar), chunkMode, blockStreaming, and blockStreamingCoalesce are legacy; use channels.msteams.streaming.{mode,chunkMode,block.enabled,block.coalesce}. Run "openclaw doctor --fix".',
+      'channels.msteams.streamMode, channels.msteams.streaming (scalar), chunkMode, blockStreaming, and blockStreamingCoalesce are legacy; use channels.msteams.streaming.{mode,chunkMode,block.enabled,block.coalesce}. Run "operator doctor --fix".',
     );
   });
 });

@@ -95,7 +95,7 @@ Save to `~/.operator/operator.json` and you can DM the bot from that number.
   // Logging
   logging: {
     level: "info",
-    file: "/tmp/openclaw/operator.log",
+    file: "/tmp/operator/operator.log",
     consoleLevel: "info",
     consoleStyle: "pretty",
     redactSensitive: "tools",
@@ -103,7 +103,7 @@ Save to `~/.operator/operator.json` and you can DM the bot from that number.
 
   // Message formatting
   messages: {
-    messagePrefix: "[openclaw]",
+    messagePrefix: "[operator]",
     visibleReplies: "automatic",
     responsePrefix: ">",
     ackReaction: "👀",
@@ -205,7 +205,7 @@ Save to `~/.operator/operator.json` and you can DM the bot from that number.
       dm: { enabled: true, allowFrom: ["123456789012345678"] },
       guilds: {
         "123456789012345678": {
-          slug: "friends-of-openclaw",
+          slug: "friends-of-operator",
           requireMention: false,
           channels: {
             general: { enabled: true },
@@ -317,7 +317,7 @@ Save to `~/.operator/operator.json` and you can DM the bot from that number.
         },
         // inherits defaults.skills -> github, weather
         groupChat: {
-          mentionPatterns: ["@openclaw", "@gabrielvfonseca/operator"],
+          mentionPatterns: ["@operator", "@gabrielvfonseca/operator"],
         },
         thinkingDefault: "high", // per-agent thinking override
         reasoningDefault: "on", // per-agent reasoning visibility
@@ -417,7 +417,7 @@ Save to `~/.operator/operator.json` and you can DM the bot from that number.
       },
     ],
     gmail: {
-      account: "openclaw@gmail.com",
+      account: "operator@gmail.com",
       label: "INBOX",
       topic: "projects/<project-id>/topics/gog-gmail-watch",
       subscription: "gog-gmail-watch-push",
@@ -436,7 +436,7 @@ Save to `~/.operator/operator.json` and you can DM the bot from that number.
     mode: "local",
     port: 18789,
     bind: "loopback",
-    controlUi: { enabled: true, basePath: "/openclaw" },
+    controlUi: { enabled: true, basePath: "/operator" },
     auth: {
       mode: "token",
       token: "gateway-token",
@@ -629,7 +629,7 @@ Only enable direct mutable name/email/nick matching with each channel's `dangero
 {
   agents: {
     defaults: {
-      workspace: "~/work-openclaw",
+      workspace: "~/work-operator",
       elevatedDefault: "off",
     },
     list: [

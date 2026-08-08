@@ -260,13 +260,13 @@ describe("doctor stale plugin config helpers", () => {
           surface: "slot",
         },
       ],
-      doctorFixCommand: "openclaw doctor --fix",
+      doctorFixCommand: "operator doctor --fix",
     });
 
     expect(warnings).toEqual([
       "- Stale plugin references (plugins.allow/deny/entries): acpx, zeta.",
       '- plugins.slots.memory: slot references missing plugin "missing-memory".',
-      '- Run "openclaw doctor --fix" to remove stale plugin ids and dangling channel references.',
+      '- Run "operator doctor --fix" to remove stale plugin ids and dangling channel references.',
     ]);
   });
 
@@ -471,7 +471,7 @@ describe("doctor stale plugin config helpers", () => {
 
     const warnings = collectStalePluginConfigWarnings({
       hits,
-      doctorFixCommand: "openclaw doctor --fix",
+      doctorFixCommand: "operator doctor --fix",
       autoRepairBlocked: true,
     });
     expect(warnings.at(-1)).toContain("Auto-removal is paused");
@@ -503,11 +503,11 @@ describe("doctor stale plugin config helpers", () => {
     expect(
       collectStalePluginConfigWarnings({
         hits,
-        doctorFixCommand: "openclaw doctor --fix",
+        doctorFixCommand: "operator doctor --fix",
       }),
     ).toEqual([
       "- Stale plugin references (plugins.allow/deny/entries): stale-plugin.",
-      '- Run "openclaw doctor --fix" to remove stale plugin ids and dangling channel references.',
+      '- Run "operator doctor --fix" to remove stale plugin ids and dangling channel references.',
     ]);
   });
 

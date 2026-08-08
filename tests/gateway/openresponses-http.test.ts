@@ -300,7 +300,7 @@ describe("OpenResponses HTTP API (e2e)", () => {
       };
       expect(invalidModelJson.error?.type).toBe("invalid_request_error");
       expect(invalidModelJson.error?.message).toBe(
-        "Invalid `model`. Use `openclaw` or `openclaw/<agentId>`.",
+        "Invalid `model`. Use `operator` or `operator/<agentId>`.",
       );
       expect(agentCommand).toHaveBeenCalledTimes(0);
       await ensureResponseConsumed(resInvalidModel);
@@ -370,7 +370,7 @@ describe("OpenResponses HTTP API (e2e)", () => {
       expect(agentCommand).toHaveBeenCalledTimes(0);
 
       mockAgentOnce([{ text: "hello" }]);
-      const resModel = await postResponses(port, { model: "openclaw/beta", input: "hi" });
+      const resModel = await postResponses(port, { model: "operator/beta", input: "hi" });
       expect(resModel.status).toBe(200);
       const optsModel = firstAgentOpts();
       expect((optsModel as { sessionKey?: string } | undefined)?.sessionKey ?? "").toMatch(
@@ -379,7 +379,7 @@ describe("OpenResponses HTTP API (e2e)", () => {
       await ensureResponseConsumed(resModel);
 
       mockAgentOnce([{ text: "hello" }]);
-      const resDefaultAlias = await postResponses(port, { model: "openclaw/default", input: "hi" });
+      const resDefaultAlias = await postResponses(port, { model: "operator/default", input: "hi" });
       expect(resDefaultAlias.status).toBe(200);
       const optsDefaultAlias = firstAgentOpts();
       expect((optsDefaultAlias as { sessionKey?: string } | undefined)?.sessionKey ?? "").toMatch(
@@ -403,7 +403,7 @@ describe("OpenResponses HTTP API (e2e)", () => {
 
       {
         agentCommand.mockClear();
-        const res = await postResponses(port, { model: "openclaw/missing-agent", input: "hi" });
+        const res = await postResponses(port, { model: "operator/missing-agent", input: "hi" });
         expect(res.status).toBe(400);
         const json = (await res.json()) as { error?: { type?: string; message?: string } };
         expect(json.error?.type).toBe("invalid_request_error");

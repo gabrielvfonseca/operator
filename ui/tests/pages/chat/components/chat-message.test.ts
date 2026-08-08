@@ -1315,8 +1315,8 @@ describe("grouped chat rendering", () => {
           key: "running-edit",
           message: {
             role: "assistant",
-            __openclawToolStreamLive: true,
-            __openclawToolStreamResultReceived: false,
+            __operatorToolStreamLive: true,
+            __operatorToolStreamResultReceived: false,
             content: [
               {
                 type: "tool_use",

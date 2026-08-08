@@ -39,7 +39,7 @@ operator gateway restart
 operator status --all
 ```
 
-Look for `plugin load failed: dependency tree corrupted; run operator doctor --fix` in `openclaw
+Look for `plugin load failed: dependency tree corrupted; run operator doctor --fix` in `operator
 status --all`. That means the channel is configured, but plugin setup/load hit a corrupted
 dependency tree instead of registering the channel. `operator doctor --fix` clears stale
 plugin-runtime dependency symlinks and stale auth shadows, then `operator gateway restart` reloads

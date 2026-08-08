@@ -3219,7 +3219,7 @@ describe("runCodexAppServerAttempt turn watches", () => {
   });
 
   it("clears the thread binding after a completion-idle timeout so the next turn starts fresh", async () => {
-    // Regression for openclaw#89974. Codex writes a generic <turn_aborted>
+    // Regression for operator#89974. Codex writes a generic <turn_aborted>
     // marker for every interrupted turn. Clearing the timed-out binding keeps
     // that marker out of the next turn by starting a fresh thread.
     vi.spyOn(embeddedAgentLog, "warn").mockImplementation(() => undefined);
@@ -5369,7 +5369,7 @@ describe("runCodexAppServerAttempt turn watches", () => {
   });
 
   it("releases completion when a projector callback throws during turn/completed", async () => {
-    // Regression for openclaw/openclaw#67996: a throw inside the projector's
+    // Regression for operator/operator#67996: a throw inside the projector's
     // turn/completed handler must not strand resolveCompletion, otherwise the
     // gateway session lane stays locked and every follow-up message queues
     // behind a run that will never resolve.

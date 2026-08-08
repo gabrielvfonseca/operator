@@ -41,7 +41,7 @@ function readSession(sessionKey = SESSION_KEY) {
 beforeEach(async () => {
   testState = await createOperatorTestState({
     layout: "state-only",
-    prefix: "openclaw-skill-workshop-state-",
+    prefix: "operator-skill-workshop-state-",
   });
   await seedSession();
 });
@@ -52,7 +52,7 @@ afterEach(async () => {
 });
 
 async function makeWorkspace(): Promise<string> {
-  return await tempDirs.make("openclaw-skill-workshop-");
+  return await tempDirs.make("operator-skill-workshop-");
 }
 
 describe("skill research auto-capture", () => {

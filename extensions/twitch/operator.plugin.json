@@ -8,7 +8,7 @@
   },
   "channels": ["twitch"],
   "channelEnvVars": {
-    "twitch": ["operator_TWITCH_ACCESS_TOKEN"]
+    "twitch": ["OPERATOR_TWITCH_ACCESS_TOKEN"]
   },
   "configSchema": {
     "type": "object",

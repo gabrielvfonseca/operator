@@ -383,7 +383,7 @@ const DOCS_SHORTLINK_PATHS = new Set([
   "/zai",
 ]);
 const APP_RESOURCE_ROOT_SEGMENTS = new Set([
-  "__openclaw",
+  "__operator",
   "__operator__",
   "_next",
   "api",
@@ -570,7 +570,7 @@ function segmentsStartWith(segments: string[], prefix: string[]): boolean {
 }
 
 function isControlUiResourcePath(segments: string[]): boolean {
-  if (segments.includes("__operator__") || segments.includes("__openclaw")) {
+  if (segments.includes("__operator__") || segments.includes("__operator")) {
     return true;
   }
   const segment = segments[0];

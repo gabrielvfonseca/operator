@@ -18,7 +18,7 @@ import type { CommitmentRecord } from "../commitments/types.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../state/openclaw-state-db.js";
+} from "../state/operator-state-db.js";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,

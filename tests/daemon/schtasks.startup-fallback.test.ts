@@ -641,7 +641,7 @@ describe("Windows startup fallback", () => {
                     {
                       ProcessId: 4242,
                       CommandLine:
-                        '"C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\steipete\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js" gateway --port 18789',
+                        '"C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\steipete\\AppData\\Roaming\\npm\\node_modules\\operator\\dist\\index.js" gateway --port 18789',
                     },
                     { ProcessId: 9999, CommandLine: "powershell.exe" },
                   ]
@@ -789,7 +789,7 @@ describe("Windows startup fallback", () => {
                 {
                   pid: 4242,
                   command: "node.exe",
-                  commandLine: 'node "C:\\openclaw\\dist\\index.js" gateway --port 18789',
+                  commandLine: 'node "C:\\operator\\dist\\index.js" gateway --port 18789',
                 },
               ]
             : [],
@@ -837,7 +837,7 @@ describe("Windows startup fallback", () => {
                     {
                       ProcessId: 4242,
                       CommandLine:
-                        '"C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\steipete\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js" gateway --port 18789',
+                        '"C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\steipete\\AppData\\Roaming\\npm\\node_modules\\operator\\dist\\index.js" gateway --port 18789',
                     },
                     { ProcessId: 9999, CommandLine: "powershell.exe" },
                   ]
@@ -889,7 +889,7 @@ describe("Windows startup fallback", () => {
               {
                 ProcessId: 4242,
                 CommandLine:
-                  '"C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\steipete\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js" gateway --port 18789',
+                  '"C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\steipete\\AppData\\Roaming\\npm\\node_modules\\operator\\dist\\index.js" gateway --port 18789',
               },
               {
                 ProcessId: 5252,
@@ -1015,7 +1015,7 @@ describe("Windows startup fallback", () => {
                 {
                   ProcessId: 4242,
                   CommandLine:
-                    '"C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\steipete\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js" gateway --port 18789',
+                    '"C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\steipete\\AppData\\Roaming\\npm\\node_modules\\operator\\dist\\index.js" gateway --port 18789',
                 },
                 { ProcessId: 9999, CommandLine: "powershell.exe" },
               ]),
@@ -1059,7 +1059,7 @@ describe("Windows startup fallback", () => {
                     {
                       ProcessId: 4242,
                       CommandLine:
-                        '"C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\steipete\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js" gateway --port 18789',
+                        '"C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\steipete\\AppData\\Roaming\\npm\\node_modules\\operator\\dist\\index.js" gateway --port 18789',
                     },
                     { ProcessId: 9999, CommandLine: "powershell.exe" },
                   ]
@@ -1123,7 +1123,7 @@ describe("Windows startup fallback", () => {
                     {
                       ProcessId: 4242,
                       CommandLine:
-                        '"C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\steipete\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js" gateway --port 18789',
+                        '"C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\steipete\\AppData\\Roaming\\npm\\node_modules\\operator\\dist\\index.js" gateway --port 18789',
                     },
                     { ProcessId: 9999, CommandLine: "powershell.exe" },
                   ]
@@ -1176,7 +1176,7 @@ describe("Windows startup fallback", () => {
                 {
                   pid: 4242,
                   command: "node.exe",
-                  commandLine: 'node "C:\\openclaw\\dist\\index.js" gateway --port 18789',
+                  commandLine: 'node "C:\\operator\\dist\\index.js" gateway --port 18789',
                 },
               ],
               hints: [],
@@ -1446,7 +1446,7 @@ describe("Windows startup fallback", () => {
             stdout: JSON.stringify([
               {
                 ProcessId: 5151,
-                CommandLine: "node openclaw node run --host 127.0.0.1 --port 18789",
+                CommandLine: "node operator node run --host 127.0.0.1 --port 18789",
               },
             ]),
             stderr: "",
@@ -1577,7 +1577,7 @@ describe("Windows startup fallback", () => {
               {
                 ProcessId: 4242,
                 CommandLine:
-                  '"C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\steipete\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js" gateway --port 18789',
+                  '"C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\steipete\\AppData\\Roaming\\npm\\node_modules\\operator\\dist\\index.js" gateway --port 18789',
               },
             ]),
           });
@@ -1761,7 +1761,7 @@ describe("Windows startup fallback", () => {
           {
             pid: 4242,
             command: "node.exe",
-            commandLine: 'node "C:\\openclaw\\dist\\index.js" gateway --port 18789',
+            commandLine: 'node "C:\\operator\\dist\\index.js" gateway --port 18789',
           },
         ],
         hints: [],
@@ -1805,7 +1805,7 @@ describe("Windows startup fallback", () => {
           {
             pid: 5151,
             command: "node.exe",
-            commandLine: 'node "C:\\openclaw\\dist\\index.js" gateway --port 18789',
+            commandLine: 'node "C:\\operator\\dist\\index.js" gateway --port 18789',
           },
         ],
         hints: [],
@@ -1905,7 +1905,7 @@ describe("Windows startup fallback", () => {
           {
             pid: 5151,
             command: "node.exe",
-            commandLine: 'node "C:\\openclaw\\dist\\index.js" gateway --port 18789',
+            commandLine: 'node "C:\\operator\\dist\\index.js" gateway --port 18789',
           },
         ],
         hints: [],

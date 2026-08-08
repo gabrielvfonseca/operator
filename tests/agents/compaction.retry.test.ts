@@ -8,7 +8,7 @@ import type { AssistantMessage, UserMessage } from "@gabrielvfonseca/operator/pl
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { retryAsync } from "../../src/infra/retry.js";
 
-vi.mock("openclaw/plugin-sdk/agent-sessions", { spy: true });
+vi.mock("operator/plugin-sdk/agent-sessions", { spy: true });
 
 const mockGenerateSummary = vi.mocked(generateSummary);
 type MockGenerateSummaryCompat = (

@@ -9,6 +9,11 @@
     "test": "vitest run --config vitest.config.ts"
   },
   "dependencies": {
+    "@operator/uirouter": "0.1.0",
+    "@operator/fs-safe": "0.4.1",
+    "@operator/libterminal": "0.3.2",
+    "@operator/crabline": "0.1.11",
+    "@operator/proxyline": "0.3.3",
     "@awesome.me/webawesome": "3.10.0",
     "@codemirror/commands": "6.10.4",
     "@codemirror/language": "6.12.4",
@@ -22,11 +27,9 @@
     "@modelcontextprotocol/sdk": "1.29.0",
     "@noble/ed25519": "3.1.0",
     "@gabrielvfonseca/gateway-client": "workspace:*",
-    "@operator/libterminal": "0.3.2",
     "@gabrielvfonseca/media-core": "workspace:*",
     "@gabrielvfonseca/normalization-core": "workspace:*",
     "@gabrielvfonseca/workboard-contract": "workspace:*",
-    "@operator/uirouter": "0.1.0",
     "@tanstack/lit-virtual": "3.13.33",
     "@tanstack/virtual-core": "3.17.4",
     "dompurify": "3.4.11",

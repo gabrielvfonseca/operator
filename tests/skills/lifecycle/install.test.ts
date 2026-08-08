@@ -32,7 +32,7 @@ async function writeInstallableSkill(workspaceDir: string, name: string): Promis
     `---
 name: ${name}
 description: test skill
-metadata: {"openclaw":{"install":[{"id":"deps","kind":"node","package":"example-package"}]}}
+metadata: {"operator":{"install":[{"id":"deps","kind":"node","package":"example-package"}]}}
 ---
 
 # ${name}
@@ -56,7 +56,7 @@ async function writeDangerousInstallableSkill(workspaceDir: string, name: string
 function loadTestWorkspaceSkillEntries(workspaceDir: string): SkillEntry[] {
   const skills = loadSkillsFromDirSafe({
     dir: path.join(workspaceDir, "skills"),
-    source: "openclaw-workspace",
+    source: "operator-workspace",
   }).skills;
   return skills.map((skill) => {
     const frontmatter =
@@ -84,7 +84,7 @@ function lastRunCommandCall(): unknown[] | undefined {
   return calls[calls.length - 1];
 }
 
-const workspaceSuite = createFixtureSuite("openclaw-skills-install-");
+const workspaceSuite = createFixtureSuite("operator-skills-install-");
 
 beforeAll(async () => {
   await workspaceSuite.setup();
@@ -160,7 +160,7 @@ describe("installSkill before_install hooks", () => {
     const envSnapshot = captureEnv(["OPERATOR_STATE_DIR", "OPERATOR_CONFIG_PATH"]);
     try {
       process.env.OPERATOR_STATE_DIR = "/tmp/untrusted-state";
-      process.env.OPERATOR_CONFIG_PATH = "/tmp/untrusted-config/openclaw.json";
+      process.env.OPERATOR_CONFIG_PATH = "/tmp/untrusted-config/operator.json";
 
       expect(
         skillsInstallTesting.resolveDefaultNodeInstallStateDir({
@@ -168,7 +168,7 @@ describe("installSkill before_install hooks", () => {
           homedir: () => "/Users/tester",
           platform: "darwin",
         }),
-      ).toBe("/Users/tester/.openclaw");
+      ).toBe("/Users/tester/.operator");
     } finally {
       envSnapshot.restore();
     }
@@ -177,12 +177,12 @@ describe("installSkill before_install hooks", () => {
   it("uses a fixed system state root for root npm installs", () => {
     expect(
       skillsInstallTesting.resolveDefaultNodeInstallStateDir({
-        cwd: "/workspace/openclaw",
+        cwd: "/workspace/operator",
         getuid: () => 0,
         homedir: () => "/root",
         platform: "linux",
       }),
-    ).toBe("/var/lib/openclaw");
+    ).toBe("/var/lib/operator");
   });
 
   it("surfaces plugin hook findings from before_install", async () => {
@@ -228,7 +228,7 @@ describe("installSkill before_install hooks", () => {
         | undefined;
       expect(payload?.targetName).toBe("policy-skill");
       expect(payload?.targetType).toBe("skill");
-      expect(payload?.origin).toBe("openclaw-workspace");
+      expect(payload?.origin).toBe("operator-workspace");
       expect(payload?.sourcePath).toContain("policy-skill");
       expect(payload?.sourcePathKind).toBe("directory");
       expect(payload?.request).toEqual({
@@ -242,7 +242,7 @@ describe("installSkill before_install hooks", () => {
       expect(payload?.skill?.installSpec?.kind).toBe("node");
       expect(payload?.skill?.installSpec?.package).toBe("example-package");
       expect(handlerCall?.[1]).toEqual({
-        origin: "openclaw-workspace",
+        origin: "operator-workspace",
         targetType: "skill",
         requestKind: "skill-install",
       });

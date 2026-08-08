@@ -497,7 +497,7 @@ function staleGatewayAgentRuntimeIdentityError(cause: unknown): Error {
   return new Error(
     [
       "The running Gateway is from an older Operator build and rejected current agent runtime connection metadata.",
-      "Restart the Gateway with `openclaw gateway restart`, then retry.",
+      "Restart the Gateway with `operator gateway restart`, then retry.",
     ].join(" "),
     { cause },
   );

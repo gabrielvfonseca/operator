@@ -177,7 +177,7 @@ describe("agent components", () => {
       channel: "discord",
       idLine: "Your Discord user id: 123456789",
     });
-    expect(pairingText).toContain(`openclaw pairing approve discord ${code}`);
+    expect(pairingText).toContain(`operator pairing approve discord ${code}`);
     expect(peekSystemEvents(defaultDmSessionKey)).toStrictEqual([]);
     expect(readAllowFromStoreMock).toHaveBeenCalledWith("discord", "default");
   });

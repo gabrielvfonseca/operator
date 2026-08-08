@@ -140,7 +140,7 @@ Options:
   --install-version <ver>    Pin site-installer version/dist-tag for the baseline lane.
   --upgrade-from-packed-main
                              Upgrade lane: install packed current-main npm tgz as baseline,
-                             then run openclaw update --channel dev.
+                             then run operator update --channel dev.
   --target-package-spec <npm-spec>
                              Install this npm package tarball instead of packing current main.
   --npm-registry <url>       Registry used for target package installs.
@@ -542,7 +542,7 @@ class WindowsSmoke extends SmokeRunController<WindowsOptions> {
 
   private logGuestPreflight(cleanOperator: boolean): void {
     const cleanScript = cleanOperator
-      ? "npm.cmd uninstall -g openclaw --no-fund --no-audit --loglevel=error 2>$null; $global:LASTEXITCODE = 0"
+      ? "npm.cmd uninstall -g operator --no-fund --no-audit --loglevel=error 2>$null; $global:LASTEXITCODE = 0"
       : "";
     this.guestPowerShell(
       `$ErrorActionPreference = 'Continue'
@@ -564,7 +564,7 @@ $script = Invoke-RestMethod -Uri ${psSingleQuote(this.options.installUrl)} -Time
 & ([scriptblock]::Create($script))${versionArg} -NoOnboard
 if ($LASTEXITCODE -ne 0) { throw "installer failed with exit code $LASTEXITCODE" }
 Invoke-Operator --version
-      if ($LASTEXITCODE -ne 0) { throw "openclaw --version failed with exit code $LASTEXITCODE" }`,
+      if ($LASTEXITCODE -ne 0) { throw "operator --version failed with exit code $LASTEXITCODE" }`,
       this.remainingPhaseTimeoutMs(WINDOWS_PACKAGE_INSTALL_TIMEOUT_MS) ??
         WINDOWS_PACKAGE_INSTALL_TIMEOUT_MS,
     );
@@ -587,7 +587,7 @@ ${registryScript}
 npm.cmd install -g $tgz --no-fund --no-audit --loglevel=error
 if ($LASTEXITCODE -ne 0) { throw "npm install failed with exit code $LASTEXITCODE" }
 Invoke-Operator --version
-      if ($LASTEXITCODE -ne 0) { throw "openclaw --version failed with exit code $LASTEXITCODE" }`,
+      if ($LASTEXITCODE -ne 0) { throw "operator --version failed with exit code $LASTEXITCODE" }`,
       this.remainingPhaseTimeoutMs(WINDOWS_PACKAGE_INSTALL_TIMEOUT_MS) ??
         WINDOWS_PACKAGE_INSTALL_TIMEOUT_MS,
     );
@@ -626,7 +626,7 @@ Invoke-Operator --version
 $PSNativeCommandUseErrorActionPreference = $false
 Set-Item -Path ('Env:' + ${psSingleQuote(this.auth.apiKeyEnv)}) -Value ${psSingleQuote(this.auth.apiKeyValue)}
 Invoke-Operator onboard --non-interactive --mode local --auth-choice ${psSingleQuote(this.auth.authChoice)} --secret-input-mode ref --gateway-port 18789 --gateway-bind loopback --install-daemon --skip-skills --skip-health --accept-risk --json
-if ($LASTEXITCODE -ne 0) { throw "openclaw onboard failed with exit code $LASTEXITCODE" }
+if ($LASTEXITCODE -ne 0) { throw "operator onboard failed with exit code $LASTEXITCODE" }
 ${this.windowsPluginIsolationScript()}`,
       720_000,
     );
@@ -676,7 +676,7 @@ Invoke-WithScopedEnv @{ OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS = '1'; O
   Invoke-Operator update --channel dev --yes --json
   $script:OperatorUpdateExit = $LASTEXITCODE
 }
-if ($script:OperatorUpdateExit -ne 0) { throw "openclaw update failed with exit code $script:OperatorUpdateExit" }
+if ($script:OperatorUpdateExit -ne 0) { throw "operator update failed with exit code $script:OperatorUpdateExit" }
 Invoke-Operator --version
 Invoke-Operator update status --json`,
       { timeoutMs: this.updateTimeoutSeconds * 1000 },
@@ -795,7 +795,7 @@ for ($attempt = 1; $attempt -le 2; $attempt++) {
     throw "agent failed with exit code $agentExitCode"
   }
 }
-if (-not $agentOk) { throw 'openclaw agent finished without OK response' }`,
+if (-not $agentOk) { throw 'operator agent finished without OK response' }`,
       this.agentTimeoutSeconds * 1000,
     );
   }

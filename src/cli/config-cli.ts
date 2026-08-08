@@ -297,21 +297,21 @@ const GATEWAY_AUTH_MODE_PATH: PathSegment[] = ["gateway", "auth", "mode"];
 const SECRET_PROVIDER_PATH_PREFIX: PathSegment[] = ["secrets", "providers"];
 const PLUGIN_INSTALL_RECORD_PATH_PREFIX: PathSegment[] = ["plugins", "installs"];
 const CONFIG_SET_EXAMPLE_VALUE = formatCliCommand(
-  "openclaw config set gateway.port 19001 --strict-json",
+  "operator config set gateway.port 19001 --strict-json",
 );
 const CONFIG_SET_EXAMPLE_REF = formatCliCommand(
-  "openclaw config set channels.discord.token --ref-provider default --ref-source env --ref-id DISCORD_BOT_TOKEN",
+  "operator config set channels.discord.token --ref-provider default --ref-source env --ref-id DISCORD_BOT_TOKEN",
 );
 const CONFIG_SET_EXAMPLE_PROVIDER = formatCliCommand(
-  "openclaw config set secrets.providers.vault --provider-source file --provider-path /etc/openclaw/secrets.json --provider-mode json",
+  "operator config set secrets.providers.vault --provider-source file --provider-path /etc/operator/secrets.json --provider-mode json",
 );
 const CONFIG_SET_EXAMPLE_BATCH = formatCliCommand(
-  "openclaw config set --batch-file ./config-set.batch.json --dry-run",
+  "operator config set --batch-file ./config-set.batch.json --dry-run",
 );
 const CONFIG_PATCH_EXAMPLE_FILE = formatCliCommand(
-  "openclaw config patch --file ./operator.patch.json5 --dry-run",
+  "operator config patch --file ./operator.patch.json5 --dry-run",
 );
-const CONFIG_PATCH_EXAMPLE_STDIN = formatCliCommand("openclaw config patch --stdin");
+const CONFIG_PATCH_EXAMPLE_STDIN = formatCliCommand("operator config patch --stdin");
 const CONFIG_SET_DESCRIPTION = [
   "Set config values by path (value mode, ref/provider builder mode, or batch JSON mode).",
   "Examples:",
@@ -467,7 +467,7 @@ function hasOwnPathKey(value: Record<string, unknown>, key: string): boolean {
 }
 
 function formatDoctorHint(message: string): string {
-  return `Run \`${formatCliCommand("openclaw doctor --fix")}\` ${message}`;
+  return `Run \`${formatCliCommand("operator doctor --fix")}\` ${message}`;
 }
 
 function formatInvalidConfigRepairHint(
@@ -529,9 +529,9 @@ function formatConfigUnsetMissingPathMessage(params: {
   runtimeOnly: boolean;
 }): string {
   if (params.runtimeOnly) {
-    return `Config path not found in authored config: ${params.path}. It only exists after runtime defaults are applied, so there is nothing for config unset to remove. Use ${formatCliCommand("openclaw config set <path> <value>")} to override the inherited value.`;
+    return `Config path not found in authored config: ${params.path}. It only exists after runtime defaults are applied, so there is nothing for config unset to remove. Use ${formatCliCommand("operator config set <path> <value>")} to override the inherited value.`;
   }
-  return `Config path not found: ${params.path}. Nothing was changed. Run ${formatCliCommand("openclaw config get <path>")} first if you are unsure of the path.`;
+  return `Config path not found: ${params.path}. Nothing was changed. Run ${formatCliCommand("operator config get <path>")} first if you are unsure of the path.`;
 }
 
 type JsonSchemaRecord = {
@@ -1874,9 +1874,9 @@ function formatPluginInstallConfigSetError(): string {
     "plugins.installs is managed by the plugin index and cannot be edited with config set.",
     "",
     "Use plugin commands instead:",
-    `  ${formatCliCommand("openclaw plugins install <spec>")}`,
-    `  ${formatCliCommand("openclaw plugins update <plugin-id>")}`,
-    `  ${formatCliCommand("openclaw plugins uninstall <plugin-id>")}`,
+    `  ${formatCliCommand("operator plugins install <spec>")}`,
+    `  ${formatCliCommand("operator plugins update <plugin-id>")}`,
+    `  ${formatCliCommand("operator plugins uninstall <plugin-id>")}`,
   ].join("\n");
 }
 
@@ -2450,7 +2450,7 @@ export async function runConfigGet(opts: { path: string; json?: boolean; runtime
     if (!res.found) {
       runtime.error(
         danger(
-          `Config path not found: ${opts.path}. Run ${formatCliCommand("openclaw config validate")} to inspect config shape.`,
+          `Config path not found: ${opts.path}. Run ${formatCliCommand("operator config validate")} to inspect config shape.`,
         ),
       );
       runtime.exit(1);
@@ -2613,7 +2613,7 @@ async function runConfigValidate(opts: { json?: boolean; runtime?: RuntimeEnv } 
       } else {
         runtime.error(danger(`Config file not found: ${shortPath}`));
         runtime.error(
-          `Create one with ${formatCliCommand("openclaw onboard")} or run ${formatCliCommand("openclaw doctor --fix")}.`,
+          `Create one with ${formatCliCommand("operator onboard")} or run ${formatCliCommand("operator doctor --fix")}.`,
         );
       }
       runtime.exit(1);
@@ -2634,7 +2634,7 @@ async function runConfigValidate(opts: { json?: boolean; runtime?: RuntimeEnv } 
         runtime.error(
           formatInvalidConfigRepairHint(snapshot, "to repair, or fix the keys above manually."),
         );
-        runtime.error(`Inspect with ${formatCliCommand("openclaw config validate")}.`);
+        runtime.error(`Inspect with ${formatCliCommand("operator config validate")}.`);
       }
       runtime.exit(1);
       return;

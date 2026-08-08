@@ -2,10 +2,10 @@
 import { GatewayClient } from "@gabrielvfonseca/gateway-client";
 import { EventHub } from "./event-hub.js";
 import type {
-  ConnectableOpenClawTransport,
+  ConnectableOperatorTransport,
   GatewayEvent,
   GatewayRequestOptions,
-  OpenClawTransport,
+  OperatorTransport,
 } from "./types.js";
 
 // Gateway transport adapter that converts the lower-level GatewayClient into the
@@ -70,7 +70,7 @@ function toGatewayEvent(event: unknown): GatewayEvent {
 }
 
 /** Connectable SDK transport backed by @gabrielvfonseca/gateway-client. */
-export class GatewayClientTransport implements ConnectableOpenClawTransport {
+export class GatewayClientTransport implements ConnectableOperatorTransport {
   private readonly eventsHub = new EventHub<GatewayEvent>({
     replayLimit: RAW_EVENT_REPLAY_LIMIT,
   });
@@ -174,7 +174,7 @@ export class GatewayClientTransport implements ConnectableOpenClawTransport {
 
 /** Narrow an SDK transport to one that supports explicit connect. */
 export function isConnectableTransport(
-  transport: OpenClawTransport,
-): transport is ConnectableOpenClawTransport {
+  transport: OperatorTransport,
+): transport is ConnectableOperatorTransport {
   return typeof (transport as { connect?: unknown }).connect === "function";
 }

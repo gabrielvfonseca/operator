@@ -17,7 +17,7 @@ describe("syncPluginVersions", () => {
     cleanupTempDirs(tempDirs);
   });
 
-  it("preserves workspace openclaw devDependencies and plugin host floors", () => {
+  it("preserves workspace operator devDependencies and plugin host floors", () => {
     const rootDir = makeTempDir(tempDirs, "operator-sync-plugin-versions-");
 
     writeJson(path.join(rootDir, "package.json"), {
@@ -62,7 +62,7 @@ describe("syncPluginVersions", () => {
       version?: string;
       devDependencies?: Record<string, string>;
       peerDependencies?: Record<string, string>;
-      openclaw?: {
+      operator?: {
         install?: {
           minHostVersion?: string;
         };
@@ -118,7 +118,7 @@ describe("syncPluginVersions", () => {
     ) as {
       version?: string;
       peerDependencies?: Record<string, string>;
-      openclaw?: {
+      operator?: {
         compat?: {
           pluginApi?: string;
         };

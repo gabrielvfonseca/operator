@@ -75,7 +75,7 @@ This guide assumes Ubuntu or Debian on Hetzner. On another Linux VPS, map packag
   <Step title="Clone the Operator repository">
     ```bash
     git clone https://github.com/gabrielvfonseca/operator.git
-    cd openclaw
+    cd operator
     ```
 
     This guide builds a custom image so any binaries you bake in survive restarts.

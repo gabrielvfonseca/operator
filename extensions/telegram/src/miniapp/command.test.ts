@@ -70,7 +70,7 @@ describe("registerTelegramMiniAppCommand", () => {
   it("returns a web app button for owner DM invocations", async () => {
     resolveTelegramMiniAppUrls.mockResolvedValue({
       pageUrl: "https://host.tailnet.ts.net/__operator_tg_miniapp/",
-      controlUiUrl: "https://host.tailnet.ts.net/openclaw",
+      controlUiUrl: "https://host.tailnet.ts.net/operator",
       gatewayUrl: "wss://host.tailnet.ts.net",
     });
     const command = registerDashboardCommand(

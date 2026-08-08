@@ -18,7 +18,7 @@ Workspace `.env` files are a lower-trust source: Operator ignores provider crede
 4. **Config `env` block** in `~/.operator/operator.json` (applied only if missing).
 5. **Optional login-shell import** (`env.shellEnv.enabled` or `OPERATOR_LOAD_SHELL_ENV=1`), applied only for missing expected keys.
 
-On fresh Ubuntu installs that use the default state dir, Operator also treats `~/.config/openclaw/gateway.env` as a compatibility fallback after the global `.env`. If both files exist and disagree, Operator keeps `~/.operator/.env` and prints a warning.
+On fresh Ubuntu installs that use the default state dir, Operator also treats `~/.config/operator/gateway.env` as a compatibility fallback after the global `.env`. If both files exist and disagree, Operator keeps `~/.operator/.env` and prints a warning.
 
 If the config file is missing entirely, step 4 is skipped; shell import still runs if enabled.
 
@@ -206,7 +206,7 @@ DigiCert Global Root G2, etc.). This causes `web_fetch` to fail with `"fetch fai
 On Linux, Operator automatically detects nvm and applies the fix in the actual startup environment:
 
 - `operator gateway install` writes `NODE_EXTRA_CA_CERTS` into the systemd service environment
-- the `openclaw` CLI entrypoint re-execs itself with `NODE_EXTRA_CA_CERTS` set before Node startup
+- the `operator` CLI entrypoint re-execs itself with `NODE_EXTRA_CA_CERTS` set before Node startup
 
 **Manual fix (for older versions or direct `node ...` launches):**
 

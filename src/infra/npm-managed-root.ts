@@ -11,7 +11,7 @@ import { hasErrnoCode } from "./errors.js";
 import type { NpmSpecResolution } from "./install-source-utils.js";
 import { readJson, readJsonIfExists, writeJson } from "./json-files.js";
 import type { ParsedRegistryNpmSpec } from "./npm-registry-spec.js";
-import { resolveOperatorPackageRootSync } from "./openclaw-root.js";
+import { resolveOperatorPackageRootSync } from "./operator-root.js";
 import { createSafeNpmInstallArgs, createSafeNpmInstallEnv } from "./safe-package-install.js";
 
 // Managed npm roots are private package roots used for installed plugins. This
@@ -360,7 +360,7 @@ export async function upsertManagedNpmRootDependency(params: {
     dependencies: nextDependencies,
     managedDependencyNames,
   });
-  const openclawMetadata = buildManagedOperatorMetadata({
+  const operatorMetadata = buildManagedOperatorMetadata({
     current: manifest.operator,
     managedOverrideKeys,
     managedPeerDependencyKeys: [...managedDependencyNames].toSorted(),
@@ -375,8 +375,8 @@ export async function upsertManagedNpmRootDependency(params: {
   } else {
     delete next.overrides;
   }
-  if (openclawMetadata) {
-    next.operator = openclawMetadata;
+  if (operatorMetadata) {
+    next.operator = operatorMetadata;
   } else {
     delete next.operator;
   }
@@ -706,7 +706,7 @@ function isHostPeerResolutionFailure(
   result: Awaited<ReturnType<ManagedNpmRootRunCommand>>,
 ): boolean {
   const output = `${result.stdout}\n${result.stderr}`;
-  return /(^|[^@\w.-])openclaw(?=$|[@\s:,"'])/i.test(output);
+  return /(^|[^@\w.-])operator(?=$|[@\s:,"'])/i.test(output);
 }
 
 function createManagedNpmPeerPlanArgs(params?: {
@@ -857,7 +857,7 @@ export async function restoreManagedNpmRootPeerDependencySnapshot(params: {
   const managedOverrideKeys = currentManagedOverrideKeys
     .filter((key) => Object.hasOwn(overrides, key))
     .toSorted();
-  const openclawMetadata = buildManagedOperatorMetadata({
+  const operatorMetadata = buildManagedOperatorMetadata({
     current: manifest.operator,
     managedOverrideKeys,
     managedPeerDependencyKeys: params.snapshot.managedPeerDependencies.toSorted(),
@@ -872,8 +872,8 @@ export async function restoreManagedNpmRootPeerDependencySnapshot(params: {
   } else {
     delete next.overrides;
   }
-  if (openclawMetadata) {
-    next.operator = openclawMetadata;
+  if (operatorMetadata) {
+    next.operator = operatorMetadata;
   } else {
     delete next.operator;
   }
@@ -932,7 +932,7 @@ export async function syncManagedNpmRootPeerDependencies(params: {
     managedDependencyNames: managedPeerDependencyNames,
   });
   const managedPeerDependencyKeys = [...managedPeerDependencyNames].toSorted();
-  const openclawMetadata = buildManagedOperatorMetadata({
+  const operatorMetadata = buildManagedOperatorMetadata({
     current: manifest.operator,
     managedOverrideKeys,
     managedPeerDependencyKeys,
@@ -947,8 +947,8 @@ export async function syncManagedNpmRootPeerDependencies(params: {
   } else {
     delete next.overrides;
   }
-  if (openclawMetadata) {
-    next.operator = openclawMetadata;
+  if (operatorMetadata) {
+    next.operator = operatorMetadata;
   } else {
     delete next.operator;
   }
@@ -959,7 +959,7 @@ export async function syncManagedNpmRootPeerDependencies(params: {
   return changed;
 }
 
-/** Remove stale managed-root openclaw peer installs while preserving active host links. */
+/** Remove stale managed-root operator peer installs while preserving active host links. */
 export async function repairManagedNpmRootOperatorPeer(params: {
   npmRoot: string;
   packageRoot?: string | null;
@@ -1032,12 +1032,12 @@ export async function repairManagedNpmRootOperatorPeer(params: {
     });
     if (result.code !== 0) {
       params.logger?.warn?.(
-        `npm ${hasManifestDependency ? "uninstall openclaw" : "prune"} failed while repairing managed npm root; falling back to direct cleanup: ${result.stderr.trim() || result.stdout.trim()}`,
+        `npm ${hasManifestDependency ? "uninstall operator" : "prune"} failed while repairing managed npm root; falling back to direct cleanup: ${result.stderr.trim() || result.stdout.trim()}`,
       );
     }
   } catch (error) {
     params.logger?.warn?.(
-      `npm ${hasManifestDependency ? "uninstall openclaw" : "prune"} failed while repairing managed npm root; falling back to direct cleanup: ${String(error)}`,
+      `npm ${hasManifestDependency ? "uninstall operator" : "prune"} failed while repairing managed npm root; falling back to direct cleanup: ${String(error)}`,
     );
   }
 
@@ -1090,7 +1090,7 @@ async function managedNpmRootLockfileHasOperatorPeer(npmRoot: string): Promise<b
       ) {
         return true;
       }
-      if ("node_modules/openclaw" in parsed.packages) {
+      if ("node_modules/operator" in parsed.packages) {
         return true;
       }
     }
@@ -1167,8 +1167,8 @@ async function scrubManagedNpmRootOperatorPeer(params: {
           lockChanged = true;
         }
       }
-      if ("node_modules/openclaw" in parsed.packages) {
-        delete parsed.packages["node_modules/openclaw"];
+      if ("node_modules/operator" in parsed.packages) {
+        delete parsed.packages["node_modules/operator"];
         lockChanged = true;
       }
     }
@@ -1187,9 +1187,9 @@ async function scrubManagedNpmRootOperatorPeer(params: {
     }
   }
 
-  const openclawPackageDir = path.join(params.npmRoot, "node_modules", "@gabrielvfonseca/operator");
-  if (!params.preservePackageDir && (await pathExists(openclawPackageDir))) {
-    await fs.rm(openclawPackageDir, { recursive: true, force: true });
+  const operatorPackageDir = path.join(params.npmRoot, "node_modules", "@gabrielvfonseca/operator");
+  if (!params.preservePackageDir && (await pathExists(operatorPackageDir))) {
+    await fs.rm(operatorPackageDir, { recursive: true, force: true });
   }
   const binDir = path.join(params.npmRoot, "node_modules", ".bin");
   await Promise.all(

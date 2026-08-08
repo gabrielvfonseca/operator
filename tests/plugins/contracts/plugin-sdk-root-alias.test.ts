@@ -147,7 +147,7 @@ function loadRootAliasWithStubs(options?: {
     if (id === "node:os") {
       return {
         tmpdir: () =>
-          context.process.env.TMPDIR ?? options?.defaultTmpDir ?? "/tmp/openclaw-root-alias-test",
+          context.process.env.TMPDIR ?? options?.defaultTmpDir ?? "/tmp/operator-root-alias-test",
       };
     }
     if (id === "jiti") {
@@ -361,7 +361,7 @@ describe("plugin-sdk root alias", () => {
     expect(lazyModule.createJitiOptions.at(-1)?.tryNative).toBe(false);
     expect(lazyModule.createJitiOptions.at(-1)?.fsCache).toBe(
       path.join(
-        "/tmp/openclaw-root-alias-test",
+        "/tmp/operator-root-alias-test",
         "jiti",
         "@gabrielvfonseca/operator",
         "3.4.5",
@@ -375,16 +375,16 @@ describe("plugin-sdk root alias", () => {
 
   it("preserves jiti's tmpdir guard when root-alias TMPDIR resolves to cwd", () => {
     const lazyModule = loadRootAliasWithStubs({
-      cwd: "/tmp/openclaw-root-alias-cwd",
-      defaultTmpDir: "/tmp/openclaw-root-alias-fallback",
-      env: { TMPDIR: "/tmp/openclaw-root-alias-cwd" },
+      cwd: "/tmp/operator-root-alias-cwd",
+      defaultTmpDir: "/tmp/operator-root-alias-fallback",
+      env: { TMPDIR: "/tmp/operator-root-alias-cwd" },
       packageVersion: "3.4.5",
     });
 
     expect("slowHelper" in lazyModule.moduleExports).toBe(true);
     expect(lazyModule.createJitiOptions.at(-1)?.fsCache).toBe(
       path.join(
-        "/tmp/openclaw-root-alias-fallback",
+        "/tmp/operator-root-alias-fallback",
         "jiti",
         "@gabrielvfonseca/operator",
         "3.4.5",
@@ -492,9 +492,9 @@ describe("plugin-sdk root alias", () => {
 
     expect((lazyModule.moduleExports.slowHelper as () => string)()).toBe("loaded");
     const aliasMap = (lazyModule.createJitiOptions.at(-1)?.alias ?? {}) as Record<string, string>;
-    expect(aliasMap["openclaw/plugin-sdk"]).toBe(rootAliasPath);
+    expect(aliasMap["operator/plugin-sdk"]).toBe(rootAliasPath);
     expect(aliasMap["@gabrielvfonseca/plugin-sdk"]).toBe(rootAliasPath);
-    expect(aliasMap["openclaw/plugin-sdk/group-access"]).toContain(
+    expect(aliasMap["operator/plugin-sdk/group-access"]).toContain(
       path.join("src", "plugin-sdk", "group-access.ts"),
     );
     expect(aliasMap["@gabrielvfonseca/plugin-sdk/group-access"]).toContain(
@@ -570,11 +570,11 @@ describe("plugin-sdk root alias", () => {
       (lazyModule.createJitiOptions.at(-1)?.alias ?? {}) as Record<string, string>,
     );
     expect(aliasKeys).toEqual([
-      "openclaw/plugin-sdk/alpha",
+      "operator/plugin-sdk/alpha",
       "@gabrielvfonseca/plugin-sdk/alpha",
-      "openclaw/plugin-sdk/group-access",
+      "operator/plugin-sdk/group-access",
       "@gabrielvfonseca/plugin-sdk/group-access",
-      "openclaw/plugin-sdk/zeta",
+      "operator/plugin-sdk/zeta",
       "@gabrielvfonseca/plugin-sdk/zeta",
       "@gabrielvfonseca/llm-core",
       "@gabrielvfonseca/llm-core/diagnostics",
@@ -611,7 +611,7 @@ describe("plugin-sdk root alias", () => {
       "@gabrielvfonseca/normalization-core/string-normalization",
       "@gabrielvfonseca/normalization-core/utf16-slice",
       "@gabrielvfonseca/retry",
-      "openclaw/plugin-sdk",
+      "operator/plugin-sdk",
       "@gabrielvfonseca/plugin-sdk",
     ]);
   });
@@ -636,11 +636,11 @@ describe("plugin-sdk root alias", () => {
 
     expect((lazyModule.moduleExports.slowHelper as () => string)()).toBe("loaded");
     const aliasMap = (lazyModule.createJitiOptions.at(-1)?.alias ?? {}) as Record<string, string>;
-    expect(aliasMap["openclaw/plugin-sdk/qa-lab"]).toBe(qaLabPath);
+    expect(aliasMap["operator/plugin-sdk/qa-lab"]).toBe(qaLabPath);
     expect(aliasMap["@gabrielvfonseca/plugin-sdk/qa-lab"]).toBe(qaLabPath);
-    expect(aliasMap).not.toHaveProperty("openclaw/plugin-sdk/../escape");
-    expect(aliasMap).not.toHaveProperty("openclaw/plugin-sdk/nested/path");
-    expect(aliasMap).not.toHaveProperty("openclaw/plugin-sdk/ssrf-runtime-internal");
+    expect(aliasMap).not.toHaveProperty("operator/plugin-sdk/../escape");
+    expect(aliasMap).not.toHaveProperty("operator/plugin-sdk/nested/path");
+    expect(aliasMap).not.toHaveProperty("operator/plugin-sdk/ssrf-runtime-internal");
     expect(aliasMap).not.toHaveProperty("@gabrielvfonseca/plugin-sdk/ssrf-runtime-internal");
   });
 
@@ -663,9 +663,9 @@ describe("plugin-sdk root alias", () => {
 
     expect((lazyModule.moduleExports.slowHelper as () => string)()).toBe("loaded");
     const aliasMap = (lazyModule.createJitiOptions.at(-1)?.alias ?? {}) as Record<string, string>;
-    expect(aliasMap).not.toHaveProperty("openclaw/plugin-sdk/codex-mcp-projection");
+    expect(aliasMap).not.toHaveProperty("operator/plugin-sdk/codex-mcp-projection");
     expect(aliasMap).not.toHaveProperty("@gabrielvfonseca/plugin-sdk/codex-mcp-projection");
-    expect(aliasMap).not.toHaveProperty("openclaw/plugin-sdk/qa-runtime");
+    expect(aliasMap).not.toHaveProperty("operator/plugin-sdk/qa-runtime");
   });
 
   it("builds source plugin-sdk subpath aliases through the wider source extension family", () => {
@@ -682,7 +682,7 @@ describe("plugin-sdk root alias", () => {
 
     expect((lazyModule.moduleExports.slowHelper as () => string)()).toBe("loaded");
     const aliasMap = (lazyModule.createJitiOptions.at(-1)?.alias ?? {}) as Record<string, string>;
-    expect(aliasMap["openclaw/plugin-sdk/channel-runtime"]).toBe(
+    expect(aliasMap["operator/plugin-sdk/channel-runtime"]).toBe(
       path.join(packageRoot, "src", "plugin-sdk", "channel-runtime.mts"),
     );
     expect(aliasMap["@gabrielvfonseca/plugin-sdk/channel-runtime"]).toBe(

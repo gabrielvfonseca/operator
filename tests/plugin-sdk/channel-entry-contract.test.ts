@@ -422,7 +422,7 @@ describe("loadBundledEntryExportSync", () => {
     vi.doMock("../infra/boundary-file-read.js", () => ({
       openRootFileSync: () => ({
         ok: true,
-        path: "C:\\Users\\alice\\openclaw\\dist\\extensions\\feishu\\helper.ts",
+        path: "C:\\Users\\alice\\operator\\dist\\extensions\\feishu\\helper.ts",
         fd: fs.openSync(openedFdPath, "r"),
       }),
     }));
@@ -435,7 +435,7 @@ describe("loadBundledEntryExportSync", () => {
 
         expect(
           channelEntryContract.loadBundledEntryExportSync<number>(
-            "file:///C:/Users/alice/openclaw/dist/extensions/feishu/index.js",
+            "file:///C:/Users/alice/operator/dist/extensions/feishu/index.js",
             {
               specifier: "./helper.ts",
               exportName: "load",
@@ -444,7 +444,7 @@ describe("loadBundledEntryExportSync", () => {
           ),
         ).toBe(42);
         expect(jitiLoad).toHaveBeenCalledWith(
-          "file:///C:/Users/alice/openclaw/dist/extensions/feishu/helper.ts",
+          "file:///C:/Users/alice/operator/dist/extensions/feishu/helper.ts",
         );
       } finally {
         vi.doUnmock("../infra/boundary-file-read.js");

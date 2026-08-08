@@ -5,9 +5,9 @@
   "description": "HashiCorp Vault SecretRef provider integration for Operator",
   "type": "module",
   "devDependencies": {
-    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*"
   },
-  "@gabrielvfonseca/openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],

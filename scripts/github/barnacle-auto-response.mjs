@@ -314,7 +314,7 @@ function extractIssueFormValue(body, field) {
 }
 
 function hasLinkedReference(text) {
-  return /(?:#\d+|github\.com\/openclaw\/openclaw\/(?:issues|pull)\/\d+)/i.test(text);
+  return /(?:#\d+|github\.com\/operator\/operator\/(?:issues|pull)\/\d+)/i.test(text);
 }
 
 function hasFilledTemplateLine(body, field) {
@@ -539,7 +539,7 @@ export function classifyPullRequestCandidateLabels(pullRequest, files) {
 
   const addsPluginManifest = files.some(
     (file) =>
-      file.status === "added" && /^extensions\/[^/]+\/openclaw\.plugin\.json$/i.test(file.filename),
+      file.status === "added" && /^extensions\/[^/]+\/operator\.plugin\.json$/i.test(file.filename),
   );
   if (
     !clearDesignContext &&

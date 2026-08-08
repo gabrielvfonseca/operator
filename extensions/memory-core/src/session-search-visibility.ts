@@ -1,18 +1,18 @@
 // Memory Core plugin module implements session search visibility behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/memory-core-host-runtime-core";
-import type { MemorySearchResult } from "openclaw/plugin-sdk/memory-core-host-runtime-files";
-import { resolveSessionAgentId } from "openclaw/plugin-sdk/memory-host-core";
+import type { OperatorConfig } from "operator/plugin-sdk/memory-core-host-runtime-core";
+import type { MemorySearchResult } from "operator/plugin-sdk/memory-core-host-runtime-files";
+import { resolveSessionAgentId } from "operator/plugin-sdk/memory-host-core";
 import {
   extractTranscriptIdentityFromSessionsMemoryHit,
   loadCombinedSessionStoreForGateway,
   resolveSessionTranscriptMemoryHitKeyToSessionKeys,
   resolveTranscriptStemToSessionKeys,
-} from "openclaw/plugin-sdk/session-transcript-hit";
+} from "operator/plugin-sdk/session-transcript-hit";
 import {
   createAgentToAgentPolicy,
   createSessionVisibilityGuard,
   resolveEffectiveSessionToolsVisibility,
-} from "openclaw/plugin-sdk/session-visibility";
+} from "operator/plugin-sdk/session-visibility";
 import { readQmdSessionArtifactIdentity } from "./qmd-session-artifacts.js";
 
 function normalizeAgentIdForCompare(value: string | undefined): string | undefined {

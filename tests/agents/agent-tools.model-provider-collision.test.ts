@@ -7,7 +7,7 @@ import { describe, expect, it, vi } from "vitest";
 import { createOperatorCodingTools } from "../../src/agents/agent-tools.js";
 import type { AnyAgentTool } from "../../src/agents/agent-tools.types.js";
 
-vi.mock("./openclaw-plugin-tools.js", () => ({
+vi.mock("./operator-plugin-tools.js", () => ({
   resolveOperatorPluginToolsForOptions: () => [{ name: "browser" }],
 }));
 

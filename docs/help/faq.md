@@ -41,7 +41,7 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
     ```
     If RPC is down, fall back to:
     ```bash
-    tail -f "$(ls -t /tmp/openclaw/operator-*.log | head -1)"
+    tail -f "$(ls -t /tmp/operator/operator-*.log | head -1)"
     ```
     File logs are separate from service logs; see [Logging](/logging) and [Troubleshooting](/gateway/troubleshooting).
   </Step>
@@ -362,7 +362,7 @@ First-run Q&A - install, onboard, auth routes, subscriptions, initial failures -
 
     This can use the local host browser or a connected browser node. If the Gateway runs elsewhere, run a node host on the browser machine, or use remote CDP instead.
 
-    Current limits on `existing-session` / `user` profiles versus the managed `openclaw` profile:
+    Current limits on `existing-session` / `user` profiles versus the managed `operator` profile:
 
     - `click`, `type`, `hover`, `scrollIntoView`, `drag`, and `select` require snapshot refs, not CSS selectors.
     - Upload hooks require `ref` or `inputRef`, one file at a time, no CSS `element`.
@@ -1260,7 +1260,7 @@ Model Q&A - defaults, selection, aliases, switching, failover, auth profiles - l
 
 <AccordionGroup>
   <Accordion title="Where are logs?">
-    File logs (structured): `/tmp/openclaw/operator-YYYY-MM-DD.log`. Set a stable path via `logging.file`; file log level via `logging.level`; console verbosity via `--verbose` and `logging.consoleLevel`.
+    File logs (structured): `/tmp/operator/operator-YYYY-MM-DD.log`. Set a stable path via `logging.file`; file log level via `logging.level`; console verbosity via `--verbose` and `logging.consoleLevel`.
 
     Fastest tail:
 
@@ -1270,7 +1270,7 @@ Model Q&A - defaults, selection, aliases, switching, failover, auth profiles - l
 
     Service/supervisor logs (when the gateway runs via launchd/systemd):
 
-    - macOS launchd stdout: `~/Library/Logs/openclaw/gateway.log` (profiles use `gateway-<profile>.log`; stderr is suppressed).
+    - macOS launchd stdout: `~/Library/Logs/operator/gateway.log` (profiles use `gateway-<profile>.log`; stderr is suppressed).
     - Linux: `journalctl --user -u operator-gateway[-<profile>].service -n 200 --no-pager`.
     - Windows: `schtasks /Query /TN "Operator Gateway (<profile>)" /V /FO LIST`.
 
@@ -1398,7 +1398,7 @@ Model Q&A - defaults, selection, aliases, switching, failover, auth profiles - l
 
 <AccordionGroup>
   <Accordion title="My skill generated an image/PDF, but nothing was sent">
-    Outbound attachments from the agent must use structured media fields such as `media`, `mediaUrl`, `path`, or `filePath`. See [Operator assistant setup](/start/openclaw) and [Agent send](/tools/agent-send).
+    Outbound attachments from the agent must use structured media fields such as `media`, `mediaUrl`, `path`, or `filePath`. See [Operator assistant setup](/start/operator) and [Agent send](/tools/agent-send).
 
     ```bash
     operator message send --target +15555550123 --message "Here you go" --media /path/to/file.png
@@ -1535,7 +1535,7 @@ Model Q&A - defaults, selection, aliases, switching, failover, auth profiles - l
   </Accordion>
 
   <Accordion title="How do I stop/cancel a running task?">
-    Send any of these **as a standalone message** (no slash) to trigger an abort: `stop`, `stop action`, `stop current action`, `stop run`, `stop current run`, `stop agent`, `stop the agent`, `stop openclaw`, `operator stop`, `stop don't do anything`, `stop do not do anything`, `stop doing anything`, `do not do that`, `please stop`, `stop please`, `abort`, `esc`, `exit`, `interrupt`, `halt`. Common non-English triggers (French, German, Spanish, Chinese, Japanese, Hindi, Arabic, Russian) also work.
+    Send any of these **as a standalone message** (no slash) to trigger an abort: `stop`, `stop action`, `stop current action`, `stop run`, `stop current run`, `stop agent`, `stop the agent`, `stop operator`, `operator stop`, `stop don't do anything`, `stop do not do anything`, `stop doing anything`, `do not do that`, `please stop`, `stop please`, `abort`, `esc`, `exit`, `interrupt`, `halt`. Common non-English triggers (French, German, Spanish, Chinese, Japanese, Hindi, Arabic, Russian) also work.
 
     For background processes started by the exec tool, ask the agent to run:
 

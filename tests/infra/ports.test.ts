@@ -120,7 +120,7 @@ describe("ports helpers", () => {
     };
 
     await handlePortError(
-      new PortInUseError(18789, "node dist/index.js openclaw gateway"),
+      new PortInUseError(18789, "node dist/index.js operator gateway"),
       18789,
       "gateway start",
       runtime,
@@ -182,7 +182,7 @@ describeUnix("inspectPortUsage", () => {
       if (command === "ps") {
         if (argv.includes("command=")) {
           return {
-            stdout: "node /tmp/openclaw/dist/index.js gateway --port 18789\n",
+            stdout: "node /tmp/operator/dist/index.js gateway --port 18789\n",
             stderr: "",
             code: 0,
           };
@@ -301,9 +301,9 @@ describeUnix("inspectPortUsage", () => {
           return {
             stdout:
               pid === "111"
-                ? "node /tmp/newer-openclaw/dist/index.js logs --follow\n"
+                ? "node /tmp/newer-operator/dist/index.js logs --follow\n"
                 : pid === "222"
-                  ? "node /tmp/older-openclaw/dist/index.js gateway run\n"
+                  ? "node /tmp/older-operator/dist/index.js gateway run\n"
                   : "browser https://example.invalid/\n",
             stderr: "",
             code: 0,
@@ -325,7 +325,7 @@ describeUnix("inspectPortUsage", () => {
     expect(result.connections[0]).toMatchObject({
       pid: 111,
       direction: "client",
-      commandLine: "node /tmp/newer-openclaw/dist/index.js logs --follow",
+      commandLine: "node /tmp/newer-operator/dist/index.js logs --follow",
     });
     expect(result.connections[1]).toMatchObject({
       pid: 222,
@@ -353,7 +353,7 @@ describeUnix("inspectPortUsage", () => {
       if (command === "ps") {
         if (argv.includes("command=")) {
           return {
-            stdout: "node /tmp/openclaw/dist/index.js gateway run\n",
+            stdout: "node /tmp/operator/dist/index.js gateway run\n",
             stderr: "",
             code: 0,
           };
@@ -393,7 +393,7 @@ describeUnix("inspectPortUsage", () => {
       if (command === "ps") {
         if (argv.includes("command=")) {
           return {
-            stdout: "bun /tmp/openclaw/dist/index.js gateway run\n",
+            stdout: "bun /tmp/operator/dist/index.js gateway run\n",
             stderr: "",
             code: 0,
           };
@@ -473,7 +473,7 @@ describeUnix("inspectPortUsage", () => {
       if (command === "ps") {
         if (argv.includes("command=")) {
           return {
-            stdout: "node /tmp/newer-openclaw/dist/index.js logs --follow\n",
+            stdout: "node /tmp/newer-operator/dist/index.js logs --follow\n",
             stderr: "",
             code: 0,
           };
@@ -529,7 +529,7 @@ describeUnix("inspectPortUsage", () => {
           return {
             stdout:
               pid === "111"
-                ? "node /tmp/newer-openclaw/dist/index.js logs --follow\n"
+                ? "node /tmp/newer-operator/dist/index.js logs --follow\n"
                 : "browser https://example.invalid/\n",
             stderr: "",
             code: 0,
@@ -551,7 +551,7 @@ describeUnix("inspectPortUsage", () => {
     expect(result.connections[0]).toMatchObject({
       pid: 111,
       direction: "client",
-      commandLine: "node /tmp/newer-openclaw/dist/index.js logs --follow",
+      commandLine: "node /tmp/newer-operator/dist/index.js logs --follow",
     });
   });
 });
@@ -576,7 +576,7 @@ describe("inspectPortUsage on Windows", () => {
       if (command === getWindowsPowerShellExePath()) {
         return {
           stdout:
-            '"C:\\Program Files\\nodejs\\node.exe" C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js logs --follow\r\n',
+            '"C:\\Program Files\\nodejs\\node.exe" C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\operator\\dist\\index.js logs --follow\r\n',
           stderr: "",
           code: 0,
         };
@@ -612,7 +612,7 @@ describe("inspectPortUsage on Windows", () => {
       if (command === getWindowsPowerShellExePath()) {
         return {
           stdout:
-            '"C:\\Program Files\\nodejs\\node.exe" C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js gateway run\r\n',
+            '"C:\\Program Files\\nodejs\\node.exe" C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\operator\\dist\\index.js gateway run\r\n',
           stderr: "",
           code: 0,
         };
@@ -651,7 +651,7 @@ describe("inspectPortUsage on Windows", () => {
       }
       if (command === getWindowsPowerShellExePath()) {
         return {
-          stdout: "node.exe C:\\openclaw\\dist\\index.js gateway run\r\n",
+          stdout: "node.exe C:\\operator\\dist\\index.js gateway run\r\n",
           stderr: "",
           code: 0,
         };
@@ -709,7 +709,7 @@ describe("inspectPortUsage on Windows", () => {
       }
       if (command === getWindowsWmicExePath()) {
         return {
-          stdout: "CommandLine=node.exe C:\\openclaw\\dist\\index.js gateway run\r\n",
+          stdout: "CommandLine=node.exe C:\\operator\\dist\\index.js gateway run\r\n",
           stderr: "",
           code: 0,
         };

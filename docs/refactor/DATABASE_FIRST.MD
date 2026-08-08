@@ -484,7 +484,7 @@ The branch already has a real shared SQLite base:
   startup gate.
 - Android device identity uses the same TypeScript-compatible key material
   stored in typed `state/operator.sqlite#table/device_identities` rows. It never
-  reads or writes `openclaw/identity/device.json`; a leftover legacy file blocks
+  reads or writes `operator/identity/device.json`; a leftover legacy file blocks
   startup until doctor imports it into SQLite.
 - Android cached device auth tokens also use typed
   `state/operator.sqlite#table/device_auth_tokens` rows and share the same
@@ -1059,7 +1059,7 @@ sessionId})`; create, branch, continue, list, and fork flows live in their
   file remains file-backed, recovery snapshots stay next to the config file,
   and durable config audit/health state belongs to the Gateway SQLite store.
 - System-agent rescue pending approvals now use core SQLite plugin state instead
-  of `crestodian/rescue-pending/*.json` or `openclaw/rescue-pending/*.json`.
+  of `crestodian/rescue-pending/*.json` or `operator/rescue-pending/*.json`.
   These short-lived security capabilities are never imported; doctor discards
   both retired directories so an upgrade cannot reactivate a stale write.
 - Phone Control temporary arm state now uses SQLite plugin state instead of
@@ -1440,7 +1440,7 @@ create` validates the written archive by default; `--no-verify` is the
   removed. There is no QMD transcript collection, no `qmd/sessions*` runtime
   path, and no file-backed session memory bridge.
 - Memory-core runtime imports SQLite transcript indexing helpers from
-  `openclaw/plugin-sdk/memory-core-host-engine-session-transcripts`, not the
+  `operator/plugin-sdk/memory-core-host-engine-session-transcripts`, not the
   QMD SDK subpath. The QMD subpath keeps a compatibility re-export only for
   external callers until a major SDK cleanup can remove it.
 - QMD's own `index.sqlite` is now a temp runtime materialization backed by the
@@ -2273,7 +2273,7 @@ Add a repo check that fails new runtime writes to legacy state paths:
 - `audit/file-transfer.jsonl`
 - `audit/crestodian.jsonl`
 - `crestodian/rescue-pending/*.json`
-- `openclaw/rescue-pending/*.json`
+- `operator/rescue-pending/*.json`
 - `plugins/phone-control/armed.json`
 - Memory Wiki `.operator-wiki/log.jsonl`
 - Memory Wiki `.operator-wiki/state.json`

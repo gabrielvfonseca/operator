@@ -21,13 +21,13 @@ const mocks = vi.hoisted(() => ({
   })),
 }));
 
-vi.mock("openclaw/plugin-sdk/heartbeat-runtime", () => ({
+vi.mock("operator/plugin-sdk/heartbeat-runtime", () => ({
   requestHeartbeat: mocks.requestHeartbeat,
 }));
-vi.mock("openclaw/plugin-sdk/routing", () => ({
+vi.mock("operator/plugin-sdk/routing", () => ({
   resolveAgentRoute: mocks.resolveAgentRoute,
 }));
-vi.mock("openclaw/plugin-sdk/system-event-runtime", () => ({
+vi.mock("operator/plugin-sdk/system-event-runtime", () => ({
   enqueueSystemEvent: mocks.enqueueSystemEvent,
 }));
 vi.mock("../send.permissions.js", () => ({

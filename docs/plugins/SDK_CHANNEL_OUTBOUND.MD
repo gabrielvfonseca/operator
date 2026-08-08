@@ -8,8 +8,8 @@ read_when:
 ---
 
 Channel plugins expose outbound message behavior from
-`openclaw/plugin-sdk/channel-outbound`. Use
-`openclaw/plugin-sdk/channel-inbound` for receive/context/dispatch
+`operator/plugin-sdk/channel-outbound`. Use
+`operator/plugin-sdk/channel-inbound` for receive/context/dispatch
 orchestration.
 
 Core owns queueing, durability, generic retry policy, hooks, receipts, and
@@ -25,7 +25,7 @@ Most plugins define one `message` adapter:
 import {
   defineChannelMessageAdapter,
   createMessageReceiptFromOutboundResults,
-} from "openclaw/plugin-sdk/channel-outbound";
+} from "operator/plugin-sdk/channel-outbound";
 
 export const demoMessageAdapter = defineChannelMessageAdapter({
   id: "demo",
@@ -74,7 +74,7 @@ the existing chat-style bold and strikethrough markers. Pass
 `{ style: "markdown" }` only when the channel reparses the result as Markdown:
 
 ```ts
-import { sanitizeForPlainText } from "openclaw/plugin-sdk/channel-outbound";
+import { sanitizeForPlainText } from "operator/plugin-sdk/channel-outbound";
 
 const chatText = sanitizeForPlainText(text);
 const markdownText = sanitizeForPlainText(text, { style: "markdown" });
@@ -96,7 +96,7 @@ through a separate channel-specific path.
 If a channel adapter can prove that retrying a failure cannot duplicate a
 recipient-visible send and no finalization-capable call began, throw
 `new PlatformMessageNotDispatchedError("...", { cause: error })` from
-`openclaw/plugin-sdk/error-runtime`. Core can then clear stale send-attempt
+`operator/plugin-sdk/error-runtime`. Core can then clear stale send-attempt
 evidence and safely retry the queued intent. Only the adapter that owns the
 final dispatch boundary may make this assertion. Never use the marker after a
 finalization/send call begins or returns an ambiguous result; false marking can
@@ -108,7 +108,7 @@ If the channel already has a compatible `outbound` adapter, derive the
 message adapter instead of duplicating send code:
 
 ```ts
-import { createChannelMessageAdapterFromOutbound } from "openclaw/plugin-sdk/channel-outbound";
+import { createChannelMessageAdapterFromOutbound } from "operator/plugin-sdk/channel-outbound";
 
 export const messageAdapter = createChannelMessageAdapterFromOutbound({
   id: "demo",
@@ -164,7 +164,7 @@ The hook is a synchronous admission decision, not a send path. Read only
 already-loaded config or runtime state; do not perform network, filesystem, or
 other asynchronous I/O. Contract tests should exercise both phases and both
 result variants through `ChannelMessageDurableFinalAdapter` from
-`openclaw/plugin-sdk/channel-outbound`.
+`operator/plugin-sdk/channel-outbound`.
 
 ## Compatibility dispatch
 

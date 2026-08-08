@@ -20,7 +20,7 @@ import {
   MIN_CLIENT_PROTOCOL_VERSION,
 } from "../../../../packages/gateway-protocol/src/version.js";
 import { runGatewaySmoke } from "../../../../scripts/dev/gateway-smoke.js";
-import type { OperatorConfig } from "../../../../src/config/types.openclaw.js";
+import type { OperatorConfig } from "../../../../src/config/types.operator.js";
 import { formatErrorMessage } from "../../../../src/infra/errors.js";
 import { createMcpClientTempState } from "./mcp-client-temp-state.fixture.ts";
 import { createQaScriptEvidenceWriter, type QaScriptEvidenceStatus } from "./script-evidence.ts";
@@ -138,8 +138,8 @@ function parseOptions(argv: readonly string[]): ProducerOptions {
 }
 
 async function createFixturePlugin() {
-  // openclaw-temp-dir: allow standalone producer cleans this root in each scenario finally block
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-gateway-mcp-fixture-"));
+  // operator-temp-dir: allow standalone producer cleans this root in each scenario finally block
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-gateway-mcp-fixture-"));
   const pluginDir = path.join(root, FIXTURE_PLUGIN_ID);
   const startupGatePath = path.join(root, "startup-connect-observed");
   await fs.mkdir(pluginDir, { recursive: true });
@@ -261,7 +261,7 @@ function resolveChannelMcpInvocation(params: {
         "--eval",
         [
           `import(${JSON.stringify(channelServerUrl)})`,
-          `.then((module) => module.serveOpenClawChannelMcp({`,
+          `.then((module) => module.serveOperatorChannelMcp({`,
           `gatewayUrl: process.env.OPENCLAW_QA_GATEWAY_URL,`,
           `gatewayToken: process.env.OPENCLAW_QA_GATEWAY_TOKEN,`,
           `claudeChannelMode: "off",`,
@@ -279,7 +279,7 @@ function resolveChannelMcpInvocation(params: {
   }
 
   throw new Error(
-    "OpenClaw channel MCP entry not found: expected dist/index.(m)js or src/mcp/channel-server.ts",
+    "Operator channel MCP entry not found: expected dist/index.(m)js or src/mcp/channel-server.ts",
   );
 }
 
@@ -710,7 +710,7 @@ async function runMcpGatewayStartupRetryProof(options: ProducerOptions): Promise
 }
 
 async function writePluginToolsConfig(root: string, pluginDir: string) {
-  const configPath = path.join(root, "openclaw.json");
+  const configPath = path.join(root, "operator.json");
   const config = withFixturePlugin({} as OperatorConfig, pluginDir);
   await fs.writeFile(configPath, `${JSON.stringify(config, null, 2)}\n`, { mode: 0o600 });
   return configPath;
@@ -718,8 +718,8 @@ async function writePluginToolsConfig(root: string, pluginDir: string) {
 
 async function runMcpPluginToolsProof(options: ProducerOptions): Promise<string> {
   const fixture = await createFixturePlugin();
-  // openclaw-temp-dir: allow standalone producer cleans and verifies this root in its finally block
-  const runtimeRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-plugin-tools-mcp-"));
+  // operator-temp-dir: allow standalone producer cleans and verifies this root in its finally block
+  const runtimeRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-plugin-tools-mcp-"));
   const stateDir = path.join(runtimeRoot, "state");
   const homeDir = path.join(runtimeRoot, "home");
   await Promise.all([

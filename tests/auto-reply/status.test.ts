@@ -738,7 +738,7 @@ describe("buildStatusMessage", () => {
     const normalized = normalizeTestText(text);
     expect(normalized).toContain("Fast");
     expect(normalized).toContain("Runtime: Operator Default");
-    expect(normalized).not.toContain("· openclaw");
+    expect(normalized).not.toContain("· operator");
   });
 
   it("shows fast mode when disabled", () => {

@@ -19,7 +19,7 @@ Related: [Browser tool](/tools/browser)
 - `--token <token>`: Gateway token (if required).
 - `--timeout <ms>`: request timeout in ms (default: `30000`).
 - `--expect-final`: wait for a final Gateway response.
-- `--browser-profile <name>`: choose a browser profile (default: `openclaw`, or `browser.defaultProfile`).
+- `--browser-profile <name>`: choose a browser profile (default: `operator`, or `browser.defaultProfile`).
 - `--json`: machine-readable output (where supported). This is a browser-level option, so
   place it before the subcommand for an unambiguous form, such as
   `operator browser --json status`. Trailing placement such as
@@ -94,7 +94,7 @@ Related: [Browser tool](/tools/browser#missing-browser-command-or-tool)
 
 Profiles are named browser routing configs:
 
-- `openclaw` (default): launches or attaches to a dedicated Operator-managed Chrome instance (isolated user data dir).
+- `operator` (default): launches or attaches to a dedicated Operator-managed Chrome instance (isolated user data dir).
 - `user`: controls your existing signed-in Chrome session via Chrome DevTools MCP.
 - custom CDP profiles: point at a local or remote CDP endpoint.
 
@@ -185,7 +185,7 @@ Action responses return the current raw `targetId` after action-triggered page r
 File + dialog helpers:
 
 ```bash
-operator browser upload /tmp/openclaw/uploads/file.pdf --ref <ref>
+operator browser upload /tmp/operator/uploads/file.pdf --ref <ref>
 operator browser upload media://inbound/file.pdf --ref <ref>
 operator browser waitfordownload
 operator browser download <ref> report.pdf
@@ -193,7 +193,7 @@ operator browser dialog --accept
 operator browser dialog --dismiss --dialog-id d1
 ```
 
-Managed Chrome profiles save ordinary click-triggered downloads into the Operator downloads directory (`/tmp/openclaw/downloads` by default, or the configured temp root). Use `waitfordownload` or `download` when the agent needs to wait for a specific file and return its path; those explicit waiters own the next download. Uploads accept files from the Operator temp uploads root and Operator-managed inbound media, including `media://inbound/<id>` and sandbox-relative `media/inbound/<id>` references. Nested media refs, traversal, and arbitrary local paths are rejected.
+Managed Chrome profiles save ordinary click-triggered downloads into the Operator downloads directory (`/tmp/operator/downloads` by default, or the configured temp root). Use `waitfordownload` or `download` when the agent needs to wait for a specific file and return its path; those explicit waiters own the next download. Uploads accept files from the Operator temp uploads root and Operator-managed inbound media, including `media://inbound/<id>` and sandbox-relative `media/inbound/<id>` references. Nested media refs, traversal, and arbitrary local paths are rejected.
 
 When an action opens a modal dialog, the action response returns `blockedByDialog` with `browserState.dialogs.pending`; pass `--dialog-id` to answer it directly. Dialogs handled outside Operator appear under `browserState.dialogs.recent`.
 

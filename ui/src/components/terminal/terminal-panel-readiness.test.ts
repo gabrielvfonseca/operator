@@ -135,7 +135,7 @@ describe("terminal panel readiness", () => {
     document.body.append(panel);
     const catalog = { catalogId: "codex", hostId: "node:mac", threadId: "thread" };
 
-    panel.handleToggleRequest(new CustomEvent("openclaw:terminal-toggle", { detail: { catalog } }));
+    panel.handleToggleRequest(new CustomEvent("operator:terminal-toggle", { detail: { catalog } }));
 
     await vi.waitFor(() => {
       expect(requests).toContainEqual({
@@ -156,7 +156,7 @@ describe("terminal panel readiness", () => {
     });
     await vi.waitFor(() => expect(panel.renderRoot.querySelector(".tp-connecting")).toBeNull());
     expect(new TextDecoder().decode(controller.write.mock.calls[0]?.[0])).toBe("ready");
-    expect(sessionStorage.getItem("openclaw.terminal.sessions.v1")).toBe(
+    expect(sessionStorage.getItem("operator.terminal.sessions.v1")).toBe(
       JSON.stringify(["catalog-terminal-1"]),
     );
   });
@@ -195,7 +195,7 @@ describe("terminal panel readiness", () => {
     document.body.append(panel);
 
     panel.handleToggleRequest(
-      new CustomEvent("openclaw:terminal-toggle", {
+      new CustomEvent("operator:terminal-toggle", {
         detail: { catalog: { catalogId: "anthropic", hostId: "node:mac", threadId: "thread" } },
       }),
     );
@@ -236,7 +236,7 @@ describe("terminal panel readiness", () => {
     document.body.append(panel);
 
     panel.handleToggleRequest(
-      new CustomEvent("openclaw:terminal-toggle", {
+      new CustomEvent("operator:terminal-toggle", {
         detail: { catalog: { catalogId: "anthropic", hostId: "node:mac", threadId: "thread" } },
       }),
     );

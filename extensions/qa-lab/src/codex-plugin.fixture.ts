@@ -10,7 +10,7 @@ export const CODEX_PLUGIN_ID = "codex";
 
 export const CODEX_PLUGIN_LIFECYCLE_MESSAGES = Object.freeze({
   missingPlugin:
-    'Codex plugin is required for Codex runtime. Run "openclaw doctor --fix" to install @gabrielvfonseca/codex, then retry.',
+    'Codex plugin is required for Codex runtime. Run "operator doctor --fix" to install @gabrielvfonseca/codex, then retry.',
 });
 
 export type CodexPluginFixtureVersion = "missing" | "current" | "head" | (string & {});
@@ -111,7 +111,7 @@ function compareCodexPluginVersions(left: ParsedSemver, right: ParsedSemver): nu
 }
 
 function formatPinnedOldRemediation(pluginVersion: string, hostVersion: string) {
-  return `Codex plugin version ${pluginVersion} is older than Operator ${hostVersion}. Run "openclaw plugins update codex" or unpin codex, then rerun "openclaw doctor --fix".`;
+  return `Codex plugin version ${pluginVersion} is older than Operator ${hostVersion}. Run "operator plugins update codex" or unpin codex, then rerun "operator doctor --fix".`;
 }
 
 function formatPinnedNewRemediation(pluginVersion: string, hostVersion: string) {

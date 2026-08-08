@@ -1,0 +1,16 @@
+{
+  "name": "@operator/proxyline",
+  "version": "0.3.3",
+  "private": true,
+  "description": "Proxyline package for Operator",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.mjs"
+    }
+  }
+}

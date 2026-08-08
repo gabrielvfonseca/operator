@@ -161,7 +161,7 @@ function shouldLogDiscordGatewayTransportClose(params: {
 }
 
 type ResolveDiscordGatewayIntentsParams = {
-  intentsConfig?: import("openclaw/plugin-sdk/config-contracts").DiscordIntentsConfig;
+  intentsConfig?: import("operator/plugin-sdk/config-contracts").DiscordIntentsConfig;
   voiceEnabled?: boolean;
 };
 

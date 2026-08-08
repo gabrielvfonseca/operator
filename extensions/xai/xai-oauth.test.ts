@@ -104,7 +104,7 @@ describe("xAI OAuth", () => {
       expect(body).toContain(`client_id=${encodeURIComponent(XAI_OAUTH_CLIENT_ID)}`);
       expect(body).toContain("refresh_token=refresh-1");
       const headers = new Headers(init?.headers ?? {});
-      expect(headers.get("user-agent")).toBe("openclaw/2026.3.22");
+      expect(headers.get("user-agent")).toBe("operator/2026.3.22");
       return jsonResponse({
         access_token: "access-2",
         expires_in: 120,

@@ -17,7 +17,7 @@ For most users, the upgrade is in place:
 - runtime state stays under `~/.operator/matrix/`
 
 You do not need to rename config keys or reinstall the plugin under a new name.
-The root `openclaw` package no longer bundles Matrix runtime code or Matrix SDK
+The root `operator` package no longer bundles Matrix runtime code or Matrix SDK
 dependencies. If `operator channels status` shows Matrix is configured but the
 plugin is not installed, run `operator doctor --fix` or
 `operator plugins install @gabrielvfonseca/matrix`; do not install Matrix SDK packages

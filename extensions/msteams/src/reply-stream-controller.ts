@@ -29,7 +29,7 @@ function isStreamCancelledError(err: unknown): boolean {
 }
 
 /**
- * Bridges openclaw's reply pipeline callbacks to the SDK's `ctx.stream`.
+ * Bridges operator's reply pipeline callbacks to the SDK's `ctx.stream`.
  * Streaming is enabled for personal (DM) conversations only; group/channel
  * messages fall through to block delivery.
  *
@@ -79,7 +79,7 @@ export function createTeamsReplyStreamController(params: {
   let latestPlan: AgentPlanStep[] | undefined;
   let latestPlanExplanation: string | undefined;
   let pendingFinalPayload: Maybe<ReplyPayload>;
-  // openclaw's reply pipeline calls onPartialReply with the cumulative text on
+  // operator's reply pipeline calls onPartialReply with the cumulative text on
   // each chunk, but the SDK's HttpStream appends each emit() to its internal
   // text buffer (this.text += activity.text). Forwarding cumulative text into
   // an appending sink produces "chunk1 + chunk2 + chunk3..." duplication. We
@@ -153,7 +153,7 @@ export function createTeamsReplyStreamController(params: {
 
     onPartialReply(payload: { text?: string }): void {
       // Partial-token streaming only fires in "partial" mode. In "progress"
-      // mode, openclaw's pipeline doesn't deliver tokens — the model output
+      // mode, operator's pipeline doesn't deliver tokens — the model output
       // arrives as a single payload at preparePayload time.
       if (
         !stream ||

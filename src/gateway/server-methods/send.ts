@@ -813,7 +813,7 @@ export const sendHandlers: GatewayRequestHandlers = {
         });
         const deliveryTarget = idLikeTarget?.to ?? resolvedTarget.to;
         // Preserve opaque, case-sensitive peer IDs (e.g. Matrix room ids) on an
-        // explicit session key instead of raw-lowercasing it (openclaw#75670).
+        // explicit session key instead of raw-lowercasing it (operator#75670).
         // Non-enrolled channels still canonicalize to lowercase via the registry.
         const providedSessionKey =
           normalizeSessionKeyPreservingOpaquePeerIds(request.sessionKey) || undefined;

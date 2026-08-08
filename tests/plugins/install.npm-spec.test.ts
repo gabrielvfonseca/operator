@@ -25,7 +25,7 @@ vi.mock("../process/exec.js", () => ({
   runCommandWithTimeout: (...args: unknown[]) => runCommandWithTimeoutMock(...args),
 }));
 
-vi.mock("../infra/openclaw-root.js", () => ({
+vi.mock("../infra/operator-root.js", () => ({
   resolveOperatorPackageRootSync: (...args: unknown[]) =>
     resolveOperatorPackageRootSyncMock(...args),
 }));
@@ -225,7 +225,7 @@ function writeInstalledNpmPlugin(params: {
   dependency?: { name: string; version: string };
   hoistedDependency?: { name: string; version: string };
   peerDependencies?: Record<string, string>;
-  openclaw?: Record<string, unknown>;
+  operator?: Record<string, unknown>;
   replaceExisting?: boolean;
 }) {
   const pluginDir = path.join(params.npmRoot, "node_modules", params.packageName);
@@ -305,7 +305,7 @@ type MockNpmPackage = {
   dependency?: { name: string; version: string };
   hoistedDependency?: { name: string; version: string };
   peerDependencies?: Record<string, string>;
-  openclaw?: Record<string, unknown>;
+  operator?: Record<string, unknown>;
   expectedDependencySpec?: string;
   versions?: string[];
   installedVersion?: string;
@@ -340,7 +340,7 @@ function writeNpmRootPackageLock(params: {
         : { integrity: pkg.installedIntegrity ?? pkg.integrity ?? "sha512-plugin-test" }),
     };
     if (pkg.materializesRootOperator) {
-      lockPackages["node_modules/openclaw"] = {
+      lockPackages["node_modules/operator"] = {
         peer: true,
         version: "2026.5.3",
       };
@@ -1523,7 +1523,7 @@ describe("installPluginFromNpmSpec", () => {
       const manifestPath = path.join(npmProjectRoot, "package.json");
       const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8")) as {
         dependencies?: Record<string, string>;
-        openclaw?: { managedPeerDependencies?: string[] };
+        operator?: { managedPeerDependencies?: string[] };
       };
       manifest.dependencies ??= {};
       manifest.dependencies[addedPeerName] = "2.0.0";
@@ -1574,7 +1574,7 @@ describe("installPluginFromNpmSpec", () => {
       fs.readFileSync(path.join(npmProjectRoot, "package.json"), "utf8"),
     ) as {
       dependencies?: Record<string, string>;
-      openclaw?: { managedPeerDependencies?: string[] };
+      operator?: { managedPeerDependencies?: string[] };
     };
     expect(manifest.dependencies?.[addedPeerName]).toBeUndefined();
     expect(manifest.operator?.managedPeerDependencies ?? []).not.toContain(addedPeerName);
@@ -1983,7 +1983,7 @@ describe("installPluginFromNpmSpec", () => {
   });
 
   it.runIf(process.platform !== "win32")(
-    "does not let managed openclaw peer links poison later npm installs",
+    "does not let managed operator peer links poison later npm installs",
     async () => {
       const stateDir = suiteTempRootTracker.makeTempDir();
       const npmRoot = path.join(stateDir, "npm");
@@ -2027,7 +2027,7 @@ describe("installPluginFromNpmSpec", () => {
 
       expect(second.ok).toBe(true);
       if (!second.ok) {
-        expect(second.error).not.toContain("peer-plugin/node_modules/openclaw");
+        expect(second.error).not.toContain("peer-plugin/node_modules/operator");
       }
       expect(
         fs
@@ -2087,7 +2087,7 @@ describe("installPluginFromNpmSpec", () => {
     },
   );
 
-  it("rejects managed npm plugins when their openclaw peer link cannot be repaired", async () => {
+  it("rejects managed npm plugins when their operator peer link cannot be repaired", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
     const warnings: string[] = [];
@@ -2113,9 +2113,9 @@ describe("installPluginFromNpmSpec", () => {
       return;
     }
     expect(result.error).toContain("@gabrielvfonseca/codex");
-    expect(result.error).toContain("plugin-local node_modules/openclaw link");
+    expect(result.error).toContain("plugin-local node_modules/operator link");
     expect(
-      warnings.some((warning) => warning.includes("Could not locate openclaw package root")),
+      warnings.some((warning) => warning.includes("Could not locate operator package root")),
     ).toBe(true);
     expect(fs.existsSync(resolveTestPluginPackageDir(npmRoot, "@gabrielvfonseca/codex"))).toBe(
       false,
@@ -2160,7 +2160,7 @@ describe("installPluginFromNpmSpec", () => {
     expect(result.error).toContain("requires plugin API >=2026.5.27");
     expect(result.error).toContain("runtime exposes 2026.5.10-beta.1");
     expect(result.error).toContain("install a compatible plugin version");
-    expect(fs.existsSync(path.join(npmRoot, "node_modules", "@openclaw", "whatsapp"))).toBe(false);
+    expect(fs.existsSync(path.join(npmRoot, "node_modules", "@operator", "whatsapp"))).toBe(false);
     expect(fs.existsSync(path.join(npmRoot, "package.json"))).toBe(false);
     expect(
       runCommandWithTimeoutMock.mock.calls.some(([argv]) => isManagedNpmInstallCommand(argv)),
@@ -2461,7 +2461,7 @@ describe("installPluginFromNpmSpec", () => {
   });
 
   it.runIf(process.platform !== "win32")(
-    "repairs root openclaw materialized by npm peer handling",
+    "repairs root operator materialized by npm peer handling",
     async () => {
       const stateDir = suiteTempRootTracker.makeTempDir();
       const npmRoot = path.join(stateDir, "npm");
@@ -2496,7 +2496,7 @@ describe("installPluginFromNpmSpec", () => {
       ) as {
         packages?: Record<string, unknown>;
       };
-      expect(lockfile.packages?.["node_modules/openclaw"]).toBeUndefined();
+      expect(lockfile.packages?.["node_modules/operator"]).toBeUndefined();
       expect(
         fs
           .lstatSync(path.join(requiredPeerPluginDir, "node_modules", "@gabrielvfonseca/operator"))
@@ -2505,7 +2505,7 @@ describe("installPluginFromNpmSpec", () => {
     },
   );
 
-  it("repairs stale managed openclaw root packages before npm plugin installs", async () => {
+  it("repairs stale managed operator root packages before npm plugin installs", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
     const npmProjectRoot = resolvePluginNpmProjectDir({
@@ -2540,9 +2540,9 @@ describe("installPluginFromNpmSpec", () => {
                 operator: "2026.5.4",
               },
             },
-            "node_modules/openclaw": {
+            "node_modules/operator": {
               version: "2026.5.4",
-              resolved: "https://registry.npmjs.org/openclaw/-/operator-2026.5.4.tgz",
+              resolved: "https://registry.npmjs.org/operator/-/operator-2026.5.4.tgz",
             },
           },
           dependencies: {
@@ -2593,11 +2593,11 @@ describe("installPluginFromNpmSpec", () => {
       packages?: Record<string, unknown>;
       dependencies?: Record<string, unknown>;
     };
-    expect(lockfile.packages?.["node_modules/openclaw"]).toBeUndefined();
+    expect(lockfile.packages?.["node_modules/operator"]).toBeUndefined();
     expect(lockfile.dependencies?.operator).toBeUndefined();
   });
 
-  it("preserves the active host openclaw runtime package during npm plugin installs", async () => {
+  it("preserves the active host operator runtime package during npm plugin installs", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
     const hostPackageRoot = path.join(npmRoot, "node_modules", "@gabrielvfonseca/operator");
@@ -2627,7 +2627,7 @@ describe("installPluginFromNpmSpec", () => {
                 operator: "2026.5.12-beta.6",
               },
             },
-            "node_modules/openclaw": {
+            "node_modules/operator": {
               version: "2026.5.12-beta.6",
             },
           },
@@ -2807,7 +2807,7 @@ describe("installPluginFromNpmSpec", () => {
     ).rejects.toHaveProperty("code", "ENOENT");
   });
 
-  it("does not fail rollback snapshots on plugin-local openclaw peer symlinks", async () => {
+  it("does not fail rollback snapshots on plugin-local operator peer symlinks", async () => {
     const npmRoot = path.join(suiteTempRootTracker.makeTempDir(), "npm");
     const npmProjectRoot = resolvePluginNpmProjectDir({
       npmDir: npmRoot,
@@ -2867,7 +2867,7 @@ describe("installPluginFromNpmSpec", () => {
       if (source === nodeModulesDir && fs.existsSync(peerLink)) {
         const destinationPeerLink = path.join(
           destination,
-          "@openclaw",
+          "@operator",
           "codex",
           "node_modules",
           "@gabrielvfonseca/operator",
@@ -3005,7 +3005,7 @@ describe("installPluginFromNpmSpec", () => {
           }
           const manifest = JSON.parse(
             fs.readFileSync(path.join(npmProjectRoot, "package.json"), "utf8"),
-          ) as { overrides?: Record<string, unknown>; openclaw?: { managedOverrides?: string[] } };
+          ) as { overrides?: Record<string, unknown>; operator?: { managedOverrides?: string[] } };
           if (installAttempts === 1) {
             expect(manifest.overrides?.["node-domexception"]).toBe(
               "npm:@nolyfill/domexception@1.0.28",

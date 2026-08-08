@@ -342,7 +342,7 @@ describe("runInstallPolicy", () => {
       reason: "blocked by install policy: unapproved registry",
     });
     expect(warnings.join("\n")).toContain("target=skill:weather");
-    expect(warnings.join("\n")).toContain("source=clawhub/openclaw");
+    expect(warnings.join("\n")).toContain("source=clawhub/operator");
     expect(warnings.join("\n")).toContain("blocked by install policy");
   });
 

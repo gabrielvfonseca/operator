@@ -30,7 +30,7 @@ vi.mock("../../config/config.js", () => {
       ) => unknown;
     }) => {
       const draft = structuredClone(loadedConfig) as OperatorConfig;
-      const snapshot = { path: "/tmp/openclaw/config.json" };
+      const snapshot = { path: "/tmp/operator/config.json" };
       const result = await params.mutate(draft, {
         snapshot,
         previousHash: "test-hash",

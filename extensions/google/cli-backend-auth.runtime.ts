@@ -93,14 +93,14 @@ function throwUnstageableSelectedGeminiProfile(
   }
   if (!credential) {
     throw new Error(
-      "Gemini CLI auth profile was selected but no credential material was found. Re-authenticate with `openclaw models auth login --provider google-gemini-cli --force`.",
+      "Gemini CLI auth profile was selected but no credential material was found. Re-authenticate with `operator models auth login --provider google-gemini-cli --force`.",
     );
   }
   if (credential.provider !== GEMINI_CLI_PROVIDER_ID) {
     throwUnsupportedGeminiCredential(credential);
   }
   throw new Error(
-    "Gemini CLI execution supports google-gemini-cli OAuth or API-key auth profiles. Re-authenticate with `openclaw models auth login --provider google-gemini-cli --force`.",
+    "Gemini CLI execution supports google-gemini-cli OAuth or API-key auth profiles. Re-authenticate with `operator models auth login --provider google-gemini-cli --force`.",
   );
 }
 
@@ -126,7 +126,7 @@ function requireGeminiOAuthCredential(
     !Number.isFinite(credential.expires)
   ) {
     throw new Error(
-      "Gemini CLI OAuth profile is missing usable token material. Re-authenticate with `openclaw models auth login --provider google-gemini-cli --force`.",
+      "Gemini CLI OAuth profile is missing usable token material. Re-authenticate with `operator models auth login --provider google-gemini-cli --force`.",
     );
   }
 

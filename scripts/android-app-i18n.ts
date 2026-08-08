@@ -445,38 +445,38 @@ const ALLOWED_UI_LITERALS = new Map<string, ReadonlySet<string>>([
       "iMessage",
       "main, isolated, current, or session:<id>",
       "n/a",
-      "openclaw gateway",
-      "openclaw qr",
+      "operator gateway",
+      "operator qr",
       "PTT_BUSY: previous push-to-talk turn is still finishing",
       "WhatsApp",
     ]),
   ],
-  ["apps/android/app/src/main/java/ai/openclaw/app/chat/ChatController.kt", new Set(["Off"])],
+  ["apps/android/app/src/main/java/ai/operator/app/chat/ChatController.kt", new Set(["Off"])],
   [
-    "apps/android/app/src/main/java/ai/openclaw/app/ui/SkillWorkshopSettingsScreen.kt",
+    "apps/android/app/src/main/java/ai/operator/app/ui/SkillWorkshopSettingsScreen.kt",
     new Set(["all", "applied", "held", "pending", "rejected"]),
   ],
   [
-    "apps/android/app/src/main/java/ai/openclaw/app/ui/GatewayDiagnostics.kt",
+    "apps/android/app/src/main/java/ai/operator/app/ui/GatewayDiagnostics.kt",
     new Set(["$versionName-dev"]),
   ],
   [
-    "apps/android/app/src/main/java/ai/openclaw/app/ui/SettingsScreens.kt",
+    "apps/android/app/src/main/java/ai/operator/app/ui/SettingsScreens.kt",
     // Discovered-gateway subtitles are host:port endpoints, not translatable copy.
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     new Set(["${endpoint.host}:${endpoint.port}"]),
   ],
   [
-    "apps/android/app/src/main/java/ai/openclaw/app/ui/VoiceScreen.kt",
+    "apps/android/app/src/main/java/ai/operator/app/ui/VoiceScreen.kt",
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     new Set(["${normalized.takeUtf16Safe(87)}..."]),
   ],
   [
-    "apps/android/app/src/main/java/ai/openclaw/app/ui/chat/ChatCommandControls.kt",
+    "apps/android/app/src/main/java/ai/operator/app/ui/chat/ChatCommandControls.kt",
     new Set(["/$name", "help"]),
   ],
   [
-    "apps/android/app/src/main/java/ai/openclaw/app/ui/chat/ChatMessageActions.kt",
+    "apps/android/app/src/main/java/ai/operator/app/ui/chat/ChatMessageActions.kt",
     new Set([">", "> $line"]),
   ],
 ]);

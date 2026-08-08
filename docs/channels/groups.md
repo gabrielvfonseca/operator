@@ -338,7 +338,7 @@ Replying to a bot message counts as an implicit mention when the channel exposes
       {
         id: "main",
         groupChat: {
-          mentionPatterns: ["@openclaw", "@gabrielvfonseca/operator", "\\+15555550123"],
+          mentionPatterns: ["@operator", "@gabrielvfonseca/operator", "\\+15555550123"],
           historyLimit: 50,
         },
       },
@@ -364,7 +364,7 @@ Use `mode: "deny"` when regex mention patterns should be off by default for a ch
 {
   messages: {
     groupChat: {
-      mentionPatterns: ["\\bopenclaw\\b", "\\bops bot\\b"],
+      mentionPatterns: ["\\boperator\\b", "\\bops bot\\b"],
     },
   },
   channels: {
@@ -384,7 +384,7 @@ Use the default `mode: "allow"` (or omit `mode`) when regex mention patterns sho
 {
   messages: {
     groupChat: {
-      mentionPatterns: ["\\bopenclaw\\b"],
+      mentionPatterns: ["\\boperator\\b"],
     },
   },
   channels: {

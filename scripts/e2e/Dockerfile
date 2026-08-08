@@ -2,7 +2,7 @@
 #
 # Shared Docker E2E image.
 # `bare` is a clean Node/Git runner for install/update lanes. `functional`
-# installs the prepared OpenClaw npm tarball into /app for built-app lanes.
+# installs the prepared Operator npm tarball into /app for built-app lanes.
 
 FROM node:24-bookworm-slim@sha256:242549cd46785b480c832479a730f4f2a20865d61ea2e404fdb2a5c3d3b73ecf AS e2e-runner
 
@@ -44,14 +44,14 @@ FROM bare AS functional
 # The app under test enters through the named BuildKit context, not by copying
 # checkout sources into the image.
 COPY --from=operator_package --chown=appuser:appuser operator-current.tgz /tmp/operator-current.tgz
-# Preserve package self-reference imports such as openclaw/plugin-sdk/* after
+# Preserve package self-reference imports such as operator/plugin-sdk/* after
 # copying the installed package out of npm's global node_modules tree.
 # The pinned Node image owns uid 1000, so useradd assigns appuser uid/gid 1001.
 RUN --mount=type=cache,target=/home/appuser/.npm,uid=1001,gid=1001,sharing=locked \
     npm install -g --prefix /tmp/operator-prefix /tmp/operator-current.tgz --no-fund --no-audit \
- && cp -a /tmp/operator-prefix/lib/node_modules/openclaw/. /app/ \
+ && cp -a /tmp/operator-prefix/lib/node_modules/operator/. /app/ \
  && mkdir -p "$HOME/.local/bin" \
- && ln -sf /app/operator.mjs "$HOME/.local/bin/openclaw" \
+ && ln -sf /app/operator.mjs "$HOME/.local/bin/operator" \
  && rm -rf /app/node_modules/operator \
  && ln -sf /app /app/node_modules/operator \
  && rm -rf /tmp/operator-prefix /tmp/operator-current.tgz

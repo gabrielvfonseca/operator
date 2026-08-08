@@ -521,7 +521,7 @@ describe("CORE_HEALTH_CHECKS", () => {
         target: "openai/gpt-5.5",
         requirement: "Codex plugin enabled for routes that use the Codex runtime.",
         fixHint:
-          "Run `openclaw doctor --fix`: it enables plugins.entries.codex, or set the affected OpenAI models to an Operator runtime policy.",
+          "Run `operator doctor --fix`: it enables plugins.entries.codex, or set the affected OpenAI models to an Operator runtime policy.",
       }),
     ]);
     expect(findings[0]?.message).toContain("Codex plugin is disabled by config");
@@ -753,7 +753,7 @@ describe("CORE_HEALTH_CHECKS", () => {
         severity: "warning",
         message: expect.stringContaining("Gateway token SecretRef could not be resolved:"),
         fixHint:
-          "Run `openclaw doctor --allow-exec` to verify exec SecretRefs during doctor, or `openclaw secrets audit --allow-exec` to audit all exec SecretRefs.",
+          "Run `operator doctor --allow-exec` to verify exec SecretRefs during doctor, or `operator secrets audit --allow-exec` to audit all exec SecretRefs.",
       }),
     );
   });

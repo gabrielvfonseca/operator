@@ -394,17 +394,17 @@ function assertRealPathInside(parentPath, childPath, label) {
 }
 
 function assertClawHubExternalInstallContract(installPath) {
-  const openclawPeerPath = path.join(installPath, "node_modules", "@gabrielvfonseca/operator");
-  if (!fs.existsSync(openclawPeerPath)) {
-    throw new Error(`missing kitchen-sink openclaw peer symlink: ${openclawPeerPath}`);
+  const operatorPeerPath = path.join(installPath, "node_modules", "@gabrielvfonseca/operator");
+  if (!fs.existsSync(operatorPeerPath)) {
+    throw new Error(`missing kitchen-sink operator peer symlink: ${operatorPeerPath}`);
   }
-  if (!fs.lstatSync(openclawPeerPath).isSymbolicLink()) {
-    throw new Error(`kitchen-sink openclaw peer is not a symlink: ${openclawPeerPath}`);
+  if (!fs.lstatSync(operatorPeerPath).isSymbolicLink()) {
+    throw new Error(`kitchen-sink operator peer is not a symlink: ${operatorPeerPath}`);
   }
   const hostRoot = fs.realpathSync(process.cwd());
-  const linkedHostRoot = fs.realpathSync(openclawPeerPath);
+  const linkedHostRoot = fs.realpathSync(operatorPeerPath);
   if (linkedHostRoot !== hostRoot) {
-    throw new Error(`expected kitchen-sink openclaw peer ${linkedHostRoot} to target ${hostRoot}`);
+    throw new Error(`expected kitchen-sink operator peer ${linkedHostRoot} to target ${hostRoot}`);
   }
 
   const dependencyPackagePath = path.join(installPath, "node_modules", "is-number", "package.json");

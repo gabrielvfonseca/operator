@@ -13,7 +13,7 @@ import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
   type OperatorStateDatabase,
-} from "../../../src/state/openclaw-state-db.js";
+} from "../../../src/state/operator-state-db.js";
 import type { WorkerInstallationArtifact } from "../../../src/gateway/worker-environments/bundle.js";
 import type { WorkerConnectionIdentity } from "../../../src/gateway/worker-environments/connection-identity.js";
 import { hashWorkerCredential } from "../../../src/gateway/worker-environments/credential.js";
@@ -47,7 +47,7 @@ const NPM_ARTIFACT: WorkerInstallationArtifact = {
   operatorVersion: "2026.7.2",
   packageIntegrity: `sha512-${Buffer.alloc(64).toString("base64")}`,
   protocolFeatures: [],
-  packageSpec: "openclaw@2026.7.2",
+  packageSpec: "operator@2026.7.2",
 };
 const BOOTSTRAP_RECEIPT = {
   bundleHash: BUNDLE_HASH,

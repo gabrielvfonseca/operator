@@ -151,11 +151,11 @@ describe("sessions", () => {
       buildGroupDisplayName({
         provider: "discord",
         groupChannel: "#general",
-        space: "friends-of-openclaw",
+        space: "friends-of-operator",
         id: "123",
         key: "discord:group:123",
       }),
-    ).toBe("discord:friends-of-openclaw#general");
+    ).toBe("discord:friends-of-operator#general");
   });
 
   const resolveSessionKeyCases = [
@@ -521,7 +521,7 @@ describe("sessions", () => {
   });
 
   it("resolveSessionFilePathOptions keeps explicit agentId alongside absolute store path", () => {
-    const storePath = "/tmp/openclaw/agents/main/sessions/sessions.json";
+    const storePath = "/tmp/operator/agents/main/sessions/sessions.json";
     const resolved = resolveSessionFilePathOptions({
       agentId: "bot2",
       storePath,

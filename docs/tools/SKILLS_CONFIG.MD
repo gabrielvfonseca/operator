@@ -185,7 +185,7 @@ skills, skill dependency installers, and plugin install/update sources.
 </ParamField>
 
 The policy receives one JSON object on stdin with `protocolVersion: 1`,
-`openclawVersion`, `targetType`, `targetName`, `sourcePath`, `sourcePathKind`,
+`operatorVersion`, `targetType`, `targetName`, `sourcePath`, `sourcePathKind`,
 optional structured `source`, structured `origin`, and `request`. It must
 write one JSON object on stdout: `{ "protocolVersion": 1, "decision": "allow" }`
 or `{ "protocolVersion": 1, "decision": "block", "reason": "..." }`. Non-zero
@@ -206,7 +206,7 @@ Example stdin:
 ```json
 {
   "protocolVersion": 1,
-  "openclawVersion": "2026.6.1",
+  "operatorVersion": "2026.6.1",
   "targetType": "skill",
   "targetName": "weather",
   "sourcePath": "/var/folders/.../operator-skill-clawhub/root",

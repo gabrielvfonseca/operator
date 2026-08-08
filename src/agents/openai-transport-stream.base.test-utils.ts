@@ -935,7 +935,7 @@ describe("openai transport stream", () => {
     expectRecordFields(headers, {
       originator: "@gabrielvfonseca/operator",
       version: "2026.3.22",
-      "User-Agent": "openclaw/2026.3.22",
+      "User-Agent": "operator/2026.3.22",
       "X-Provider": "model",
       "X-Caller": "request",
     });
@@ -960,7 +960,7 @@ describe("openai transport stream", () => {
     expectRecordFields(headers, {
       originator: "@gabrielvfonseca/operator",
       version: "2026.3.22",
-      "User-Agent": "openclaw/2026.3.22",
+      "User-Agent": "operator/2026.3.22",
     });
     expect(headers.Accept).toBeUndefined();
     expect(headers.accept).toBeUndefined();

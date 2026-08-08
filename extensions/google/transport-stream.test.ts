@@ -27,7 +27,7 @@ const {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/provider-transport-runtime", async (importOriginal) => ({
+vi.mock("operator/plugin-sdk/provider-transport-runtime", async (importOriginal) => ({
   ...(await importOriginal()),
   buildGuardedModelFetch: buildGuardedModelFetchMock,
 }));
@@ -345,7 +345,7 @@ describe("google transport stream", () => {
   });
 
   afterAll(() => {
-    vi.doUnmock("openclaw/plugin-sdk/provider-transport-runtime");
+    vi.doUnmock("operator/plugin-sdk/provider-transport-runtime");
     vi.doUnmock("google-auth-library");
     vi.resetModules();
   });
@@ -445,7 +445,7 @@ describe("google transport stream", () => {
       "x-goog-api-key": "gemini-api-key",
       "X-Provider": "google",
     });
-    expect(new Headers(init.headers).get("x-goog-api-client")).toMatch(/^openclaw\//u);
+    expect(new Headers(init.headers).get("x-goog-api-client")).toMatch(/^operator\//u);
 
     const payload = parseRequestJsonBody(init);
     expect(payload.cachedContent).toBe("cachedContents/request-cache");

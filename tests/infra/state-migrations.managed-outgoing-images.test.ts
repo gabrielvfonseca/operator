@@ -14,7 +14,7 @@ import type { ManagedImageRecordDatabase } from "../../src/gateway/managed-image
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import { executeSqliteQueryTakeFirstSync, getNodeSqliteKysely } from "../../src/infra/kysely-sync.js";
 import {
   detectLegacyManagedOutgoingImages,

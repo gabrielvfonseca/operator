@@ -107,7 +107,7 @@ With the `acpx` backend, use these ids as `/acp spawn <id>` or
 | `kiro`       | Kiro CLI                                       | Adapter availability and model control depend on the installed CLI.                 |
 | `mux`        | Mux CLI ACP adapter                            | Fetched on demand with `npx`.                                                       |
 | `opencode`   | OpenCode ACP adapter                           | Requires OpenCode CLI/provider auth.                                                |
-| `openclaw`   | Operator Gateway bridge through `operator acp` | Lets an ACP-aware harness talk back to an Operator Gateway session.                 |
+| `operator`   | Operator Gateway bridge through `operator acp` | Lets an ACP-aware harness talk back to an Operator Gateway session.                 |
 | `qoder`      | Qoder CLI                                      | Adapter availability and model control depend on the installed CLI.                 |
 | `qwen`       | Qwen Code / Qwen CLI                           | Requires Qwen-compatible auth on the host.                                          |
 | `trae`       | Trae CLI ACP adapter                           | Adapter availability and model control depend on the installed CLI.                 |
@@ -387,7 +387,7 @@ Use `agents.list[].runtime` to define ACP defaults once per agent:
             agent: "codex",
             backend: "acpx",
             mode: "persistent",
-            cwd: "/workspace/openclaw",
+            cwd: "/workspace/operator",
           },
         },
       },

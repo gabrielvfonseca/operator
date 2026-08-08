@@ -61,8 +61,8 @@ import {
   resolveLocalModelLeanPreserveToolNames,
 } from "./local-model-lean.js";
 import type { ModelAuthMode } from "./model-auth.js";
-import { resolveOperatorPluginToolsForOptions } from "./openclaw-plugin-tools.js";
-import { createOperatorTools, filterToolsByClientCaps } from "./openclaw-tools.js";
+import { resolveOperatorPluginToolsForOptions } from "./operator-plugin-tools.js";
+import { createOperatorTools, filterToolsByClientCaps } from "./operator-tools.js";
 import type { SandboxContext } from "./sandbox.js";
 import { SANDBOX_AGENT_WORKSPACE_MOUNT } from "./sandbox/constants.js";
 import { resolveReadOnlyWorkspaceSkillMounts } from "./sandbox/workspace-mounts.js";
@@ -963,7 +963,7 @@ function createOperatorCodingToolsInternal(options?: OperatorCodingToolsOptions)
       : pluginToolsOnly),
     ...toolSearchTools,
   ];
-  options?.recordToolPrepStage?.("openclaw-tools");
+  options?.recordToolPrepStage?.("operator-tools");
   const toolsForMemoryFlush: AnyAgentTool[] = isMemoryFlushRun && memoryFlushWritePath ? [] : tools;
   if (isMemoryFlushRun && memoryFlushWritePath) {
     for (const tool of tools) {

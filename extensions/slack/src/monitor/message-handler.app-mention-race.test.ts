@@ -27,9 +27,9 @@ const inboundDeliveryTestCache = resolveGlobalDedupeCache(
   { ttlMs: 24 * 60 * 60 * 1000, maxSize: 20_000 },
 );
 
-vi.mock("openclaw/plugin-sdk/channel-inbound", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/channel-inbound")>(
-    "openclaw/plugin-sdk/channel-inbound",
+vi.mock("operator/plugin-sdk/channel-inbound", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/channel-inbound")>(
+    "operator/plugin-sdk/channel-inbound",
   );
   return {
     ...actual,

@@ -119,7 +119,7 @@ Moltbot never quite rolled off the tongue. So at 4am GMT, the team gathered agai
 In just 3 hours:
 
 - GitHub renamed to `github.com/gabrielvfonseca/operator`
-- X handle `@openclaw` secured, with a gold checkmark
+- X handle `@operator` secured, with a gold checkmark
 - npm packages released under the new name
 - Docs migrated to `docs.operator.ai`
 - 200K+ views on the announcement in 90 minutes

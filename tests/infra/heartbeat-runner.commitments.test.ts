@@ -7,7 +7,7 @@ import { listDueCommitmentSessionKeys } from "../../src/commitments/store.js";
 import { readCommitmentsForTest, seedCommitmentsForTest } from "../../src/commitments/store.test-utils.js";
 import type { CommitmentRecord } from "../../src/commitments/types.js";
 import type { OperatorConfig } from "../../src/config/config.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { captureEnv, setTestEnvValue } from "../../src/test-utils/env.js";
 import { getLastHeartbeatEvent, resetHeartbeatEventsForTest } from "../../src/infra/heartbeat-events.js";
 import { resolveHeartbeatRunScope } from "../../src/infra/heartbeat-run-scope.js";

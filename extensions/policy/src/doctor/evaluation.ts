@@ -320,7 +320,7 @@ function channelFindings(
         severity: "error",
         message: `Channel '${channel.id}' uses denied provider '${channel.provider}'.`,
         source: "policy",
-        path: "openclaw config",
+        path: "operator config",
         ocPath: channel.source,
         target: channel.source,
         requirement: rule.requirement,

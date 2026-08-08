@@ -117,8 +117,8 @@ vi.mock("./channel-tools.js", () => ({
   listChannelAgentTools: () => [],
 }));
 
-vi.mock("./openclaw-tools.js", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("./openclaw-tools.js")>();
+vi.mock("./operator-tools.js", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("./operator-tools.js")>();
   return {
     createOperatorTools: () => [],
     filterToolsByClientCaps: actual.filterToolsByClientCaps,
@@ -146,7 +146,7 @@ vi.mock("../plugins/tools.js", () => ({
   getPluginToolMeta: () => undefined,
 }));
 
-vi.mock("openclaw/plugin-sdk/agent-sessions", () => ({
+vi.mock("operator/plugin-sdk/agent-sessions", () => ({
   AuthStorage: vi.fn(),
   CURRENT_SESSION_VERSION: 1,
   ModelRegistry: vi.fn(),

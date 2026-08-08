@@ -20,7 +20,7 @@ function writeJsonFile(targetPath: string, value: unknown): void {
   fs.writeFileSync(targetPath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
 }
 
-function writeFakeOpenClawPackage(root: string): { distRoot: string; loaderModulePath: string } {
+function writeFakeOperatorPackage(root: string): { distRoot: string; loaderModulePath: string } {
   writeJsonFile(path.join(root, "package.json"), {
     name: "operator",
     type: "module",
@@ -107,8 +107,8 @@ describe("installOperatorPluginSdkNativeResolver", () => {
   it("resolves installed plugin SDK imports to the dev source root", () => {
     const stableRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sdk-native-stable-"));
     const devRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sdk-native-dev-source-"));
-    const { loaderModulePath } = writeFakeOpenClawPackage(stableRoot);
-    writeFakeOpenClawPackage(devRoot);
+    const { loaderModulePath } = writeFakeOperatorPackage(stableRoot);
+    writeFakeOperatorPackage(devRoot);
     fs.mkdirSync(path.join(devRoot, "src"), { recursive: true });
     fs.mkdirSync(path.join(devRoot, "extensions"), { recursive: true });
     const externalPluginEntry = writeExternalPluginEntry(path.join(stableRoot, "external-plugin"));
@@ -138,8 +138,8 @@ describe("installOperatorPluginSdkNativeResolver", () => {
   it("resolves installed plugin SDK imports to an explicit dev source root", () => {
     const stableRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sdk-native-stable-"));
     const devRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sdk-native-dev-source-"));
-    const { loaderModulePath } = writeFakeOpenClawPackage(stableRoot);
-    writeFakeOpenClawPackage(devRoot);
+    const { loaderModulePath } = writeFakeOperatorPackage(stableRoot);
+    writeFakeOperatorPackage(devRoot);
     fs.mkdirSync(path.join(devRoot, "src"), { recursive: true });
     fs.mkdirSync(path.join(devRoot, "extensions"), { recursive: true });
     const externalPluginEntry = writeExternalPluginEntry(path.join(stableRoot, "external-plugin"));
@@ -160,8 +160,8 @@ describe("installOperatorPluginSdkNativeResolver", () => {
   it("updates native SDK aliases when the same plugin parent switches dev source roots", () => {
     const stableRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sdk-native-stable-"));
     const devRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sdk-native-dev-source-"));
-    const { loaderModulePath } = writeFakeOpenClawPackage(stableRoot);
-    writeFakeOpenClawPackage(devRoot);
+    const { loaderModulePath } = writeFakeOperatorPackage(stableRoot);
+    writeFakeOperatorPackage(devRoot);
     fs.mkdirSync(path.join(devRoot, "src"), { recursive: true });
     fs.mkdirSync(path.join(devRoot, "extensions"), { recursive: true });
     const externalPluginEntry = writeExternalPluginEntry(path.join(stableRoot, "external-plugin"));
@@ -189,8 +189,8 @@ describe("installOperatorPluginSdkNativeResolver", () => {
   it("removes stale native SDK aliases when a later dev root omits a subpath", () => {
     const stableRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sdk-native-stable-"));
     const devRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sdk-native-dev-source-"));
-    const { loaderModulePath } = writeFakeOpenClawPackage(stableRoot);
-    writeFakeOpenClawPackage(devRoot);
+    const { loaderModulePath } = writeFakeOperatorPackage(stableRoot);
+    writeFakeOperatorPackage(devRoot);
     const stableExtraPath = addFakePluginSdkDistExport(stableRoot, "stable-extra");
     fs.mkdirSync(path.join(devRoot, "src"), { recursive: true });
     fs.mkdirSync(path.join(devRoot, "extensions"), { recursive: true });
@@ -216,7 +216,7 @@ describe("installOperatorPluginSdkNativeResolver", () => {
 
   it("keeps native aliases on JS dist artifacts when source files exist", () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sdk-native-source-resolver-"));
-    const { loaderModulePath } = writeFakeOpenClawPackage(root);
+    const { loaderModulePath } = writeFakeOperatorPackage(root);
     const sourceChannelOutboundPath = path.join(root, "src", "plugin-sdk", "channel-outbound.ts");
     fs.mkdirSync(path.dirname(sourceChannelOutboundPath), { recursive: true });
     fs.writeFileSync(sourceChannelOutboundPath, "export const sourceOnly = true;\n", "utf8");
@@ -237,7 +237,7 @@ describe("installOperatorPluginSdkNativeResolver", () => {
 
   it("lets built external plugins resolve Operator SDK subpaths with createRequire", () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sdk-native-resolver-"));
-    const { distRoot, loaderModulePath } = writeFakeOpenClawPackage(root);
+    const { distRoot, loaderModulePath } = writeFakeOperatorPackage(root);
     const externalPluginEntry = writeExternalPluginEntry(path.join(root, "external-plugin"));
 
     const distMode = fs.statSync(distRoot).mode;
@@ -355,7 +355,7 @@ describe("installOperatorPluginSdkNativeResolver", () => {
 
   it("does not resolve SDK aliases for parents outside registered plugin roots", () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sdk-native-guard-"));
-    const { loaderModulePath } = writeFakeOpenClawPackage(root);
+    const { loaderModulePath } = writeFakeOperatorPackage(root);
     const externalPluginEntry = writeExternalPluginEntry(path.join(root, "external-plugin"));
     const unrelatedRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sdk-native-outside-"));
     const unrelatedEntry = path.join(unrelatedRoot, "runtime-api.js");
@@ -376,7 +376,7 @@ describe("installOperatorPluginSdkNativeResolver", () => {
 
   it("resolves internal core packages only for Operator-owned source parents", () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sdk-native-core-internal-"));
-    const { loaderModulePath } = writeFakeOpenClawPackage(root);
+    const { loaderModulePath } = writeFakeOperatorPackage(root);
     const normalizationSource = writeNormalizationCoreSource(root);
     const booleanCoercionSource = writeInternalCorePackageSource(
       root,
@@ -483,7 +483,7 @@ describe("installOperatorPluginSdkNativeResolver", () => {
 
   it("does not register source-only SDK subpaths for native resolution", () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sdk-native-source-only-"));
-    const { loaderModulePath } = writeFakeOpenClawPackage(root);
+    const { loaderModulePath } = writeFakeOperatorPackage(root);
     const sourceOnlyPath = path.join(root, "src", "plugin-sdk", "source-only.ts");
     fs.mkdirSync(path.dirname(sourceOnlyPath), { recursive: true });
     fs.writeFileSync(sourceOnlyPath, "export const sourceOnly = true;\n", "utf8");
@@ -503,7 +503,7 @@ describe("installOperatorPluginSdkNativeResolver", () => {
 
   it("scopes private SSRF SDK aliases to bundled local IPC native parents", () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sdk-native-ssrf-"));
-    const { loaderModulePath } = writeFakeOpenClawPackage(root);
+    const { loaderModulePath } = writeFakeOperatorPackage(root);
     const internalPath = path.join(root, "dist", "plugin-sdk", "ssrf-runtime-internal.js");
     fs.writeFileSync(internalPath, "export const ssrfInternal = true;\n", "utf8");
     const ollamaEntry = path.join(root, "dist", "extensions", "ollama", "index.js");

@@ -156,7 +156,7 @@ describe("parseReleaseVerifyBetaArgs", () => {
       rerunFailedClawHub: true,
       workflowRuns: {
         fullReleaseValidation: "10",
-        openclawNpm: "11",
+        operatorNpm: "11",
         pluginNpm: "22",
         pluginClawHub: "33",
         pluginClawHubBootstrap: "34",

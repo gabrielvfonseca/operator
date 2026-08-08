@@ -1319,7 +1319,7 @@ describe("dispatchReplyFromConfig", () => {
         SessionKey: sessionKey,
         MessageSid: "visible-after-failure",
         To: "telegram:-1003774691294",
-        BodyForAgent: "@openclaw recover",
+        BodyForAgent: "@operator recover",
       }),
       cfg: automaticGroupReplyConfig,
       dispatcher,
@@ -1382,7 +1382,7 @@ describe("dispatchReplyFromConfig", () => {
         SessionKey: sessionKey,
         MessageSid: messageSid,
         To: "telegram:-1003774691295",
-        BodyForAgent: "@openclaw recover",
+        BodyForAgent: "@operator recover",
       });
 
     const firstTurn = dispatchReplyFromConfig({
@@ -1472,7 +1472,7 @@ describe("dispatchReplyFromConfig", () => {
         SessionKey: sessionKey,
         MessageSid: messageSid,
         To: "telegram:-1003774691295",
-        BodyForAgent: "@openclaw recover",
+        BodyForAgent: "@operator recover",
       });
 
     const firstTurn = dispatchReplyFromConfig({
@@ -1620,7 +1620,7 @@ describe("dispatchReplyFromConfig", () => {
         SessionKey: sessionKey,
         MessageSid: "visible-after-rotation",
         To: "telegram:-1003774691297",
-        BodyForAgent: "@openclaw recover",
+        BodyForAgent: "@operator recover",
       }),
       cfg: automaticGroupReplyConfig,
       dispatcher,

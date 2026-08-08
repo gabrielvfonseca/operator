@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 const execFileMock = vi.hoisted(() => vi.fn());
 
 vi.mock("node:child_process", async () => {
-  const { mockNodeChildProcessExecFile } = await import("openclaw/plugin-sdk/test-node-mocks");
+  const { mockNodeChildProcessExecFile } = await import("operator/plugin-sdk/test-node-mocks");
   return mockNodeChildProcessExecFile(
     Object.assign(execFileMock, {
       [Symbol.for("nodejs.util.promisify.custom")]: vi.fn(),

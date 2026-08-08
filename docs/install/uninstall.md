@@ -8,7 +8,7 @@ title: "Uninstall"
 
 Two paths:
 
-- **Easy path** if `openclaw` is still installed.
+- **Easy path** if `operator` is still installed.
 - **Manual service removal** if the CLI is gone but the service is still running.
 
 ## Easy path (CLI still installed)
@@ -68,9 +68,9 @@ rm -rf ~/.operator/workspace
 5. Remove the CLI install (pick the one you used):
 
 ```bash
-npm rm -g openclaw
-pnpm remove -g openclaw
-bun remove -g openclaw
+npm rm -g operator
+pnpm remove -g operator
+bun remove -g operator
 ```
 
 6. If you installed the macOS app:
@@ -86,7 +86,7 @@ Notes:
 
 ## Manual service removal (CLI not installed)
 
-Use this if the gateway service keeps running but `openclaw` is missing.
+Use this if the gateway service keeps running but `operator` is missing.
 
 ### macOS (launchd)
 
@@ -128,8 +128,8 @@ If you used a profile, delete the matching task name and the `gateway.cmd` /
 
 ### Normal install (install.sh / npm / pnpm / bun)
 
-If you used `https://operator.ai/install.sh` or `install.ps1`, the CLI was installed with `npm install -g openclaw@latest`.
-Remove it with `npm rm -g openclaw` (or `pnpm remove -g` / `bun remove -g` if you installed that way).
+If you used `https://operator.ai/install.sh` or `install.ps1`, the CLI was installed with `npm install -g operator@latest`.
+Remove it with `npm rm -g operator` (or `pnpm remove -g` / `bun remove -g` if you installed that way).
 
 ### Source checkout (git clone)
 

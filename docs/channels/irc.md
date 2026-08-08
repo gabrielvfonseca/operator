@@ -28,7 +28,7 @@ operator plugins install @gabrielvfonseca/irc
       port: 6697,
       tls: true,
       nick: "operator-bot",
-      channels: ["#openclaw"],
+      channels: ["#operator"],
     },
   },
 }
@@ -50,10 +50,10 @@ Prefer a private IRC server for bot coordination. If you intentionally use a pub
 | `port`                        | `6697` with TLS, `6667` plain | 1-65535                                                     |
 | `tls`                         | `true`                        | Set `false` only for intentional plaintext                  |
 | `nick`                        | none (required)               | Bot nick                                                    |
-| `username`                    | nick, else `openclaw`         | IRC username                                                |
+| `username`                    | nick, else `operator`         | IRC username                                                |
 | `realname`                    | `Operator`                    | Realname/GECOS field                                        |
 | `password` / `passwordFile`   | none                          | Server password; file must be a regular file                |
-| `channels`                    | none                          | Channels to join (`["#openclaw"]`)                          |
+| `channels`                    | none                          | Channels to join (`["#operator"]`)                          |
 | `accounts` / `defaultAccount` | none                          | Multi-account setup; env vars fill only the default account |
 
 ## Security defaults
@@ -92,7 +92,7 @@ If you see logs like:
 - setting `channels.irc.groupAllowFrom` (global for all channels), or
 - setting per-channel sender allowlists: `channels.irc.groups["#channel"].allowFrom`
 
-Example (allow anyone in `#openclaw` to talk to the bot):
+Example (allow anyone in `#operator` to talk to the bot):
 
 ```json5
 {
@@ -100,7 +100,7 @@ Example (allow anyone in `#openclaw` to talk to the bot):
     irc: {
       groupPolicy: "allowlist",
       groups: {
-        "#openclaw": { allowFrom: ["*"] },
+        "#operator": { allowFrom: ["*"] },
       },
     },
   },
@@ -121,7 +121,7 @@ To make the bot reply in an IRC channel **without needing a mention**, disable m
     irc: {
       groupPolicy: "allowlist",
       groups: {
-        "#openclaw": {
+        "#operator": {
           requireMention: false,
           allowFrom: ["*"],
         },
@@ -158,7 +158,7 @@ To reduce risk, restrict tools for that channel.
   channels: {
     irc: {
       groups: {
-        "#openclaw": {
+        "#operator": {
           allowFrom: ["*"],
           tools: {
             deny: ["group:runtime", "group:fs", "gateway", "nodes", "cron", "browser"],
@@ -179,7 +179,7 @@ Use `toolsBySender` to apply a stricter policy to `"*"` and a looser one to your
   channels: {
     irc: {
       groups: {
-        "#openclaw": {
+        "#operator": {
           allowFrom: ["*"],
           toolsBySender: {
             "*": {

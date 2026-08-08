@@ -9,7 +9,7 @@ sidebarTitle: "Config"
 Non-interactive helpers for `operator.json`: get/set/patch/unset a value by path, print the schema, validate, or print the active file path. Run `operator config` with no subcommand to open the same guided wizard as `operator configure`.
 
 <Note>
-When `OPERATOR_NIX_MODE=1`, Operator treats `operator.json` as immutable. Read-only commands (`config get`, `config file`, `config schema`, `config validate`) still work; config writers refuse. Edit the Nix source for the install instead; for the first-party nix-operator distribution, use the [nix-operator Quick Start](https://github.com/openclaw/nix-openclaw#quick-start) and set values under `programs.operator.config` or `instances.<name>.config`.
+When `OPERATOR_NIX_MODE=1`, Operator treats `operator.json` as immutable. Read-only commands (`config get`, `config file`, `config schema`, `config validate`) still work; config writers refuse. Edit the Nix source for the install instead; for the first-party nix-operator distribution, use the [nix-operator Quick Start](https://github.com/operator/nix-operator#quick-start) and set values under `programs.operator.config` or `instances.<name>.config`.
 </Note>
 
 ## Root options
@@ -34,7 +34,7 @@ operator config set agents.defaults.heartbeat.every "2h"
 operator config set 'agents.list[0].tools.exec.node' "node-id-or-name"
 operator config set agents.defaults.models '{"openai/gpt-5.4":{}}' --strict-json --merge
 operator config set channels.discord.token --ref-provider default --ref-source env --ref-id DISCORD_BOT_TOKEN
-operator config set secrets.providers.vaultfile --provider-source file --provider-path /etc/openclaw/secrets.json --provider-mode json
+operator config set secrets.providers.vaultfile --provider-source file --provider-path /etc/operator/secrets.json --provider-mode json
 operator config patch --file ./operator.patch.json5 --dry-run
 operator config unset plugins.entries.brave.config.webSearch.apiKey
 operator config set channels.discord.token --ref-provider default --ref-source env --ref-id DISCORD_BOT_TOKEN --dry-run
@@ -192,7 +192,7 @@ operator config set channels.discord.token \
   --strict-json
 
 operator config set secrets.providers.vaultfile \
-  '{"source":"file","path":"/etc/openclaw/secrets.json","mode":"json"}' \
+  '{"source":"file","path":"/etc/operator/secrets.json","mode":"json"}' \
   --strict-json
 ```
 

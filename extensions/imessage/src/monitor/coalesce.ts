@@ -4,7 +4,7 @@ import { sliceUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utilit
 import type { IMessagePayload } from "./types.js";
 
 // Keep the merge contract narrow (caps, ID tracking, reply-context preference)
-// so a future SDK lift into `openclaw/plugin-sdk/channel-inbound` is a
+// so a future SDK lift into `operator/plugin-sdk/channel-inbound` is a
 // mechanical extraction instead of a behavioral redesign. Apple's URL-preview
 // split-send pipeline is the iMessage-only behavior this still protects.
 

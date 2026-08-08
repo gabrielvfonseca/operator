@@ -5,8 +5,8 @@ import os from "node:os";
 import path from "node:path";
 import readline from "node:readline";
 import chokidar, { type FSWatcher } from "chokidar";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { withFileLock } from "openclaw/plugin-sdk/file-lock";
+import { formatErrorMessage } from "operator/plugin-sdk/error-runtime";
+import { withFileLock } from "operator/plugin-sdk/file-lock";
 import {
   createSubsystemLogger,
   resolveAgentContextLimits,
@@ -16,13 +16,13 @@ import {
   resolveStateDir,
   truncateUtf16Safe,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
+} from "operator/plugin-sdk/memory-core-host-engine-foundation";
 import {
   deriveQmdScopeChannel,
   deriveQmdScopeChatType,
   isQmdScopeAllowed,
   type QmdQueryResult,
-} from "openclaw/plugin-sdk/memory-core-host-engine-qmd";
+} from "operator/plugin-sdk/memory-core-host-engine-qmd";
 import {
   buildMemoryReadResult,
   buildMemoryReadResultFromSlice,
@@ -40,15 +40,15 @@ import {
   type MemorySyncParams,
   type ResolvedMemoryBackendConfig,
   type ResolvedQmdConfig,
-} from "openclaw/plugin-sdk/memory-core-host-engine-storage";
+} from "operator/plugin-sdk/memory-core-host-engine-storage";
 import {
   isFutureDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "openclaw/plugin-sdk/number-runtime";
+} from "operator/plugin-sdk/number-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   uniqueValues,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "operator/plugin-sdk/string-coerce-runtime";
 import {
   attachQmdSessionArtifactHit,
   copyQmdSessionArtifactHit,
@@ -116,8 +116,8 @@ const QMD_EMBED_LOCK_RETRY_TEMPLATE = {
   maxTimeout: 10_000,
   randomize: true,
 } as const;
-const QMD_EMBED_QUEUE_KEY = Symbol.for("openclaw.qmdEmbedQueueTail");
-const QMD_UPDATE_QUEUE_KEY = Symbol.for("openclaw.qmdUpdateQueueState");
+const QMD_EMBED_QUEUE_KEY = Symbol.for("operator.qmdEmbedQueueTail");
+const QMD_UPDATE_QUEUE_KEY = Symbol.for("operator.qmdUpdateQueueState");
 const IGNORED_MEMORY_WATCH_DIR_NAMES = new Set([
   ".git",
   ".cache",

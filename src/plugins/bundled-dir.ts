@@ -5,7 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
-import { resolveOperatorPackageRootSync } from "../infra/openclaw-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
 import { isPathInside } from "../infra/path-guards.js";
 import { resolveUserPath } from "../utils.js";
 

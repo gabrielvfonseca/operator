@@ -221,9 +221,9 @@ describe("install-cli.sh", () => {
   it("keeps HOME for default prefix while OPERATOR_HOME controls git checkout paths", () => {
     const tmp = mkdtempSync(join(tmpdir(), "operator-install-cli-home-"));
     const osHome = join(tmp, "os-home");
-    const openclawHome = join(tmp, "operator-home");
+    const operatorHome = join(tmp, "operator-home");
     mkdirSync(osHome, { recursive: true });
-    mkdirSync(openclawHome, { recursive: true });
+    mkdirSync(operatorHome, { recursive: true });
 
     let result: ReturnType<typeof runInstallCliShell> | undefined;
     try {
@@ -235,7 +235,7 @@ describe("install-cli.sh", () => {
         ].join("\n"),
         {
           HOME: osHome,
-          OPERATOR_HOME: openclawHome,
+          OPERATOR_HOME: operatorHome,
           OPERATOR_GIT_DIR: undefined,
           OPERATOR_PREFIX: undefined,
         },
@@ -247,7 +247,7 @@ describe("install-cli.sh", () => {
     expect(result?.status).toBe(0);
     const output = result?.stdout ?? "";
     expect(output).toContain(`prefix=${join(osHome, ".operator")}`);
-    expect(output).toContain(`git=${join(openclawHome, "@gabrielvfonseca/operator")}`);
+    expect(output).toContain(`git=${join(operatorHome, "@gabrielvfonseca/operator")}`);
   });
 
   it("resolves requested git install versions to checkout refs", () => {
@@ -987,7 +987,7 @@ describe("install-cli.sh", () => {
           `PREFIX=${JSON.stringify(prefix)}`,
           "SET_NPM_PREFIX=0",
           "OPERATOR_VERSION=1.2.3",
-          "install_openclaw",
+          "install_operator",
         ].join("\n"),
         {
           NPM_CONFIG_USERCONFIG: npmrc,
@@ -1059,7 +1059,7 @@ describe("install-cli.sh", () => {
           `PREFIX=${JSON.stringify(installPrefix)}`,
           "SET_NPM_PREFIX=0",
           "OPERATOR_VERSION=1.2.3",
-          "install_openclaw",
+          "install_operator",
         ].join("\n"),
         {
           HOME: home,
@@ -1136,7 +1136,7 @@ describe("install-cli.sh", () => {
           `PREFIX=${JSON.stringify(installPrefix)}`,
           "SET_NPM_PREFIX=0",
           "OPERATOR_VERSION=1.2.3",
-          "install_openclaw",
+          "install_operator",
         ].join("\n"),
         {
           HOME: home,
@@ -1165,7 +1165,7 @@ describe("install-cli.sh", () => {
       set -euo pipefail
       source "${SCRIPT_PATH}"
       OPERATOR_VERSION=main
-      install_openclaw
+      install_operator
     `);
 
     expect(result.status).toBe(1);
@@ -1195,7 +1195,7 @@ describe("install-cli.sh", () => {
           "OPERATOR_VERSION=2026.5.19",
           `source ${JSON.stringify(SCRIPT_PATH)}`,
           "ensure_git() { return 0; }",
-          "install_openclaw",
+          "install_operator",
         ].join("\n"),
       );
       argsOutput = readFileSync(argsLog, "utf8");
@@ -1234,7 +1234,7 @@ describe("install-cli.sh", () => {
           "OPERATOR_VERSION=2026.5.19",
           `source ${JSON.stringify(process.cwd() + "/" + SCRIPT_PATH)}`,
           "ensure_git() { return 0; }",
-          "install_openclaw",
+          "install_operator",
         ].join("\n"),
       );
       argsOutput = readFileSync(argsLog, "utf8");

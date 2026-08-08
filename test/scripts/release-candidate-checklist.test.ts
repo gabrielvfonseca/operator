@@ -172,7 +172,7 @@ describe("release candidate checklist", () => {
     ).toThrow("clean tracked tooling checkout");
     const source = readFileSync("scripts/release-candidate-checklist.mjs", "utf8");
     expect(source).toContain('const TOOLING_ROOT = fileURLToPath(new URL("../", import.meta.url))');
-    expect(source).toContain('mkdtempSync(join(tmpdir(), "openclaw-release-tooling-"))');
+    expect(source).toContain('mkdtempSync(join(tmpdir(), "operator-release-tooling-"))');
     expect(source).toContain(
       '["install", "--frozen-lockfile", "--ignore-scripts", "--prefer-offline"]',
     );
@@ -207,7 +207,7 @@ describe("release candidate checklist", () => {
         "",
         `- **PR #123** ${"record ".repeat(20_000)}`,
       ].join("\n"),
-      repository: "openclaw/openclaw",
+      repository: "operator/operator",
       tag: "v2026.7.1-beta.3",
     });
     const source = readFileSync("scripts/release-candidate-checklist.mjs", "utf8");
@@ -461,16 +461,16 @@ describe("release candidate checklist", () => {
   });
 
   it("runs Parallels against the exact prepared candidate tarball", () => {
-    expect(candidateParallelsArgs(".artifacts/preflight/openclaw.tgz", [], "/trusted")).toEqual([
+    expect(candidateParallelsArgs(".artifacts/preflight/operator.tgz", [], "/trusted")).toEqual([
       "exec",
       "tsx",
       "/trusted/scripts/e2e/parallels/npm-update-smoke.ts",
       "--target-tarball",
-      ".artifacts/preflight/openclaw.tgz",
+      ".artifacts/preflight/operator.tgz",
       "--json",
     ]);
     const command = candidateParallelsShellCommand(
-      ".artifacts/preflight/openclaw candidate.tgz",
+      ".artifacts/preflight/operator candidate.tgz",
       "/opt/homebrew/bin/gtimeout",
     );
     expect(command).toContain(
@@ -478,15 +478,15 @@ describe("release candidate checklist", () => {
     );
     expect(
       candidateParallelsShellCommand(
-        ".artifacts/preflight/openclaw candidate.tgz",
+        ".artifacts/preflight/operator candidate.tgz",
         "/opt/homebrew/bin/gtimeout",
-        [".artifacts/preflight/openclaw-ai candidate.tgz"],
+        [".artifacts/preflight/operator-ai candidate.tgz"],
       ),
-    ).toContain("'--target-tarball' '.artifacts/preflight/openclaw candidate.tgz'");
+    ).toContain("'--target-tarball' '.artifacts/preflight/operator candidate.tgz'");
     expect(
       candidateParallelsArgs(
-        ".artifacts/preflight/openclaw.tgz",
-        [".artifacts/preflight/openclaw-ai.tgz"],
+        ".artifacts/preflight/operator.tgz",
+        [".artifacts/preflight/operator-ai.tgz"],
         "/trusted",
       ),
     ).toEqual([
@@ -494,9 +494,9 @@ describe("release candidate checklist", () => {
       "tsx",
       "/trusted/scripts/e2e/parallels/npm-update-smoke.ts",
       "--target-tarball",
-      ".artifacts/preflight/openclaw.tgz",
+      ".artifacts/preflight/operator.tgz",
       "--dependency-tarball",
-      ".artifacts/preflight/openclaw-ai.tgz",
+      ".artifacts/preflight/operator-ai.tgz",
       "--json",
     ]);
   });
@@ -506,13 +506,13 @@ describe("release candidate checklist", () => {
       releaseTag: "v2026.7.1-beta.3",
       releaseSha: "candidate-sha",
       npmDistTag: "beta",
-      tarballName: "openclaw-2026.7.1-beta.3.tgz",
+      tarballName: "operator-2026.7.1-beta.3.tgz",
       tarballSha256: "root-sha",
       dependencyTarballs: [
         {
           packageName: "@gabrielvfonseca/ai",
           packageVersion: "2026.7.1-beta.3",
-          tarballName: "openclaw-ai-2026.7.1-beta.3.tgz",
+          tarballName: "operator-ai-2026.7.1-beta.3.tgz",
           tarballSha256: "ai-sha",
         },
       ],
@@ -534,7 +534,7 @@ describe("release candidate checklist", () => {
           dependencyTarballs: [
             {
               ...manifest.dependencyTarballs[0],
-              tarballName: "../openclaw-ai.tgz",
+              tarballName: "../operator-ai.tgz",
             },
           ],
         },
@@ -627,7 +627,7 @@ describe("release candidate checklist", () => {
     const duplicateCases = [
       duplicateOption("--tag", "v2026.5.14-beta.3", "v2026.5.14-beta.4", []),
       duplicateOption("--workflow-ref", "release/a", "release/b"),
-      duplicateOption("--repo", "openclaw/openclaw", "fork/openclaw"),
+      duplicateOption("--repo", "operator/operator", "fork/operator"),
       duplicateOption("--full-release-run", "111", "222"),
       duplicateOption("--npm-preflight-run", "111", "222"),
       duplicateOption("--windows-node-tag", "v0.6.3", "v0.6.4"),
@@ -768,7 +768,7 @@ describe("release candidate checklist", () => {
     expect(command).not.toContain("windows_node_tag=");
 
     const workflow = parse(
-      readFileSync(".github/workflows/openclaw-release-publish.yml", "utf8"),
+      readFileSync(".github/workflows/operator-release-publish.yml", "utf8"),
     ) as {
       on: { workflow_dispatch: { inputs: Record<string, unknown> } };
     };
@@ -799,25 +799,25 @@ describe("release candidate checklist", () => {
       ]),
       workflowRef: "main",
       windowsNodeInstallerDigests: JSON.stringify({
-        "OpenClawCompanion-Setup-x64.exe": `sha256:${"a".repeat(64)}`,
-        "OpenClawCompanion-Setup-arm64.exe": `sha256:${"b".repeat(64)}`,
+        "OperatorCompanion-Setup-x64.exe": `sha256:${"a".repeat(64)}`,
+        "OperatorCompanion-Setup-arm64.exe": `sha256:${"b".repeat(64)}`,
       }),
     };
 
     expect(buildPublishCommand(options)).toContain("'windows_node_tag=v0.6.3'");
     expect(buildPublishCommand(options)).toContain(
-      `'windows_node_installer_digests={"OpenClawCompanion-Setup-x64.exe":"sha256:${"a".repeat(64)}","OpenClawCompanion-Setup-arm64.exe":"sha256:${"b".repeat(64)}"}'`,
+      `'windows_node_installer_digests={"OperatorCompanion-Setup-x64.exe":"sha256:${"a".repeat(64)}","OperatorCompanion-Setup-arm64.exe":"sha256:${"b".repeat(64)}"}'`,
     );
   });
 
   it("validates the stable Windows source release and immutable installer digests", async () => {
     const assets = [
       {
-        name: "OpenClawCompanion-Setup-x64.exe",
+        name: "OperatorCompanion-Setup-x64.exe",
         digest: `sha256:${"a".repeat(64)}`,
       },
       {
-        name: "OpenClawCompanion-Setup-arm64.exe",
+        name: "OperatorCompanion-Setup-arm64.exe",
         digest: `sha256:${"b".repeat(64)}`,
       },
     ];
@@ -826,7 +826,7 @@ describe("release candidate checklist", () => {
         tag_name: "v0.6.3",
         draft: false,
         prerelease: false,
-        html_url: "https://github.com/openclaw/openclaw-windows-node/releases/tag/v0.6.3",
+        html_url: "https://github.com/operator/operator-windows-node/releases/tag/v0.6.3",
         assets,
       });
     });
@@ -839,7 +839,7 @@ describe("release candidate checklist", () => {
       }),
     ).resolves.toEqual({
       tag: "v0.6.3",
-      url: "https://github.com/openclaw/openclaw-windows-node/releases/tag/v0.6.3",
+      url: "https://github.com/operator/operator-windows-node/releases/tag/v0.6.3",
       assets,
     });
   });
@@ -850,35 +850,35 @@ describe("release candidate checklist", () => {
     [{ tag_name: "v0.6.4" }, "Windows source release tag mismatch: expected v0.6.3, got v0.6.4"],
     [
       { assets: [] },
-      "must contain exactly one required asset OpenClawCompanion-Setup-x64.exe; found 0",
+      "must contain exactly one required asset OperatorCompanion-Setup-x64.exe; found 0",
     ],
     [
       {
         assets: [
           {
-            name: "OpenClawCompanion-Setup-x64.exe",
+            name: "OperatorCompanion-Setup-x64.exe",
             digest: `sha256:${"a".repeat(64)}`,
           },
           {
-            name: "OpenClawCompanion-Setup-x64.exe",
+            name: "OperatorCompanion-Setup-x64.exe",
             digest: `sha256:${"c".repeat(64)}`,
           },
           {
-            name: "OpenClawCompanion-Setup-arm64.exe",
+            name: "OperatorCompanion-Setup-arm64.exe",
             digest: `sha256:${"b".repeat(64)}`,
           },
         ],
       },
-      "must contain exactly one required asset OpenClawCompanion-Setup-x64.exe; found 2",
+      "must contain exactly one required asset OperatorCompanion-Setup-x64.exe; found 2",
     ],
     [
       {
         assets: [
-          { name: "OpenClawCompanion-Setup-x64.exe", digest: "" },
-          { name: "OpenClawCompanion-Setup-arm64.exe", digest: `sha256:${"b".repeat(64)}` },
+          { name: "OperatorCompanion-Setup-x64.exe", digest: "" },
+          { name: "OperatorCompanion-Setup-arm64.exe", digest: `sha256:${"b".repeat(64)}` },
         ],
       },
-      "asset OpenClawCompanion-Setup-x64.exe is missing its SHA-256 digest",
+      "asset OperatorCompanion-Setup-x64.exe is missing its SHA-256 digest",
     ],
   ])("rejects an invalid stable Windows source release", async (override, message) => {
     const fetchImpl = vi.fn(async () => {
@@ -886,14 +886,14 @@ describe("release candidate checklist", () => {
         tag_name: "v0.6.3",
         draft: false,
         prerelease: false,
-        html_url: "https://github.com/openclaw/openclaw-windows-node/releases/tag/v0.6.3",
+        html_url: "https://github.com/operator/operator-windows-node/releases/tag/v0.6.3",
         assets: [
           {
-            name: "OpenClawCompanion-Setup-x64.exe",
+            name: "OperatorCompanion-Setup-x64.exe",
             digest: `sha256:${"a".repeat(64)}`,
           },
           {
-            name: "OpenClawCompanion-Setup-arm64.exe",
+            name: "OperatorCompanion-Setup-arm64.exe",
             digest: `sha256:${"b".repeat(64)}`,
           },
         ],
@@ -946,13 +946,13 @@ describe("release candidate checklist", () => {
         "--plugins",
         "@operator/diffs",
       ]),
-    ).toThrow("release candidates publish OpenClaw with --plugin-publish-scope all-publishable");
+    ).toThrow("release candidates publish Operator with --plugin-publish-scope all-publishable");
   });
 
   it("extracts a workflow run id from gh dispatch output", () => {
     expect(
       parseRunIdFromDispatchOutput(
-        "https://github.com/openclaw/openclaw/actions/runs/25922042055\n",
+        "https://github.com/operator/operator/actions/runs/25922042055\n",
       ),
     ).toBe("25922042055");
   });
@@ -969,11 +969,11 @@ describe("release candidate checklist", () => {
   it("falls back to a single compatible artifact from the same run", () => {
     expect(
       resolveArtifactName(
-        [{ name: "openclaw-npm-preflight-dba00", expired: false }],
-        "openclaw-npm-preflight-v2026.5.16-beta.2",
-        "openclaw-npm-preflight-",
+        [{ name: "operator-npm-preflight-dba00", expired: false }],
+        "operator-npm-preflight-v2026.5.16-beta.2",
+        "operator-npm-preflight-",
       ),
-    ).toBe("openclaw-npm-preflight-dba00");
+    ).toBe("operator-npm-preflight-dba00");
   });
 
   it("builds the complete immutable Telegram artifact identity tuple", () => {
@@ -982,12 +982,12 @@ describe("release candidate checklist", () => {
         artifact: {
           digest: `sha256:${"a".repeat(64)}`,
           id: 123,
-          name: "openclaw-npm-preflight-v2026.7.2-beta.1",
+          name: "operator-npm-preflight-v2026.7.2-beta.1",
           workflowRunId: 456,
         },
         manifest: {
           packageVersion: "2026.7.2-beta.1",
-          tarballName: "openclaw-2026.7.2-beta.1.tgz",
+          tarballName: "operator-2026.7.2-beta.1.tgz",
           tarballSha256: "b".repeat(64),
         },
         runAttempt: 2,
@@ -997,10 +997,10 @@ describe("release candidate checklist", () => {
     ).toEqual({
       package_artifact_digest: "a".repeat(64),
       package_artifact_id: 123,
-      package_artifact_name: "openclaw-npm-preflight-v2026.7.2-beta.1",
+      package_artifact_name: "operator-npm-preflight-v2026.7.2-beta.1",
       package_artifact_run_attempt: 2,
       package_artifact_run_id: "456",
-      package_file_name: "openclaw-2026.7.2-beta.1.tgz",
+      package_file_name: "operator-2026.7.2-beta.1.tgz",
       package_sha256: "b".repeat(64),
       package_source_sha: "c".repeat(40),
       package_version: "2026.7.2-beta.1",
@@ -1019,14 +1019,14 @@ describe("release candidate checklist", () => {
     });
 
     await expect(
-      githubApi("repos/openclaw/openclaw/actions/runs", {
+      githubApi("repos/operator/operator/actions/runs", {
         fetchImpl,
         timeoutMs: 1234,
         token: "test-token",
       }),
     ).resolves.toEqual({ workflow_runs: [] });
     expect(fetchImpl).toHaveBeenCalledWith(
-      "https://api.github.com/repos/openclaw/openclaw/actions/runs",
+      "https://api.github.com/repos/operator/operator/actions/runs",
       expect.objectContaining({
         signal: expect.any(AbortSignal),
       }),
@@ -1041,7 +1041,7 @@ describe("release candidate checklist", () => {
 
     await withGithubApiTimeoutEnv("2500", async () => {
       await expect(
-        githubApi("repos/openclaw/openclaw/actions/runs", {
+        githubApi("repos/operator/operator/actions/runs", {
           fetchImpl,
           token: "test-token",
         }),
@@ -1057,7 +1057,7 @@ describe("release candidate checklist", () => {
 
       await withGithubApiTimeoutEnv(raw, async () => {
         await expect(
-          githubApi("repos/openclaw/openclaw/actions/runs", {
+          githubApi("repos/operator/operator/actions/runs", {
             fetchImpl,
             token: "test-token",
           }),
@@ -1078,14 +1078,14 @@ describe("release candidate checklist", () => {
     });
 
     await expect(
-      githubApi("repos/openclaw/openclaw/actions/runs", {
+      githubApi("repos/operator/operator/actions/runs", {
         fetchImpl,
         maxBodyBytes: 64,
         timeoutMs: 1234,
         token: "test-token",
       }),
     ).rejects.toThrow(
-      "GitHub API repos/openclaw/openclaw/actions/runs response body exceeded 64 bytes",
+      "GitHub API repos/operator/operator/actions/runs response body exceeded 64 bytes",
     );
   });
 
@@ -1097,12 +1097,12 @@ describe("release candidate checklist", () => {
     });
 
     await expect(
-      githubApi("repos/openclaw/openclaw/actions/runs", {
+      githubApi("repos/operator/operator/actions/runs", {
         fetchImpl,
         timeoutMs: 25,
         token: "test-token",
       }),
-    ).rejects.toThrow("GitHub API repos/openclaw/openclaw/actions/runs timed out after 25ms");
+    ).rejects.toThrow("GitHub API repos/operator/operator/actions/runs timed out after 25ms");
   });
 
   it("includes the GitHub API path when a request times out", async () => {
@@ -1111,13 +1111,13 @@ describe("release candidate checklist", () => {
     });
 
     await expect(
-      githubApi("repos/openclaw/openclaw/actions/runs/123/jobs", {
+      githubApi("repos/operator/operator/actions/runs/123/jobs", {
         fetchImpl,
         timeoutMs: 5,
         token: "test-token",
       }),
     ).rejects.toThrow(
-      "GitHub API repos/openclaw/openclaw/actions/runs/123/jobs timed out after 5ms",
+      "GitHub API repos/operator/operator/actions/runs/123/jobs timed out after 5ms",
     );
   });
 });
@@ -1134,7 +1134,7 @@ describe("GitHub API public fallback", () => {
         .mockResolvedValueOnce(new Response(JSON.stringify({ ok: true }), { status: 200 }));
 
       await expect(
-        githubApi("repos/openclaw/openclaw/actions/runs/123", {
+        githubApi("repos/operator/operator/actions/runs/123", {
           token: "x",
           fetchImpl,
         }),

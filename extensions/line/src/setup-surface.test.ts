@@ -337,7 +337,7 @@ describe("probeLineBot", () => {
     getBotInfoMock.mockResolvedValue({
       displayName: "Operator",
       userId: "U123",
-      basicId: "@openclaw",
+      basicId: "@operator",
       pictureUrl: "https://example.com/bot.png",
     });
 
@@ -357,7 +357,7 @@ describe("linePlugin status.probeAccount", () => {
     getBotInfoMock.mockResolvedValue({
       displayName: "Operator",
       userId: "U123",
-      basicId: "@openclaw",
+      basicId: "@operator",
       pictureUrl: "https://example.com/bot.png",
     });
 

@@ -9,7 +9,7 @@ import {
   INSTALLED_PLUGIN_INDEX_VERSION,
   type InstalledPluginIndex,
 } from "../plugins/installed-plugin-index.js";
-import { runOperatorStateWriteTransaction } from "../state/openclaw-state-db.js";
+import { runOperatorStateWriteTransaction } from "../state/operator-state-db.js";
 import { requireNodeSqlite } from "./node-sqlite.js";
 import { parseRegistryNpmSpec } from "./npm-registry-spec.js";
 import { fileExists, safeReadDir } from "./state-migrations.fs.js";

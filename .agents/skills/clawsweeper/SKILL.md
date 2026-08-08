@@ -35,7 +35,7 @@ Required app setup:
   `actions/create-github-app-token` steps.
 - Target app permissions: read target scan context; write issues and pull
   requests; contents write for report commits, repair branches, and workflow
-  inputs; Actions write on `openclaw/clawsweeper` for comment-router
+  inputs; Actions write on `operator/clawsweeper` for comment-router
   re-review dispatch, workflow dispatch, run cancellation, and self-heal;
   optional Checks write for commit Check Runs.
 
@@ -61,7 +61,7 @@ Use the lister:
 pnpm commit-reports -- --since 6h
 pnpm commit-reports -- --since "24 hours ago" --findings
 pnpm commit-reports -- --since 7d --non-clean
-pnpm commit-reports -- --repo openclaw/operator --author steipete --since 7d
+pnpm commit-reports -- --repo operator/operator --author steipete --since 7d
 pnpm commit-reports -- --since 24h --json
 ```
 
@@ -71,8 +71,8 @@ Results: `nothing_found`, `findings`, `inconclusive`, `failed`,
 Manual rerun/backfill:
 
 ```bash
-gh workflow run commit-review.yml --repo openclaw/clawsweeper \
-  -f target_repo=openclaw/operator \
+gh workflow run commit-review.yml --repo operator/clawsweeper \
+  -f target_repo=operator/operator \
   -f commit_sha=<end-sha> \
   -f before_sha=<start-or-parent-sha> \
   -f create_checks=false \
@@ -116,7 +116,7 @@ Create a job from issue/PR refs and a maintainer prompt:
 
 ```bash
 pnpm run repair:create-job -- \
-  --repo openclaw/operator \
+  --repo operator/operator \
   --refs 123,456 \
   --prompt-file /tmp/clawsweeper-prompt.md
 ```
@@ -125,7 +125,7 @@ Create from an existing ClawSweeper report:
 
 ```bash
 pnpm run repair:create-job -- \
-  --from-report ../clawsweeper/records/operator-openclaw/items/123.md
+  --from-report ../clawsweeper/records/operator-operator/items/123.md
 ```
 
 The job creator checks for an existing open PR, body match, or remote
@@ -135,8 +135,8 @@ to inspect. Use `--force` only after deciding the duplicate guard is stale.
 Validate, commit, then dispatch:
 
 ```bash
-pnpm run repair:validate-job -- jobs/openclaw/inbox/clawsweeper-operator-operator-123.md
-pnpm run repair:dispatch -- jobs/openclaw/inbox/clawsweeper-operator-operator-123.md \
+pnpm run repair:validate-job -- jobs/operator/inbox/clawsweeper-operator-operator-123.md
+pnpm run repair:dispatch -- jobs/operator/inbox/clawsweeper-operator-operator-123.md \
   --mode autonomous \
   --runner blacksmith-4vcpu-ubuntu-2404 \
   --execution-runner blacksmith-16vcpu-ubuntu-2404 \
@@ -169,10 +169,10 @@ trailers, and closes superseded source PRs only after replacement exists.
 Open execution windows intentionally and close them after the run:
 
 ```bash
-gh variable set CLAWSWEEPER_ALLOW_EXECUTE --repo openclaw/clawsweeper --body 1
-gh variable set CLAWSWEEPER_ALLOW_FIX_PR --repo openclaw/clawsweeper --body 1
-gh variable set CLAWSWEEPER_ALLOW_MERGE --repo openclaw/clawsweeper --body 1
-gh variable set CLAWSWEEPER_ALLOW_AUTOMERGE --repo openclaw/clawsweeper --body 1
+gh variable set CLAWSWEEPER_ALLOW_EXECUTE --repo operator/clawsweeper --body 1
+gh variable set CLAWSWEEPER_ALLOW_FIX_PR --repo operator/clawsweeper --body 1
+gh variable set CLAWSWEEPER_ALLOW_MERGE --repo operator/clawsweeper --body 1
+gh variable set CLAWSWEEPER_ALLOW_AUTOMERGE --repo operator/clawsweeper --body 1
 ```
 
 Reset gates only when explicitly requested; the active maintainer window may intentionally
@@ -234,8 +234,8 @@ comments are ignored without a reply.
 Run router manually:
 
 ```bash
-pnpm run repair:comment-router -- --repo openclaw/operator --lookback-minutes 180
-pnpm run repair:comment-router -- --repo openclaw/operator --execute --wait-for-capacity
+pnpm run repair:comment-router -- --repo operator/operator --lookback-minutes 180
+pnpm run repair:comment-router -- --repo operator/operator --execute --wait-for-capacity
 ```
 
 Scheduled routing stays dry unless
@@ -303,25 +303,25 @@ prose.
 Receiver workflows:
 
 ```bash
-gh run list --repo openclaw/clawsweeper --workflow "ClawSweeper Commit Review" \
+gh run list --repo operator/clawsweeper --workflow "ClawSweeper Commit Review" \
   --limit 12 --json databaseId,displayTitle,event,status,conclusion,createdAt,updatedAt,url
-gh run list --repo openclaw/clawsweeper --workflow "repair cluster worker" \
+gh run list --repo operator/clawsweeper --workflow "repair cluster worker" \
   --limit 12 --json databaseId,displayTitle,event,status,conclusion,createdAt,updatedAt,url
-gh run list --repo openclaw/clawsweeper --workflow "repair comment router" \
+gh run list --repo operator/clawsweeper --workflow "repair comment router" \
   --limit 12 --json databaseId,displayTitle,event,status,conclusion,createdAt,updatedAt,url
 ```
 
 Target dispatcher:
 
 ```bash
-gh run list --repo openclaw/operator --workflow "ClawSweeper Dispatch" \
+gh run list --repo operator/operator --workflow "ClawSweeper Dispatch" \
   --event push --limit 8 --json databaseId,displayTitle,event,status,conclusion,headSha,url
 ```
 
 Target commit check:
 
 ```bash
-gh api "repos/openclaw/openclaw/commits/<sha>/check-runs?per_page=100" \
+gh api "repos/operator/operator/commits/<sha>/check-runs?per_page=100" \
   --jq '.check_runs[] | select(.name=="ClawSweeper Commit Review") | [.status,.conclusion,.details_url] | @tsv'
 ```
 

@@ -32,18 +32,18 @@ Hosting multiple users? See [Multi-tenant hosting](/gateway/multi-tenant-hosting
     This builds the gateway image locally as `operator:local`. To use a pre-built image instead:
 
     ```bash
-    export OPERATOR_IMAGE="ghcr.io/openclaw/operator:latest"
+    export OPERATOR_IMAGE="ghcr.io/operator/operator:latest"
     ./scripts/docker/setup.sh
     ```
 
-    Pre-built images are published first to the [GitHub Container Registry](https://github.com/gabrielvfonseca/operator/pkgs/container/openclaw). GHCR is the primary registry for release automation, pinned deployments, and provenance checks. The same release publishes a Docker Hub mirror at `openclaw/openclaw`:
+    Pre-built images are published first to the [GitHub Container Registry](https://github.com/gabrielvfonseca/operator/pkgs/container/operator). GHCR is the primary registry for release automation, pinned deployments, and provenance checks. The same release publishes a Docker Hub mirror at `operator/operator`:
 
     ```bash
-    export OPERATOR_IMAGE="openclaw/operator:latest"
+    export OPERATOR_IMAGE="operator/operator:latest"
     ./scripts/docker/setup.sh
     ```
 
-    Use `ghcr.io/openclaw/openclaw` or `openclaw/openclaw` and avoid unofficial mirrors, which don't share Operator's release timing or retention policy. Official tags: `main`, `latest`, `<version>` (e.g. `2026.2.26`), and beta tags such as `2026.2.26-beta.1` (betas never move `latest`/`main`). The default `main`/`latest`/`<version>` image bundles the `codex` and `diagnostics-otel` plugins. A `-browser` variant (e.g. `latest-browser`) also ships with Chromium baked in, useful for the [sandboxed browser](/gateway/sandboxing#sandboxed-browser) tool without a first-run Playwright install.
+    Use `ghcr.io/operator/operator` or `operator/operator` and avoid unofficial mirrors, which don't share Operator's release timing or retention policy. Official tags: `main`, `latest`, `<version>` (e.g. `2026.2.26`), and beta tags such as `2026.2.26-beta.1` (betas never move `latest`/`main`). The default `main`/`latest`/`<version>` image bundles the `codex` and `diagnostics-otel` plugins. A `-browser` variant (e.g. `latest-browser`) also ships with Chromium baked in, useful for the [sandboxed browser](/gateway/sandboxing#sandboxed-browser) tool without a first-run Playwright install.
 
   </Step>
 
@@ -52,7 +52,7 @@ Hosting multiple users? See [Multi-tenant hosting](/gateway/multi-tenant-hosting
 
     ```bash
     docker load -i operator-image.tar
-    export OPERATOR_IMAGE="ghcr.io/openclaw/operator:latest"
+    export OPERATOR_IMAGE="ghcr.io/operator/operator:latest"
     ./scripts/docker/setup.sh --offline
     ```
 
@@ -325,7 +325,7 @@ The official image does not pre-install Claude Code. Install and log in inside t
 For a new install, enable a persistent `/home/node` volume before running setup:
 
 ```bash
-export OPERATOR_IMAGE="ghcr.io/openclaw/operator:latest"
+export OPERATOR_IMAGE="ghcr.io/operator/operator:latest"
 export OPERATOR_HOME_VOLUME="operator_home"
 ./scripts/docker/setup.sh
 ```
@@ -395,7 +395,7 @@ Use the published Gateway URL, Tailscale, or wide-area DNS-SD for Docker hosts o
 
 ### Storage and persistence
 
-Docker Compose bind-mounts `OPERATOR_CONFIG_DIR` to `/home/node/.operator`, `OPERATOR_WORKSPACE_DIR` to `/home/node/.operator/workspace`, and `OPERATOR_AUTH_PROFILE_SECRET_DIR` to `/home/node/.config/openclaw`, so those paths survive container replacement. When a variable is unset, `docker-compose.yml` falls back under `${HOME}`, or `/tmp` if `HOME` itself is missing, so `docker compose up` never emits an empty-source volume spec on bare environments.
+Docker Compose bind-mounts `OPERATOR_CONFIG_DIR` to `/home/node/.operator`, `OPERATOR_WORKSPACE_DIR` to `/home/node/.operator/workspace`, and `OPERATOR_AUTH_PROFILE_SECRET_DIR` to `/home/node/.config/operator`, so those paths survive container replacement. When a variable is unset, `docker-compose.yml` falls back under `${HOME}`, or `/tmp` if `HOME` itself is missing, so `docker compose up` never emits an empty-source volume spec on bare environments.
 
 That mounted config directory holds:
 
@@ -409,14 +409,14 @@ Installed downloadable plugins store package state under the mounted Operator ho
 
 For full VM persistence details, see [Docker VM Runtime - What persists where](/install/docker-vm-runtime#what-persists-where).
 
-**Disk growth hotspots:** `media/`, per-agent SQLite databases, legacy session JSONL transcripts, the shared SQLite state database, installed plugin package roots, and rolling file logs under `/tmp/openclaw/`.
+**Disk growth hotspots:** `media/`, per-agent SQLite databases, legacy session JSONL transcripts, the shared SQLite state database, installed plugin package roots, and rolling file logs under `/tmp/operator/`.
 
 ### Shell helpers (optional)
 
 For shorter day-to-day commands, install [ClawDock](/install/clawdock):
 
 ```bash
-mkdir -p ~/.clawdock && curl -sL https://raw.githubusercontent.com/openclaw/openclaw/main/scripts/clawdock/clawdock-helpers.sh -o ~/.clawdock/clawdock-helpers.sh
+mkdir -p ~/.clawdock && curl -sL https://raw.githubusercontent.com/operator/operator/main/scripts/clawdock/clawdock-helpers.sh -o ~/.clawdock/clawdock-helpers.sh
 echo 'source ~/.clawdock/clawdock-helpers.sh' >> ~/.zshrc && source ~/.zshrc
 ```
 

@@ -30,8 +30,8 @@ function commandContext(channel = process.env.OPERATOR_LIVE_SYSTEM_AGENT_CHANNEL
     senderIsOwner: true,
     isAuthorizedSender: true,
     senderId: "user:owner",
-    rawBodyNormalized: "/openclaw status",
-    commandBodyNormalized: "/openclaw status",
+    rawBodyNormalized: "/operator status",
+    commandBodyNormalized: "/operator status",
     from: "user:owner",
     to: "account:default",
   } satisfies CommandContext;
@@ -66,7 +66,7 @@ describeLive("Operator live rescue channel smoke", () => {
     }
   });
 
-  it("handles /openclaw status and a persistent approval roundtrip", async () => {
+  it("handles /operator status and a persistent approval roundtrip", async () => {
     await withTempDir({ prefix: "operator-live-rescue-" }, async (tempDir) => {
       const configPath = path.join(tempDir, "operator.json");
       setTestEnvValue("OPERATOR_STATE_DIR", tempDir);
@@ -89,13 +89,13 @@ describeLive("Operator live rescue channel smoke", () => {
         tools: { exec: { security: "full", ask: "off" } },
       };
 
-      await expect(runRescue({ commandBody: "/openclaw status", cfg })).resolves.toContain(
-        "[openclaw] done: status.check",
+      await expect(runRescue({ commandBody: "/operator status", cfg })).resolves.toContain(
+        "[operator] done: status.check",
       );
       await expect(
-        runRescue({ commandBody: "/openclaw set default model openai/gpt-5.5", cfg }),
-      ).resolves.toContain("Reply /openclaw yes to apply");
-      await expect(runRescue({ commandBody: "/openclaw yes", cfg })).resolves.toContain(
+        runRescue({ commandBody: "/operator set default model openai/gpt-5.5", cfg }),
+      ).resolves.toContain("Reply /operator yes to apply");
+      await expect(runRescue({ commandBody: "/operator yes", cfg })).resolves.toContain(
         "Default model: openai/gpt-5.5",
       );
 

@@ -97,7 +97,7 @@ ${params.bindUiDist ? `      - ${yamlDoubleQuoted(`${qaLabUiMount}:${QA_LAB_UI_O
     environment:
       OPERATOR_ENABLE_PRIVATE_QA_CLI: "1"
       OPERATOR_CONFIG_PATH: /opt/operator-scaffold/operator.json
-      OPERATOR_STATE_DIR: /tmp/openclaw/state
+      OPERATOR_STATE_DIR: /tmp/operator/state
       OPERATOR_SKIP_GMAIL_WATCHER: "1"
       OPERATOR_SKIP_BROWSER_CONTROL_SERVER: "1"
       OPERATOR_SKIP_CANVAS_HOST: "1"
@@ -117,8 +117,8 @@ ${imageBlock}    pull_policy: never
     ports:
       - "127.0.0.1:${params.gatewayPort}:18789"
     environment:
-      OPERATOR_CONFIG_PATH: /tmp/openclaw/operator.json
-      OPERATOR_STATE_DIR: /tmp/openclaw/state
+      OPERATOR_CONFIG_PATH: /tmp/operator/operator.json
+      OPERATOR_STATE_DIR: /tmp/operator/state
       OPERATOR_NO_RESPAWN: "1"
       OPERATOR_SKIP_GMAIL_WATCHER: "1"
       OPERATOR_SKIP_BROWSER_CONTROL_SERVER: "1"
@@ -148,7 +148,7 @@ ${
     command:
       - sh
       - -lc
-      - mkdir -p /tmp/openclaw/workspace /tmp/openclaw/state && cp /opt/operator-scaffold/operator.json /tmp/openclaw/operator.json && cp -R /opt/operator-scaffold/seed-workspace/. /tmp/openclaw/workspace/ && rm -rf /tmp/openclaw/workspace/repo && ln -s /opt/operator-repo /tmp/openclaw/workspace/repo && exec node dist/index.js gateway run --port 18789 --bind lan --allow-unconfigured`;
+      - mkdir -p /tmp/operator/workspace /tmp/operator/state && cp /opt/operator-scaffold/operator.json /tmp/operator/operator.json && cp -R /opt/operator-scaffold/seed-workspace/. /tmp/operator/workspace/ && rm -rf /tmp/operator/workspace/repo && ln -s /opt/operator-repo /tmp/operator/workspace/repo && exec node dist/index.js gateway run --port 18789 --bind lan --allow-unconfigured`;
 }
 
 function renderEnvExample(params: {

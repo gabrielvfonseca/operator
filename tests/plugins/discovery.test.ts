@@ -1052,7 +1052,7 @@ describe("discoverOperatorPlugins", () => {
     expect(
       result.diagnostics.some(
         (entry) =>
-          entry.pluginId === "source-only-pack" && entry.message.includes("openclaw doctor --fix"),
+          entry.pluginId === "source-only-pack" && entry.message.includes("operator doctor --fix"),
       ),
     ).toBe(false);
     expect(result.diagnostics).toHaveLength(1);
@@ -1176,7 +1176,7 @@ describe("discoverOperatorPlugins", () => {
       level: "warn",
       pluginId: "guardrail-bridge",
       source: path.join(pluginDir, "operator.extension.json"),
-      messageIncludes: 'run "openclaw doctor --fix"',
+      messageIncludes: 'run "operator doctor --fix"',
     });
   });
 
@@ -1802,7 +1802,7 @@ describe("discoverOperatorPlugins", () => {
 
   it("does not discover nested node_modules copies under installed plugins", async () => {
     const stateDir = makeTempDir();
-    const pluginDir = path.join(stateDir, "extensions", "opik-openclaw");
+    const pluginDir = path.join(stateDir, "extensions", "opik-operator");
     const nestedDiffsDir = path.join(
       pluginDir,
       "node_modules",
@@ -1817,10 +1817,10 @@ describe("discoverOperatorPlugins", () => {
 
     writePluginPackageManifest({
       packageDir: pluginDir,
-      packageName: "@opik/opik-openclaw",
+      packageName: "@opik/opik-operator",
       extensions: ["./src/index.ts"],
     });
-    writePluginManifest({ pluginDir, id: "opik-openclaw" });
+    writePluginManifest({ pluginDir, id: "opik-operator" });
     fs.writeFileSync(
       path.join(pluginDir, "src", "index.ts"),
       "export default function () {}",
@@ -1845,7 +1845,7 @@ describe("discoverOperatorPlugins", () => {
     );
 
     const { candidates } = await discoverWithStateDir(stateDir, {});
-    expectCandidateOrder(candidates, ["opik-openclaw"]);
+    expectCandidateOrder(candidates, ["opik-operator"]);
   });
 
   it("skips dependency and build directories while scanning workspace roots", () => {

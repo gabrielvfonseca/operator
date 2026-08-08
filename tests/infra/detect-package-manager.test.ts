@@ -110,7 +110,7 @@ describe("detectPackageManager", () => {
       const packageRoot = path.join(
         nodeModulesRoot,
         ".pnpm",
-        "openclaw@2026.5.27",
+        "operator@2026.5.27",
         "node_modules",
         "@gabrielvfonseca/operator",
       );

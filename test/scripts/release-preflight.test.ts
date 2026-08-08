@@ -36,7 +36,7 @@ afterEach(() => {
 });
 
 function makeFakePnpm(): { binDir: string; eventsPath: string; logPath: string } {
-  const root = makeTempDir(tempDirs, "openclaw-release-preflight-");
+  const root = makeTempDir(tempDirs, "operator-release-preflight-");
   const binDir = join(root, "bin");
   const eventsPath = join(root, "pnpm-events.log");
   const logPath = join(root, "pnpm.log");
@@ -92,8 +92,8 @@ function runPreflight(
 function makeReleaseFixture(
   params: { buildVersion?: string; packageVersion?: string; shortVersion?: string } = {},
 ): string {
-  const root = makeTempDir(tempDirs, "openclaw-release-preflight-fixture-");
-  const plistDir = join(root, "apps", "macos", "Sources", "OpenClaw", "Resources");
+  const root = makeTempDir(tempDirs, "operator-release-preflight-fixture-");
+  const plistDir = join(root, "apps", "macos", "Sources", "Operator", "Resources");
   mkdirSync(plistDir, { recursive: true });
   writeFileSync(
     join(root, "package.json"),
@@ -233,7 +233,7 @@ describe("scripts/release-preflight.mjs", () => {
 
   it("checks non-version scopes without requiring macOS source metadata", () => {
     const fakePnpm = makeFakePnpm();
-    const root = makeTempDir(tempDirs, "openclaw-release-preflight-config-");
+    const root = makeTempDir(tempDirs, "operator-release-preflight-config-");
     const result = runPreflight(["--scope", "config"], fakePnpm, {}, root);
 
     expect(result.status).toBe(0);
@@ -306,7 +306,7 @@ describe("scripts/release-preflight.mjs", () => {
   it("fails closed when required macOS plist values are missing", () => {
     const fakePnpm = makeFakePnpm();
     const root = makeReleaseFixture();
-    const plistPath = join(root, "apps", "macos", "Sources", "OpenClaw", "Resources", "Info.plist");
+    const plistPath = join(root, "apps", "macos", "Sources", "Operator", "Resources", "Info.plist");
     writeFileSync(
       plistPath,
       readFileSync(plistPath, "utf8").replace(
@@ -328,7 +328,7 @@ describe("scripts/release-preflight.mjs", () => {
       buildVersion: "2026061000",
       shortVersion: "2026.6.10",
     });
-    const plistPath = join(root, "apps", "macos", "Sources", "OpenClaw", "Resources", "Info.plist");
+    const plistPath = join(root, "apps", "macos", "Sources", "Operator", "Resources", "Info.plist");
     const before = readFileSync(plistPath, "utf8");
     const result = runPreflight(["--fix"], fakePnpm, {}, root);
 

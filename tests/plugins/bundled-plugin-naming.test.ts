@@ -13,7 +13,7 @@ type PluginManifestShape = {
 
 type OperatorPackageShape = {
   name?: unknown;
-  openclaw?: {
+  operator?: {
     install?: {
       npmSpec?: unknown;
     };
@@ -74,7 +74,7 @@ function listExternalBundledPluginDirs(): string[] | null {
 
   const metadataByDir = new Map<string, Set<string>>();
   for (const file of files) {
-    const match = /^extensions\/([^/]+)\/(openclaw\.plugin\.json|package\.json)$/u.exec(file);
+    const match = /^extensions\/([^/]+)\/(operator\.plugin\.json|package\.json)$/u.exec(file);
     if (!match) {
       continue;
     }

@@ -595,7 +595,7 @@ export async function prepareBundledAiRuntimePackage(
 
   try {
     await runCaptureImpl(
-      "bun",
+      "pnpm",
       ["--dir", "packages/ai", "pack", "--silent", "--pack-destination", outputDir],
       sourceDir,
       {
@@ -670,7 +670,7 @@ export async function packOperatorPackageForDocker(sourceDir, outputDir, options
       }));
   const restoreChangelog = options.restoreChangelog ?? restorePackageChangelog;
   const prepareBundledAiRuntime = options.prepareBundledAiRuntime ?? prepareBundledAiRuntimePackage;
-  const packTool = options.pnpmPack ? "bun" : "npm";
+  const packTool = options.pnpmPack ? "pnpm" : "npm";
   if (options.packJsonPath && options.pnpmPack) {
     throw new Error("packJsonPath cannot be combined with pnpmPack");
   }
@@ -682,7 +682,7 @@ export async function packOperatorPackageForDocker(sourceDir, outputDir, options
     await cleanPackedOperatorTarballs(outputDir);
     cleanupBundledAiRuntime = await prepareBundledAiRuntime(sourceDir, outputDir, runCaptureImpl);
     const packArgs =
-      packTool === "bun"
+      packTool === "pnpm"
         ? ["pack", "--silent", "--config.ignore-scripts=true", "--pack-destination", outputDir]
         : [
             "pack",

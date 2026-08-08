@@ -64,7 +64,7 @@ export function redactMatrixQaCliOutput(text: string): string {
 }
 
 export function formatMatrixQaCliCommand(args: string[]) {
-  return `openclaw ${redactMatrixQaCliArgs(args).join(" ")}`;
+  return `operator ${redactMatrixQaCliArgs(args).join(" ")}`;
 }
 
 function buildMatrixQaCliResult(params: {

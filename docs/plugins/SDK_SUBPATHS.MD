@@ -7,7 +7,7 @@ title: "Plugin SDK subpaths"
 ---
 
 The plugin SDK is exposed as a set of narrow public subpaths under
-`openclaw/plugin-sdk/`. This page catalogs the commonly used subpaths grouped by
+`operator/plugin-sdk/`. This page catalogs the commonly used subpaths grouped by
 purpose. Three files define the surface:
 
 - `scripts/lib/plugin-sdk-entrypoints.json`: the maintained entrypoint inventory

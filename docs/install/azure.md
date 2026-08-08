@@ -54,17 +54,17 @@ Set up an Azure Linux VM with the Azure CLI, apply Network Security Group (NSG) 
 
   <Step title="Set deployment variables">
     ```bash
-    RG="rg-openclaw"
+    RG="rg-operator"
     LOCATION="westus2"
-    VNET_NAME="vnet-openclaw"
+    VNET_NAME="vnet-operator"
     VNET_PREFIX="10.40.0.0/16"
     VM_SUBNET_NAME="snet-operator-vm"
     VM_SUBNET_PREFIX="10.40.2.0/24"
     BASTION_SUBNET_PREFIX="10.40.1.0/26"
     NSG_NAME="nsg-operator-vm"
-    VM_NAME="vm-openclaw"
+    VM_NAME="vm-operator"
     ADMIN_USERNAME="@gabrielvfonseca/operator"
-    BASTION_NAME="bas-openclaw"
+    BASTION_NAME="bas-operator"
     BASTION_PIP_NAME="pip-operator-bastion"
     ```
 

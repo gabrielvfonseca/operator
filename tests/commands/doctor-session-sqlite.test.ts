@@ -20,8 +20,8 @@ import {
   openOperatorAgentDatabase,
   OPERATOR_AGENT_SCHEMA_VERSION,
   resolveOperatorAgentSqlitePath,
-} from "../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import {
   assertSafeSessionSqliteMigrationMove,
   restoreSessionSqliteMigrationRun,
@@ -557,7 +557,7 @@ describe("runDoctorSessionSqlite", () => {
       mutate: (database: DatabaseSync) => {
         database.exec(`PRAGMA user_version = ${OPERATOR_AGENT_SCHEMA_VERSION - 1};`);
       },
-      message: /run openclaw doctor --fix before compacting/iu,
+      message: /run operator doctor --fix before compacting/iu,
     },
   ])("rejects $label before compaction", async ({ mutate, message }) => {
     const { sqlitePath, store } = await createImportedStoreForCompaction();
@@ -1559,7 +1559,7 @@ describe("runDoctorSessionSqlite", () => {
     if (process.env.HOME) {
       expect(recover.supportIssue?.body).not.toContain(process.env.HOME);
     }
-    expect(recover.supportIssue?.url).toContain("github.com/openclaw/openclaw/issues/new");
+    expect(recover.supportIssue?.url).toContain("github.com/operator/operator/issues/new");
   });
 
   it("recovers only manifests matching an explicit store selector", async () => {
@@ -2351,7 +2351,7 @@ describe("runDoctorSessionSqlite", () => {
       "utf-8",
     );
     expect(failureReport).toContain("transcript_malformed");
-    expect(failureReport).toContain("openclaw doctor --session-sqlite recover --github-issue");
+    expect(failureReport).toContain("operator doctor --session-sqlite recover --github-issue");
     expect(failureReport).not.toContain("supersecret");
   });
 

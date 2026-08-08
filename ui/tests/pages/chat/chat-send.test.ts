@@ -2331,7 +2331,8 @@ describe("handleSendChat", () => {
       }
       throw new Error(`Unexpected request: ${method}`);
     });
-    const text = "large paste\n" + "x".repeat(1100);
+    const text = `large paste
+${"x".repeat(1100)}`;
     const file = new File([text], "pasted-text-123.txt", { type: "text/plain" });
     const attachment = registerChatAttachmentPayload({
       attachment: {
@@ -4009,7 +4010,7 @@ describe("handleSendChat", () => {
     ).toEqual(["user", "assistant"]);
     expect(
       inactiveCached.filter((message) => {
-        const marker = requireRecord(message, "cached terminal transcript")["__openclaw"];
+        const marker = requireRecord(message, "cached terminal transcript")["__operator"];
         return (
           marker &&
           typeof marker === "object" &&

@@ -9,11 +9,11 @@ import {
   waitForDiagnosticEventsDrained,
 } from "../../../src/infra/diagnostic-events.js";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../../../src/infra/kysely-sync.js";
-import type { DB as OperatorStateDatabase } from "../../../../src/state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateDatabase } from "../../../../src/state/operator-state-db.generated.js";
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
-} from "../../../src/state/openclaw-state-db.js";
+} from "../../../src/state/operator-state-db.js";
 import { loadSkills } from "../../../src/skills/loading/session.js";
 import {
   buildWorkspaceSkillSnapshot,
@@ -161,7 +161,7 @@ function addAppliedSkill(params: {
     scanState: "clean",
   });
   store.records.set(id, {
-    schema: "openclaw.skill-workshop.proposal.v1",
+    schema: "operator.skill-workshop.proposal.v1",
     id,
     kind,
     status: "applied",
@@ -203,7 +203,7 @@ function writeSkill(agentDir: string, key: string, name: string): void {
 }
 
 beforeEach(() => {
-  rootDir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-curator-")));
+  rootDir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "operator-curator-")));
   stateDir = path.join(rootDir, "state-root");
   fs.mkdirSync(stateDir, { recursive: true });
   originalStateDir = process.env.OPERATOR_STATE_DIR;
@@ -211,7 +211,7 @@ beforeEach(() => {
   store.entries.length = 0;
   store.records.clear();
   store.readManifest.mockReset().mockImplementation(async () => ({
-    schema: "openclaw.skill-workshop.proposals-manifest.v1",
+    schema: "operator.skill-workshop.proposals-manifest.v1",
     updatedAt: new Date(0).toISOString(),
     proposals: store.entries,
   }));
@@ -597,7 +597,7 @@ describe("skill curator lifecycle", () => {
       ).toContain("skill curator has not completed a sweep");
 
       resolveManifest?.({
-        schema: "openclaw.skill-workshop.proposals-manifest.v1",
+        schema: "operator.skill-workshop.proposals-manifest.v1",
         updatedAt: new Date(nowMs).toISOString(),
         proposals: [],
       });

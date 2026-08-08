@@ -7,8 +7,8 @@ import { qqbotChannelConfigSchema } from "./config-schema.js";
 import type { ResolvedQQBotAccount } from "./types.js";
 
 /**
- * Setup-only QQBot plugin — lightweight subset used during `openclaw onboard`
- * and `openclaw configure` without pulling the full runtime dependencies.
+ * Setup-only QQBot plugin — lightweight subset used during `operator onboard`
+ * and `operator configure` without pulling the full runtime dependencies.
  */
 export const qqbotSetupPlugin: ChannelPlugin<ResolvedQQBotAccount> = {
   id: "qqbot",

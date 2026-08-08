@@ -2527,7 +2527,7 @@ final class TalkModeManager: NSObject {
     {
         for msg in messages.reversed() {
             guard (msg["role"] as? String) == "assistant" else { continue }
-            let metadata = msg["__openclaw"] as? [String: Any]
+            let metadata = msg["__operator"] as? [String: Any]
             let idempotencyKey = (msg["idempotencyKey"] as? String) ?? (metadata?["idempotencyKey"] as? String)
             guard idempotencyKey == runId else { continue }
             if let since, let timestamp = msg["timestamp"] as? Double,

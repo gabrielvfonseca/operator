@@ -18,7 +18,7 @@ function requireInvocationOrder(mock: { invocationCallOrder: number[] }, context
   return expectDefined(mock.invocationCallOrder[0], context);
 }
 
-vi.mock("openclaw/plugin-sdk/runtime-env", () => ({
+vi.mock("operator/plugin-sdk/runtime-env", () => ({
   createSubsystemLogger: () => ({
     child: () => ({
       info: telegramInboundInfo,

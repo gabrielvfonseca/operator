@@ -5,7 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { tryReadJsonSync } from "../infra/json-files.js";
-import { resolveOperatorPackageRootSync } from "../infra/openclaw-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
 import { resolveOperatorDevSourceRoot } from "./dev-source-root.js";
 import { PluginLruCache } from "./plugin-cache-primitives.js";
 
@@ -486,7 +486,7 @@ const cachedPluginSdkScopedAliasMaps = new PluginLruCache<Record<string, string>
 const cachedBundledPluginPublicSurfaceAliasMaps = new PluginLruCache<Record<string, string>>(
   MAX_PLUGIN_LOADER_ALIAS_CACHE_ENTRIES,
 );
-const PLUGIN_SDK_PACKAGE_NAMES = ["openclaw/plugin-sdk", "@gabrielvfonseca/plugin-sdk"] as const;
+const PLUGIN_SDK_PACKAGE_NAMES = ["operator/plugin-sdk", "@gabrielvfonseca/plugin-sdk"] as const;
 const CODEX_NATIVE_TASK_RUNTIME_PLUGIN_SDK_SUBPATH = "codex-native-task-runtime";
 const CODEX_MCP_PROJECTION_PLUGIN_SDK_SUBPATH = "codex-mcp-projection";
 const OLLAMA_CONFIGURED_LOCAL_ORIGIN_RUNTIME_PLUGIN_SDK_SUBPATH = "ssrf-runtime-internal";
@@ -1647,7 +1647,7 @@ function resolvePluginSdkScopedAliasMap(
         }
         break;
       }
-      if (Object.hasOwn(aliasMap, `openclaw/plugin-sdk/${subpath}`)) {
+      if (Object.hasOwn(aliasMap, `operator/plugin-sdk/${subpath}`)) {
         break;
       }
     }
@@ -1889,7 +1889,7 @@ export function buildPluginLoaderAliasMap(
   });
   const result: Record<string, string> = {
     ...(extensionApiAlias
-      ? { "openclaw/extension-api": normalizeJitiAliasTargetPath(extensionApiAlias) }
+      ? { "operator/extension-api": normalizeJitiAliasTargetPath(extensionApiAlias) }
       : {}),
     ...resolveBundledPluginPackagePublicSurfaceAliasMap({
       modulePath,

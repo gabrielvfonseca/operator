@@ -53,10 +53,10 @@ If you already manage the workspace files yourself, disable bootstrap file creat
 
 ## Extra workspace folders
 
-Older installs may have created `~/openclaw`. Keeping multiple workspace directories around can cause confusing auth or state drift, since only one workspace is active at a time.
+Older installs may have created `~/operator`. Keeping multiple workspace directories around can cause confusing auth or state drift, since only one workspace is active at a time.
 
 <Note>
-**Recommendation:** keep a single active workspace. If you no longer use the extra folders, archive or move them to Trash (for example `trash ~/openclaw`). If you intentionally keep multiple workspaces, make sure `agents.defaults.workspace` (or the per-agent `workspace` key) points to the active one.
+**Recommendation:** keep a single active workspace. If you no longer use the extra folders, archive or move them to Trash (for example `trash ~/operator`). If you intentionally keep multiple workspaces, make sure `agents.defaults.workspace` (or the per-agent `workspace` key) points to the active one.
 </Note>
 
 ## Workspace file map

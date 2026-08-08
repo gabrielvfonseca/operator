@@ -211,7 +211,7 @@ async function runNonInteractiveRepair(params: {
 
 const gatewayProgramArguments = [
   "/usr/bin/node",
-  "/usr/local/bin/openclaw",
+  "/usr/local/bin/operator",
   "gateway",
   "--port",
   "18789",
@@ -459,7 +459,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("does not duplicate gateway runtime warnings already emitted by the node install plan", async () => {
     const nvmNode = "/home/test/.nvm/versions/node/v22.22.3/bin/node";
     mocks.readCommand.mockResolvedValue({
-      programArguments: [nvmNode, "/usr/local/bin/openclaw", "gateway", "--port", "18789"],
+      programArguments: [nvmNode, "/usr/local/bin/operator", "gateway", "--port", "18789"],
       environment: {},
     });
     mocks.buildGatewayInstallPlan.mockImplementation(async ({ warn }) => {
@@ -468,7 +468,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
         "Gateway runtime",
       );
       return {
-        programArguments: [nvmNode, "/usr/local/bin/openclaw", "gateway", "--port", "18789"],
+        programArguments: [nvmNode, "/usr/local/bin/operator", "gateway", "--port", "18789"],
         workingDirectory: "/tmp",
         environment: {},
       };
@@ -540,7 +540,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       environment: {},
     });
     mocks.buildGatewayInstallPlan.mockResolvedValue({
-      programArguments: ["/usr/bin/node", "/usr/local/bin/openclaw", "gateway", "--port", "18888"],
+      programArguments: ["/usr/bin/node", "/usr/local/bin/operator", "gateway", "--port", "18888"],
       workingDirectory: "/tmp",
       environment: {},
     });
@@ -628,15 +628,15 @@ describe("maybeRepairGatewayServiceConfig", () => {
 
   it("does not flag entrypoint mismatch when symlink and realpath match", async () => {
     setupGatewayEntrypointRepairScenario({
-      currentEntrypoint: "/Users/test/Library/pnpm/global/5/node_modules/openclaw/dist/index.js",
+      currentEntrypoint: "/Users/test/Library/pnpm/global/5/node_modules/operator/dist/index.js",
       installEntrypoint:
-        "/Users/test/Library/pnpm/global/5/node_modules/.pnpm/openclaw@2026.3.12/node_modules/openclaw/dist/index.js",
+        "/Users/test/Library/pnpm/global/5/node_modules/.pnpm/operator@2026.3.12/node_modules/operator/dist/index.js",
       realpath: async (value: string) => {
         const normalized = value.replaceAll("\\", "/").replace(/^[A-Z]:/i, "");
-        if (normalized.includes("/global/5/node_modules/openclaw/")) {
+        if (normalized.includes("/global/5/node_modules/operator/")) {
           return normalized.replace(
-            "/global/5/node_modules/openclaw/",
-            "/global/5/node_modules/.pnpm/openclaw@2026.3.12/node_modules/openclaw/",
+            "/global/5/node_modules/operator/",
+            "/global/5/node_modules/.pnpm/operator@2026.3.12/node_modules/operator/",
           );
         }
         return normalized;
@@ -655,8 +655,8 @@ describe("maybeRepairGatewayServiceConfig", () => {
 
   it("does not flag entrypoint mismatch when realpath fails but normalized absolute paths match", async () => {
     setupGatewayEntrypointRepairScenario({
-      currentEntrypoint: "/opt/openclaw/../openclaw/dist/index.js",
-      installEntrypoint: "/opt/openclaw/dist/index.js",
+      currentEntrypoint: "/opt/operator/../operator/dist/index.js",
+      installEntrypoint: "/opt/operator/dist/index.js",
       realpathError: new Error("no realpath"),
     });
 
@@ -715,8 +715,8 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("still flags entrypoint mismatch when canonicalized paths differ", async () => {
     setupGatewayEntrypointRepairScenario({
       currentEntrypoint:
-        "/Users/test/.nvm/versions/node/v22.0.0/lib/node_modules/openclaw/dist/index.js",
-      installEntrypoint: "/Users/test/Library/pnpm/global/5/node_modules/openclaw/dist/index.js",
+        "/Users/test/.nvm/versions/node/v22.0.0/lib/node_modules/operator/dist/index.js",
+      installEntrypoint: "/Users/test/Library/pnpm/global/5/node_modules/operator/dist/index.js",
     });
 
     await runRepair({ gateway: {} });
@@ -732,7 +732,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("skips entrypoint rewrites for an active systemd unit", async () => {
     mockProcessPlatform("linux");
     mocks.readCommand.mockResolvedValue({
-      ...createGatewayCommand("/opt/old-openclaw/dist/index.js"),
+      ...createGatewayCommand("/opt/old-operator/dist/index.js"),
       sourcePath: "/etc/systemd/system/custom-gateway.service",
     });
     mocks.auditGatewayServiceConfig.mockResolvedValue({
@@ -740,7 +740,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       issues: [],
     });
     mocks.buildGatewayInstallPlan.mockResolvedValue({
-      ...createGatewayCommand("/opt/new-openclaw/dist/index.js"),
+      ...createGatewayCommand("/opt/new-operator/dist/index.js"),
       workingDirectory: "/tmp",
     });
     mocks.isSystemdUnitActive.mockResolvedValue(true);
@@ -760,7 +760,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("repairs entrypoint drift when the systemd unit is stopped", async () => {
     mockProcessPlatform("linux");
     mocks.readCommand.mockResolvedValue({
-      ...createGatewayCommand("/opt/old-openclaw/dist/index.js"),
+      ...createGatewayCommand("/opt/old-operator/dist/index.js"),
       sourcePath: "/home/test/.config/systemd/user/custom-gateway.service",
     });
     mocks.auditGatewayServiceConfig.mockResolvedValue({
@@ -768,7 +768,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       issues: [],
     });
     mocks.buildGatewayInstallPlan.mockResolvedValue({
-      ...createGatewayCommand("/opt/new-openclaw/dist/index.js"),
+      ...createGatewayCommand("/opt/new-operator/dist/index.js"),
       workingDirectory: "/tmp",
     });
     mocks.isSystemdUnitActive.mockResolvedValue(false);
@@ -787,7 +787,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("leaves all service metadata unchanged when an active unit has command drift plus other issues", async () => {
     mockProcessPlatform("linux");
     mocks.readCommand.mockResolvedValue({
-      programArguments: ["/usr/bin/openclaw", "run"],
+      programArguments: ["/usr/bin/operator", "run"],
       environment: {},
       sourcePath: "/home/test/.config/systemd/user/operator-gateway.service",
     });
@@ -827,8 +827,8 @@ describe("maybeRepairGatewayServiceConfig", () => {
 
   it("skips entrypoint rewrite in non-interactive fix mode", async () => {
     setupGatewayEntrypointRepairScenario({
-      currentEntrypoint: "/Users/test/Library/npm/node_modules/openclaw/dist/entry.js",
-      installEntrypoint: "/Users/test/Library/npm/node_modules/openclaw/dist/index.js",
+      currentEntrypoint: "/Users/test/Library/npm/node_modules/operator/dist/entry.js",
+      installEntrypoint: "/Users/test/Library/npm/node_modules/operator/dist/index.js",
       installWorkingDirectory: "/tmp",
     });
 
@@ -841,7 +841,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       "Gateway service entrypoint does not match the current install.",
       "Gateway service config",
     );
-    expectNoteContaining("openclaw gateway install --force", "Gateway service config");
+    expectNoteContaining("operator gateway install --force", "Gateway service config");
     expect(mocks.stage).not.toHaveBeenCalled();
     expect(mocks.install).not.toHaveBeenCalled();
   });
@@ -850,8 +850,8 @@ describe("maybeRepairGatewayServiceConfig", () => {
     mockProcessPlatform("linux");
     process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
     setupGatewayEntrypointRepairScenario({
-      currentEntrypoint: "/Users/test/Library/npm/node_modules/openclaw/dist/entry.js",
-      installEntrypoint: "/Users/test/Library/npm/node_modules/openclaw/dist/index.js",
+      currentEntrypoint: "/Users/test/Library/npm/node_modules/operator/dist/entry.js",
+      installEntrypoint: "/Users/test/Library/npm/node_modules/operator/dist/index.js",
       installWorkingDirectory: "/tmp",
     });
 
@@ -873,8 +873,8 @@ describe("maybeRepairGatewayServiceConfig", () => {
     mockProcessPlatform("darwin");
     process.env.OPERATOR_UPDATE_PARENT_ALLOWS_GATEWAY_SERVICE_REPAIR = "1";
     setupGatewayEntrypointRepairScenario({
-      currentEntrypoint: "/Users/test/Library/npm/node_modules/openclaw/dist/entry.js",
-      installEntrypoint: "/Users/test/Library/npm/node_modules/openclaw/dist/index.js",
+      currentEntrypoint: "/Users/test/Library/npm/node_modules/operator/dist/entry.js",
+      installEntrypoint: "/Users/test/Library/npm/node_modules/operator/dist/index.js",
       installWorkingDirectory: "/tmp",
     });
 
@@ -1425,8 +1425,8 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("reports service config drift but skips service rewrite when service repair policy is external", async () => {
     await withEnvAsync({ OPERATOR_SERVICE_REPAIR_POLICY: "external" }, async () => {
       setupGatewayEntrypointRepairScenario({
-        currentEntrypoint: "/Users/test/Library/npm/node_modules/openclaw/dist/entry.js",
-        installEntrypoint: "/Users/test/Library/npm/node_modules/openclaw/dist/index.js",
+        currentEntrypoint: "/Users/test/Library/npm/node_modules/operator/dist/entry.js",
+        installEntrypoint: "/Users/test/Library/npm/node_modules/operator/dist/index.js",
         installWorkingDirectory: "/tmp",
       });
 
@@ -1493,7 +1493,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
         );
         const sourceCheckoutEntrypoint = path.join(root, "dist", "index.js");
         await fs.writeFile(sourceCheckoutEntrypoint, "export {};\n", "utf8");
-        const installEntrypoint = "/usr/local/lib/node_modules/openclaw/dist/index.js";
+        const installEntrypoint = "/usr/local/lib/node_modules/operator/dist/index.js";
         setupGatewayEntrypointRepairScenario({
           currentEntrypoint: sourceCheckoutEntrypoint,
           installEntrypoint,
@@ -1511,7 +1511,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
           "Gateway service entrypoint does not match the current install.",
         );
         expect(consolidated).not.toContain("resolves to a source checkout");
-        const forceMatches = consolidated.match(/openclaw gateway install --force/g) ?? [];
+        const forceMatches = consolidated.match(/operator gateway install --force/g) ?? [];
         expect(forceMatches).toHaveLength(0);
       } finally {
         await fs.rm(root, { recursive: true, force: true });
@@ -1536,7 +1536,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
         );
         const sourceCheckoutEntrypoint = path.join(root, "dist", "index.js");
         await fs.writeFile(sourceCheckoutEntrypoint, "export {};\n", "utf8");
-        const installEntrypoint = "/usr/local/lib/node_modules/openclaw/dist/index.js";
+        const installEntrypoint = "/usr/local/lib/node_modules/operator/dist/index.js";
         setupGatewayEntrypointRepairScenario({
           currentEntrypoint: sourceCheckoutEntrypoint,
           installEntrypoint,
@@ -1565,7 +1565,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
           "Gateway service entrypoint does not match the current install.",
         );
         expect(auditNote).not.toContain("resolves to a source checkout");
-        expect(gatewayServiceConfigNotes[1]?.[0]).toContain("openclaw gateway install --force");
+        expect(gatewayServiceConfigNotes[1]?.[0]).toContain("operator gateway install --force");
       } finally {
         await fs.rm(root, { recursive: true, force: true });
       }

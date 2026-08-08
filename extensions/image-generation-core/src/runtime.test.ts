@@ -6,7 +6,7 @@ const sdkExports = vi.hoisted(() => ({
   listRuntimeImageGenerationProviders: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/image-generation-runtime", () => sdkExports);
+vi.mock("operator/plugin-sdk/image-generation-runtime", () => sdkExports);
 
 import {
   generateImage as sdkGenerateImage,
@@ -16,7 +16,7 @@ import { generateImage, listRuntimeImageGenerationProviders } from "./runtime.js
 
 describe("image-generation-core runtime", () => {
   afterAll(() => {
-    vi.doUnmock("openclaw/plugin-sdk/image-generation-runtime");
+    vi.doUnmock("operator/plugin-sdk/image-generation-runtime");
     vi.resetModules();
   });
 

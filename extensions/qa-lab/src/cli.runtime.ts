@@ -6,8 +6,8 @@ import { parseStrictPositiveInteger } from "@gabrielvfonseca/operator/plugin-sdk
 import { uniqueStrings } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   OPENCLAW_CRABLINE_DEFAULT_CHANNEL,
-  resolveOpenClawCrablineChannelDriverSelection,
-} from "@openclaw/crabline";
+  resolveOperatorCrablineChannelDriverSelection,
+} from "@operator/crabline";
 import {
   buildQaAgenticParityComparison,
   buildQaRuntimeParityReport,
@@ -279,7 +279,7 @@ function parseQaRuntimePair(value: string | undefined): [RuntimeId, RuntimeId] |
     .filter(Boolean)
     .map(normalizeQaRuntimeId);
   if (runtimes.length !== 2) {
-    throw new Error('--runtime-pair must use exactly two runtimes, e.g. "openclaw,codex".');
+    throw new Error('--runtime-pair must use exactly two runtimes, e.g. "operator,codex".');
   }
   const [left, right] = runtimes;
   if (!left || !right) {
@@ -1038,7 +1038,7 @@ export async function runQaSuiteCommand(opts: QaSuiteCommandOptions) {
   const [singleChannelDriverChannel] = channelDriverChannels;
   const channelDriverSelection =
     channelDriver === "crabline" && channelDriverChannels.length === 1 && singleChannelDriverChannel
-      ? resolveOpenClawCrablineChannelDriverSelection({
+      ? resolveOperatorCrablineChannelDriverSelection({
           channel: singleChannelDriverChannel,
         })
       : undefined;
@@ -1409,7 +1409,7 @@ export async function runQaJsonlReplayCommand(opts: {
     "codex",
   ];
   if (runtimePair[0] !== "@gabrielvfonseca/operator" || runtimePair[1] !== "codex") {
-    throw new Error('--runtime-pair for jsonl-replay must be "openclaw,codex".');
+    throw new Error('--runtime-pair for jsonl-replay must be "operator,codex".');
   }
   const providerMode = normalizeQaProviderMode(opts.providerMode ?? "mock-openai");
   if (providerMode !== "mock-openai") {

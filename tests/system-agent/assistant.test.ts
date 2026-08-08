@@ -31,7 +31,7 @@ function overview(overrides: Partial<SystemAgentOverview["tools"]> = {}): System
     },
     references: {
       docsUrl: "https://docs.operator.ai",
-      sourceUrl: "https://github.com/openclaw/openclaw",
+      sourceUrl: "https://github.com/operator/operator",
     },
   };
 }
@@ -83,10 +83,10 @@ describe("Operator assistant", () => {
         defaultAgentId: "main",
         defaultModel: "openai/gpt-5.5",
         references: {
-          docsPath: "/tmp/openclaw/docs",
+          docsPath: "/tmp/operator/docs",
           docsUrl: "https://docs.operator.ai",
-          sourcePath: "/tmp/openclaw",
-          sourceUrl: "https://github.com/openclaw/openclaw",
+          sourcePath: "/tmp/operator",
+          sourceUrl: "https://github.com/operator/operator",
         },
       },
     });
@@ -95,8 +95,8 @@ describe("Operator assistant", () => {
     expect(prompt).toContain("Default model: openai/gpt-5.5");
     expect(prompt).toContain("id=main, name=Main, workspace=/tmp/main");
     expect(prompt).toContain("OpenAI API key: found");
-    expect(prompt).toContain("Operator docs: /tmp/openclaw/docs");
-    expect(prompt).toContain("Operator source: /tmp/openclaw");
+    expect(prompt).toContain("Operator docs: /tmp/operator/docs");
+    expect(prompt).toContain("Operator source: /tmp/operator");
   });
 
   it("keeps truncated conversation history valid at a UTF-16 boundary", () => {

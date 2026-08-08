@@ -24,7 +24,7 @@ cargo run
 cargo build
 ```
 
-The app uses `OPERATOR_DESKTOP_CLI` when set. Otherwise it checks `~/.operator/bin/openclaw`, then `openclaw` on `PATH`.
+The app uses `OPERATOR_DESKTOP_CLI` when set. Otherwise it checks `~/.operator/bin/operator`, then `operator` on `PATH`.
 
 ## Updates
 

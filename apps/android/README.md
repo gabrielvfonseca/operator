@@ -52,8 +52,8 @@ cd apps/android
 Repository-backed debug Gradle invocations, including `pnpm android:run` and
 `pnpm android:screenshots`, stamp the full checkout commit and capture one UTC
 build timestamp shared by every debug variant in that invocation. Release
-tasks still require explicit `openclawBuildCommit` and
-`openclawBuildTimestamp` properties so signed artifacts remain reproducible.
+tasks still require explicit `operatorBuildCommit` and
+`operatorBuildTimestamp` properties so signed artifacts remain reproducible.
 
 Android release archives use the pinned version in `apps/android/version.json`. Update it with:
 
@@ -117,8 +117,8 @@ Prefer `pnpm android:release:archive`, which stamps and validates the full Git c
 cd apps/android
 commit="$(git -C ../.. rev-parse HEAD)"
 built_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-./gradlew -PopenclawBuildCommit="$commit" -PopenclawBuildTimestamp="$built_at" :app:bundlePlayRelease
-./gradlew -PopenclawBuildCommit="$commit" -PopenclawBuildTimestamp="$built_at" :app:bundleThirdPartyRelease
+./gradlew -PoperatorBuildCommit="$commit" -PoperatorBuildTimestamp="$built_at" :app:bundlePlayRelease
+./gradlew -PoperatorBuildCommit="$commit" -PoperatorBuildTimestamp="$built_at" :app:bundleThirdPartyRelease
 ```
 
 ## Kotlin Lint + Format

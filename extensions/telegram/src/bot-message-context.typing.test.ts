@@ -76,7 +76,7 @@ describe("buildTelegramMessageContext typing", () => {
           text: "hello",
         },
         cfg: {
-          agents: { defaults: { model: "anthropic/claude-opus-4-5", workspace: "/tmp/openclaw" } },
+          agents: { defaults: { model: "anthropic/claude-opus-4-5", workspace: "/tmp/operator" } },
           channels: { telegram: { dmPolicy: "disabled", allowFrom: [] } },
           messages: { groupChat: { mentionPatterns: [] } },
         },

@@ -1145,7 +1145,7 @@ describe("loadOperatorPlugins", () => {
 
   it("uses discovery registration mode for non-activating loads", () => {
     useNoBundledPlugins();
-    const marker = "__openclawDiscoveryModeTest";
+    const marker = "__operatorDiscoveryModeTest";
     const plugin = writePlugin({
       id: "discovery-mode-test",
       filename: "discovery-mode-test.cjs",
@@ -1330,7 +1330,7 @@ describe("loadOperatorPlugins", () => {
   it("caches non-activating snapshots without restoring global side effects", () => {
     useNoBundledPlugins();
     clearPluginCommands();
-    const marker = "__openclawSnapshotCacheRegisterCount";
+    const marker = "__operatorSnapshotCacheRegisterCount";
     const plugin = writePlugin({
       id: "snapshot-cache",
       filename: "snapshot-cache.cjs",
@@ -1385,7 +1385,7 @@ describe("loadOperatorPlugins", () => {
 
   it("does not re-register non-bundled plugins after gateway-bindable boot loads", () => {
     useNoBundledPlugins();
-    const marker = "__openclawGatewayBootRegisterCount";
+    const marker = "__operatorGatewayBootRegisterCount";
     const plugin = writePlugin({
       id: "costclaw-boot-cache",
       filename: "costclaw-boot-cache.cjs",
@@ -1425,7 +1425,7 @@ describe("loadOperatorPlugins", () => {
 
   it("reuses a gateway-bindable cache entry for later default-mode loads", () => {
     useNoBundledPlugins();
-    const marker = "__openclawGatewayBindableCacheRegisterCount";
+    const marker = "__operatorGatewayBindableCacheRegisterCount";
     const plugin = writePlugin({
       id: "gateway-bindable-cache",
       filename: "gateway-bindable-cache.cjs",

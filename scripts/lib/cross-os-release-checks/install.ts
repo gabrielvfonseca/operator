@@ -585,7 +585,7 @@ export function shouldRunWindowsInstalledBrowserOverrideImportSmoke(platform = p
 }
 
 export function buildInstalledBrowserOverrideImportProbeScript(
-  runtimeModuleSpecifier = "openclaw/plugin-sdk/plugin-runtime",
+  runtimeModuleSpecifier = "operator/plugin-sdk/plugin-runtime",
 ) {
   return `
 import { existsSync } from "node:fs";

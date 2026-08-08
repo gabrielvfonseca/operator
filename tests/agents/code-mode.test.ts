@@ -479,11 +479,11 @@ describe("Code Mode", () => {
       registerTestNamespace({
         id: "bad",
         pluginId: "fake-code-mode",
-        globalName: "__openclawHostRequest",
+        globalName: "__operatorHostRequest",
         requiredToolNames: ["fake_noop"],
         createScope: () => ({}),
       }),
-    ).toThrow('globalName "__openclawHostRequest" is reserved');
+    ).toThrow('globalName "__operatorHostRequest" is reserved');
     expect(() =>
       registerTestNamespace({
         id: "bad",
@@ -717,7 +717,7 @@ describe("Code Mode", () => {
       execTool: expectDefined(codeModeTools[0], "codeModeTools[0] test invariant"),
       waitTool: expectDefined(codeModeTools[1], "codeModeTools[1] test invariant"),
       code: `
-        globalThis.__openclawHostRequest("namespace", JSON.stringify(["leaky", ["hidden"], []]));
+        globalThis.__operatorHostRequest("namespace", JSON.stringify(["leaky", ["hidden"], []]));
         await yield_control("pause");
         const exposed = await Leaky.exposed();
         return exposed.input.value;
@@ -2010,7 +2010,7 @@ describe("Code Mode", () => {
       await expectDefined(codeModeTools[0], "codeModeTools[0] test invariant").execute(
         "code-call-host-error",
         {
-          code: 'return globalThis.__openclawHostRequest("unsupported", "[]");',
+          code: 'return globalThis.__operatorHostRequest("unsupported", "[]");',
         },
       ),
     );

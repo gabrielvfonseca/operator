@@ -38,7 +38,7 @@ describe("irc config schema", () => {
       parseIrcConfig({
         host: "irc.libera.chat",
         nick: "operator-bot",
-        channels: ["#openclaw"],
+        channels: ["#operator"],
       }),
     );
 

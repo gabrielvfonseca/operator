@@ -663,7 +663,7 @@ describe("watch-node script", () => {
   it("prints recovery guidance when chokidar fails with invalid package config", async () => {
     const error = Object.assign(
       new Error(
-        'Invalid package config /tmp/openclaw/.pnpm/chokidar/package.json while importing "chokidar" from /tmp/openclaw/scripts/watch-node.mjs.',
+        'Invalid package config /tmp/operator/.pnpm/chokidar/package.json while importing "chokidar" from /tmp/operator/scripts/watch-node.mjs.',
       ),
       { code: "ERR_INVALID_PACKAGE_CONFIG" },
     );
@@ -675,7 +675,7 @@ describe("watch-node script", () => {
       await expect(
         runWatch({
           args: ["gateway", "--force"],
-          cwd: "/tmp/openclaw",
+          cwd: "/tmp/operator",
           loadChokidar: vi.fn(async () => {
             throw error;
           }),
@@ -689,16 +689,16 @@ describe("watch-node script", () => {
       expect(errorSpy.mock.calls).toEqual([
         [""],
         [
-          "[openclaw] gateway:watch could not start because a dependency package config looks corrupted.",
+          "[operator] gateway:watch could not start because a dependency package config looks corrupted.",
         ],
-        ["[openclaw] Invalid package config: /tmp/openclaw/.pnpm/chokidar/package.json"],
-        ["[openclaw] This usually means a file in node_modules is empty or truncated."],
-        ["[openclaw] Recommended recovery:"],
-        ["[openclaw]   rm -rf node_modules"],
-        ["[openclaw]   pnpm store prune"],
-        ["[openclaw]   pnpm install"],
+        ["[operator] Invalid package config: /tmp/operator/.pnpm/chokidar/package.json"],
+        ["[operator] This usually means a file in node_modules is empty or truncated."],
+        ["[operator] Recommended recovery:"],
+        ["[operator]   rm -rf node_modules"],
+        ["[operator]   pnpm store prune"],
+        ["[operator]   pnpm install"],
         [""],
-        ["[openclaw] Original error:"],
+        ["[operator] Original error:"],
         [error],
       ]);
     } finally {

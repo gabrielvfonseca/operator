@@ -17,7 +17,7 @@ import {
   resolveSessionFilePath,
   resolveStorePath,
   type SessionEntry,
-} from "./openclaw-runtime-session.js";
+} from "./operator-runtime-session.js";
 
 type SessionTranscriptCorpusArtifactKind = "active-session" | "archive-artifact";
 

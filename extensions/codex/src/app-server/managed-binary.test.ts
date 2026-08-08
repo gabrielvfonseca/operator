@@ -187,7 +187,7 @@ describe("managed Codex app-server binary", () => {
 
   it("finds Codex bins hoisted into an isolated npm project root", async () => {
     const projectRoot = path.join("/tmp", "state", "npm", "projects", "operator-codex-hash");
-    const pluginRoot = path.join(projectRoot, "node_modules", "@openclaw", "codex");
+    const pluginRoot = path.join(projectRoot, "node_modules", "@operator", "codex");
     const installedCommand = managedCommandPath(projectRoot, "linux");
     const pathExists = vi.fn(async (filePath: string) => filePath === installedCommand);
 
@@ -214,7 +214,7 @@ describe("managed Codex app-server binary", () => {
       "projects",
       "operator-codex-hash",
     );
-    const pluginRoot = path.win32.join(projectRoot, "node_modules", "@openclaw", "codex");
+    const pluginRoot = path.win32.join(projectRoot, "node_modules", "@operator", "codex");
     const installedCommand = managedCommandPath(projectRoot, "win32");
     const pathExists = vi.fn(async (filePath: string) => filePath === installedCommand);
 

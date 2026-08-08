@@ -1014,7 +1014,7 @@ async function updateCommandInternal(
     if (runtimeSelection.replacedNodeRunner && !opts.json) {
       defaultRuntime.log(
         theme.warn(
-          `Managed gateway service Node (${runtimeSelection.replacedNodeRunner}) cannot run openclaw@${runtimeSelection.targetVersion ?? tag}.`,
+          `Managed gateway service Node (${runtimeSelection.replacedNodeRunner}) cannot run operator@${runtimeSelection.targetVersion ?? tag}.`,
         ),
       );
       defaultRuntime.log(
@@ -1094,7 +1094,7 @@ async function updateCommandInternal(
         [
           `${updateLabel} cannot run from inside the gateway service process.`,
           "That path replaces the active Operator dist tree while the live gateway may still lazy-load old chunks.",
-          `Run \`${replaceCliName(formatCliCommand("openclaw update"), CLI_NAME)}\` from a shell outside the gateway service, or stop the gateway service first and then update.`,
+          `Run \`${replaceCliName(formatCliCommand("operator update"), CLI_NAME)}\` from a shell outside the gateway service, or stop the gateway service first and then update.`,
         ].join("\n"),
       );
       defaultRuntime.exit(1);
@@ -1237,18 +1237,18 @@ async function updateCommandInternal(
         ),
       );
       defaultRuntime.log(
-        theme.muted("Commit, stash, or discard the local changes, then rerun `openclaw update`."),
+        theme.muted("Commit, stash, or discard the local changes, then rerun `operator update`."),
       );
     }
     if (result.reason === "not-git-install") {
       defaultRuntime.log(
         theme.warn(
-          `Skipped: this Operator install isn't a git checkout, and the package manager couldn't be detected. Update via your package manager, then run \`${replaceCliName(formatCliCommand("openclaw doctor"), CLI_NAME)}\` and \`${replaceCliName(formatCliCommand("openclaw gateway restart"), CLI_NAME)}\`.`,
+          `Skipped: this Operator install isn't a git checkout, and the package manager couldn't be detected. Update via your package manager, then run \`${replaceCliName(formatCliCommand("operator doctor"), CLI_NAME)}\` and \`${replaceCliName(formatCliCommand("operator gateway restart"), CLI_NAME)}\`.`,
         ),
       );
       defaultRuntime.log(
         theme.muted(
-          `Examples: \`${replaceCliName("npm i -g openclaw@latest", CLI_NAME)}\` or \`${replaceCliName("pnpm add -g openclaw@latest", CLI_NAME)}\``,
+          `Examples: \`${replaceCliName("npm i -g operator@latest", CLI_NAME)}\` or \`${replaceCliName("pnpm add -g operator@latest", CLI_NAME)}\``,
         ),
       );
     }

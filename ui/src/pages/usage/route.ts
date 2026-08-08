@@ -1,4 +1,4 @@
-import { definePage } from "@openclaw/uirouter";
+import { definePage } from "@operator/uirouter";
 import { html } from "lit";
 import type { CostUsageSummary } from "../../api/types.ts";
 import type { ApplicationContext } from "../../app/context.ts";

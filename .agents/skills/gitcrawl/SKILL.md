@@ -3,13 +3,13 @@ name: gitcrawl
 description: "GitHub archive: issue/PR search, sync freshness, duplicate clusters, gh-shim PR status, and Gitcrawl repo work."
 metadata:
   operator:
-    homepage: https://github.com/openclaw/gitcrawl
+    homepage: https://github.com/operator/gitcrawl
     requires:
       bins:
         - gitcrawl
     install:
       - kind: go
-        module: github.com/openclaw/gitcrawl/cmd/gitcrawl@latest
+        module: github.com/operator/gitcrawl/cmd/gitcrawl@latest
         bins:
           - gitcrawl
 ---
@@ -25,19 +25,19 @@ gitcrawl doctor --json
 Find candidates:
 
 ```bash
-gitcrawl threads openclaw/operator --numbers <issue-or-pr-number> --include-closed --json
-gitcrawl neighbors openclaw/operator --number <issue-or-pr-number> --limit 12 --json
-gitcrawl search issues "query" -R openclaw/operator --state open --json number,title,url
-gitcrawl clusters openclaw/operator --sort size --min-size 5
-gitcrawl cluster-detail openclaw/operator --id <cluster-id>
+gitcrawl threads operator/operator --numbers <issue-or-pr-number> --include-closed --json
+gitcrawl neighbors operator/operator --number <issue-or-pr-number> --limit 12 --json
+gitcrawl search issues "query" -R operator/operator --state open --json number,title,url
+gitcrawl clusters operator/operator --sort size --min-size 5
+gitcrawl cluster-detail operator/operator --id <cluster-id>
 ```
 
 For PR triage, start cached and go live only before mutation/merge decisions:
 
 ```bash
-gitcrawl gh pr status <number-or-url> -R openclaw/operator --compact
-gitcrawl gh pr view <number-or-url> -R openclaw/operator --json number,title,state,url,isDraft,headRef,headSha
-gitcrawl gh --live pr status <number-or-url> -R openclaw/operator --compact
+gitcrawl gh pr status <number-or-url> -R operator/operator --compact
+gitcrawl gh pr view <number-or-url> -R operator/operator --json number,title,state,url,isDraft,headRef,headSha
+gitcrawl gh --live pr status <number-or-url> -R operator/operator --compact
 ```
 
 Use live `gh` plus checkout proof before commenting, labeling, closing, reopening, merging, or filing a PR review:

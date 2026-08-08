@@ -7,11 +7,11 @@ import { executeSqliteQueryTakeFirstSync, getNodeSqliteKysely } from "../../src/
 import { readPersistedInstalledPluginIndex } from "../../src/plugins/installed-plugin-index-store.js";
 import type { PluginManifestRegistry } from "../../src/plugins/manifest-registry.js";
 import { clearLoadPluginMetadataSnapshotMemo } from "../../src/plugins/plugin-metadata-snapshot.js";
-import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/operator-state-db.generated.js";
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import { createSuiteTempRootTracker } from "../../src/test-helpers/temp-dir.js";
 import { withEnvAsync } from "../../src/test-utils/env.js";
 import { initializePublishedConfigRuntimeEnv, prepareConfigRuntimeEnv } from "../../src/config/config-env-vars.js";
@@ -255,7 +255,7 @@ describe("config io write", () => {
       });
 
       await expect(io.writeConfigFile({ gateway: { mode: "local", port: 19001 } })).rejects.toThrow(
-        "Agent-first Nix setup: https://github.com/openclaw/nix-openclaw#quick-start",
+        "Agent-first Nix setup: https://github.com/operator/nix-operator#quick-start",
       );
 
       await expect(fs.readFile(configPath, "utf-8")).resolves.toBe(initialRaw);

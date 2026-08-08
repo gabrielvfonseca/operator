@@ -1,5 +1,5 @@
 // Control UI test helper supports custom theme setup.
-import { parseImportedCustomTheme } from "../app/custom-theme.ts";
+import { parseImportedCustomTheme } from "../../src/app/custom-theme.ts";
 
 const CUSTOM_THEME_MODE_TOKENS = [
   "bg",

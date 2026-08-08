@@ -136,7 +136,7 @@ describe("noteDevicePairingHealth", () => {
       expect(requireNoteTitle()).toBe("Device pairing");
       expect(message).toContain("Pending scope upgrade");
       expect(message).toContain("operator.admin");
-      expect(message).toContain("openclaw devices approve");
+      expect(message).toContain("operator devices approve");
       expect(callGatewayMock).not.toHaveBeenCalled();
 
       const findings = await collectDevicePairingHealthFindings({
@@ -150,7 +150,7 @@ describe("noteDevicePairingHealth", () => {
           target: `${identity.deviceId}:${pending.request.requestId}`,
           requirement: "scope-upgrade",
           message: expect.stringContaining("Pending scope upgrade"),
-          fixHint: expect.stringContaining("openclaw devices approve"),
+          fixHint: expect.stringContaining("operator devices approve"),
         }),
       ]);
       expect(callGatewayMock).not.toHaveBeenCalled();
@@ -233,7 +233,7 @@ describe("noteDevicePairingHealth", () => {
       expect(noteMock).toHaveBeenCalledTimes(1);
       const message = requireNoteMessage();
       expect(message).toContain("stale device-token pattern");
-      expect(message).toContain("openclaw devices rotate");
+      expect(message).toContain("operator devices rotate");
     });
   });
 
@@ -365,9 +365,9 @@ describe("noteDevicePairingHealth", () => {
     });
 
     const message = requireNoteMessage();
-    expect(message).toContain("openclaw devices remove 'device; echo pwn'");
+    expect(message).toContain("operator devices remove 'device; echo pwn'");
     expect(message).toContain(
-      "openclaw devices rotate --device 'device; echo pwn' --role 'operator; touch /tmp/pwn'",
+      "operator devices rotate --device 'device; echo pwn' --role 'operator; touch /tmp/pwn'",
     );
   });
 

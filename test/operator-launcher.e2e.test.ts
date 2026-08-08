@@ -53,7 +53,7 @@ async function addCompileCacheProbe(fixtureRoot: string): Promise<void> {
       'import module from "node:module";',
       "process.stdout.write(",
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-      '  `${module.getCompileCacheDir?.() ? "cache:enabled" : "cache:disabled"};respawn:${process.env.OPERATOR_COMPILE_CACHE_DISABLED_RESPAWNED ?? "0"}`',
+      '  `${module.getCompileCacheDir?.() ? "cache:enabled" : "cache:disabled"};respawn:${process.env.OPENCLAW_COMPILE_CACHE_DISABLED_RESPAWNED ?? "0"}`',
       ");",
     ].join("\n"),
     "utf8",
@@ -131,12 +131,12 @@ function isProcessAlive(pid: number | undefined): boolean {
 
 function launcherEnv(extra: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
   const env = { ...process.env, ...extra };
-  delete env.OPERATOR_BUNDLED_PLUGINS_DIR;
-  delete env.OPERATOR_CONFIG_PATH;
-  delete env.OPERATOR_DISABLE_BUNDLED_PLUGINS;
-  delete env.OPERATOR_HOME;
-  delete env.OPERATOR_STATE_DIR;
-  delete env.OPERATOR_TEST_TRUST_BUNDLED_PLUGINS_DIR;
+  delete env.OPENCLAW_BUNDLED_PLUGINS_DIR;
+  delete env.OPENCLAW_CONFIG_PATH;
+  delete env.OPENCLAW_DISABLE_BUNDLED_PLUGINS;
+  delete env.OPENCLAW_HOME;
+  delete env.OPENCLAW_STATE_DIR;
+  delete env.OPENCLAW_TEST_TRUST_BUNDLED_PLUGINS_DIR;
   delete env.NODE_COMPILE_CACHE;
   delete env.NODE_DISABLE_COMPILE_CACHE;
   for (const [key, value] of Object.entries(extra)) {
@@ -358,7 +358,7 @@ describe("operator launcher", () => {
       [path.join(fixtureRoot, "operator.mjs"), "--version"],
       {
         cwd: fixtureRoot,
-        env: launcherEnv({ OPERATOR_CONTAINER: "demo" }),
+        env: launcherEnv({ OPENCLAW_CONTAINER: "demo" }),
         encoding: "utf8",
       },
     );
@@ -422,7 +422,7 @@ describe("operator launcher", () => {
     });
   });
 
-  it.runIf(process.env.OPERATOR_TEST_BUN_LAUNCHER === "1" && hasBunRuntime())(
+  it.runIf(process.env.OPENCLAW_TEST_BUN_LAUNCHER === "1" && hasBunRuntime())(
     "rejects the real Bun runtime before loading the CLI",
     async () => {
       const fixtureRoot = await makeLauncherFixture(fixtureRoots);
@@ -559,7 +559,7 @@ describe("operator launcher", () => {
       [path.join(fixtureRoot, "operator.mjs"), "models", "--help"],
       {
         cwd: fixtureRoot,
-        env: launcherEnv({ OPERATOR_CONTAINER: "demo" }),
+        env: launcherEnv({ OPENCLAW_CONTAINER: "demo" }),
         encoding: "utf8",
       },
     );
@@ -573,7 +573,7 @@ describe("operator launcher", () => {
     {
       name: "container env",
       args: ["browser", "--help"],
-      env: { OPERATOR_CONTAINER: "demo" },
+      env: { OPENCLAW_CONTAINER: "demo" },
     },
     {
       name: "root --container flag",
@@ -634,7 +634,7 @@ describe("operator launcher", () => {
 
     const result = spawnSync(process.execPath, [path.join(fixtureRoot, "operator.mjs"), "--help"], {
       cwd: fixtureRoot,
-      env: launcherEnv({ OPERATOR_CONFIG_PATH: configPath }),
+      env: launcherEnv({ OPENCLAW_CONFIG_PATH: configPath }),
       encoding: "utf8",
     });
 
@@ -667,7 +667,7 @@ describe("operator launcher", () => {
       [path.join(fixtureRoot, "operator.mjs"), "nodes", "--help"],
       {
         cwd: fixtureRoot,
-        env: launcherEnv({ OPERATOR_CONFIG_PATH: configPath }),
+        env: launcherEnv({ OPENCLAW_CONFIG_PATH: configPath }),
         encoding: "utf8",
       },
     );
@@ -677,7 +677,7 @@ describe("operator launcher", () => {
     expect(result.stdout).not.toContain("PRECOMPUTED");
   });
 
-  it("checks the OPERATOR_HOME default config path before using precomputed root help", async () => {
+  it("checks the OPENCLAW_HOME default config path before using precomputed root help", async () => {
     const fixtureRoot = await makeLauncherFixture(fixtureRoots);
     const operatorHome = path.join(fixtureRoot, "home");
     const configDir = path.join(operatorHome, ".operator");
@@ -700,7 +700,7 @@ describe("operator launcher", () => {
 
     const result = spawnSync(process.execPath, [path.join(fixtureRoot, "operator.mjs"), "--help"], {
       cwd: fixtureRoot,
-      env: launcherEnv({ OPERATOR_HOME: operatorHome }),
+      env: launcherEnv({ OPENCLAW_HOME: operatorHome }),
       encoding: "utf8",
     });
 
@@ -732,7 +732,7 @@ describe("operator launcher", () => {
 
     const result = spawnSync(process.execPath, [path.join(fixtureRoot, "operator.mjs"), "--help"], {
       cwd: fixtureRoot,
-      env: launcherEnv({ HOME: home, OPERATOR_HOME: undefined }),
+      env: launcherEnv({ HOME: home, OPENCLAW_HOME: undefined }),
       encoding: "utf8",
     });
 
@@ -758,7 +758,7 @@ describe("operator launcher", () => {
 
     const result = spawnSync(process.execPath, [path.join(fixtureRoot, "operator.mjs"), "--help"], {
       cwd: fixtureRoot,
-      env: launcherEnv({ OPERATOR_CONFIG_PATH: configPath }),
+      env: launcherEnv({ OPENCLAW_CONFIG_PATH: configPath }),
       encoding: "utf8",
     });
 
@@ -780,7 +780,7 @@ describe("operator launcher", () => {
     expect(result.status).not.toBe(0);
     expect(result.stderr).toContain("missing dist/entry.(m)js");
     expect(result.stderr).toContain("unbuilt source tree or GitHub source archive");
-    expect(result.stderr).toContain("pnpm install && bun build");
+    expect(result.stderr).toContain("pnpm install && pnpm build");
     expect(result.stderr).toContain("github:operator/operator#<ref>");
   });
 

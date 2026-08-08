@@ -2360,7 +2360,7 @@ describe("runCli exit behavior", () => {
 
   it("suggests close known commands for unowned command roots before proxy startup", async () => {
     await expect(runCli(["node", "@gabrielvfonseca/operator", "upate"])).rejects.toThrow(
-      "Did you mean this?\n  openclaw update",
+      "Did you mean this?\n  operator update",
     );
 
     expect(startProxyMock).not.toHaveBeenCalled();
@@ -2805,7 +2805,7 @@ describe("runCli exit behavior", () => {
 
       expect(process.exitCode).toBe(1);
       expect(errorSpy).toHaveBeenCalledWith(
-        "Onboarding needs an interactive TTY. Use `openclaw onboard --non-interactive --accept-risk ...` for automation.",
+        "Onboarding needs an interactive TTY. Use `operator onboard --non-interactive --accept-risk ...` for automation.",
       );
       expect(setupWizardCommandMock).not.toHaveBeenCalled();
       expect(tryRouteCliMock).not.toHaveBeenCalled();
@@ -2949,7 +2949,7 @@ describe("runCli exit behavior", () => {
 
       expect(process.exitCode).toBe(1);
       expect(errorSpy).toHaveBeenCalledWith(
-        "Remote Gateway inference setup needs an interactive TTY. Re-run `openclaw` in a terminal connected to this Gateway.",
+        "Remote Gateway inference setup needs an interactive TTY. Re-run `operator` in a terminal connected to this Gateway.",
       );
       expect(setupWizardCommandMock).not.toHaveBeenCalled();
       expect(runRemoteGatewayInferenceOnboardingMock).not.toHaveBeenCalled();
@@ -3649,7 +3649,7 @@ describe("runCli exit behavior", () => {
 
       expect(process.exitCode).toBe(1);
       expect(errorSpy).toHaveBeenCalledWith(
-        "Operator TUI needs an interactive TTY. Use `openclaw agent --local ...` for automation.",
+        "Operator TUI needs an interactive TTY. Use `operator agent --local ...` for automation.",
       );
       expect(launchTuiCliMock).not.toHaveBeenCalled();
     } finally {
@@ -3702,7 +3702,7 @@ describe("runCli exit behavior", () => {
 
       expect(process.exitCode).toBe(1);
       expect(errorSpy).toHaveBeenCalledWith(
-        "Operator config is invalid. Run `openclaw doctor --fix` before onboarding.",
+        "Operator config is invalid. Run `operator doctor --fix` before onboarding.",
       );
       expect(setupWizardCommandMock).not.toHaveBeenCalled();
     } finally {
@@ -3868,9 +3868,9 @@ describe("runCli exit behavior", () => {
     try {
       expect(() => handler(new Error("boom"))).toThrow("process.exit(1)");
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        "[openclaw] Operator hit an unexpected runtime error.",
+        "[operator] Operator hit an unexpected runtime error.",
       );
-      expect(consoleErrorSpy).toHaveBeenCalledWith("[openclaw] Reason: boom");
+      expect(consoleErrorSpy).toHaveBeenCalledWith("[operator] Reason: boom");
       expect(restoreTerminalStateMock).toHaveBeenCalledWith("uncaught exception", {
         resumeStdinIfPaused: false,
       });
@@ -3909,7 +3909,7 @@ describe("runCli exit behavior", () => {
       });
       expect(handler(hostUnreachable)).toBeUndefined();
       expect(consoleWarnSpy.mock.calls).toEqual([
-        ["[openclaw] Non-fatal uncaught exception (continuing):", hostUnreachable.stack],
+        ["[operator] Non-fatal uncaught exception (continuing):", hostUnreachable.stack],
       ]);
       expect(restoreTerminalStateMock).not.toHaveBeenCalled();
       expect(exitSpy).not.toHaveBeenCalled();

@@ -1,4 +1,4 @@
-// Summarizes channel token/account credential fields for `openclaw status --all`.
+// Summarizes channel token/account credential fields for `operator status --all`.
 // The display path is intentionally secret-safe unless the caller explicitly requests disclosure.
 
 import { asRecord } from "@gabrielvfonseca/normalization-core/record-coerce";

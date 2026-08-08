@@ -124,7 +124,7 @@ const createSecureActionId = () => {
   return null;
 };
 
-const openclawTheme = {
+const operatorTheme = {
   components: {
     AudioPlayer: emptyClasses(),
     Button: emptyClasses(),
@@ -248,7 +248,7 @@ class OperatorA2UIHost extends LitElement {
   #processor = v0_8.Data.createSignalA2uiMessageProcessor();
   themeProvider = new ContextProvider(this, {
     context: themeContext,
-    initialValue: openclawTheme,
+    initialValue: operatorTheme,
   });
 
   surfaces = [];
@@ -500,7 +500,7 @@ class OperatorA2UIHost extends LitElement {
       ...(Object.keys(context).length ? { context } : {}),
     };
 
-    globalThis["__openclawLastA2UIAction"] = userAction;
+    globalThis["__operatorLastA2UIAction"] = userAction;
 
     const handler =
       globalThis.webkit?.messageHandlers?.operatorCanvasA2UIAction ??

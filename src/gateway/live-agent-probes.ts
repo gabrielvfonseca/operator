@@ -98,8 +98,8 @@ export function buildLiveCronProbeMessage(params: {
   const claudeLike = isClaudeLikeLiveAgent(params.agent);
   if (params.attempt === 0) {
     return (
-      "Use the Operator MCP cron tool from server `openclaw`. " +
-      "If it is not already visible, search/load MCP tools for `openclaw cron` or `cron`, " +
+      "Use the Operator MCP cron tool from server `operator`. " +
+      "If it is not already visible, search/load MCP tools for `operator cron` or `cron`, " +
       "then call the matching Operator MCP tool; Claude-style names may appear as `mcp__operator__cron`. " +
       "Do not use Claude native `CronCreate`, `CronList`, or `CronDelete`; those are not Operator proof. " +
       `Call it with JSON arguments ${params.argsJson}. ` +
@@ -110,8 +110,8 @@ export function buildLiveCronProbeMessage(params: {
   }
   if (claudeLike) {
     return (
-      "Retry the Operator MCP cron tool from server `openclaw` now. " +
-      "If it is not already visible, search/load MCP tools for `openclaw cron` or `cron`, " +
+      "Retry the Operator MCP cron tool from server `operator` now. " +
+      "If it is not already visible, search/load MCP tools for `operator cron` or `cron`, " +
       "then call the matching Operator MCP tool; Claude-style names may appear as `mcp__operator__cron`. " +
       "Do not use Claude native `CronCreate`, `CronList`, or `CronDelete`; those are not Operator proof. " +
       `Use these exact JSON arguments: ${params.argsJson}. ` +
@@ -124,7 +124,7 @@ export function buildLiveCronProbeMessage(params: {
   }
   return (
     "Your previous Operator cron MCP tool call was cancelled before the job was created. " +
-    "Retry the Operator MCP cron tool from server `openclaw` now. " +
+    "Retry the Operator MCP cron tool from server `operator` now. " +
     "If the harness shows Claude-style MCP names, use `mcp__operator__cron`. " +
     `Use these exact JSON arguments: ${params.argsJson}. ` +
     "Preserve job.sessionTarget and job.sessionKey exactly as provided. " +
@@ -155,7 +155,7 @@ export async function runOperatorCliJson<T>(args: string[], env: NodeJS.ProcessE
   if (!trimmed) {
     throw new Error(
       [
-        `openclaw ${args.join(" ")} produced no JSON stdout`,
+        `operator ${args.join(" ")} produced no JSON stdout`,
         stderr.trim() ? `stderr: ${stderr.trim()}` : undefined,
       ]
         .filter(Boolean)
@@ -167,7 +167,7 @@ export async function runOperatorCliJson<T>(args: string[], env: NodeJS.ProcessE
   } catch (error) {
     throw new Error(
       [
-        `openclaw ${args.join(" ")} returned invalid JSON`,
+        `operator ${args.join(" ")} returned invalid JSON`,
         `stdout: ${trimmed}`,
         stderr.trim() ? `stderr: ${stderr.trim()}` : undefined,
         error instanceof Error ? `cause: ${error.message}` : undefined,

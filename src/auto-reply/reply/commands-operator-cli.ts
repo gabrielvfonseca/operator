@@ -6,7 +6,7 @@ import { isBunRuntime } from "../../daemon/runtime-binary.js";
 import { resolveOperatorPackageRootSync } from "../../infra/operator-root.js";
 
 const requireFromHere = createRequire(import.meta.url);
-const OPERATOR_CLI_ENTRY_BASENAMES = new Set(["operator", "operator.mjs"]);
+const OPERATOR_CLI_ENTRY_BASENAMES = new Set(["@gabrielvfonseca/operator", "operator.mjs"]);
 const OPERATOR_PACKAGE_ENTRY_PATHS = new Set([
   path.join("dist", "entry.js"),
   path.join("dist", "entry.mjs"),

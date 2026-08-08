@@ -3,12 +3,12 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { formatCliCommand } from "../../src/cli/command-format.js";
-import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/operator-state-db.generated.js";
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import {
   createOperatorTestState,
   type OperatorTestState,
@@ -32,7 +32,7 @@ const {
   startManagedServiceUpdateHandoffMock: vi.fn(async () => ({
     status: "started" as const,
     pid: 12345,
-    command: "openclaw update --yes --channel beta --timeout 2700",
+    command: "operator update --yes --channel beta --timeout 2700",
     logPath: "/tmp/operator-handoff.log",
   })),
 }));
@@ -41,8 +41,8 @@ vi.mock("../config/config.js", () => ({
   getRuntimeConfig: getRuntimeConfigMock,
 }));
 
-vi.mock("./openclaw-root.js", async () => {
-  const actual = await vi.importActual<typeof import("./openclaw-root.js")>("./openclaw-root.js");
+vi.mock("./operator-root.js", async () => {
+  const actual = await vi.importActual<typeof import("./operator-root.js")>("./operator-root.js");
   return {
     ...actual,
     resolveOperatorPackageRoot: vi.fn(),
@@ -129,7 +129,7 @@ describe("update-startup", () => {
   let tempDir: string;
   let testState: OperatorTestState;
 
-  let resolveOperatorPackageRoot: typeof import("./openclaw-root.js")["resolveOperatorPackageRoot"];
+  let resolveOperatorPackageRoot: typeof import("./operator-root.js")["resolveOperatorPackageRoot"];
   let checkUpdateStatus: typeof import("./update-check.js")["checkUpdateStatus"];
   let resolveNpmChannelTag: typeof import("./update-check.js")["resolveNpmChannelTag"];
   let runCommandWithTimeout: typeof import("../process/exec.js")["runCommandWithTimeout"];
@@ -230,7 +230,7 @@ describe("update-startup", () => {
 
     // Perf: load mocked modules once (after timers/env are set up).
     if (!loaded) {
-      ({ resolveOperatorPackageRoot } = await import("./openclaw-root.js"));
+      ({ resolveOperatorPackageRoot } = await import("./operator-root.js"));
       ({ checkUpdateStatus, resolveNpmChannelTag } = await import("./update-check.js"));
       ({ runCommandWithTimeout } = await import("../process/exec.js"));
       ({
@@ -254,7 +254,7 @@ describe("update-startup", () => {
     startManagedServiceUpdateHandoffMock.mockResolvedValue({
       status: "started",
       pid: 12345,
-      command: "openclaw update --yes --channel beta --timeout 2700",
+      command: "operator update --yes --channel beta --timeout 2700",
       logPath: "/tmp/operator-handoff.log",
     });
     resetUpdateAvailableStateForTest();
@@ -273,9 +273,9 @@ describe("update-startup", () => {
   }
 
   function mockPackageInstallStatus() {
-    vi.mocked(resolveOperatorPackageRoot).mockResolvedValue("/opt/openclaw");
+    vi.mocked(resolveOperatorPackageRoot).mockResolvedValue("/opt/operator");
     vi.mocked(checkUpdateStatus).mockResolvedValue({
-      root: "/opt/openclaw",
+      root: "/opt/operator",
       installKind: "package",
       packageManager: "npm",
     } satisfies UpdateCheckResult);
@@ -442,7 +442,7 @@ describe("update-startup", () => {
     const { log, parsed } = await runUpdateCheckAndReadState(channel);
 
     expect(log.info).toHaveBeenCalledWith(
-      `update available (latest): v2.0.0 (current v1.0.0). Run: ${formatCliCommand("openclaw update")}`,
+      `update available (latest): v2.0.0 (current v1.0.0). Run: ${formatCliCommand("operator update")}`,
     );
     expect(parsed?.lastNotifiedVersion).toBe("2.0.0");
     expect(parsed?.lastAvailableVersion).toBe("2.0.0");
@@ -721,7 +721,7 @@ describe("update-startup", () => {
     });
     expect(log.info).toHaveBeenCalledTimes(1);
     expect(log.info).toHaveBeenCalledWith(
-      `update available (extended-stable): v2.0.0 (current v1.0.0). Run: ${formatCliCommand("openclaw update")}`,
+      `update available (extended-stable): v2.0.0 (current v1.0.0). Run: ${formatCliCommand("operator update")}`,
     );
     expect(onUpdateAvailableChange).toHaveBeenCalledTimes(1);
     expect(onUpdateAvailableChange).toHaveBeenCalledWith({
@@ -864,9 +864,9 @@ describe("update-startup", () => {
     vi.mocked(resolveOperatorPackageRoot).mockClear();
     vi.mocked(checkUpdateStatus).mockClear();
     vi.mocked(resolveNpmChannelTag).mockClear();
-    vi.mocked(resolveOperatorPackageRoot).mockResolvedValue("/opt/openclaw");
+    vi.mocked(resolveOperatorPackageRoot).mockResolvedValue("/opt/operator");
     vi.mocked(checkUpdateStatus).mockResolvedValue({
-      root: "/opt/openclaw",
+      root: "/opt/operator",
       installKind: "git",
       packageManager: "unknown",
     } satisfies UpdateCheckResult);
@@ -940,7 +940,7 @@ describe("update-startup", () => {
       channel: "stable",
       timeoutMs: 45 * 60 * 1000,
       restartDrainTimeoutMs: 300_000,
-      root: "/opt/openclaw",
+      root: "/opt/operator",
     });
   });
 
@@ -961,7 +961,7 @@ describe("update-startup", () => {
       channel: "beta",
       timeoutMs: 45 * 60 * 1000,
       restartDrainTimeoutMs: 90_000,
-      root: "/opt/openclaw",
+      root: "/opt/operator",
     });
   });
 
@@ -1017,7 +1017,7 @@ describe("update-startup", () => {
     });
 
     const originalArgv = process.argv.slice();
-    process.argv = [process.execPath, "/opt/openclaw/dist/entry.js"];
+    process.argv = [process.execPath, "/opt/operator/dist/entry.js"];
     try {
       await runAutoUpdateCheckWithDefaults({
         cfg: createBetaAutoUpdateConfig(),
@@ -1035,7 +1035,7 @@ describe("update-startup", () => {
     const [argv, options] = requireFirstRunCommandCall();
     expect(argv).toEqual([
       process.execPath,
-      "/opt/openclaw/dist/entry.js",
+      "/opt/operator/dist/entry.js",
       "update",
       "--yes",
       "--channel",
@@ -1066,7 +1066,7 @@ describe("update-startup", () => {
     expect(runCommandWithTimeout).not.toHaveBeenCalled();
     expect(startManagedServiceUpdateHandoffMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        root: "/opt/openclaw",
+        root: "/opt/operator",
         timeoutMs: 45 * 60 * 1000,
         restartDrainTimeoutMs: 300_000,
         channel: "beta",
@@ -1099,7 +1099,7 @@ describe("update-startup", () => {
       channel: "beta",
       version: "2.0.0-beta.1",
       tag: "beta",
-      command: "openclaw update --yes --channel beta --timeout 2700",
+      command: "operator update --yes --channel beta --timeout 2700",
       logPath: "/tmp/operator-handoff.log",
     });
   });
@@ -1144,7 +1144,7 @@ describe("update-startup", () => {
     });
     expect(startManagedServiceUpdateHandoffMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        root: "/opt/openclaw",
+        root: "/opt/operator",
         timeoutMs: 45 * 60 * 1000,
         channel: "beta",
         restartDelayMs: 2000,

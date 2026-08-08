@@ -107,7 +107,7 @@ describe("shouldDropEmptyMattermostBody", () => {
     expect(
       shouldDropEmptyMattermostBody({
         bodyText: "",
-        rawText: "@openclaw",
+        rawText: "@operator",
         botUsername: "@gabrielvfonseca/operator",
       }),
     ).toBe(false);
@@ -147,7 +147,7 @@ describe("shouldDropEmptyMattermostBody", () => {
     expect(
       shouldDropEmptyMattermostBody({
         bodyText: "\u0085",
-        rawText: "@openclaw\u0085",
+        rawText: "@operator\u0085",
         botUsername: "@gabrielvfonseca/operator",
       }),
     ).toBe(true);
@@ -157,23 +157,23 @@ describe("shouldDropEmptyMattermostBody", () => {
     expect(
       shouldDropEmptyMattermostBody({
         bodyText: "\ufe0f",
-        rawText: "@openclaw\ufe0f",
+        rawText: "@operator\ufe0f",
         botUsername: "@gabrielvfonseca/operator",
       }),
     ).toBe(true);
   });
 
   it.each([
-    "@openclaw @openclaw",
-    "@openclaw\n@openclaw",
-    "@openclaw\n",
-    "\n@openclaw",
-    "@openclaw\r\n",
-    "@openclaw\u2028",
-    "@openclaw\u2029",
-    "\v@openclaw\f",
-    "@openclaw\u00a0",
-    "\u2003@openclaw",
+    "@operator @operator",
+    "@operator\n@operator",
+    "@operator\n",
+    "\n@operator",
+    "@operator\r\n",
+    "@operator\u2028",
+    "@operator\u2029",
+    "\v@operator\f",
+    "@operator\u00a0",
+    "\u2003@operator",
   ])("drops an invalid empty-body candidate: %j", (rawText) => {
     expect(
       shouldDropEmptyMattermostBody({

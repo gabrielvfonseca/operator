@@ -7,7 +7,7 @@ import type {
   Usage,
 } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import { OPERATOR_TRANSCRIPT_ARTIFACT_API } from "../../src/shared/transcript-only-openclaw-assistant.js";
+import { OPERATOR_TRANSCRIPT_ARTIFACT_API } from "../../src/shared/transcript-only-operator-assistant.js";
 import {
   expectOpenAIResponsesStrictSanitizeCall,
   loadSanitizeSessionHistoryWithCleanMocks,

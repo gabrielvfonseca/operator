@@ -376,7 +376,7 @@ const runTmux = (spawnSyncImpl, args, options = {}) =>
   });
 
 const log = (stderr, message) => {
-  stderr.write(`[openclaw] ${message}\n`);
+  stderr.write(`[operator] ${message}\n`);
 };
 
 const getTmuxErrorText = (result) =>

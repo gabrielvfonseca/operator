@@ -55,8 +55,8 @@ describe("logging/logger browser-safe import", () => {
     const { module, resolvePreferredOperatorTmpDir } = await importBrowserSafeLogger();
 
     expect(resolvePreferredOperatorTmpDir).not.toHaveBeenCalled();
-    expect(module.DEFAULT_LOG_DIR).toBe("/tmp/openclaw");
-    expect(module.DEFAULT_LOG_FILE).toBe("/tmp/openclaw/operator.log");
+    expect(module.DEFAULT_LOG_DIR).toBe("/tmp/operator");
+    expect(module.DEFAULT_LOG_FILE).toBe("/tmp/operator/operator.log");
   });
 
   it("disables file logging when imported in a browser-like environment", async () => {
@@ -64,7 +64,7 @@ describe("logging/logger browser-safe import", () => {
 
     expect(module.getResolvedLoggerSettings()).toStrictEqual({
       level: "silent",
-      file: "/tmp/openclaw/operator.log",
+      file: "/tmp/operator/operator.log",
       maxFileBytes: 100 * 1024 * 1024,
     });
     expect(module.isFileLogLevelEnabled("info")).toBe(false);

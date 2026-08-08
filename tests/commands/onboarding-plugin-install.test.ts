@@ -375,7 +375,7 @@ describe("ensureOnboardingPluginInstalled", () => {
     installPluginFromNpmPackArchive.mockResolvedValue({
       ok: true,
       pluginId: "demo-plugin",
-      targetDir: "/tmp/openclaw/extensions/demo-plugin",
+      targetDir: "/tmp/operator/extensions/demo-plugin",
       version: "1.2.3",
       manifestName: "@demo/plugin",
       npmTarballName: "demo-plugin-1.2.3.tgz",
@@ -428,7 +428,7 @@ describe("ensureOnboardingPluginInstalled", () => {
       source: "npm",
       spec: "file:demo-plugin-1.2.3.tgz",
       sourcePath: archivePath,
-      installPath: "/tmp/openclaw/extensions/demo-plugin",
+      installPath: "/tmp/operator/extensions/demo-plugin",
       version: "1.2.3",
       artifactKind: "npm-pack",
       artifactFormat: "tgz",
@@ -455,7 +455,7 @@ describe("ensureOnboardingPluginInstalled", () => {
     installPluginFromNpmSpec.mockResolvedValue({
       ok: true,
       pluginId: "codex",
-      targetDir: "/tmp/openclaw/extensions/codex",
+      targetDir: "/tmp/operator/extensions/codex",
       version: "2026.5.8",
       npmResolution: {
         name: "@gabrielvfonseca/codex",
@@ -845,7 +845,7 @@ describe("ensureOnboardingPluginInstalled", () => {
       return {
         ok: true,
         pluginId: "codex",
-        targetDir: "/tmp/openclaw/extensions/codex",
+        targetDir: "/tmp/operator/extensions/codex",
         version: "2026.5.10-beta.5",
       };
     });

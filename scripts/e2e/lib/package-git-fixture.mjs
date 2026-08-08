@@ -29,7 +29,7 @@ function withoutAiRuntimeDependency(value) {
 function prepare(root) {
   const packageJsonPath = path.join(root, "package.json");
   const packageJson = readJson(packageJsonPath);
-  const aiRuntimeSource = path.join(root, "node_modules", "@openclaw", "ai");
+  const aiRuntimeSource = path.join(root, "node_modules", "@operator", "ai");
   const aiRuntimePackageJson = path.join(aiRuntimeSource, "package.json");
   if (!fs.existsSync(aiRuntimePackageJson)) {
     return;

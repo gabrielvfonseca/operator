@@ -53,8 +53,8 @@ vi.mock("./preflight-audio.runtime.js", () => ({
   transcribeFirstAudio: transcribeFirstAudioMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/runtime-env", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/runtime-env")>();
+vi.mock("operator/plugin-sdk/runtime-env", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/runtime-env")>();
   return {
     ...actual,
     logVerbose: (...args: unknown[]) => logVerboseMock(...args),
@@ -62,8 +62,8 @@ vi.mock("openclaw/plugin-sdk/runtime-env", async (importOriginal) => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/system-event-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/system-event-runtime")>();
+vi.mock("operator/plugin-sdk/system-event-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/system-event-runtime")>();
   return {
     ...actual,
     enqueueSystemEvent: (...args: unknown[]) => enqueueSystemEventMock(...args),
@@ -3054,7 +3054,7 @@ Second paragraph should still reach the agent after Slack's preview cutoff.`;
       defaultRequireMention: true,
       replyToMode: "all",
     });
-    slackCtx.resolveChannelName = async () => ({ name: "proj-openclaw", type: "channel" });
+    slackCtx.resolveChannelName = async () => ({ name: "proj-operator", type: "channel" });
     slackCtx.resolveUserName = async () => ({ name: "Bek" });
 
     const root = await prepareSlackMessage({
@@ -3080,7 +3080,7 @@ Second paragraph should still reach the agent after Slack's preview cutoff.`;
         channel: "C0AHZFCAS1K",
         channel_type: "channel",
         user: "U_BEK",
-        text: "https://github.com/openclaw/openclaw/issues/50621",
+        text: "https://github.com/operator/operator/issues/50621",
         ts: "1777244714.000100",
         thread_ts: rootTs,
       } as SlackMessageEvent,
@@ -3118,7 +3118,7 @@ Second paragraph should still reach the agent after Slack's preview cutoff.`;
       defaultRequireMention: true,
       replyToMode: "all",
     });
-    slackCtx.resolveChannelName = async () => ({ name: "proj-openclaw", type: "channel" });
+    slackCtx.resolveChannelName = async () => ({ name: "proj-operator", type: "channel" });
     slackCtx.resolveUserName = async () => ({ name: "Bek" });
 
     const root = await prepareSlackMessage({
@@ -3144,7 +3144,7 @@ Second paragraph should still reach the agent after Slack's preview cutoff.`;
         channel: "C0AHZFCAS1K",
         channel_type: "channel",
         user: "U_BEK",
-        text: "https://github.com/openclaw/openclaw/issues/50621",
+        text: "https://github.com/operator/operator/issues/50621",
         ts: "1777244714.000100",
         thread_ts: rootTs,
       } as SlackMessageEvent,
@@ -3170,7 +3170,7 @@ Second paragraph should still reach the agent after Slack's preview cutoff.`;
       defaultRequireMention: true,
       replyToMode: "all",
     });
-    slackCtx.resolveChannelName = async () => ({ name: "proj-openclaw", type: "channel" });
+    slackCtx.resolveChannelName = async () => ({ name: "proj-operator", type: "channel" });
     slackCtx.resolveUserName = async () => ({ name: "Bek" });
 
     const prepared = await prepareSlackMessage({
@@ -3459,7 +3459,7 @@ Second paragraph should still reach the agent after Slack's preview cutoff.`;
       replyToMode: "all",
     });
     slackCtx.allowFrom = ["U_BEK"];
-    slackCtx.resolveChannelName = async () => ({ name: "proj-openclaw", type: "channel" });
+    slackCtx.resolveChannelName = async () => ({ name: "proj-operator", type: "channel" });
     slackCtx.resolveUserName = async () => ({ name: "Bek" });
 
     const prepared = await prepareSlackMessage({
@@ -3714,7 +3714,7 @@ Second paragraph should still reach the agent after Slack's preview cutoff.`;
       defaultRequireMention: true,
       replyToMode: "all",
     });
-    slackCtx.resolveChannelName = async () => ({ name: "proj-openclaw", type: "channel" });
+    slackCtx.resolveChannelName = async () => ({ name: "proj-operator", type: "channel" });
     slackCtx.resolveUserName = async () => ({ name: "Bek" });
     return slackCtx;
   }
@@ -3925,7 +3925,7 @@ Second paragraph should still reach the agent after Slack's preview cutoff.`;
       defaultRequireMention: true,
       replyToMode: "all",
     });
-    slackCtx.resolveChannelName = async () => ({ name: "proj-openclaw", type: "channel" });
+    slackCtx.resolveChannelName = async () => ({ name: "proj-operator", type: "channel" });
     slackCtx.resolveUserName = async () => ({ name: "Bek" });
 
     const root = await prepareSlackMessage({
@@ -3951,7 +3951,7 @@ Second paragraph should still reach the agent after Slack's preview cutoff.`;
         channel: "C0AHZFCAS1K",
         channel_type: "channel",
         user: "U_BEK",
-        text: "https://github.com/openclaw/openclaw/issues/50621",
+        text: "https://github.com/operator/operator/issues/50621",
         ts: "1777244714.000100",
         thread_ts: rootTs,
       } as SlackMessageEvent,
@@ -3979,7 +3979,7 @@ Second paragraph should still reach the agent after Slack's preview cutoff.`;
       defaultRequireMention: true,
       replyToMode: "all",
     });
-    slackCtx.resolveChannelName = async () => ({ name: "proj-openclaw", type: "channel" });
+    slackCtx.resolveChannelName = async () => ({ name: "proj-operator", type: "channel" });
     slackCtx.resolveUserName = async () => ({ name: "Bek" });
 
     const prepared = await prepareSlackMessage({
@@ -4048,7 +4048,7 @@ Second paragraph should still reach the agent after Slack's preview cutoff.`;
         defaultRequireMention: true,
         replyToMode: "all",
       });
-      slackCtx.resolveChannelName = async () => ({ name: "proj-openclaw", type: "channel" });
+      slackCtx.resolveChannelName = async () => ({ name: "proj-operator", type: "channel" });
       slackCtx.resolveUserName = async () => ({ name: "Bek" });
 
       const prepared = await prepareSlackMessage({
@@ -4074,7 +4074,7 @@ Second paragraph should still reach the agent after Slack's preview cutoff.`;
           channel: "C0AHZFCAS1K",
           channel_type: "channel",
           user: "U_BEK",
-          text: "https://github.com/openclaw/openclaw/issues/50621",
+          text: "https://github.com/operator/operator/issues/50621",
           ts: "1777244714.000100",
           thread_ts: rootTs,
         } as SlackMessageEvent,
@@ -4137,7 +4137,7 @@ Second paragraph should still reach the agent after Slack's preview cutoff.`;
         defaultRequireMention: true,
         replyToMode: "all",
       });
-      slackCtx.resolveChannelName = async () => ({ name: "proj-openclaw", type: "channel" });
+      slackCtx.resolveChannelName = async () => ({ name: "proj-operator", type: "channel" });
       slackCtx.resolveUserName = async () => ({ name: "Bek" });
 
       const root = await prepareSlackMessage({
@@ -4163,7 +4163,7 @@ Second paragraph should still reach the agent after Slack's preview cutoff.`;
           channel: "C0AHZFCAS1K",
           channel_type: "channel",
           user: "U_BEK",
-          text: "https://github.com/openclaw/openclaw/issues/50621",
+          text: "https://github.com/operator/operator/issues/50621",
           ts: "1777244714.000100",
           thread_ts: rootTs,
         } as SlackMessageEvent,
@@ -4206,7 +4206,7 @@ Second paragraph should still reach the agent after Slack's preview cutoff.`;
       defaultRequireMention: true,
       replyToMode: "all",
     });
-    slackCtx.resolveChannelName = async () => ({ name: "proj-openclaw", type: "channel" });
+    slackCtx.resolveChannelName = async () => ({ name: "proj-operator", type: "channel" });
     slackCtx.resolveUserName = async () => ({ name: "Bek" });
 
     const prepared = await prepareSlackMessage({
@@ -4247,7 +4247,7 @@ Second paragraph should still reach the agent after Slack's preview cutoff.`;
         defaultRequireMention: true,
         replyToMode,
       });
-      slackCtx.resolveChannelName = async () => ({ name: "proj-openclaw", type: "channel" });
+      slackCtx.resolveChannelName = async () => ({ name: "proj-operator", type: "channel" });
       slackCtx.resolveUserName = async () => ({ name: "Bek" });
 
       const prepared = await prepareSlackMessage({
@@ -4283,7 +4283,7 @@ describe("prepareSlackMessage sender prefix", () => {
   }): SlackMonitorContext {
     return {
       cfg: {
-        agents: { defaults: { model: "anthropic/claude-opus-4-5", workspace: "/tmp/openclaw" } },
+        agents: { defaults: { model: "anthropic/claude-opus-4-5", workspace: "/tmp/operator" } },
         channels: { slack: params.channels },
       },
       accountId: "default",
@@ -4355,7 +4355,7 @@ describe("prepareSlackMessage sender prefix", () => {
   it("prefixes channel bodies with sender label and annotates Slack mention tokens", async () => {
     const ctx = createSenderPrefixCtx({
       channels: {},
-      slashCommand: { command: "/openclaw", enabled: true },
+      slashCommand: { command: "/operator", enabled: true },
     });
     ctx.resolveUserName = async (id: string) => ({ name: id === "U1" ? "Alice" : "Bek" });
 
@@ -4372,7 +4372,7 @@ describe("prepareSlackMessage sender prefix", () => {
   it("keeps raw Slack mention tokens when user lookup cannot resolve them", async () => {
     const ctx = createSenderPrefixCtx({
       channels: {},
-      slashCommand: { command: "/openclaw", enabled: true },
+      slashCommand: { command: "/operator", enabled: true },
     });
     ctx.resolveUserName = async (id: string) => ({
       name: id === "U1" ? "Alice" : undefined,
@@ -4522,7 +4522,7 @@ describe("slack thread.requireExplicitMention", () => {
     const ctx = createCtxWithExplicitMention(true);
     const { storePath } = storeFixture.makeTmpStorePath();
     vi.spyOn(
-      await import("openclaw/plugin-sdk/session-store-runtime"),
+      await import("operator/plugin-sdk/session-store-runtime"),
       "resolveStorePath",
     ).mockReturnValue(storePath);
     const account = createSlackTestAccount();
@@ -4549,7 +4549,7 @@ describe("slack thread.requireExplicitMention", () => {
     const ctx = createCtxWithExplicitMention(true);
     const { storePath } = storeFixture.makeTmpStorePath();
     vi.spyOn(
-      await import("openclaw/plugin-sdk/session-store-runtime"),
+      await import("operator/plugin-sdk/session-store-runtime"),
       "resolveStorePath",
     ).mockReturnValue(storePath);
     const account = createSlackTestAccount();
@@ -4578,7 +4578,7 @@ describe("slack thread.requireExplicitMention", () => {
     const ctx = createCtxWithExplicitMention(false);
     const { storePath } = storeFixture.makeTmpStorePath();
     vi.spyOn(
-      await import("openclaw/plugin-sdk/session-store-runtime"),
+      await import("operator/plugin-sdk/session-store-runtime"),
       "resolveStorePath",
     ).mockReturnValue(storePath);
     const account = createSlackTestAccount();

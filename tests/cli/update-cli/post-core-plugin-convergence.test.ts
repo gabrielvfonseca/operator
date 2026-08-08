@@ -157,7 +157,7 @@ describe("runPostCorePluginConvergence", () => {
     });
   });
 
-  it("repairs managed npm openclaw peer links in every managed npm project before payload smoke checks", async () => {
+  it("repairs managed npm operator peer links in every managed npm project before payload smoke checks", async () => {
     mocks.repairMissingConfiguredPluginInstalls.mockResolvedValue({
       changes: [],
       warnings: [],
@@ -326,7 +326,7 @@ describe("runPostCorePluginConvergence", () => {
           'Failed to install missing configured plugin "discord" from @gabrielvfonseca/discord: ENETUNREACH.',
         message:
           'Failed to install missing configured plugin "discord" from @gabrielvfonseca/discord: ENETUNREACH.',
-        guidance: ["Run `openclaw update repair` to retry plugin repair."],
+        guidance: ["Run `operator update repair` to retry plugin repair."],
       },
     ]);
   });
@@ -353,7 +353,7 @@ describe("runPostCorePluginConvergence", () => {
           'Failed to install missing configured plugin "matrix" from clawhub:@gabrielvfonseca/matrix@beta: ClawHub ClawPack download for @gabrielvfonseca/matrix@2026.6.1-beta.1 body stalled after 30000ms.',
         message:
           'Failed to install missing configured plugin "matrix" from clawhub:@gabrielvfonseca/matrix@beta: ClawHub ClawPack download for @gabrielvfonseca/matrix@2026.6.1-beta.1 body stalled after 30000ms.',
-        guidance: ["Run `openclaw update repair` to retry plugin repair."],
+        guidance: ["Run `operator update repair` to retry plugin repair."],
       },
     ]);
     expect(mocks.runPluginPayloadSmokeCheck).toHaveBeenCalledWith({
@@ -458,8 +458,8 @@ describe("runPostCorePluginConvergence", () => {
         message:
           'Plugin "brave" failed post-core payload smoke check (missing-main-entry): Plugin main entry "dist/index.js" not found at /p/brave/dist/index.js',
         guidance: [
-          "Run `openclaw update repair` to retry plugin repair.",
-          "Run `openclaw plugins inspect brave --runtime --json` for details.",
+          "Run `operator update repair` to retry plugin repair.",
+          "Run `operator plugins inspect brave --runtime --json` for details.",
         ],
       },
     ]);
@@ -495,8 +495,8 @@ describe("runPostCorePluginConvergence", () => {
         message:
           'Plugin "brave" failed post-core payload smoke check (missing-install-path): Install path is missing from the plugin install record.',
         guidance: [
-          "Run `openclaw update repair` to retry plugin repair.",
-          "Run `openclaw plugins inspect brave --runtime --json` for details.",
+          "Run `operator update repair` to retry plugin repair.",
+          "Run `operator plugins inspect brave --runtime --json` for details.",
         ],
       },
     ]);
@@ -535,12 +535,12 @@ describe("convergenceWarningsToOutcomes", () => {
           pluginId: "brave",
           reason: "missing-main-entry: …",
           message: 'Plugin "brave" failed payload smoke check.',
-          guidance: ["Run `openclaw update repair`."],
+          guidance: ["Run `operator update repair`."],
         },
         {
           reason: "Failed install",
           message: "Failed install for some plugin.",
-          guidance: ["Run `openclaw update repair`."],
+          guidance: ["Run `operator update repair`."],
         },
       ],
       errored: true,

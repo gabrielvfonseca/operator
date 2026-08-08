@@ -536,15 +536,15 @@ function meetStatusScript(params: {
   const captionState = (() => {
     if (!captureCaptions) return undefined;
     const w = window;
-    if (!inCall && !w.__openclawMeetCaptions) return undefined;
+    if (!inCall && !w.__operatorMeetCaptions) return undefined;
     // A reused tab starts a fresh logical transcript for each Operator session.
     // Status refreshes omit the id, so they preserve the active page-owned buffer.
-    if (!w.__openclawMeetCaptions || (captionSessionId && w.__openclawMeetCaptions.sessionId !== captionSessionId)) {
-      if (w.__openclawMeetCaptions?.settleTimer !== undefined) {
-        clearTimeout(w.__openclawMeetCaptions.settleTimer);
+    if (!w.__operatorMeetCaptions || (captionSessionId && w.__operatorMeetCaptions.sessionId !== captionSessionId)) {
+      if (w.__operatorMeetCaptions?.settleTimer !== undefined) {
+        clearTimeout(w.__operatorMeetCaptions.settleTimer);
       }
-      w.__openclawMeetCaptions?.observer?.disconnect?.();
-      w.__openclawMeetCaptions = {
+      w.__operatorMeetCaptions?.observer?.disconnect?.();
+      w.__operatorMeetCaptions = {
         sessionId: captionSessionId,
         // Epochs cross document lifetimes in the runtime transcript cursor.
         // Strong UUIDs keep a reloaded page distinct from its prior buffer.
@@ -558,7 +558,7 @@ function meetStatusScript(params: {
         visible: []
       };
     }
-    return w.__openclawMeetCaptions;
+    return w.__operatorMeetCaptions;
   })();
   const normalizeCaption = (speaker, captionText) => {
     if (!captionState) return;
@@ -599,7 +599,7 @@ function meetStatusScript(params: {
       if (captionState.visible.length > 0 && captionState.settleTimer === undefined) {
         const pendingState = captionState;
         pendingState.settleTimer = setTimeout(() => {
-          if (window.__openclawMeetCaptions !== pendingState) return;
+          if (window.__operatorMeetCaptions !== pendingState) return;
           commitLines(pendingState, pendingState.visible);
           pendingState.visible = [];
           pendingState.settleTimer = undefined;
@@ -766,7 +766,7 @@ function meetTranscriptScript(meetingUrl: string, meetingSessionId: string, fina
   if (!expectedMeetingUrl || currentMeetingUrl !== expectedMeetingUrl) {
     return JSON.stringify({ urlMatched: false });
   }
-  const state = window.__openclawMeetCaptions;
+  const state = window.__operatorMeetCaptions;
   if (state?.sessionId && state.sessionId !== expectedSessionId) {
     return JSON.stringify({ urlMatched: true, sessionMatched: false });
   }

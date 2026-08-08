@@ -5,7 +5,7 @@ const clientFetchMocks = vi.hoisted(() => ({
     ok: true,
     targetId: "tab-1",
     download: {
-      path: "/tmp/openclaw/downloads/report.pdf",
+      path: "/tmp/operator/downloads/report.pdf",
       suggestedFilename: "report.pdf",
       url: "https://example.com/report.pdf",
     },
@@ -51,7 +51,7 @@ describe("browser download client actions", () => {
     });
 
     const call = lastFetchCall();
-    expect(call.url).toBe("/wait/download?profile=openclaw");
+    expect(call.url).toBe("/wait/download?profile=operator");
     expect(call.options.timeoutMs).toBe(35_000);
     expect(JSON.parse(call.options.body ?? "{}")).toEqual({
       targetId: "tab-1",

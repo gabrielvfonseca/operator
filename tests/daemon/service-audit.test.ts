@@ -272,7 +272,7 @@ describe("auditGatewayServiceConfig", () => {
       command: {
         programArguments: [
           "/opt/homebrew/opt/node/bin/node",
-          "/opt/openclaw/dist/index.js",
+          "/opt/operator/dist/index.js",
           "gateway",
         ],
         environment: { PATH: expectedServicePath },
@@ -303,7 +303,7 @@ describe("auditGatewayServiceConfig", () => {
       command: {
         programArguments: [
           "/opt/homebrew/opt/node/bin/node",
-          "/opt/openclaw/dist/index.js",
+          "/opt/operator/dist/index.js",
           "gateway",
         ],
         environment: { PATH: `${expectedServicePath}:/Users/testuser/.asdf/shims` },
@@ -370,7 +370,7 @@ describe("auditGatewayServiceConfig", () => {
         programArguments: [
           "/bin/zsh",
           "-lc",
-          "exec /usr/bin/node /opt/openclaw/dist/index.js gateway --port 18890",
+          "exec /usr/bin/node /opt/operator/dist/index.js gateway --port 18890",
         ],
         environment: {},
       },
@@ -719,7 +719,7 @@ describe("checkTokenDrift", () => {
       code: SERVICE_AUDIT_CODES.gatewayTokenDrift,
       message:
         "Config token differs from service token. The daemon will use the old token after restart.",
-      detail: "Run `openclaw gateway install --force` to sync the token.",
+      detail: "Run `operator gateway install --force` to sync the token.",
       level: "recommended",
     });
   });

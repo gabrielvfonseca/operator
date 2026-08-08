@@ -703,7 +703,7 @@ describe("routeReply", () => {
 
   it("applies responsePrefix when routing", async () => {
     const cfg = {
-      messages: { responsePrefix: "[openclaw]" },
+      messages: { responsePrefix: "[operator]" },
     } as unknown as OperatorConfig;
     await routeReply({
       payload: { text: "hi" },
@@ -711,7 +711,7 @@ describe("routeReply", () => {
       to: "channel:C123",
       cfg,
     });
-    expect(lastDeliveryPayload().text).toBe("[openclaw] hi");
+    expect(lastDeliveryPayload().text).toBe("[operator] hi");
   });
 
   it("routes directive-only Slack replies when interactive replies are enabled", async () => {

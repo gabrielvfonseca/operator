@@ -5,8 +5,8 @@ import os from "node:os";
 import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
 import { setTimeout as scheduleNativeTimeout } from "node:timers";
-import { expectDefined } from "@openclaw/normalization-core";
-import { withMockedWindowsPlatform } from "openclaw/plugin-sdk/test-node-mocks";
+import { expectDefined } from "@operator/normalization-core";
+import { withMockedWindowsPlatform } from "operator/plugin-sdk/test-node-mocks";
 import type { Mock } from "vitest";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -32,9 +32,9 @@ const { withFileLockMock } = vi.hoisted(() => ({
     async <T>(_filePath: string, _options: unknown, fn: () => Promise<T>) => await fn(),
   ),
 }));
-const MEMORY_EMBEDDING_PROVIDERS_KEY = Symbol.for("openclaw.memoryEmbeddingProviders");
-const MCPORTER_STATE_KEY = Symbol.for("openclaw.mcporterState");
-const QMD_EMBED_QUEUE_KEY = Symbol.for("openclaw.qmdEmbedQueueTail");
+const MEMORY_EMBEDDING_PROVIDERS_KEY = Symbol.for("operator.memoryEmbeddingProviders");
+const MCPORTER_STATE_KEY = Symbol.for("operator.mcporterState");
+const QMD_EMBED_QUEUE_KEY = Symbol.for("operator.qmdEmbedQueueTail");
 
 type WatchOptions = {
   ignored?: (watchPath: string) => boolean;
@@ -158,10 +158,10 @@ function firstWriteLockCall(): EmbedLockCall {
   return call;
 }
 
-vi.mock("openclaw/plugin-sdk/memory-core-host-engine-foundation", async () => {
+vi.mock("operator/plugin-sdk/memory-core-host-engine-foundation", async () => {
   const actual = await vi.importActual<
-    typeof import("openclaw/plugin-sdk/memory-core-host-engine-foundation")
-  >("openclaw/plugin-sdk/memory-core-host-engine-foundation");
+    typeof import("operator/plugin-sdk/memory-core-host-engine-foundation")
+  >("operator/plugin-sdk/memory-core-host-engine-foundation");
   return {
     ...actual,
     createSubsystemLogger: () => {
@@ -189,9 +189,9 @@ vi.mock("chokidar", () => ({
   watch: watchMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/file-lock", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/file-lock")>(
-    "openclaw/plugin-sdk/file-lock",
+vi.mock("operator/plugin-sdk/file-lock", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/file-lock")>(
+    "operator/plugin-sdk/file-lock",
   );
   return {
     ...actual,
@@ -200,20 +200,20 @@ vi.mock("openclaw/plugin-sdk/file-lock", async () => {
 });
 
 import { spawn as mockedSpawn } from "node:child_process";
-import type { OperatorConfig } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
+import type { OperatorConfig } from "operator/plugin-sdk/memory-core-host-engine-foundation";
 import {
   type MemorySearchRuntimeDebug,
   requireNodeSqlite,
   resolveMemoryBackendConfig,
-} from "openclaw/plugin-sdk/memory-core-host-engine-storage";
-import { MAX_TIMER_TIMEOUT_MS } from "openclaw/plugin-sdk/number-runtime";
+} from "operator/plugin-sdk/memory-core-host-engine-storage";
+import { MAX_TIMER_TIMEOUT_MS } from "operator/plugin-sdk/number-runtime";
 import {
   formatSqliteSessionFileMarker,
   upsertSessionEntry,
-} from "openclaw/plugin-sdk/session-store-runtime";
-import { formatSessionTranscriptMemoryHitKey } from "openclaw/plugin-sdk/session-transcript-hit";
-import { appendSessionTranscriptMessageByIdentity } from "openclaw/plugin-sdk/session-transcript-runtime";
-import { closeOperatorAgentDatabasesForTest } from "openclaw/plugin-sdk/sqlite-runtime-testing";
+} from "operator/plugin-sdk/session-store-runtime";
+import { formatSessionTranscriptMemoryHitKey } from "operator/plugin-sdk/session-transcript-hit";
+import { appendSessionTranscriptMessageByIdentity } from "operator/plugin-sdk/session-transcript-runtime";
+import { closeOperatorAgentDatabasesForTest } from "operator/plugin-sdk/sqlite-runtime-testing";
 import { configureMemoryCoreDreamingState } from "../dreaming-state.js";
 import { resolveQmdSessionArtifactIdentity } from "../qmd-session-artifacts.js";
 import {
@@ -7243,10 +7243,10 @@ describe("QmdMemoryManager", () => {
 
   it("rebinds a stale in-container collection root to the host workspace (sandbox-mode transition)", async () => {
     // Sandbox coverage: an agent that previously ran with its workspace bind-mounted under
-    // /home/node/.openclaw/... stored that in-container path as the collection root. Resolved
+    // /home/node/.operator/... stored that in-container path as the collection root. Resolved
     // with host paths, `collection show` reveals the stale container path; the rebind is
     // path-namespace-agnostic and re-binds to the current host root.
-    const containerRoot = "/home/node/.openclaw/teams/x/workspace";
+    const containerRoot = "/home/node/.operator/teams/x/workspace";
     const newWorkspaceDir = workspaceDir; // host path the manager is configured for
 
     cfg = {
@@ -7309,13 +7309,13 @@ describe("QmdMemoryManager", () => {
   it("parseShownQmdCollection extracts path and pattern from qmd collection show output", () => {
     const sampleOutput = [
       "Collection: memory-dir-example",
-      "  Path:     /home/node/.openclaw/teams/example-team/workspace-example/memory",
+      "  Path:     /home/node/.operator/teams/example-team/workspace-example/memory",
       "  Pattern:  **/*.md",
       "  Include:  yes (default)",
     ].join("\n");
 
     const result = parseShownQmdCollection(sampleOutput);
-    expect(result.path).toBe("/home/node/.openclaw/teams/example-team/workspace-example/memory");
+    expect(result.path).toBe("/home/node/.operator/teams/example-team/workspace-example/memory");
     expect(result.pattern).toBe("**/*.md");
 
     // Tolerant of missing fields.

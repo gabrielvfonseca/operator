@@ -10,7 +10,7 @@ import {
   validateFindings,
 } from "../../scripts/periphery-intersection.mjs";
 
-const WORKFLOW_PATH = ".github/workflows/shared-openclawkit-periphery.yml";
+const WORKFLOW_PATH = ".github/workflows/shared-operatorkit-periphery.yml";
 
 type WorkflowStep = {
   id?: string;

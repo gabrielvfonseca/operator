@@ -12,11 +12,11 @@ import { formatCliCommand } from "../cli/command-format.js";
 import { getRuntimeConfig } from "../config/config.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { runCommandWithTimeout } from "../process/exec.js";
-import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../state/openclaw-state-db.js";
+} from "../state/operator-state-db.js";
 import { VERSION } from "../version.js";
 import { isTruthyEnvValue } from "./env.js";
 import {
@@ -24,7 +24,7 @@ import {
   executeSqliteQueryTakeFirstSync,
   getNodeSqliteKysely,
 } from "./kysely-sync.js";
-import { resolveOperatorPackageRoot } from "./openclaw-root.js";
+import { resolveOperatorPackageRoot } from "./operator-root.js";
 import {
   resolveGatewayRestartDeferralTimeoutMs,
   scheduleGatewaySigusr1Restart,
@@ -654,7 +654,7 @@ export async function runGatewayUpdateCheck(params: {
       state.lastNotifiedVersion !== resolved.version || state.lastNotifiedTag !== tag;
     if (shouldRunUpdateHints && shouldNotify) {
       params.log.info(
-        `update available (${tag}): v${resolved.version} (current v${VERSION}). Run: ${formatCliCommand("openclaw update")}`,
+        `update available (${tag}): v${resolved.version} (current v${VERSION}). Run: ${formatCliCommand("operator update")}`,
       );
       nextState.lastNotifiedVersion = resolved.version;
       nextState.lastNotifiedTag = tag;

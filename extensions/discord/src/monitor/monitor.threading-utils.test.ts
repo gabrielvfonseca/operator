@@ -279,7 +279,7 @@ describe("resolveDiscordPresenceUpdate", () => {
     const presence = resolveDiscordPresenceUpdate({
       activity: "Live",
       activityType: 1,
-      activityUrl: "https://twitch.tv/openclaw",
+      activityUrl: "https://twitch.tv/operator",
     });
     expect(presence).toEqual({
       since: null,
@@ -287,7 +287,7 @@ describe("resolveDiscordPresenceUpdate", () => {
         {
           type: 1,
           name: "Live",
-          url: "https://twitch.tv/openclaw",
+          url: "https://twitch.tv/operator",
         },
       ],
       status: "online",

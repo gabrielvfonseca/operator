@@ -352,11 +352,11 @@ describe("runtime api guardrails", () => {
       expect(
         source,
         `${pluginId} runtime api should use generic sdk subpaths or local exports`,
-      ).not.toContain(`"openclaw/plugin-sdk/${pluginId}"`);
+      ).not.toContain(`"operator/plugin-sdk/${pluginId}"`);
       expect(
         source,
         `${pluginId} runtime api should use generic sdk subpaths or local exports`,
-      ).not.toContain(`'openclaw/plugin-sdk/${pluginId}'`);
+      ).not.toContain(`'operator/plugin-sdk/${pluginId}'`);
     }
   });
 

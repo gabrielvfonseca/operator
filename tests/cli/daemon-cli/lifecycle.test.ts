@@ -559,8 +559,8 @@ describe("runDaemonRestart health checks", () => {
     const error = await expectRestartError(runDaemonRestart({ json: true }));
     expect(error.message).toBe("Gateway restart timed out after 60s waiting for health checks.");
     expect(error.hints).toEqual([
-      formatCliCommand("openclaw gateway status --deep"),
-      formatCliCommand("openclaw doctor"),
+      formatCliCommand("operator gateway status --deep"),
+      formatCliCommand("operator doctor"),
     ]);
     expect(terminateStaleGatewayPids).not.toHaveBeenCalled();
     expect(renderRestartDiagnostics).toHaveBeenCalledTimes(1);
@@ -623,8 +623,8 @@ describe("runDaemonRestart health checks", () => {
       "Gateway restart failed after 13s: service stayed stopped and health checks never came up.",
     );
     expect(error.hints).toEqual([
-      formatCliCommand("openclaw gateway status --deep"),
-      formatCliCommand("openclaw doctor"),
+      formatCliCommand("operator gateway status --deep"),
+      formatCliCommand("operator doctor"),
     ]);
     expect(terminateStaleGatewayPids).not.toHaveBeenCalled();
     expect(renderRestartDiagnostics).toHaveBeenCalledTimes(1);
@@ -741,7 +741,7 @@ describe("runDaemonRestart health checks", () => {
   it("does not fall back to unmanaged restart when launchd repair reports headless GUI bootstrap failure", async () => {
     vi.spyOn(process, "platform", "get").mockReturnValue("darwin");
     recoverInstalledLaunchAgent.mockRejectedValue(
-      new Error("LaunchAgent openclaw gateway restart requires a logged-in macOS GUI session"),
+      new Error("LaunchAgent operator gateway restart requires a logged-in macOS GUI session"),
     );
     findVerifiedGatewayListenerPidsOnPortSync.mockReturnValue([4200]);
     mockUnmanagedRestart();
@@ -807,7 +807,7 @@ describe("runDaemonRestart health checks", () => {
     );
   });
 
-  it("delegates system-scope restart to systemctl without unmanaged signaling when root (openclaw#87577)", async () => {
+  it("delegates system-scope restart to systemctl without unmanaged signaling when root (operator#87577)", async () => {
     vi.spyOn(process, "platform", "get").mockReturnValue("linux");
     findInstalledSystemdGatewayScope.mockResolvedValue({
       scope: "system",
@@ -825,7 +825,7 @@ describe("runDaemonRestart health checks", () => {
     expect(probeGateway).not.toHaveBeenCalled();
   });
 
-  it("surfaces systemd sudo guidance and never signals when restarting a system-scope unit as non-root (openclaw#87577)", async () => {
+  it("surfaces systemd sudo guidance and never signals when restarting a system-scope unit as non-root (operator#87577)", async () => {
     vi.spyOn(process, "platform", "get").mockReturnValue("linux");
     findInstalledSystemdGatewayScope.mockResolvedValue({
       scope: "system",
@@ -841,14 +841,14 @@ describe("runDaemonRestart health checks", () => {
     mockUnmanagedRestart();
 
     await expect(runDaemonRestart({ json: true })).rejects.toThrow(
-      /sudo systemctl restart openclaw\.service/,
+      /sudo systemctl restart operator\.service/,
     );
 
     expect(signalVerifiedGatewayPidSync).not.toHaveBeenCalled();
     expect(probeGateway).not.toHaveBeenCalled();
   });
 
-  it("delegates system-scope stop to systemctl without unmanaged signaling when root (openclaw#87577)", async () => {
+  it("delegates system-scope stop to systemctl without unmanaged signaling when root (operator#87577)", async () => {
     vi.spyOn(process, "platform", "get").mockReturnValue("linux");
     findInstalledSystemdGatewayScope.mockResolvedValue({
       scope: "system",
@@ -870,7 +870,7 @@ describe("runDaemonRestart health checks", () => {
     expect(signalVerifiedGatewayPidSync).not.toHaveBeenCalled();
   });
 
-  it("surfaces systemd sudo guidance and never signals when stopping a system-scope unit as non-root (openclaw#87577)", async () => {
+  it("surfaces systemd sudo guidance and never signals when stopping a system-scope unit as non-root (operator#87577)", async () => {
     vi.spyOn(process, "platform", "get").mockReturnValue("linux");
     findInstalledSystemdGatewayScope.mockResolvedValue({
       scope: "system",

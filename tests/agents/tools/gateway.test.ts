@@ -470,7 +470,7 @@ describe("gateway tool defaults", () => {
         },
       ),
     ).rejects.toThrow(
-      "The running Gateway is from an older Operator build and rejected current agent runtime connection metadata. Restart the Gateway with `openclaw gateway restart`, then retry.",
+      "The running Gateway is from an older Operator build and rejected current agent runtime connection metadata. Restart the Gateway with `operator gateway restart`, then retry.",
     );
 
     const call = capturedGatewayCall();
@@ -492,7 +492,7 @@ describe("gateway tool defaults", () => {
         },
       ),
     ).rejects.toThrow(
-      "The running Gateway is from an older Operator build and rejected current agent runtime connection metadata. Restart the Gateway with `openclaw gateway restart`, then retry.",
+      "The running Gateway is from an older Operator build and rejected current agent runtime connection metadata. Restart the Gateway with `operator gateway restart`, then retry.",
     );
 
     const call = capturedGatewayCall();

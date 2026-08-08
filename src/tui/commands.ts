@@ -222,7 +222,7 @@ export function helpText(options: SlashCommandOptions = {}): string {
     "/gwstatus",
     ...(options.local ? ["/auth [provider]"] : []),
     "/agent <id> (or /agents)",
-    "/openclaw [request]",
+    "/operator [request]",
     "/session <key> (or /sessions)",
     "/model <provider/model> (or /models)",
     `/think <${thinkLevels}>`,

@@ -1,6 +1,6 @@
 // Covers silent-pairing approval provenance and superseded-record pruning.
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { createSuiteTempRootTracker } from "../../src/test-helpers/temp-dir.js";
 import {
   approveBootstrapDevicePairing,

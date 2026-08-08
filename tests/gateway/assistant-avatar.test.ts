@@ -140,19 +140,19 @@ describe("resolveGatewayAssistantAvatar", () => {
 
   it("preserves same-origin avatar routes and applies the configured base path", () => {
     const { cfg } = createWorkspace();
-    cfg.gateway = { controlUi: { basePath: "/openclaw" } };
+    cfg.gateway = { controlUi: { basePath: "/operator" } };
 
     expect(
       resolveGatewayAssistantAvatar({
         cfg,
         identity: { agentId: "main", avatar: "/avatar/main" },
       }),
-    ).toEqual({ avatar: "/openclaw/avatar/main", resolution: null });
+    ).toEqual({ avatar: "/operator/avatar/main", resolution: null });
     expect(
       resolveGatewayAssistantAvatar({
         cfg,
-        identity: { agentId: "main", avatar: "/openclaw/avatar/main" },
+        identity: { agentId: "main", avatar: "/operator/avatar/main" },
       }),
-    ).toEqual({ avatar: "/openclaw/avatar/main", resolution: null });
+    ).toEqual({ avatar: "/operator/avatar/main", resolution: null });
   });
 });

@@ -4,10 +4,10 @@
   "description": "Operator Tencent Cloud provider plugin (TokenHub + Token Plan)",
   "type": "module",
   "devDependencies": {
-    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   },
-  "openclaw": {
+  "operator": {
     "extensions": [
       "./index.ts"
     ],
@@ -34,6 +34,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gabrielvfonseca/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   }
 }

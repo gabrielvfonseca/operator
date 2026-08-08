@@ -135,7 +135,7 @@ describe("resolveGatewayConnection", () => {
     resolveConfigPath.mockReset();
     resolveGatewayPort.mockReturnValue(18789);
     resolveStateDir.mockImplementation(
-      (env: NodeJS.ProcessEnv) => env.OPERATOR_STATE_DIR ?? "/tmp/openclaw",
+      (env: NodeJS.ProcessEnv) => env.OPERATOR_STATE_DIR ?? "/tmp/operator",
     );
     resolveConfigPath.mockImplementation(
       (env: NodeJS.ProcessEnv, stateDir: string) =>

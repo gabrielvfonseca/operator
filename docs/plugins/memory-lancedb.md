@@ -272,7 +272,7 @@ LanceDB data defaults to `~/.operator/memory/lancedb`. Override with `dbPath`:
       "memory-lancedb": {
         enabled: true,
         config: {
-          dbPath: "s3://memory-bucket/openclaw",
+          dbPath: "s3://memory-bucket/operator",
           storageOptions: {
             access_key: "${AWS_ACCESS_KEY_ID}",
             secret_key: "${AWS_SECRET_ACCESS_KEY}",

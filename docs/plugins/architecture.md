@@ -221,7 +221,7 @@ For channel-owned execution helpers, bundled plugins should keep the execution r
 
 The same boundary applies to provider-named SDK seams in general: core should not import channel-specific convenience barrels for Discord, Signal, Slack, WhatsApp, or similar plugins. If core needs a behavior, either consume the bundled plugin's own `api.ts` / `runtime-api.ts` barrel or promote the need into a narrow generic capability in the shared SDK.
 
-Bundled plugins follow the same rule. A bundled plugin's `runtime-api.ts` should not re-export its own branded `openclaw/plugin-sdk/<plugin-id>` facade. Those branded facades remain compatibility shims for external plugins and older consumers, but bundled plugins should use local exports plus narrow generic SDK subpaths such as `openclaw/plugin-sdk/channel-policy`, `openclaw/plugin-sdk/runtime-store`, or `openclaw/plugin-sdk/webhook-ingress`. New code should not add plugin-id-specific SDK facades unless the compatibility boundary for an existing external ecosystem requires it.
+Bundled plugins follow the same rule. A bundled plugin's `runtime-api.ts` should not re-export its own branded `operator/plugin-sdk/<plugin-id>` facade. Those branded facades remain compatibility shims for external plugins and older consumers, but bundled plugins should use local exports plus narrow generic SDK subpaths such as `operator/plugin-sdk/channel-policy`, `operator/plugin-sdk/runtime-store`, or `operator/plugin-sdk/webhook-ingress`. New code should not add plugin-id-specific SDK facades unless the compatibility boundary for an existing external ecosystem requires it.
 
 For polls specifically, there are two execution paths:
 
@@ -315,12 +315,12 @@ That same pattern should be preferred for future capabilities.
 A company plugin should feel cohesive from the outside. If Operator has shared contracts for models, speech, realtime transcription, realtime voice, media understanding, image generation, video generation, web fetch, and web search, a vendor can own all of its surfaces in one place:
 
 ```ts
-import type { OperatorPluginDefinition } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginDefinition } from "operator/plugin-sdk/plugin-entry";
 import {
   describeImageWithModel,
   transcribeOpenAiCompatibleAudio,
-} from "openclaw/plugin-sdk/media-understanding";
-import { createPluginBackedWebSearchProvider } from "openclaw/plugin-sdk/provider-web-search";
+} from "operator/plugin-sdk/media-understanding";
+import { createPluginBackedWebSearchProvider } from "operator/plugin-sdk/provider-web-search";
 
 const plugin: OperatorPluginDefinition = {
   id: "exampleai",

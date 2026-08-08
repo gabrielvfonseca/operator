@@ -180,8 +180,8 @@ function packageMarkerPathsToRoots(markerPaths: string[], extensionsDir: string)
 }
 
 afterEach(() => {
-  delete (globalThis as { __openclawBundledChannelReenter?: () => void })[
-    "__openclawBundledChannelReenter"
+  delete (globalThis as { __operatorBundledChannelReenter?: () => void })[
+    "__operatorBundledChannelReenter"
   ];
   vi.resetModules();
   vi.doUnmock("../../plugins/bundled-channel-runtime.js");
@@ -1160,7 +1160,7 @@ describe("bundled channel entry shape guards", () => {
       }
       const setupEntrySource = fs.readFileSync(setupEntryPath, "utf8");
       const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8")) as {
-        openclaw?: {
+        operator?: {
           setupFeatures?: Record<string, boolean>;
         };
       };
@@ -1219,7 +1219,7 @@ describe("bundled channel entry shape guards", () => {
       "extensions/irc/src/runtime-api.ts",
       "extensions/matrix/src/runtime-api.ts",
     ].filter((filePath) =>
-      fs.readFileSync(path.resolve(filePath), "utf8").includes("openclaw/plugin-sdk/core"),
+      fs.readFileSync(path.resolve(filePath), "utf8").includes("operator/plugin-sdk/core"),
     );
 
     expect(offenders).toStrictEqual([]);
@@ -1266,7 +1266,7 @@ describe("bundled channel entry shape guards", () => {
     fs.writeFileSync(
       modulePath,
       `
-const reenter = globalThis["__openclawBundledChannelReenter"];
+const reenter = globalThis["__operatorBundledChannelReenter"];
 if (typeof reenter === "function") {
   reenter();
 }
@@ -1326,8 +1326,8 @@ module.exports = {
     }));
 
     let reentered = false;
-    (globalThis as { __openclawBundledChannelReenter?: () => void })[
-      "__openclawBundledChannelReenter"
+    (globalThis as { __operatorBundledChannelReenter?: () => void })[
+      "__operatorBundledChannelReenter"
     ] = () => {
       if (!reentered) {
         reentered = true;

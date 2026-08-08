@@ -19,12 +19,12 @@ import {
   type PluginApprovalRequestPayload,
 } from "../../../src/infra/plugin-approvals.js";
 import type { SystemAgentApprovalRequestPayload } from "../../../src/infra/system-agent-approvals.js";
-import type { DB as OperatorStateKyselyDatabase } from "../../../../src/state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../../../../src/state/operator-state-db.generated.js";
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
   type OperatorStateDatabaseOptions,
-} from "../../../src/state/openclaw-state-db.js";
+} from "../../../src/state/operator-state-db.js";
 import { ExecApprovalManager } from "../../../src/gateway/exec-approval-manager.js";
 import { getOperatorApprovalDetailed, insertOperatorApproval } from "../../../src/gateway/operator-approval-store.js";
 

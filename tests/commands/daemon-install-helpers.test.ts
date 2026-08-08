@@ -280,16 +280,16 @@ describe("buildGatewayInstallPlan", () => {
     expect(serviceEnvRequest?.extraPathDirs).toStrictEqual(["/custom"]);
   });
 
-  it("adds the active openclaw command bin directory to the managed service PATH", async () => {
+  it("adds the active operator command bin directory to the managed service PATH", async () => {
     mockNodeGatewayPlanFixture();
     const originalArgv = process.argv;
-    const openclawBinPath = path.join(
+    const operatorBinPath = path.join(
       isolatedHome,
       ".npm-global",
       "bin",
       "@gabrielvfonseca/operator",
     );
-    process.argv = ["node", openclawBinPath, "gateway", "install"];
+    process.argv = ["node", operatorBinPath, "gateway", "install"];
 
     try {
       await buildGatewayInstallPlan({
@@ -306,7 +306,7 @@ describe("buildGatewayInstallPlan", () => {
     expect(mocks.buildServiceEnvironment).toHaveBeenCalledOnce();
     expect(
       firstMockArg(mocks.buildServiceEnvironment, "buildServiceEnvironment").extraPathDirs,
-    ).toStrictEqual(["/opt/homebrew/opt/node/bin", path.dirname(openclawBinPath)]);
+    ).toStrictEqual(["/opt/homebrew/opt/node/bin", path.dirname(operatorBinPath)]);
   });
 
   it("does not prepend '.' when nodePath is a bare executable name", async () => {
@@ -1771,7 +1771,7 @@ describe("gatewayInstallErrorHint", () => {
     expect(gatewayInstallErrorHint("win32")).toContain("Startup-folder login item");
     expect(gatewayInstallErrorHint("win32")).toContain("elevated PowerShell");
     expect(gatewayInstallErrorHint("linux")).toMatch(
-      /(?:openclaw|openclaw)( --profile isolated)? gateway install/,
+      /(?:operator|operator)( --profile isolated)? gateway install/,
     );
   });
 });

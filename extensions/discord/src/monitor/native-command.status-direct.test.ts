@@ -12,9 +12,9 @@ const runtimeModuleMocks = vi.hoisted(() => ({
   resolveDirectStatusReplyForSession: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/reply-dispatch-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/reply-dispatch-runtime")>(
-    "openclaw/plugin-sdk/reply-dispatch-runtime",
+vi.mock("operator/plugin-sdk/reply-dispatch-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/reply-dispatch-runtime")>(
+    "operator/plugin-sdk/reply-dispatch-runtime",
   );
   return {
     ...actual,
@@ -23,12 +23,12 @@ vi.mock("openclaw/plugin-sdk/reply-dispatch-runtime", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/command-status-runtime", () => ({
+vi.mock("operator/plugin-sdk/command-status-runtime", () => ({
   resolveDirectStatusReplyForSession: (...args: unknown[]) =>
     runtimeModuleMocks.resolveDirectStatusReplyForSession(...args),
 }));
 
-vi.mock("openclaw/plugin-sdk/web-media", () => ({
+vi.mock("operator/plugin-sdk/web-media", () => ({
   loadWebMedia: (...args: unknown[]) => runtimeModuleMocks.loadWebMedia(...args),
 }));
 
@@ -158,9 +158,9 @@ describe("discord native /status", () => {
       fileName: "status.png",
     });
     nativeCommandRuntime.dispatchReplyWithDispatcher =
-      runtimeModuleMocks.dispatchReplyWithDispatcher as typeof import("openclaw/plugin-sdk/reply-dispatch-runtime").dispatchReplyWithDispatcher;
+      runtimeModuleMocks.dispatchReplyWithDispatcher as typeof import("operator/plugin-sdk/reply-dispatch-runtime").dispatchReplyWithDispatcher;
     nativeCommandRuntime.matchPluginCommand = (() =>
-      null) as typeof import("openclaw/plugin-sdk/plugin-runtime").matchPluginCommand;
+      null) as typeof import("operator/plugin-sdk/plugin-runtime").matchPluginCommand;
     setDefaultRouteState();
   });
 
@@ -192,9 +192,9 @@ describe("discord native /status", () => {
         handler: async () => ({ text: "plugin status" }),
       },
       args: undefined,
-    })) as typeof import("openclaw/plugin-sdk/plugin-runtime").matchPluginCommand;
+    })) as typeof import("operator/plugin-sdk/plugin-runtime").matchPluginCommand;
     nativeCommandRuntime.executePluginCommand =
-      executePluginCommand as typeof import("openclaw/plugin-sdk/plugin-runtime").executePluginCommand;
+      executePluginCommand as typeof import("operator/plugin-sdk/plugin-runtime").executePluginCommand;
     const cfg = createConfig();
     const command = await createStatusCommand(cfg);
     const interaction = createInteraction();

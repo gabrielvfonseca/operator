@@ -18,14 +18,14 @@ export type { DiscordSenderIdentity } from "./sender-identity.js";
 import type { DiscordThreadChannel } from "./threading.js";
 
 type LoadedConfig = OperatorConfig;
-export type RuntimeEnv = import("openclaw/plugin-sdk/runtime-env").RuntimeEnv;
+export type RuntimeEnv = import("operator/plugin-sdk/runtime-env").RuntimeEnv;
 
 export type DiscordMessageEvent = import("./listeners.js").DiscordMessageEvent;
 
 type DiscordMessagePreflightSharedFields = {
   cfg: LoadedConfig;
   discordConfig: NonNullable<
-    import("openclaw/plugin-sdk/config-contracts").OperatorConfig["channels"]
+    import("operator/plugin-sdk/config-contracts").OperatorConfig["channels"]
   >["discord"];
   accountId: string;
   token: string;

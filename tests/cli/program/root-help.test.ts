@@ -62,11 +62,11 @@ describe("root help", () => {
     const config = {
       agents: {
         defaults: {
-          workspace: "/tmp/openclaw-root-help-workspace",
+          workspace: "/tmp/operator-root-help-workspace",
         },
       },
     };
-    const env = { OPERATOR_STATE_DIR: "/tmp/openclaw-root-help-state" } as NodeJS.ProcessEnv;
+    const env = { OPERATOR_STATE_DIR: "/tmp/operator-root-help-state" } as NodeJS.ProcessEnv;
 
     await renderRootHelpText({ config, env, pluginSdkResolution: "src" });
 

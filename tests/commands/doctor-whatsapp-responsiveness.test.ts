@@ -6,7 +6,7 @@ const noteMock = vi.hoisted(() => vi.fn());
 const spawnSyncMock = vi.hoisted(() => vi.fn());
 
 vi.mock("node:child_process", async () => {
-  const { mockNodeChildProcessSpawnSync } = await import("openclaw/plugin-sdk/test-node-mocks");
+  const { mockNodeChildProcessSpawnSync } = await import("operator/plugin-sdk/test-node-mocks");
   return mockNodeChildProcessSpawnSync(spawnSyncMock, () =>
     vi.importActual<typeof import("node:child_process")>("node:child_process"),
   );
@@ -32,13 +32,13 @@ describe("doctor WhatsApp responsiveness", () => {
       status: 0,
       stdout: [
         " 101 operator-tui",
-        " 102 /usr/bin/node /usr/lib/node_modules/openclaw/dist/index.js gateway --port 18789",
-        " 103 openclaw channels",
-        " 104 openclaw tui --local",
-        " 105 /usr/bin/openclaw chat",
-        " 106 helper --note 'openclaw tui'",
-        " 107 operator-helper openclaw terminal",
-        " 108 openclaw --flag tui",
+        " 102 /usr/bin/node /usr/lib/node_modules/operator/dist/index.js gateway --port 18789",
+        " 103 operator channels",
+        " 104 operator tui --local",
+        " 105 /usr/bin/operator chat",
+        " 106 helper --note 'operator tui'",
+        " 107 operator-helper operator terminal",
+        " 108 operator --flag tui",
       ].join("\n"),
     });
 
@@ -48,8 +48,8 @@ describe("doctor WhatsApp responsiveness", () => {
     } else {
       expect(listLocalTuiProcesses()).toEqual([
         { pid: 101, command: "operator-tui" },
-        { pid: 104, command: "openclaw tui --local" },
-        { pid: 105, command: "/usr/bin/openclaw chat" },
+        { pid: 104, command: "operator tui --local" },
+        { pid: 105, command: "/usr/bin/operator chat" },
       ]);
     }
   });
@@ -152,7 +152,7 @@ describe("doctor WhatsApp responsiveness", () => {
         path: "channels.whatsapp",
         target: "101",
         requirement: "local-tui-event-loop-pressure",
-        fixHint: expect.stringContaining("openclaw doctor --fix"),
+        fixHint: expect.stringContaining("operator doctor --fix"),
       }),
     ]);
   });

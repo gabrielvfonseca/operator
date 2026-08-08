@@ -9,7 +9,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
-} from "../../../src/state/openclaw-state-db.js";
+} from "../../../src/state/operator-state-db.js";
 import {
   createOperatorTestState,
   type OperatorTestState,

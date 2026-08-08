@@ -498,7 +498,7 @@ describe("resolveProviderHttpRequestConfig", () => {
     expect(resolved.allowPrivateNetwork).toBe(false);
     expect(resolved.headers.get("authorization")).toBe("Bearer override");
     expect(resolved.headers.get("x-default")).toBe("1");
-    expect(resolved.headers.get("user-agent")).toBe(`openclaw/${VERSION}`);
+    expect(resolved.headers.get("user-agent")).toBe(`operator/${VERSION}`);
     expect(resolved.headers.get("originator")).toBe("@gabrielvfonseca/operator");
     expect(resolved.headers.get("version")).toBe(VERSION);
   });

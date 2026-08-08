@@ -658,13 +658,13 @@ PY`);
     const bonjourEnv = this.disableBonjour ? " OPERATOR_DISABLE_BONJOUR=1" : "";
     this.guestBash(
       // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
-      String.raw`pkill -f "openclaw gateway run" >/dev/null 2>&1 || true
+      String.raw`pkill -f "operator gateway run" >/dev/null 2>&1 || true
 rm -f /tmp/operator-parallels-linux-gateway.log
 setsid sh -lc ` +
         shellQuote(
           `exec env OPERATOR_HOME=/root OPERATOR_STATE_DIR=/root/.operator OPERATOR_CONFIG_PATH=/root/.operator/operator.json OPERATOR_ALLOW_ROOT=1${bonjourEnv} ${this.auth.apiKeyEnv}=${shellQuote(
             this.auth.apiKeyValue,
-          )} openclaw gateway run --bind loopback --port 18789 --force >/tmp/operator-parallels-linux-gateway.log 2>&1`,
+          )} operator gateway run --bind loopback --port 18789 --force >/tmp/operator-parallels-linux-gateway.log 2>&1`,
         ) +
         // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
         String.raw` >/dev/null 2>&1 < /dev/null &`,
@@ -789,7 +789,7 @@ rm -rf /root/.operator/test-bad-plugin`);
 cat >"$provider_config_batch" <<'JSON'
 ${modelProviderConfigBatch}
 JSON
-openclaw config set --batch-file "$provider_config_batch" --strict-json
+operator config set --batch-file "$provider_config_batch" --strict-json
 rm -f "$provider_config_batch"`);
     }
     this.guestExec([
@@ -812,7 +812,7 @@ for attempt in 1 2; do
   rm -f "$HOME/.operator/agents/main/sessions/$session_id.jsonl"
   output_file="$(mktemp)"
   set +e
-  /usr/bin/env OPERATOR_ALLOW_ROOT=1 ${shellQuote(`${this.auth.apiKeyEnv}=${this.auth.apiKeyValue}`)} openclaw agent --local --agent main --session-id "$session_id" --message ${shellQuote(
+  /usr/bin/env OPERATOR_ALLOW_ROOT=1 ${shellQuote(`${this.auth.apiKeyEnv}=${this.auth.apiKeyValue}`)} operator agent --local --agent main --session-id "$session_id" --message ${shellQuote(
     "Reply with exact ASCII text OK only.",
   )} --thinking off --timeout ${resolveParallelsModelTimeoutSeconds("linux")} --json >"$output_file" 2>&1
   rc=$?
@@ -839,7 +839,7 @@ for attempt in 1 2; do
   fi
 done
 if [ "$agent_ok" != true ]; then
-  echo "openclaw agent finished without OK response" >&2
+  echo "operator agent finished without OK response" >&2
   exit 1
 fi`,
     );

@@ -3,7 +3,7 @@
 import { promises as fs } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "operator/plugin-sdk/config-contracts";
 import type { MemoryTieredPluginConfig } from "./config.js";
 import { createEmbedder } from "./embedding.js";
 import { createSemanticClient } from "./semantic.js";
@@ -15,7 +15,7 @@ export type MigrateResult = {
 };
 
 function resolveWorkspaceDir(): string {
-  return join(homedir(), ".openclaw", "workspace");
+  return join(homedir(), ".operator", "workspace");
 }
 
 function splitMarkdownChunks(text: string): string[] {

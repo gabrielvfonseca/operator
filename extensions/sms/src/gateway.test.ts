@@ -17,9 +17,9 @@ const { registeredRoutes, registerPluginHttpRoute, waitUntilAbort } = vi.hoisted
   };
 });
 
-vi.mock("openclaw/plugin-sdk/channel-outbound", () => ({ waitUntilAbort }));
+vi.mock("operator/plugin-sdk/channel-outbound", () => ({ waitUntilAbort }));
 
-vi.mock("openclaw/plugin-sdk/webhook-ingress", () => ({
+vi.mock("operator/plugin-sdk/webhook-ingress", () => ({
   createFixedWindowRateLimiter: () => ({
     clear: vi.fn(),
     isRateLimited: vi.fn(() => false),

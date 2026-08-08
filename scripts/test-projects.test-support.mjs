@@ -518,7 +518,7 @@ const GITHUB_WORKFLOW_OWNER_TEST_TARGETS = new Map([
   ],
   [".github/workflows/ios-periphery.yml", ["test/scripts/ios-periphery-comment-workflow.test.ts"]],
   [
-    ".github/workflows/shared-openclawkit-periphery.yml",
+    ".github/workflows/shared-operatorkit-periphery.yml",
     ["test/scripts/periphery-intersection.test.ts"],
   ],
   [

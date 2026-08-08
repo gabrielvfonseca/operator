@@ -4,20 +4,20 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
-import { clearMemoryEmbeddingProviders as clearRegistry } from "openclaw/plugin-sdk/memory-core-host-engine-embeddings";
-import { hashText } from "openclaw/plugin-sdk/memory-core-host-engine-storage";
-import { resolveSessionTranscriptsDirForAgent } from "openclaw/plugin-sdk/memory-core-host-runtime-core";
+import { clearMemoryEmbeddingProviders as clearRegistry } from "operator/plugin-sdk/memory-core-host-engine-embeddings";
+import { hashText } from "operator/plugin-sdk/memory-core-host-engine-storage";
+import { resolveSessionTranscriptsDirForAgent } from "operator/plugin-sdk/memory-core-host-runtime-core";
 import {
   formatSqliteSessionFileMarker,
   upsertSessionEntry,
-} from "openclaw/plugin-sdk/session-store-runtime";
-import { appendSessionTranscriptMessageByIdentity } from "openclaw/plugin-sdk/session-transcript-runtime";
-import { resolveOperatorAgentSqlitePath } from "openclaw/plugin-sdk/sqlite-runtime";
+} from "operator/plugin-sdk/session-store-runtime";
+import { appendSessionTranscriptMessageByIdentity } from "operator/plugin-sdk/session-transcript-runtime";
+import { resolveOperatorAgentSqlitePath } from "operator/plugin-sdk/sqlite-runtime";
 import {
   closeOperatorAgentDatabasesForTest,
   closeOperatorStateDatabaseForTest,
   openOperatorAgentDatabase,
-} from "openclaw/plugin-sdk/sqlite-runtime-testing";
+} from "operator/plugin-sdk/sqlite-runtime-testing";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import "./test-runtime-mocks.js";
 import type { MemoryIndexManager } from "./index.js";
@@ -278,7 +278,7 @@ describe("memory index", () => {
   const managersForCleanup = new Set<MemoryIndexManager>();
 
   beforeAll(async () => {
-    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-mem-fixtures-"));
+    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-mem-fixtures-"));
     workspaceDir = path.join(fixtureRoot, "workspace");
     memoryDir = path.join(workspaceDir, "memory");
   });
@@ -2244,7 +2244,7 @@ describe("memory index", () => {
         embedQuery: vi.fn(async () => [1, 0, 0, 0]),
         embedBatch: vi.fn(async (texts: string[]) => texts.map(() => [1, 0, 0, 0])),
       };
-      Object.defineProperty(provider, Symbol.for("openclaw.localEmbeddingRuntimeFacts"), {
+      Object.defineProperty(provider, Symbol.for("operator.localEmbeddingRuntimeFacts"), {
         value: getRuntimeFacts,
       });
       const fields = manager as unknown as {
@@ -2977,7 +2977,7 @@ describe("memory index", () => {
     }
   });
   it("status-purpose manager detects unindexed session transcripts as dirty", async () => {
-    // Regression test for #97814: plain openclaw memory status (purpose: status)
+    // Regression test for #97814: plain operator memory status (purpose: status)
     // must report dirty=true when session files exist without index rows.
     const cfg = createCfg({ sources: ["sessions"], sessionMemory: true });
     const stateDirName = ".state-status-dirty-test";

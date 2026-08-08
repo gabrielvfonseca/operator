@@ -11,7 +11,7 @@ import type {
   ExecApprovalRequestPayload as InfraExecApprovalRequestPayload,
 } from "../infra/exec-approvals.js";
 import { resolveTimerTimeoutMs } from "../shared/number-coercion.js";
-import type { OperatorStateDatabaseOptions } from "../state/openclaw-state-db.js";
+import type { OperatorStateDatabaseOptions } from "../state/operator-state-db.js";
 import {
   consumeOperatorApprovalAllowOnce,
   forceDenyOperatorApproval,

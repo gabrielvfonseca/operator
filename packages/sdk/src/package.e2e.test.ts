@@ -275,7 +275,7 @@ function closeServer(server: Server): Promise<void> {
   });
 }
 
-async function startOpenClawRegistry(packages: PackedPackage[]): Promise<{
+async function startOperatorRegistry(packages: PackedPackage[]): Promise<{
   registryUrl: string;
   close: () => Promise<void>;
 }> {
@@ -414,7 +414,7 @@ describe("Operator SDK package e2e", () => {
     const sdkTarball =
       packedPackages.find((pkg) => pkg.manifest.name === "@gabrielvfonseca/sdk")?.tarball ?? "";
     expect(sdkTarball).not.toBe("");
-    const registry = await startOpenClawRegistry(packedPackages);
+    const registry = await startOperatorRegistry(packedPackages);
 
     await fs.writeFile(
       path.join(tempDir, "package.json"),

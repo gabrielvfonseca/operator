@@ -24,7 +24,7 @@ publish skill; use `$release-operator-maintainer` before changing release state.
 ## Core Checks
 
 1. GitHub release:
-   - `gh release view v<VERSION> --repo openclaw/operator --json tagName,name,publishedAt,isDraft,isPrerelease,targetCommitish,url,body,assets`
+   - `gh release view v<VERSION> --repo operator/operator --json tagName,name,publishedAt,isDraft,isPrerelease,targetCommitish,url,body,assets`
    - Confirm stable releases are not draft/prerelease.
    - Confirm release body has npm, CI, plugin npm, ClawHub, mac/appcast evidence
      links when expected.
@@ -34,7 +34,7 @@ publish skill; use `$release-operator-maintainer` before changing release state.
    - Download each immutable evidence asset and its `.sha256` companion, then
      verify the checksum before trusting the release record.
 2. Root npm:
-   - `npm view openclaw@<VERSION> version dist-tags.latest dist.tarball dist.integrity time.<VERSION> --json`
+   - `npm view operator@<VERSION> version dist-tags.latest dist.tarball dist.integrity time.<VERSION> --json`
    - `latest` must equal `<VERSION>` for stable.
    - Record tarball, integrity, publish time.
    - Confirm the release postpublish evidence records
@@ -42,13 +42,13 @@ publish skill; use `$release-operator-maintainer` before changing release state.
      `npmProvenanceAttestationMatched: true`.
 3. Plugin publish set:
    - Get exact tag metadata from GitHub, not the local checkout when dirty:
-     download `https://api.github.com/repos/openclaw/openclaw/tarball/v<VERSION>`
+     download `https://api.github.com/repos/operator/operator/tarball/v<VERSION>`
      into `/tmp/operator-v<VERSION>-src`.
    - Count `extensions/*/package.json` with
      `operator.release.publishToNpm === true` and
      `operator.release.publishToClawHub === true`.
    - Compare expected counts to workflow job counts:
-     `gh api repos/openclaw/openclaw/actions/runs/<RUN>/jobs --paginate`.
+     `gh api repos/operator/operator/actions/runs/<RUN>/jobs --paginate`.
    - Each expected npm plugin must have version `<VERSION>` and
      `dist-tags.latest === <VERSION>`.
 4. ClawHub:
@@ -70,7 +70,7 @@ publish skill; use `$release-operator-maintainer` before changing release state.
      optional lanes unless the release body promised them.
 6. Published package smoke:
    - In `/tmp`, isolated HOME:
-     `npm exec --yes --package openclaw@<VERSION> -- operator --version`.
+     `npm exec --yes --package operator@<VERSION> -- operator --version`.
    - Run at least one harmless command that touches the published CLI surface,
      for example `plugins --help` or `gateway --help`.
 7. Dev Gateway live model smoke:

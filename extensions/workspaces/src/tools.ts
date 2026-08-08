@@ -829,7 +829,7 @@ export function createWorkspaceTools(params: WorkspaceToolParams): AnyAgentTool[
       description: toolDescription(
         "Create a custom widget scaffold and register it as pending. Agent-authored widget code " +
           "never renders until a human approves it, and there is no tool to approve it — ask the " +
-          "operator to approve from the Workspaces tab, or to run `openclaw workspaces " +
+          "operator to approve from the Workspaces tab, or to run `operator workspaces " +
           "widget-approve <name>`. Edit the scaffolded index.html to build the widget.",
       ),
       parameters: Type.Object(

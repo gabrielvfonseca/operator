@@ -282,7 +282,7 @@ describe("QA Lab UI evidence render", () => {
                   coverageIds: ["ui.control"],
                   runner: {
                     availability: "local",
-                    command: "pnpm openclaw qa suite --scenario ux-matrix-evidence-dashboard",
+                    command: "pnpm operator qa suite --scenario ux-matrix-evidence-dashboard",
                     lane: "web-ui-playwright",
                     workflow: ".github/workflows/ux-matrix-qa.yml#ux-matrix-local",
                   },
@@ -298,7 +298,7 @@ describe("QA Lab UI evidence render", () => {
                   coverageIds: ["cli.entrypoint"],
                   runner: {
                     availability: "local",
-                    command: "pnpm openclaw qa suite --scenario ux-matrix-evidence-dashboard",
+                    command: "pnpm operator qa suite --scenario ux-matrix-evidence-dashboard",
                     lane: "cli-status",
                     workflow: ".github/workflows/ux-matrix-qa.yml#ux-matrix-local",
                   },

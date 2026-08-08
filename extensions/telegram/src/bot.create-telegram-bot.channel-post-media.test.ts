@@ -8,7 +8,7 @@ const saveMediaBuffer = vi.fn();
 const readRemoteMediaBuffer = vi.fn();
 const rootRead = vi.fn();
 
-vi.mock("openclaw/plugin-sdk/file-access-runtime", () => ({
+vi.mock("operator/plugin-sdk/file-access-runtime", () => ({
   root: async (rootDir: string) => ({
     read: async (relativePath: string, options?: { maxBytes?: number }) =>
       await rootRead({ rootDir, relativePath, maxBytes: options?.maxBytes }),
@@ -16,8 +16,8 @@ vi.mock("openclaw/plugin-sdk/file-access-runtime", () => ({
 }));
 
 vi.mock("./bot/delivery.resolve-media.runtime.js", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/media-runtime")>(
-    "openclaw/plugin-sdk/media-runtime",
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/media-runtime")>(
+    "operator/plugin-sdk/media-runtime",
   );
   return {
     readRemoteMediaBuffer: (...args: unknown[]) => readRemoteMediaBuffer(...args),

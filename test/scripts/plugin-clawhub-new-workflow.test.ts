@@ -346,7 +346,7 @@ describe("Plugin ClawHub New workflow", () => {
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(publishRun).toContain('"${OPENCLAW_CLAWHUB_CLI}" package trusted-publisher set');
     expect(publishRun).toContain("timeout --signal=TERM --kill-after=10s 300s");
-    expect(publishRun).toContain("--repository openclaw/openclaw");
+    expect(publishRun).toContain("--repository operator/operator");
     expect(publishRun).toContain("--workflow-filename plugin-clawhub-release.yml");
     expect(publishRun).not.toContain("--environment");
     expect(step(publish, "Verify exact ClawHub registry artifact bytes").run).toContain(

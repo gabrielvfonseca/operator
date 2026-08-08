@@ -199,7 +199,7 @@ describe("Zalo polling image handling", () => {
 
   it("times out inbound image downloads when photo_url headers never arrive", async () => {
     const { createServer } = await import("node:http");
-    const { saveRemoteMedia } = await import("openclaw/plugin-sdk/media-runtime");
+    const { saveRemoteMedia } = await import("operator/plugin-sdk/media-runtime");
 
     const server = createServer((_req, _res) => {
       // Accept the connection but never write status/headers.

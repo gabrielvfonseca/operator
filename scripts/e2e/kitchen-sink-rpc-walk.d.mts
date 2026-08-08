@@ -96,7 +96,7 @@ export function createRpcCliRunOptions(
   options?: { env?: NodeJS.ProcessEnv; commandResourceOptions?: Record<string, unknown> },
 ): Record<string, unknown> & { resourceLabel: string; timeoutMs: number };
 export function findDistCallGatewayModuleFiles(cwd?: string): string[];
-export function usesBuiltOpenClawEntry(
+export function usesBuiltOperatorEntry(
   runner: unknown,
   cwd?: string,
   env?: NodeJS.ProcessEnv,

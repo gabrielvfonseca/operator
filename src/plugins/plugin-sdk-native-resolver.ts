@@ -50,7 +50,7 @@ type InstallOperatorPluginSdkNativeResolverOptions = {
 
 const moduleWithResolver = Module as ModuleWithResolver;
 const nodeResolveFilenameProperty = "_resolveFilename" as const;
-const PLUGIN_SDK_PACKAGE_PREFIXES = ["openclaw/plugin-sdk", "@gabrielvfonseca/plugin-sdk"] as const;
+const PLUGIN_SDK_PACKAGE_PREFIXES = ["operator/plugin-sdk", "@gabrielvfonseca/plugin-sdk"] as const;
 const INTERNAL_CORE_PACKAGE_ALIASES = [
   {
     packageName: "@gabrielvfonseca/markdown-core",

@@ -6,7 +6,7 @@ import {
   resolvePinnedNpmInstallRecordForCli,
 } from "../../src/cli/npm-resolution.js";
 
-const CLI_STATE_ROOT = "/tmp/openclaw";
+const CLI_STATE_ROOT = "/tmp/operator";
 const ALPHA_INSTALL_PATH = installedPluginRoot(CLI_STATE_ROOT, "alpha");
 
 describe("npm-resolution helpers", () => {

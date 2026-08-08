@@ -72,7 +72,7 @@ describe("plugins marketplace entries", () => {
   it("lists entries from the configured marketplace feed as JSON", async () => {
     const config = {
       marketplaces: {
-        feeds: { acme: { url: "https://packages.acme.example/openclaw/feed" } },
+        feeds: { acme: { url: "https://packages.acme.example/operator/feed" } },
         sources: { "acme-npm": { type: "npm" as const } },
       },
     };
@@ -102,14 +102,14 @@ describe("plugins marketplace entries", () => {
         entries: [],
       },
       metadata: {
-        url: "https://packages.acme.example/openclaw/feed",
+        url: "https://packages.acme.example/operator/feed",
         status: 200,
         checksum: "feed-sha",
       },
       snapshot: {
         body: "{}",
         metadata: {
-          url: "https://packages.acme.example/openclaw/feed",
+          url: "https://packages.acme.example/operator/feed",
           status: 200,
           checksum: "feed-sha",
         },
@@ -240,14 +240,14 @@ describe("plugins marketplace entries", () => {
         entries: [],
       },
       metadata: {
-        url: "https://packages.acme.example/openclaw/feed",
+        url: "https://packages.acme.example/operator/feed",
         status: 200,
         checksum: "feed-sha",
       },
       snapshot: {
         body: "{}",
         metadata: {
-          url: "https://packages.acme.example/openclaw/feed",
+          url: "https://packages.acme.example/operator/feed",
           status: 200,
           checksum: "feed-sha",
         },
@@ -295,14 +295,14 @@ describe("plugins marketplace entries", () => {
         entries: [],
       },
       metadata: {
-        url: "https://user:secret@packages.acme.example/openclaw/feed?token=leak#frag",
+        url: "https://user:secret@packages.acme.example/operator/feed?token=leak#frag",
         status: 200,
         checksum: "feed-sha",
       },
       snapshot: {
         body: "{}",
         metadata: {
-          url: "https://user:secret@packages.acme.example/openclaw/feed?token=leak#frag",
+          url: "https://user:secret@packages.acme.example/operator/feed?token=leak#frag",
           status: 200,
           checksum: "feed-sha",
         },

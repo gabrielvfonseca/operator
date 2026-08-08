@@ -9,13 +9,13 @@ title: "Browser (Operator-managed)"
 
 Operator can run a **dedicated Chrome/Brave/Edge/Chromium profile** that the agent controls. It runs through a small local control service inside the Gateway (loopback only) and is isolated from your personal browser.
 
-- Think of it as a **separate, agent-only browser**. The `openclaw` profile never touches your personal browser profile.
+- Think of it as a **separate, agent-only browser**. The `operator` profile never touches your personal browser profile.
 - The agent opens tabs, reads pages, clicks, and types in this isolated lane.
 - The built-in `user` profile attaches to your real signed-in Chrome session instead, via Chrome DevTools MCP.
 
 ## What you get
 
-- A separate browser profile named **openclaw** (orange accent by default).
+- A separate browser profile named **operator** (orange accent by default).
 - Deterministic tab control (list/open/focus/close).
 - Agent actions (click/type/drag/select), snapshots, screenshots, PDFs.
 - Playwright-backed profiles save direct attachment navigations under the managed downloads directory and return `{ url, suggestedFilename, path }` metadata after final-URL policy validation.
@@ -23,7 +23,7 @@ Operator can run a **dedicated Chrome/Brave/Edge/Chromium profile** that the age
 - A bundled `browser-automation` skill that teaches agents the snapshot,
   stable-tab, stale-ref, and manual-blocker recovery loop when the browser
   plugin is enabled.
-- Optional multi-profile support (`openclaw`, `work`, `remote`, ...).
+- Optional multi-profile support (`operator`, `work`, `remote`, ...).
 
 This browser is **not** your daily driver. It is a safe, isolated surface for
 agent automation and verification.
@@ -120,9 +120,9 @@ channel config behavior. `plugins.entries.browser.enabled=true` and
 `tools.alsoAllow: ["browser"]` do not substitute for allowlist membership by
 themselves. Removing `plugins.allow` entirely also restores the default.
 
-## Profiles: `openclaw`, `user`, `chrome`
+## Profiles: `operator`, `user`, `chrome`
 
-- `openclaw`: managed, isolated browser (no extension required).
+- `operator`: managed, isolated browser (no extension required).
 - `user`: built-in Chrome DevTools MCP attach profile for your **real
   signed-in Chrome** session. Chrome shows a blocking "Allow remote debugging?"
   prompt the first time Operator attaches, so someone must be at the computer.
@@ -133,7 +133,7 @@ themselves. Removing `plugins.allow` entirely also restores the default.
 
 For agent browser tool calls:
 
-- Default: use the isolated `openclaw` browser.
+- Default: use the isolated `operator` browser.
 - Prefer `profile="chrome"` (extension) when existing logged-in sessions matter
   and the user is **away from the computer** (Telegram, WhatsApp, etc.).
 - Prefer `profile="user"` (Chrome MCP) when existing logged-in sessions matter
@@ -265,7 +265,7 @@ main model can read the screenshot directly.
 <Accordion title="Ports and reachability">
 
 - Control service binds to loopback on a port derived from `gateway.port` (default `18791` = gateway + 2). `OPERATOR_GATEWAY_PORT` takes priority over `gateway.port`; either shifts the derived ports in the same family.
-- Local `openclaw` profiles auto-assign `cdpPort`/`cdpUrl` from a range starting 9 ports above the control port (default `18800`-`18899`); set those only for
+- Local `operator` profiles auto-assign `cdpPort`/`cdpUrl` from a range starting 9 ports above the control port (default `18800`-`18899`); set those only for
   remote CDP profiles or existing-session endpoint attach. `cdpUrl` defaults to
   the managed local CDP port when unset.
 - `remoteCdpTimeoutMs` applies to remote and `attachOnly` CDP HTTP reachability
@@ -338,7 +338,7 @@ main model can read the screenshot directly.
   or grant sandbox browser device access.
 - `executablePath` can be set globally or per local managed profile. Per-profile values override `browser.executablePath`, so different managed profiles can launch different Chromium-based browsers. Both forms accept `~` for your OS home directory.
 - `color` (top-level and per-profile) tints the browser UI so you can see which profile is active.
-- Default profile is `openclaw` (managed standalone). Use `defaultProfile: "user"` to opt into the signed-in user browser.
+- Default profile is `operator` (managed standalone). Use `defaultProfile: "user"` to opt into the signed-in user browser.
 - Auto-detect order: system default browser if Chromium-based; otherwise Chrome, Brave, Edge, Chromium, Chrome Canary.
 - `driver: "existing-session"` uses Chrome DevTools MCP instead of raw CDP. It can attach through Chrome MCP auto-connect, or through `cdpUrl` when you already have a DevTools endpoint for the running browser.
 - `driver: "extension"` drives your signed-in Chrome through the [Operator Chrome extension](/tools/chrome-extension). The relay owns its loopback endpoint, so these profiles do not accept `cdpUrl`. This is the only signed-in-browser mode that works with nobody at the computer.
@@ -649,7 +649,7 @@ Operator supports multiple named profiles (routing configs). Profiles can be:
 
 Defaults:
 
-- The `openclaw` profile is auto-created if missing.
+- The `operator` profile is auto-created if missing.
 - The `user` profile is built-in for Chrome MCP existing-session attach.
 - Existing-session profiles are opt-in beyond `user`; create them with `--driver existing-session`.
 - Local CDP ports allocate from **18800-18899** by default.
@@ -742,7 +742,7 @@ Agent use:
 
 Notes:
 
-- This path is higher-risk than the isolated `openclaw` profile because it can
+- This path is higher-risk than the isolated `operator` profile because it can
   act inside your signed-in browser session.
 - Operator does not launch the browser for this driver; it only attaches.
 - Operator uses the official Chrome DevTools MCP `--autoConnect` flow here. If
@@ -785,7 +785,7 @@ directory.
 
 <Accordion title="Existing-session feature limitations">
 
-Compared to the managed `openclaw` profile, existing-session drivers are more constrained:
+Compared to the managed `operator` profile, existing-session drivers are more constrained:
 
 - **Screenshots** - page captures and `--ref` element captures work; CSS `--element` selectors do not. Playwright is not required for page or ref-based element screenshots. (`--full-page` cannot combine with `--ref` or `--element` on any profile, not just existing-session.)
 - **Actions** - `click`, `type`, `hover`, `scrollIntoView`, `drag`, and `select` require snapshot refs (no CSS selectors). `click-coords` clicks visible viewport coordinates and does not require a snapshot ref. `click` is left-button only (no button overrides or modifiers). `type` does not support `slowly=true`; use `fill` or `press`. `press` does not support `delayMs`. `type`, `hover`, `scrollIntoView`, `drag`, `select`, and `fill` do not support per-call `timeoutMs` overrides; `evaluate` does. `select` accepts a single value. `batch` is not supported; send actions individually.
@@ -852,7 +852,7 @@ Common examples:
 - CDP startup or readiness failure:
   - `Chrome CDP websocket for profile "@gabrielvfonseca/operator" is not reachable after start`
   - `Remote CDP for profile "<name>" is not reachable at <cdpUrl>`
-  - `Port <port> is in use for profile "<name>" but not by openclaw` when a
+  - `Port <port> is in use for profile "<name>" but not by operator` when a
     loopback external CDP service is configured without `attachOnly: true`
 - Navigation SSRF block:
   - `open`, `navigate`, snapshot, or tab-opening flows fail with a browser/network policy error while `start` and `tabs` still work
@@ -875,7 +875,7 @@ How to read the results:
 Important behavior details:
 
 - Browser config defaults to a fail-closed SSRF policy object even when you do not configure `browser.ssrfPolicy`.
-- For the local loopback `openclaw` managed profile, CDP health checks intentionally skip browser SSRF reachability enforcement for Operator's own local control plane.
+- For the local loopback `operator` managed profile, CDP health checks intentionally skip browser SSRF reachability enforcement for Operator's own local control plane.
 - Navigation protection is separate. A successful `start` or `tabs` result does not mean a later `open` or `navigate` target is allowed.
 
 Security guidance:
@@ -897,7 +897,7 @@ How it maps:
 - `browser screenshot` captures pixels (full page, element, or labeled refs).
 - `browser doctor` checks Gateway, plugin, profile, browser, and tab readiness.
 - `browser` accepts:
-  - `profile` to choose a named browser profile (openclaw, chrome, or remote CDP).
+  - `profile` to choose a named browser profile (operator, chrome, or remote CDP).
   - `target` (`sandbox` | `host` | `node`) to select where the browser lives.
   - In sandboxed sessions, `target: "host"` requires `agents.defaults.sandbox.browser.allowHostControl=true`.
   - If `target` is omitted: sandboxed sessions default to `sandbox`, non-sandbox sessions default to `host`.

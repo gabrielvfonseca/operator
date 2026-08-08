@@ -3375,8 +3375,8 @@ describeControlUiE2e("Control UI mocked Gateway E2E", () => {
       await page.goto(`${server.baseUrl}chat`);
       const documentMarker = await page.evaluate(() => {
         const marker = crypto.randomUUID();
-        (window as Window & { __openclawAvatarTestDocument?: string })[
-          "__openclawAvatarTestDocument"
+        (window as Window & { __operatorAvatarTestDocument?: string })[
+          "__operatorAvatarTestDocument"
         ] = marker;
         return marker;
       });
@@ -3413,8 +3413,8 @@ describeControlUiE2e("Control UI mocked Gateway E2E", () => {
       expect(
         await page.evaluate(
           () =>
-            (window as Window & { __openclawAvatarTestDocument?: string })[
-              "__openclawAvatarTestDocument"
+            (window as Window & { __operatorAvatarTestDocument?: string })[
+              "__operatorAvatarTestDocument"
             ],
         ),
       ).toBe(documentMarker);

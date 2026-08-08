@@ -122,7 +122,7 @@ describe("wide-area DNS-SD zone rendering", () => {
     const txt = renderZoneText({
       tailnetIPv6: "fd7a:115c:a1e0::8801:e04c",
       sshPort: 22,
-      cliPath: "/opt/homebrew/bin/openclaw",
+      cliPath: "/opt/homebrew/bin/operator",
     });
 
     expectZoneRecords(txt, [
@@ -134,7 +134,7 @@ describe("wide-area DNS-SD zone rendering", () => {
       `displayName=Mac Studio (Operator)`,
       `gatewayPort=18789`,
       `sshPort=22`,
-      `cliPath=/opt/homebrew/bin/openclaw`,
+      `cliPath=/opt/homebrew/bin/operator`,
     ]);
   });
 
@@ -155,7 +155,7 @@ describe("wide-area DNS-SD zone rendering", () => {
         gatewayTlsFingerprintSha256: "abc123",
         gatewayDirectReachable: true,
         tailnetDns: " tailnet.ts.net ",
-        cliPath: " /opt/homebrew/bin/openclaw ",
+        cliPath: " /opt/homebrew/bin/operator ",
       },
       records: [
         `$ORIGIN operator.internal.`,
@@ -166,7 +166,7 @@ describe("wide-area DNS-SD zone rendering", () => {
         `gatewayTlsSha256=abc123`,
         `gatewayDirectReachable=1`,
         `tailnetDns=tailnet.ts.net`,
-        `cliPath=/opt/homebrew/bin/openclaw`,
+        `cliPath=/opt/homebrew/bin/operator`,
       ],
     },
   ])("$name", ({ overrides, records }) => {

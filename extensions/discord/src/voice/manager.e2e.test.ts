@@ -201,9 +201,9 @@ vi.mock("./sdk-runtime.js", () => ({
   }),
 }));
 
-vi.mock("openclaw/plugin-sdk/routing", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/routing")>(
-    "openclaw/plugin-sdk/routing",
+vi.mock("operator/plugin-sdk/routing", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/routing")>(
+    "operator/plugin-sdk/routing",
   );
   return {
     ...actual,
@@ -211,9 +211,9 @@ vi.mock("openclaw/plugin-sdk/routing", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/agent-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/agent-runtime")>(
-    "openclaw/plugin-sdk/agent-runtime",
+vi.mock("operator/plugin-sdk/agent-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/agent-runtime")>(
+    "operator/plugin-sdk/agent-runtime",
   );
   return {
     ...actual,
@@ -228,19 +228,19 @@ vi.mock("openclaw/plugin-sdk/agent-runtime", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/realtime-bootstrap-context", async () => {
+vi.mock("operator/plugin-sdk/realtime-bootstrap-context", async () => {
   const actual = await vi.importActual<
-    typeof import("openclaw/plugin-sdk/realtime-bootstrap-context")
-  >("openclaw/plugin-sdk/realtime-bootstrap-context");
+    typeof import("operator/plugin-sdk/realtime-bootstrap-context")
+  >("operator/plugin-sdk/realtime-bootstrap-context");
   return {
     ...actual,
     resolveRealtimeBootstrapContextInstructions: resolveRealtimeBootstrapContextInstructionsMock,
   };
 });
 
-vi.mock("openclaw/plugin-sdk/runtime-env", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/runtime-env")>(
-    "openclaw/plugin-sdk/runtime-env",
+vi.mock("operator/plugin-sdk/runtime-env", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/runtime-env")>(
+    "operator/plugin-sdk/runtime-env",
   );
   return {
     ...actual,
@@ -248,13 +248,13 @@ vi.mock("openclaw/plugin-sdk/runtime-env", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/system-event-runtime", () => ({
+vi.mock("operator/plugin-sdk/system-event-runtime", () => ({
   enqueueSystemEvent: enqueueSystemEventMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/realtime-voice", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/realtime-voice")>(
-    "openclaw/plugin-sdk/realtime-voice",
+vi.mock("operator/plugin-sdk/realtime-voice", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/realtime-voice")>(
+    "operator/plugin-sdk/realtime-voice",
   );
   return {
     ...actual,
@@ -4001,7 +4001,7 @@ describe("DiscordVoiceManager", () => {
   });
 
   it("accepts Operator as a default wake name before realtime agent-proxy consults", async () => {
-    agentCommandMock.mockResolvedValueOnce({ payloads: [{ text: "openclaw wake answer" }] });
+    agentCommandMock.mockResolvedValueOnce({ payloads: [{ text: "operator wake answer" }] });
     const manager = createManager(
       {
         groupPolicy: "open",
@@ -4047,7 +4047,7 @@ describe("DiscordVoiceManager", () => {
     });
     expect(lastAgentCommandArgs().message).toContain("how is it going");
     expect(lastAgentCommandArgs().message).not.toContain("Operator");
-    expectUserMessageIncludes("openclaw wake answer");
+    expectUserMessageIncludes("operator wake answer");
   });
 
   it("ignores default agent wake names longer than two words", async () => {

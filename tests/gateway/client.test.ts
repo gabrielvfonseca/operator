@@ -163,7 +163,7 @@ vi.mock("ws", () => ({
   WebSocket: MockWebSocket,
 }));
 
-vi.mock("@openclaw/proxyline", () => ({
+vi.mock("@operator/proxyline", () => ({
   installGlobalProxy: installGlobalProxyMock,
 }));
 
@@ -267,7 +267,7 @@ function expectSecurityConnectError(
 ) {
   const error = firstMockArg(onConnectError, "connect error") as Error;
   expect(error.message).toContain("SECURITY ERROR");
-  expect(error.message).toContain("openclaw doctor --fix");
+  expect(error.message).toContain("operator doctor --fix");
   if (params?.expectTailscaleHint) {
     expect(error.message).toContain("Tailscale Serve/Funnel");
   }

@@ -40,7 +40,7 @@ does not flicker while offline.
 
 Use the CLI flow in [Gateway health](/gateway/health) (`operator status`,
 `operator status --deep`, `operator health --json`) and tail
-`/tmp/openclaw/operator-*.log`, filtering for `web-heartbeat` / `web-reconnect`.
+`/tmp/operator/operator-*.log`, filtering for `web-heartbeat` / `web-reconnect`.
 
 ## Related
 

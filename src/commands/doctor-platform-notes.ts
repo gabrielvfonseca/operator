@@ -77,7 +77,7 @@ async function collectMacStaleOperatorUpdateLaunchdJobsWarning(deps?: {
     }),
     "- Fix after confirming no update is running:",
     "  launchctl remove <label>",
-    `  ${formatCliCommand("openclaw gateway restart")}`,
+    `  ${formatCliCommand("operator gateway restart")}`,
   ].join("\n");
 }
 

@@ -90,7 +90,7 @@ export function getUsedPorts(
 
 /** Default browser profile color palette. */
 const PROFILE_COLORS = [
-  "#FF4500", // Orange-red (openclaw default)
+  "#FF4500", // Orange-red (operator default)
   "#0066CC", // Blue
   "#00AA00", // Green
   "#9933FF", // Purple

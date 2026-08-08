@@ -25,7 +25,7 @@ Operator is a single container with some config files. The interesting customiza
 export <PROVIDER>_API_KEY="..."
 ./scripts/k8s/deploy.sh
 
-kubectl port-forward svc/operator 18789:18789 -n openclaw
+kubectl port-forward svc/operator 18789:18789 -n operator
 open http://localhost:18789
 ```
 
@@ -75,7 +75,7 @@ Add `--show-token` to either command to print the token to stdout for local test
 ### 2) Access the gateway
 
 ```bash
-kubectl port-forward svc/operator 18789:18789 -n openclaw
+kubectl port-forward svc/operator 18789:18789 -n operator
 open http://localhost:18789
 ```
 
@@ -122,7 +122,7 @@ Or patch the Secret directly:
 ```bash
 kubectl patch secret operator-secrets -n operator \
   -p '{"stringData":{"<PROVIDER>_API_KEY":"..."}}'
-kubectl rollout restart deployment/operator -n openclaw
+kubectl rollout restart deployment/operator -n operator
 ```
 
 ### Custom namespace
@@ -136,7 +136,7 @@ OPERATOR_NAMESPACE=my-namespace ./scripts/k8s/deploy.sh
 Edit the `image` field in `scripts/k8s/manifests/deployment.yaml`:
 
 ```yaml
-image: ghcr.io/openclaw/operator:slim # primary; official Docker Hub mirror: openclaw/openclaw
+image: ghcr.io/operator/operator:slim # primary; official Docker Hub mirror: operator/operator
 ```
 
 ### Expose beyond port-forward

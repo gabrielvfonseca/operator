@@ -211,7 +211,7 @@ describe("noteMemorySearchHealth", () => {
     expect(note).toHaveBeenCalledTimes(1);
     const message = firstNoteMessage();
     expect(message).toContain('Memory search provider is set to "local"');
-    expect(message).toContain("openclaw plugins install @gabrielvfonseca/llama-cpp-provider");
+    expect(message).toContain("operator plugins install @gabrielvfonseca/llama-cpp-provider");
   });
 
   it("supports silent structured collection through an injected note sink", async () => {
@@ -396,7 +396,7 @@ describe("noteMemorySearchHealth", () => {
         checked: false,
         ready: false,
         error:
-          "memory embedding readiness not checked; run `openclaw memory status --deep` to probe",
+          "memory embedding readiness not checked; run `operator memory status --deep` to probe",
         skipped: true,
       },
     });
@@ -416,7 +416,7 @@ describe("noteMemorySearchHealth", () => {
         checked: false,
         ready: false,
         error:
-          "memory embedding readiness not checked; run `openclaw memory status --deep` to probe",
+          "memory embedding readiness not checked; run `operator memory status --deep` to probe",
         skipped: true,
       },
     });
@@ -729,7 +729,7 @@ describe("noteMemorySearchHealth", () => {
     const message = String(note.mock.calls[0]?.[0] ?? "");
     expect(message).toContain("memorySearch.sources with sessions");
     expect(message).toContain("memory.qmd.sessions.enabled is not true");
-    expect(message).toContain("openclaw config set memory.qmd.sessions.enabled true");
+    expect(message).toContain("operator config set memory.qmd.sessions.enabled true");
   });
 
   it("warns when QMD session export is explicitly disabled", async () => {
@@ -966,11 +966,11 @@ describe("noteMemorySearchHealth", () => {
   });
 
   it("does not warn when key-optional provider (lmstudio) probe was skipped (skipped: true)", async () => {
-    // When `openclaw doctor` runs without --deep, the probe is skipped and returns
+    // When `operator doctor` runs without --deep, the probe is skipped and returns
     // { checked: false, ready: false, skipped: true }. This must NOT produce a
     // false-positive warning — it means readiness was never checked, not that
     // embeddings are unavailable.
-    // Regression test for: https://github.com/openclaw/openclaw/issues/74608
+    // Regression test for: https://github.com/operator/operator/issues/74608
     resolveMemorySearchConfig.mockReturnValue({
       provider: "lmstudio",
       local: {},
@@ -1029,7 +1029,7 @@ describe("noteMemorySearchHealth", () => {
     const message = firstNoteMessage();
     expect(message).toContain('provider is set to "openai-compatible"');
     expect(message).toContain("remote.baseUrl");
-    expect(message).toContain("openclaw config set");
+    expect(message).toContain("operator config set");
     expect(resolveApiKeyForProvider).not.toHaveBeenCalled();
   });
 
@@ -1048,7 +1048,7 @@ describe("noteMemorySearchHealth", () => {
     const message = firstNoteMessage();
     expect(message).toContain('provider is set to "openai-compatible"');
     expect(message).toContain("memorySearch.model");
-    expect(message).toContain("openclaw config set");
+    expect(message).toContain("operator config set");
     expect(resolveApiKeyForProvider).not.toHaveBeenCalled();
   });
 
@@ -1295,7 +1295,7 @@ describe("noteMemorySearchHealth", () => {
   it("warns for key-optional provider (lmstudio) when gateway probe timed out", async () => {
     // A gateway timeout sets checked: false but skipped: false/absent. This is a
     // real diagnostic signal — embeddings may be unavailable — so we should warn.
-    // Regression guard: https://github.com/openclaw/openclaw/issues/74608
+    // Regression guard: https://github.com/operator/operator/issues/74608
     resolveMemorySearchConfig.mockReturnValue({
       provider: "lmstudio",
       local: {},
@@ -1347,8 +1347,8 @@ describe("noteMemorySearchHealth", () => {
 
     const message = firstNoteMessage();
     expect(message).toContain("Gateway memory probe for default agent is not ready");
-    expect(message).toContain("openclaw configure --section model");
-    expect(message).not.toContain("openclaw auth add --provider");
+    expect(message).toContain("operator configure --section model");
+    expect(message).not.toContain("operator auth add --provider");
   });
 
   it("warns for legacy auto mode as OpenAI when no API key is configured", async () => {
@@ -1364,7 +1364,7 @@ describe("noteMemorySearchHealth", () => {
     const message = firstNoteMessage();
     expect(message).toContain('provider is set to "openai"');
     expect(message).toContain("OPENAI_API_KEY");
-    expect(message).toContain("openclaw configure --section model");
+    expect(message).toContain("operator configure --section model");
   });
 
   it("does not probe unrelated embedding providers for legacy auto mode", async () => {

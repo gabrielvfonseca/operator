@@ -145,59 +145,59 @@ describe("host tool tilde expansion (non-workspace mode)", () => {
   });
 
   it("ignores OPERATOR_HOME for write operations", async () => {
-    const openclawHome = await createTempDir("operator-home-override-", os.tmpdir());
+    const operatorHome = await createTempDir("operator-home-override-", os.tmpdir());
     const dir = await createTempDir("operator-tilde-test-write-");
     const testFile = path.join(dir, "os-home-write.txt");
 
-    await withEnvAsync({ OPERATOR_HOME: openclawHome }, async () => {
-      createHostWorkspaceWriteTool(openclawHome, { workspaceOnly: false });
+    await withEnvAsync({ OPERATOR_HOME: operatorHome }, async () => {
+      createHostWorkspaceWriteTool(operatorHome, { workspaceOnly: false });
       await readWriteOps().writeFile(toTildePath(testFile), "written via os home");
 
       expect(await fs.readFile(testFile, "utf8")).toBe("written via os home");
-      await expectMissingPath(fs.access(path.join(openclawHome, path.basename(testFile))));
+      await expectMissingPath(fs.access(path.join(operatorHome, path.basename(testFile))));
     });
   });
 
   it("ignores OPERATOR_HOME for mkdir operations", async () => {
-    const openclawHome = await createTempDir("operator-home-override-", os.tmpdir());
+    const operatorHome = await createTempDir("operator-home-override-", os.tmpdir());
     const dir = await createTempDir("operator-tilde-test-mkdir-");
     const newDir = path.join(dir, "os-home-subdir");
 
-    await withEnvAsync({ OPERATOR_HOME: openclawHome }, async () => {
-      createHostWorkspaceWriteTool(openclawHome, { workspaceOnly: false });
+    await withEnvAsync({ OPERATOR_HOME: operatorHome }, async () => {
+      createHostWorkspaceWriteTool(operatorHome, { workspaceOnly: false });
       await readWriteOps().mkdir(toTildePath(newDir));
 
       expect((await fs.stat(newDir)).isDirectory()).toBe(true);
-      await expectMissingPath(fs.access(path.join(openclawHome, path.basename(newDir))));
+      await expectMissingPath(fs.access(path.join(operatorHome, path.basename(newDir))));
     });
   });
 
   it("ignores OPERATOR_HOME for readFile operations", async () => {
-    const openclawHome = await createTempDir("operator-home-override-", os.tmpdir());
+    const operatorHome = await createTempDir("operator-home-override-", os.tmpdir());
     const dir = await createTempDir("operator-tilde-test-edit-");
     const testFile = path.join(dir, "os-home-read.txt");
     await fs.writeFile(testFile, "OS home content", "utf8");
 
-    await withEnvAsync({ OPERATOR_HOME: openclawHome }, async () => {
-      createHostWorkspaceEditTool(openclawHome, { workspaceOnly: false });
+    await withEnvAsync({ OPERATOR_HOME: operatorHome }, async () => {
+      createHostWorkspaceEditTool(operatorHome, { workspaceOnly: false });
       const content = await readEditOps().readFile(toTildePath(testFile));
 
       expect(content.toString("utf8")).toBe("OS home content");
-      await expectMissingPath(fs.access(path.join(openclawHome, path.basename(testFile))));
+      await expectMissingPath(fs.access(path.join(operatorHome, path.basename(testFile))));
     });
   });
 
   it("ignores OPERATOR_HOME for access operations", async () => {
-    const openclawHome = await createTempDir("operator-home-override-", os.tmpdir());
+    const operatorHome = await createTempDir("operator-home-override-", os.tmpdir());
     const dir = await createTempDir("operator-tilde-test-edit-");
     const testFile = path.join(dir, "os-home-access.txt");
     await fs.writeFile(testFile, "exists", "utf8");
 
-    await withEnvAsync({ OPERATOR_HOME: openclawHome }, async () => {
-      createHostWorkspaceEditTool(openclawHome, { workspaceOnly: false });
+    await withEnvAsync({ OPERATOR_HOME: operatorHome }, async () => {
+      createHostWorkspaceEditTool(operatorHome, { workspaceOnly: false });
 
       await expect(readEditOps().access(toTildePath(testFile))).resolves.toBeUndefined();
-      await expectMissingPath(fs.access(path.join(openclawHome, path.basename(testFile))));
+      await expectMissingPath(fs.access(path.join(operatorHome, path.basename(testFile))));
     });
   });
 });

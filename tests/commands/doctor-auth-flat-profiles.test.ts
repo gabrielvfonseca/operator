@@ -7,8 +7,8 @@ import {
   saveAuthProfileStore,
 } from "../../src/agents/auth-profiles/store.js";
 import type { OperatorConfig } from "../../src/config/types.operator.js";
-import { closeOperatorAgentDatabasesForTest } from "../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import {
   createOperatorTestState,
   type OperatorTestState,

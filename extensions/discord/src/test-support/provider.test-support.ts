@@ -352,9 +352,9 @@ vi.mock("../internal/voice.js", () => ({
   VoicePlugin: function VoicePlugin() {},
 }));
 
-vi.mock("openclaw/plugin-sdk/acp-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/acp-runtime")>(
-    "openclaw/plugin-sdk/acp-runtime",
+vi.mock("operator/plugin-sdk/acp-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/acp-runtime")>(
+    "operator/plugin-sdk/acp-runtime",
   );
   return {
     ...actual,
@@ -366,9 +366,9 @@ vi.mock("openclaw/plugin-sdk/acp-runtime", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/command-auth-native", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/command-auth-native")>(
-    "openclaw/plugin-sdk/command-auth-native",
+vi.mock("operator/plugin-sdk/command-auth-native", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/command-auth-native")>(
+    "operator/plugin-sdk/command-auth-native",
   );
   return {
     ...actual,
@@ -376,9 +376,9 @@ vi.mock("openclaw/plugin-sdk/command-auth-native", async () => {
     listSkillCommandsForAgents: listSkillCommandsForAgentsMock,
   };
 });
-vi.mock("openclaw/plugin-sdk/reply-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/reply-runtime")>(
-    "openclaw/plugin-sdk/reply-runtime",
+vi.mock("operator/plugin-sdk/reply-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/reply-runtime")>(
+    "operator/plugin-sdk/reply-runtime",
   );
   return {
     ...actual,
@@ -386,10 +386,10 @@ vi.mock("openclaw/plugin-sdk/reply-runtime", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/native-command-config-runtime", async () => {
+vi.mock("operator/plugin-sdk/native-command-config-runtime", async () => {
   const actual = await vi.importActual<
-    typeof import("openclaw/plugin-sdk/native-command-config-runtime")
-  >("openclaw/plugin-sdk/native-command-config-runtime");
+    typeof import("operator/plugin-sdk/native-command-config-runtime")
+  >("operator/plugin-sdk/native-command-config-runtime");
   return {
     ...actual,
     isNativeCommandsExplicitlyDisabled: isNativeCommandsExplicitlyDisabledMock,
@@ -398,19 +398,19 @@ vi.mock("openclaw/plugin-sdk/native-command-config-runtime", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/runtime-config-snapshot", async () => {
+vi.mock("operator/plugin-sdk/runtime-config-snapshot", async () => {
   const actual = await vi.importActual<
-    typeof import("openclaw/plugin-sdk/runtime-config-snapshot")
-  >("openclaw/plugin-sdk/runtime-config-snapshot");
+    typeof import("operator/plugin-sdk/runtime-config-snapshot")
+  >("operator/plugin-sdk/runtime-config-snapshot");
   return {
     ...actual,
     getRuntimeConfig: () => ({}),
   };
 });
 
-vi.mock("openclaw/plugin-sdk/runtime-env", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/runtime-env")>(
-    "openclaw/plugin-sdk/runtime-env",
+vi.mock("operator/plugin-sdk/runtime-env", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/runtime-env")>(
+    "operator/plugin-sdk/runtime-env",
   );
   return {
     ...actual,
@@ -433,9 +433,9 @@ vi.mock("openclaw/plugin-sdk/runtime-env", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/error-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/error-runtime")>(
-    "openclaw/plugin-sdk/error-runtime",
+vi.mock("operator/plugin-sdk/error-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/error-runtime")>(
+    "operator/plugin-sdk/error-runtime",
   );
   return {
     ...actual,

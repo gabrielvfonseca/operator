@@ -631,7 +631,7 @@ describe("tui command handlers", () => {
   it("returns to Operator with an optional request", async () => {
     const { handleCommand, addSystem, requestExit, sendChat } = createHarness();
 
-    await handleCommand("/openclaw restart gateway");
+    await handleCommand("/operator restart gateway");
 
     expect(sendChat).not.toHaveBeenCalled();
     expect(addSystem).toHaveBeenCalledWith("returning to Operator with request: restart gateway");
@@ -659,7 +659,7 @@ describe("tui command handlers", () => {
 
     expect(state.currentAgentId).toBe("work");
     expect(setSession).toHaveBeenCalledWith("");
-    expect(addSystem).toHaveBeenCalledWith("agent set to work; use /openclaw to return");
+    expect(addSystem).toHaveBeenCalledWith("agent set to work; use /operator to return");
   });
 
   it("marks the generated runId as local before gateway events arrive", async () => {
@@ -1149,7 +1149,7 @@ describe("tui command handlers", () => {
     await codex.handleCommand("/think");
     expect(codex.addSystem).toHaveBeenCalledWith(expect.not.stringContaining("ultra"));
 
-    const openclaw = createHarness({
+    const operator = createHarness({
       sessionInfo: {
         modelProvider: "openai",
         model: "gpt-5.6-luna",

@@ -69,7 +69,7 @@ const legacyConfigRepairMocks = vi.hoisted(() => ({
   repairLegacyConfigForUpdateChannel: vi.fn(),
 }));
 const launchdUpdateCleanupMocks = vi.hoisted(() => ({
-  disableCurrentOpenClawUpdateLaunchdJob: vi.fn(async () => false),
+  disableCurrentOperatorUpdateLaunchdJob: vi.fn(async () => false),
 }));
 const restartHealthTestControl = vi.hoisted(() => ({
   snapshot: undefined as unknown,
@@ -105,8 +105,8 @@ vi.mock("../infra/update-runner.js", async (importOriginal) => ({
 }));
 
 vi.mock("../infra/operator-root.js", () => ({
-  resolveOpenClawPackageRoot: vi.fn(),
-  resolveOpenClawPackageRootSync: vi.fn(() => process.cwd()),
+  resolveOperatorPackageRoot: vi.fn(),
+  resolveOperatorPackageRootSync: vi.fn(() => process.cwd()),
 }));
 
 vi.mock("../config/config.js", () => ({
@@ -334,8 +334,8 @@ vi.mock("../daemon/service.js", () => ({
 
 vi.mock("../daemon/launchd.js", async (importOriginal) => ({
   ...(await importOriginal<typeof import("../daemon/launchd.js")>()),
-  disableCurrentOpenClawUpdateLaunchdJob:
-    launchdUpdateCleanupMocks.disableCurrentOpenClawUpdateLaunchdJob,
+  disableCurrentOperatorUpdateLaunchdJob:
+    launchdUpdateCleanupMocks.disableCurrentOperatorUpdateLaunchdJob,
 }));
 
 vi.mock("../daemon/schtasks.js", () => ({
@@ -407,7 +407,7 @@ vi.mock("../runtime.js", () => ({
 }));
 
 const { runGatewayUpdate } = await import("../infra/update-runner.js");
-const { resolveOpenClawPackageRoot } = await import("../infra/operator-root.js");
+const { resolveOperatorPackageRoot } = await import("../infra/operator-root.js");
 const {
   mutateConfigFileWithRetry,
   readConfigFileSnapshot,
@@ -506,7 +506,7 @@ describe("update-cli", () => {
   };
 
   const mockPackageInstallStatus = (root: string) => {
-    vi.mocked(resolveOpenClawPackageRoot).mockResolvedValue(root);
+    vi.mocked(resolveOperatorPackageRoot).mockResolvedValue(root);
     vi.mocked(checkUpdateStatus).mockResolvedValue({
       root,
       installKind: "package",
@@ -536,7 +536,7 @@ describe("update-cli", () => {
   const packagePackCommandCall = () =>
     commandCalls().find(([argv]) => argv[0] === "npm" && argv[1] === "pack");
 
-  const stripOpenClawPackageAlias = (spec: string) => {
+  const stripOperatorPackageAlias = (spec: string) => {
     const trimmed = spec.trim();
     return trimmed.toLowerCase().startsWith("operator@")
       ? trimmed.slice("operator@".length)
@@ -544,7 +544,7 @@ describe("update-cli", () => {
   };
 
   const isNpmGitPackageSpec = (spec: string) => {
-    const target = stripOpenClawPackageAlias(spec);
+    const target = stripOperatorPackageAlias(spec);
     const [repo] = target.split("#", 1);
     const isGitHubShorthand =
       Boolean(repo) &&
@@ -888,7 +888,7 @@ describe("update-cli", () => {
       return child;
     });
     vi.mocked(defaultRuntime.exit).mockImplementation(() => {});
-    vi.mocked(resolveOpenClawPackageRoot).mockResolvedValue(process.cwd());
+    vi.mocked(resolveOperatorPackageRoot).mockResolvedValue(process.cwd());
     vi.mocked(readConfigFileSnapshot).mockResolvedValue(baseSnapshot);
     vi.mocked(readSourceConfigBestEffort).mockResolvedValue(baseSnapshot.config);
     setupConfigMutationWithRetryMock();
@@ -1034,8 +1034,8 @@ describe("update-cli", () => {
         repaired: false,
       }),
     );
-    launchdUpdateCleanupMocks.disableCurrentOpenClawUpdateLaunchdJob.mockReset();
-    launchdUpdateCleanupMocks.disableCurrentOpenClawUpdateLaunchdJob.mockResolvedValue(false);
+    launchdUpdateCleanupMocks.disableCurrentOperatorUpdateLaunchdJob.mockReset();
+    launchdUpdateCleanupMocks.disableCurrentOperatorUpdateLaunchdJob.mockResolvedValue(false);
     confirm.mockResolvedValue(false);
     select.mockResolvedValue("stable");
     vi.mocked(runGatewayUpdate).mockResolvedValue(makeOkUpdateResult());
@@ -1085,7 +1085,7 @@ describe("update-cli", () => {
       await expect(updateCommand({ yes: true })).rejects.toThrow("OPENCLAW_NIX_MODE=1");
     });
 
-    expect(launchdUpdateCleanupMocks.disableCurrentOpenClawUpdateLaunchdJob).toHaveBeenCalledOnce();
+    expect(launchdUpdateCleanupMocks.disableCurrentOperatorUpdateLaunchdJob).toHaveBeenCalledOnce();
     expect(runGatewayUpdate).not.toHaveBeenCalled();
     expect(replaceConfigFile).not.toHaveBeenCalled();
     expect(updateNpmInstalledPlugins).not.toHaveBeenCalled();
@@ -2454,7 +2454,7 @@ describe("update-cli", () => {
         expect(runRestartScript).not.toHaveBeenCalled();
         expect(runDaemonRestart).not.toHaveBeenCalled();
         expect(
-          launchdUpdateCleanupMocks.disableCurrentOpenClawUpdateLaunchdJob,
+          launchdUpdateCleanupMocks.disableCurrentOperatorUpdateLaunchdJob,
         ).not.toHaveBeenCalled();
 
         const logs = vi.mocked(defaultRuntime.log).mock.calls.map((call) => String(call[0]));
@@ -2473,7 +2473,7 @@ describe("update-cli", () => {
         expect(defaultRuntime.exit).not.toHaveBeenCalledWith(1);
         expect(runGatewayUpdate).not.toHaveBeenCalled();
         expect(
-          launchdUpdateCleanupMocks.disableCurrentOpenClawUpdateLaunchdJob,
+          launchdUpdateCleanupMocks.disableCurrentOperatorUpdateLaunchdJob,
         ).not.toHaveBeenCalled();
       },
     },
@@ -2710,7 +2710,7 @@ describe("update-cli", () => {
 
     expect(packageInstallCommandCall()).toBeUndefined();
     expect(replaceConfigFile).not.toHaveBeenCalled();
-    expect(launchdUpdateCleanupMocks.disableCurrentOpenClawUpdateLaunchdJob).not.toHaveBeenCalled();
+    expect(launchdUpdateCleanupMocks.disableCurrentOperatorUpdateLaunchdJob).not.toHaveBeenCalled();
     expect(lastWriteJsonCall()).toBeUndefined();
     expect(defaultRuntime.exit).toHaveBeenCalledWith(1);
   });
@@ -2736,7 +2736,7 @@ describe("update-cli", () => {
 
     expect(packageInstallCommandCall()).toBeUndefined();
     expect(replaceConfigFile).not.toHaveBeenCalled();
-    expect(launchdUpdateCleanupMocks.disableCurrentOpenClawUpdateLaunchdJob).not.toHaveBeenCalled();
+    expect(launchdUpdateCleanupMocks.disableCurrentOperatorUpdateLaunchdJob).not.toHaveBeenCalled();
     expect(defaultRuntime.exit).toHaveBeenCalledWith(1);
   });
 
@@ -2767,7 +2767,7 @@ describe("update-cli", () => {
     expect(resolveExtendedStablePackage).not.toHaveBeenCalled();
     expect(packageInstallCommandCall()).toBeUndefined();
     expect(replaceConfigFile).not.toHaveBeenCalled();
-    expect(launchdUpdateCleanupMocks.disableCurrentOpenClawUpdateLaunchdJob).not.toHaveBeenCalled();
+    expect(launchdUpdateCleanupMocks.disableCurrentOperatorUpdateLaunchdJob).not.toHaveBeenCalled();
     expect(defaultRuntime.exit).toHaveBeenCalledWith(1);
   });
 
@@ -2778,7 +2778,7 @@ describe("update-cli", () => {
     expect(runGatewayUpdate).not.toHaveBeenCalled();
     expect(runCommandWithTimeout).not.toHaveBeenCalled();
     expect(replaceConfigFile).not.toHaveBeenCalled();
-    expect(launchdUpdateCleanupMocks.disableCurrentOpenClawUpdateLaunchdJob).not.toHaveBeenCalled();
+    expect(launchdUpdateCleanupMocks.disableCurrentOperatorUpdateLaunchdJob).not.toHaveBeenCalled();
     expect(defaultRuntime.exit).toHaveBeenCalledWith(1);
   });
 
@@ -3231,7 +3231,7 @@ describe("update-cli", () => {
       readPackageName.mockResolvedValue("operator");
       readPackageVersion.mockResolvedValue("1.0.0");
       resolveGlobalManager.mockResolvedValue("npm");
-      vi.mocked(resolveOpenClawPackageRoot).mockResolvedValue(process.cwd());
+      vi.mocked(resolveOperatorPackageRoot).mockResolvedValue(process.cwd());
       await run();
       expectPackageInstallSpec(expectedSpec);
     },
@@ -4430,7 +4430,7 @@ describe("update-cli", () => {
       pid: 4242,
       state: "running",
     });
-    launchdUpdateCleanupMocks.disableCurrentOpenClawUpdateLaunchdJob.mockResolvedValue(true);
+    launchdUpdateCleanupMocks.disableCurrentOperatorUpdateLaunchdJob.mockResolvedValue(true);
     pathExists.mockImplementation(async (candidate: string) => {
       try {
         await fs.access(candidate);
@@ -4463,7 +4463,7 @@ describe("update-cli", () => {
     await updateCommand({ yes: true });
 
     const cleanupOrder =
-      launchdUpdateCleanupMocks.disableCurrentOpenClawUpdateLaunchdJob.mock.invocationCallOrder[0];
+      launchdUpdateCleanupMocks.disableCurrentOperatorUpdateLaunchdJob.mock.invocationCallOrder[0];
     const serviceStopOrder = serviceStop.mock.invocationCallOrder[0];
     expect(requireValue(cleanupOrder, "launchd updater cleanup order")).toBeLessThan(
       requireValue(serviceStopOrder, "service stop order"),
@@ -5488,7 +5488,7 @@ describe("update-cli", () => {
 
     expect(replaceConfigFile).not.toHaveBeenCalled();
     expect(runCommandWithTimeout).not.toHaveBeenCalled();
-    expect(launchdUpdateCleanupMocks.disableCurrentOpenClawUpdateLaunchdJob).not.toHaveBeenCalled();
+    expect(launchdUpdateCleanupMocks.disableCurrentOperatorUpdateLaunchdJob).not.toHaveBeenCalled();
     expect(defaultRuntime.exit).toHaveBeenCalledWith(1);
   });
 

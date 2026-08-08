@@ -40,7 +40,7 @@ class DeferredPluginPage extends PluginPage {
   }
 }
 
-const deferredPluginPageTag = "openclaw-deferred-plugin-page-test";
+const deferredPluginPageTag = "operator-deferred-plugin-page-test";
 if (!customElements.get(deferredPluginPageTag)) {
   customElements.define(deferredPluginPageTag, DeferredPluginPage);
 }

@@ -7,7 +7,7 @@ scenario:
   coverage:
     primary: [runtime.delivery]
   regressionRefs:
-    - openclaw/openclaw#39905
+    - operator/operator#39905
   objective: Verify Telegram quiet streaming finalizes one preview without a duplicate reply.
   successCriteria:
     - The scripted streaming reply contains the exact marker.

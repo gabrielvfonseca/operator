@@ -9,9 +9,9 @@ import { createCopilotNativeSubagentTaskMirror } from "./native-subagent-task-mi
 
 const taskRuntimeMocks = vi.hoisted(() => ({ runtime: undefined as unknown }));
 
-vi.mock("openclaw/plugin-sdk/agent-harness-task-runtime", async (importOriginal) => {
+vi.mock("operator/plugin-sdk/agent-harness-task-runtime", async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import("openclaw/plugin-sdk/agent-harness-task-runtime")>();
+    await importOriginal<typeof import("operator/plugin-sdk/agent-harness-task-runtime")>();
   return {
     ...actual,
     createAgentHarnessTaskRuntime: vi.fn(() => taskRuntimeMocks.runtime),

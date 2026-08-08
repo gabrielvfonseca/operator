@@ -1,5 +1,5 @@
 #!/usr/bin/env -S node --import tsx
-// operator Npm Prepublish Verify script supports Operator repository automation.
+// Openclaw Npm Prepublish Verify script supports Operator repository automation.
 
 import { mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -40,7 +40,7 @@ type OperatorNpmPrepublishVerifyArgs =
       tarballPath: "";
     };
 
-export function operatorNpmPrepublishVerifyUsage(): string {
+export function openClawNpmPrepublishVerifyUsage(): string {
   return "Usage: node --import tsx scripts/operator-npm-prepublish-verify.ts <tarball.tgz> [expected-version] [dependency.tgz ...]";
 }
 
@@ -53,7 +53,7 @@ export function parseOperatorNpmPrepublishVerifyArgs(
     return { dependencyTarballPaths: [], help: true, tarballPath: "" };
   }
   if (!tarballPath) {
-    throw new Error(operatorNpmPrepublishVerifyUsage());
+    throw new Error(openClawNpmPrepublishVerifyUsage());
   }
   if (tarballPath.startsWith("-")) {
     throw new Error(`Unknown operator npm prepublish verifier option: ${tarballPath}`);
@@ -94,7 +94,7 @@ function npmExec(args: string[], cwd: string): string {
 function main(argv = process.argv.slice(2)): void {
   const args = parseOperatorNpmPrepublishVerifyArgs(argv);
   if (args.help) {
-    console.log(operatorNpmPrepublishVerifyUsage());
+    console.log(openClawNpmPrepublishVerifyUsage());
     return;
   }
 
@@ -129,12 +129,12 @@ function main(argv = process.argv.slice(2)): void {
         )}\n`,
       );
       npmExec(["install", "--prefix", prefixDir, "--no-fund", "--no-audit"], workingDir);
-      packageRoot = join(prefixDir, "node_modules", "operator");
+      packageRoot = join(prefixDir, "node_modules", "@gabrielvfonseca/operator");
       const binaryPath = join(
         prefixDir,
         "node_modules",
         ".bin",
-        process.platform === "win32" ? "operator.cmd" : "operator",
+        process.platform === "win32" ? "operator.cmd" : "@gabrielvfonseca/operator",
       );
       binaryInvocation =
         process.platform === "win32"
@@ -159,7 +159,7 @@ function main(argv = process.argv.slice(2)): void {
         workingDir,
       );
       const globalRoot = npmExec(["root", "-g", "--prefix", prefixDir], workingDir);
-      packageRoot = join(globalRoot, "operator");
+      packageRoot = join(globalRoot, "@gabrielvfonseca/operator");
       binaryInvocation = resolveInstalledBinaryCommandInvocation(prefixDir, ["--version"]);
     }
     const pkg = JSON.parse(

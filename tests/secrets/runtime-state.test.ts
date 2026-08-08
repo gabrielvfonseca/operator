@@ -22,7 +22,7 @@ import {
 } from "../../src/config/runtime-snapshot.js";
 import type { OperatorConfig } from "../../src/config/types.operator.js";
 import type { SecretRef } from "../../src/config/types.secrets.js";
-import { closeOperatorAgentDatabasesForTest } from "../../src/state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../src/state/operator-agent-db.js";
 import { captureEnv } from "../../src/test-utils/env.js";
 import {
   activateSecretsRuntimeSnapshotState,

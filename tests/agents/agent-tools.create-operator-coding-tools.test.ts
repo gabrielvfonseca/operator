@@ -28,7 +28,7 @@ import { createOperatorCodingTools } from "../../src/agents/agent-tools.js";
 import { runWithAgentRingZeroTools } from "../../src/agents/agent-tools.ring-zero-context.js";
 import type { AuthProfileStore } from "../../src/agents/auth-profiles/types.js";
 import { resolveConversationCapabilityProfile } from "../../src/agents/conversation-capability-profile.js";
-import * as operatorPluginTools from "../../src/agents/operator-plugin-tools.js";
+import * as openClawPluginTools from "../../src/agents/operator-plugin-tools.js";
 import { createOperatorTools } from "../../src/agents/operator-tools.js";
 import { expectReadWriteEditTools } from "../../src/agents/test-helpers/agent-tools-fs-helpers.js";
 import { createAgentToolsSandboxContext } from "../../src/agents/test-helpers/agent-tools-sandbox-context.js";
@@ -418,13 +418,13 @@ describe("createOperatorCodingTools", () => {
 
   it("keeps the injected ring-zero tool under policy and rejects a same-name replacement", () => {
     const injectedTool = {
-      ...stubTool("operator"),
+      ...stubTool("@gabrielvfonseca/operator"),
       label: "Operator",
       description: "trusted ring-zero tool",
       execute: async () => ({ content: [], details: {} }),
     };
     const duplicateTool = {
-      ...stubTool("operator"),
+      ...stubTool("@gabrielvfonseca/operator"),
       label: "Operator",
       description: "duplicate plugin tool",
       execute: async () => ({ content: [], details: {} }),
@@ -433,8 +433,8 @@ describe("createOperatorCodingTools", () => {
 
     const tools = runWithAgentRingZeroTools([injectedTool], () =>
       createOperatorCodingTools({
-        config: { tools: { allow: ["read"], deny: ["operator"] } },
-        runtimeToolAllowlist: ["operator"],
+        config: { tools: { allow: ["read"], deny: ["@gabrielvfonseca/operator"] } },
+        runtimeToolAllowlist: ["@gabrielvfonseca/operator"],
         toolConstructionPlan: {
           includeBaseCodingTools: false,
           includeShellTools: false,
@@ -446,7 +446,7 @@ describe("createOperatorCodingTools", () => {
     );
 
     expect(tools).toHaveLength(1);
-    expect(tools[0]?.name).toBe("operator");
+    expect(tools[0]?.name).toBe("@gabrielvfonseca/operator");
     expect(tools[0]?.description).toBe("trusted ring-zero tool");
   });
 
@@ -780,7 +780,7 @@ describe("createOperatorCodingTools", () => {
     const createOperatorToolsMock = vi.mocked(createOperatorTools);
     createOperatorToolsMock.mockClear();
     const resolvePluginToolsSpy = vi
-      .spyOn(operatorPluginTools, "resolveOperatorPluginToolsForOptions")
+      .spyOn(openClawPluginTools, "resolveOperatorPluginToolsForOptions")
       .mockReturnValue([]);
 
     try {
@@ -814,7 +814,7 @@ describe("createOperatorCodingTools", () => {
   it("wraps plugin-only tools with trusted caller routing context", async () => {
     let observedIdentity: unknown;
     const resolvePluginToolsSpy = vi
-      .spyOn(operatorPluginTools, "resolveOperatorPluginToolsForOptions")
+      .spyOn(openClawPluginTools, "resolveOperatorPluginToolsForOptions")
       .mockReturnValue([
         {
           name: "file_fetch",
@@ -865,7 +865,7 @@ describe("createOperatorCodingTools", () => {
 
   it("forwards owner identity to plugin-only tool construction", () => {
     const resolvePluginToolsSpy = vi
-      .spyOn(operatorPluginTools, "resolveOperatorPluginToolsForOptions")
+      .spyOn(openClawPluginTools, "resolveOperatorPluginToolsForOptions")
       .mockReturnValue([]);
 
     try {
@@ -912,7 +912,7 @@ describe("createOperatorCodingTools", () => {
     const createOperatorToolsMock = vi.mocked(createOperatorTools);
     createOperatorToolsMock.mockClear();
     const resolvePluginToolsSpy = vi
-      .spyOn(operatorPluginTools, "resolveOperatorPluginToolsForOptions")
+      .spyOn(openClawPluginTools, "resolveOperatorPluginToolsForOptions")
       .mockReturnValue([]);
     const authProfileStore = {
       version: 1,

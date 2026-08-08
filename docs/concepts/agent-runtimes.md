@@ -18,7 +18,7 @@ configuration. They are different layers:
 | ------------- | -------------------------------------------- | ------------------------------------------------------------------- |
 | Provider      | `anthropic`, `github-copilot`, `openai`      | How Operator authenticates, discovers models, and names model refs. |
 | Model         | `claude-opus-4-6`, `gpt-5.6-sol`             | The model selected for the agent turn.                              |
-| Agent runtime | `claude-cli`, `codex`, `copilot`, `openclaw` | The low-level loop or backend that executes the prepared turn.      |
+| Agent runtime | `claude-cli`, `codex`, `copilot`, `operator` | The low-level loop or backend that executes the prepared turn.      |
 | Channel       | Discord, Slack, Telegram, WhatsApp           | Where messages enter and leave Operator.                            |
 
 A **harness** is the implementation that provides an agent runtime (code
@@ -31,7 +31,7 @@ provider/model refs plus model-scoped runtime policy where needed.
 Two runtime families:
 
 - **Embedded harnesses** run inside Operator's prepared agent loop: the
-  built-in `openclaw` runtime, plus registered plugin harnesses such as
+  built-in `operator` runtime, plus registered plugin harnesses such as
   `codex` and `copilot`.
 - **CLI backends** run a local CLI process while keeping the model ref
   canonical. For example, `anthropic/claude-opus-4-8` with a model-scoped
@@ -140,7 +140,7 @@ this order:
 2. **Provider-scoped runtime policy**: `models.providers.<provider>.agentRuntime`.
 3. **`auto` mode**: registered plugin runtimes can claim supported provider/model pairs.
 4. If nothing claims the turn in `auto` mode, Operator falls back to
-   `openclaw` as the compatibility runtime. Use an explicit runtime id when
+   `operator` as the compatibility runtime. Use an explicit runtime id when
    the run must be strict.
 
 Whole-session and whole-agent runtime pins are ignored: `OPERATOR_AGENT_RUNTIME`,

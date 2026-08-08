@@ -1,6 +1,6 @@
 import { expectDefined } from "@gabrielvfonseca/normalization-core";
 // Qa Lab tests cover bounded CI smoke profile planning.
-import { OPENCLAW_CRABLINE_DEFAULT_CHANNEL } from "@openclaw/crabline";
+import { OPENCLAW_CRABLINE_DEFAULT_CHANNEL } from "@operator/crabline";
 import { describe, expect, it } from "vitest";
 import { createQaSmokeCiPart } from "./ci-smoke-plan.js";
 import { readQaScenarioPack } from "./scenario-catalog.js";

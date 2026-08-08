@@ -1,6 +1,6 @@
 // Memory Core plugin module implements tools.shared behavior.
-import { optionalFiniteNumberSchema, stringEnum } from "openclaw/plugin-sdk/channel-actions";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import { optionalFiniteNumberSchema, stringEnum } from "operator/plugin-sdk/channel-actions";
+import { createLazyRuntimeModule } from "operator/plugin-sdk/lazy-runtime";
 import {
   listMemoryCorpusSupplements,
   resolveMemorySearchConfig,
@@ -8,8 +8,8 @@ import {
   type MemoryCorpusSearchResult,
   type AnyAgentTool,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/memory-core-host-runtime-core";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "operator/plugin-sdk/memory-core-host-runtime-core";
+import { normalizeLowercaseStringOrEmpty } from "operator/plugin-sdk/string-coerce-runtime";
 import { Type } from "typebox";
 import type { MemoryCoreAcquireLocalService } from "./memory/embedding-local-service.js";
 type MemorySearchManagerResult = Awaited<

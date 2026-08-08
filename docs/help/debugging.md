@@ -15,7 +15,7 @@ Debugging helpers for streaming output, gateway iteration, and startup profiling
 
 ```text
 /debug show
-/debug set messages.responsePrefix="[openclaw]"
+/debug set messages.responsePrefix="[operator]"
 /debug unset messages.responsePrefix
 /debug reset
 ```

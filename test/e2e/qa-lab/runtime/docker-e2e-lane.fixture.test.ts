@@ -45,13 +45,13 @@ describe("QA Docker E2E lane fixture", () => {
 
   it("resolves lane-specific environment overlays at run time", () => {
     const updateMigration = resolveQaDockerE2eLane("update-migration", {
-      OPENCLAW_UPGRADE_SURVIVOR_BASELINE_SPEC: "openclaw@custom",
+      OPENCLAW_UPGRADE_SURVIVOR_BASELINE_SPEC: "operator@custom",
       OPENCLAW_UPGRADE_SURVIVOR_SCENARIO: "custom-scenario",
     });
 
     expect(updateMigration.script).toBe("scripts/e2e/upgrade-survivor-docker.sh");
     expect(updateMigration.env.OPENCLAW_UPGRADE_SURVIVOR_PUBLISHED_BASELINE).toBe("1");
-    expect(updateMigration.env.OPENCLAW_UPGRADE_SURVIVOR_BASELINE_SPEC).toBe("openclaw@custom");
+    expect(updateMigration.env.OPENCLAW_UPGRADE_SURVIVOR_BASELINE_SPEC).toBe("operator@custom");
     expect(updateMigration.env.OPENCLAW_UPGRADE_SURVIVOR_SCENARIO).toBe("custom-scenario");
 
     const updateRestartAuth = resolveQaDockerE2eLane("update-restart-auth", {});

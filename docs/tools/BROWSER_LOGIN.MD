@@ -8,7 +8,7 @@ title: "Browser login"
 
 ## Manual login (recommended)
 
-When a site requires login, sign in manually in the host browser's `openclaw`
+When a site requires login, sign in manually in the host browser's `operator`
 profile. Do not give the model your credentials: automated logins often
 trigger anti-bot defenses and can lock the account.
 
@@ -20,18 +20,18 @@ Back to the main browser docs: [Browser](/tools/browser).
 
 ## Which Chrome profile is used?
 
-Operator controls a dedicated Chrome profile named `openclaw` (orange-tinted
+Operator controls a dedicated Chrome profile named `operator` (orange-tinted
 UI), separate from your daily browser profile.
 
 For agent browser tool calls:
 
-- Default choice: the agent uses its isolated `openclaw` browser.
+- Default choice: the agent uses its isolated `operator` browser.
 - Use `profile="user"` only when existing logged-in sessions matter and you
   are at the computer to click/approve any attach prompt.
 - If you have multiple user-browser profiles, specify the profile explicitly
   instead of guessing.
 
-Two ways to access the `openclaw` profile:
+Two ways to access the `operator` profile:
 
 1. Ask the agent to open the browser, then log in yourself.
 2. Open it via CLI:
@@ -42,7 +42,7 @@ operator browser open https://x.com
 ```
 
 For a non-default profile, put `--browser-profile <name>` before the
-subcommand (default is `openclaw`):
+subcommand (default is `operator`):
 
 ```bash
 operator browser --browser-profile <name> open https://x.com

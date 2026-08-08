@@ -216,7 +216,7 @@ export function registerBrowserDebugCommands(
     .description("Stop trace recording and write a .zip")
     .option(
       "--out <path>",
-      "Output path within openclaw temp dir (e.g. trace.zip or /tmp/openclaw/trace.zip)",
+      "Output path within operator temp dir (e.g. trace.zip or /tmp/operator/trace.zip)",
     )
     .option("--target-id <id>", BROWSER_TAB_REFERENCE_HELP)
     .action(async (opts, cmd) => {

@@ -20,7 +20,7 @@ vi.mock("../commands/doctor-browser.js", () => ({
 const residue = {
   legacyProfileDir: "/tmp/operator-home/browser/clawd",
   legacyUserDataDir: "/tmp/operator-home/browser/clawd/user-data",
-  canonicalUserDataDir: "/tmp/operator-home/browser/openclaw/user-data",
+  canonicalUserDataDir: "/tmp/operator-home/browser/operator/user-data",
 };
 
 function runtime() {

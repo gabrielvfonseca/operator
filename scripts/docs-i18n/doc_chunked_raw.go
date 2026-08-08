@@ -595,9 +595,9 @@ var contextualProductDestinations = map[string]contextualProductDestinationRule{
 	"Runway":      {hosts: []string{"runwayml.com"}, routes: []string{"/providers/runway", "/plugins/reference/runway"}},
 	"Synthetic":   {hosts: []string{"synthetic.new"}, routes: []string{"/providers/synthetic"}},
 	"Upstash Box": {hosts: []string{"upstash.com"}, routes: []string{"/install/upstash", "/docs/box"}},
-	"Lobster":     {routes: []string{"/tools/lobster", "/openclaw/lobster"}},
-	"Mantis":      {routes: []string{"/concepts/mantis", "/openclaw/mantis"}},
-	"Tokenjuice":  {routes: []string{"/tools/tokenjuice", "/openclaw/tokenjuice"}},
+	"Lobster":     {routes: []string{"/tools/lobster", "/operator/lobster"}},
+	"Mantis":      {routes: []string{"/concepts/mantis", "/operator/mantis"}},
+	"Tokenjuice":  {routes: []string{"/tools/tokenjuice", "/operator/tokenjuice"}},
 }
 
 func destinationMentionsProductName(destination, name string) bool {

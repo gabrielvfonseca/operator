@@ -460,7 +460,7 @@ function isOperatorExecutable(token: string | undefined): boolean {
 
 function isOperatorPackageSpec(token: string | undefined): boolean {
   const packageSpec = normalizeOptionalLowercaseString(token);
-  return packageSpec?.startsWith("openclaw@") === true && packageSpec.length > "openclaw@".length;
+  return packageSpec?.startsWith("operator@") === true && packageSpec.length > "operator@".length;
 }
 
 function skipOperatorPackageRunner(

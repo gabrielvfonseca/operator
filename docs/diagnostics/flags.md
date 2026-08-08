@@ -152,7 +152,7 @@ diagnostics artifacts; review before sharing them outside your machine.
 Flags emit logs into the standard diagnostics log file. By default:
 
 ```
-/tmp/openclaw/operator-YYYY-MM-DD.log
+/tmp/operator/operator-YYYY-MM-DD.log
 ```
 
 If you set `logging.file`, use that path instead. Logs are JSONL (one JSON
@@ -165,25 +165,25 @@ redaction model.
 Pick the latest log file:
 
 ```bash
-ls -t /tmp/openclaw/operator-*.log | head -n 1
+ls -t /tmp/operator/operator-*.log | head -n 1
 ```
 
 Filter for Telegram HTTP diagnostics:
 
 ```bash
-rg "telegram http error" /tmp/openclaw/operator-*.log
+rg "telegram http error" /tmp/operator/operator-*.log
 ```
 
 Filter for Brave Search HTTP diagnostics:
 
 ```bash
-rg "brave http" /tmp/openclaw/operator-*.log
+rg "brave http" /tmp/operator/operator-*.log
 ```
 
 Or tail while reproducing:
 
 ```bash
-tail -f /tmp/openclaw/operator-$(date +%F).log | rg "telegram http error"
+tail -f /tmp/operator/operator-$(date +%F).log | rg "telegram http error"
 ```
 
 For remote gateways, use `operator logs --follow` instead (see

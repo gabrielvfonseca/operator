@@ -1,7 +1,7 @@
 /**
  * Doctor contract for the copilot extension.
  *
- * Mirrors {@link ../codex/doctor-contract-api.ts} so `openclaw doctor`
+ * Mirrors {@link ../codex/doctor-contract-api.ts} so `operator doctor`
  * can:
  *   - Reason about which session-state belongs to this extension
  *     (sessionRouteStateOwners) for cleanup of stale state across

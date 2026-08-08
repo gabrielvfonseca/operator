@@ -133,21 +133,21 @@ describe("upgrade survivor config recipe command resolution", () => {
       const logPath = join(root, "operator-argv.jsonl");
       const summaryPath = join(root, "summary.json");
       mkdirSync(binDir, { recursive: true });
-      const openclawLogPath = join(binDir, "operator-log.js");
-      const openclawPath = join(binDir, "@gabrielvfonseca/operator");
-      const openclawCmdPath = join(binDir, "operator.cmd");
+      const operatorLogPath = join(binDir, "operator-log.js");
+      const operatorPath = join(binDir, "@gabrielvfonseca/operator");
+      const operatorCmdPath = join(binDir, "operator.cmd");
       writeFileSync(
-        openclawLogPath,
+        operatorLogPath,
         `
 const fs = require("node:fs");
 fs.appendFileSync(${JSON.stringify(logPath)}, JSON.stringify(process.argv.slice(2)) + "\\n");
 process.exit(0);
 `,
       );
-      writeFileSync(openclawPath, `#!/usr/bin/env node\nrequire("./operator-log.js");\n`);
-      chmodSync(openclawPath, 0o755);
+      writeFileSync(operatorPath, `#!/usr/bin/env node\nrequire("./operator-log.js");\n`);
+      chmodSync(operatorPath, 0o755);
       writeFileSync(
-        openclawCmdPath,
+        operatorCmdPath,
         `@echo off\r\n"${process.execPath}" "%~dp0operator-log.js" %*\r\n`,
       );
 

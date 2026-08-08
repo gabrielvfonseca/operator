@@ -70,8 +70,8 @@ describeControlUiE2e("embedded terminal document", () => {
       const connect = await gateway.waitForRequest("connect");
 
       expect(connect.params).toMatchObject({ auth: { token: "native-terminal-token" } });
-      expect(await page.locator("openclaw-login-gate").count()).toBe(0);
-      expect(await page.locator("openclaw-terminal-panel").count()).toBe(1);
+      expect(await page.locator("operator-login-gate").count()).toBe(0);
+      expect(await page.locator("operator-terminal-panel").count()).toBe(1);
 
       await gateway.resolveDeferred("connect");
       const terminalOpen = await gateway.waitForRequest("terminal.open");
@@ -96,10 +96,10 @@ describeControlUiE2e("embedded terminal document", () => {
           data: "\u001b]11;rgb:f7f7/f8f8/fafa\u001b\\",
         },
       ]);
-      expect(await page.locator("openclaw-login-gate").count()).toBe(0);
-      expect(await page.locator("openclaw-terminal-panel").count()).toBe(1);
+      expect(await page.locator("operator-login-gate").count()).toBe(0);
+      expect(await page.locator("operator-terminal-panel").count()).toBe(1);
       const closeControlMetrics = await page
-        .locator("openclaw-terminal-panel")
+        .locator("operator-terminal-panel")
         .locator(".tabstrip-tab__close")
         .evaluate((close) => {
           const header = close.closest<HTMLElement>(".tp-header");
@@ -121,7 +121,7 @@ describeControlUiE2e("embedded terminal document", () => {
       expect(closeControlMetrics.width).toBe(24);
       expect(closeControlMetrics.height).toBe(36);
       expect(closeControlMetrics.centerOffset).toBeLessThanOrEqual(0.5);
-      const closeControl = page.locator("openclaw-terminal-panel").locator(".tabstrip-tab__close");
+      const closeControl = page.locator("operator-terminal-panel").locator(".tabstrip-tab__close");
       expect(await closeControl.getAttribute("aria-label")).toBe("Close terminal session: bash");
       await closeControl.click();
       const terminalClose = await gateway.waitForRequest("terminal.close");

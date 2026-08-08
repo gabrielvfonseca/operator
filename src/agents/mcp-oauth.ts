@@ -157,7 +157,7 @@ export function createMcpOAuthClientProvider(params: {
   const assertAuthorizationRedirectAllowed = () => {
     if (!allowAuthorizationRedirect) {
       throw new Error(
-        `MCP server "${params.serverName}" requires OAuth authorization. Run openclaw mcp login ${params.serverName}.`,
+        `MCP server "${params.serverName}" requires OAuth authorization. Run operator mcp login ${params.serverName}.`,
       );
     }
   };
@@ -268,7 +268,7 @@ async function resolveMcpOAuthAccessTokenLocked(
   const tokens = store.tokens;
   if (!tokens?.access_token) {
     throw new Error(
-      `MCP server "${params.serverName}" requires OAuth authorization. Run openclaw mcp login ${params.serverName}.`,
+      `MCP server "${params.serverName}" requires OAuth authorization. Run operator mcp login ${params.serverName}.`,
     );
   }
 
@@ -279,7 +279,7 @@ async function resolveMcpOAuthAccessTokenLocked(
   }
   if (!tokens.refresh_token) {
     throw new Error(
-      `MCP server "${params.serverName}" has expired OAuth credentials. Run openclaw mcp login ${params.serverName}.`,
+      `MCP server "${params.serverName}" has expired OAuth credentials. Run operator mcp login ${params.serverName}.`,
     );
   }
 
@@ -292,7 +292,7 @@ async function resolveMcpOAuthAccessTokenLocked(
   const refreshedTokens = await provider.tokens();
   if (result !== "AUTHORIZED" || !refreshedTokens?.access_token) {
     throw new Error(
-      `MCP server "${params.serverName}" could not refresh OAuth credentials. Run openclaw mcp login ${params.serverName}.`,
+      `MCP server "${params.serverName}" could not refresh OAuth credentials. Run operator mcp login ${params.serverName}.`,
     );
   }
   return refreshedTokens.access_token;

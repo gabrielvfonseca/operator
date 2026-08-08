@@ -1,4 +1,4 @@
-// Guided channel-setup wizard flow shared by `openclaw channels add` (clack
+// Guided channel-setup wizard flow shared by `operator channels add` (clack
 // prompter) and the gateway `wizard.start {flow:"channels"}` RPC (session
 // prompter driving the Control UI / native clients).
 import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
@@ -246,7 +246,7 @@ export async function runChannelsSetupWizard(
   const snapshot = await readConfigFileSnapshot();
   if (snapshot.exists && !snapshot.valid) {
     throw new Error(
-      "Operator config is invalid; run `openclaw doctor --fix`, then retry channel setup.",
+      "Operator config is invalid; run `operator doctor --fix`, then retry channel setup.",
     );
   }
   const cfg = (snapshot.sourceConfig ?? snapshot.config) as OperatorConfig;

@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
-import { root, type Root } from "@openclaw/fs-safe";
+import { root, type Root } from "@operator/fs-safe";
 import { formatErrorMessage } from "./errors.js";
 import { acquireGatewayLock, GatewayLockError } from "./gateway-lock.js";
 import {
@@ -22,11 +22,11 @@ import {
   type ApnsRegistration,
 } from "./push-apns-store.js";
 import type { LegacyStateDetection, MigrationMessages } from "./state-migrations.types.js";
-import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../state/openclaw-state-db.js";
+} from "../state/operator-state-db.js";
 
 const LEGACY_APNS_REGISTRATION_PATH = "push/apns-registrations.json";
 const APNS_DOCTOR_CLAIM_SUFFIX = ".doctor-importing";
@@ -606,7 +606,7 @@ export async function migrateLegacyApnsRegistrations(params: {
     return {
       changes: [],
       warnings: [
-        `Failed migrating legacy APNs state: ${detail}. Stop the Gateway and run \`openclaw doctor --fix\` again.`,
+        `Failed migrating legacy APNs state: ${detail}. Stop the Gateway and run \`operator doctor --fix\` again.`,
       ],
     };
   }

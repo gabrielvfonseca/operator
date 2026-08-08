@@ -1,4 +1,4 @@
-export interface operatorNpmResumeRunRecord {
+export interface OperatorNpmResumeRunRecord {
   conclusion?: unknown;
   event?: unknown;
   head_branch?: unknown;
@@ -8,7 +8,7 @@ export interface operatorNpmResumeRunRecord {
   workflow_id?: unknown;
 }
 
-export interface operatorNpmResumeTagRecord {
+export interface OperatorNpmResumeTagRecord {
   object?: {
     sha?: unknown;
     type?: unknown;
@@ -18,35 +18,35 @@ export interface operatorNpmResumeTagRecord {
   };
 }
 
-export interface operatorNpmResumeJobRecord {
+export interface OperatorNpmResumeJobRecord {
   conclusion?: unknown;
   name?: unknown;
 }
 
-export interface operatorNpmResumeValidationInput {
+export interface OperatorNpmResumeValidationInput {
   canonicalWorkflowId: unknown;
   compareStatus: unknown;
-  jobs: operatorNpmResumeJobRecord[];
-  run: operatorNpmResumeRunRecord;
-  tag: operatorNpmResumeTagRecord;
-  tagRef: operatorNpmResumeTagRecord;
+  jobs: OperatorNpmResumeJobRecord[];
+  run: OperatorNpmResumeRunRecord;
+  tag: OperatorNpmResumeTagRecord;
+  tagRef: OperatorNpmResumeTagRecord;
 }
 
-export interface operatorNpmResumeIdentity {
+export interface OperatorNpmResumeIdentity {
   tagObjectSha: string;
   url: string;
   workflowRef: string;
   workflowSha: string;
 }
 
-export function validateoperatorNpmResumeRun(
-  input: operatorNpmResumeValidationInput,
-): operatorNpmResumeIdentity;
+export function validateOperatorNpmResumeRun(
+  input: OperatorNpmResumeValidationInput,
+): OperatorNpmResumeIdentity;
 
-export function resolveoperatorNpmResumeRun(options: {
+export function resolveOperatorNpmResumeRun(options: {
   repo: string;
   runId: string;
   runGh?: (args: string[]) => string;
-}): operatorNpmResumeIdentity;
+}): OperatorNpmResumeIdentity;
 
 export function main(argv?: string[]): void;

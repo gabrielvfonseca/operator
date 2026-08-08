@@ -14,8 +14,8 @@ const buildGatewayInstallPlanMock = vi.hoisted(() =>
       const preservedFileValue =
         params.existingEnvironmentValueSources?.TELEGRAM_DEFAULT_BOTTOKEN === "file";
       return {
-        programArguments: ["/usr/bin/openclaw", "gateway", "run"],
-        workingDirectory: "/tmp/openclaw",
+        programArguments: ["/usr/bin/operator", "gateway", "run"],
+        workingDirectory: "/tmp/operator",
         environment: {
           TELEGRAM_DEFAULT_BOTTOKEN: preservedFileValue
             ? params.existingEnvironment?.TELEGRAM_DEFAULT_BOTTOKEN
@@ -96,7 +96,7 @@ describe("repairLoadedGatewayServiceForStart", () => {
       snapshot: { exists: true, valid: true, sourceConfig: {}, config: {} },
       writeOptions: { expectedConfigPath: "/tmp/operator.json" },
     });
-    resolveOperatorWrapperPathMock.mockResolvedValue("/usr/bin/openclaw");
+    resolveOperatorWrapperPathMock.mockResolvedValue("/usr/bin/operator");
     formatGatewayServiceStartRepairIssuesMock.mockReturnValue(
       "service was installed by an older version",
     );
@@ -123,7 +123,7 @@ describe("repairLoadedGatewayServiceForStart", () => {
       running: false,
       env: {},
       command: {
-        programArguments: ["/usr/bin/openclaw", "gateway", "run"],
+        programArguments: ["/usr/bin/operator", "gateway", "run"],
         environment: existingEnvironment,
         environmentValueSources: existingEnvironmentValueSources,
       },

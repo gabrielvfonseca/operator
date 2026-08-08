@@ -244,7 +244,7 @@ describe("credential lease runtime", () => {
           credentialId: "cred-chunked",
           leaseToken: "lease-chunked",
           payload: {
-            __openclawQaCredentialPayloadChunksV1: true,
+            __operatorQaCredentialPayloadChunksV1: true,
             byteLength: serialized.length,
             chunkCount: 2,
           },
@@ -302,7 +302,7 @@ describe("credential lease runtime", () => {
           credentialId: "cred-utf8",
           leaseToken: "lease-utf8",
           payload: {
-            __openclawQaCredentialPayloadChunksV1: true,
+            __operatorQaCredentialPayloadChunksV1: true,
             byteLength: Buffer.byteLength(serialized, "utf8"),
             chunkCount: 1,
           },
@@ -336,7 +336,7 @@ describe("credential lease runtime", () => {
           credentialId: "cred-many-chunks",
           leaseToken: "lease-many-chunks",
           payload: {
-            __openclawQaCredentialPayloadChunksV1: true,
+            __operatorQaCredentialPayloadChunksV1: true,
             byteLength: 1,
             chunkCount: 3,
           },
@@ -376,7 +376,7 @@ describe("credential lease runtime", () => {
           credentialId: "cred-large-payload",
           leaseToken: "lease-large-payload",
           payload: {
-            __openclawQaCredentialPayloadChunksV1: true,
+            __operatorQaCredentialPayloadChunksV1: true,
             byteLength: 33,
             chunkCount: 1,
           },
@@ -416,7 +416,7 @@ describe("credential lease runtime", () => {
           credentialId: "cred-overrun",
           leaseToken: "lease-overrun",
           payload: {
-            __openclawQaCredentialPayloadChunksV1: true,
+            __operatorQaCredentialPayloadChunksV1: true,
             byteLength: 2,
             chunkCount: 2,
           },

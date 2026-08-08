@@ -483,7 +483,7 @@ describe("config mutate helpers", () => {
         nextConfig: { gateway: { port: 19001 } },
       }),
     ).rejects.toThrow(
-      "Agent-first Nix setup: https://github.com/openclaw/nix-openclaw#quick-start",
+      "Agent-first Nix setup: https://github.com/operator/nix-operator#quick-start",
     );
 
     expect(ioMocks.writeConfigFile).not.toHaveBeenCalled();

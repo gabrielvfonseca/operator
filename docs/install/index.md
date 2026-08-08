@@ -76,7 +76,7 @@ If you already manage Node yourself:
 <Tabs>
   <Tab title="npm">
     ```bash
-    npm install -g openclaw@latest
+    npm install -g operator@latest
     operator onboard --install-daemon
     ```
 
@@ -89,7 +89,7 @@ If you already manage Node yourself:
   </Tab>
   <Tab title="pnpm">
     ```bash
-    pnpm add -g openclaw@latest
+    pnpm add -g operator@latest
     pnpm approve-builds -g
     operator onboard --install-daemon
     ```
@@ -101,12 +101,12 @@ If you already manage Node yourself:
   </Tab>
   <Tab title="bun">
     ```bash
-    bun add -g openclaw@latest
+    bun add -g operator@latest
     operator onboard --install-daemon
     ```
 
     <Note>
-    Bun can install the global package, but the resulting `openclaw` executable requires a supported Node runtime because Operator state uses `node:sqlite`.
+    Bun can install the global package, but the resulting `operator` executable requires a supported Node runtime because Operator state uses `node:sqlite`.
     </Note>
 
   </Tab>
@@ -118,7 +118,7 @@ For contributors or anyone who wants to run from a local checkout:
 
 ```bash
 git clone https://github.com/gabrielvfonseca/operator.git
-cd openclaw
+cd operator
 pnpm install && pnpm build && pnpm ui:build
 pnpm link --global
 operator onboard --install-daemon
@@ -199,7 +199,7 @@ Northflank, Oracle Cloud, Raspberry Pi, and more), or deploy declaratively on
   </Card>
 </CardGroup>
 
-## Troubleshooting: `openclaw` not found
+## Troubleshooting: `operator` not found
 
 Almost always a PATH issue: npm's global bin directory isn't on your shell's `PATH`. See [Node.js troubleshooting](/install/node#troubleshooting) for the full fix, including the Windows path.
 

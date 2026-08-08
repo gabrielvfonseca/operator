@@ -329,7 +329,7 @@ describe("local-heavy-check-runtime", () => {
   );
 
   it("skips the heavy-check lock for explicit oxlint file targets", () => {
-    const cwd = createTempDir("openclaw-oxlint-lock-skip-");
+    const cwd = createTempDir("operator-oxlint-lock-skip-");
     const target = path.join(cwd, "sample.ts");
     fs.writeFileSync(target, "export const ok = true;\n", "utf8");
 
@@ -349,7 +349,7 @@ describe("local-heavy-check-runtime", () => {
   });
 
   it("keeps the heavy-check lock for directory targets and broad oxlint runs", () => {
-    const cwd = createTempDir("openclaw-oxlint-lock-keep-");
+    const cwd = createTempDir("operator-oxlint-lock-keep-");
     fs.mkdirSync(path.join(cwd, "src"), { recursive: true });
     fs.writeFileSync(path.join(cwd, "src", "sample.ts"), "export const ok = true;\n", "utf8");
 
@@ -360,7 +360,7 @@ describe("local-heavy-check-runtime", () => {
   });
 
   it("allows forcing the oxlint lock back on", () => {
-    const cwd = createTempDir("openclaw-oxlint-lock-force-");
+    const cwd = createTempDir("operator-oxlint-lock-force-");
     fs.writeFileSync(path.join(cwd, "sample.ts"), "export const ok = true;\n", "utf8");
 
     expect(
@@ -372,9 +372,9 @@ describe("local-heavy-check-runtime", () => {
   });
 
   it("reclaims stale local heavy-check locks from dead pids", () => {
-    const cwd = createTempDir("openclaw-local-heavy-check-");
+    const cwd = createTempDir("operator-local-heavy-check-");
     const commonDir = path.join(cwd, ".git");
-    const lockDir = path.join(commonDir, "openclaw-local-checks", "heavy-check.lock");
+    const lockDir = path.join(commonDir, "operator-local-checks", "heavy-check.lock");
     fs.mkdirSync(lockDir, { recursive: true });
     fs.writeFileSync(
       path.join(lockDir, "owner.json"),
@@ -401,18 +401,18 @@ describe("local-heavy-check-runtime", () => {
   });
 
   it("uses a worktree-local heavy-check lock when explicitly requested", () => {
-    const repoRoot = createTempDir("openclaw-local-heavy-check-worktree-");
+    const repoRoot = createTempDir("operator-local-heavy-check-worktree-");
     execFileSync("git", ["init"], { cwd: repoRoot, stdio: "ignore" });
     const cwd = path.join(repoRoot, "nested", "tooling");
     fs.mkdirSync(cwd, { recursive: true });
-    const commonLockDir = path.join(repoRoot, ".git", "openclaw-local-checks", "heavy-check.lock");
+    const commonLockDir = path.join(repoRoot, ".git", "operator-local-checks", "heavy-check.lock");
     const worktreeLockDir = path.join(
       repoRoot,
       ".artifacts",
-      "openclaw-local-checks",
+      "operator-local-checks",
       "heavy-check.lock",
     );
-    const nestedLockDir = path.join(cwd, ".artifacts", "openclaw-local-checks", "heavy-check.lock");
+    const nestedLockDir = path.join(cwd, ".artifacts", "operator-local-checks", "heavy-check.lock");
 
     const release = acquireLocalHeavyCheckLockSync({
       cwd,
@@ -431,7 +431,7 @@ describe("local-heavy-check-runtime", () => {
   });
 
   it("rejects malformed heavy-check lock timing env values", () => {
-    const cwd = createTempDir("openclaw-local-heavy-check-malformed-env-");
+    const cwd = createTempDir("operator-local-heavy-check-malformed-env-");
 
     expect(() =>
       acquireLocalHeavyCheckLockSync({
@@ -450,9 +450,9 @@ describe("local-heavy-check-runtime", () => {
   });
 
   it("cleans up stale legacy test locks when acquiring the shared heavy-check lock", () => {
-    const cwd = createTempDir("openclaw-local-heavy-check-legacy-");
+    const cwd = createTempDir("operator-local-heavy-check-legacy-");
     const commonDir = path.join(cwd, ".git");
-    const locksDir = path.join(commonDir, "openclaw-local-checks");
+    const locksDir = path.join(commonDir, "operator-local-checks");
     const legacyLockDir = path.join(locksDir, "test.lock");
     const heavyCheckLockDir = path.join(locksDir, "heavy-check.lock");
     fs.mkdirSync(legacyLockDir, { recursive: true });

@@ -183,7 +183,7 @@ function catalogRawResult(raw: unknown): string | null {
 }
 function nativeHistoryMessageIdentity(message: unknown): string | null {
   const record = catalogRawRecord(message);
-  const metadata = catalogRawRecord(record?.["__openclaw"]);
+  const metadata = catalogRawRecord(record?.["__operator"]);
   const seq = metadata?.seq;
   const id = metadata?.id ?? record?.messageId;
   const sourceIdentity =

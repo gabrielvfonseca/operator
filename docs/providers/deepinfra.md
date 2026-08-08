@@ -50,7 +50,7 @@ export DEEPINFRA_API_KEY="<your-deepinfra-api-key>" # pragma: allowlist secret
 ## Supported surfaces
 
 Chat, image generation, and video generation refresh their model catalogs
-live from `https://api.deepinfra.com/v1/openai/models?sort_by=openclaw&filter=with_meta`
+live from `https://api.deepinfra.com/v1/openai/models?sort_by=operator&filter=with_meta`
 once `DEEPINFRA_API_KEY` is configured. Other surfaces use the static
 defaults below until they move onto the same live catalog.
 

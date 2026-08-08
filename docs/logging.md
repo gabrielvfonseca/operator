@@ -19,9 +19,9 @@ logs live, how to read them, and how to configure log levels and formats.
 
 By default, the Gateway writes a rolling log file per day:
 
-`/tmp/openclaw/operator-YYYY-MM-DD.log`
+`/tmp/operator/operator-YYYY-MM-DD.log`
 
-The date uses the gateway host's local timezone. When `/tmp/openclaw` is unsafe
+The date uses the gateway host's local timezone. When `/tmp/operator` is unsafe
 or unavailable (and always on Windows), Operator uses a user-scoped
 `operator-<uid>` directory under the OS temp dir instead. Dated log files are
 pruned after 24 hours.
@@ -174,7 +174,7 @@ All logging configuration lives under `logging` in `~/.operator/operator.json`.
 {
   "logging": {
     "level": "info",
-    "file": "/tmp/openclaw/operator-YYYY-MM-DD.log",
+    "file": "/tmp/operator/operator-YYYY-MM-DD.log",
     "consoleLevel": "info",
     "consoleStyle": "pretty",
     "redactSensitive": "tools",

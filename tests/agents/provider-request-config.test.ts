@@ -466,7 +466,7 @@ describe("provider request config", () => {
 
     expect(resolved?.originator).toBe("@gabrielvfonseca/operator");
     expect(typeof resolved?.version).toBe("string");
-    expect(resolved?.["User-Agent"]).toMatch(/^openclaw\//);
+    expect(resolved?.["User-Agent"]).toMatch(/^operator\//);
     expect(resolved?.["X-Custom"]).toBe("1");
   });
 
@@ -546,7 +546,7 @@ describe("provider request config", () => {
     expect(
       Object.keys(resolved ?? {}).filter((key) => key.toLowerCase() === "user-agent"),
     ).toHaveLength(1);
-    expect(resolved?.["User-Agent"]).toMatch(/^openclaw\//);
+    expect(resolved?.["User-Agent"]).toMatch(/^operator\//);
   });
 
   it("drops forbidden header keys while merging", () => {
@@ -597,7 +597,7 @@ describe("provider request config", () => {
     expect(resolved.headers?.authorization).toBe("Bearer test-key");
     expect(resolved.headers?.originator).toBe("@gabrielvfonseca/operator");
     expect(typeof resolved.headers?.version).toBe("string");
-    expect(resolved.headers?.["User-Agent"]).toMatch(/^openclaw\//);
+    expect(resolved.headers?.["User-Agent"]).toMatch(/^operator\//);
     expect(resolved.headers?.["X-Custom"]).toBe("1");
   });
 

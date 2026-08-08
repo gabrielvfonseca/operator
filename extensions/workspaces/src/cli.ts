@@ -471,7 +471,7 @@ export function registerWorkspaceCli(options: RegisterWorkspaceCliOptions): void
     }
     const dir = isRecord(result) && typeof result.dir === "string" ? result.dir : name;
     writeLine(`created ${dir}`);
-    writeLine(`pending approval; run: openclaw workspaces widget-approve ${name}`);
+    writeLine(`pending approval; run: operator workspaces widget-approve ${name}`);
   });
 
   addGatewayOptions(

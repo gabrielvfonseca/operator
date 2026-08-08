@@ -12,7 +12,7 @@ describe("@gabrielvfonseca/plugin-package-contract", () => {
     expect(
       normalizeExternalPluginCompatibility({
         version: "1.2.3",
-        openclaw: {
+        operator: {
           compat: {
             pluginApi: ">=2026.3.24-beta.2",
             minGatewayVersion: "2026.3.24-beta.2",
@@ -35,7 +35,7 @@ describe("@gabrielvfonseca/plugin-package-contract", () => {
     expect(
       normalizeExternalPluginCompatibility({
         version: "1.2.3",
-        openclaw: {
+        operator: {
           compat: {
             pluginApi: ">=1.0.0",
           },
@@ -53,31 +53,31 @@ describe("@gabrielvfonseca/plugin-package-contract", () => {
 
   it("lists the required external code-plugin fields", () => {
     expect(EXTERNAL_CODE_PLUGIN_REQUIRED_FIELD_PATHS).toEqual([
-      "openclaw.compat.pluginApi",
-      "openclaw.build.operatorVersion",
+      "operator.compat.pluginApi",
+      "operator.build.operatorVersion",
     ]);
   });
 
   it("reports missing required fields with stable field paths", () => {
     const packageJson = {
-      openclaw: {
+      operator: {
         compat: {},
         build: {},
       },
     };
 
     expect(listMissingExternalCodePluginFieldPaths(packageJson)).toEqual([
-      "openclaw.compat.pluginApi",
-      "openclaw.build.operatorVersion",
+      "operator.compat.pluginApi",
+      "operator.build.operatorVersion",
     ]);
     expect(validateExternalCodePluginPackageJson(packageJson).issues).toEqual([
       {
-        fieldPath: "openclaw.compat.pluginApi",
-        message: "openclaw.compat.pluginApi is required for external code plugin packages.",
+        fieldPath: "operator.compat.pluginApi",
+        message: "operator.compat.pluginApi is required for external code plugin packages.",
       },
       {
-        fieldPath: "openclaw.build.operatorVersion",
-        message: "openclaw.build.operatorVersion is required for external code plugin packages.",
+        fieldPath: "operator.build.operatorVersion",
+        message: "operator.build.operatorVersion is required for external code plugin packages.",
       },
     ]);
   });

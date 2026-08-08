@@ -471,7 +471,7 @@ describe("loadConfigForInstall", () => {
           {
             path: "tools.web.search.provider",
             message:
-              'web_search provider is not available: brave (install or enable plugin "brave", then run openclaw doctor --fix)',
+              'web_search provider is not available: brave (install or enable plugin "brave", then run operator doctor --fix)',
           },
         ],
       }),
@@ -551,7 +551,7 @@ describe("loadConfigForInstall", () => {
   it("rejects recovery installs through an external plugins include", async () => {
     const externalPluginsPath = path.join(
       path.parse(process.cwd()).root,
-      "external-openclaw",
+      "external-operator",
       "plugins.json5",
     );
     const snapshotCfg = { plugins: {} } as OperatorConfig;
@@ -576,7 +576,7 @@ describe("loadConfigForInstall", () => {
     const configPath = path.join(process.cwd(), "config.json5");
     const externalPluginsPath = path.join(
       path.parse(process.cwd()).root,
-      "external-openclaw",
+      "external-operator",
       "plugins.json5",
     );
     includeFileTargetsForWriteMock.mockReturnValue({
@@ -599,7 +599,7 @@ describe("loadConfigForInstall", () => {
   it("carries a plugin-mutation block for ambiguous installs through external plugin includes", async () => {
     const externalPluginsPath = path.join(
       path.parse(process.cwd()).root,
-      "external-openclaw",
+      "external-operator",
       "plugins.json5",
     );
     const snapshotCfg = { plugins: {} } as OperatorConfig;
@@ -632,7 +632,7 @@ describe("loadConfigForInstall", () => {
   it("blocks known plugins through external includes", async () => {
     const externalPluginsPath = path.join(
       path.parse(process.cwd()).root,
-      "external-openclaw",
+      "external-operator",
       "plugins.json5",
     );
     const snapshotCfg = { plugins: {} } as OperatorConfig;
@@ -657,7 +657,7 @@ describe("loadConfigForInstall", () => {
   it("carries a hook-mutation block through an external hooks include", async () => {
     const externalHooksPath = path.join(
       path.parse(process.cwd()).root,
-      "external-openclaw",
+      "external-operator",
       "hooks.json5",
     );
     const snapshotCfg = { hooks: { internal: {} } } as OperatorConfig;
@@ -739,7 +739,7 @@ describe("loadConfigForInstall", () => {
     const sharedPath = path.join(tempRoot, "shared.json5");
     const externalHooksPath = path.join(
       path.parse(process.cwd()).root,
-      "external-openclaw",
+      "external-operator",
       "hooks.json5",
     );
     const sharedRaw = "{}\n";
@@ -937,7 +937,7 @@ describe("loadConfigForInstall", () => {
         rawSpec: "alpha",
         normalizedSpec: "alpha",
       }),
-    ).rejects.toThrow("Config invalid; run `openclaw doctor --fix` before installing plugins.");
+    ).rejects.toThrow("Config invalid; run `operator doctor --fix` before installing plugins.");
   });
 
   it("throws when invalid snapshot parsed is empty", async () => {
@@ -949,7 +949,7 @@ describe("loadConfigForInstall", () => {
     );
 
     await expect(loadConfigForInstall(discordNpmRequest)).rejects.toThrow(
-      "Config file could not be parsed; run `openclaw doctor` to repair it.",
+      "Config file could not be parsed; run `operator doctor` to repair it.",
     );
   });
 
@@ -957,7 +957,7 @@ describe("loadConfigForInstall", () => {
     readConfigFileSnapshotMock.mockResolvedValue(makeSnapshot({ exists: false, parsed: {} }));
 
     await expect(loadConfigForInstall(discordNpmRequest)).rejects.toThrow(
-      "Config file could not be parsed; run `openclaw doctor` to repair it.",
+      "Config file could not be parsed; run `operator doctor` to repair it.",
     );
   });
 });

@@ -7,7 +7,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   closeOperatorStateDatabaseForTest,
   runOperatorStateWriteTransaction,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import type { PluginCandidate } from "../../src/plugins/discovery.js";
 import {
   readPersistedInstalledPluginIndex,

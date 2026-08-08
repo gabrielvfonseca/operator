@@ -570,7 +570,7 @@ describe("buildAgentSystemPrompt", () => {
     });
 
     expect(prompt).toContain("Docs: https://docs.operator.ai");
-    expect(prompt).toContain("Source: https://github.com/openclaw/openclaw");
+    expect(prompt).toContain("Source: https://github.com/operator/operator");
     expect(prompt).toContain(
       "Operator behavior questions: docs mirror first when web exists. AGENTS/project/workspace/profile/memory = instructions/user memory, not product design truth.",
     );
@@ -749,7 +749,7 @@ describe("buildAgentSystemPrompt", () => {
 
   it("delegates system changes when operator tool is present", () => {
     const prompt = buildAgentSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       toolNames: ["@gabrielvfonseca/operator", "sessions_spawn"],
     });
 

@@ -232,7 +232,7 @@ async function main() {
         "x-operator-agent": "qa",
       },
       body: JSON.stringify({
-        model: "openclaw/qa",
+        model: "operator/qa",
         input: [
           {
             type: "message",

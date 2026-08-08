@@ -118,8 +118,8 @@ async function runScope(options: {
       },
     },
     repo: {
-      owner: "openclaw",
-      repo: "openclaw",
+      owner: "operator",
+      repo: "operator",
     },
   };
   const exec = {
@@ -221,7 +221,7 @@ async function runCommenter(
           pullGetCount += 1;
           return {
             data: {
-              base: { repo: { full_name: "openclaw/openclaw" } },
+              base: { repo: { full_name: "operator/operator" } },
               head: {
                 sha:
                   pullGetCount > 1
@@ -280,15 +280,15 @@ async function runCommenter(
         id: 12345,
         name: "iOS Periphery Dead Code",
         pull_requests: [{ number: 123 }],
-        repository: { full_name: "openclaw/openclaw" },
+        repository: { full_name: "operator/operator" },
         run_attempt: options.runAttempt ?? 2,
         run_number: 8,
         workflow_id: 999,
       },
     },
     repo: {
-      owner: "openclaw",
-      repo: "openclaw",
+      owner: "operator",
+      repo: "operator",
     },
   };
   const execute = compileFunction(`return (async () => {\n${script}\n})();`, [
@@ -693,7 +693,7 @@ describe("iOS Periphery comment workflow", () => {
       {
         existingComments: [
           {
-            body: "<!-- openclaw-ios-periphery-dead-code -->\nprevious findings",
+            body: "<!-- operator-ios-periphery-dead-code -->\nprevious findings",
             id: 99,
             user: { login: "github-actions[bot]", type: "Bot" },
           },
@@ -723,7 +723,7 @@ describe("iOS Periphery comment workflow", () => {
       {
         existingComments: [
           {
-            body: "<!-- openclaw-ios-periphery-dead-code -->\nold findings",
+            body: "<!-- operator-ios-periphery-dead-code -->\nold findings",
             id: 99,
             user: { login: "github-actions[bot]", type: "Bot" },
           },
@@ -1010,7 +1010,7 @@ describe("iOS Periphery comment workflow", () => {
       {
         existingComments: [
           {
-            body: "<!-- openclaw-ios-periphery-dead-code -->",
+            body: "<!-- operator-ios-periphery-dead-code -->",
             id: 99,
             user: { login: "another-app[bot]", type: "Bot" },
           },

@@ -14,7 +14,7 @@ import { getIMessageRuntime } from "../runtime.js";
 // `dispatch` callback so `evaluateIMessageInbound` + `dispatchInboundMessage`
 // runs unchanged on replayed rows.
 //
-// See https://github.com/openclaw/openclaw/issues/78649 for design discussion.
+// See https://github.com/operator/operator/issues/78649 for design discussion.
 
 const DEFAULT_MAX_AGE_MINUTES = 120;
 const MAX_MAX_AGE_MINUTES = 12 * 60;

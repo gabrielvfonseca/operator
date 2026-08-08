@@ -129,7 +129,7 @@ function codexSkillPlan(overrides: Partial<MigrationPlan> = {}): MigrationPlan {
       action: "copy",
       status: "planned",
       source: "/tmp/codex/skills/alpha",
-      target: "/tmp/openclaw/workspace/skills/alpha",
+      target: "/tmp/operator/workspace/skills/alpha",
       details: {
         skillName: "alpha",
         sourceLabel: "Codex skill",
@@ -141,7 +141,7 @@ function codexSkillPlan(overrides: Partial<MigrationPlan> = {}): MigrationPlan {
       action: "copy",
       status: "planned",
       source: "/tmp/codex/skills/beta",
-      target: "/tmp/openclaw/workspace/skills/beta",
+      target: "/tmp/operator/workspace/skills/beta",
       details: {
         skillName: "beta",
         sourceLabel: "Personal AgentSkill",

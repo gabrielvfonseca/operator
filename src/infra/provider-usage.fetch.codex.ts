@@ -67,7 +67,7 @@ export async function fetchCodexUsage(
     Accept: "application/json",
     originator: "@gabrielvfonseca/operator",
     ...(version ? { version } : {}),
-    "User-Agent": `openclaw/${version || "dev"}`,
+    "User-Agent": `operator/${version || "dev"}`,
   };
   if (accountId) {
     defaultHeaders["ChatGPT-Account-Id"] = accountId;

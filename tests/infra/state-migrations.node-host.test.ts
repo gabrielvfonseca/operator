@@ -5,11 +5,11 @@ import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { useAutoCleanupTempDirTracker } from "../../test/helpers/temp-dir.js";
 import { loadNodeHostConfig } from "../../src/node-host/config.js";
-import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/operator-state-db.generated.js";
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import { acquireGatewayLock } from "../../src/infra/gateway-lock.js";
 import {
   executeSqliteQuerySync,
@@ -413,6 +413,6 @@ describe("legacy node-host Doctor migration", () => {
 
     expect(result.warnings[0]).toContain("source or Doctor claim remains after cleanup");
     expect(fs.existsSync(sourcePath)).toBe(true);
-    await expect(loadNodeHostConfig(env)).rejects.toThrow("openclaw doctor --fix");
+    await expect(loadNodeHostConfig(env)).rejects.toThrow("operator doctor --fix");
   });
 });

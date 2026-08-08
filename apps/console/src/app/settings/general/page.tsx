@@ -2,8 +2,6 @@
 
 import { PageHeader, LoadingState, ErrorState } from "@/components/page.tsx";
 import { useGatewayRequest } from "@/lib/gateway-client.tsx";
-import { Card, CardContent, CardHeader, CardTitle, Button } from "@operator/design-system";
-
 export default function GeneralSettingsPage() {
   const { data, error, loading } = useGatewayRequest<Record<string, unknown>>("config.get", {
     scope: "general",

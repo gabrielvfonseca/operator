@@ -7,7 +7,7 @@ const mocks = vi.hoisted(() => ({
   shouldAutoControlRealtimeVoiceAgentText: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/realtime-voice", () => ({
+vi.mock("operator/plugin-sdk/realtime-voice", () => ({
   controlRealtimeVoiceAgentRun: mocks.controlRealtimeVoiceAgentRun,
   shouldAutoControlRealtimeVoiceAgentText: mocks.shouldAutoControlRealtimeVoiceAgentText,
 }));

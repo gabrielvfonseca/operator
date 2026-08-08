@@ -3137,9 +3137,9 @@ describe("scripts/crabbox-wrapper", () => {
     const remoteCommand = output.args.at(-1) ?? "";
     expect(result.status).toBe(0);
     expect(output.args).toContain("--shell");
-    expect(remoteCommand).toContain("$openclawModulesDir = $env:PNPM_CONFIG_MODULES_DIR");
-    expect(remoteCommand).toContain('mklink /J "$openclawSelfModules" "$openclawModulesDir"');
-    expect(remoteCommand).toContain('mklink /J "$openclawWorkspaceModules" "$openclawModulesDir"');
+    expect(remoteCommand).toContain("$operatorModulesDir = $env:PNPM_CONFIG_MODULES_DIR");
+    expect(remoteCommand).toContain('mklink /J "$operatorSelfModules" "$operatorModulesDir"');
+    expect(remoteCommand).toContain('mklink /J "$operatorWorkspaceModules" "$operatorModulesDir"');
     expect(remoteCommand).toContain("corepack pnpm check:changed");
   });
 
@@ -3163,9 +3163,9 @@ describe("scripts/crabbox-wrapper", () => {
     const remoteCommand = output.args.at(-1) ?? "";
     expect(result.status).toBe(0);
     expect(output.args).toContain("--shell");
-    expect(remoteCommand).toContain("$openclawModulesDir = $env:PNPM_CONFIG_MODULES_DIR");
-    expect(remoteCommand).toContain('mklink /J "$openclawSelfModules" "$openclawModulesDir"');
-    expect(remoteCommand).toContain('mklink /J "$openclawWorkspaceModules" "$openclawModulesDir"');
+    expect(remoteCommand).toContain("$operatorModulesDir = $env:PNPM_CONFIG_MODULES_DIR");
+    expect(remoteCommand).toContain('mklink /J "$operatorSelfModules" "$operatorModulesDir"');
+    expect(remoteCommand).toContain('mklink /J "$operatorWorkspaceModules" "$operatorModulesDir"');
     expect(remoteCommand).toContain("corepack pnpm check:changed");
   });
 
@@ -3191,7 +3191,7 @@ describe("scripts/crabbox-wrapper", () => {
     const remoteCommand = output.args.at(-1) ?? "";
     expect(result.status).toBe(0);
     expect(output.args).toContain("--shell");
-    expect(remoteCommand).toContain("$openclawModulesDir = $env:PNPM_CONFIG_MODULES_DIR");
+    expect(remoteCommand).toContain("$operatorModulesDir = $env:PNPM_CONFIG_MODULES_DIR");
     expect(remoteCommand).toContain("pnpm --filter '@gabrielvfonseca/discord' test");
   });
 

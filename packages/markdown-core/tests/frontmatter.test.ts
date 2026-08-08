@@ -23,7 +23,7 @@ description: |
 name: session-memory
 metadata:
   {
-    "openclaw":
+    "operator":
       {
         "emoji": "disk",
         "events": ["command:new"],
@@ -32,20 +32,20 @@ metadata:
 ---
 `;
     const result = parseFrontmatterBlock(content);
-    expect(result.metadata).toBe('{"openclaw":{"emoji":"disk","events":["command:new"]}}');
+    expect(result.metadata).toBe('{"operator":{"emoji":"disk","events":["command:new"]}}');
 
     const parsed = JSON5.parse(expectDefined(result.metadata, "result.metadata test invariant"));
-    expect(parsed.openclaw?.emoji).toBe("disk");
+    expect(parsed.operator?.emoji).toBe("disk");
   });
 
   it("preserves inline JSON values", () => {
     const content = `---
 name: inline-json
-metadata: {"openclaw": {"events": ["test"]}}
+metadata: {"operator": {"events": ["test"]}}
 ---
 `;
     const result = parseFrontmatterBlock(content);
-    expect(result.metadata).toBe('{"openclaw": {"events": ["test"]}}');
+    expect(result.metadata).toBe('{"operator": {"events": ["test"]}}');
   });
 
   it("stringifies YAML objects and arrays", () => {
@@ -57,7 +57,7 @@ tags:
   - alpha
   - beta
 metadata:
-  openclaw:
+  operator:
     events:
       - command:new
 ---
@@ -67,7 +67,7 @@ metadata:
     expect(result.retries).toBe("3");
     expect(JSON.parse(result.tags ?? "[]")).toEqual(["alpha", "beta"]);
     const parsed = JSON5.parse(result.metadata ?? "");
-    expect(parsed.openclaw?.events).toEqual(["command:new"]);
+    expect(parsed.operator?.events).toEqual(["command:new"]);
   });
 
   it("preserves inline description values containing colons", () => {
@@ -93,10 +93,10 @@ description: |-
     const content = `---
 name: sample-skill
 metadata:
-  openclaw: true
+  operator: true
 ---`;
     const result = parseFrontmatterBlock(content);
-    expect(result.metadata).toBe('{"openclaw":true}');
+    expect(result.metadata).toBe('{"operator":true}');
   });
 
   it("returns empty when frontmatter is missing", () => {

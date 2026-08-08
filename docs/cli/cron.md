@@ -35,7 +35,7 @@ Use `--webhook <url>` when the job should POST the finished payload instead of d
 operator cron create "0 18 * * 1-5" \
   "Summarize today's deploys as JSON." \
   --name "Deploy digest" \
-  --webhook "https://example.invalid/openclaw/cron"
+  --webhook "https://example.invalid/operator/cron"
 ```
 
 Use `--command` for deterministic shell-style jobs that run inside Operator cron without starting an isolated agent/model run:
@@ -278,7 +278,7 @@ operator cron create "*/30 * * * *" \
   --timeout-seconds 120 \
   --no-output-timeout-seconds 30 \
   --output-max-bytes 65536 \
-  --webhook "https://example.invalid/openclaw/cron"
+  --webhook "https://example.invalid/operator/cron"
 ```
 
 ## Common admin commands
@@ -321,7 +321,7 @@ Delivery tweaks:
 
 ```bash
 operator cron edit <job-id> --announce --channel slack --to "channel:C1234567890"
-operator cron edit <job-id> --webhook "https://example.invalid/openclaw/cron"
+operator cron edit <job-id> --webhook "https://example.invalid/operator/cron"
 operator cron edit <job-id> --best-effort-deliver
 operator cron edit <job-id> --no-best-effort-deliver
 operator cron edit <job-id> --no-deliver

@@ -11,9 +11,9 @@ const slashCommandMenuMocks = vi.hoisted(() => ({
   resolveCommandArgMenu: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/agent-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/agent-runtime")>(
-    "openclaw/plugin-sdk/agent-runtime",
+vi.mock("operator/plugin-sdk/agent-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/agent-runtime")>(
+    "operator/plugin-sdk/agent-runtime",
   );
   return {
     ...actual,
@@ -672,7 +672,7 @@ describe("Slack native command argument menus", () => {
 
     expect(
       [...configuredHarness.commands.keys()].some(
-        (command) => command instanceof RegExp && command.test("/openclaw"),
+        (command) => command instanceof RegExp && command.test("/operator"),
       ),
     ).toBe(true);
     expect(configuredHarness.commands.has("/usage")).toBe(false);

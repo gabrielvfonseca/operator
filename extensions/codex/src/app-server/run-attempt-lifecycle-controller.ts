@@ -192,7 +192,7 @@ export function createCodexAttemptLifecycleController(
     try {
       await params.onToolResult?.({
         text: summary,
-        channelData: { openclawProgressKind: FAST_MODE_AUTO_PROGRESS_KIND },
+        channelData: { operatorProgressKind: FAST_MODE_AUTO_PROGRESS_KIND },
       });
     } catch (error) {
       embeddedAgentLog.debug("codex app-server fast mode auto progress delivery failed", { error });

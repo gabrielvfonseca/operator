@@ -6,7 +6,7 @@ import {
   readChannelPairingStateSnapshot,
   writeChannelPairingStateSnapshot,
 } from "../../src/pairing/pairing-store-sqlite.test-helpers.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { createTrackedTempDirs } from "../../src/test-utils/tracked-temp-dirs.js";
 import {
   detectLegacyChannelPairingState,

@@ -93,7 +93,7 @@ describe("gateway-watch tmux wrapper", () => {
   it("builds a login-shell command that runs the raw watcher in the repo", () => {
     const command = buildGatewayWatchTmuxCommand({
       args: ["gateway", "--force", "--raw-stream-path", "a b.jsonl"],
-      cwd: "/repo with spaces/openclaw",
+      cwd: "/repo with spaces/operator",
       env: {
         OPERATOR_GATEWAY_PORT: "19001",
         OPERATOR_GATEWAY_RESTART_TRACE: "1",
@@ -108,7 +108,7 @@ describe("gateway-watch tmux wrapper", () => {
     });
 
     expect(command).toContain("exec '/bin/zsh' -lc");
-    expect(command).toContain("/repo with spaces/openclaw");
+    expect(command).toContain("/repo with spaces/operator");
     expect(command).toContain("'OPERATOR_GATEWAY_WATCH_TMUX_CHILD=1'");
     expect(command).toContain("'OPERATOR_GATEWAY_WATCH_SESSION=operator-gateway-watch-main'");
     expect(command).toContain("'\\''-u'\\'' '\\''NO_COLOR'\\''");

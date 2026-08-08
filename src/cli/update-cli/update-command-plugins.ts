@@ -47,7 +47,7 @@ import {
 import { readPackageVersion, type UpdateCommandOptions } from "./shared.js";
 
 const POST_UPDATE_PLUGIN_REPAIR_GUIDANCE =
-  "Run openclaw update repair to retry post-update plugin repair.";
+  "Run operator update repair to retry post-update plugin repair.";
 
 export type PostCorePluginUpdateResult = NonNullable<
   NonNullable<UpdateRunResult["postUpdate"]>["plugins"]
@@ -223,7 +223,7 @@ function formatMissingPluginPayloadReason(entry: MissingPluginInstallPayload): s
 }
 
 function formatPostUpdatePluginInspectGuidance(pluginId: string): string {
-  return `Run openclaw plugins inspect ${pluginId} --runtime --json for details.`;
+  return `Run operator plugins inspect ${pluginId} --runtime --json for details.`;
 }
 
 function createPostUpdatePluginWarning(params: {
@@ -309,8 +309,8 @@ function buildInvalidConfigPostCoreUpdateResult(): {
   result: PostCorePluginUpdateResult;
 } {
   const guidance = [
-    "Run `openclaw doctor` to inspect the config validation errors.",
-    "Once the config parses, rerun `openclaw update repair`.",
+    "Run `operator doctor` to inspect the config validation errors.",
+    "Once the config parses, rerun `operator update repair`.",
   ];
   const message =
     "Plugin post-update convergence skipped because the config is invalid; refusing to restart the gateway with an unverified plugin set.";

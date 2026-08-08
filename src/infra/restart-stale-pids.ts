@@ -296,7 +296,7 @@ function parsePidsFromLsofOutput(
 }
 
 /**
- * Windows: find listening PIDs on the port, then verify each is an openclaw
+ * Windows: find listening PIDs on the port, then verify each is an operator
  * gateway process via command-line inspection. Excludes the current process
  * and its ancestors (same invariant as the lsof path — see
  * `getSelfAndAncestorPidsSync`).
@@ -359,7 +359,7 @@ function findGatewayPidsOnPortWithProtectedPidSync(
 ): number[] {
   if (process.platform === "win32") {
     // Use the shared Windows port inspection (PowerShell / netstat) with
-    // command-line verification to find only openclaw gateway processes.
+    // command-line verification to find only operator gateway processes.
     return findVerifiedWindowsGatewayPidsOnPortSync(port, protectedPid);
   }
   const lsof = resolveLsofCommandSync();
@@ -397,7 +397,7 @@ function findGatewayPidsOnPortWithProtectedPidSync(
 
 /**
  * Find PIDs of gateway processes listening on the given port using synchronous lsof.
- * Returns only PIDs that belong to openclaw gateway processes (not the current process).
+ * Returns only PIDs that belong to operator gateway processes (not the current process).
  */
 export function findGatewayPidsOnPortSync(
   port: number,

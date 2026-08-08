@@ -9,7 +9,7 @@ const triggerOperatorRestartMock = vi.hoisted(() => vi.fn());
 const isContainerEnvironmentMock = vi.hoisted(() => vi.fn(() => false));
 
 vi.mock("node:child_process", async () => {
-  const { mockNodeBuiltinModule } = await import("openclaw/plugin-sdk/test-node-mocks");
+  const { mockNodeBuiltinModule } = await import("operator/plugin-sdk/test-node-mocks");
   return mockNodeBuiltinModule(
     () => vi.importActual<typeof import("node:child_process")>("node:child_process"),
     {
@@ -261,7 +261,7 @@ describe("restartGatewayProcessWithFreshPid", () => {
   it("ignores node task script hints for gateway restart detection on Windows", () => {
     clearSupervisorHints();
     setPlatform("win32");
-    process.env.OPERATOR_TASK_SCRIPT = "C:\\openclaw\\node.cmd";
+    process.env.OPERATOR_TASK_SCRIPT = "C:\\operator\\node.cmd";
     process.env.OPERATOR_TASK_SCRIPT_NAME = "node.cmd";
     process.env.OPERATOR_SERVICE_MARKER = "@gabrielvfonseca/operator";
     process.env.OPERATOR_SERVICE_KIND = "node";
@@ -307,7 +307,7 @@ describe("respawnGatewayProcessForUpdate", () => {
     process.execArgv = [];
     process.argv = [
       "C:\\Program Files\\node.exe",
-      "C:\\openclaw\\node_modules\\.pnpm\\openclaw@2026.6.5\\node_modules\\openclaw\\dist\\index.js",
+      "C:\\operator\\node_modules\\.pnpm\\operator@2026.6.5\\node_modules\\operator\\dist\\index.js",
       "gateway",
       "run",
     ];
@@ -319,7 +319,7 @@ describe("respawnGatewayProcessForUpdate", () => {
     expect(result.pid).toBe(5151);
     expect(spawnMock).toHaveBeenCalledWith(
       process.execPath,
-      ["C:\\openclaw\\node_modules\\openclaw\\operator.mjs", "gateway", "run"],
+      ["C:\\operator\\node_modules\\operator\\operator.mjs", "gateway", "run"],
       {
         detached: true,
         env: process.env,
@@ -334,7 +334,7 @@ describe("respawnGatewayProcessForUpdate", () => {
     process.execArgv = [];
     process.argv = [
       "/usr/local/bin/node",
-      "/app/node_modules/.pnpm/openclaw@2026.6.5/node_modules/openclaw/dist/entry.js",
+      "/app/node_modules/.pnpm/operator@2026.6.5/node_modules/operator/dist/entry.js",
       "gateway",
       "run",
     ];
@@ -345,7 +345,7 @@ describe("respawnGatewayProcessForUpdate", () => {
     expect(result.mode).toBe("spawned");
     expect(spawnMock).toHaveBeenCalledWith(
       process.execPath,
-      ["/app/node_modules/openclaw/operator.mjs", "gateway", "run"],
+      ["/app/node_modules/operator/operator.mjs", "gateway", "run"],
       {
         detached: true,
         env: process.env,

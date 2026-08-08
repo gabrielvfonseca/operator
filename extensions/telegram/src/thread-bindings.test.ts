@@ -17,9 +17,9 @@ import type { TelegramRuntime } from "./runtime.types.js";
 
 const readAcpSessionEntryMock = vi.hoisted(() => vi.fn());
 
-vi.mock("openclaw/plugin-sdk/acp-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/acp-runtime")>(
-    "openclaw/plugin-sdk/acp-runtime",
+vi.mock("operator/plugin-sdk/acp-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/acp-runtime")>(
+    "operator/plugin-sdk/acp-runtime",
   );
   readAcpSessionEntryMock.mockImplementation(actual.readAcpSessionEntry);
   return {
@@ -106,8 +106,8 @@ describe("telegram thread bindings", () => {
     installThreadBindingStore(createThreadBindingStore());
     threadBindingStore.clear();
     readAcpSessionEntryMock.mockReset();
-    const acpRuntime = await vi.importActual<typeof import("openclaw/plugin-sdk/acp-runtime")>(
-      "openclaw/plugin-sdk/acp-runtime",
+    const acpRuntime = await vi.importActual<typeof import("operator/plugin-sdk/acp-runtime")>(
+      "operator/plugin-sdk/acp-runtime",
     );
     readAcpSessionEntryMock.mockImplementation(acpRuntime.readAcpSessionEntry);
     await testing.resetTelegramThreadBindingsForTests();

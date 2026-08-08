@@ -875,86 +875,77 @@ PY
 
   describe("ReDoS protection", () => {
     it("renders deeply nested emphasis markers without dropping text (#36213)", () => {
-      const nested = "*".repeat(500) + "text" + "*".repeat(500);
-      const html = toSanitizedMarkdownHtml(nested);
-      const container = htmlFragment(html);
+      const nested = `${"*".repeat(500)}text${"*".repeat(500)}`;
       expect(container.children).toHaveLength(1);
       expect(container.firstElementChild?.tagName).toBe("P");
       expect(container.textContent).toBe("text\n");
     });
 
-    it("renders deeply nested brackets without dropping text (#36213)", () => {
-      const nested = "[".repeat(200) + "link" + "]".repeat(200) + "(" + "x".repeat(200) + ")";
-      const html = toSanitizedMarkdownHtml(nested);
-      const container = htmlFragment(html);
-      expect(container.children).toHaveLength(1);
-      expect(container.firstElementChild?.tagName).toBe("P");
-      expect(container.textContent).toBe(`${nested}\n`);
-    });
-
-    it("does not hang on backtick + bracket ReDoS pattern", { timeout: 2_000 }, () => {
-      const HEADER =
-        '{"type":"message","id":"aaa","parentId":"bbb",' +
-        '"timestamp":"2000-01-01T00:00:00.000Z","message":' +
-        '{"role":"toolResult","toolCallId":"call_000",' +
-        '"toolName":"read","content":[{"type":"text","text":' +
-        '"{\\"type\\":\\"message\\",\\"id\\":\\"ccc\\",' +
-        '\\"timestamp\\":\\"2000-01-01T00:00:00.000Z\\",' +
-        '\\"message\\":{\\"role\\":\\"toolResult\\",' +
-        '\\"toolCallId\\":\\"call_111\\",\\"toolName\\":\\"read\\",' +
-        '\\"content\\":[{\\"type\\":\\"text\\",' +
-        '\\"text\\":\\"# Memory Index\\\\n\\\\n';
-
-      const RECORD_UNIT =
-        "## 2000-01-01 00:00:00 done [tag]\\\\n" +
-        "**question**:\\\\n```\\\\nsome question text here\\\\n```\\\\n" +
-        "**details**: [see details](./2000.01.01/00000000/INFO.md)\\\\n\\\\n";
-
-      const poison = HEADER + RECORD_UNIT.repeat(9);
-
-      const start = performance.now();
-      const html = toSanitizedMarkdownHtml(poison);
-      const elapsed = performance.now() - start;
-
-      expect(elapsed).toBeLessThan(500);
-      expect(html.length).toBeGreaterThan(0);
-    });
+    const nested = `${"[".repeat(200)}link${"]".repeat(200)}(${"x".repeat(200)})`;
+    expect(container.textContent).toBe(`${nested}\n`);
   });
 
-  describe("large text handling", () => {
-    it("uses plain text fallback for oversized content", () => {
-      // MARKDOWN_PARSE_LIMIT is 40_000 chars
-      const input = Array.from(
-        { length: 220 },
-        (_, i) =>
-          `Paragraph ${i + 1}: ${Array.from({ length: 8 }, () => "Long plain-text reply.").join(
-            " ",
-          )}`,
-      ).join("\n\n");
-      const html = toSanitizedMarkdownHtml(input);
-      const fallback = htmlFragment(html).firstElementChild;
-      expect(fallback?.tagName).toBe("DIV");
-      expect(fallback?.className).toBe("markdown-plain-text-fallback");
-      expect(fallback?.textContent).toBe(input);
-    });
+  it("does not hang on backtick + bracket ReDoS pattern", { timeout: 2_000 }, () => {
+    const HEADER =
+      '{"type":"message","id":"aaa","parentId":"bbb",' +
+      '"timestamp":"2000-01-01T00:00:00.000Z","message":' +
+      '{"role":"toolResult","toolCallId":"call_000",' +
+      '"toolName":"read","content":[{"type":"text","text":' +
+      '"{\\"type\\":\\"message\\",\\"id\\":\\"ccc\\",' +
+      '\\"timestamp\\":\\"2000-01-01T00:00:00.000Z\\",' +
+      '\\"message\\":{\\"role\\":\\"toolResult\\",' +
+      '\\"toolCallId\\":\\"call_111\\",\\"toolName\\":\\"read\\",' +
+      '\\"content\\":[{\\"type\\":\\"text\\",' +
+      '\\"text\\":\\"# Memory Index\\\\n\\\\n';
 
-    it("preserves indentation in plain text fallback", () => {
-      const input = `${"Header line\n".repeat(3400)}\n    indented log line\n        deeper indent`;
-      const html = toSanitizedMarkdownHtml(input);
-      const fallback = htmlFragment(html).firstElementChild;
-      expect(fallback?.className).toBe("markdown-plain-text-fallback");
-      expect(fallback?.textContent).toBe(input);
-    });
+    const RECORD_UNIT =
+      "## 2000-01-01 00:00:00 done [tag]\\\\n" +
+      "**question**:\\\\n```\\\\nsome question text here\\\\n```\\\\n" +
+      "**details**: [see details](./2000.01.01/00000000/INFO.md)\\\\n\\\\n";
 
-    it("caches oversized fallback results", () => {
-      const input =
-        Array.from({ length: 240 }, (_, i) => `P${i}`).join("\n\n") + "x".repeat(45_000);
-      const first = toSanitizedMarkdownHtml(input);
-      const second = toSanitizedMarkdownHtml(input);
-      expect(input.length).toBeGreaterThan(40_000);
-      expect(htmlFragment(first).firstElementChild?.className).toBe("markdown-plain-text-fallback");
-      expect(second).toBe(first);
-    });
+    const poison = HEADER + RECORD_UNIT.repeat(9);
+
+    const start = performance.now();
+    const html = toSanitizedMarkdownHtml(poison);
+    const elapsed = performance.now() - start;
+
+    expect(elapsed).toBeLessThan(500);
+    expect(html.length).toBeGreaterThan(0);
+  });
+});
+
+describe("large text handling", () => {
+  it("uses plain text fallback for oversized content", () => {
+    // MARKDOWN_PARSE_LIMIT is 40_000 chars
+    const input = Array.from(
+      { length: 220 },
+      (_, i) =>
+        `Paragraph ${i + 1}: ${Array.from({ length: 8 }, () => "Long plain-text reply.").join(
+          " ",
+        )}`,
+    ).join("\n\n");
+    const html = toSanitizedMarkdownHtml(input);
+    const fallback = htmlFragment(html).firstElementChild;
+    expect(fallback?.tagName).toBe("DIV");
+    expect(fallback?.className).toBe("markdown-plain-text-fallback");
+    expect(fallback?.textContent).toBe(input);
+  });
+
+  it("preserves indentation in plain text fallback", () => {
+    const input = `${"Header line\n".repeat(3400)}\n    indented log line\n        deeper indent`;
+    const html = toSanitizedMarkdownHtml(input);
+    const fallback = htmlFragment(html).firstElementChild;
+    expect(fallback?.className).toBe("markdown-plain-text-fallback");
+    expect(fallback?.textContent).toBe(input);
+  });
+
+  it("caches oversized fallback results", () => {
+    const input = Array.from({ length: 240 }, (_, i) => `P${i}`).join("\n\n") + "x".repeat(45_000);
+    const first = toSanitizedMarkdownHtml(input);
+    const second = toSanitizedMarkdownHtml(input);
+    expect(input.length).toBeGreaterThan(40_000);
+    expect(htmlFragment(first).firstElementChild?.className).toBe("markdown-plain-text-fallback");
+    expect(second).toBe(first);
   });
 });
 

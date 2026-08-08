@@ -17,7 +17,7 @@ const memoryHostEmbeddingMocks = vi.hoisted(() => ({
 }));
 const LOCAL_EMBEDDING_RUNTIME_FACTS = Symbol.for("operator.localEmbeddingRuntimeFacts");
 
-vi.mock("openclaw/plugin-sdk/memory-core-host-engine-embeddings", () => ({
+vi.mock("operator/plugin-sdk/memory-core-host-engine-embeddings", () => ({
   createLocalEmbeddingProvider: memoryHostEmbeddingMocks.createLocalEmbeddingProvider,
 }));
 
@@ -461,7 +461,7 @@ describe("llama.cpp provider plugin", () => {
     });
 
     expect(llamaCppEmbeddingProviderAdapter.formatSetupError?.(err)).toContain(
-      "openclaw plugins install @gabrielvfonseca/llama-cpp-provider",
+      "operator plugins install @gabrielvfonseca/llama-cpp-provider",
     );
   });
 });

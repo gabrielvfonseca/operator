@@ -63,13 +63,13 @@ const hoisted = vi.hoisted(() => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/memory-host-search", () => ({
+vi.mock("operator/plugin-sdk/memory-host-search", () => ({
   closeActiveMemorySearchManager: hoisted.closeActiveMemorySearchManager,
 }));
 
-vi.mock("openclaw/plugin-sdk/session-store-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/session-store-runtime")>(
-    "openclaw/plugin-sdk/session-store-runtime",
+vi.mock("operator/plugin-sdk/session-store-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/session-store-runtime")>(
+    "operator/plugin-sdk/session-store-runtime",
   );
   return {
     ...actual,
@@ -79,10 +79,10 @@ vi.mock("openclaw/plugin-sdk/session-store-runtime", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/session-transcript-runtime", async () => {
+vi.mock("operator/plugin-sdk/session-transcript-runtime", async () => {
   const actual = await vi.importActual<
-    typeof import("openclaw/plugin-sdk/session-transcript-runtime")
-  >("openclaw/plugin-sdk/session-transcript-runtime");
+    typeof import("operator/plugin-sdk/session-transcript-runtime")
+  >("operator/plugin-sdk/session-transcript-runtime");
   return {
     ...actual,
     readSessionTranscriptEvents: async (

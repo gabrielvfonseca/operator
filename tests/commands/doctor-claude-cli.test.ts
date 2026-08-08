@@ -58,7 +58,7 @@ describe("resolveClaudeCliProjectDirForWorkspace", () => {
   it("matches Claude's sanitized workspace project dir shape", () => {
     expect(
       resolveClaudeCliProjectDirForWorkspace({
-        workspaceDir: "/Users/vincentkoc/GIT/_Perso/openclaw/.operator/workspace",
+        workspaceDir: "/Users/vincentkoc/GIT/_Perso/operator/.operator/workspace",
         homeDir: "/Users/vincentkoc",
       }),
     ).toBe(
@@ -212,7 +212,7 @@ describe("noteClaudeCliHealth", () => {
       const body = noteBody(noteFn);
       expect(body).toContain(`Operator auth profile: missing (${CLAUDE_CLI_PROFILE_ID})`);
       expect(body).toContain(
-        "openclaw models auth login --provider anthropic --method cli --set-default",
+        "operator models auth login --provider anthropic --method cli --set-default",
       );
       expect(body).not.toContain("Headless Claude auth: OK");
       expect(body).not.toContain("not created yet");

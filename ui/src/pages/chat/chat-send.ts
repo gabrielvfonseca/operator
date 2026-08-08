@@ -1578,7 +1578,7 @@ function historyContainsQueuedSend(history: ChatHistoryResult, item: ChatQueueIt
       return false;
     }
     const record = message as Record<string, unknown>;
-    const marker = record["__openclaw"];
+    const marker = record["__operator"];
     const metadata =
       marker && typeof marker === "object" && !Array.isArray(marker)
         ? (marker as Record<string, unknown>)

@@ -123,7 +123,7 @@ if [[ "$START_GATEWAY" -eq 1 ]]; then
   (
     cd "$ROOT_DIR"
     OPENAI_API_KEY="$OPERATOR_OPENAI_API_KEY" \
-      pnpm openclaw gateway run \
+      pnpm operator gateway run \
         --port "$PORT" \
         --auth none \
         --bind loopback \

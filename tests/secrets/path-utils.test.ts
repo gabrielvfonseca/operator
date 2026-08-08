@@ -21,7 +21,7 @@ function createAgentListConfig(): OperatorConfig {
 }
 
 const BLOCKED_PATH_SEGMENTS = ["__proto__", "constructor", "prototype"];
-const POLLUTION_PROBE = "openclawPathPollutionProbe";
+const POLLUTION_PROBE = "operatorPathPollutionProbe";
 
 describe("secrets path utils", () => {
   it("deletePathStrict compacts arrays via splice", () => {

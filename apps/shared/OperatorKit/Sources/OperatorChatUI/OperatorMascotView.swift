@@ -2,8 +2,8 @@ import SwiftUI
 
 /// Animated operator mascot. Redraws the canonical 120x120 vector from
 /// `ui/public/favicon.svg` so individual parts (claws, antennae, eyes) can
-/// animate like the openclaw.ai hero mark; the bundled PNG asset cannot.
-/// Styling (palette, glow colors, float depth) follows the openclaw.ai hero
+/// animate like the operator.ai hero mark; the bundled PNG asset cannot.
+/// Styling (palette, glow colors, float depth) follows the operator.ai hero
 /// (`src/pages/index.astro` + `Layout.astro` theme variables).
 ///
 /// Beyond the site's loop, an `operatorMascotAnimator` layers on moods
@@ -85,7 +85,7 @@ public struct operatorMascotView: View {
         Date().timeIntervalSinceReferenceDate
     }
 
-    /// openclaw.ai hero drop-shadow color (`--logo-glow` / `--logo-glow-hover`).
+    /// operator.ai hero drop-shadow color (`--logo-glow` / `--logo-glow-hover`).
     /// Pair with a shadow radius of ~10% of the mascot size (15% while hovering)
     /// to match the site's `drop-shadow(0 0 20px)` on a 100px mark.
     public static func heroGlowColor(for colorScheme: ColorScheme, hovering: Bool = false) -> Color {
@@ -123,7 +123,7 @@ extension View {
     }
 }
 
-/// Body/antenna colors from the openclaw.ai theme variables: `:root` (dark)
+/// Body/antenna colors from the operator.ai theme variables: `:root` (dark)
 /// and `html[data-theme='light']` in `Layout.astro`. Eye colors are fixed in
 /// the site markup and shared by both themes.
 struct operatorMascotPalette: Equatable {

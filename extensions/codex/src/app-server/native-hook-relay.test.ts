@@ -36,7 +36,7 @@ describe("Codex native hook relay config", () => {
             {
               type: "command",
               command:
-                "openclaw hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event pre_tool_use --timeout 6000",
+                "operator hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event pre_tool_use --timeout 6000",
               timeout: 7,
               async: false,
               statusMessage: "Operator native hook relay",
@@ -50,7 +50,7 @@ describe("Codex native hook relay config", () => {
             {
               type: "command",
               command:
-                "openclaw hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event post_tool_use --timeout 6000",
+                "operator hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event post_tool_use --timeout 6000",
               timeout: 7,
               async: false,
               statusMessage: "Operator native hook relay",
@@ -64,7 +64,7 @@ describe("Codex native hook relay config", () => {
             {
               type: "command",
               command:
-                "openclaw hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event permission_request --timeout 6000",
+                "operator hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event permission_request --timeout 6000",
               timeout: 7,
               async: false,
               statusMessage: "Operator native hook relay",
@@ -78,7 +78,7 @@ describe("Codex native hook relay config", () => {
             {
               type: "command",
               command:
-                "openclaw hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event before_agent_finalize --timeout 6000",
+                "operator hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event before_agent_finalize --timeout 6000",
               timeout: 7,
               async: false,
               statusMessage: "Operator native hook relay",
@@ -142,7 +142,7 @@ describe("Codex native hook relay config", () => {
             {
               type: "command",
               command:
-                "openclaw hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event permission_request --timeout 9000",
+                "operator hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event permission_request --timeout 9000",
               timeout: 10,
               async: false,
               statusMessage: "Operator native hook relay",
@@ -178,7 +178,7 @@ describe("Codex native hook relay config", () => {
             {
               type: "command",
               command:
-                "openclaw hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event pre_tool_use --timeout 9000",
+                "operator hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event pre_tool_use --timeout 9000",
               timeout: 10,
               async: false,
               statusMessage: "Operator native hook relay",
@@ -216,7 +216,7 @@ describe("Codex native hook relay config", () => {
             {
               type: "command",
               command:
-                "openclaw hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event pre_tool_use --pre-tool-use-unavailable noop --timeout 9000",
+                "operator hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event pre_tool_use --pre-tool-use-unavailable noop --timeout 9000",
               timeout: 10,
               async: false,
               statusMessage: "Operator native hook relay",
@@ -269,7 +269,7 @@ describe("Codex native hook relay config", () => {
             {
               type: "command",
               command:
-                "openclaw hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event permission_request --timeout 9000",
+                "operator hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event permission_request --timeout 9000",
               timeout: 10,
               async: false,
               statusMessage: "Operator native hook relay",
@@ -386,7 +386,7 @@ function createRelay(options?: {
     expiresAtMs: Date.now() + 1000,
     shouldRelayEvent: (event) => !inactiveEvents.has(event),
     commandForEvent: (event, commandOptions) =>
-      `openclaw hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event ${event}${
+      `operator hooks relay --provider codex --relay-id relay-1 --generation generation-1 --event ${event}${
         event === "pre_tool_use" && inactiveEvents.has(event)
           ? " --pre-tool-use-unavailable noop"
           : ""

@@ -1,5 +1,5 @@
 import { ContextProvider } from "@lit/context";
-import type { RouteLocation, RouterState } from "@openclaw/uirouter";
+import type { RouteLocation, RouterState } from "@operator/uirouter";
 import { html, nothing } from "lit";
 import { property, query, state } from "lit/decorators.js";
 import { hasStoredGatewayAuth, type GatewayBrowserClient } from "../api/gateway.ts";
@@ -245,7 +245,7 @@ class OperatorApp extends OperatorLightDomElement {
     // their lazy source getters bind on both the initial mount and reconnect.
     this.requestUpdate();
     void this.runtime.start().catch((error: unknown) => {
-      console.error("[openclaw] application start failed", error);
+      console.error("[operator] application start failed", error);
     });
   }
 

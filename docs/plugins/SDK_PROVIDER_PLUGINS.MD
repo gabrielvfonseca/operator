@@ -44,7 +44,7 @@ catalog, API-key auth, and dynamic model resolution.
           "minGatewayVersion": "2026.3.24-beta.2"
         },
         "build": {
-          "openclawVersion": "2026.3.24-beta.2",
+          "operatorVersion": "2026.3.24-beta.2",
           "pluginSdkVersion": "2026.3.24-beta.2"
         }
       }
@@ -110,8 +110,8 @@ catalog, API-key auth, and dynamic model resolution.
     vendor APIs and returns `models.providers` entries.
 
     ```typescript index.ts
-    import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
-    import { createProviderApiKeyAuthMethod } from "openclaw/plugin-sdk/provider-auth";
+    import { definePluginEntry } from "operator/plugin-sdk/plugin-entry";
+    import { createProviderApiKeyAuthMethod } from "operator/plugin-sdk/provider-auth";
 
     export default definePluginEntry({
       id: "acme-ai",
@@ -210,7 +210,7 @@ catalog, API-key auth, and dynamic model resolution.
 
     If your provider exposes a `/models`-style API, keep the provider-specific
     endpoint and row projection in your plugin and use
-    `openclaw/plugin-sdk/provider-catalog-live-runtime` for the shared fetch
+    `operator/plugin-sdk/provider-catalog-live-runtime` for the shared fetch
     lifecycle. The helper gives you guarded HTTP fetches, provider-auth headers,
     structured HTTP errors, TTL caching, and static fallback behavior without
     putting provider policy in Operator core.
@@ -219,11 +219,11 @@ catalog, API-key auth, and dynamic model resolution.
     provider-owned static catalog rows are currently available:
 
     ```typescript index.ts
-    import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
+    import { definePluginEntry } from "operator/plugin-sdk/plugin-entry";
     import {
       buildLiveModelProviderConfig,
       type LiveModelCatalogFetchGuard,
-    } from "openclaw/plugin-sdk/provider-catalog-live-runtime";
+    } from "operator/plugin-sdk/provider-catalog-live-runtime";
 
     const STATIC_MODELS = [
       {
@@ -312,7 +312,7 @@ catalog, API-key auth, and dynamic model resolution.
     import {
       getCachedLiveProviderModelRows,
       LiveModelCatalogHttpError,
-    } from "openclaw/plugin-sdk/provider-catalog-live-runtime";
+    } from "operator/plugin-sdk/provider-catalog-live-runtime";
 
     async function discoverAcmeModels(apiKey: string) {
       try {
@@ -370,7 +370,7 @@ catalog, API-key auth, and dynamic model resolution.
     `defineSingleProviderPluginEntry(...)` helper:
 
     ```typescript
-    import { defineSingleProviderPluginEntry } from "openclaw/plugin-sdk/provider-entry";
+    import { defineSingleProviderPluginEntry } from "operator/plugin-sdk/provider-entry";
 
     export default defineSingleProviderPluginEntry({
       id: "acme-ai",
@@ -417,14 +417,14 @@ catalog, API-key auth, and dynamic model resolution.
 
     If your auth flow also needs to patch `models.providers.*`, aliases, and
     the agent default model during onboarding, use the preset helpers from
-    `openclaw/plugin-sdk/provider-onboard`. The narrowest helpers are
+    `operator/plugin-sdk/provider-onboard`. The narrowest helpers are
     `createDefaultModelPresetAppliers(...)`,
     `createDefaultModelsPresetAppliers(...)`, and
     `createModelCatalogPresetAppliers(...)`.
 
     When a provider's native endpoint supports streamed usage blocks on the
     normal `openai-completions` transport, prefer the shared catalog helpers in
-    `openclaw/plugin-sdk/provider-catalog-shared` instead of hardcoding
+    `operator/plugin-sdk/provider-catalog-shared` instead of hardcoding
     provider-id checks. `supportsNativeStreamingUsageCompat(...)` and
     `applyProviderNativeStreamingUsageCompat(...)` detect support from the
     endpoint capability map, so native Moonshot/DashScope-style endpoints still
@@ -472,9 +472,9 @@ catalog, API-key auth, and dynamic model resolution.
     families, so plugins usually do not need to hand-wire each hook one by one:
 
     ```typescript
-    import { buildProviderReplayFamilyHooks } from "openclaw/plugin-sdk/provider-model-shared";
-    import { buildProviderStreamFamilyHooks } from "openclaw/plugin-sdk/provider-stream";
-    import { buildProviderToolCompatFamilyHooks } from "openclaw/plugin-sdk/provider-tools";
+    import { buildProviderReplayFamilyHooks } from "operator/plugin-sdk/provider-model-shared";
+    import { buildProviderStreamFamilyHooks } from "operator/plugin-sdk/provider-stream";
+    import { buildProviderToolCompatFamilyHooks } from "operator/plugin-sdk/provider-tools";
 
     const GOOGLE_FAMILY_HOOKS = {
       ...buildProviderReplayFamilyHooks({ family: "google-gemini" }),
@@ -515,10 +515,10 @@ catalog, API-key auth, and dynamic model resolution.
     <Accordion title="SDK seams powering the family builders">
       Each family builder is composed from lower-level public helpers exported from the same package, which you can reach for when a provider needs to go off the common pattern:
 
-      - `openclaw/plugin-sdk/provider-model-shared` - `ProviderReplayFamily`, `buildProviderReplayFamilyHooks(...)`, and the raw replay builders (`buildOpenAICompatibleReplayPolicy`, `buildAnthropicReplayPolicyForModel`, `buildGoogleGeminiReplayPolicy`, `buildHybridAnthropicOrOpenAIReplayPolicy`). Also exports Gemini replay helpers (`sanitizeGoogleGeminiReplayHistory`, `resolveTaggedReasoningOutputMode`) and endpoint/model helpers (`resolveProviderEndpoint`, `normalizeProviderId`, `normalizeGooglePreviewModelId`).
-      - `openclaw/plugin-sdk/provider-stream` - `ProviderStreamFamily`, `buildProviderStreamFamilyHooks(...)`, `composeProviderStreamWrappers(...)`, plus the shared OpenAI/Codex wrappers (`createOpenAIAttributionHeadersWrapper`, `createOpenAIFastModeWrapper`, `createOpenAIServiceTierWrapper`, `createOpenAIResponsesContextManagementWrapper`, `createCodexNativeWebSearchWrapper`), DeepSeek V4 OpenAI-compatible wrapper (`createDeepSeekV4OpenAICompatibleThinkingWrapper`), Anthropic Messages thinking prefill cleanup (`createAnthropicThinkingPrefillPayloadWrapper`), plain-text tool-call compat (`createPlainTextToolCallCompatWrapper`), and shared proxy/provider wrappers (`createOpenRouterWrapper`, `createToolStreamWrapper`, `createMinimaxFastModeWrapper`).
-      - `openclaw/plugin-sdk/provider-stream-shared` - lightweight payload and event wrappers for hot provider paths, including `createOpenAICompatibleCompletionsThinkingOffWrapper`, `createPayloadPatchStreamWrapper`, `createPlainTextToolCallCompatWrapper`, `normalizeOpenAICompatibleReasoningPayload(...)`, and `setQwenChatTemplateThinking(...)`.
-      - `openclaw/plugin-sdk/provider-tools` - `ProviderToolCompatFamily`, `buildProviderToolCompatFamilyHooks("deepseek" | "gemini" | "openai")`, and underlying provider schema helpers.
+      - `operator/plugin-sdk/provider-model-shared` - `ProviderReplayFamily`, `buildProviderReplayFamilyHooks(...)`, and the raw replay builders (`buildOpenAICompatibleReplayPolicy`, `buildAnthropicReplayPolicyForModel`, `buildGoogleGeminiReplayPolicy`, `buildHybridAnthropicOrOpenAIReplayPolicy`). Also exports Gemini replay helpers (`sanitizeGoogleGeminiReplayHistory`, `resolveTaggedReasoningOutputMode`) and endpoint/model helpers (`resolveProviderEndpoint`, `normalizeProviderId`, `normalizeGooglePreviewModelId`).
+      - `operator/plugin-sdk/provider-stream` - `ProviderStreamFamily`, `buildProviderStreamFamilyHooks(...)`, `composeProviderStreamWrappers(...)`, plus the shared OpenAI/Codex wrappers (`createOpenAIAttributionHeadersWrapper`, `createOpenAIFastModeWrapper`, `createOpenAIServiceTierWrapper`, `createOpenAIResponsesContextManagementWrapper`, `createCodexNativeWebSearchWrapper`), DeepSeek V4 OpenAI-compatible wrapper (`createDeepSeekV4OpenAICompatibleThinkingWrapper`), Anthropic Messages thinking prefill cleanup (`createAnthropicThinkingPrefillPayloadWrapper`), plain-text tool-call compat (`createPlainTextToolCallCompatWrapper`), and shared proxy/provider wrappers (`createOpenRouterWrapper`, `createToolStreamWrapper`, `createMinimaxFastModeWrapper`).
+      - `operator/plugin-sdk/provider-stream-shared` - lightweight payload and event wrappers for hot provider paths, including `createOpenAICompatibleCompletionsThinkingOffWrapper`, `createPayloadPatchStreamWrapper`, `createPlainTextToolCallCompatWrapper`, `normalizeOpenAICompatibleReasoningPayload(...)`, and `setQwenChatTemplateThinking(...)`.
+      - `operator/plugin-sdk/provider-tools` - `ProviderToolCompatFamily`, `buildProviderToolCompatFamilyHooks("deepseek" | "gemini" | "openai")`, and underlying provider schema helpers.
 
       For Gemini-family providers, keep the reasoning-output mode aligned with
       the transport. Direct Google Gemini API providers should use `native`
@@ -715,7 +715,7 @@ catalog, API-key auth, and dynamic model resolution.
         import {
           assertOkOrThrowProviderError,
           postJsonRequest,
-        } from "openclaw/plugin-sdk/provider-http";
+        } from "operator/plugin-sdk/provider-http";
 
         api.registerSpeechProvider({
           id: "acme-ai",
@@ -794,7 +794,7 @@ catalog, API-key auth, and dynamic model resolution.
 
         Batch STT providers that POST multipart audio should use
         `buildAudioTranscriptionFormData(...)` from
-        `openclaw/plugin-sdk/provider-http`. The helper normalizes upload
+        `operator/plugin-sdk/provider-http`. The helper normalizes upload
         filenames, including AAC uploads that need an M4A-style filename for
         compatible transcription APIs.
       </Tab>

@@ -2,7 +2,7 @@ import { readRecentUserAssistantTextForSession } from "@gabrielvfonseca/operator
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { buildTelegramSessionTranscriptPromptEntries } from "./session-transcript-context.js";
 
-vi.mock("openclaw/plugin-sdk/session-store-runtime", () => ({
+vi.mock("operator/plugin-sdk/session-store-runtime", () => ({
   readRecentUserAssistantTextForSession: vi.fn(),
 }));
 

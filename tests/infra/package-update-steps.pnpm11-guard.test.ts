@@ -90,7 +90,7 @@ describe("pnpm 11 isolated install preflight", () => {
           globalRoot,
           packageRoot,
         },
-        installSpec: "openclaw@2.0.0",
+        installSpec: "operator@2.0.0",
         packageName: "@gabrielvfonseca/operator",
         packageRoot,
         runCommand,
@@ -130,7 +130,7 @@ describe("pnpm 11 isolated install preflight", () => {
           globalRoot,
           packageRoot,
         },
-        installSpec: "openclaw@2.0.0",
+        installSpec: "operator@2.0.0",
         packageName: "@gabrielvfonseca/operator",
         packageRoot,
         runCommand,
@@ -167,7 +167,7 @@ describe("pnpm 11 isolated install preflight", () => {
           globalRoot,
           packageRoot,
         },
-        installSpec: "openclaw@2.0.0",
+        installSpec: "operator@2.0.0",
         packageName: "@gabrielvfonseca/operator",
         packageRoot,
         runCommand,
@@ -229,7 +229,7 @@ describe("pnpm 11 isolated install preflight", () => {
           globalRoot,
           packageRoot: orphanPackageRoot,
         },
-        installSpec: "openclaw@2.0.0",
+        installSpec: "operator@2.0.0",
         packageName: "@gabrielvfonseca/operator",
         packageRoot: orphanPackageRoot,
         runCommand,
@@ -272,7 +272,7 @@ describe("pnpm 11 isolated install preflight", () => {
         JSON.stringify({ private: true, dependencies: { operator: "1.0.0" } }),
         "utf8",
       );
-      await fs.symlink(path.join(globalRoot, "old"), path.join(globalRoot, "hash-openclaw"), "dir");
+      await fs.symlink(path.join(globalRoot, "old"), path.join(globalRoot, "hash-operator"), "dir");
 
       const pnpmWarning = "[WARN] Using --global skips the package manager check for this project";
       const runCommand: CommandRunner = async (argv, options) => {
@@ -303,10 +303,10 @@ describe("pnpm 11 isolated install preflight", () => {
             globalDir,
             "--global-bin-dir",
             ownerBinDir,
-            "--allow-build=openclaw",
-            "openclaw@2.0.0",
+            "--allow-build=operator",
+            "operator@2.0.0",
           ]);
-          await fs.rm(path.join(globalRoot, "hash-openclaw"), { force: true });
+          await fs.rm(path.join(globalRoot, "hash-operator"), { force: true });
           await fs.rm(path.join(globalRoot, "old"), { recursive: true, force: true });
           await writePackageRoot(newPackageRoot, "2.0.0");
           await fs.mkdir(path.join(newPackageRoot, "scripts"), { recursive: true });
@@ -334,7 +334,7 @@ describe("pnpm 11 isolated install preflight", () => {
           ]);
           await fs.symlink(
             path.join(globalRoot, "new"),
-            path.join(globalRoot, "hash-openclaw"),
+            path.join(globalRoot, "hash-operator"),
             "dir",
           );
         } else if (name === "pnpm package preinstall") {
@@ -380,7 +380,7 @@ describe("pnpm 11 isolated install preflight", () => {
           globalRoot,
           packageRoot: oldPackageRoot,
         },
-        installSpec: "openclaw@2.0.0",
+        installSpec: "operator@2.0.0",
         packageName: "@gabrielvfonseca/operator",
         packageRoot: oldPackageRoot,
         runCommand,
@@ -424,7 +424,7 @@ describe("pnpm 11 isolated install preflight", () => {
           "@gabrielvfonseca/operator",
         );
         const sharedPackageRoot = path.join(base, "store", "@gabrielvfonseca/operator");
-        const activeLink = path.join(globalRoot, "hash-openclaw");
+        const activeLink = path.join(globalRoot, "hash-operator");
         await Promise.all([
           fs.mkdir(path.dirname(oldPackageRoot), { recursive: true }),
           writePackageRoot(sharedPackageRoot, "1.0.0"),
@@ -483,7 +483,7 @@ describe("pnpm 11 isolated install preflight", () => {
             globalRoot,
             packageRoot: oldPackageRoot,
           },
-          installSpec: "openclaw@1.0.0",
+          installSpec: "operator@1.0.0",
           packageName: "@gabrielvfonseca/operator",
           packageRoot: oldPackageRoot,
           runCommand,
@@ -517,8 +517,8 @@ describe("pnpm 11 isolated install preflight", () => {
           expectedInstallSpec: `file:${candidateTarball}`,
         },
         {
-          installSpec: "openclaw@link:./candidate",
-          expectedInstallSpec: `openclaw@link:${path.join(callerProjectDir, "candidate")}`,
+          installSpec: "operator@link:./candidate",
+          expectedInstallSpec: `operator@link:${path.join(callerProjectDir, "candidate")}`,
         },
         {
           installSpec: "git+file:./candidate#main",
@@ -527,11 +527,11 @@ describe("pnpm 11 isolated install preflight", () => {
         },
         { installSpec: "./candidate.tar", expectedInstallSpec: candidateTar },
         {
-          installSpec: "openclaw@file:./candidate.tar",
-          expectedInstallSpec: `openclaw@file:${candidateTar}`,
+          installSpec: "operator@file:./candidate.tar",
+          expectedInstallSpec: `operator@file:${candidateTar}`,
         },
         { installSpec: "candidate.tar", expectedInstallSpec: "candidate.tar" },
-        { installSpec: "openclaw@candidate.tar", expectedInstallSpec: "openclaw@candidate.tar" },
+        { installSpec: "operator@candidate.tar", expectedInstallSpec: "operator@candidate.tar" },
         { installSpec: "file:~/candidate.tgz", expectedInstallSpec: "file:~/candidate.tgz" },
         { installSpec: "~/candidate.tgz", expectedInstallSpec: "~/candidate.tgz" },
       ];
@@ -569,7 +569,7 @@ describe("pnpm 11 isolated install preflight", () => {
           globalDir,
           "--global-bin-dir",
           globalBinDir,
-          "--allow-build=openclaw",
+          "--allow-build=operator",
           expectedInstallSpec,
         ]);
         return {
@@ -642,7 +642,7 @@ describe("pnpm 11 isolated install preflight", () => {
           globalRoot,
           packageRoot,
         },
-        installSpec: "openclaw@2.0.0",
+        installSpec: "operator@2.0.0",
         packageName: "@gabrielvfonseca/operator",
         packageRoot,
         runCommand,
@@ -683,7 +683,7 @@ describe("pnpm 11 isolated install preflight", () => {
           globalRoot,
           packageRoot,
         },
-        installSpec: "openclaw@2.0.0",
+        installSpec: "operator@2.0.0",
         packageName: "@gabrielvfonseca/operator",
         packageRoot,
         runCommand,
@@ -743,7 +743,7 @@ describe("pnpm 11 isolated install preflight", () => {
           globalRoot,
           packageRoot,
         },
-        installSpec: "openclaw@2.0.0",
+        installSpec: "operator@2.0.0",
         packageName: "@gabrielvfonseca/operator",
         packageRoot,
         runCommand,
@@ -802,7 +802,7 @@ describe("pnpm 11 isolated install preflight", () => {
       });
       const updateParams = {
         installTarget: createPnpmTarget(globalRoot),
-        installSpec: "openclaw@2.0.0",
+        installSpec: "operator@2.0.0",
         packageName: "@gabrielvfonseca/operator",
         packageRoot,
         runCommand: async (argv: string[]) => {

@@ -20,12 +20,12 @@ const qaTempPathState = vi.hoisted(() => ({
   preferredTmpDir: process.env.TMPDIR || "/tmp",
 }));
 
-vi.mock("openclaw/plugin-sdk/ssrf-runtime", () => ({
+vi.mock("operator/plugin-sdk/ssrf-runtime", () => ({
   fetchWithSsrFGuard: fetchWithSsrFGuardMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/temp-path", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("openclaw/plugin-sdk/temp-path")>()),
+vi.mock("operator/plugin-sdk/temp-path", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("operator/plugin-sdk/temp-path")>()),
   resolvePreferredOperatorTmpDir: () => qaTempPathState.preferredTmpDir,
 }));
 

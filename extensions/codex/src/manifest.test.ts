@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 type CodexPackageManifest = {
   dependencies?: Record<string, string>;
   devDependencies?: Record<string, string>;
-  openclaw?: {
+  operator?: {
     install?: {
       requiredPlatformPackages?: string[];
     };

@@ -322,7 +322,7 @@ import {
   SystemAgentSetupDetectResultSchema,
   SystemAgentSetupVerifyParamsSchema,
   SystemAgentSetupVerifyResultSchema,
-} from "./openclaw.js";
+} from "./operator.js";
 import {
   PluginApprovalRequestParamsSchema,
   PluginApprovalResolveParamsSchema,

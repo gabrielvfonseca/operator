@@ -325,7 +325,7 @@ export function createGauntletPrebuildCommand(repoRoot) {
   };
 }
 
-function openclawCommand(repoRoot, args) {
+function operatorCommand(repoRoot, args) {
   return {
     command: process.execPath,
     args: [path.join(repoRoot, "dist", "entry.js"), ...args],

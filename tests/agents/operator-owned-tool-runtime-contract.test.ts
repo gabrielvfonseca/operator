@@ -1,11 +1,11 @@
 // Verifies Operator-owned tool hooks preserve adjusted params and telemetry.
-import type { AgentTool } from "operator/plugin-sdk/agent-core";
+import type { AgentTool } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import {
   installOperatorOwnedToolHooks,
   resetOperatorOwnedToolHooks,
   textToolResult,
-} from "operator/plugin-sdk/agent-runtime-test-contracts";
-import type { ExtensionContext } from "operator/plugin-sdk/agent-sessions";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime-test-contracts";
+import type { ExtensionContext } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { toToolDefinitions } from "../../src/agents/agent-tool-definition-adapter.js";
 import { createBaseToolHandlerState } from "../../src/agents/agent-tool-handler-state.test-helpers.js";

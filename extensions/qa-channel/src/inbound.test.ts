@@ -244,7 +244,7 @@ describe("handleQaInbound", () => {
 
   it("marks group messages that match configured mention patterns", async () => {
     const runtime = createPluginRuntimeMock();
-    vi.mocked(runtime.channel.mentions.buildMentionRegexes).mockReturnValue([/\b@?openclaw\b/i]);
+    vi.mocked(runtime.channel.mentions.buildMentionRegexes).mockReturnValue([/\b@?operator\b/i]);
     setQaChannelRuntime(runtime);
 
     await handleQaInbound(
@@ -257,7 +257,7 @@ describe("handleQaInbound", () => {
           },
           senderId: "alice",
           senderName: "Alice",
-          text: "@openclaw ping",
+          text: "@operator ping",
         },
       }),
     );
@@ -415,7 +415,7 @@ describe("handleQaInbound", () => {
 
   it("skips configured group messages that miss mention activation", async () => {
     const runtime = createPluginRuntimeMock();
-    vi.mocked(runtime.channel.mentions.buildMentionRegexes).mockReturnValue([/\b@?openclaw\b/i]);
+    vi.mocked(runtime.channel.mentions.buildMentionRegexes).mockReturnValue([/\b@?operator\b/i]);
     setQaChannelRuntime(runtime);
 
     await handleQaInbound(

@@ -151,8 +151,8 @@ function commandContext(overrides: Partial<CommandContext> = {}): CommandContext
     senderIsOwner: true,
     isAuthorizedSender: true,
     senderId: "user:owner",
-    rawBodyNormalized: "/openclaw models",
-    commandBodyNormalized: "/openclaw models",
+    rawBodyNormalized: "/operator models",
+    commandBodyNormalized: "/operator models",
     from: "user:owner",
     to: "account:default",
     ...overrides,
@@ -212,14 +212,14 @@ describe("Operator rescue message", () => {
   });
 
   it("recognizes the Operator rescue command", () => {
-    expect(extractSystemAgentRescueMessage("/openclaw status")).toBe("status");
-    expect(extractSystemAgentRescueMessage("/openclaw")).toBe("");
+    expect(extractSystemAgentRescueMessage("/operator status")).toBe("status");
+    expect(extractSystemAgentRescueMessage("/operator")).toBe("");
     expect(extractSystemAgentRescueMessage("/status")).toBeNull();
   });
 
   it("denies rescue when sandboxing is active", async () => {
     await expect(
-      runRescue("/openclaw status", {
+      runRescue("/operator status", {
         systemAgent: { rescue: { enabled: true } },
         agents: { defaults: { sandbox: { mode: "all" } } },
       }),
@@ -235,9 +235,9 @@ describe("Operator rescue message", () => {
     };
 
     await expect(
-      runRescue("/openclaw talk to agent", cfg, commandContext(), deps),
+      runRescue("/operator talk to agent", cfg, commandContext(), deps),
     ).resolves.toContain("cannot open the local TUI");
-    await expect(runRescue("/openclaw chat", cfg, commandContext(), deps)).resolves.toContain(
+    await expect(runRescue("/operator chat", cfg, commandContext(), deps)).resolves.toContain(
       "cannot open the local TUI",
     );
     expect(deps.runTui).not.toHaveBeenCalled();
@@ -253,10 +253,10 @@ describe("Operator rescue message", () => {
     // Questions must never become mutation plans (previously "why did my
     // gateway stop" keyword-matched into a gateway-stop proposal).
     await expect(
-      runRescue("/openclaw why did my gateway stop", cfg, commandContext(), deps),
+      runRescue("/operator why did my gateway stop", cfg, commandContext(), deps),
     ).resolves.toContain("I can run doctor/status/health");
     await expect(
-      runRescue("/openclaw explain how restart gateway works", cfg, commandContext(), deps),
+      runRescue("/operator explain how restart gateway works", cfg, commandContext(), deps),
     ).resolves.toContain("I can run doctor/status/health");
     expect(deps.runGatewayStop).not.toHaveBeenCalled();
     expect(deps.runGatewayRestart).not.toHaveBeenCalled();
@@ -264,16 +264,16 @@ describe("Operator rescue message", () => {
 
   it("refuses channel setup from remote rescue with a local pointer", async () => {
     const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
-    await expect(runRescue("/openclaw connect telegram", cfg)).resolves.toContain(
+    await expect(runRescue("/operator connect telegram", cfg)).resolves.toContain(
       "cannot host the interactive channel setup",
     );
   });
 
   it("refuses model provider setup from remote rescue with a local pointer", async () => {
     const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
-    const reply = await runRescue("/openclaw configure model provider", cfg);
+    const reply = await runRescue("/operator configure model provider", cfg);
     expect(reply).toContain("cannot host model-provider credential setup");
-    expect(reply).toContain("openclaw onboard");
+    expect(reply).toContain("operator onboard");
   });
 
   it("refuses doctor repairs without creating a pending approval", async () => {
@@ -286,9 +286,9 @@ describe("Operator rescue message", () => {
       };
 
       await expect(
-        runRescue("/openclaw doctor fix", cfg, commandContext(), deps),
-      ).resolves.toContain("run `openclaw doctor --fix` in a terminal");
-      await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toBe(
+        runRescue("/operator doctor fix", cfg, commandContext(), deps),
+      ).resolves.toContain("run `operator doctor --fix` in a terminal");
+      await expect(runRescue("/operator yes", cfg, commandContext(), deps)).resolves.toBe(
         "No pending Operator rescue change is waiting for approval.",
       );
       expect(deps.runDoctor).not.toHaveBeenCalled();
@@ -301,12 +301,12 @@ describe("Operator rescue message", () => {
       const deps = { runGatewayRestart: vi.fn(async () => {}) };
 
       await expect(
-        runRescue("/openclaw restart gateway", cfg, commandContext(), deps),
-      ).resolves.toContain("Reply /openclaw yes to apply");
-      await expect(runRescue("/openclaw no", cfg, commandContext(), deps)).resolves.toContain(
+        runRescue("/operator restart gateway", cfg, commandContext(), deps),
+      ).resolves.toContain("Reply /operator yes to apply");
+      await expect(runRescue("/operator no", cfg, commandContext(), deps)).resolves.toContain(
         "Dropped the pending Operator rescue change",
       );
-      await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toBe(
+      await expect(runRescue("/operator yes", cfg, commandContext(), deps)).resolves.toBe(
         "No pending Operator rescue change is waiting for approval.",
       );
       expect(deps.runGatewayRestart).not.toHaveBeenCalled();
@@ -322,12 +322,12 @@ describe("Operator rescue message", () => {
       };
 
       await expect(
-        runRescue("/openclaw restart gateway", cfg, commandContext(), deps),
-      ).resolves.toContain("Reply /openclaw yes to apply");
-      await expect(runRescue("/openclaw plugins list", cfg, commandContext(), deps)).resolves.toBe(
+        runRescue("/operator restart gateway", cfg, commandContext(), deps),
+      ).resolves.toContain("Reply /operator yes to apply");
+      await expect(runRescue("/operator plugins list", cfg, commandContext(), deps)).resolves.toBe(
         "plugin rows",
       );
-      await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toBe(
+      await expect(runRescue("/operator yes", cfg, commandContext(), deps)).resolves.toBe(
         "No pending Operator rescue change is waiting for approval.",
       );
       expect(deps.runGatewayRestart).not.toHaveBeenCalled();
@@ -339,15 +339,15 @@ describe("Operator rescue message", () => {
       const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       const deps = { runGatewayRestart: vi.fn(async () => {}) };
 
-      await runRescue("/openclaw restart gateway", cfg, commandContext(), deps);
+      await runRescue("/operator restart gateway", cfg, commandContext(), deps);
       const replies = await Promise.all([
-        runRescue("/openclaw yes", cfg, commandContext(), deps),
-        runRescue("/openclaw yes", cfg, commandContext(), deps),
+        runRescue("/operator yes", cfg, commandContext(), deps),
+        runRescue("/operator yes", cfg, commandContext(), deps),
       ]);
 
       expect(deps.runGatewayRestart).toHaveBeenCalledTimes(1);
       expect(replies).toContain("No pending Operator rescue change is waiting for approval.");
-      expect(replies.some((reply) => reply?.includes("[openclaw] done: gateway.restart"))).toBe(
+      expect(replies.some((reply) => reply?.includes("[operator] done: gateway.restart"))).toBe(
         true,
       );
     });
@@ -362,11 +362,11 @@ describe("Operator rescue message", () => {
         }),
       };
 
-      await runRescue("/openclaw restart gateway", cfg, commandContext(), deps);
-      await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).rejects.toThrow(
+      await runRescue("/operator restart gateway", cfg, commandContext(), deps);
+      await expect(runRescue("/operator yes", cfg, commandContext(), deps)).rejects.toThrow(
         "restart failed",
       );
-      await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toBe(
+      await expect(runRescue("/operator yes", cfg, commandContext(), deps)).resolves.toBe(
         "No pending Operator rescue change is waiting for approval.",
       );
       expect(deps.runGatewayRestart).toHaveBeenCalledTimes(1);
@@ -392,14 +392,14 @@ describe("Operator rescue message", () => {
         runGatewayStart: vi.fn(async () => {}),
       };
 
-      await runRescue("/openclaw restart gateway", cfg, commandContext(), deps);
-      const approval = runRescue("/openclaw yes", cfg, commandContext(), deps);
+      await runRescue("/operator restart gateway", cfg, commandContext(), deps);
+      const approval = runRescue("/operator yes", cfg, commandContext(), deps);
       await restartEntered;
-      await runRescue("/openclaw start gateway", cfg, commandContext(), deps);
+      await runRescue("/operator start gateway", cfg, commandContext(), deps);
       releaseRestart?.();
-      await expect(approval).resolves.toContain("[openclaw] done: gateway.restart");
-      await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toContain(
-        "[openclaw] done: gateway.start",
+      await expect(approval).resolves.toContain("[operator] done: gateway.restart");
+      await expect(runRescue("/operator yes", cfg, commandContext(), deps)).resolves.toContain(
+        "[operator] done: gateway.start",
       );
       expect(deps.runGatewayRestart).toHaveBeenCalledTimes(1);
       expect(deps.runGatewayStart).toHaveBeenCalledTimes(1);
@@ -414,12 +414,12 @@ describe("Operator rescue message", () => {
         runGatewayStart: vi.fn(async () => {}),
       };
 
-      const olderPlan = runRescue("/openclaw restart gateway", cfg, commandContext(), deps);
-      const newerPlan = runRescue("/openclaw start gateway", cfg, commandContext(), deps);
+      const olderPlan = runRescue("/operator restart gateway", cfg, commandContext(), deps);
+      const newerPlan = runRescue("/operator start gateway", cfg, commandContext(), deps);
       await expect(olderPlan).resolves.toContain("restart the Gateway");
       await expect(newerPlan).resolves.toContain("start the Gateway");
-      await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toContain(
-        "[openclaw] done: gateway.start",
+      await expect(runRescue("/operator yes", cfg, commandContext(), deps)).resolves.toContain(
+        "[operator] done: gateway.start",
       );
       expect(deps.runGatewayRestart).not.toHaveBeenCalled();
       expect(deps.runGatewayStart).toHaveBeenCalledTimes(1);
@@ -431,11 +431,11 @@ describe("Operator rescue message", () => {
       const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       const deps = { runGatewayRestart: vi.fn(async () => {}) };
 
-      await runRescue("/openclaw restart gateway", cfg, commandContext(), deps);
+      await runRescue("/operator restart gateway", cfg, commandContext(), deps);
       resetPluginStateStoreForTests();
 
-      await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toContain(
-        "[openclaw] done: gateway.restart",
+      await expect(runRescue("/operator yes", cfg, commandContext(), deps)).resolves.toContain(
+        "[operator] done: gateway.restart",
       );
       expect(deps.runGatewayRestart).toHaveBeenCalledTimes(1);
       await expect(
@@ -450,18 +450,18 @@ describe("Operator rescue message", () => {
       const deps = { runGatewayRestart: vi.fn(async () => {}) };
       const original = commandContext();
 
-      await runRescue("/openclaw restart gateway", cfg, original, deps);
+      await runRescue("/operator restart gateway", cfg, original, deps);
       for (const isolated of [
         commandContext({ accountId: "secondary" }),
         commandContext({ channelId: "telegram" }),
         commandContext({ from: "user:other", senderId: "user:other" }),
       ]) {
-        await expect(runRescue("/openclaw yes", cfg, isolated, deps)).resolves.toBe(
+        await expect(runRescue("/operator yes", cfg, isolated, deps)).resolves.toBe(
           "No pending Operator rescue change is waiting for approval.",
         );
       }
-      await expect(runRescue("/openclaw yes", cfg, original, deps)).resolves.toContain(
-        "[openclaw] done: gateway.restart",
+      await expect(runRescue("/operator yes", cfg, original, deps)).resolves.toContain(
+        "[operator] done: gateway.restart",
       );
       expect(deps.runGatewayRestart).toHaveBeenCalledTimes(1);
     });
@@ -473,17 +473,17 @@ describe("Operator rescue message", () => {
       const deps = { runGatewayRestart: vi.fn(async () => {}) };
       const original = commandContext({ accountId: undefined, to: "bot:primary" });
 
-      await runRescue("/openclaw restart gateway", cfg, original, deps);
+      await runRescue("/operator restart gateway", cfg, original, deps);
       await expect(
         runRescue(
-          "/openclaw yes",
+          "/operator yes",
           cfg,
           commandContext({ accountId: undefined, to: "bot:secondary" }),
           deps,
         ),
       ).resolves.toBe("No pending Operator rescue change is waiting for approval.");
-      await expect(runRescue("/openclaw yes", cfg, original, deps)).resolves.toContain(
-        "[openclaw] done: gateway.restart",
+      await expect(runRescue("/operator yes", cfg, original, deps)).resolves.toContain(
+        "[operator] done: gateway.restart",
       );
       expect(deps.runGatewayRestart).toHaveBeenCalledTimes(1);
     });
@@ -498,7 +498,7 @@ describe("Operator rescue message", () => {
     };
 
     await expect(
-      runRescue("/openclaw plugin install clawhub:operator-demo", cfg, commandContext(), deps),
+      runRescue("/operator plugin install clawhub:operator-demo", cfg, commandContext(), deps),
     ).resolves.toContain("cannot install plugins from a message channel");
     expect(deps.runPluginInstall).not.toHaveBeenCalled();
   });
@@ -515,10 +515,10 @@ describe("Operator rescue message", () => {
     };
 
     await expect(
-      runRescue("/openclaw plugins list", cfg, commandContext(), deps),
+      runRescue("/operator plugins list", cfg, commandContext(), deps),
     ).resolves.toContain("plugin rows");
     await expect(
-      runRescue("/openclaw plugins search calendar", cfg, commandContext(), deps),
+      runRescue("/operator plugins search calendar", cfg, commandContext(), deps),
     ).resolves.toContain("search rows: calendar");
     expect(deps.runPluginsList).toHaveBeenCalledTimes(1);
     expect(deps.runPluginsSearch).toHaveBeenCalledTimes(1);
@@ -541,9 +541,9 @@ describe("Operator rescue message", () => {
         })),
       };
       await expect(
-        runRescue("/openclaw set default model openai/gpt-5.2", cfg, commandContext(), deps),
-      ).resolves.toContain("Reply /openclaw yes to apply");
-      await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toContain(
+        runRescue("/operator set default model openai/gpt-5.2", cfg, commandContext(), deps),
+      ).resolves.toContain("Reply /operator yes to apply");
+      await expect(runRescue("/operator yes", cfg, commandContext(), deps)).resolves.toContain(
         "Default model: openai/gpt-5.2",
       );
 
@@ -569,10 +569,10 @@ describe("Operator rescue message", () => {
       const deps = { runGatewayRestart: vi.fn(async () => {}) };
 
       await expect(
-        runRescue("/openclaw restart gateway", cfg, commandContext(), deps),
-      ).resolves.toBe("Plan: restart the Gateway. Reply /openclaw yes to apply.");
-      await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toContain(
-        "[openclaw] done: gateway.restart",
+        runRescue("/operator restart gateway", cfg, commandContext(), deps),
+      ).resolves.toBe("Plan: restart the Gateway. Reply /operator yes to apply.");
+      await expect(runRescue("/operator yes", cfg, commandContext(), deps)).resolves.toContain(
+        "[operator] done: gateway.restart",
       );
 
       expect(deps.runGatewayRestart).toHaveBeenCalledTimes(1);
@@ -596,7 +596,7 @@ describe("Operator rescue message", () => {
         const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
 
         await expect(
-          runRescue("/openclaw restart gateway", cfg, commandContext()),
+          runRescue("/operator restart gateway", cfg, commandContext()),
         ).resolves.toContain("expiry clock is invalid");
 
         await expect(
@@ -616,14 +616,14 @@ describe("Operator rescue message", () => {
       const deps = { runGatewayRestart: vi.fn(async () => {}) };
 
       await runRescue(
-        "/openclaw restart gateway",
+        "/operator restart gateway",
         { systemAgent: { rescue: { enabled: true, pendingTtlMinutes: 1 } } },
         commandContext(),
         deps,
       );
       vi.advanceTimersByTime(60_001);
 
-      await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toBe(
+      await expect(runRescue("/operator yes", cfg, commandContext(), deps)).resolves.toBe(
         "No pending Operator rescue change is waiting for approval.",
       );
       expect(deps.runGatewayRestart).not.toHaveBeenCalled();
@@ -635,7 +635,7 @@ describe("Operator rescue message", () => {
       const cfg: OperatorConfig = { systemAgent: { rescue: { enabled: true } } };
       const deps = { runGatewayRestart: vi.fn(async () => {}) };
 
-      await runRescue("/openclaw restart gateway", cfg, commandContext(), deps);
+      await runRescue("/operator restart gateway", cfg, commandContext(), deps);
       const store = openRescuePendingTestStore();
       const [entry] = store.entries();
       if (!entry) {
@@ -647,10 +647,10 @@ describe("Operator rescue message", () => {
         { ttlMs: 60_000 },
       );
 
-      await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toBe(
+      await expect(runRescue("/operator yes", cfg, commandContext(), deps)).resolves.toBe(
         "No pending Operator rescue change is waiting for approval.",
       );
-      await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toBe(
+      await expect(runRescue("/operator yes", cfg, commandContext(), deps)).resolves.toBe(
         "No pending Operator rescue change is waiting for approval.",
       );
       expect(deps.runGatewayRestart).not.toHaveBeenCalled();
@@ -663,12 +663,12 @@ describe("Operator rescue message", () => {
       const deps = { runAgentsAdd: vi.fn(async () => {}) };
 
       await expect(
-        runRescue("/openclaw create agent work workspace /tmp/work", cfg, commandContext(), deps),
+        runRescue("/operator create agent work workspace /tmp/work", cfg, commandContext(), deps),
       ).resolves.toBe(
-        "Plan: create agent work with workspace /tmp/work. Reply /openclaw yes to apply.",
+        "Plan: create agent work with workspace /tmp/work. Reply /operator yes to apply.",
       );
-      await expect(runRescue("/openclaw yes", cfg, commandContext(), deps)).resolves.toContain(
-        "[openclaw] done: agents.create",
+      await expect(runRescue("/operator yes", cfg, commandContext(), deps)).resolves.toContain(
+        "[operator] done: agents.create",
       );
 
       expect(deps.runAgentsAdd).toHaveBeenCalledTimes(1);

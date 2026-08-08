@@ -19,10 +19,10 @@ type TestRunnerInternals = {
   workerState: { evaluatedModules: unknown };
 };
 
-const SHARED_TEST_SETUP = Symbol.for("openclaw.sharedTestSetup");
-const EMBEDDED_RUN_STATE = Symbol.for("openclaw.embeddedRunState");
-const REPLY_RUN_REGISTRY = Symbol.for("openclaw.replyRunRegistry");
-const DIAGNOSTIC_EVENTS_STATE = Symbol.for("openclaw.diagnosticEvents.state.v1");
+const SHARED_TEST_SETUP = Symbol.for("operator.sharedTestSetup");
+const EMBEDDED_RUN_STATE = Symbol.for("operator.embeddedRunState");
+const REPLY_RUN_REGISTRY = Symbol.for("operator.replyRunRegistry");
+const DIAGNOSTIC_EVENTS_STATE = Symbol.for("operator.diagnosticEvents.state.v1");
 const nativeTimerGlobals = {
   setTimeout: globalThis.setTimeout,
   clearTimeout: globalThis.clearTimeout,
@@ -154,7 +154,7 @@ function runCleanupActions(actions: CleanupAction[]): unknown {
   return firstError;
 }
 
-function resetOpenClawGlobalRunState(): void {
+function resetOperatorGlobalRunState(): void {
   const cleanupActions: CleanupAction[] = [];
   const globalStore = globalThis as Record<PropertyKey, unknown>;
   const embeddedRunState = globalStore[EMBEDDED_RUN_STATE] as EmbeddedRunStateForTest | undefined;
@@ -215,7 +215,7 @@ function resetOpenClawGlobalRunState(): void {
   replyRunState?.waitersByKey?.clear();
 }
 
-function resetOpenClawGlobalDiagnosticState(): void {
+function resetOperatorGlobalDiagnosticState(): void {
   const globalStore = globalThis as Record<PropertyKey, unknown>;
   const state = globalStore[DIAGNOSTIC_EVENTS_STATE] as DiagnosticEventsStateForTest | undefined;
   // The dispatcher intentionally survives module reloads. Mirror isolate mode
@@ -227,7 +227,7 @@ function resetOpenClawGlobalDiagnosticState(): void {
   Reflect.deleteProperty(globalStore, DIAGNOSTIC_EVENTS_STATE);
 }
 
-export default class OpenClawNonIsolatedRunner extends TestRunner {
+export default class OperatorNonIsolatedRunner extends TestRunner {
   override onCollectStart(file: RunnerTestFile) {
     super.onCollectStart(file);
     restoreRealTimers();
@@ -271,8 +271,8 @@ export default class OpenClawNonIsolatedRunner extends TestRunner {
     vi.unstubAllEnvs();
     restoreSharedTestHomeAfterEnvUnstub(testHome);
     vi.clearAllMocks();
-    resetOpenClawGlobalRunState();
-    resetOpenClawGlobalDiagnosticState();
+    resetOperatorGlobalRunState();
+    resetOperatorGlobalDiagnosticState();
     vi.resetModules();
     const internals = this as unknown as TestRunnerInternals;
     internals.moduleRunner?.mocker?.reset?.();

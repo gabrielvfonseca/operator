@@ -21,7 +21,7 @@ Use [internal hooks](/automation/hooks) instead for a small operator-installed
 Register typed hooks with `api.on(...)` from the plugin entry:
 
 ```typescript
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
+import { definePluginEntry } from "operator/plugin-sdk/plugin-entry";
 
 export default definePluginEntry({
   id: "tool-preflight",
@@ -394,10 +394,10 @@ When sender identity is available, agent hook contexts also include:
 Core only defines the nested `id` fields. Channel plugins that pass richer
 sender or chat metadata through the inbound helper can augment
 `PluginHookChannelSenderContext` or `PluginHookChannelChatContext` from
-`openclaw/plugin-sdk/channel-inbound`:
+`operator/plugin-sdk/channel-inbound`:
 
 ```ts
-declare module "openclaw/plugin-sdk/channel-inbound" {
+declare module "operator/plugin-sdk/channel-inbound" {
   interface PluginHookChannelSenderContext {
     unionId?: string;
     userId?: string;
@@ -652,7 +652,7 @@ snapshot.
 
 ```typescript
 import { setTimeout as sleep } from "node:timers/promises";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi } from "operator/plugin-sdk/plugin-entry";
 
 type ExternalWake = { jobId: string; runAtMs: number };
 

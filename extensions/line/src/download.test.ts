@@ -22,7 +22,7 @@ function cancellableResponse(status: number): {
   return { response: new Response(body, { status }), cancel };
 }
 
-vi.mock("openclaw/plugin-sdk/runtime-env", () => ({
+vi.mock("operator/plugin-sdk/runtime-env", () => ({
   createSubsystemLogger: () => {
     const logger = {
       debug: () => {},
@@ -36,7 +36,7 @@ vi.mock("openclaw/plugin-sdk/runtime-env", () => ({
   logVerbose: () => {},
 }));
 
-vi.mock("openclaw/plugin-sdk/media-store", () => ({
+vi.mock("operator/plugin-sdk/media-store", () => ({
   saveMediaStream: saveMediaStreamMock,
 }));
 
@@ -67,8 +67,8 @@ describe("downloadLineMedia", () => {
 
   afterAll(() => {
     vi.doUnmock("node:timers/promises");
-    vi.doUnmock("openclaw/plugin-sdk/runtime-env");
-    vi.doUnmock("openclaw/plugin-sdk/media-store");
+    vi.doUnmock("operator/plugin-sdk/runtime-env");
+    vi.doUnmock("operator/plugin-sdk/media-store");
     vi.unstubAllGlobals();
     vi.resetModules();
   });

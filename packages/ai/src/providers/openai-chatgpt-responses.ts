@@ -1658,10 +1658,10 @@ function buildBaseCodexHeaders(
   }
   headers.set("Authorization", `Bearer ${token}`);
   headers.set("chatgpt-account-id", accountId);
-  headers.set("originator", "openclaw");
+  headers.set("originator", "operator");
   const userAgent = os
-    ? `openclaw (${os.platform()} ${os.release()}; ${os.arch()})`
-    : "openclaw (browser)";
+    ? `operator (${os.platform()} ${os.release()}; ${os.arch()})`
+    : "operator (browser)";
   headers.set("User-Agent", userAgent);
   return headers;
 }

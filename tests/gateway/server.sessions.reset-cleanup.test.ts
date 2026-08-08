@@ -19,7 +19,7 @@ import {
   runExclusiveSessionLifecycleMutation,
 } from "../../src/sessions/session-lifecycle-admission.js";
 import { runExclusiveSessionLifecycle } from "../../src/sessions/session-lifecycle-admission.test-support.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { embeddedRunMock, testState, writeSessionStore } from "../../src/gateway/test-helpers.js";
 import {
   setupGatewaySessionsTestHarness,

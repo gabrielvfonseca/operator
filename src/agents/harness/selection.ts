@@ -31,7 +31,7 @@ import {
 import { resolveSandboxRuntimeStatus } from "../sandbox/runtime-status.js";
 import { expandToolGroups, mergeAlsoAllowPolicy, normalizeToolName } from "../tool-policy.js";
 import type { SystemAgentToolOptions } from "../tools/system-agent-tool.js";
-import { createOperatorAgentHarness } from "./builtin-openclaw.js";
+import { createOperatorAgentHarness } from "./builtin-operator.js";
 import { MissingAgentHarnessError } from "./errors.js";
 import { runAgentHarnessLifecycleAttempt } from "./lifecycle.js";
 import {
@@ -108,18 +108,18 @@ type AgentHarnessSelectionDecision = {
   policy: AgentHarnessPolicy;
   selectedHarnessId: string;
   selectedReason:
-    | "forced_openclaw"
+    | "forced_operator"
     | "forced_plugin"
     // Implicit Codex preference found no registered Codex harness, so Operator handled the run.
-    | "implicit_plugin_unavailable_openclaw"
+    | "implicit_plugin_unavailable_operator"
     // Implicit Codex preference cannot reproduce the prepared transport, so Operator handled it.
-    | "implicit_plugin_unsupported_openclaw"
+    | "implicit_plugin_unsupported_operator"
     // Provider-owned CLI runtime aliases have no agent harness plugin counterpart.
-    | "cli_runtime_passthrough_openclaw"
+    | "cli_runtime_passthrough_operator"
     // Auto mode chose a registered plugin harness that supports the provider/model.
     | "auto_plugin"
     // Auto mode found no supporting plugin harness, so Operator handled the run.
-    | "auto_openclaw";
+    | "auto_operator";
   candidates: AgentHarnessSelectionCandidate[];
 };
 
@@ -292,12 +292,12 @@ function selectAgentHarnessDecision(
   const runtime = policy.runtime;
   if (runtime === "@gabrielvfonseca/operator") {
     const selectedReason = selectedRuntimeOverride
-      ? "forced_openclaw"
+      ? "forced_operator"
       : availability.kind === "implicit-unavailable"
-        ? "implicit_plugin_unavailable_openclaw"
+        ? "implicit_plugin_unavailable_operator"
         : availability.kind === "implicit-unsupported"
-          ? "implicit_plugin_unsupported_openclaw"
-          : "forced_openclaw";
+          ? "implicit_plugin_unsupported_operator"
+          : "forced_operator";
     return buildSelectionDecision({
       harness: openClawHarness,
       policy,
@@ -348,7 +348,7 @@ function selectAgentHarnessDecision(
             ...policy,
             runtime: "@gabrielvfonseca/operator",
           },
-          selectedReason: "cli_runtime_passthrough_openclaw",
+          selectedReason: "cli_runtime_passthrough_operator",
           candidates: listHarnessCandidates(pluginHarnesses),
         });
       }
@@ -365,7 +365,7 @@ function selectAgentHarnessDecision(
           ...policy,
           runtime: "@gabrielvfonseca/operator",
         },
-        selectedReason: "implicit_plugin_unavailable_openclaw",
+        selectedReason: "implicit_plugin_unavailable_operator",
         candidates: listHarnessCandidates(pluginHarnesses),
       });
     }
@@ -382,7 +382,7 @@ function selectAgentHarnessDecision(
           ...policy,
           runtime: "@gabrielvfonseca/operator",
         },
-        selectedReason: "cli_runtime_passthrough_openclaw",
+        selectedReason: "cli_runtime_passthrough_operator",
         candidates: listHarnessCandidates(pluginHarnesses),
       });
     }
@@ -435,7 +435,7 @@ function selectAgentHarnessDecision(
   return buildSelectionDecision({
     harness: openClawHarness,
     policy,
-    selectedReason: "auto_openclaw",
+    selectedReason: "auto_operator",
     candidates: candidates.map(toSelectionCandidate),
   });
 }

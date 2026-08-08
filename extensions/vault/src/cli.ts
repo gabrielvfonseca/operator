@@ -530,10 +530,10 @@ async function runSetup(options: SetupOptions): Promise<void> {
   writeLine(`Targets: ${plan.targets.length}`);
   writeLine("");
   writeLine("Next steps:");
-  writeLine(`  openclaw secrets apply --from ${planPath} --dry-run --allow-exec`);
-  writeLine(`  openclaw secrets apply --from ${planPath} --allow-exec`);
-  writeLine("  openclaw secrets audit --check --allow-exec");
-  writeLine("  openclaw secrets reload");
+  writeLine(`  operator secrets apply --from ${planPath} --dry-run --allow-exec`);
+  writeLine(`  operator secrets apply --from ${planPath} --allow-exec`);
+  writeLine("  operator secrets audit --check --allow-exec");
+  writeLine("  operator secrets reload");
 }
 
 export function registerVaultCommands(params: RegisterVaultCommandsParams): void {

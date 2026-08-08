@@ -15,8 +15,8 @@ import {
 import type { CronJob } from "../../src/cron/types.js";
 import { createEmptyPluginRegistry } from "../../src/plugins/registry-empty.js";
 import { resetPluginRuntimeStateForTest, setActivePluginRegistry } from "../../src/plugins/runtime.js";
-import { closeOperatorAgentDatabasesForTest } from "../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { withStateDirEnv as withRawStateDirEnv } from "../../src/test-helpers/state-dir-env.js";
 import { registerSessionAutomationSource } from "../../src/gateway/session-automation-index.js";
 import { buildGatewaySessionEventFields } from "../../src/gateway/session-event-payload.js";
@@ -795,7 +795,7 @@ describe("gateway session utils", () => {
       agentRuntimeOverride: "@gabrielvfonseca/operator",
     } as SessionEntry);
     const legacyObservedOperator = row({
-      sessionId: "legacy-observed-openclaw",
+      sessionId: "legacy-observed-operator",
       thinkingLevel: "ultra",
       agentHarnessId: "@gabrielvfonseca/operator",
     } as SessionEntry);
@@ -887,7 +887,7 @@ describe("gateway session utils", () => {
       key: "agent:main:main",
       entry: {
         sessionId: "session-1",
-        sessionFile: "/tmp/openclaw/agents/main/sessions/session-1.jsonl",
+        sessionFile: "/tmp/operator/agents/main/sessions/session-1.jsonl",
         updatedAt: 1,
         contextBudgetStatus: {
           schemaVersion: 1,
@@ -1141,9 +1141,9 @@ describe("gateway session utils", () => {
       sessionId: "s1",
       updatedAt: 1,
       spawnedCwd: "/state/worktrees/abc/wt-1234",
-      worktree: { id: "wt-id", branch: "openclaw/wt-1234", repoRoot: "/repo" },
+      worktree: { id: "wt-id", branch: "operator/wt-1234", repoRoot: "/repo" },
       execNode: "macbook",
-      execCwd: "/Users/peter/Projects/openclaw",
+      execCwd: "/Users/peter/Projects/operator",
     } as SessionEntry;
     const row = buildGatewaySessionRow({
       cfg,
@@ -1152,9 +1152,9 @@ describe("gateway session utils", () => {
       key: "agent:main:dashboard:x",
       entry,
     });
-    expect(row.worktree).toEqual({ id: "wt-id", branch: "openclaw/wt-1234", repoRoot: "/repo" });
+    expect(row.worktree).toEqual({ id: "wt-id", branch: "operator/wt-1234", repoRoot: "/repo" });
     expect(row.execNode).toBe("macbook");
-    expect(row.execCwd).toBe("/Users/peter/Projects/openclaw");
+    expect(row.execCwd).toBe("/Users/peter/Projects/operator");
   });
 
   test("buildGatewaySessionRow prefers entry.label over origin.label for direct sessions", () => {

@@ -216,7 +216,7 @@ async function runBrowserDoctor(parent: BrowserParentOpts, profile?: string, dee
     ok: status.running,
     detail: status.running
       ? `running${status.cdpReady === false ? ", CDP not ready" : ""}`
-      : "not running; run `openclaw browser start`",
+      : "not running; run `operator browser start`",
   });
   if (status.graphics) {
     checks.push({
@@ -824,7 +824,7 @@ export function registerBrowserManageCommands(
     .option("--color <hex>", "Profile color (hex format, e.g. #0066CC)")
     .option("--cdp-url <url>", "DevTools endpoint URL (http/https/ws/wss)")
     .option("--user-data-dir <path>", "User data dir for existing-session Chromium attach")
-    .option("--driver <driver>", "Profile driver (openclaw|existing-session). Default: openclaw")
+    .option("--driver <driver>", "Profile driver (operator|existing-session). Default: operator")
     .action(
       async (
         opts: {

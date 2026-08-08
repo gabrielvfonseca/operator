@@ -7,7 +7,7 @@ const { warnMock } = vi.hoisted(() => ({
   warnMock: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/runtime-env", () => ({
+vi.mock("operator/plugin-sdk/runtime-env", () => ({
   createSubsystemLogger: () => ({
     debug: vi.fn(),
     error: vi.fn(),
@@ -17,7 +17,7 @@ vi.mock("openclaw/plugin-sdk/runtime-env", () => ({
 }));
 
 afterAll(() => {
-  vi.doUnmock("openclaw/plugin-sdk/runtime-env");
+  vi.doUnmock("operator/plugin-sdk/runtime-env");
   vi.resetModules();
 });
 

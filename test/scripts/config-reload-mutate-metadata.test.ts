@@ -24,8 +24,8 @@ function runMutateMetadata(configPath: string) {
 
 describe("config reload metadata mutator", () => {
   it("updates the config reload gateway metadata knob without dropping existing config", () => {
-    const root = makeTempDir(tempDirs, "openclaw-config-reload-metadata-");
-    const configPath = path.join(root, "openclaw.json");
+    const root = makeTempDir(tempDirs, "operator-config-reload-metadata-");
+    const configPath = path.join(root, "operator.json");
     writeFileSync(
       configPath,
       `${JSON.stringify(

@@ -328,7 +328,7 @@ Enterprise Grid organization installation, use the dedicated
     },
     "slash_commands": [
       {
-        "command": "/openclaw",
+        "command": "/operator",
         "description": "Send a message to Operator",
         "should_escape": false
       }
@@ -414,7 +414,7 @@ Enterprise Grid organization installation, use the dedicated
     },
     "slash_commands": [
       {
-        "command": "/openclaw",
+        "command": "/operator",
         "description": "Send a message to Operator",
         "should_escape": false
       }
@@ -544,7 +544,7 @@ operator gateway
     },
     "slash_commands": [
       {
-        "command": "/openclaw",
+        "command": "/operator",
         "description": "Send a message to Operator",
         "should_escape": false,
         "url": "https://gateway-host.example.com/slack/events"
@@ -636,7 +636,7 @@ operator gateway
     },
     "slash_commands": [
       {
-        "command": "/openclaw",
+        "command": "/operator",
         "description": "Send a message to Operator",
         "should_escape": false,
         "url": "https://gateway-host.example.com/slack/events"
@@ -804,7 +804,7 @@ Base manifest (Socket Mode default):
     },
     "slash_commands": [
       {
-        "command": "/openclaw",
+        "command": "/operator",
         "description": "Send a message to Operator",
         "should_escape": false
       }
@@ -871,7 +871,7 @@ For **HTTP Request URLs mode**, replace `settings` with the HTTP variant and add
   "features": {
     "slash_commands": [
       {
-        "command": "/openclaw",
+        "command": "/operator",
         "description": "Send a message to Operator",
         "should_escape": false,
         "url": "https://gateway-host.example.com/slack/events"

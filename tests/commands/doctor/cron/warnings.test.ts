@@ -12,7 +12,7 @@ vi.mock("../../../channels/plugins/read-only.js", () => ({
 }));
 vi.mock("../../../../packages/terminal-core/src/note.js", () => ({ note: mocks.note }));
 
-const STORE_PATH = "/tmp/openclaw/cron/jobs.sqlite";
+const STORE_PATH = "/tmp/operator/cron/jobs.sqlite";
 
 function job(overrides: Record<string, unknown>): Record<string, unknown> {
   return { id: "job", schedule: "0 * * * *", ...overrides };

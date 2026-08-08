@@ -1389,7 +1389,7 @@ describe("createCopilotToolBridge tool conversion", () => {
   });
 
   it("marks every bridged tool as overridesBuiltInTool so Operator owns names that collide with Copilot CLI built-ins (edit/read/write/bash/...)", async () => {
-    // Real-world dogfood found that openclaw's createOperatorCodingTools
+    // Real-world dogfood found that operator's createOperatorCodingTools
     // returns a tool named `edit`, which the bundled Copilot CLI also ships
     // as a built-in. The SDK rejects the registration unless the external
     // tool is explicitly marked as an override.

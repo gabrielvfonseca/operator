@@ -232,13 +232,13 @@ describe("createRuntimeConfigCapability", () => {
         return {
           config: {},
           hash: "hash-1",
-          path: "/tmp/openclaw.json",
+          path: "/tmp/operator.json",
           valid: true,
           issues: [],
         };
       }
       if (method === "config.openFile") {
-        return { ok: false, error: "not supported", path: "/tmp/openclaw.json" };
+        return { ok: false, error: "not supported", path: "/tmp/operator.json" };
       }
       return {};
     });
@@ -248,7 +248,7 @@ describe("createRuntimeConfigCapability", () => {
     await runtimeConfig.ensureLoaded();
 
     await runtimeConfig.openFile();
-    expect(writeText).toHaveBeenCalledWith("/tmp/openclaw.json");
+    expect(writeText).toHaveBeenCalledWith("/tmp/operator.json");
     expect(runtimeConfig.state.lastError).toContain("File path copied to clipboard");
     runtimeConfig.dispose();
   });

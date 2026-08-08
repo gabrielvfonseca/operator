@@ -224,7 +224,7 @@ describe("doctor session snapshot stale runtime metadata", () => {
       path: storePath,
       target: stalePath,
       requirement: expect.stringContaining(bundledSkillsDir),
-      fixHint: expect.stringContaining("openclaw doctor --fix"),
+      fixHint: expect.stringContaining("operator doctor --fix"),
     });
     expect(sessionSnapshotIssueToRepairEffect(issue)).toEqual({
       kind: "file",
@@ -236,7 +236,7 @@ describe("doctor session snapshot stale runtime metadata", () => {
 
   it("expands home-relative cached bundled skill locations before classifying them", () => {
     const homeDir = path.join(root, "home");
-    const stalePath = "~/old-runtime/node_modules/openclaw/skills/doctor/SKILL.md";
+    const stalePath = "~/old-runtime/node_modules/operator/skills/doctor/SKILL.md";
 
     const findings = scanSessionStoreForStaleRuntimeSnapshotPaths({
       bundledSkillsDir,

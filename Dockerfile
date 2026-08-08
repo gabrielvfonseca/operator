@@ -137,7 +137,7 @@ RUN pnpm_config_verify_deps_before_run=false pnpm canvas:a2ui:bundle || \
      mkdir -p extensions/canvas/src/host/a2ui && \
      echo "/* A2UI bundle unavailable in this build */" > extensions/canvas/src/host/a2ui/a2ui.bundle.js && \
      echo "stub" > extensions/canvas/src/host/a2ui/.bundle.hash && \
-     rm -rf vendor/a2ui apps/shared/OpenClawKit/Tools/CanvasA2UI)
+     rm -rf vendor/a2ui apps/shared/OperatorKit/Tools/CanvasA2UI)
 # Force pnpm for UI build (Bun may fail on ARM/Synology architectures)
 ENV OPERATOR_PREFER_PNPM=1
 RUN set -eu; \
@@ -206,8 +206,8 @@ LABEL org.opencontainers.image.source="https://github.com/gabrielvfonseca/operat
   org.opencontainers.image.url="https://operator.ai" \
   org.opencontainers.image.documentation="https://docs.operator.ai/install/docker" \
   org.opencontainers.image.licenses="MIT" \
-  org.opencontainers.image.title="OpenClaw" \
-  org.opencontainers.image.description="OpenClaw gateway and CLI runtime container image"
+  org.opencontainers.image.title="Operator" \
+  org.opencontainers.image.description="Operator gateway and CLI runtime container image"
 
 WORKDIR /app
 

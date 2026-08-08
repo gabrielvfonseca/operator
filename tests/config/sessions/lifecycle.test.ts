@@ -5,8 +5,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   closeOperatorAgentDatabasesForTest,
   resolveOperatorAgentSqlitePath,
-} from "../../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../../src/state/openclaw-state-db.js";
+} from "../../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../../src/state/operator-state-db.js";
 import {
   hasTerminalMainSessionTranscriptNewerThanRegistry,
   hasTerminalMainSessionTranscriptNewerThanRegistrySync,

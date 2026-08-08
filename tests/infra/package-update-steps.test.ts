@@ -190,7 +190,7 @@ describe("runGlobalPackageUpdateSteps", () => {
           );
           await fs.mkdir(path.join(stagePrefix, "bin"), { recursive: true });
           await fs.symlink(
-            "../lib/node_modules/openclaw/dist/index.js",
+            "../lib/node_modules/operator/dist/index.js",
             path.join(stagePrefix, "bin", "@gabrielvfonseca/operator"),
           );
           return {
@@ -205,7 +205,7 @@ describe("runGlobalPackageUpdateSteps", () => {
 
       const result = await runGlobalPackageUpdateSteps({
         installTarget: createNpmTarget(globalRoot),
-        installSpec: "openclaw@2.0.0",
+        installSpec: "operator@2.0.0",
         packageName: "@gabrielvfonseca/operator",
         packageRoot,
         runCommand: createRootRunner(globalRoot),
@@ -228,7 +228,7 @@ describe("runGlobalPackageUpdateSteps", () => {
       );
       await expect(
         fs.readlink(path.join(prefix, "bin", "@gabrielvfonseca/operator")),
-      ).resolves.toBe("../lib/node_modules/openclaw/dist/index.js");
+      ).resolves.toBe("../lib/node_modules/operator/dist/index.js");
     });
   });
 
@@ -244,7 +244,7 @@ describe("runGlobalPackageUpdateSteps", () => {
 
         const result = await runGlobalPackageUpdateSteps({
           installTarget: createNpmTarget(globalRoot),
-          installSpec: "openclaw@2.0.0",
+          installSpec: "operator@2.0.0",
           packageName: "@gabrielvfonseca/operator",
           packageRoot,
           runCommand: createRootRunner(globalRoot),
@@ -315,7 +315,7 @@ describe("runGlobalPackageUpdateSteps", () => {
         );
         await fs.mkdir(path.join(stagePrefix, "bin"), { recursive: true });
         await fs.symlink(
-          "../lib/node_modules/openclaw/dist/index.js",
+          "../lib/node_modules/operator/dist/index.js",
           path.join(stagePrefix, "bin", "@gabrielvfonseca/operator"),
         );
         return {
@@ -332,7 +332,7 @@ describe("runGlobalPackageUpdateSteps", () => {
           ...createNpmTarget(managedRoot),
           directNodeModulesRoot: true,
         },
-        installSpec: "openclaw@2.0.0",
+        installSpec: "operator@2.0.0",
         packageName: "@gabrielvfonseca/operator",
         packageRoot,
         runCommand: createRootRunner(path.join(base, "shell", "lib", "node_modules")),
@@ -361,7 +361,7 @@ describe("runGlobalPackageUpdateSteps", () => {
         if (name !== "global update") {
           throw new Error(`unexpected step ${name}`);
         }
-        expect(argv).toContain("openclaw@v2.0.0");
+        expect(argv).toContain("operator@v2.0.0");
         const prefixIndex = argv.indexOf("--prefix");
         const stagePrefix = argv[prefixIndex + 1];
         if (!stagePrefix) {
@@ -373,7 +373,7 @@ describe("runGlobalPackageUpdateSteps", () => {
         );
         await fs.mkdir(path.join(stagePrefix, "bin"), { recursive: true });
         await fs.symlink(
-          "../lib/node_modules/openclaw/dist/index.js",
+          "../lib/node_modules/operator/dist/index.js",
           path.join(stagePrefix, "bin", "@gabrielvfonseca/operator"),
         );
         return {
@@ -387,7 +387,7 @@ describe("runGlobalPackageUpdateSteps", () => {
 
       const result = await runGlobalPackageUpdateSteps({
         installTarget: createNpmTarget(globalRoot),
-        installSpec: "openclaw@v2.0.0",
+        installSpec: "operator@v2.0.0",
         packageName: "@gabrielvfonseca/operator",
         packageRoot,
         runCommand: createRootRunner(globalRoot),
@@ -409,7 +409,7 @@ describe("runGlobalPackageUpdateSteps", () => {
       const prefix = path.join(base, "prefix");
       const globalRoot = path.join(prefix, "lib", "node_modules");
       const packageRoot = path.join(globalRoot, "@gabrielvfonseca/operator");
-      const sourceSpec = "Operator@github:openclaw/openclaw#release/2026.5.12";
+      const sourceSpec = "Operator@github:operator/operator#release/2026.5.12";
       await writePackageRoot(packageRoot, "1.0.0");
 
       let packDir: string | undefined;
@@ -466,7 +466,7 @@ describe("runGlobalPackageUpdateSteps", () => {
         );
         await fs.mkdir(path.join(stagePrefix, "bin"), { recursive: true });
         await fs.symlink(
-          "../lib/node_modules/openclaw/dist/index.js",
+          "../lib/node_modules/operator/dist/index.js",
           path.join(stagePrefix, "bin", "@gabrielvfonseca/operator"),
         );
         return {
@@ -505,23 +505,23 @@ describe("runGlobalPackageUpdateSteps", () => {
   it.each([
     {
       name: "full git url",
-      sourceSpec: "https://github.com/openclaw/operator.git#main",
+      sourceSpec: "https://github.com/operator/operator.git#main",
     },
     {
       name: "hosted GitHub URL without git suffix",
-      sourceSpec: "https://github.com/openclaw/openclaw#main",
+      sourceSpec: "https://github.com/operator/operator#main",
     },
     {
       name: "aliased hosted GitHub URL without git suffix",
-      sourceSpec: "openclaw@https://github.com/openclaw/openclaw#main",
+      sourceSpec: "operator@https://github.com/operator/operator#main",
     },
     {
       name: "GitHub shorthand",
-      sourceSpec: "openclaw/openclaw#main",
+      sourceSpec: "operator/operator#main",
     },
     {
       name: "SCP-style SSH",
-      sourceSpec: "git@github.com:openclaw/operator.git#main",
+      sourceSpec: "git@github.com:operator/operator.git#main",
     },
   ] as const)(
     "packs additional npm git source spec forms before install: $name",
@@ -618,7 +618,7 @@ describe("runGlobalPackageUpdateSteps", () => {
       try {
         const result = await runGlobalPackageUpdateSteps({
           installTarget: createNpmTarget(globalRoot),
-          installSpec: "openclaw@2.0.0",
+          installSpec: "operator@2.0.0",
           packageName: "@gabrielvfonseca/operator",
           packageRoot,
           runCommand: createRootRunner(globalRoot),
@@ -673,7 +673,7 @@ describe("runGlobalPackageUpdateSteps", () => {
         expect(argv).toContain("i");
         expect(argv).toContain("-g");
         expect(argv).toContain("--prefix");
-        expect(argv).toContain("openclaw@2.0.0");
+        expect(argv).toContain("operator@2.0.0");
         expect(argv).not.toContain("pnpm");
         const prefixIndex = argv.indexOf("--prefix");
         const stagePrefix = argv[prefixIndex + 1];
@@ -695,7 +695,7 @@ describe("runGlobalPackageUpdateSteps", () => {
 
       const result = await runGlobalPackageUpdateSteps({
         installTarget: createPnpmTarget(globalRoot),
-        installSpec: "openclaw@2.0.0",
+        installSpec: "operator@2.0.0",
         packageName: "@gabrielvfonseca/operator",
         packageRoot,
         runCommand: createRootRunner(globalRoot),
@@ -732,8 +732,8 @@ describe("runGlobalPackageUpdateSteps", () => {
             "-g",
             "--global-dir",
             globalDir,
-            "--allow-build=openclaw",
-            "openclaw@2.0.0",
+            "--allow-build=operator",
+            "operator@2.0.0",
           ]);
           await writePackageRoot(packageRoot, "2.0.0");
           return {
@@ -747,7 +747,7 @@ describe("runGlobalPackageUpdateSteps", () => {
 
         const result = await runGlobalPackageUpdateSteps({
           installTarget: createPnpmTarget(globalRoot),
-          installSpec: "openclaw@2.0.0",
+          installSpec: "operator@2.0.0",
           packageName: "@gabrielvfonseca/operator",
           packageRoot,
           runCommand: createRootRunner(globalRoot),
@@ -789,7 +789,7 @@ describe("runGlobalPackageUpdateSteps", () => {
       try {
         const result = await runGlobalPackageUpdateSteps({
           installTarget: createNpmTarget(globalRoot),
-          installSpec: "openclaw@2.0.0",
+          installSpec: "operator@2.0.0",
           packageName: "@gabrielvfonseca/operator",
           packageRoot,
           runCommand: createRootRunner(globalRoot),
@@ -842,7 +842,7 @@ describe("runGlobalPackageUpdateSteps", () => {
 
       const result = await runGlobalPackageUpdateSteps({
         installTarget: createNpmTarget(globalRoot),
-        installSpec: "openclaw@2.0.0",
+        installSpec: "operator@2.0.0",
         packageName: "@gabrielvfonseca/operator",
         packageRoot,
         runCommand: createRootRunner(globalRoot),
@@ -913,7 +913,7 @@ describe("runGlobalPackageUpdateSteps", () => {
         try {
           result = await runGlobalPackageUpdateSteps({
             installTarget: createNpmTarget(globalRoot),
-            installSpec: "openclaw@2.0.0",
+            installSpec: "operator@2.0.0",
             packageName: "@gabrielvfonseca/operator",
             packageRoot,
             runCommand: createRootRunner(globalRoot),
@@ -967,7 +967,7 @@ describe("runGlobalPackageUpdateSteps", () => {
       await expect(
         runGlobalPackageUpdateSteps({
           installTarget: createNpmTarget(globalRoot),
-          installSpec: "openclaw@2.0.0",
+          installSpec: "operator@2.0.0",
           packageName: "@gabrielvfonseca/operator",
           packageRoot,
           runCommand: createRootRunner(globalRoot),

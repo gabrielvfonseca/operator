@@ -5,7 +5,7 @@ read_when:
 title: "Secure file operations"
 ---
 
-Operator uses [`@gabrielvfonseca/fs-safe`](https://github.com/openclaw/fs-safe) for security-sensitive local file operations: root-bounded reads/writes, atomic replacement, archive extraction, temp workspaces, JSON state, and secret-file handling.
+Operator uses [`@gabrielvfonseca/fs-safe`](https://github.com/operator/fs-safe) for security-sensitive local file operations: root-bounded reads/writes, atomic replacement, archive extraction, temp workspaces, JSON state, and secret-file handling.
 
 It is a **library guardrail** for trusted Operator code that receives untrusted path names, not a sandbox. Host filesystem permissions, OS users, containers, and the agent/tool policy still define the real blast radius.
 
@@ -65,7 +65,7 @@ OPERATOR_FS_SAFE_PYTHON_MODE=require
 
 ## Plugin and core guidance
 
-- Plugin-facing file access should go through `openclaw/plugin-sdk/*` helpers, not raw `fs`, when a path comes from a message, model output, config, or plugin input.
+- Plugin-facing file access should go through `operator/plugin-sdk/*` helpers, not raw `fs`, when a path comes from a message, model output, config, or plugin input.
 - Core code should use the fs-safe wrappers under `src/infra/*` so Operator's process policy applies consistently.
 - Archive extraction should use the fs-safe archive helpers with explicit size, entry-count, link, and destination limits.
 - Secrets should use Operator secret helpers or fs-safe secret/private-state helpers; do not hand-roll mode checks around `fs.writeFile`.

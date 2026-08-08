@@ -4,9 +4,9 @@ import deprecatedPublicPluginSdkSubpaths from "./plugin-sdk-deprecated-public-su
 };
 
 const DEPRECATED_PLUGIN_SDK_EXTRA_SPECIFIERS = [
-  "openclaw/plugin-sdk",
-  "openclaw/plugin-sdk/agent-dir-compat",
-  "openclaw/plugin-sdk/test-utils",
+  "operator/plugin-sdk",
+  "operator/plugin-sdk/agent-dir-compat",
+  "operator/plugin-sdk/test-utils",
 ];
 
 /** Build fully qualified deprecated plugin SDK module specifiers from subpath metadata. */
@@ -15,7 +15,7 @@ export function buildDeprecatedPluginSdkModuleSpecifiers(
 ) {
   const unscoped = [
     ...DEPRECATED_PLUGIN_SDK_EXTRA_SPECIFIERS,
-    ...deprecatedSubpaths.map((subpath) => `openclaw/plugin-sdk/${subpath}`),
+    ...deprecatedSubpaths.map((subpath) => `operator/plugin-sdk/${subpath}`),
   ];
   // tsconfig aliases the scoped @gabrielvfonseca/plugin-sdk package to the same
   // src/plugin-sdk modules, so ban both spellings of every deprecated specifier.
@@ -31,33 +31,33 @@ export function buildDeprecatedPluginSdkModuleSpecifiers(
  * compat re-export chain that keeps the public subpath alive.
  */
 export const BANNED_INTERNAL_PLUGIN_SDK_FACADE_MODULES = [
-  // Reply facades: canonical seams are openclaw/plugin-sdk/channel-inbound and
-  // openclaw/plugin-sdk/channel-outbound (defineChannelMessageAdapter family).
+  // Reply facades: canonical seams are operator/plugin-sdk/channel-inbound and
+  // operator/plugin-sdk/channel-outbound (defineChannelMessageAdapter family).
   {
     modulePath: "src/plugin-sdk/channel-envelope",
-    canonical: "openclaw/plugin-sdk/channel-inbound",
+    canonical: "operator/plugin-sdk/channel-inbound",
   },
   {
     modulePath: "src/plugin-sdk/channel-message",
-    canonical: "openclaw/plugin-sdk/channel-outbound",
+    canonical: "operator/plugin-sdk/channel-outbound",
   },
   {
     modulePath: "src/plugin-sdk/channel-message-runtime",
-    canonical: "openclaw/plugin-sdk/channel-outbound",
+    canonical: "operator/plugin-sdk/channel-outbound",
   },
   {
     modulePath: "src/plugin-sdk/channel-reply-pipeline",
-    canonical: "openclaw/plugin-sdk/channel-outbound",
+    canonical: "operator/plugin-sdk/channel-outbound",
   },
   {
     modulePath: "src/plugin-sdk/inbound-reply-dispatch",
-    canonical: "openclaw/plugin-sdk/channel-inbound",
+    canonical: "operator/plugin-sdk/channel-inbound",
   },
   // Shared dispatch bridge backing the facades above; only the SDK seams may
   // consume it directly so channel code stays on channel-inbound/channel-outbound.
   {
     modulePath: "src/channels/message/inbound-reply-dispatch",
-    canonical: "openclaw/plugin-sdk/channel-inbound",
+    canonical: "operator/plugin-sdk/channel-inbound",
     allowedImporters: [
       "src/plugin-sdk/channel-inbound.ts",
       "src/plugin-sdk/inbound-reply-dispatch.ts",

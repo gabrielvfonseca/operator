@@ -262,7 +262,7 @@ describe("CodexAppServerClient", () => {
     const { harness, initializing, outbound } = startInitialize();
     harness.send({
       id: outbound.id,
-      result: { userAgent: "openclaw/0.143.0 (macOS; test)" },
+      result: { userAgent: "operator/0.143.0 (macOS; test)" },
     });
 
     await expect(initializing).resolves.toBeUndefined();
@@ -288,7 +288,7 @@ describe("CodexAppServerClient", () => {
     const { harness, initializing, outbound } = startInitialize();
     harness.send({
       id: outbound.id,
-      result: { userAgent: "openclaw/0.124.9 (macOS; test)" },
+      result: { userAgent: "operator/0.124.9 (macOS; test)" },
     });
 
     await expect(initializing).rejects.toThrow(
@@ -301,7 +301,7 @@ describe("CodexAppServerClient", () => {
     const { harness, initializing, outbound } = startInitialize();
     harness.send({
       id: outbound.id,
-      result: { userAgent: "openclaw/0.143.0-alpha.2 (macOS; test)" },
+      result: { userAgent: "operator/0.143.0-alpha.2 (macOS; test)" },
     });
 
     await expect(initializing).rejects.toThrow(
@@ -314,7 +314,7 @@ describe("CodexAppServerClient", () => {
     const { harness, initializing, outbound } = startInitialize();
     harness.send({
       id: outbound.id,
-      result: { userAgent: "openclaw/0.143.0+alpha.2 (macOS; test)" },
+      result: { userAgent: "operator/0.143.0+alpha.2 (macOS; test)" },
     });
 
     await expect(initializing).rejects.toThrow(
@@ -327,7 +327,7 @@ describe("CodexAppServerClient", () => {
     const { harness, initializing, outbound } = startInitialize();
     harness.send({
       id: outbound.id,
-      result: { userAgent: "openclaw/0.144.0-alpha.1 (macOS; test)" },
+      result: { userAgent: "operator/0.144.0-alpha.1 (macOS; test)" },
     });
 
     await expect(initializing).resolves.toBeUndefined();
@@ -338,7 +338,7 @@ describe("CodexAppServerClient", () => {
     const { harness, initializing, outbound } = startInitialize();
     harness.send({
       id: outbound.id,
-      result: { userAgent: "openclaw/0.144.0+custom (macOS; test)" },
+      result: { userAgent: "operator/0.144.0+custom (macOS; test)" },
     });
 
     await expect(initializing).resolves.toBeUndefined();

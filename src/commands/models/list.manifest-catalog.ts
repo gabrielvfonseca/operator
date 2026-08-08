@@ -1,4 +1,4 @@
-/** Manifest-backed model catalog row loaders for `openclaw models list`. */
+/** Manifest-backed model catalog row loaders for `operator models list`. */
 import { normalizeModelCatalogProviderId } from "@gabrielvfonseca/model-catalog-core/model-catalog-refs";
 import type { NormalizedModelCatalogRow } from "@gabrielvfonseca/model-catalog-core/model-catalog-types";
 import type { OperatorConfig } from "../../config/types.operator.js";

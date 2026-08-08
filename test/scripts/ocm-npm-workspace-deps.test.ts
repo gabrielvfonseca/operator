@@ -96,7 +96,7 @@ describe("OCM npm workspace dependency adapter", () => {
           "--omit=dev",
           "--no-save",
           "--package-lock=false",
-          "openclaw.tgz",
+          "operator.tgz",
         ],
         ["/repo/packages/ai"],
         "/repo",
@@ -111,25 +111,25 @@ describe("OCM npm workspace dependency adapter", () => {
         "--package-lock=false",
       ],
       prefixDir: "/repo/runtime",
-      rootArchive: "/repo/openclaw.tgz",
+      rootArchive: "/repo/operator.tgz",
     });
   });
 
   it("keeps normal npm commands unchanged", () => {
     expect(resolveWorkspaceInstallPlan(["pack", "--silent"], ["/repo/packages/ai"])).toBeNull();
-    expect(resolveWorkspaceInstallPlan(["install", "openclaw.tgz"], [])).toBeNull();
+    expect(resolveWorkspaceInstallPlan(["install", "operator.tgz"], [])).toBeNull();
   });
 
   it("builds a manifest with the root and local workspace tarballs", () => {
     expect(
-      buildInstallManifest("/tmp/openclaw.tgz", [
-        { name: "@gabrielvfonseca/ai", tarball: "/tmp/openclaw-ai.tgz" },
+      buildInstallManifest("/tmp/operator.tgz", [
+        { name: "@gabrielvfonseca/ai", tarball: "/tmp/operator-ai.tgz" },
       ]),
     ).toEqual({
       private: true,
       dependencies: {
-        "@gabrielvfonseca/ai": "file:///tmp/openclaw-ai.tgz",
-        openclaw: "file:///tmp/openclaw.tgz",
+        "@gabrielvfonseca/ai": "file:///tmp/operator-ai.tgz",
+        operator: "file:///tmp/operator.tgz",
       },
     });
   });
@@ -147,7 +147,7 @@ describe("OCM npm workspace dependency adapter", () => {
         {
           name: "@gabrielvfonseca/ai",
           version: "2026.7.1-beta.3",
-          tarball: "/tmp/openclaw-ai.tgz",
+          tarball: "/tmp/operator-ai.tgz",
         },
       ]),
     ).toBe(1);
@@ -158,19 +158,19 @@ describe("OCM npm workspace dependency adapter", () => {
   });
 
   it("installs a packed root with a local workspace dependency", () => {
-    const root = mkdtempSync(join(tmpdir(), "openclaw-ocm-adapter-test-"));
+    const root = mkdtempSync(join(tmpdir(), "operator-ocm-adapter-test-"));
     try {
       const archiveRoot = join(root, "archive");
       const packagedRoot = join(archiveRoot, "package");
       const workspaceDir = join(root, "ai");
       const installDir = join(root, "install");
-      const rootArchive = join(root, "openclaw.tgz");
+      const rootArchive = join(root, "operator.tgz");
       mkdirSync(packagedRoot, { recursive: true });
       mkdirSync(workspaceDir, { recursive: true });
       writeFileSync(
         join(packagedRoot, "package.json"),
         `${JSON.stringify({
-          name: "openclaw",
+          name: "operator",
           version: "1.0.0",
           dependencies: { "@gabrielvfonseca/ai": "workspace:*" },
         })}\n`,
@@ -212,7 +212,7 @@ describe("OCM npm workspace dependency adapter", () => {
       );
 
       expect(
-        JSON.parse(readFileSync(join(installDir, "node_modules/openclaw/package.json"), "utf8"))
+        JSON.parse(readFileSync(join(installDir, "node_modules/operator/package.json"), "utf8"))
           .version,
       ).toBe("1.0.0");
       expect(

@@ -2041,10 +2041,10 @@ function resolveMessageActionDetails(
     return null;
   }
   const transcriptMeta =
-    record["__openclaw"] &&
-    typeof record["__openclaw"] === "object" &&
-    !Array.isArray(record["__openclaw"])
-      ? (record["__openclaw"] as Record<string, unknown>)
+    record["__operator"] &&
+    typeof record["__operator"] === "object" &&
+    !Array.isArray(record["__operator"])
+      ? (record["__operator"] as Record<string, unknown>)
       : null;
   const messageId =
     typeof transcriptMeta?.id === "string"

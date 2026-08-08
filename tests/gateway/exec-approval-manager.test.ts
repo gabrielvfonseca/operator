@@ -11,7 +11,7 @@ import { MAX_TIMER_TIMEOUT_MS } from "../../src/shared/number-coercion.js";
 import {
   closeOperatorStateDatabase,
   openOperatorStateDatabase,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import {
   ExecApprovalManager,
   type OperatorApprovalLifecycleEvent,

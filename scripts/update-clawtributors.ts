@@ -6,7 +6,7 @@ import pMap, { pMapSkip } from "p-map";
 import { expectDefined } from "../packages/normalization-core/src/expect.js";
 import type { ApiContributor, Entry, MapConfig, User } from "./update-clawtributors.types.js";
 
-const REPO = "openclaw/openclaw";
+const REPO = "operator/operator";
 const PER_LINE = 10;
 const AVATAR_PROBE_SIZE = 40;
 const AVATAR_PROBE_MAX_BYTES = 256 * 1024;

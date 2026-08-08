@@ -35,10 +35,10 @@ afterEach(() => {
 });
 
 function createDualPublishPluginRepo() {
-  const repoDir = makeTempRepoRoot(tempDirs, "openclaw-plugin-pretag-pack-");
+  const repoDir = makeTempRepoRoot(tempDirs, "operator-plugin-pretag-pack-");
   const packageDir = join(repoDir, "extensions", "demo-plugin");
   mkdirSync(packageDir, { recursive: true });
-  writeJsonFile(join(repoDir, "package.json"), { name: "openclaw-test-root", type: "module" });
+  writeJsonFile(join(repoDir, "package.json"), { name: "operator-test-root", type: "module" });
   writeJsonFile(join(packageDir, "package.json"), {
     name: "@operator/demo-plugin",
     version: "2026.4.10",
@@ -47,7 +47,7 @@ function createDualPublishPluginRepo() {
       type: "git",
       url: OPENCLAW_PLUGIN_NPM_REPOSITORY_URL,
     },
-    openclaw: {
+    operator: {
       extensions: ["./index.ts"],
       compat: {
         pluginApi: ">=2026.4.10",

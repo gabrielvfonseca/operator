@@ -3,7 +3,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import { openOperatorStateDatabase } from "../../../src/state/openclaw-state-db.js";
+import { openOperatorStateDatabase } from "../../../src/state/operator-state-db.js";
 import {
   failPendingDelivery,
   loadPendingDelivery,

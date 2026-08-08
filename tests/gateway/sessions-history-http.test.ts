@@ -13,9 +13,9 @@ import {
 } from "../../src/config/sessions/transcript.js";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../../src/infra/kysely-sync.js";
 import { emitSessionTranscriptUpdate } from "../../src/sessions/transcript-events.js";
-import { OPERATOR_TRANSCRIPT_ARTIFACT_API } from "../../src/shared/transcript-only-openclaw-assistant.js";
-import type { DB as OperatorAgentKyselyDatabase } from "../../../src/state/openclaw-agent-db.generated.js";
-import { runOperatorAgentWriteTransaction } from "../../src/state/openclaw-agent-db.js";
+import { OPERATOR_TRANSCRIPT_ARTIFACT_API } from "../../src/shared/transcript-only-operator-assistant.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../../../src/state/operator-agent-db.generated.js";
+import { runOperatorAgentWriteTransaction } from "../../src/state/operator-agent-db.js";
 import { testState } from "../../src/gateway/test-helpers.runtime-state.js";
 import {
   connectReq,
@@ -294,7 +294,7 @@ async function withGatewayHarness<T>(
 
 type SessionHistoryMessage = {
   content?: Array<{ text?: string }>;
-  __openclaw?: { id?: string; seq?: number };
+  __operator?: { id?: string; seq?: number };
 };
 
 type SessionHistoryBody = {
@@ -436,8 +436,8 @@ async function expectMessageEventMatch(
   expect((event.data as { messageSeq?: number }).messageSeq).toBe(params.seq);
   if (params.id !== undefined) {
     expectOperatorMetadata(
-      (event.data as { message?: { __openclaw?: { id?: string; seq?: number } } }).message?.[
-        "__openclaw"
+      (event.data as { message?: { __operator?: { id?: string; seq?: number } } }).message?.[
+        "__operator"
       ],
       {
         id: params.id,
@@ -473,7 +473,7 @@ describe("session history HTTP endpoints", () => {
       expect(body.sessionKey).toBe("agent:main:main");
       expect(body.messages).toHaveLength(1);
       expect(body.messages?.[0]?.content?.[0]?.text).toBe("hello from history");
-      expectOperatorMetadata(body.messages?.[0]?.["__openclaw"], {
+      expectOperatorMetadata(body.messages?.[0]?.["__operator"], {
         seq: 2,
       });
     });
@@ -515,7 +515,7 @@ describe("session history HTTP endpoints", () => {
       ]);
       expect(body.hasMore).toBe(true);
       expect(body.nextCursor).toBe("2");
-      expectOperatorMetadata(body.messages?.[0]?.["__openclaw"], {
+      expectOperatorMetadata(body.messages?.[0]?.["__operator"], {
         seq: 2,
       });
     });
@@ -691,7 +691,7 @@ describe("session history HTTP endpoints", () => {
         "second message",
         "third message",
       ]);
-      expect(firstBody.messages?.map((message) => message["__openclaw"]?.seq)).toEqual([3, 4]);
+      expect(firstBody.messages?.map((message) => message["__operator"]?.seq)).toEqual([3, 4]);
       expect(firstBody.hasMore).toBe(true);
       expect(firstBody.nextCursor).toBe("3");
 
@@ -703,7 +703,7 @@ describe("session history HTTP endpoints", () => {
       expect(secondBody.items?.map((message) => message.content?.[0]?.text)).toEqual([
         "first message",
       ]);
-      expect(secondBody.messages?.map((message) => message["__openclaw"]?.seq)).toEqual([2]);
+      expect(secondBody.messages?.map((message) => message["__operator"]?.seq)).toEqual([2]);
       expect(secondBody.hasMore).toBe(false);
       expect(secondBody.nextCursor).toBeUndefined();
     });
@@ -755,11 +755,11 @@ describe("session history HTTP endpoints", () => {
       const nextData = nextEvent.data as {
         messages?: Array<{
           content?: Array<{ text?: string }>;
-          __openclaw?: { id?: string; seq?: number };
+          __operator?: { id?: string; seq?: number };
         }>;
       };
       expect(nextData.messages?.[0]?.content?.[0]?.text).toBe("third message");
-      expectOperatorMetadata(nextData.messages?.[0]?.["__openclaw"], {
+      expectOperatorMetadata(nextData.messages?.[0]?.["__operator"], {
         id: thirdMessageId,
         seq: 4,
       });
@@ -784,10 +784,10 @@ describe("session history HTTP endpoints", () => {
       const refreshEvent = await readSseEvent(stream.reader, stream.streamState);
       expect(refreshEvent.event).toBe("history");
       const refreshData = refreshEvent.data as {
-        messages?: Array<{ content?: Array<{ text?: string }>; __openclaw?: { seq?: number } }>;
+        messages?: Array<{ content?: Array<{ text?: string }>; __operator?: { seq?: number } }>;
       };
       expect(refreshData.messages?.[0]?.content?.[0]?.text).toBe("second message");
-      expect(refreshData.messages?.[0]?.["__openclaw"]?.seq).toBe(3);
+      expect(refreshData.messages?.[0]?.["__operator"]?.seq).toBe(3);
 
       await stream.reader.cancel();
     });
@@ -843,13 +843,13 @@ describe("session history HTTP endpoints", () => {
         sessionKey?: string;
         messages?: Array<{
           content?: Array<{ text?: string }>;
-          __openclaw?: { id?: string; seq?: number };
+          __operator?: { id?: string; seq?: number };
         }>;
       };
       expect(body.sessionKey).toBe("agent:main:main");
       expect(body.messages).toHaveLength(1);
       expect(body.messages?.[0]?.content?.[0]?.text).toBe("Done.");
-      expectOperatorMetadata(body.messages?.[0]?.["__openclaw"], {
+      expectOperatorMetadata(body.messages?.[0]?.["__operator"], {
         id: visibleMessageId,
         seq: 3,
       });

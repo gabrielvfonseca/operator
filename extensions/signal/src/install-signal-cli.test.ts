@@ -21,24 +21,24 @@ const {
   tempDownloadPaths: [] as string[],
 }));
 
-vi.mock("openclaw/plugin-sdk/ssrf-runtime", () => ({
+vi.mock("operator/plugin-sdk/ssrf-runtime", () => ({
   fetchWithSsrFGuard: fetchWithSsrFGuardMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/setup-tools", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/setup-tools")>();
+vi.mock("operator/plugin-sdk/setup-tools", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/setup-tools")>();
   return {
     ...actual,
     resolveBrewExecutable: resolveBrewExecutableMock,
   };
 });
 
-vi.mock("openclaw/plugin-sdk/run-command", () => ({
+vi.mock("operator/plugin-sdk/run-command", () => ({
   runPluginCommandWithTimeout: runPluginCommandWithTimeoutMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/temp-path", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/temp-path")>();
+vi.mock("operator/plugin-sdk/temp-path", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/temp-path")>();
   return {
     ...actual,
     withTempDownloadPath: async (

@@ -70,7 +70,7 @@ function createTwitchSendReceipt(params: {
  * const result = await sendMessageTwitchInternal(
  *   "#mychannel",
  *   "Hello Twitch!",
- *   openclawConfig,
+ *   operatorConfig,
  *   "default",
  *   true,
  *   console,

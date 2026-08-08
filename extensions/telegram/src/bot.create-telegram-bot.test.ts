@@ -27,12 +27,12 @@ import type { TelegramBotOptions } from "./bot.types.js";
 import type { TelegramGetChat } from "./bot/types.js";
 import { buildTelegramOpaqueCallbackData } from "./native-command-callback-data.js";
 
-vi.mock("openclaw/plugin-sdk/conversation-runtime", { spy: true });
+vi.mock("operator/plugin-sdk/conversation-runtime", { spy: true });
 
 const harness = await import("./bot.create-telegram-bot.test-harness.js");
-const pluginStateTestRuntime = await import("openclaw/plugin-sdk/plugin-state-test-runtime");
-const configMutation = await import("openclaw/plugin-sdk/config-mutation");
-const sessionStoreRuntime = await import("openclaw/plugin-sdk/session-store-runtime");
+const pluginStateTestRuntime = await import("operator/plugin-sdk/plugin-state-test-runtime");
+const configMutation = await import("operator/plugin-sdk/config-mutation");
+const sessionStoreRuntime = await import("operator/plugin-sdk/session-store-runtime");
 const EYES_EMOJI = "\u{1F440}";
 const tempStateDirs: string[] = [];
 let previousStateDir: string | undefined;
@@ -2123,7 +2123,7 @@ describe("createTelegramBot", () => {
       const pairingText = String(sendMessageSpy.mock.calls.at(0)?.[1]);
       expect(pairingText, testCase.name).toContain(`Your Telegram user id: ${senderId}`);
       expect(pairingText, testCase.name).toContain("Pairing code:");
-      expect(pairingText, testCase.name).toContain("openclaw pairing approve telegram");
+      expect(pairingText, testCase.name).toContain("operator pairing approve telegram");
       expectRecordFields(
         sendMessageSpy.mock.calls.at(0)?.[2],
         { parse_mode: "HTML" },
@@ -2345,7 +2345,7 @@ describe("createTelegramBot", () => {
           date: 1736380799,
           chat: { id: 1234, type: "private", first_name: "Harold" },
           from: { id: 7, is_bot: true, first_name: "Operator", username: "operator_bot" },
-          text: "Binding: Review pull request 54118 (openclaw)",
+          text: "Binding: Review pull request 54118 (operator)",
         },
       },
       me: { id: 7, is_bot: true, first_name: "Operator", username: "operator_bot" },

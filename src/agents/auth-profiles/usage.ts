@@ -271,7 +271,7 @@ async function probeWhamForCooldown(
       Accept: "application/json",
       originator: "@gabrielvfonseca/operator",
       ...(version ? { version } : {}),
-      "User-Agent": `openclaw/${version || "dev"}`,
+      "User-Agent": `operator/${version || "dev"}`,
     };
     if (profile.accountId) {
       defaultHeaders["ChatGPT-Account-Id"] = profile.accountId;

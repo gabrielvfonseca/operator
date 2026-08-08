@@ -176,7 +176,7 @@ declare module "*operator-changelog-update/scripts/verify-release-notes.mjs" {
   export function ledgerChecks(...args: unknown[]): string[];
 }
 
-declare module "*openclaw-live-updater/scripts/update-main.mjs" {
+declare module "*operator-live-updater/scripts/update-main.mjs" {
   type GatewayDeployment = Record<string, unknown> & {
     entrypoint: string;
     workingDirectory?: string | null;

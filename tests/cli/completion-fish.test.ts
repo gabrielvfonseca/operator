@@ -14,7 +14,7 @@ describe("completion-fish helpers", () => {
       description: "Manage Bob's plugins",
     });
     expect(line).toBe(
-      `complete -c openclaw -n "__fish_use_subcommand" -a "plugins" -d 'Manage Bob'\\''s plugins'\n`,
+      `complete -c operator -n "__fish_use_subcommand" -a "plugins" -d 'Manage Bob'\\''s plugins'\n`,
     );
   });
 
@@ -26,7 +26,7 @@ describe("completion-fish helpers", () => {
       description: "Shell target",
     });
     expect(line).toBe(
-      `complete -c openclaw -n "__fish_use_subcommand" -s s -l shell -d 'Shell target'\n`,
+      `complete -c operator -n "__fish_use_subcommand" -s s -l shell -d 'Shell target'\n`,
     );
   });
 
@@ -38,7 +38,7 @@ describe("completion-fish helpers", () => {
       description: "Write cache",
     });
     expect(line).toBe(
-      `complete -c openclaw -n "__fish_seen_subcommand_from completion" -l write-state -d 'Write cache'\n`,
+      `complete -c operator -n "__fish_seen_subcommand_from completion" -l write-state -d 'Write cache'\n`,
     );
   });
 });

@@ -63,7 +63,7 @@ function runCleanupFunction(fakePs: string) {
 
   const script = readFileSync(restartScriptPath, "utf8");
   const cleanupFunction = script.slice(
-    script.indexOf("kill_all_openclaw()"),
+    script.indexOf("kill_all_operator()"),
     script.indexOf("stop_launch_agent()"),
   );
   const harnessPath = join(root, "cleanup-harness.sh");
@@ -82,7 +82,7 @@ function runCleanupFunction(fakePs: string) {
       '  printf "%s\\n" "$*" >> "$OPERATOR_TEST_KILL_CALLS"',
       "  return 0",
       "}",
-      "kill_all_openclaw",
+      "kill_all_operator",
     ].join("\n"),
   );
   chmodSync(harnessPath, 0o755);
@@ -118,7 +118,7 @@ function runManagedSupervisorClassifier(
   const script = readFileSync(restartScriptPath, "utf8");
   const classifierFunctions = script.slice(
     script.indexOf("print_managed_operator_supervisor_label()"),
-    script.indexOf("kill_managed_openclaw()"),
+    script.indexOf("kill_managed_operator()"),
   );
   const harnessPath = join(root, "supervisor-harness.sh");
   writeFileSync(
@@ -407,7 +407,7 @@ describe("scripts/restart-mac.sh", () => {
   it("keeps restart cleanup scoped to known Operator app and build paths", () => {
     const script = readFileSync(restartScriptPath, "utf8");
     const cleanupBlock = script.slice(
-      script.indexOf("kill_all_openclaw()"),
+      script.indexOf("kill_all_operator()"),
       script.indexOf("stop_launch_agent()"),
     );
 
@@ -429,7 +429,7 @@ describe("scripts/restart-mac.sh", () => {
   it("stops launchd supervision before killing app processes", () => {
     const script = readFileSync(restartScriptPath, "utf8");
     const stopIndex = script.indexOf("stop_launch_agent\n  log");
-    const killIndex = script.indexOf("if ! kill_all_openclaw");
+    const killIndex = script.indexOf("if ! kill_all_operator");
 
     expect(stopIndex).toBeGreaterThan(-1);
     expect(killIndex).toBeGreaterThan(-1);
@@ -448,11 +448,11 @@ describe("scripts/restart-mac.sh", () => {
     );
 
     expect(initialTargetBlock).toContain("foreign_operator_process_pids");
-    expect(initialTargetBlock).not.toContain("kill_managed_openclaw");
+    expect(initialTargetBlock).not.toContain("kill_managed_operator");
     expect(initialTargetBlock).not.toContain("stop_launch_agent");
-    expect(initialTargetBlock).not.toContain("kill_all_openclaw");
+    expect(initialTargetBlock).not.toContain("kill_all_operator");
     expect(switchTargetBlock).toContain("foreign_operator_process_pids");
-    expect(switchTargetBlock).toContain("kill_managed_openclaw");
+    expect(switchTargetBlock).toContain("kill_managed_operator");
     expect(script).toContain('[[ "${executable}" == "${TARGET_EXECUTABLE}" ]] && continue');
     expect(script).toContain('process_pids_for_executable "${TARGET_EXECUTABLE}"');
     expect(script).toContain("target-only restart deferred");
@@ -546,11 +546,11 @@ describe("scripts/restart-mac.sh", () => {
   it("escalates only exact managed app processes when graceful shutdown stalls", () => {
     const script = readFileSync(restartScriptPath, "utf8");
     const managedKillBlock = script.slice(
-      script.indexOf("kill_managed_openclaw()"),
+      script.indexOf("kill_managed_operator()"),
       script.indexOf("stop_launch_agent()"),
     );
     const broadKillBlock = script.slice(
-      script.indexOf("kill_all_openclaw()"),
+      script.indexOf("kill_all_operator()"),
       script.indexOf("known_operator_executables()"),
     );
 

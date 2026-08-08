@@ -220,7 +220,7 @@ async function main() {
     maxProtocol: PROTOCOL_VERSION,
     client: {
       id: "cli",
-      displayName: "openclaw ios node e2e",
+      displayName: "operator ios node e2e",
       version: "dev",
       platform: "dev",
       mode: "cli",

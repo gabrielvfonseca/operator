@@ -233,28 +233,28 @@
    brand moves first, clears the traffic lights, and stays non-interactive
    under the AppKit drag region (x 78-254, y < 46); the drawer toggle and
    search sit to its right. */
-html.openclaw-native-macos body .shell--mobile-nav {
+html.operator-native-macos body .shell--mobile-nav {
   --shell-topbar-height: 58px;
 }
 
-html.openclaw-native-macos body .shell--mobile-nav .topbar {
+html.operator-native-macos body .shell--mobile-nav .topbar {
   padding: 0 12px 0 92px;
 }
 
-html.openclaw-native-macos body .shell--mobile-nav .topnav-shell {
+html.operator-native-macos body .shell--mobile-nav .topnav-shell {
   display: flex;
   gap: 8px;
   min-height: 58px;
 }
 
-html.openclaw-native-macos body .shell--mobile-nav .topnav-shell__content {
+html.operator-native-macos body .shell--mobile-nav .topnav-shell__content {
   order: -1;
   flex: 0 0 auto;
   min-width: 176px;
   justify-content: flex-start;
 }
 
-html.openclaw-native-macos body .shell--mobile-nav .topnav-shell__actions {
+html.operator-native-macos body .shell--mobile-nav .topnav-shell__actions {
   margin-left: auto;
 }
 
@@ -605,13 +605,13 @@ html.openclaw-native-macos body .shell--mobile-nav .topnav-shell__actions {
     max-height: 380px;
   }
 
-  .content:has(openclaw-logs-page) {
+  .content:has(operator-logs-page) {
     display: block;
     overflow-y: auto;
   }
 
-  .content:has(openclaw-logs-page) > openclaw-router-outlet,
-  .content openclaw-logs-page,
+  .content:has(operator-logs-page) > operator-router-outlet,
+  .content operator-logs-page,
   .content .settings-workspace--fill-height,
   .content .settings-workspace--fill-height > .settings-workspace__body,
   .content .settings-workspace--fill-height .logs-card {

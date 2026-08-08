@@ -34,7 +34,7 @@ const TEST_AUTH = {
 const tempDirs: string[] = [];
 
 function makeTempDir(): string {
-  const root = mkdtempSync(path.join(tmpdir(), "openclaw-parallels-npm-update-"));
+  const root = mkdtempSync(path.join(tmpdir(), "operator-parallels-npm-update-"));
   tempDirs.push(root);
   return root;
 }
@@ -109,20 +109,20 @@ describe("parallels npm update smoke", () => {
     expect(
       parseArgs([
         "--target-tarball",
-        "/tmp/openclaw-candidate.tgz",
+        "/tmp/operator-candidate.tgz",
         "--dependency-tarball",
-        "/tmp/openclaw-ai-candidate.tgz",
+        "/tmp/operator-ai-candidate.tgz",
       ]),
     ).toMatchObject({
-      dependencyTarballs: ["/tmp/openclaw-ai-candidate.tgz"],
-      targetTarball: "/tmp/openclaw-candidate.tgz",
+      dependencyTarballs: ["/tmp/operator-ai-candidate.tgz"],
+      targetTarball: "/tmp/operator-candidate.tgz",
       updateTarget: "",
       freshTargetSpec: undefined,
     });
     expect(() =>
-      parseArgs(["--target-tarball", "/tmp/openclaw-candidate.tgz", "--update-target", "beta"]),
+      parseArgs(["--target-tarball", "/tmp/operator-candidate.tgz", "--update-target", "beta"]),
     ).toThrow("--target-tarball cannot be combined");
-    expect(() => parseArgs(["--dependency-tarball", "/tmp/openclaw-ai-candidate.tgz"])).toThrow(
+    expect(() => parseArgs(["--dependency-tarball", "/tmp/operator-ai-candidate.tgz"])).toThrow(
       "--dependency-tarball requires --target-tarball",
     );
   });
@@ -155,7 +155,7 @@ describe("parallels npm update smoke", () => {
         ...TEST_AUTH,
         dependencyTarballs: [],
         json: false,
-        packageSpec: "openclaw@latest",
+        packageSpec: "operator@latest",
         platforms: new Set<Platform>(["linux"]),
         provider: "openai",
         updateTarget: "local-main",
@@ -178,15 +178,15 @@ set -euo pipefail
 log_path=${JSON.stringify(logPath)}
 printf '%s\\n' "$*" >>"$log_path"
 args=" $* "
-if [[ "$args" == *" /usr/bin/tee /tmp/openclaw-parallels-npm-update-linux-"* ]]; then
+if [[ "$args" == *" /usr/bin/tee /tmp/operator-parallels-npm-update-linux-"* ]]; then
   cat >/dev/null
   exit 0
 fi
-if [[ "$args" == *" /bin/chmod 755 /tmp/openclaw-parallels-npm-update-linux-"* ]]; then
+if [[ "$args" == *" /bin/chmod 755 /tmp/operator-parallels-npm-update-linux-"* ]]; then
   echo "chmod denied" >&2
   exit 7
 fi
-if [[ "$args" == *" /bin/rm -f /tmp/openclaw-parallels-npm-update-linux-"* ]]; then
+if [[ "$args" == *" /bin/rm -f /tmp/operator-parallels-npm-update-linux-"* ]]; then
   printf 'cleanup\\n' >>"$log_path"
   exit 0
 fi
@@ -205,7 +205,7 @@ exit 1
           ...TEST_AUTH,
           dependencyTarballs: [],
           json: false,
-          packageSpec: "openclaw@latest",
+          packageSpec: "operator@latest",
           platforms: new Set<Platform>(["linux"]),
           provider: "openai",
           updateTarget: "local-main",
@@ -221,15 +221,15 @@ exit 1
             smoke,
             "Linux VM",
             "echo update",
-            "openclaw-parallels-npm-update-linux",
+            "operator-parallels-npm-update-linux",
           ),
         ).toThrow("failed to chmod guest script");
       },
     );
 
     const log = readFileSync(logPath, "utf8");
-    expect(log).toContain("/bin/chmod 755 /tmp/openclaw-parallels-npm-update-linux-");
-    expect(log).toContain("/bin/rm -f /tmp/openclaw-parallels-npm-update-linux-");
+    expect(log).toContain("/bin/chmod 755 /tmp/operator-parallels-npm-update-linux-");
+    expect(log).toContain("/bin/rm -f /tmp/operator-parallels-npm-update-linux-");
     expect(log.match(/^cleanup$/gm)).toHaveLength(1);
   });
 
@@ -237,10 +237,10 @@ exit 1
     const script = readFileSync(SCRIPT_PATH, "utf8");
 
     expect(script).toContain("--beta-validation [target]");
-    expect(script).toContain("resolveOpenClawRegistryVersion");
+    expect(script).toContain("resolveOperatorRegistryVersion");
     expect(script).toContain("this.options.updateTarget = version");
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-    expect(script).toContain("this.options.freshTargetSpec = `openclaw@${version}`");
+    expect(script).toContain("this.options.freshTargetSpec = `operator@${version}`");
     expect(script).toContain("runFreshTargetInstalls");
     expect(script).toContain("freshTargetStatus");
   });
@@ -282,13 +282,13 @@ exit 1
       parseRegistryPackageMetadata(
         JSON.stringify({
           version: "2026.5.20-beta.1",
-          "dist.tarball": "https://registry.example/openclaw-keyed.tgz",
+          "dist.tarball": "https://registry.example/operator-keyed.tgz",
           gitHead: "abcdef0123456789",
         }),
       ),
     ).toEqual({
       version: "2026.5.20-beta.1",
-      tarball: "https://registry.example/openclaw-keyed.tgz",
+      tarball: "https://registry.example/operator-keyed.tgz",
       gitHead: "abcdef0123456789",
     });
 
@@ -296,12 +296,12 @@ exit 1
       parseRegistryPackageMetadata(
         JSON.stringify({
           version: "2026.5.20-beta.1",
-          dist: { tarball: "https://registry.example/openclaw-nested.tgz" },
+          dist: { tarball: "https://registry.example/operator-nested.tgz" },
         }),
       ),
     ).toEqual({
       version: "2026.5.20-beta.1",
-      tarball: "https://registry.example/openclaw-nested.tgz",
+      tarball: "https://registry.example/operator-nested.tgz",
       gitHead: "",
     });
   });
@@ -364,10 +364,10 @@ exit 1
     expect(scripts).toContain("print_log_tail()");
     expect(scripts).toContain("OPENCLAW_PARALLELS_NPM_UPDATE_LOG_TAIL_BYTES");
     expect(scripts).toContain('print_log_tail "$output_file"');
-    expect(scripts).toContain("print_log_tail /tmp/openclaw-parallels-macos-gateway.log >&2");
-    expect(scripts).toContain("print_log_tail /tmp/openclaw-parallels-linux-gateway.log >&2");
+    expect(scripts).toContain("print_log_tail /tmp/operator-parallels-macos-gateway.log >&2");
+    expect(scripts).toContain("print_log_tail /tmp/operator-parallels-linux-gateway.log >&2");
     expect(scripts).not.toContain('cat "$output_file"');
-    expect(scripts).not.toContain("cat /tmp/openclaw-parallels-");
+    expect(scripts).not.toContain("cat /tmp/operator-parallels-");
   });
 
   it("passes platform model timeouts to POSIX update agent turns", () => {
@@ -545,7 +545,7 @@ exit 1
           ...TEST_AUTH,
           dependencyTarballs: [],
           json: false,
-          packageSpec: "openclaw@latest",
+          packageSpec: "operator@latest",
           platforms: new Set<Platform>(["linux"]),
           provider: "openai",
           updateTarget: "local-main",
@@ -563,7 +563,7 @@ exit 1
     ) => Promise<number>;
 
     await expect(
-      runStreamingToJobLog.call(smoke, "openclaw-definitely-missing-command", [], 60 * 60 * 1000, {
+      runStreamingToJobLog.call(smoke, "operator-definitely-missing-command", [], 60 * 60 * 1000, {
         append: () => undefined,
         logPath: "",
         signal: new AbortController().signal,
@@ -586,7 +586,7 @@ exit 1
             ...TEST_AUTH,
             dependencyTarballs: [],
             json: false,
-            packageSpec: "openclaw@latest",
+            packageSpec: "operator@latest",
             platforms: new Set<Platform>(["linux"]),
             provider: "openai",
             updateTarget: "local-main",
@@ -680,14 +680,14 @@ exit 1
     const commands = decodedCommands.join("\n---\n");
     const payloads = inputs.join("\n---\n");
     expect(commands).toContain("$pidPath");
-    expect(commands).toContain("function Write-OpenClawUtf8File");
+    expect(commands).toContain("function Write-OperatorUtf8File");
     expect(commands).toContain("[System.Text.UTF8Encoding]::new($false)");
-    expect(payloads).toContain("Write-OpenClawUtf8File $exitPath '0'");
-    expect(payloads).toContain("Write-OpenClawUtf8File $donePath 'done'");
-    expect(payloads).toContain("Write-OpenClawUtf8File $pidPath ([string]$PID)");
+    expect(payloads).toContain("Write-OperatorUtf8File $exitPath '0'");
+    expect(payloads).toContain("Write-OperatorUtf8File $donePath 'done'");
+    expect(payloads).toContain("Write-OperatorUtf8File $pidPath ([string]$PID)");
     expect(commands).toContain('cmd.exe /d /s /c start "" /b powershell.exe');
     expect(commands).toContain("icacls.exe $runDir /inheritance:r");
-    expect(commands).toContain("Stop-OpenClawBackgroundProcessTree ([int]$backgroundPid)");
+    expect(commands).toContain("Stop-OperatorBackgroundProcessTree ([int]$backgroundPid)");
     expect(commands).toContain(
       'Get-CimInstance Win32_Process -Filter "ParentProcessId=$ProcessId"',
     );
@@ -727,7 +727,7 @@ exit 1
     ).rejects.toThrow("windows background marker smuggle timed out");
 
     expect(decodedCommands.join("\n")).toContain(
-      "Stop-OpenClawBackgroundProcessTree ([int]$backgroundPid)",
+      "Stop-OperatorBackgroundProcessTree ([int]$backgroundPid)",
     );
   });
 
@@ -775,7 +775,7 @@ exit 1
 
     expect(pollCount).toBe(1);
     expect(output.join("")).toContain("first chunk");
-    expect(decodedCommands.join("\n")).not.toContain("Stop-OpenClawBackgroundProcessTree");
+    expect(decodedCommands.join("\n")).not.toContain("Stop-OperatorBackgroundProcessTree");
     expect(decodedCommands.join("\n")).toContain(
       "Remove-Item -Path $scriptPath, $logPath, $donePath, $exitPath, $pidPath",
     );
@@ -820,7 +820,7 @@ exit 7
           ...TEST_AUTH,
           dependencyTarballs: [],
           json: false,
-          packageSpec: "openclaw@latest",
+          packageSpec: "operator@latest",
           platforms: new Set<Platform>(["macos"]),
           provider: "openai",
           updateTarget: "local-main",
@@ -862,7 +862,7 @@ exit 7
           ...TEST_AUTH,
           dependencyTarballs: [],
           json: false,
-          packageSpec: "openclaw@latest",
+          packageSpec: "operator@latest",
           platforms: new Set<Platform>(["macos"]),
           provider: "openai",
           updateTarget: "local-main",
@@ -906,21 +906,21 @@ exit 7
     expect(windowsScript).toContain(
       "Remove-Item $nodeScriptPath -Force -ErrorAction SilentlyContinue",
     );
-    expect(windowsScript).toContain("Remove-FuturePluginEntries\nStop-OpenClawGatewayProcesses");
-    expect(script).toContain("scrub_future_plugin_entries\nstop_openclaw_gateway_processes");
+    expect(windowsScript).toContain("Remove-FuturePluginEntries\nStop-OperatorGatewayProcesses");
+    expect(script).toContain("scrub_future_plugin_entries\nstop_operator_gateway_processes");
     expect(script).toContain("Invoke-WithScopedEnv @{ OPENCLAW_DISABLE_BUNDLED_PLUGINS = '1'");
-    expect(macosScript).toContain('OPENCLAW_BIN="$(resolve_required_command openclaw)"');
+    expect(macosScript).toContain('OPENCLAW_BIN="$(resolve_required_command operator)"');
     expect(macosScript).toContain("/usr/local/bin:/usr/local/sbin");
     expect(macosScript).toContain(
       'OPENCLAW_DISABLE_BUNDLED_PLUGINS=1 "$OPENCLAW_BIN" update --tag',
     );
-    expect(macosScript).not.toContain("/opt/homebrew/bin/openclaw");
-    expect(script).toContain("OPENCLAW_DISABLE_BUNDLED_PLUGINS=1 openclaw update --tag");
+    expect(macosScript).not.toContain("/opt/homebrew/bin/operator");
+    expect(script).toContain("OPENCLAW_DISABLE_BUNDLED_PLUGINS=1 operator update --tag");
     expect(macosScript).toContain(
       'OPENCLAW_DISABLE_BUNDLED_PLUGINS=1 "$OPENCLAW_BIN" gateway stop',
     );
     expect(script).toContain(
-      "OPENCLAW_DISABLE_BUNDLED_PLUGINS=1 OPENCLAW_ALLOW_ROOT=1 openclaw gateway stop",
+      "OPENCLAW_DISABLE_BUNDLED_PLUGINS=1 OPENCLAW_ALLOW_ROOT=1 operator gateway stop",
     );
   });
 
@@ -931,11 +931,11 @@ exit 7
       updateTarget: "2026.5.3-beta.2",
     });
 
-    const updateIndex = script.indexOf("Invoke-OpenClaw update --tag");
+    const updateIndex = script.indexOf("Invoke-Operator update --tag");
     const scopedIndex = script.indexOf("Invoke-WithScopedEnv @{ OPENCLAW_DISABLE_BUNDLED_PLUGINS");
-    const versionIndex = script.indexOf("Invoke-OpenClaw --version", scopedIndex);
-    const restartIndex = script.indexOf("Invoke-OpenClaw gateway restart");
-    const agentIndex = script.indexOf("Invoke-OpenClaw agent --local");
+    const versionIndex = script.indexOf("Invoke-Operator --version", scopedIndex);
+    const restartIndex = script.indexOf("Invoke-Operator gateway restart");
+    const agentIndex = script.indexOf("Invoke-Operator agent --local");
 
     expect(updateIndex).toBeGreaterThanOrEqual(0);
     expect(scopedIndex).toBeGreaterThanOrEqual(0);
@@ -965,13 +965,13 @@ exit 7
     expect(staleImportLine).toContain("$updateText -match 'ERR_MODULE_NOT_FOUND'");
     expect(staleImportLine).toContain(`$updateText -match '${staleImportPattern}'`);
     expect(staleImportPattern).toBe(
-      String.raw`node_modules\\openclaw\\dist\\[^\\]+-[A-Za-z0-9_-]+\.js`,
+      String.raw`node_modules\\operator\\dist\\[^\\]+-[A-Za-z0-9_-]+\.js`,
     );
-    expect(staleImportPattern).not.toContain("node_modules\\openclaw\\dist\\");
+    expect(staleImportPattern).not.toContain("node_modules\\operator\\dist\\");
     expect(staleImportPattern.match(/\\\\/g)).toHaveLength(4);
-    const representativeUpdateFailure = String.raw`Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\Users\runner\AppData\Roaming\npm\node_modules\openclaw\dist\main-a1_B2.js' imported from C:\Users\runner\AppData\Roaming\npm\node_modules\openclaw\dist\cli.js`;
+    const representativeUpdateFailure = String.raw`Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\Users\runner\AppData\Roaming\npm\node_modules\operator\dist\main-a1_B2.js' imported from C:\Users\runner\AppData\Roaming\npm\node_modules\operator\dist\cli.js`;
     const generatedRegex = new RegExp(staleImportPattern);
     expect(generatedRegex.test(representativeUpdateFailure)).toBe(true);
-    expect(generatedRegex.test(String.raw`node_modules\openclaw\dist\main.js`)).toBe(false);
+    expect(generatedRegex.test(String.raw`node_modules\operator\dist\main.js`)).toBe(false);
   });
 });

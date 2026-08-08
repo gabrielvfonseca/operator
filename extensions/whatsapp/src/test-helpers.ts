@@ -641,7 +641,7 @@ vi.mock("./auto-reply/monitor/message-line.runtime.js", () => ({
     if (configured !== undefined) {
       return configured;
     }
-    return params?.hasAllowFrom === true ? "" : "[openclaw]";
+    return params?.hasAllowFrom === true ? "" : "[operator]";
   },
 }));
 

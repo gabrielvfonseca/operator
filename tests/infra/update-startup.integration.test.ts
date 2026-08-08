@@ -1,18 +1,18 @@
 // Proves startup update discovery through the real extended-stable registry resolver.
 import http from "node:http";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import {
   createOperatorTestState,
   type OperatorTestState,
 } from "../../src/test-utils/operator-test-state.ts";
 import type { UpdateCheckResult } from "../../src/infra/update-check.js";
 
-vi.mock("./openclaw-root.js", async () => {
-  const actual = await vi.importActual<typeof import("./openclaw-root.js")>("./openclaw-root.js");
+vi.mock("./operator-root.js", async () => {
+  const actual = await vi.importActual<typeof import("./operator-root.js")>("./operator-root.js");
   return {
     ...actual,
-    resolveOperatorPackageRoot: vi.fn(async () => "/opt/openclaw"),
+    resolveOperatorPackageRoot: vi.fn(async () => "/opt/operator"),
   };
 });
 
@@ -23,7 +23,7 @@ vi.mock("./update-check.js", async () => {
     checkUpdateStatus: vi.fn(
       async () =>
         ({
-          root: "/opt/openclaw",
+          root: "/opt/operator",
           installKind: "package",
           packageManager: "npm",
         }) satisfies UpdateCheckResult,
@@ -99,14 +99,14 @@ describe("extended-stable startup update integration", () => {
       runAutoUpdate,
     });
 
-    expect(requests).toEqual(["/openclaw/extended-stable", "/openclaw/2.0.0"]);
+    expect(requests).toEqual(["/operator/extended-stable", "/operator/2.0.0"]);
     expect(onUpdateAvailableChange).toHaveBeenCalledWith({
       currentVersion: "1.0.0",
       latestVersion: "2.0.0",
       channel: "extended-stable",
     });
     expect(log.info).toHaveBeenCalledWith(
-      "update available (extended-stable): v2.0.0 (current v1.0.0). Run: openclaw update",
+      "update available (extended-stable): v2.0.0 (current v1.0.0). Run: operator update",
     );
     expect(runAutoUpdate).not.toHaveBeenCalled();
   });

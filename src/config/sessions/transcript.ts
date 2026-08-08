@@ -14,7 +14,7 @@ import {
   OPERATOR_TRANSCRIPT_ARTIFACT_API,
   OPERATOR_TRANSCRIPT_ARTIFACT_PROVIDER,
   isTranscriptOnlyOperatorAssistantModel,
-} from "../../shared/transcript-only-openclaw-assistant.js";
+} from "../../shared/transcript-only-operator-assistant.js";
 import type { OperatorConfig } from "../types.operator.js";
 import {
   resolveDefaultSessionStorePath,

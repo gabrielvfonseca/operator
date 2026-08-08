@@ -25,7 +25,7 @@ import {
 const execFileAsync = promisify(execFile);
 const SCENARIO_ID = "ux-matrix-evidence-dashboard";
 const SOURCE_PATH = "scripts/qa/ux-matrix-evidence-producer.ts";
-const SUITE_COMMAND = `pnpm openclaw qa suite --scenario ${SCENARIO_ID}`;
+const SUITE_COMMAND = `pnpm operator qa suite --scenario ${SCENARIO_ID}`;
 
 type MatrixCell = {
   artifacts: Array<{ kind: string; path: string }>;

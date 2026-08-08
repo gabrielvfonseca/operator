@@ -149,7 +149,7 @@ function configSnapshot(isWorkboardEnabled: boolean) {
     config,
     hash: isWorkboardEnabled ? "plugins-config-enabled" : "plugins-config-disabled",
     issues: [],
-    path: "/tmp/openclaw-e2e/openclaw.json",
+    path: "/tmp/operator-e2e/operator.json",
     raw: JSON.stringify(config, null, 2),
     resolved: config,
     sourceConfig: config,
@@ -507,7 +507,7 @@ describeControlUiE2e("Control UI Plugins mocked Gateway E2E", () => {
       if (await settingsSidebar.isVisible()) {
         await settingsSidebar.getByRole("button", { name: "Back to app" }).click();
       }
-      const sidebar = page.locator("openclaw-app-sidebar");
+      const sidebar = page.locator("operator-app-sidebar");
       await sidebar.waitFor({ state: "visible" });
       const moreButton = sidebar.getByRole("button", { name: "More" });
       if ((await moreButton.getAttribute("aria-expanded")) !== "true") {

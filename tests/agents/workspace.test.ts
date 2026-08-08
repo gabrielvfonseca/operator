@@ -152,7 +152,7 @@ describe("ensureAgentWorkspace", () => {
   it("does not overwrite a foreign root workspace-state.json file", async () => {
     const tempDir = await makeTempWorkspace("operator-workspace-");
     const foreignStatePath = path.join(tempDir, "workspace-state.json");
-    const foreignState = "not openclaw state\n";
+    const foreignState = "not operator state\n";
     await fs.writeFile(foreignStatePath, foreignState);
 
     await ensureAgentWorkspace({ dir: tempDir, ensureBootstrapFiles: true });

@@ -407,7 +407,7 @@ process.stdout.write(JSON.stringify({ ok: body.ok, id: body.result?.id, username
 if (!body.ok || !body.result?.id) process.exit(1);
 MANTIS_TELEGRAM_GETME
 node --input-type=module -e 'import fs from "node:fs"; const value = JSON.parse(fs.readFileSync(process.argv[1], "utf8")); process.stdout.write(String(value.id || ""));' "$out/telegram-driver-getme.json")"
-    export OPERATOR_HOME="$HOME/.operator-mantis/telegram-openclaw"
+    export OPERATOR_HOME="$HOME/.operator-mantis/telegram-operator"
     mkdir -p "$OPERATOR_HOME"    cat >"$out/telegram.patch.json5" <<MANTIS_TELEGRAM_PATCH
 {
   gateway: {
@@ -447,7 +447,7 @@ const body = await response.json();
 process.stdout.write(JSON.stringify({ ok: body.ok, message_id: body.result?.message_id }));
 if (!body.ok) process.exit(1);
 MANTIS_TELEGRAM_READY
-    nohup pnpm openclaw gateway run --dev --allow-unconfigured --port 38974 --cli-backend-logs </dev/null >"$out/operator-gateway.log" 2>&1 &    gateway_pid="$!"
+    nohup pnpm operator gateway run --dev --allow-unconfigured --port 38974 --cli-backend-logs </dev/null >"$out/operator-gateway.log" 2>&1 &    gateway_pid="$!"
     echo "$gateway_pid" >"$out/operator-gateway.pid"
     sleep 12
     if ! kill -0 "$gateway_pid" >/dev/null 2>&1; then

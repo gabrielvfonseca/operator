@@ -51,7 +51,7 @@ proxy:
   enabled: true
   proxyUrl: https://proxy.corp.example:8443
   tls:
-    caFile: /etc/openclaw/proxy-ca.pem
+    caFile: /etc/operator/proxy-ca.pem
 ```
 
 `proxy.tls.caFile` verifies the proxy endpoint's own TLS certificate. It is not a destination MITM trust setting, a client certificate, or a substitute for the proxy's destination policy. Use `NODE_EXTRA_CA_CERTS` instead only when the entire Node process must trust an additional CA from startup (for example, an enterprise TLS-inspection system re-signing every HTTPS destination certificate) — that variable is process-global and must be set before Node starts, so Operator cannot apply it mid-run the way it applies `proxy.tls.caFile`. Prefer `proxy.tls.caFile` for HTTPS proxy endpoint trust: it is scoped to managed proxy routing instead of the whole process.
@@ -59,7 +59,7 @@ proxy:
 ```bash
 operator config set proxy.enabled true
 operator config set proxy.proxyUrl https://proxy.corp.example:8443
-operator config set proxy.tls.caFile /etc/openclaw/proxy-ca.pem
+operator config set proxy.tls.caFile /etc/operator/proxy-ca.pem
 operator gateway run
 ```
 
@@ -72,7 +72,7 @@ Operator process
   fetch, node:http, node:https, WebSocket clients  -> operator proxy -> destination
 ```
 
-Internally, Operator installs [Proxyline](https://github.com/openclaw/proxyline) as the process-level routing runtime. It covers `fetch`, undici-backed clients, `node:http`/`node:https`, common WebSocket clients, and helper-created `CONNECT` tunnels, and it replaces caller-provided Node HTTP agents so explicit agents (including `axios`, `got`, `node-fetch`, and similar Node-agent-based clients) cannot silently bypass the proxy.
+Internally, Operator installs [Proxyline](https://github.com/operator/proxyline) as the process-level routing runtime. It covers `fetch`, undici-backed clients, `node:http`/`node:https`, common WebSocket clients, and helper-created `CONNECT` tunnels, and it replaces caller-provided Node HTTP agents so explicit agents (including `axios`, `got`, `node-fetch`, and similar Node-agent-based clients) cannot silently bypass the proxy.
 
 The proxy URL scheme describes the hop from Operator to the proxy, not to the final destination:
 
@@ -136,7 +136,7 @@ operator proxy validate --proxy-url http://127.0.0.1:3128
 With a private-CA HTTPS proxy endpoint:
 
 ```bash
-operator proxy validate --proxy-url https://proxy.corp.example:8443 --proxy-ca-file /etc/openclaw/proxy-ca.pem
+operator proxy validate --proxy-url https://proxy.corp.example:8443 --proxy-ca-file /etc/operator/proxy-ca.pem
 ```
 
 | Flag                     | Purpose                                                              |

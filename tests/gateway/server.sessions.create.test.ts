@@ -14,7 +14,7 @@ import { managedWorktrees } from "../../src/agents/worktrees/service.js";
 import { loadSessionEntry, loadTranscriptEvents } from "../../src/config/sessions/session-accessor.js";
 import { createEmptyPluginRegistry } from "../../src/plugins/registry-empty.js";
 import { setActivePluginRegistry } from "../../src/plugins/runtime.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import {
   agentCommand,
   agentDiscoveryMock,
@@ -87,7 +87,7 @@ test("sessions.create provisions and reuses a session worktree for later runs", 
     expect(created.ok).toBe(true);
     const key = requireNonEmptyString(created.payload?.key, "created session key");
     const worktree = created.payload?.worktree;
-    expect(worktree?.branch).toMatch(/^openclaw\/wt-[a-f0-9]{8}$/);
+    expect(worktree?.branch).toMatch(/^operator\/wt-[a-f0-9]{8}$/);
     expect(created.payload?.entry.spawnedCwd).toBe(worktree?.path);
     worktreeId = worktree?.id;
     expect(findLiveRegistryWorktreeByOwner(process.env, "session", key)).toMatchObject({
@@ -187,7 +187,7 @@ test("sessions.create honors worktree name/base ref and persists worktree info",
     expect(created.ok).toBe(true);
     const worktree = created.payload?.worktree;
     worktreeId = worktree?.id;
-    expect(worktree?.branch).toBe("openclaw/target-task");
+    expect(worktree?.branch).toBe("operator/target-task");
     const { stdout: worktreeCommitRaw } = await execFileAsync("git", [
       "-C",
       requireNonEmptyString(worktree?.path, "worktree path"),
@@ -197,7 +197,7 @@ test("sessions.create honors worktree name/base ref and persists worktree info",
     expect(worktreeCommitRaw.trim()).toBe(baseCommitRaw.trim());
     expect(created.payload?.entry.worktree).toEqual({
       id: worktree?.id,
-      branch: "openclaw/target-task",
+      branch: "operator/target-task",
       repoRoot: workspace,
     });
 
@@ -243,7 +243,7 @@ test("sessions.create accepts a node-host cwd without provisioning a Gateway wor
     entry: { execHost?: string; execNode?: string; execCwd?: string; spawnedCwd?: string };
   }>(
     "sessions.create",
-    { agentId: "main", execNode: "macbook", cwd: "/Users/peter/Projects/openclaw" },
+    { agentId: "main", execNode: "macbook", cwd: "/Users/peter/Projects/operator" },
     { client: { connect: { scopes: ["operator.admin"] } } as never },
   );
 
@@ -251,7 +251,7 @@ test("sessions.create accepts a node-host cwd without provisioning a Gateway wor
   expect(created.payload?.entry).toMatchObject({
     execHost: "node",
     execNode: "macbook",
-    execCwd: "/Users/peter/Projects/openclaw",
+    execCwd: "/Users/peter/Projects/operator",
   });
   expect(created.payload?.entry.spawnedCwd).toBeUndefined();
 });
@@ -288,7 +288,7 @@ test("sessions.create reset-in-place clears a prior node binding for Gateway exe
       parentSessionKey: "main",
       emitCommandHooks: true,
       execNode: "macbook",
-      cwd: "/Users/peter/Projects/openclaw",
+      cwd: "/Users/peter/Projects/operator",
     },
     { client: { connect: { scopes: ["operator.admin"] } } as never },
   );
@@ -296,7 +296,7 @@ test("sessions.create reset-in-place clears a prior node binding for Gateway exe
   expect(nodeSession.payload?.entry).toMatchObject({
     execHost: "node",
     execNode: "macbook",
-    execCwd: "/Users/peter/Projects/openclaw",
+    execCwd: "/Users/peter/Projects/operator",
   });
   expect(nodeSession.payload?.entry.spawnedCwd).toBeUndefined();
 
@@ -478,7 +478,7 @@ test("sessions.create preserves a linked-worktree subdirectory", async () => {
     worktreeId = worktree?.id;
     // The managed worktree anchors at the repo root even when the workspace is nested;
     // the session cwd points at the equivalent subdirectory inside the worktree.
-    expect(worktree?.branch).toMatch(/^openclaw\/wt-[a-f0-9]{8}$/);
+    expect(worktree?.branch).toMatch(/^operator\/wt-[a-f0-9]{8}$/);
     expect(created.payload?.entry.spawnedCwd).toBe(
       path.join(requireNonEmptyString(worktree?.path, "worktree path"), "packages", "app"),
     );

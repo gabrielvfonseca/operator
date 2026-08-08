@@ -268,7 +268,7 @@ function resolveOperatorRunner() {
       return { command: "node", baseArgs: [resolved], label: resolved };
     }
   }
-  return { pnpm: true, baseArgs: ["@gabrielvfonseca/operator"], label: "pnpm openclaw" };
+  return { pnpm: true, baseArgs: ["@gabrielvfonseca/operator"], label: "pnpm operator" };
 }
 
 export function makeEnv() {

@@ -6,7 +6,7 @@ import {
   clearRuntimeConfigSnapshot,
   setRuntimeConfigSnapshot,
 } from "../../../src/config/runtime-snapshot.js";
-import type { OperatorConfig } from "../../../src/config/types.openclaw.js";
+import type { OperatorConfig } from "../../../src/config/types.operator.js";
 import { clearPluginMetadataLifecycleCaches } from "../../../src/plugins/plugin-metadata-lifecycle.js";
 import { captureEnv, withPathResolutionEnv } from "../../../src/test-utils/env.js";
 import { createFixtureSuite } from "../../../src/test-utils/fixture-suite.js";
@@ -30,7 +30,7 @@ vi.mock("./plugin-skills.js", () => ({
   resolvePluginSkillDirs: () => [],
 }));
 
-const fixtureSuite = createFixtureSuite("openclaw-skills-suite-");
+const fixtureSuite = createFixtureSuite("operator-skills-suite-");
 let tempHome: TempHomeEnv | null = null;
 let skillsHomeEnv: SkillsHomeEnvSnapshot | null = null;
 const pluginEnvSnapshot = captureEnv(["OPERATOR_DISABLE_BUNDLED_PLUGINS"]);
@@ -151,9 +151,9 @@ function resolvedSkillApiKeyConfig(skillName: string, apiKey: string): OperatorC
 beforeAll(async () => {
   await fixtureSuite.setup();
   process.env.OPERATOR_DISABLE_BUNDLED_PLUGINS = "1";
-  tempHome = await createTempHomeEnv("openclaw-skills-home-");
+  tempHome = await createTempHomeEnv("operator-skills-home-");
   skillsHomeEnv = setMockSkillsHomeEnv(tempHome.home);
-  await fs.mkdir(path.join(tempHome.home, ".openclaw", "agents", "main", "sessions"), {
+  await fs.mkdir(path.join(tempHome.home, ".operator", "agents", "main", "sessions"), {
     recursive: true,
   });
 });
@@ -295,7 +295,7 @@ describe("buildWorkspaceSkillCommandSpecs", () => {
       config,
     });
 
-    const pluginRoot = path.join(workspaceDir, ".openclaw", "extensions", "compound-bundle");
+    const pluginRoot = path.join(workspaceDir, ".operator", "extensions", "compound-bundle");
     await fs.mkdir(path.join(pluginRoot, ".claude-plugin"), { recursive: true });
     await fs.mkdir(path.join(pluginRoot, "commands"), { recursive: true });
     await fs.writeFile(

@@ -688,7 +688,7 @@ describe("channels command", () => {
       patterns: [
         /Warnings:/,
         /Message Content Intent is disabled/i,
-        /Run: (?:openclaw|openclaw)( --profile isolated)? doctor/,
+        /Run: (?:operator|operator)( --profile isolated)? doctor/,
       ],
     },
     {

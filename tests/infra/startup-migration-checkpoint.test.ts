@@ -6,8 +6,8 @@ import { useAutoCleanupTempDirTracker } from "../../test/helpers/temp-dir.js";
 import {
   closeOperatorStateDatabaseForTest,
   OPERATOR_STATE_SCHEMA_VERSION,
-} from "../../src/state/openclaw-state-db.js";
-import { resolveOperatorStateSqlitePath } from "../../src/state/openclaw-state-db.paths.js";
+} from "../../src/state/operator-state-db.js";
+import { resolveOperatorStateSqlitePath } from "../../src/state/operator-state-db.paths.js";
 import { requireNodeSqlite } from "../../src/infra/node-sqlite.js";
 import {
   acquireStartupMigrationLease,

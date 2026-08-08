@@ -25,8 +25,8 @@ const INSTALL_E2E_RUNNER_PATH = "scripts/docker/install-sh-e2e/run.sh";
 const DOCKER_SETUP_PATH = "scripts/docker/setup.sh";
 const HOST_TIMEOUT_PATH = "scripts/lib/host-timeout.sh";
 const PODMAN_SETUP_PATH = "scripts/podman/setup.sh";
-const PODMAN_QUADLET_TEMPLATE_PATH = "scripts/podman/openclaw.container.in";
-const PODMAN_RUN_PATH = "scripts/run-openclaw-podman.sh";
+const PODMAN_QUADLET_TEMPLATE_PATH = "scripts/podman/operator.container.in";
+const PODMAN_RUN_PATH = "scripts/run-operator-podman.sh";
 const SMOKE_DOCKERFILE_PATH = "scripts/docker/install-sh-smoke/Dockerfile";
 const SMOKE_RUNNER_PATH = "scripts/docker/install-sh-smoke/run.sh";
 const NONROOT_DOCKERFILE_PATH = "scripts/docker/install-sh-nonroot/Dockerfile";
@@ -36,8 +36,8 @@ const BUN_GLOBAL_ASSERTIONS_PATH = "scripts/e2e/lib/bun-global-install/assertion
 const DOCKER_E2E_PACKAGE_HELPER_PATH = "scripts/lib/docker-e2e-package.sh";
 const INSTALL_SMOKE_WORKFLOW_PATH = ".github/workflows/install-smoke-reusable.yml";
 const INSTALL_SMOKE_WRAPPER_PATH = ".github/workflows/install-smoke.yml";
-const RELEASE_CHECKS_WORKFLOW_PATH = ".github/workflows/openclaw-release-checks.yml";
-const LIVE_E2E_WORKFLOW_PATH = ".github/workflows/openclaw-live-and-e2e-checks-reusable.yml";
+const RELEASE_CHECKS_WORKFLOW_PATH = ".github/workflows/operator-release-checks.yml";
+const LIVE_E2E_WORKFLOW_PATH = ".github/workflows/operator-live-and-e2e-checks-reusable.yml";
 const tempDirs = createTempDirTracker();
 
 afterEach(() => {
@@ -146,7 +146,7 @@ function extractInstallE2eAgentJsonParser(): string {
 }
 
 function normalizeInstallE2eAgentOutput(output: string) {
-  const root = mkdtempSync(join(tmpdir(), "openclaw-install-e2e-agent-output-"));
+  const root = mkdtempSync(join(tmpdir(), "operator-install-e2e-agent-output-"));
   const outputPath = join(root, "agent.json");
   writeFileSync(outputPath, output, "utf8");
   try {
@@ -176,7 +176,7 @@ function extractInstallSmokeUpdateJsonParser(): string {
 }
 
 function validateInstallSmokeUpdateJson(doctorStep?: Record<string, unknown>) {
-  const updateUrl = "http://candidate.invalid/openclaw.tgz";
+  const updateUrl = "http://candidate.invalid/operator.tgz";
   const payload = {
     status: "ok",
     before: { version: "2026.7.0" },
@@ -297,8 +297,8 @@ type RestorePathEscape = "packages" | "ai";
 function runRestoreLocalDistFixture(
   options: { failAiSwap?: boolean; symlinkEscape?: RestorePathEscape } = {},
 ) {
-  const fixtureRoot = tempDirs.make("openclaw-install-restore-root-");
-  const imageRoot = tempDirs.make("openclaw-install-restore-image-");
+  const fixtureRoot = tempDirs.make("operator-install-restore-root-");
+  const imageRoot = tempDirs.make("operator-install-restore-image-");
   let externalSentinel = "";
   for (const [relativePath, contents] of [
     ["dist/root.txt", "old-root"],
@@ -319,7 +319,7 @@ function runRestoreLocalDistFixture(
   }
 
   if (options.symlinkEscape) {
-    const escapeRoot = tempDirs.make("openclaw-install-restore-escape-");
+    const escapeRoot = tempDirs.make("operator-install-restore-escape-");
     const externalAiRoot =
       options.symlinkEscape === "packages" ? join(escapeRoot, "packages", "ai") : escapeRoot;
     externalSentinel = join(externalAiRoot, "dist", "ai.txt");
@@ -447,17 +447,17 @@ describe("test-install-sh-docker", () => {
     const e2eDockerfile = expectInstallDockerfileContract(
       INSTALL_E2E_DOCKERFILE_PATH,
       "install-sh-e2e/run.sh",
-      "/usr/local/bin/openclaw-install-e2e",
+      "/usr/local/bin/operator-install-e2e",
     );
     const smokeDockerfile = expectInstallDockerfileContract(
       SMOKE_DOCKERFILE_PATH,
       "install-sh-smoke/run.sh",
-      "/usr/local/bin/openclaw-install-smoke",
+      "/usr/local/bin/operator-install-smoke",
     );
     const nonrootDockerfile = expectInstallDockerfileContract(
       NONROOT_DOCKERFILE_PATH,
       "install-sh-nonroot/run.sh",
-      "/usr/local/bin/openclaw-install-nonroot",
+      "/usr/local/bin/operator-install-nonroot",
     );
 
     expect(e2eDockerfile).toContain("USER appuser");
@@ -473,18 +473,18 @@ describe("test-install-sh-docker", () => {
   });
 
   it("keeps shared install helpers parsing and verifying installed CLI versions", () => {
-    const root = tempDirs.make("openclaw-install-helper-");
+    const root = tempDirs.make("operator-install-helper-");
     const binDir = join(root, "bin");
     mkdirSync(binDir, { recursive: true });
     writeFileSync(
-      join(binDir, "openclaw"),
+      join(binDir, "operator"),
       [
         "#!/usr/bin/env bash",
         "set -euo pipefail",
         // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'case "${1:-}" in',
         "  --version)",
-        "    printf 'OpenClaw v2026.6.21-beta.1\\r\\n'",
+        "    printf 'Operator v2026.6.21-beta.1\\r\\n'",
         "    ;;",
         "  --help)",
         "    printf 'usage\\n'",
@@ -505,8 +505,8 @@ describe("test-install-sh-docker", () => {
         [
           "set -euo pipefail",
           "source scripts/docker/install-sh-common/cli-verify.sh",
-          "printf 'parsed=%s\\n' \"$(extract_openclaw_semver 'OpenClaw v2026.6.21-beta.1+build.7')\"",
-          "verify_installed_cli openclaw 2026.6.21-beta.1",
+          "printf 'parsed=%s\\n' \"$(extract_operator_semver 'Operator v2026.6.21-beta.1+build.7')\"",
+          "verify_installed_cli operator 2026.6.21-beta.1",
         ].join("\n"),
       ],
       {
@@ -524,7 +524,7 @@ describe("test-install-sh-docker", () => {
     expect(result.stderr).toBe("");
     expect(result.stdout).toContain("parsed=2026.6.21-beta.1+build.7");
     expect(result.stdout).toContain(
-      "cli=openclaw installed=2026.6.21-beta.1 expected=2026.6.21-beta.1",
+      "cli=operator installed=2026.6.21-beta.1 expected=2026.6.21-beta.1",
     );
     expect(result.stdout).toContain("==> Sanity: CLI runs");
   });
@@ -726,7 +726,7 @@ printf 'status=%s\\n' "$status"
     expect(script).toContain('DOCKER_PULL_TIMEOUT="${OPENCLAW_DOCKER_SETUP_PULL_TIMEOUT:-600s}"');
     expect(script).toContain("run_docker_pull()");
     expect(script).toContain(
-      'openclaw_host_timeout_cmd "$DOCKER_PULL_TIMEOUT" docker pull "$image"',
+      'operator_host_timeout_cmd "$DOCKER_PULL_TIMEOUT" docker pull "$image"',
     );
     expect(timeoutHelper).toContain("elif command -v gtimeout >/dev/null 2>&1; then");
     expect(timeoutHelper).toContain('"$timeout_bin" --kill-after=30s "$timeout_value" "$@"');
@@ -742,7 +742,7 @@ printf 'status=%s\\n' "$status"
     expect(script).toContain('PODMAN_PULL_TIMEOUT="${OPENCLAW_PODMAN_SETUP_PULL_TIMEOUT:-600s}"');
     expect(script).toContain("run_podman_pull()");
     expect(script).toContain(
-      'openclaw_host_timeout_cmd "$PODMAN_PULL_TIMEOUT" podman pull "$image"',
+      'operator_host_timeout_cmd "$PODMAN_PULL_TIMEOUT" podman pull "$image"',
     );
     expect(script).toContain('run_podman_pull "$OPENCLAW_IMAGE"');
     expect(script).not.toContain('podman pull "$OPENCLAW_IMAGE"');
@@ -756,7 +756,7 @@ printf 'status=%s\\n' "$status"
       'PODMAN_BUILD_TIMEOUT="${OPENCLAW_PODMAN_SETUP_BUILD_TIMEOUT:-1800s}"',
     );
     expect(script).toContain("run_podman_build()");
-    expect(script).toContain('openclaw_host_timeout_cmd "$PODMAN_BUILD_TIMEOUT" podman build "$@"');
+    expect(script).toContain('operator_host_timeout_cmd "$PODMAN_BUILD_TIMEOUT" podman build "$@"');
     expect(script).toContain('run_podman_build -t "$OPENCLAW_IMAGE"');
     expect(script).not.toContain('podman build -t "$OPENCLAW_IMAGE"');
   });
@@ -769,7 +769,7 @@ printf 'status=%s\\n' "$status"
     expect(script).toContain("OPENCLAW_PODMAN_RUN_TIMEOUT|OPENCLAW_PODMAN_GATEWAY_HOST_PORT");
     expect(script).toContain('source "$SCRIPT_DIR/lib/host-timeout.sh"');
     expect(script).toContain("run_podman_detached()");
-    expect(script).toContain('openclaw_host_timeout_cmd "$PODMAN_RUN_TIMEOUT" podman run "$@"');
+    expect(script).toContain('operator_host_timeout_cmd "$PODMAN_RUN_TIMEOUT" podman run "$@"');
     expect(script).toContain('podman run --pull="$PODMAN_PULL" --rm -it \\');
     expect(script).toContain('run_podman_detached --pull="$PODMAN_PULL" -d --replace \\');
     expect(script).not.toContain('podman run --pull="$PODMAN_PULL" -d --replace \\');
@@ -809,8 +809,8 @@ printf 'status=%s\\n' "$status"
 
     for (const setupScript of [dockerSetup, podmanSetup]) {
       expect(setupScript).toContain("scripts/lib/build-metadata.sh");
-      expect(setupScript).toContain("openclaw_resolve_git_commit");
-      expect(setupScript).toContain("openclaw_resolve_build_timestamp");
+      expect(setupScript).toContain("operator_resolve_git_commit");
+      expect(setupScript).toContain("operator_resolve_build_timestamp");
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(setupScript).toContain("OPENCLAW_BUILD_TIMESTAMP=${BUILD_TIMESTAMP}");
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
@@ -823,7 +823,7 @@ printf 'status=%s\\n' "$status"
     const template = readFileSync(PODMAN_QUADLET_TEMPLATE_PATH, "utf8");
 
     expect(setupScript).toContain(
-      'QUADLET_TEMPLATE="$REPO_PATH/scripts/podman/openclaw.container.in"',
+      'QUADLET_TEMPLATE="$REPO_PATH/scripts/podman/operator.container.in"',
     );
     for (const placeholder of [
       "OPENCLAW_CONFIG_DIR",
@@ -837,9 +837,9 @@ printf 'status=%s\\n' "$status"
 
     expect(template).toContain("UserNS=keep-id");
     expect(template).toContain("User=%U:%G");
-    expect(template).toContain("Volume={{OPENCLAW_CONFIG_DIR}}:/home/node/.openclaw:Z");
+    expect(template).toContain("Volume={{OPENCLAW_CONFIG_DIR}}:/home/node/.operator:Z");
     expect(template).toContain(
-      "Volume={{OPENCLAW_WORKSPACE_DIR}}:/home/node/.openclaw/workspace:Z",
+      "Volume={{OPENCLAW_WORKSPACE_DIR}}:/home/node/.operator/workspace:Z",
     );
     expect(template).toContain("EnvironmentFile={{OPENCLAW_CONFIG_DIR}}/.env");
     expect(template).toContain("PublishPort=127.0.0.1:18789:18789");
@@ -860,7 +860,7 @@ printf 'status=%s\\n' "$status"
     expect(workflow).toContain(
       "git for-each-ref --format='%(refname:short)' --contains \"$selected_sha\" refs/remotes/origin",
     );
-    expect(workflow).toContain("reachable from an OpenClaw branch or release tag");
+    expect(workflow).toContain("reachable from an Operator branch or release tag");
   });
 
   it("prints package size audits for release smoke tarballs", () => {
@@ -896,18 +896,18 @@ printf 'status=%s\\n' "$status"
   });
 
   it("rejects path-like npm pack tarball filenames in update smoke metadata", () => {
-    expect(runReadPackTarballFilename("openclaw-2026.6.17.tgz")).toMatchObject({
+    expect(runReadPackTarballFilename("operator-2026.6.17.tgz")).toMatchObject({
       status: 0,
-      stdout: "openclaw-2026.6.17.tgz",
+      stdout: "operator-2026.6.17.tgz",
     });
 
     const unsafeFilenames = [
-      "../openclaw.tgz",
-      "nested/openclaw.tgz",
-      "nested\\openclaw.tgz",
-      "/tmp/openclaw.tgz",
-      "C:\\temp\\openclaw.tgz",
-      "openclaw.tar.gz",
+      "../operator.tgz",
+      "nested/operator.tgz",
+      "nested\\operator.tgz",
+      "/tmp/operator.tgz",
+      "C:\\temp\\operator.tgz",
+      "operator.tar.gz",
     ];
 
     for (const filename of unsafeFilenames) {
@@ -921,7 +921,7 @@ printf 'status=%s\\n' "$status"
   it("uses the package artifact helper for local update tarballs", () => {
     const script = readFileSync(SCRIPT_PATH, "utf8");
 
-    expect(script).toContain('node "$HARNESS_ROOT/scripts/package-openclaw-for-docker.mjs"');
+    expect(script).toContain('node "$HARNESS_ROOT/scripts/package-operator-for-docker.mjs"');
     expect(script).toContain("--allow-unreleased-changelog");
     expect(script).toContain("OPENCLAW_INSTALL_SMOKE_ALLOW_UNRELEASED_CHANGELOG");
     expect(script).toContain(
@@ -934,7 +934,7 @@ printf 'status=%s\\n' "$status"
     expect(script).toContain("--skip-build");
     expect(script).not.toContain("node --import tsx scripts/write-package-dist-inventory.ts");
     expect(script).not.toContain("quiet_npm pack --ignore-scripts --json");
-    expect(script).toContain('node "$HARNESS_ROOT/scripts/check-openclaw-package-tarball.mjs"');
+    expect(script).toContain('node "$HARNESS_ROOT/scripts/check-operator-package-tarball.mjs"');
     expect(script).toContain("--require-bundled-workspace-deps");
   });
 
@@ -942,7 +942,7 @@ printf 'status=%s\\n' "$status"
     const wrapper = readFileSync(SCRIPT_PATH, "utf8");
     const runner = readFileSync(SMOKE_RUNNER_PATH, "utf8");
 
-    expect(wrapper).toContain('-v "$ROOT_DIR/scripts/install.sh:/tmp/openclaw-install.sh:ro"');
+    expect(wrapper).toContain('-v "$ROOT_DIR/scripts/install.sh:/tmp/operator-install.sh:ro"');
     expect(runner).toContain("Run official installer one-liner for latest release tarball");
     expect(runner).toContain("run_installer_for_package_spec");
     expect(runner).toContain('bash -c "curl -fsSL \\"\\$1\\" | bash -s --');
@@ -1106,21 +1106,21 @@ describe("install-sh smoke runner", () => {
     expect(script).toContain("==> Still running");
     expect(script).toContain("print_install_audit");
     expect(script).toContain('install -g "$@"');
-    expect(script).toContain("openclaw update --tag");
+    expect(script).toContain("operator update --tag");
     expect(script).toContain("is_self_swapped_package_process_exit");
     expect(script).toContain("legacy updater process exited after self-swap");
     expect(script).toContain("parseFirstJsonObject");
     expect(script).toContain("unterminated update JSON object");
     expect(script).toContain("verify_candidate_ai_runtime");
-    expect(script).toContain("openclaw infer image providers --json");
+    expect(script).toContain("operator infer image providers --json");
   });
 
   it.each([
-    ["successful", { name: "openclaw doctor", exitCode: 0 }],
+    ["successful", { name: "operator doctor", exitCode: 0 }],
     [
       "recoverable advisory",
       {
-        name: "openclaw doctor",
+        name: "operator doctor",
         exitCode: 86,
         advisory: { kind: "package-post-install-doctor", message: "repair deferred" },
       },
@@ -1132,22 +1132,22 @@ describe("install-sh smoke runner", () => {
   });
 
   it.each([
-    ["missing", undefined, "missing openclaw doctor step"],
-    ["fatal", { name: "openclaw doctor", exitCode: 1 }, "openclaw doctor step failed"],
-    ["untyped advisory", { name: "openclaw doctor", exitCode: 86 }, "openclaw doctor step failed"],
+    ["missing", undefined, "missing operator doctor step"],
+    ["fatal", { name: "operator doctor", exitCode: 1 }, "operator doctor step failed"],
+    ["untyped advisory", { name: "operator doctor", exitCode: 86 }, "operator doctor step failed"],
     [
       "wrong advisory kind",
-      { name: "openclaw doctor", exitCode: 86, advisory: { kind: "other" } },
-      "openclaw doctor step failed",
+      { name: "operator doctor", exitCode: 86, advisory: { kind: "other" } },
+      "operator doctor step failed",
     ],
     [
       "wrong advisory exit",
       {
-        name: "openclaw doctor",
+        name: "operator doctor",
         exitCode: 1,
         advisory: { kind: "package-post-install-doctor" },
       },
-      "openclaw doctor step failed",
+      "operator doctor step failed",
     ],
   ])("rejects a %s package post-install doctor result", (_label, doctorStep, error) => {
     const result = validateInstallSmokeUpdateJson(doctorStep);
@@ -1234,7 +1234,7 @@ describe("bun global install smoke", () => {
     const assertions = readFileSync(BUN_GLOBAL_ASSERTIONS_PATH, "utf8");
     const packageHelper = readFileSync(DOCKER_E2E_PACKAGE_HELPER_PATH, "utf8");
 
-    expect(script).toContain("node scripts/package-openclaw-for-docker.mjs");
+    expect(script).toContain("node scripts/package-operator-for-docker.mjs");
     expect(script).toContain("--allow-unreleased-changelog");
     expect(script).toContain("OPENCLAW_BUN_GLOBAL_SMOKE_ALLOW_UNRELEASED_CHANGELOG");
     expect(script).toContain(
@@ -1243,7 +1243,7 @@ describe("bun global install smoke", () => {
     );
     expect(script).toContain("package_args+=(--allow-unreleased-changelog)");
     expect(script).toContain("--skip-build");
-    expect(script).toContain("--output-name openclaw-current.tgz");
+    expect(script).toContain("--output-name operator-current.tgz");
     expect(script).not.toContain("npm pack --ignore-scripts --json --pack-destination");
     expect(script).toContain('"$bun_path" install -g "$PACKAGE_TGZ" --no-progress');
     expect(script).toContain("infer image providers --json");
@@ -1299,9 +1299,9 @@ describe("bun global install smoke", () => {
     const script = readFileSync(BUN_GLOBAL_SMOKE_PATH, "utf8");
 
     expect(script).toContain('PACK_DIR="$(mktemp -d');
-    expect(script).toContain("node scripts/package-openclaw-for-docker.mjs");
+    expect(script).toContain("node scripts/package-operator-for-docker.mjs");
     expect(script).toContain('--output-dir "$PACK_DIR"');
-    expect(script).toContain("--output-name openclaw-current.tgz");
+    expect(script).toContain("--output-name operator-current.tgz");
   });
 
   it("resolves the matching candidate AI package without changing the public registry", () => {
@@ -1315,17 +1315,17 @@ describe("bun global install smoke", () => {
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('overrides: { "@gabrielvfonseca/ai": `file:${aiPackageTarball}` }');
     expect(script).not.toContain("--registry");
-    expect(script).not.toContain("@openclaw:registry");
+    expect(script).not.toContain("@operator:registry");
   });
 
   it("requires root and AI candidate versions to match", () => {
-    const tempDir = tempDirs.make("openclaw-bun-candidate-versions-");
-    const rootManifestPath = join(tempDir, "openclaw.json");
+    const tempDir = tempDirs.make("operator-bun-candidate-versions-");
+    const rootManifestPath = join(tempDir, "operator.json");
     const aiManifestPath = join(tempDir, "ai.json");
     writeFileSync(
       rootManifestPath,
       JSON.stringify({
-        name: "openclaw",
+        name: "operator",
         version: "2026.6.17",
         dependencies: { "@gabrielvfonseca/ai": "2026.6.17" },
       }),
@@ -1353,23 +1353,23 @@ describe("bun global install smoke", () => {
     );
     expect(mismatched.status).not.toBe(0);
     expect(mismatched.stderr).toContain(
-      "candidate version mismatch: openclaw=2026.6.17, dependency=2026.6.17, @operator/ai=2026.6.18",
+      "candidate version mismatch: operator=2026.6.17, dependency=2026.6.17, @operator/ai=2026.6.18",
     );
   });
 
   it.runIf(process.platform !== "win32")(
     "uses bundled AI bytes when a prebuilt tarball is provided",
     () => {
-      const tempDir = tempDirs.make("openclaw-bun-prebuilt-");
+      const tempDir = tempDirs.make("operator-bun-prebuilt-");
       const packageDir = join(tempDir, "fixture", "package");
-      const aiDir = join(packageDir, "node_modules", "@openclaw", "ai");
-      const packageTgz = join(tempDir, "openclaw-prebuilt.tgz");
+      const aiDir = join(packageDir, "node_modules", "@operator", "ai");
+      const packageTgz = join(tempDir, "operator-prebuilt.tgz");
       const bunPath = join(tempDir, "bun");
       mkdirSync(aiDir, { recursive: true });
       writeFileSync(
         join(packageDir, "package.json"),
         JSON.stringify({
-          name: "openclaw",
+          name: "operator",
           version: "2026.6.17",
           dependencies: { "@gabrielvfonseca/ai": "2026.6.17" },
           bundleDependencies: ["@gabrielvfonseca/ai"],
@@ -1402,15 +1402,15 @@ case "\${override#file:}" in
 esac
 test -f "\${override#file:}"
 mkdir -p "$BUN_INSTALL/bin"
-cat >"$BUN_INSTALL/bin/openclaw" <<'OPENCLAW'
+cat >"$BUN_INSTALL/bin/operator" <<'OPENCLAW'
 #!/usr/bin/env bash
 if [ "\${1:-}" = "--version" ]; then
-  echo "OpenClaw 2026.6.17"
+  echo "Operator 2026.6.17"
 else
   printf '[{"id":"google"},{"id":"openai"},{"id":"xai"}]\n'
 fi
 OPENCLAW
-chmod +x "$BUN_INSTALL/bin/openclaw"
+chmod +x "$BUN_INSTALL/bin/operator"
 `,
       );
       chmodSync(bunPath, 0o755);
@@ -1434,7 +1434,7 @@ chmod +x "$BUN_INSTALL/bin/openclaw"
   it.runIf(process.platform !== "win32" && existsSync("/usr/bin/time"))(
     "preserves Bun global timeout kill grace after the leader exits",
     () => {
-      const tempDir = tempDirs.make("openclaw-bun-global-timeout-grace-");
+      const tempDir = tempDirs.make("operator-bun-global-timeout-grace-");
       const readyPath = path.join(tempDir, "ready");
       const drainedPath = path.join(tempDir, "drained");
       const childScript = [
@@ -1482,7 +1482,7 @@ chmod +x "$BUN_INSTALL/bin/openclaw"
   it.runIf(process.platform !== "win32")(
     "cleans Bun global smoke descendants on parent signal",
     async () => {
-      const tempDir = tempDirs.make("openclaw-bun-global-parent-signal-");
+      const tempDir = tempDirs.make("operator-bun-global-parent-signal-");
       const readyPath = path.join(tempDir, "ready");
       const descendantPidPath = path.join(tempDir, "descendant.pid");
       let descendantPid = 0;
@@ -1609,13 +1609,13 @@ chmod +x "$BUN_INSTALL/bin/openclaw"
     expect(workflow).not.toMatch(/(^|\n)\s+docker run --rm --entrypoint sh/u);
     expect(workflow).toContain("--progress=plain");
     expect(workflow).toContain("--load");
-    expect(workflow).toContain("OPENCLAW_INSTALL_URL: file:///tmp/openclaw-install.sh");
-    expect(workflow).toContain("OPENCLAW_INSTALL_CLI_URL: file:///tmp/openclaw-install-cli.sh");
+    expect(workflow).toContain("OPENCLAW_INSTALL_URL: file:///tmp/operator-install.sh");
+    expect(workflow).toContain("OPENCLAW_INSTALL_CLI_URL: file:///tmp/operator-install-cli.sh");
     expect(workflow).toContain('OPENCLAW_INSTALL_SMOKE_SKIP_CLI: "0"');
     expect(workflow).toContain("Run Rocky Linux installer smoke");
     expect(workflow).toContain("Run Rocky Linux CLI installer smoke");
     expect(workflow).toContain("scripts/install-cli.sh:/tmp/install-cli.sh:ro");
-    expect(workflow).toContain("bash /tmp/install-cli.sh --prefix /tmp/openclaw-cli");
+    expect(workflow).toContain("bash /tmp/install-cli.sh --prefix /tmp/operator-cli");
     expect(workflow).toContain("rockylinux:9@sha256:");
     expect(workflow).toContain("pnpm-workspace.yaml");
     expect(workflow).toContain("workspace.patchedDependencies");

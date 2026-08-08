@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import type { OperatorConfig } from "../../../../src/config/types.openclaw.js";
+import type { OperatorConfig } from "../../../../src/config/types.operator.js";
 import { formatErrorMessage } from "../../../../src/infra/errors.js";
 import { isWithinActiveHours } from "../../../../src/infra/heartbeat-active-hours.js";
 import { startHeartbeatRunner } from "../../../../src/infra/heartbeat-runner.js";

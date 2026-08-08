@@ -249,7 +249,7 @@ const openClawWrapperArgs = new Set([
   ${quoteCommandPart(OPERATOR_GATEWAY_INSTANCE_ID_ARG)},
 ]);
 
-function readOpenClawWrapperArg(args, name) {
+function readOperatorWrapperArg(args, name) {
   const index = args.indexOf(name);
   if (index < 0) {
     return undefined;
@@ -269,7 +269,7 @@ function resolveStderrLogPath(args) {
   }
   const leaseId =
     process.env[${JSON.stringify(OPERATOR_ACPX_LEASE_ID_ENV)}] ||
-    readOpenClawWrapperArg(args, ${quoteCommandPart(OPERATOR_ACPX_LEASE_ID_ARG)}) ||
+    readOperatorWrapperArg(args, ${quoteCommandPart(OPERATOR_ACPX_LEASE_ID_ARG)}) ||
     "pid-" + process.pid;
   const fileName = stderrLogFileNamePrefix + "." + safeDiagnosticFilePart(leaseId) + ".log";
   return fileURLToPath(new URL("./" + fileName, import.meta.url));
@@ -388,7 +388,7 @@ function finishStderrLog() {
   writeRedactedStderrLog(text);
 }
 
-function stripOpenClawWrapperArgs(args) {
+function stripOperatorWrapperArgs(args) {
   const stripped = [];
   for (let index = 0; index < args.length; index += 1) {
     const value = args[index];
@@ -412,7 +412,7 @@ try {
   // Stderr capture is diagnostic-only; never break the ACP adapter.
 }
 
-const configuredArgs = stripOpenClawWrapperArgs(rawConfiguredArgs);
+const configuredArgs = stripOperatorWrapperArgs(rawConfiguredArgs);
 
 function resolveNpmCliPath() {
   const candidate = path.resolve(

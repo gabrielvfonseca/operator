@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # Shared in-container lifecycle helpers for Docker/Bash E2E lanes.
 operator_e2e_eval_test_state_from_b64() {
-  local encoded="${1:?missing operator test-state script}"
+  local encoded="${1:?missing Operator test-state script}"
   local decoded
   if ! decoded="$(printf '%s' "$encoded" | base64 -d)"; then
-    echo "Invalid operator test-state base64 payload" >&2
+    echo "Invalid Operator test-state base64 payload" >&2
     return 1
   fi
   if [ -z "${decoded//[[:space:]]/}" ]; then
-    echo "operator test-state base64 payload decoded to an empty script" >&2
+    echo "Operator test-state base64 payload decoded to an empty script" >&2
     return 1
   fi
   eval "$decoded"
@@ -44,7 +44,7 @@ operator_e2e_resolve_entrypoint() {
   for entry in dist/index.mjs dist/index.js; do
     [ -f "$entry" ] && { printf '%s\n' "$entry"; return 0; }
   done
-  echo "operator entrypoint not found under dist/" >&2
+  echo "Operator entrypoint not found under dist/" >&2
   return 1
 }
 operator_e2e_package_root() {
@@ -61,7 +61,7 @@ operator_e2e_package_entrypoint() {
   for entry in "$root/dist/index.mjs" "$root/dist/index.js"; do
     [ -f "$entry" ] && { printf '%s\n' "$entry"; return 0; }
   done
-  echo "operator package entrypoint not found under $root/dist/" >&2
+  echo "Operator package entrypoint not found under $root/dist/" >&2
   return 1
 }
 operator_e2e_maybe_timeout() {
@@ -79,7 +79,7 @@ operator_e2e_maybe_timeout() {
   fi
   if [ -z "$timeout_bin" ]; then
     if command -v node >/dev/null 2>&1; then
-      echo "timeout command not found; using Node watchdog for operator E2E command timeout $timeout_value" >&2
+      echo "timeout command not found; using Node watchdog for Operator E2E command timeout $timeout_value" >&2
       if [[ "$1" != */* ]]; then
         local resolved_command
         resolved_command="$(command -v "$1" 2>/dev/null || true)"
@@ -125,7 +125,7 @@ const signalExitCodes = new Map([
   ["SIGTERM", 143],
 ]);
 const killGraceMs = Number.parseInt(
-  process.env.operator_E2E_TIMEOUT_KILL_GRACE_MS || "30000",
+  process.env.OPENCLAW_E2E_TIMEOUT_KILL_GRACE_MS || "30000",
   10,
 );
 const killTarget = process.platform === "win32" ? child.pid : -child.pid;
@@ -143,7 +143,7 @@ const killChild = (signal) => {
 };
 const timer = setTimeout(() => {
   timedOut = true;
-  console.error(`operator E2E command timed out after ${timeoutValue}`);
+  console.error(`Operator E2E command timed out after ${timeoutValue}`);
   killChild("SIGTERM");
   setTimeout(() => killChild("SIGKILL"), killGraceMs).unref();
 }, timeoutMs);
@@ -191,7 +191,7 @@ child.on("error", (error) => {
 NODE
       return
     fi
-    echo "timeout command not found and Node is unavailable; cannot bound operator E2E command after $timeout_value" >&2
+    echo "timeout command not found and Node is unavailable; cannot bound Operator E2E command after $timeout_value" >&2
     return 127
   fi
   if "$timeout_bin" --kill-after=1s 1s true >/dev/null 2>&1; then
@@ -203,18 +203,18 @@ NODE
 operator_e2e_print_log() {
   local path="$1"
   local max_bytes max_lines
-  max_bytes="$(operator_e2e_read_nonnegative_int_env operator_E2E_LOG_TAIL_BYTES 262144)" || return $?
-  max_lines="$(operator_e2e_read_nonnegative_int_env operator_E2E_LOG_TAIL_LINES 120)" || return $?
+  max_bytes="$(operator_e2e_read_nonnegative_int_env OPENCLAW_E2E_LOG_TAIL_BYTES 262144)" || return $?
+  max_lines="$(operator_e2e_read_nonnegative_int_env OPENCLAW_E2E_LOG_TAIL_LINES 120)" || return $?
   [ -f "$path" ] || return 0
   echo "--- $path ---"
   tail -c "$max_bytes" "$path" 2>/dev/null | tail -n "$max_lines" || tail -n "$max_lines" "$path" || true
 }
 operator_e2e_install_package() {
   local log_file="$1"
-  local label="${2:-mounted operator package}"
+  local label="${2:-mounted Operator package}"
   local prefix="${3:-}"
-  local package_tgz="${operator_CURRENT_PACKAGE_TGZ:?missing operator_CURRENT_PACKAGE_TGZ}"
-  local timeout_value="${operator_E2E_NPM_INSTALL_TIMEOUT:-600s}"
+  local package_tgz="${OPENCLAW_CURRENT_PACKAGE_TGZ:?missing OPENCLAW_CURRENT_PACKAGE_TGZ}"
+  local timeout_value="${OPENCLAW_E2E_NPM_INSTALL_TIMEOUT:-600s}"
   local args=(-g)
   if [ -n "$prefix" ]; then
     args+=("--prefix" "$prefix")
@@ -271,22 +271,22 @@ operator_e2e_write_state_env() {
   local target="${1:-/tmp/operator-test-state-env}"
   {
     printf 'export HOME=%q\n' "$HOME"
-    printf 'export operator_HOME=%q\n' "$operator_HOME"
-    printf 'export operator_STATE_DIR=%q\n' "$operator_STATE_DIR"
-    printf 'export operator_CONFIG_PATH=%q\n' "$operator_CONFIG_PATH"
-    printf 'export operator_AGENT_DIR=%q\n' "${operator_AGENT_DIR-}"
+    printf 'export OPENCLAW_HOME=%q\n' "$OPENCLAW_HOME"
+    printf 'export OPENCLAW_STATE_DIR=%q\n' "$OPENCLAW_STATE_DIR"
+    printf 'export OPENCLAW_CONFIG_PATH=%q\n' "$OPENCLAW_CONFIG_PATH"
+    printf 'export OPENCLAW_AGENT_DIR=%q\n' "${OPENCLAW_AGENT_DIR-}"
   } >"$target"
 }
 operator_e2e_install_trash_shim() {
-  local shim_dir="${operator_E2E_BIN_DIR:-}"
+  local shim_dir="${OPENCLAW_E2E_BIN_DIR:-}"
   if [ -z "$shim_dir" ]; then
-    if [ -n "${operator_STATE_DIR:-}" ]; then
-      shim_dir="$operator_STATE_DIR/e2e-bin"
+    if [ -n "${OPENCLAW_STATE_DIR:-}" ]; then
+      shim_dir="$OPENCLAW_STATE_DIR/e2e-bin"
     else
       shim_dir="$(mktemp -d "${TMPDIR:-/tmp}/operator-bin.XXXXXX")"
     fi
-    operator_E2E_BIN_DIR="$shim_dir"
-    export operator_E2E_BIN_DIR
+    OPENCLAW_E2E_BIN_DIR="$shim_dir"
+    export OPENCLAW_E2E_BIN_DIR
   fi
   case ":$PATH:" in
     *":$shim_dir:"*) ;;
@@ -311,7 +311,7 @@ TRASH
 operator_e2e_run_script_with_pty() {
   local command="$1"
   local log_path="$2"
-  local timeout_value="${operator_E2E_COMMAND_TIMEOUT:-300s}"
+  local timeout_value="${OPENCLAW_E2E_COMMAND_TIMEOUT:-300s}"
   if script --version >/dev/null 2>&1; then
     operator_e2e_maybe_timeout "$timeout_value" script -q -f -c "$command" "$log_path"
   elif node -e 'import("@lydell/node-pty")' >/dev/null 2>&1; then
@@ -321,7 +321,7 @@ operator_e2e_run_script_with_pty() {
   fi
 }
 operator_e2e_start_tracked_process() {
-  local log_path="${1:?missing operator E2E process log path}"
+  local log_path="${1:?missing Operator E2E process log path}"
   shift
   if command -v setsid >/dev/null 2>&1; then
     setsid "$@" >"$log_path" 2>&1 &
@@ -334,7 +334,7 @@ import { spawn } from "node:child_process";
 
 const [logPath, command, ...args] = process.argv.slice(2);
 if (!command) {
-  console.error("missing command for operator E2E tracked process");
+  console.error("missing command for Operator E2E tracked process");
   process.exit(1);
 }
 const logFd = openSync(logPath, "a");
@@ -432,7 +432,7 @@ operator_e2e_wait_gateway_ready() {
     fi
     if [ "$saw_ready_log" = "true" ]; then
       [ "$readiness_mode" = "legacy-ready-log-ok" ] && return 0
-      [ -n "$ready_port" ] || ready_port="${operator_E2E_GATEWAY_READY_PORT:-18789}"
+      [ -n "$ready_port" ] || ready_port="${OPENCLAW_E2E_GATEWAY_READY_PORT:-18789}"
       operator_e2e_probe_http "http://127.0.0.1:${ready_port}/readyz" ok 400 && return 0
     fi
     sleep 0.25
@@ -484,29 +484,29 @@ operator_e2e_assert_log_not_contains() {
   ! grep -q "$2" "$1" || { echo "Unexpected log output: $2"; exit 1; }
 }
 operator_e2e_run_logged() {
-  local label="$1" log_root="${operator_E2E_LOG_DIR:-${TMPDIR:-/tmp}}" log_path safe_label
+  local label="$1" log_root="${OPENCLAW_E2E_LOG_DIR:-${TMPDIR:-/tmp}}" log_path safe_label
   shift
   safe_label="${label//[^A-Za-z0-9_.-]/-}"
   [ -n "$safe_label" ] || safe_label="command"
   mkdir -p "$log_root"
   log_path="$(mktemp "$log_root/operator-${safe_label}.XXXXXX.log")"
-  operator_E2E_LAST_LOG_PATH="$log_path"
-  export operator_E2E_LAST_LOG_PATH
+  OPENCLAW_E2E_LAST_LOG_PATH="$log_path"
+  export OPENCLAW_E2E_LAST_LOG_PATH
   operator_e2e_run_command "$@" >"$log_path" 2>&1 || { operator_e2e_print_log "$log_path"; exit 1; }
 }
 operator_e2e_run_command() {
-  local timeout_value="${operator_E2E_COMMAND_TIMEOUT:-300s}"
+  local timeout_value="${OPENCLAW_E2E_COMMAND_TIMEOUT:-300s}"
   operator_e2e_maybe_timeout "$timeout_value" "$@"
 }
 operator_e2e_enable_operator_cli_timeout() {
-  operator_E2E_CLI_BIN="$(type -P operator)"
-  if [ -z "$operator_E2E_CLI_BIN" ]; then
-    echo "operator CLI binary not found on PATH" >&2
+  OPENCLAW_E2E_CLI_BIN="$(type -P operator)"
+  if [ -z "$OPENCLAW_E2E_CLI_BIN" ]; then
+    echo "Operator CLI binary not found on PATH" >&2
     return 1
   fi
-  export operator_E2E_CLI_BIN
+  export OPENCLAW_E2E_CLI_BIN
   operator() {
-    operator_e2e_run_command "$operator_E2E_CLI_BIN" "$@"
+    operator_e2e_run_command "$OPENCLAW_E2E_CLI_BIN" "$@"
   }
 }
 operator_e2e_dump_logs() {

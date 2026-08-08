@@ -68,7 +68,7 @@ describe("Telegram direct session recreation after delete", () => {
       agents: {
         defaults: {
           model: "openai/gpt-5.4",
-          workspace: "/tmp/openclaw",
+          workspace: "/tmp/operator",
         },
       },
       channels: { telegram: {} },

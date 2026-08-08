@@ -7,7 +7,7 @@ scenario:
   coverage:
     primary: [runtime.delivery]
   regressionRefs:
-    - openclaw/openclaw#39905
+    - operator/operator#39905
   objective: Verify a long Telegram final replaces its preview instead of leaving stale text.
   successCriteria:
     - The joined final contains both scripted boundary markers.

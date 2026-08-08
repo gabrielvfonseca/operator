@@ -42,8 +42,8 @@ vi.mock("./protocol.js", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/plugin-config-runtime", async () => {
-  const original = (await vi.importActual("openclaw/plugin-sdk/plugin-config-runtime")) as Record<
+vi.mock("operator/plugin-sdk/plugin-config-runtime", async () => {
+  const original = (await vi.importActual("operator/plugin-sdk/plugin-config-runtime")) as Record<
     string,
     unknown
   >;
@@ -53,8 +53,8 @@ vi.mock("openclaw/plugin-sdk/plugin-config-runtime", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/text-chunking", async () => {
-  const original = (await vi.importActual("openclaw/plugin-sdk/text-chunking")) as Record<
+vi.mock("operator/plugin-sdk/text-chunking", async () => {
+  const original = (await vi.importActual("operator/plugin-sdk/text-chunking")) as Record<
     string,
     unknown
   >;
@@ -84,8 +84,8 @@ afterAll(() => {
   vi.doUnmock("./client.js");
   vi.doUnmock("./connect-options.js");
   vi.doUnmock("./protocol.js");
-  vi.doUnmock("openclaw/plugin-sdk/plugin-config-runtime");
-  vi.doUnmock("openclaw/plugin-sdk/text-chunking");
+  vi.doUnmock("operator/plugin-sdk/plugin-config-runtime");
+  vi.doUnmock("operator/plugin-sdk/text-chunking");
   vi.resetModules();
 });
 

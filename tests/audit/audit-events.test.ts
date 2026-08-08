@@ -11,7 +11,7 @@ import {
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import { createAgentEventAuditRecorder } from "../../src/audit/agent-event-audit.js";
 import { listAuditEvents, pruneExpiredAuditEvents, recordAuditEvent } from "../../src/audit/audit-event-store.js";
 import type { AuditEventInput, ToolActionAuditEventInput } from "../../src/audit/audit-event-types.js";

@@ -12,7 +12,7 @@ function buildPrompt(config: OperatorConfig, agentId = "main"): string {
   return buildConfiguredAgentSystemPrompt({
     config,
     agentId,
-    workspaceDir: "/tmp/openclaw",
+    workspaceDir: "/tmp/operator",
     toolNames: ["sessions_spawn", "subagents"],
   });
 }
@@ -70,7 +70,7 @@ describe("buildConfiguredAgentSystemPrompt", () => {
         },
       },
       agentId: "main",
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       toolNames: ["sessions_spawn", "subagents"],
     });
 

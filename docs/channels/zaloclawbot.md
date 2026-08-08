@@ -17,7 +17,7 @@ Operator connects to Zalo ClawBot through the catalog-listed external `@zalo-pla
 ## Prerequisites
 
 - Node.js >= 22
-- [Operator](https://docs.operator.ai/install) installed (`openclaw` CLI available)
+- [Operator](https://docs.operator.ai/install) installed (`operator` CLI available)
 - A Zalo account on a mobile device to scan the login QR code
 
 ## Install with onboard (recommended)

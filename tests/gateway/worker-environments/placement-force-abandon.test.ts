@@ -6,7 +6,7 @@ import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
   type OperatorStateDatabase,
-} from "../../../src/state/openclaw-state-db.js";
+} from "../../../src/state/operator-state-db.js";
 import {
   createDispatchEnvironmentFixtures,
   REQUEST,

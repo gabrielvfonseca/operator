@@ -373,7 +373,7 @@ export class TelegramPollingSession {
     } finally {
       // Release the transport's dispatchers on session shutdown. Without
       // this, the undici keep-alive sockets survive beyond the session and
-      // leak to api.telegram.org; see openclaw#68128.
+      // leak to api.telegram.org; see operator#68128.
       await this.#transportState.dispose();
       this.#status.notePollingStop();
     }

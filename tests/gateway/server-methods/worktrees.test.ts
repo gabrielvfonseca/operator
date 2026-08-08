@@ -10,7 +10,7 @@ const record: ManagedWorktreeRecord = {
   repoFingerprint: "0123456789abcdef",
   repoRoot: "/repo",
   path: "/state/worktrees/0123456789abcdef/task-one",
-  branch: "openclaw/task-one",
+  branch: "operator/task-one",
   baseRef: "HEAD",
   ownerKind: "manual",
   createdAt: 1,

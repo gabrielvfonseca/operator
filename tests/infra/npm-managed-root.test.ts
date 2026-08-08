@@ -766,7 +766,7 @@ describe("managed npm root", () => {
                 peer: true,
                 version: "2.1.0",
               },
-              "node_modules/openclaw": {
+              "node_modules/operator": {
                 peer: true,
                 version: "2026.5.12",
               },
@@ -1055,7 +1055,7 @@ describe("managed npm root", () => {
         return {
           code: 1,
           stdout: "",
-          stderr: "npm ERR! notarget No matching version found for openclaw@2026.5.99-beta.1",
+          stderr: "npm ERR! notarget No matching version found for operator@2026.5.99-beta.1",
           signal: null,
           killed: false,
           termination: "exit" as const,
@@ -1284,7 +1284,7 @@ describe("managed npm root", () => {
     });
   });
 
-  it("repairs stale managed openclaw peer state without dropping plugin packages", async () => {
+  it("repairs stale managed operator peer state without dropping plugin packages", async () => {
     const npmRoot = await makeTempRoot();
     await fs.mkdir(path.join(npmRoot, "node_modules", "@gabrielvfonseca/operator"), {
       recursive: true,
@@ -1315,7 +1315,7 @@ describe("managed npm root", () => {
                 "@gabrielvfonseca/discord": "2026.5.4",
               },
             },
-            "node_modules/openclaw": {
+            "node_modules/operator": {
               version: "2026.5.4",
             },
             "node_modules/@gabrielvfonseca/discord": {
@@ -1349,7 +1349,7 @@ describe("managed npm root", () => {
         {
           lockfileVersion: 3,
           packages: {
-            "node_modules/openclaw": {
+            "node_modules/operator": {
               version: "2026.5.4",
             },
           },
@@ -1393,7 +1393,7 @@ describe("managed npm root", () => {
     expect(lockfile.packages?.[""]?.dependencies).toEqual({
       "@gabrielvfonseca/discord": "2026.5.4",
     });
-    expect(lockfile.packages?.["node_modules/openclaw"]).toBeUndefined();
+    expect(lockfile.packages?.["node_modules/operator"]).toBeUndefined();
     expect(lockfile.packages?.["node_modules/@gabrielvfonseca/discord"]?.version).toBe("2026.5.4");
     expect(lockfile.dependencies?.operator).toBeUndefined();
     await expectPathMissing(path.join(npmRoot, "node_modules", "@gabrielvfonseca/operator"));
@@ -1433,7 +1433,7 @@ describe("managed npm root", () => {
                 "@xdarkicex/operator-memory-libravdb": "1.4.69",
               },
             },
-            "node_modules/openclaw": {
+            "node_modules/operator": {
               version: "2026.5.12-beta.6",
             },
           },
@@ -1496,7 +1496,7 @@ describe("managed npm root", () => {
         {
           lockfileVersion: 3,
           packages: {
-            "node_modules/openclaw": {
+            "node_modules/operator": {
               version: "2026.5.12-beta.6",
             },
           },
@@ -1531,7 +1531,7 @@ describe("managed npm root", () => {
                 "@xdarkicex/operator-memory-libravdb": "1.4.69",
               },
             },
-            "node_modules/openclaw": {
+            "node_modules/operator": {
               version: "2026.5.12-beta.6",
             },
             "node_modules/@xdarkicex/operator-memory-libravdb": {
@@ -1582,7 +1582,7 @@ describe("managed npm root", () => {
     expect(lockfile.packages?.[""]?.dependencies).toEqual({
       "@xdarkicex/operator-memory-libravdb": "1.4.69",
     });
-    expect(lockfile.packages?.["node_modules/openclaw"]).toBeUndefined();
+    expect(lockfile.packages?.["node_modules/operator"]).toBeUndefined();
     expect(lockfile.packages?.["node_modules/@xdarkicex/operator-memory-libravdb"]?.version).toBe(
       "1.4.69",
     );

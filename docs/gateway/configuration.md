@@ -191,7 +191,7 @@ candidate contains a redacted secret placeholder such as `***` or `[redacted]`.
           {
             id: "main",
             groupChat: {
-              mentionPatterns: ["@openclaw", "@gabrielvfonseca/operator"],
+              mentionPatterns: ["@operator", "@gabrielvfonseca/operator"],
             },
           },
         ],
@@ -538,7 +538,7 @@ writes use the same schema gate before writing (see [Strict validation](#strict-
 for the clobber/rollback rules that apply to every write).
 
 If you see `config reload skipped (invalid config)` or startup reports `Invalid
-config`, inspect the config, run `operator config validate`, then run `openclaw
+config`, inspect the config, run `operator config validate`, then run `operator
 doctor --fix` for repair. See [Gateway troubleshooting](/gateway/troubleshooting#gateway-rejected-invalid-config)
 for the checklist.
 

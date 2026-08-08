@@ -78,7 +78,7 @@ const fsSafeJsonStoreWriteMethods = new Set(["update", "updateOr", "write"]);
 
 const helperWriteModulePattern =
   /(?:^|\/)(?:fs-safe|json-files|json-store|private-file-store|replace-file)(?:\.[cm]?[jt]s)?$/u;
-const fsSafePackageModulePattern = /^@openclaw\/fs-safe(?:\/(?:root|store))?$/u;
+const fsSafePackageModulePattern = /^@operator\/fs-safe(?:\/(?:root|store))?$/u;
 
 const bridgeMarkerPattern = /\btranscriptLocator\b|sqlite-transcript:\/\//u;
 
@@ -97,10 +97,10 @@ const legacyStorePatterns = [
   /\bnode\.json\b/u,
   /\bsubagents\/runs\.json\b/u,
   /\btmp\/skill-uploads\b/u,
-  /\b(?:crestodian|openclaw)\/rescue-pending\/[^"'`]*\.json\b/u,
+  /\b(?:crestodian|operator)\/rescue-pending\/[^"'`]*\.json\b/u,
   /\bcron\/(?:runs\/[^"'`]+\.jsonl|jobs\.json|jobs-state\.json)\b/u,
   /\b(?:process-leases|session-toggles|known-users|msteams-conversations|msteams-polls|msteams-sso-tokens|bot-storage|sync-store|thread-bindings|inbound-dedupe|startup-verification|storage-meta|crypto-idb-snapshot|command-deploy-cache|plugin-binding-approvals|plugins\/installs|config-health|port-guard|restart-sentinel|gateway-restart-intent|gateway-supervisor-restart-handoff)\.json\b/u,
-  /\b(?:calls|ref-index|audit\/file-transfer|audit\/openclaw)\.jsonl\b/u,
+  /\b(?:calls|ref-index|audit\/file-transfer|audit\/operator)\.jsonl\b/u,
   /\b(?:reply-cache|sent-echoes|events|claims)\.jsonl\b/u,
   /\bplugin-state\/state\.sqlite\b/u,
   /\btasks\/(?:runs\.sqlite|flows\/registry\.sqlite)\b/u,
@@ -313,8 +313,8 @@ function importSource(node) {
 
 function isHelperWriteModuleSource(source) {
   return (
-    source === "openclaw/plugin-sdk/file-access-runtime" ||
-    source === "openclaw/plugin-sdk/security-runtime" ||
+    source === "operator/plugin-sdk/file-access-runtime" ||
+    source === "operator/plugin-sdk/security-runtime" ||
     fsSafePackageModulePattern.test(source) ||
     helperWriteModulePattern.test(source)
   );

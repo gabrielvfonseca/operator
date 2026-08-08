@@ -14,11 +14,11 @@ type SpeechSynthesisTarget = SpeechSynthesisRequest["target"];
 const runFfmpegMock = vi.hoisted(() => vi.fn<(args: string[]) => Promise<string | undefined>>());
 const debugLogMock = vi.hoisted(() => vi.fn());
 
-vi.mock("openclaw/plugin-sdk/media-runtime", () => ({
+vi.mock("operator/plugin-sdk/media-runtime", () => ({
   runFfmpeg: runFfmpegMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/runtime-env", () => ({
+vi.mock("operator/plugin-sdk/runtime-env", () => ({
   createSubsystemLogger: () => ({ debug: debugLogMock }),
 }));
 
@@ -378,8 +378,8 @@ mkdirSync(process.argv[outIndex + 1]);
       return;
     }
     const fixture = createCliFixture();
-    const rawFfmpeg = await vi.importActual<typeof import("openclaw/plugin-sdk/media-runtime")>(
-      "openclaw/plugin-sdk/media-runtime",
+    const rawFfmpeg = await vi.importActual<typeof import("operator/plugin-sdk/media-runtime")>(
+      "operator/plugin-sdk/media-runtime",
     );
     runFfmpegMock.mockImplementation(async (args) => {
       await rawFfmpeg.runFfmpeg(args);

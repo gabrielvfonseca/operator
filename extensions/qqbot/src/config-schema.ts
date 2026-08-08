@@ -27,7 +27,7 @@ const QQBotSttSchema = z
   .optional();
 
 // Nested streaming config. Legacy scalar booleans and the `c2cStreamApi` key
-// migrate to this shape via `openclaw doctor --fix`.
+// migrate to this shape via `operator doctor --fix`.
 const QQBotStreamingSchema = z
   .object({
     /** "partial" (default) enables block streaming; "off" disables it. */

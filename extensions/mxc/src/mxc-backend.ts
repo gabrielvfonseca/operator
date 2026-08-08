@@ -345,7 +345,7 @@ function toBuffer(value: Buffer | string): Buffer {
   return Buffer.from(value, "utf-8");
 }
 
-/** Manager for `openclaw sandbox list` and `openclaw sandbox remove`. */
+/** Manager for `operator sandbox list` and `operator sandbox remove`. */
 export const mxcSandboxBackendManager: SandboxBackendManager = {
   async describeRuntime() {
     return {

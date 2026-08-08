@@ -16,7 +16,7 @@ function makeResult(
     steps: [
       {
         name: stepName,
-        command: "npm i -g openclaw@latest",
+        command: "npm i -g operator@latest",
         cwd: "/tmp",
         durationMs: 1,
         exitCode: 1,

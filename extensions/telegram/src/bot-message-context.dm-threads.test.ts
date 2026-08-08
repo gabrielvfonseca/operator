@@ -62,7 +62,7 @@ const { buildTelegramMessageContextForTest } = await import(
   "./bot-message-context.test-harness.js"
 );
 const { clearRuntimeConfigSnapshot, setRuntimeConfigSnapshot } = await import(
-  "openclaw/plugin-sdk/runtime-config-snapshot"
+  "operator/plugin-sdk/runtime-config-snapshot"
 );
 
 beforeEach(() => {
@@ -264,7 +264,7 @@ describe("buildTelegramMessageContext group sessions without forum", () => {
   });
 
   it("does not add a topic-cache store lookup for non-forum group reply threads", async () => {
-    const resolveStorePath = vi.fn(() => "/tmp/openclaw/session-store.json");
+    const resolveStorePath = vi.fn(() => "/tmp/operator/session-store.json");
 
     const ctx = await buildTelegramMessageContextForTest({
       message: {
@@ -436,7 +436,7 @@ describe("buildTelegramMessageContext group sessions without forum", () => {
 describe("buildTelegramMessageContext direct peer routing", () => {
   it("isolates dm sessions by sender id when chat id differs", async () => {
     const runtimeCfg = {
-      agents: { defaults: { model: "anthropic/claude-opus-4-5", workspace: "/tmp/openclaw" } },
+      agents: { defaults: { model: "anthropic/claude-opus-4-5", workspace: "/tmp/operator" } },
       channels: { telegram: {} },
       messages: { groupChat: { mentionPatterns: [] } },
       session: { dmScope: "per-channel-peer" as const },

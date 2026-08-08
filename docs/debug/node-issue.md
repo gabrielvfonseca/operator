@@ -18,7 +18,7 @@ future `tsx`/esbuild upgrade reintroduces it.
 Running Operator dev scripts through `tsx` failed at startup with:
 
 ```text
-[openclaw] Failed to start CLI: TypeError: __name is not a function
+[operator] Failed to start CLI: TypeError: __name is not a function
     at createSubsystemLogger (src/logging/subsystem.ts)
     at <caller> (src/agents/auth-profiles/constants.ts)
 ```

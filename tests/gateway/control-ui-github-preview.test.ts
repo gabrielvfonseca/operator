@@ -34,8 +34,8 @@ function previewPayload(overrides: Record<string, unknown> = {}): Record<string,
     state: "closed",
     title: "fix(agents): derive conversation scope from trusted group facts",
     updated_at: "2026-07-04T09:53:55Z",
-    base: { repo: { url: "https://api.github.com/repos/openclaw/openclaw" } },
-    repository_url: "https://api.github.com/repos/openclaw/openclaw",
+    base: { repo: { url: "https://api.github.com/repos/operator/operator" } },
+    repository_url: "https://api.github.com/repos/operator/operator",
     user: {
       avatar_url: "https://avatars.githubusercontent.com/u/58493?v=4",
       login: "steipete",
@@ -65,7 +65,7 @@ describe("parseControlUiGitHubPreviewTarget", () => {
       parseControlUiGitHubPreviewTarget({
         kind: "issue",
         number: 1,
-        owner: "openclaw/evil",
+        owner: "operator/evil",
         repo: "@gabrielvfonseca/operator",
       }),
     ).toBeNull();
@@ -124,7 +124,7 @@ describe("loadControlUiGitHubPreview", () => {
     expect(second).toEqual(first);
     expect(fetchMock).toHaveBeenCalledTimes(2);
     expect(fetchMock.mock.calls[0]?.[0]).toBe(
-      "https://api.github.com/repos/openclaw/openclaw/pulls/99816",
+      "https://api.github.com/repos/operator/operator/pulls/99816",
     );
     const avatarRequest = fetchMock.mock.calls[1]?.[0];
     expect(avatarRequest).toBeInstanceOf(URL);
@@ -178,7 +178,7 @@ describe("loadControlUiGitHubPreview", () => {
       .mockResolvedValueOnce(
         githubJson(
           previewPayload({
-            repository_url: "https://api.github.com/repos/openclaw/public",
+            repository_url: "https://api.github.com/repos/operator/public",
             user: { login: "octocat" },
           }),
         ),
@@ -194,11 +194,11 @@ describe("loadControlUiGitHubPreview", () => {
     await loadControlUiGitHubPreview(target, fetchMock);
 
     expect(fetchMock).toHaveBeenCalledTimes(3);
-    expect(fetchMock.mock.calls[0]?.[0]).toBe("https://api.github.com/repos/openclaw/public");
+    expect(fetchMock.mock.calls[0]?.[0]).toBe("https://api.github.com/repos/operator/public");
     expect(fetchMock.mock.calls[1]?.[0]).toBe(
-      "https://api.github.com/repos/openclaw/public/issues/70003",
+      "https://api.github.com/repos/operator/public/issues/70003",
     );
-    expect(fetchMock.mock.calls[2]?.[0]).toBe("https://api.github.com/repos/openclaw/public");
+    expect(fetchMock.mock.calls[2]?.[0]).toBe("https://api.github.com/repos/operator/public");
     for (const call of fetchMock.mock.calls) {
       expect(call[1]?.headers).toHaveProperty("Authorization", "Bearer github-test-token");
     }
@@ -212,14 +212,14 @@ describe("loadControlUiGitHubPreview", () => {
       .mockResolvedValueOnce(
         new Response(null, {
           status: 301,
-          headers: { Location: "/repos/openclaw/renamed/issues/70007" },
+          headers: { Location: "/repos/operator/renamed/issues/70007" },
         }),
       )
       .mockResolvedValueOnce(githubJson({ private: false }))
       .mockResolvedValueOnce(
         githubJson(
           previewPayload({
-            repository_url: "https://api.github.com/repos/openclaw/renamed",
+            repository_url: "https://api.github.com/repos/operator/renamed",
             user: { login: "octocat" },
           }),
         ),
@@ -234,10 +234,10 @@ describe("loadControlUiGitHubPreview", () => {
     expect(preview.login).toBe("octocat");
     expect(fetchMock).toHaveBeenCalledTimes(5);
     expect(requestUrl(fetchMock.mock.calls[3]?.[0])).toBe(
-      "https://api.github.com/repos/openclaw/renamed/issues/70007",
+      "https://api.github.com/repos/operator/renamed/issues/70007",
     );
     expect(requestUrl(fetchMock.mock.calls[4]?.[0])).toBe(
-      "https://api.github.com/repos/openclaw/renamed",
+      "https://api.github.com/repos/operator/renamed",
     );
     for (const call of fetchMock.mock.calls) {
       expect(new URL(requestUrl(call[0])).origin).toBe("https://api.github.com");
@@ -251,7 +251,7 @@ describe("loadControlUiGitHubPreview", () => {
     vi.stubEnv("GH_TOKEN", "github-test-token");
     const redirectResponse = new Response("discard me", {
       status: 301,
-      headers: { Location: "https://example.com/repos/openclaw/private" },
+      headers: { Location: "https://example.com/repos/operator/private" },
     });
     const fetchMock = vi
       .fn<typeof fetch>()
@@ -295,8 +295,8 @@ describe("loadControlUiGitHubPreview", () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(2);
     expect(fetchMock.mock.calls.map((call) => requestUrl(call[0]))).toEqual([
-      "https://api.github.com/repos/openclaw/private",
-      "https://api.github.com/repos/openclaw/missing",
+      "https://api.github.com/repos/operator/private",
+      "https://api.github.com/repos/operator/missing",
     ]);
   });
 
@@ -308,7 +308,7 @@ describe("loadControlUiGitHubPreview", () => {
       .mockResolvedValueOnce(
         new Response(null, {
           status: 301,
-          headers: { Location: "/repos/openclaw/private/issues/70004" },
+          headers: { Location: "/repos/operator/private/issues/70004" },
         }),
       )
       .mockResolvedValueOnce(githubJson({ private: true }));
@@ -338,7 +338,7 @@ describe("loadControlUiGitHubPreview", () => {
       .mockResolvedValueOnce(
         githubJson(
           previewPayload({
-            repository_url: "https://api.github.com/repos/openclaw/visibility-change",
+            repository_url: "https://api.github.com/repos/operator/visibility-change",
             user: { login: "octocat" },
           }),
         ),

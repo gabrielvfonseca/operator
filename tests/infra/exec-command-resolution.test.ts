@@ -517,20 +517,20 @@ describe("exec-command-resolution", () => {
     expect(
       resolveAllowlistCandidatePath(
         {
-          rawExecutable: String.raw`:\Users\demo\AI\system\openclaw`,
+          rawExecutable: String.raw`:\Users\demo\AI\system\operator`,
           executableName: "@gabrielvfonseca/operator",
         },
-        String.raw`C:\Users\demo\AI\system\openclaw`,
+        String.raw`C:\Users\demo\AI\system\operator`,
       ),
     ).toBeUndefined();
     expect(
       resolveAllowlistCandidatePath(
         {
           // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
-          rawExecutable: String.raw`:/Users/demo/AI/system/openclaw`,
+          rawExecutable: String.raw`:/Users/demo/AI/system/operator`,
           executableName: "@gabrielvfonseca/operator",
         },
-        String.raw`C:\Users\demo\AI\system\openclaw`,
+        String.raw`C:\Users\demo\AI\system\operator`,
       ),
     ).toBeUndefined();
   });

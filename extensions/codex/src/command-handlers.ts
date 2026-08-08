@@ -402,7 +402,7 @@ export async function handleCodexSubcommand(
       return {
         text:
           "Codex sub-plugin management is not wired up (codexPluginsManagementIo dep is undefined). " +
-          "Edit ~/.operator/operator.json or use `openclaw config patch` until the runtime exposes the IO.",
+          "Edit ~/.operator/operator.json or use `operator config patch` until the runtime exposes the IO.",
       };
     }
     return await handleCodexPluginsSubcommand(ctx, rest, deps.codexPluginsManagementIo);

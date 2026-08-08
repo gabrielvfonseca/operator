@@ -90,8 +90,8 @@ const fetchGuardMocks = vi.hoisted(() => ({
   ),
 }));
 
-vi.mock("openclaw/plugin-sdk/ssrf-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/ssrf-runtime")>();
+vi.mock("operator/plugin-sdk/ssrf-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/ssrf-runtime")>();
   return {
     ...actual,
     fetchWithSsrFGuard: fetchGuardMocks.fetchWithSsrFGuard,
@@ -656,7 +656,7 @@ describe("google-meet plugin", () => {
   });
 
   afterAll(() => {
-    vi.doUnmock("openclaw/plugin-sdk/ssrf-runtime");
+    vi.doUnmock("operator/plugin-sdk/ssrf-runtime");
     vi.doUnmock("./src/voice-call-gateway.js");
     vi.resetModules();
   });
@@ -2860,7 +2860,7 @@ describe("google-meet plugin", () => {
           return { ok: true };
         }
         if (request.path === "/act") {
-          if (String(request.body?.fn).includes("state = window.__openclawMeetCaptions")) {
+          if (String(request.body?.fn).includes("state = window.__operatorMeetCaptions")) {
             const finalizing = String(request.body?.fn).includes("if (true &&");
             if (!finalizing) {
               options?.onNonFinalTranscriptRead?.();
@@ -3105,7 +3105,7 @@ describe("google-meet plugin", () => {
         const request = call[2] as { body?: { fn?: string } };
         const script = String(request.body?.fn);
         return (
-          script.includes("state = window.__openclawMeetCaptions") && script.includes("if (true &&")
+          script.includes("state = window.__operatorMeetCaptions") && script.includes("if (true &&")
         );
       });
       expect(finalCaptures).toHaveLength(1);
@@ -3903,7 +3903,7 @@ describe("google-meet plugin", () => {
     ).runInContext(context) as () => string | Promise<string>;
 
     const first = JSON.parse(await inspect()) as { captionsEnabledAttempted?: boolean };
-    const captionsStateKey = "__openclawMeetCaptions";
+    const captionsStateKey = "__operatorMeetCaptions";
     const stateAfterFirst = windowState[captionsStateKey] as {
       enabledAttempted?: boolean;
     };
@@ -3998,7 +3998,7 @@ describe("google-meet plugin", () => {
     expect(first.leaveReason).toBeUndefined();
     page.caption = "Alice\nmeeting ended after the recap";
     await inspect();
-    const state = windowState["__openclawMeetCaptions"] as {
+    const state = windowState["__operatorMeetCaptions"] as {
       epoch: string;
       lines: Array<{ text: string }>;
       visible: Array<{ text: string }>;
@@ -4036,9 +4036,9 @@ describe("google-meet plugin", () => {
     };
     expect(afterFinalize.lines).toHaveLength(2);
 
-    delete windowState["__openclawMeetCaptions"];
+    delete windowState["__operatorMeetCaptions"];
     await inspect();
-    const reloadedState = windowState["__openclawMeetCaptions"] as { epoch: string };
+    const reloadedState = windowState["__operatorMeetCaptions"] as { epoch: string };
     expect(reloadedState.epoch).not.toBe(state.epoch);
 
     const inspectNextSession = new Script(
@@ -4049,7 +4049,7 @@ describe("google-meet plugin", () => {
       })})`,
     ).runInContext(context) as () => string | Promise<string>;
     await inspectNextSession();
-    const nextState = windowState["__openclawMeetCaptions"] as {
+    const nextState = windowState["__operatorMeetCaptions"] as {
       droppedLines: number;
       epoch: string;
       sessionId?: string;
@@ -6542,7 +6542,7 @@ describe("google-meet plugin", () => {
     });
 
     expect(result.details.error).toContain("No connected Google Meet-capable node");
-    expect(result.details.error).toContain("openclaw node run");
+    expect(result.details.error).toContain("operator node run");
   });
 
   it("requires chromeNode.node when multiple capable nodes are connected", async () => {

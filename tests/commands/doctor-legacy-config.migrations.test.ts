@@ -178,13 +178,13 @@ describe("normalizeCompatibilityConfigValues", () => {
       },
       messages: {
         groupChat: {
-          mentionPatterns: ["@openclaw"],
+          mentionPatterns: ["@operator"],
         },
       },
     });
 
     expect(res.config.messages?.groupChat).toEqual({
-      mentionPatterns: ["@openclaw"],
+      mentionPatterns: ["@operator"],
     });
     expect(res.changes.some((change) => change.includes("messages.groupChat.visibleReplies"))).toBe(
       false,
@@ -275,7 +275,7 @@ describe("normalizeCompatibilityConfigValues", () => {
       normalizeCompatibilityConfigValues({
         messages: {
           groupChat: {
-            mentionPatterns: ["@openclaw"],
+            mentionPatterns: ["@operator"],
           },
         },
       }).changes,

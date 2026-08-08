@@ -495,7 +495,7 @@ describe("handleFeishuCommentEvent", () => {
         "",
         "Ask the bot owner to approve with:",
         "```",
-        "openclaw pairing approve feishu TESTCODE",
+        "operator pairing approve feishu TESTCODE",
         "```",
       ].join("\n"),
       is_whole_comment: false,

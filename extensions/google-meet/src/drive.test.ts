@@ -2,7 +2,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { exportGoogleDriveDocumentText } from "./drive.js";
 
-vi.mock("openclaw/plugin-sdk/ssrf-runtime", () => ({
+vi.mock("operator/plugin-sdk/ssrf-runtime", () => ({
   fetchWithSsrFGuard: vi.fn(),
 }));
 

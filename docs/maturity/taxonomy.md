@@ -3140,7 +3140,7 @@ A surface is a product area such as Gateway runtime, Discord, or the macOS app. 
         <div><span className="maturity-score maturity-score-experimental"><span className="maturity-score-label"><span className="maturity-level-pill maturity-level-experimental">Experimental</span><span>21%</span></span><span className="maturity-meter" aria-hidden="true"><span style={{ width: "21%" }} /></span></span></div>
         <div className="maturity-category-docs">
 
-    [Linux](/platforms/linux), [Openclaw](/start/openclaw), [Doctor](/gateway/doctor)
+    [Linux](/platforms/linux), [Openclaw](/start/operator), [Doctor](/gateway/doctor)
 
     </div>
       </div>

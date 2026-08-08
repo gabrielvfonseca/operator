@@ -133,7 +133,7 @@ function primeUpdateConfigSnapshot(params: {
 function primeBlockedUpdateConfig(section: "hooks" | "plugins", config: OperatorConfig): void {
   const externalPath = path.join(
     path.parse(process.cwd()).root,
-    "external-openclaw",
+    "external-operator",
     `${section}.json5`,
   );
   primeUpdateConfigSnapshot({
@@ -575,7 +575,7 @@ describe("plugins cli update", () => {
       label: "git",
       record: {
         source: "git",
-        spec: "https://github.com/openclaw/voice-call.git",
+        spec: "https://github.com/operator/voice-call.git",
         installPath: "/tmp/voice-call",
       },
     },
@@ -618,7 +618,7 @@ describe("plugins cli update", () => {
   it("blocks possible legacy id migration when an included plugins section is unresolved", async () => {
     const externalPath = path.join(
       path.parse(process.cwd()).root,
-      "external-openclaw",
+      "external-operator",
       "plugins.json5",
     );
     const cfg = { plugins: {} } as OperatorConfig;

@@ -18,11 +18,11 @@ const defaultDependencyMocks = vi.hoisted(() => ({
   oauthDir: "",
 }));
 
-vi.mock("openclaw/plugin-sdk/setup-tools", () => ({
+vi.mock("operator/plugin-sdk/setup-tools", () => ({
   detectBinary: vi.fn(async () => defaultDependencyMocks.binaryFound),
 }));
 
-vi.mock("openclaw/plugin-sdk/state-paths", () => ({
+vi.mock("operator/plugin-sdk/state-paths", () => ({
   resolveOAuthDir: () => defaultDependencyMocks.oauthDir,
 }));
 

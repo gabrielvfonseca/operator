@@ -1,5 +1,5 @@
 // Minimal @gabrielvfonseca/ai consumer: one isolated runtime, built-in providers,
-// one streamed completion. Uses only the public package surface — no OpenClaw
+// one streamed completion. Uses only the public package surface — no Operator
 // application code. Run with:
 //   ANTHROPIC_API_KEY=... node index.mjs "your prompt"
 //   OPENAI_API_KEY=... node index.mjs --provider openai "your prompt"

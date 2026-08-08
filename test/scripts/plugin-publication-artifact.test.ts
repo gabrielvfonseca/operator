@@ -26,27 +26,27 @@ const WORKFLOW_SHA = "2".repeat(40);
 const ARTIFACT_ID = 12345;
 const RUN_ID = 67890;
 const RUN_ATTEMPT = 2;
-const REPOSITORY = "openclaw/openclaw";
+const REPOSITORY = "operator/operator";
 const WORKFLOW_PATH = ".github/workflows/plugin-npm-release.yml";
 const ARTIFACT_NAME = "plugin-npm-package-meta-2026.7.1-beta.3";
 const PACKAGE_NAME = "@operator/meta-provider";
 const PRODUCER_JOB_NAME = `Preflight plugin npm package (${PACKAGE_NAME})`;
 const PACKAGE_VERSION = "2026.7.1-beta.3";
 const PACKAGE_DIR = "extensions/meta";
-const TARBALL_NAME = "openclaw-meta-provider-2026.7.1-beta.3.tgz";
+const TARBALL_NAME = "operator-meta-provider-2026.7.1-beta.3.tgz";
 const MANUAL_OVERRIDE_REASON =
-  "OpenClaw Release Publish run 12345 approved token release for v2026.7.1-beta.3";
+  "Operator Release Publish run 12345 approved token release for v2026.7.1-beta.3";
 const PUBLICATION_REASON = "First npm publication for the approved beta3 Meta package.";
 const PUBLISHER_POLICY = {
   policyId: "2026.7.1-beta.3",
-  schema: "openclaw.plugin-npm-publisher-policy/v1",
+  schema: "operator.plugin-npm-publisher-policy/v1",
   sha256: "6a40c33756ff1016744bb929660c1d9bf271cd478b0b9811fa8e2d8f1f775e95",
 };
 
 const tempDirs: string[] = [];
 
 function tempDir(): string {
-  const dir = mkdtempSync(path.join(tmpdir(), "openclaw-plugin-publication-artifact-"));
+  const dir = mkdtempSync(path.join(tmpdir(), "operator-plugin-publication-artifact-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -298,7 +298,7 @@ function metaPackageJson(markerPath: string, overrides: Record<string, unknown> 
         preinstall: `node -e "require('node:fs').writeFileSync(${JSON.stringify(markerPath)}, 'bad')"`,
         postinstall: `node -e "require('node:fs').writeFileSync(${JSON.stringify(markerPath)}, 'bad')"`,
       },
-      openclaw: {
+      operator: {
         release: {
           publishToClawHub: true,
           publishToNpm: true,
@@ -351,7 +351,7 @@ function createFixture(
     options.tarEntries ?? [
       { path: "package/", type: "5" },
       { content: packageJson, path: "package/package.json" },
-      { content: '{"id":"meta"}\n', path: "package/openclaw.plugin.json" },
+      { content: '{"id":"meta"}\n', path: "package/operator.plugin.json" },
       { content: "export default {};\n", path: "package/index.js" },
     ],
   );
@@ -623,7 +623,7 @@ describe("plugin publication artifact", () => {
     expect(() =>
       verifyFixture(fixture, {
         manualOverrideReason:
-          "OpenClaw Release Publish run 12345 approved token release for v2026.7.1-beta.4",
+          "Operator Release Publish run 12345 approved token release for v2026.7.1-beta.4",
       }),
     ).toThrow(/does not canonically bind/u);
   });
@@ -677,7 +677,7 @@ describe("plugin publication artifact", () => {
       ["artifact size", { artifactSizeBytes: fixture.zip.length + 1 }],
       ["workflow run id", { producerRunId: RUN_ID + 1 }],
       ["workflow run attempt", { producerRunAttempt: RUN_ATTEMPT + 1 }],
-      ["repository", { repository: "openclaw/not-openclaw" }],
+      ["repository", { repository: "operator/not-operator" }],
       ["workflow SHA", { workflowSha: "3".repeat(40) }],
       ["workflow path", { workflowPath: ".github/workflows/other.yml" }],
       ["workflow event", { workflowEvent: "workflow_call" }],
@@ -703,7 +703,7 @@ describe("plugin publication artifact", () => {
         run.conclusion = "cancelled";
       },
       (run: Record<string, unknown>) => {
-        run.head_repository = { full_name: "openclaw/not-openclaw" };
+        run.head_repository = { full_name: "operator/not-operator" };
       },
     ];
     for (const mutate of mutations) {
@@ -1195,7 +1195,7 @@ describe("plugin publication artifact", () => {
         }),
         tarEntry({
           content: '{"id":"meta"}\n',
-          path: "package/openclaw.plugin.json",
+          path: "package/operator.plugin.json",
         }),
       ]),
     );
@@ -1678,7 +1678,7 @@ describe("plugin publication artifact", () => {
           content: metaPackageJson(markerPath, { tag: "latest" }),
           path: "package/package.json",
         },
-        { content: '{"id":"meta"}\n', path: "package/openclaw.plugin.json" },
+        { content: '{"id":"meta"}\n', path: "package/operator.plugin.json" },
       ]),
     );
 
@@ -1727,12 +1727,12 @@ describe("plugin publication artifact", () => {
     }> = [
       {
         manifestOverrides: {
-          openclaw: { release: { publishToClawHub: false, publishToNpm: true } },
+          operator: { release: { publishToClawHub: false, publishToNpm: true } },
         },
       },
       {
         manifestOverrides: {
-          openclaw: { release: { publishToClawHub: true, publishToNpm: false } },
+          operator: { release: { publishToClawHub: true, publishToNpm: false } },
         },
       },
       {
@@ -1754,7 +1754,7 @@ describe("plugin publication artifact", () => {
             content: metaPackageJson(markerPath, testCase.manifestOverrides),
             path: "package/package.json",
           },
-          { content: '{"id":"meta"}\n', path: "package/openclaw.plugin.json" },
+          { content: '{"id":"meta"}\n', path: "package/operator.plugin.json" },
         ]),
       );
       expect(

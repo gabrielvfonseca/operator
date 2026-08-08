@@ -2228,7 +2228,7 @@ rules:
         - CWE-400
       category: security
       technology:
-        - openclaw
+        - operator
         - acp
       advisory-url: https://github.com/gabrielvfonseca/operator/security/advisories/GHSA-CXPW-2G23-2VGW
       detector-bucket: precise

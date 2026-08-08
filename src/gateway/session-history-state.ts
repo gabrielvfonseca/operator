@@ -23,7 +23,7 @@ type SessionHistoryTranscriptMeta = {
 };
 
 type SessionHistoryMessage = Record<string, unknown> & {
-  __openclaw?: SessionHistoryTranscriptMeta;
+  __operator?: SessionHistoryTranscriptMeta;
 };
 
 type PaginatedSessionHistory = {
@@ -114,7 +114,7 @@ function buildPaginatedSessionHistory(params: {
 }
 
 function resolveMessageSeq(message: SessionHistoryMessage | undefined): number | undefined {
-  return asPositiveSafeInteger(message?.["__openclaw"]?.seq);
+  return asPositiveSafeInteger(message?.["__operator"]?.seq);
 }
 
 function isMessageToolMirrorMessage(message: SessionHistoryMessage): boolean {

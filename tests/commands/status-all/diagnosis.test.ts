@@ -173,11 +173,11 @@ describe("status-all diagnosis port checks", () => {
 
     const output = params.lines.join("\n");
     expect(output).toContain(
-      "Update restart: failed · managed-service-handoff-failed · run openclaw gateway status --deep",
+      "Update restart: failed · managed-service-handoff-failed · run operator gateway status --deep",
     );
-    expect(output).toContain("Update restart failed; run openclaw gateway status --deep.");
+    expect(output).toContain("Update restart failed; run operator gateway status --deep.");
     expect(output).toContain(
-      "If the service is down, run openclaw gateway restart or openclaw gateway install --force.",
+      "If the service is down, run operator gateway restart or operator gateway install --force.",
     );
   });
 
@@ -200,10 +200,10 @@ describe("status-all diagnosis port checks", () => {
 
     const output = params.lines.join("\n");
     expect(output).toContain(
-      "Update restart: restart pending health verification · run openclaw gateway status --deep",
+      "Update restart: restart pending health verification · run operator gateway status --deep",
     );
     expect(output).toContain(
-      "Update restart is still pending; run openclaw update status --json for handoff state.",
+      "Update restart is still pending; run operator update status --json for handoff state.",
     );
   });
 
@@ -380,12 +380,12 @@ describe("status-all diagnosis port checks", () => {
     Object.defineProperty(process, "platform", { value: "darwin" });
     try {
       restartLogMocks.resolveGatewaySupervisorLogPaths.mockReturnValue({
-        logDir: "/Users/test/Library/Logs/openclaw",
-        stdoutPath: "/Users/test/Library/Logs/openclaw/gateway.log",
-        stderrPath: "/Users/test/Library/Logs/openclaw/gateway.err.log",
+        logDir: "/Users/test/Library/Logs/operator",
+        stdoutPath: "/Users/test/Library/Logs/operator/gateway.log",
+        stderrPath: "/Users/test/Library/Logs/operator/gateway.err.log",
       });
       restartLogMocks.resolveGatewayRestartLogPath.mockReturnValue(
-        "/tmp/openclaw/logs/gateway-restart.log",
+        "/tmp/operator/logs/gateway-restart.log",
       );
       gatewayMocks.readFileTailLines.mockImplementation(async (filePath: string) => {
         if (filePath.endsWith("gateway.log")) {
@@ -402,10 +402,10 @@ describe("status-all diagnosis port checks", () => {
 
       const output = params.lines.join("\n");
       expect(gatewayMocks.readFileTailLines).not.toHaveBeenCalledWith(
-        "/Users/test/Library/Logs/openclaw/gateway.err.log",
+        "/Users/test/Library/Logs/operator/gateway.err.log",
         40,
       );
-      expect(output).toContain("# stdout: /Users/test/Library/Logs/openclaw/gateway.log");
+      expect(output).toContain("# stdout: /Users/test/Library/Logs/operator/gateway.log");
       expect(output).toContain("gateway stdout current");
       expect(output).not.toContain("# stderr:");
       expect(output).not.toContain("failed to bind gateway socket stale");

@@ -83,7 +83,7 @@ function requireFirstMockCall(mock: { mock: { calls: unknown[][] } }, label: str
   return call;
 }
 
-describe("openclaw channel mcp server", () => {
+describe("operator channel mcp server", () => {
   describe("gateway-backed flows", () => {
     describe("gateway integration", () => {
       test("returns conversation and message payloads in primary MCP content", async () => {
@@ -193,7 +193,7 @@ describe("openclaw channel mcp server", () => {
         const messages = await bridge.readMessages(sessionKey, 5);
         expect(messages[0]?.role).toBe("assistant");
         expect(messages[0]?.content).toEqual([{ type: "text", text: "hello from transcript" }]);
-        expect((messages[1]?.["__openclaw"] as { id?: string } | undefined)?.id).toBe(
+        expect((messages[1]?.["__operator"] as { id?: string } | undefined)?.id).toBe(
           "msg-attachment",
         );
         expect(

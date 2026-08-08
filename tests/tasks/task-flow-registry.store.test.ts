@@ -3,9 +3,9 @@ import { statSync } from "node:fs";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../../src/infra/kysely-sync.js";
-import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/openclaw-state-db.generated.js";
-import { openOperatorStateDatabase } from "../../src/state/openclaw-state-db.js";
-import { resolveOperatorStateSqlitePath } from "../../src/state/openclaw-state-db.paths.js";
+import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/operator-state-db.generated.js";
+import { openOperatorStateDatabase } from "../../src/state/operator-state-db.js";
+import { resolveOperatorStateSqlitePath } from "../../src/state/operator-state-db.paths.js";
 import { withOperatorTestState } from "../../src/test-utils/operator-test-state.ts";
 import {
   createManagedTaskFlow as createManagedTaskFlowOrNull,

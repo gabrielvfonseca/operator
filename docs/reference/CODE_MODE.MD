@@ -622,7 +622,7 @@ The serializer rejects:
 - `globalName` values that are not JavaScript identifiers
 - `globalName` collisions with built-in code-mode globals such as `tools`,
   `namespaces`, `text`, `json`, `yield_control`, `MCP`, `API`, `ALL_TOOLS`, or
-  `__openclaw*`
+  `__operator*`
 
 Values that cannot be JSON-serialized are converted to JSON-safe fallback
 values before crossing the bridge. Binary data, handles, sockets, clients, and
@@ -709,8 +709,8 @@ tool sets when possible. Actual shape:
 <source>:<owner>:<tool-name>
 ```
 
-where `<source>` is `openclaw`, `mcp`, or `client` (plugin tools use
-`openclaw` with the plugin id as `<owner>`; core tools use `operator:core:*`).
+where `<source>` is `operator`, `mcp`, or `client` (plugin tools use
+`operator` with the plugin id as `<owner>`; core tools use `operator:core:*`).
 Examples:
 
 ```text
@@ -883,7 +883,7 @@ objects, prototypes, and host functions do not cross into QuickJS.
 ## Telemetry
 
 Each result's `telemetry` field reports: hidden catalog size and a source
-breakdown (`openclaw`/`mcp`/`client` counts), cumulative search/describe/call
+breakdown (`operator`/`mcp`/`client` counts), cumulative search/describe/call
 counts for the run's catalog, and the model-visible tool names (`exec`,
 `wait`, and retained direct-only tools).
 

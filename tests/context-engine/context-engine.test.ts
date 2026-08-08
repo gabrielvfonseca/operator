@@ -1627,7 +1627,7 @@ describe("Invalid engine fallback", () => {
   });
 
   it("accepts resolved engines whose info.id differs from the registered slot id (#66601)", async () => {
-    // Regression for openclaw/openclaw#66601: third-party plugins like
+    // Regression for operator/operator#66601: third-party plugins like
     // lossless-claw register under an external slot id ("lossless-claw") but
     // the ContextEngine they return uses the plugin's own internal id
     // (e.g. "lcm"). That id is metadata, not the lookup key.

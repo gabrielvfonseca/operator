@@ -346,7 +346,7 @@ describe("buildProviderStreamFamilyHooks", () => {
     expect(openAiPayload.reasoning).toEqual({ effort: "max", summary: "auto" });
     expect(openAiPayload.service_tier).toBe("flex");
     expect(capturedHeaders).toEqual({
-      "User-Agent": `openclaw/${VERSION}`,
+      "User-Agent": `operator/${VERSION}`,
       originator: "@gabrielvfonseca/operator",
       version: VERSION,
     });

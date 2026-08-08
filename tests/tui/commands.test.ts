@@ -55,10 +55,10 @@ describe("getSlashCommands", () => {
     const commands = getSlashCommands();
     const status = commands.find((command) => command.name === "status");
     const gatewayStatus = commands.find((command) => command.name === "gateway-status");
-    const openclaw = commands.find((command) => command.name === "@gabrielvfonseca/operator");
+    const operator = commands.find((command) => command.name === "@gabrielvfonseca/operator");
     expect(status?.description).toBe("Show current status.");
     expect(gatewayStatus?.description).toBe("Show gateway status summary");
-    expect(openclaw?.description).toBe("Return to Operator");
+    expect(operator?.description).toBe("Return to Operator");
   });
 
   it("distinguishes new-session and reset command descriptions", () => {
@@ -165,7 +165,7 @@ describe("helpText", () => {
     expect(output).toContain("/fast <status|auto|on|off>");
     expect(output).toContain("/gateway-status");
     expect(output).toContain("/gwstatus");
-    expect(output).toContain("/openclaw [request]");
+    expect(output).toContain("/operator [request]");
   });
 
   it("does not advertise Gateway-owned commands in local mode", () => {

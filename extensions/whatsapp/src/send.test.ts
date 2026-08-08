@@ -21,8 +21,8 @@ let sendMessageWhatsApp: typeof import("./send.js").sendMessageWhatsApp;
 let sendPollWhatsApp: typeof import("./send.js").sendPollWhatsApp;
 let sendReactionWhatsApp: typeof import("./send.js").sendReactionWhatsApp;
 let sendTypingWhatsApp: typeof import("./send.js").sendTypingWhatsApp;
-let resetLogger: typeof import("openclaw/plugin-sdk/runtime-env").resetLogger;
-let setLoggerOverride: typeof import("openclaw/plugin-sdk/runtime-env").setLoggerOverride;
+let resetLogger: typeof import("operator/plugin-sdk/runtime-env").resetLogger;
+let setLoggerOverride: typeof import("operator/plugin-sdk/runtime-env").setLoggerOverride;
 
 const WHATSAPP_TEST_CFG: OperatorConfig = {
   channels: { whatsapp: {} },
@@ -55,9 +55,9 @@ vi.mock("./outbound-media.runtime.js", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/media-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/media-runtime")>(
-    "openclaw/plugin-sdk/media-runtime",
+vi.mock("operator/plugin-sdk/media-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/media-runtime")>(
+    "operator/plugin-sdk/media-runtime",
   );
   return {
     ...actual,
@@ -85,7 +85,7 @@ describe("web outbound", () => {
     ({ sendMessageWhatsApp, sendPollWhatsApp, sendReactionWhatsApp, sendTypingWhatsApp } =
       await import("./send.js"));
     const { resetLogger: loadedResetLogger, setLoggerOverride: loadedSetLoggerOverride } =
-      await import("openclaw/plugin-sdk/runtime-env");
+      await import("operator/plugin-sdk/runtime-env");
     resetLogger = loadedResetLogger;
     setLoggerOverride = loadedSetLoggerOverride;
   });

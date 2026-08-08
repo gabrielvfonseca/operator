@@ -16,7 +16,7 @@ async function expectPathMissing(targetPath: string): Promise<void> {
   throw new Error(`expected missing path: ${targetPath}`);
 }
 
-describe("openclaw test state", () => {
+describe("operator test state", () => {
   it("creates an isolated home layout with spawn env and restores process env", async () => {
     const previousHome = process.env.HOME;
     const previousOperatorHome = process.env.OPERATOR_HOME;
@@ -30,8 +30,8 @@ describe("openclaw test state", () => {
 
     try {
       expect(state.home).toBe(path.join(state.root, "home"));
-      expect(state.stateDir).toBe(path.join(state.home, ".openclaw"));
-      expect(state.configPath).toBe(path.join(state.stateDir, "openclaw.json"));
+      expect(state.stateDir).toBe(path.join(state.home, ".operator"));
+      expect(state.configPath).toBe(path.join(state.stateDir, "operator.json"));
       expect(state.workspaceDir).toBe(path.join(state.home, "workspace"));
       expect(state.env.HOME).toBe(state.home);
       expect(state.env.OPERATOR_HOME).toBe(state.home);
@@ -70,7 +70,7 @@ describe("openclaw test state", () => {
   });
 
   it("clears inherited agent-dir overrides by default", async () => {
-    await withEnvAsync({ OPERATOR_AGENT_DIR: "/tmp/outside-openclaw-agent" }, async () => {
+    await withEnvAsync({ OPERATOR_AGENT_DIR: "/tmp/outside-operator-agent" }, async () => {
       const state = await createOperatorTestState({
         layout: "state-only",
       });
@@ -83,7 +83,7 @@ describe("openclaw test state", () => {
         await state.cleanup();
       }
 
-      expect(process.env.OPERATOR_AGENT_DIR).toBe("/tmp/outside-openclaw-agent");
+      expect(process.env.OPERATOR_AGENT_DIR).toBe("/tmp/outside-operator-agent");
     });
   });
 
@@ -91,12 +91,12 @@ describe("openclaw test state", () => {
     await withOperatorTestState(
       {
         env: {
-          OPERATOR_AGENT_DIR: "/tmp/explicit-openclaw-agent",
+          OPERATOR_AGENT_DIR: "/tmp/explicit-operator-agent",
         },
       },
       async (state) => {
-        expect(process.env.OPERATOR_AGENT_DIR).toBe("/tmp/explicit-openclaw-agent");
-        expect(state.env.OPERATOR_AGENT_DIR).toBe("/tmp/explicit-openclaw-agent");
+        expect(process.env.OPERATOR_AGENT_DIR).toBe("/tmp/explicit-operator-agent");
+        expect(state.env.OPERATOR_AGENT_DIR).toBe("/tmp/explicit-operator-agent");
       },
     );
   });
@@ -137,7 +137,7 @@ describe("openclaw test state", () => {
           },
         });
 
-        expect(profilePath).toBe(path.join(state.agentDir(), "openclaw-agent.sqlite"));
+        expect(profilePath).toBe(path.join(state.agentDir(), "operator-agent.sqlite"));
         const profiles = loadPersistedAuthProfileStore(state.agentDir());
         expect(profiles?.version).toBe(1);
         expect(profiles?.profiles["openai:test"]?.provider).toBe("openai");

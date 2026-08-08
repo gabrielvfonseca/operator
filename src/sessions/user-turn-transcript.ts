@@ -208,7 +208,7 @@ function buildUserTurnSenderMeta(
 }
 
 function readOperatorMessageMeta(message: AgentMessage): Record<string, unknown> | undefined {
-  const meta = (message as unknown as Record<string, unknown>)["__openclaw"];
+  const meta = (message as unknown as Record<string, unknown>)["__operator"];
   return meta && typeof meta === "object" && !Array.isArray(meta)
     ? (meta as Record<string, unknown>)
     : undefined;
@@ -223,7 +223,7 @@ export function buildPersistedUserTurnMessage(params: UserTurnInput): PersistedU
   // derived from each message's own `timestamp` field, so the current turn and
   // every historical turn serialize identically on the wire. Persisting a stamp
   // here would NOT match the bare-current arrival (the gateway no longer stamps
-  // the live turn) — see https://github.com/openclaw/openclaw/issues/3658.
+  // the live turn) — see https://github.com/operator/operator/issues/3658.
   const content = text || (hasMedia ? (params.mediaOnlyText ?? "") : "");
   const senderMeta = buildUserTurnSenderMeta(params.sender);
   const openClawMeta = {
@@ -306,7 +306,7 @@ function buildLateResolvedMediaMessage(params: {
 }
 
 function isBeforeAgentRunBlockedMessage(message: AgentMessage): boolean {
-  const marker = (message as { __openclaw?: { beforeAgentRunBlocked?: unknown } })["__openclaw"]
+  const marker = (message as { __operator?: { beforeAgentRunBlocked?: unknown } })["__operator"]
     ?.beforeAgentRunBlocked;
   return marker !== undefined;
 }

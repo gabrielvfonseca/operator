@@ -90,7 +90,7 @@ The first time the browser sidebar opens while the app runs against a local Gate
 | Local  | This Mac should run the Gateway and keep it alive with launchd.                | [Gateway on macOS](/platforms/mac/bundled-gateway) |
 | Remote | Another host runs the Gateway; this Mac controls it over SSH, LAN, or Tailnet. | [Remote control](/platforms/mac/remote)            |
 
-Both modes need an installed `openclaw` CLI because the app reuses its node-host
+Both modes need an installed `operator` CLI because the app reuses its node-host
 runtime. On a fresh Mac, the app installs the matching CLI automatically; local
 mode then starts the Gateway wizard, while remote mode connects to the selected
 Gateway without starting a second local Gateway.

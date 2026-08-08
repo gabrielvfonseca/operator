@@ -189,7 +189,7 @@ function writeImageGeneration(res) {
         b64_json:
           "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+yf7kAAAAASUVORK5CYII=",
         mime_type: "image/png",
-        revised_prompt: "openclaw mock image",
+        revised_prompt: "operator mock image",
       },
     ],
   });

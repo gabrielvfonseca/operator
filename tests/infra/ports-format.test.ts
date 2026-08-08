@@ -10,7 +10,7 @@ import {
   isSameProcessSpecificIpv4WithLoopbackListeners,
 } from "../../src/infra/ports-format.js";
 
-const gatewayAlreadyRunningHint = `Gateway already running locally. Stop it (${formatCliCommand("openclaw gateway stop")}) or use a different port.`;
+const gatewayAlreadyRunningHint = `Gateway already running locally. Stop it (${formatCliCommand("operator gateway stop")}) or use a different port.`;
 const multipleListenersHint =
   "Multiple listeners detected; ensure only one gateway/tunnel per port unless intentionally running isolated profiles.";
 
@@ -42,7 +42,7 @@ describe("ports-format", () => {
     // is no -L/-R forward, so it must not classify as a tunnel or emit the hint.
     [{ commandLine: "/opt/fast-ssh/server --listen 127.0.0.1:18789" }, "non_gateway"],
     [{ commandLine: "ssh -N -L 9999:remote:22 host" }, "ssh"],
-    [{ commandLine: "node /Users/me/Projects/openclaw/dist/entry.js gateway" }, "gateway"],
+    [{ commandLine: "node /Users/me/Projects/operator/dist/entry.js gateway" }, "gateway"],
     [{ commandLine: "python -m http.server 18789" }, "unknown"],
   ] as const)("classifies port listener %j", (listener, expected) => {
     expect(classifyPortListener(listener, 18789)).toBe(expected);
@@ -60,7 +60,7 @@ describe("ports-format", () => {
     expect(
       buildPortHints(
         [
-          { commandLine: "node dist/index.js openclaw gateway" },
+          { commandLine: "node dist/index.js operator gateway" },
           { commandLine: "ssh -N -L 18789:127.0.0.1:18789" },
           { commandLine: "python -m http.server 18789" },
         ],

@@ -8,7 +8,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, expect, it } from "vitest";
 import { loadSessionEntry, replaceSessionEntry } from "../../../src/config/sessions/session-accessor.js";
-import { closeOperatorAgentDatabasesForTest } from "../../../src/state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../../src/state/operator-agent-db.js";
 import { loadCronSessionEntryLatest } from "../../../src/cron/isolated-agent/session.js";
 
 const SESSION_KEY = "agent:main:cron:job-1";

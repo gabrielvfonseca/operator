@@ -48,20 +48,20 @@ type AcpSessionRecord = Parameters<AcpSessionStore["save"]>[0];
 type AcpLoadedSessionRecord = Awaited<ReturnType<AcpSessionStore["load"]>>;
 type BaseAcpxRuntimeTestOptions = ConstructorParameters<typeof BaseAcpxRuntime>[1];
 type OperatorAcpxRuntimeOptions = AcpRuntimeOptions & {
-  openclawWrapperRoot?: string;
+  operatorWrapperRoot?: string;
   operatorGatewayInstanceId?: string;
   operatorProcessLeaseStore?: AcpxProcessLeaseStore;
   operatorToolsMcpBridgeEnabled?: boolean;
 };
 type AcpxRuntimeTestOptions = Record<string, unknown> & {
-  openclawProcessCleanup?: AcpxProcessCleanupDeps;
+  operatorProcessCleanup?: AcpxProcessCleanupDeps;
 };
 type OperatorRuntimeTurnInput = Parameters<NonNullable<AcpRuntime["startTurn"]>>[0];
 type OperatorRuntimeEnsureInput = Parameters<AcpRuntime["ensureSession"]>[0];
 type AcpxDelegateEnsureInput = Parameters<BaseAcpxRuntime["ensureSession"]>[0];
 type AcpxMcpServer = NonNullable<AcpRuntimeOptions["mcpServers"]>[number];
 
-const ACPX_OPERATOR_TOOLS_MCP_SERVER_NAME = "openclaw-tools";
+const ACPX_OPERATOR_TOOLS_MCP_SERVER_NAME = "operator-tools";
 const OPERATOR_TOOLS_MCP_AGENT_SESSION_KEY_ENV = "OPERATOR_TOOLS_MCP_AGENT_SESSION_KEY";
 
 type ResetAwareSessionStore = AcpSessionStore & {
@@ -69,7 +69,7 @@ type ResetAwareSessionStore = AcpSessionStore & {
 };
 
 type OperatorLeaseSessionMetadata = {
-  openclawLeaseId: string;
+  operatorLeaseId: string;
   operatorGatewayInstanceId: string;
 };
 
@@ -88,7 +88,7 @@ function withOperatorLeaseSessionMetadata<T extends object>(
 ): T & OperatorLeaseSessionMetadata {
   return {
     ...record,
-    openclawLeaseId: metadata.operatorLeaseId,
+    operatorLeaseId: metadata.operatorLeaseId,
     operatorGatewayInstanceId: metadata.operatorGatewayInstanceId,
   };
 }
@@ -201,8 +201,8 @@ function readOperatorLeaseIdFromRecord(record: unknown): string | undefined {
   if (typeof record !== "object" || record === null) {
     return undefined;
   }
-  const { openclawLeaseId } = record as { openclawLeaseId?: unknown };
-  return typeof openclawLeaseId === "string" ? openclawLeaseId.trim() || undefined : undefined;
+  const { operatorLeaseId } = record as { operatorLeaseId?: unknown };
+  return typeof operatorLeaseId === "string" ? operatorLeaseId.trim() || undefined : undefined;
 }
 
 function readOperatorGatewayInstanceIdFromRecord(record: unknown): string | undefined {
@@ -275,7 +275,7 @@ function createResetAwareSessionStore(
         return record;
       }
       return withOperatorLeaseSessionMetadata(record, {
-        openclawLeaseId: lease.leaseId,
+        operatorLeaseId: lease.leaseId,
         operatorGatewayInstanceId: lease.gatewayInstanceId,
       });
     },
@@ -313,7 +313,7 @@ function createResetAwareSessionStore(
             agentCommand: stableAgentCommand,
           },
           {
-            openclawLeaseId: launch.leaseId,
+            operatorLeaseId: launch.leaseId,
             operatorGatewayInstanceId: launch.gatewayInstanceId,
           },
         );
@@ -465,7 +465,7 @@ function isOperatorBridgeCommand(command: string | undefined): boolean {
     return false;
   }
   const scriptName = basename(parts[1] ?? "");
-  return /^openclaw(?:\.[cm]?js)?$/i.test(scriptName) && parts[2] === OPERATOR_BRIDGE_SUBCOMMAND;
+  return /^operator(?:\.[cm]?js)?$/i.test(scriptName) && parts[2] === OPERATOR_BRIDGE_SUBCOMMAND;
 }
 
 function isCodexAcpCommand(command: string | undefined): boolean {
@@ -493,7 +493,7 @@ function failUnsupportedCodexAcpModel(rawModel: string, detail?: string): never 
 // acpx's `decodeAcpxRuntimeHandleState` only accepts `persistent` and `oneshot`; any other
 // value silently round-trips through the encoded handle as `persistent` and later throws
 // `SessionResumeRequiredError` on agent restart. Fail fast at this boundary instead.
-// See openclaw/openclaw#73071.
+// See operator/operator#73071.
 const SUPPORTED_RUNTIME_SESSION_MODES = new Set(["persistent", "oneshot"] as const);
 const WIRE_TIMEOUT_CONFIG_KEYS = new Set(["timeout", "timeout_seconds"]);
 
@@ -729,8 +729,8 @@ export class AcpxRuntime implements AcpRuntime {
   private readonly cwd: string;
 
   constructor(options: OperatorAcpxRuntimeOptions, testOptions?: AcpxRuntimeTestOptions) {
-    const { openclawProcessCleanup, ...delegateTestOptions } = testOptions ?? {};
-    this.processCleanupDeps = openclawProcessCleanup;
+    const { operatorProcessCleanup, ...delegateTestOptions } = testOptions ?? {};
+    this.processCleanupDeps = operatorProcessCleanup;
     this.wrapperRoot = options.operatorWrapperRoot;
     this.gatewayInstanceId = options.operatorGatewayInstanceId;
     this.processLeaseStore = options.operatorProcessLeaseStore;

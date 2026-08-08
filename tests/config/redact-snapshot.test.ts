@@ -619,9 +619,9 @@ describe("redactConfigSnapshot", () => {
     const snapshot = makeSnapshot({
       channels: {
         irc: {
-          passwordFile: "/etc/openclaw/irc-password.txt",
+          passwordFile: "/etc/operator/irc-password.txt",
           nickserv: {
-            passwordFile: "/etc/openclaw/nickserv-password.txt",
+            passwordFile: "/etc/operator/nickserv-password.txt",
             password: "super-secret-nickserv-password",
           },
         },
@@ -633,8 +633,8 @@ describe("redactConfigSnapshot", () => {
     const irc = expectDefined(channels.irc, "channels.irc test invariant");
     const nickserv = irc.nickserv as Record<string, unknown>;
 
-    expect(irc.passwordFile).toBe("/etc/openclaw/irc-password.txt");
-    expect(nickserv.passwordFile).toBe("/etc/openclaw/nickserv-password.txt");
+    expect(irc.passwordFile).toBe("/etc/operator/irc-password.txt");
+    expect(nickserv.passwordFile).toBe("/etc/operator/nickserv-password.txt");
     expect(nickserv.password).toBe(REDACTED_SENTINEL);
   });
 

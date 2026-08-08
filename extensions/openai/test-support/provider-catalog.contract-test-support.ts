@@ -27,10 +27,10 @@ const resolveCatalogHookProviderPluginIdsMock = vi.hoisted(() =>
   vi.fn<ResolveCatalogHookProviderPluginIds>((_) => [] as string[]),
 );
 
-vi.mock("openclaw/plugin-sdk/provider-catalog-runtime", async () => {
+vi.mock("operator/plugin-sdk/provider-catalog-runtime", async () => {
   const actual = await vi.importActual<
-    typeof import("openclaw/plugin-sdk/provider-catalog-runtime")
-  >("openclaw/plugin-sdk/provider-catalog-runtime");
+    typeof import("operator/plugin-sdk/provider-catalog-runtime")
+  >("operator/plugin-sdk/provider-catalog-runtime");
   const resolveCatalogHookProviders = (params: unknown) =>
     resolvePluginProvidersMock({
       onlyPluginIds: resolveCatalogHookProviderPluginIdsMock(params),

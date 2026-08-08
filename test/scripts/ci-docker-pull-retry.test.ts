@@ -24,7 +24,7 @@ function runPullHelper(binDir: string) {
 }
 
 function runPullHelperWithEnv(binDir: string, env: Record<string, string>) {
-  return spawnSync("/bin/bash", [SCRIPT_PATH, "registry.example/openclaw:test"], {
+  return spawnSync("/bin/bash", [SCRIPT_PATH, "registry.example/operator:test"], {
     cwd: process.cwd(),
     encoding: "utf8",
     env: {
@@ -46,7 +46,7 @@ afterEach(() => {
 
 describe("scripts/ci-docker-pull-retry.sh", () => {
   it("uses a kill-after grace period when timeout supports it", () => {
-    const binDir = makeTempBin("openclaw-ci-docker-pull-gnu-");
+    const binDir = makeTempBin("operator-ci-docker-pull-gnu-");
     const timeoutArgsPath = path.join(binDir, "timeout-args.txt");
     const dockerArgsPath = path.join(binDir, "docker-args.txt");
 
@@ -74,15 +74,15 @@ describe("scripts/ci-docker-pull-retry.sh", () => {
 
     expect(result.status).toBe(0);
     expect(execFileSync("cat", [timeoutArgsPath], { encoding: "utf8" }).trim()).toBe(
-      "--kill-after=30s 42s docker pull registry.example/openclaw:test",
+      "--kill-after=30s 42s docker pull registry.example/operator:test",
     );
     expect(execFileSync("cat", [dockerArgsPath], { encoding: "utf8" }).trim()).toBe(
-      "pull registry.example/openclaw:test",
+      "pull registry.example/operator:test",
     );
   });
 
   it("falls back to plain timeout when kill-after is unavailable", () => {
-    const binDir = makeTempBin("openclaw-ci-docker-pull-plain-");
+    const binDir = makeTempBin("operator-ci-docker-pull-plain-");
     const timeoutArgsPath = path.join(binDir, "timeout-args.txt");
     const dockerArgsPath = path.join(binDir, "docker-args.txt");
 
@@ -110,15 +110,15 @@ describe("scripts/ci-docker-pull-retry.sh", () => {
 
     expect(result.status).toBe(0);
     expect(execFileSync("cat", [timeoutArgsPath], { encoding: "utf8" }).trim()).toBe(
-      "42s docker pull registry.example/openclaw:test",
+      "42s docker pull registry.example/operator:test",
     );
     expect(execFileSync("cat", [dockerArgsPath], { encoding: "utf8" }).trim()).toBe(
-      "pull registry.example/openclaw:test",
+      "pull registry.example/operator:test",
     );
   });
 
   it("uses gtimeout when timeout is unavailable", () => {
-    const binDir = makeTempBin("openclaw-ci-docker-pull-gtimeout-");
+    const binDir = makeTempBin("operator-ci-docker-pull-gtimeout-");
     const timeoutArgsPath = path.join(binDir, "gtimeout-args.txt");
     const dockerArgsPath = path.join(binDir, "docker-args.txt");
 
@@ -146,15 +146,15 @@ describe("scripts/ci-docker-pull-retry.sh", () => {
 
     expect(result.status).toBe(0);
     expect(execFileSync("cat", [timeoutArgsPath], { encoding: "utf8" }).trim()).toBe(
-      "gtimeout:--kill-after=30s 42s docker pull registry.example/openclaw:test",
+      "gtimeout:--kill-after=30s 42s docker pull registry.example/operator:test",
     );
     expect(execFileSync("cat", [dockerArgsPath], { encoding: "utf8" }).trim()).toBe(
-      "pull registry.example/openclaw:test",
+      "pull registry.example/operator:test",
     );
   });
 
   it("fails fast when timeout and gtimeout are unavailable", () => {
-    const binDir = makeTempBin("openclaw-ci-docker-pull-no-timeout-");
+    const binDir = makeTempBin("operator-ci-docker-pull-no-timeout-");
     const dockerArgsPath = path.join(binDir, "docker-args.txt");
 
     writeExecutable(
@@ -174,7 +174,7 @@ describe("scripts/ci-docker-pull-retry.sh", () => {
   });
 
   it("returns the last pull failure status after retries are exhausted", () => {
-    const binDir = makeTempBin("openclaw-ci-docker-pull-fail-");
+    const binDir = makeTempBin("operator-ci-docker-pull-fail-");
     const dockerArgsPath = path.join(binDir, "docker-args.txt");
 
     writeExecutable(

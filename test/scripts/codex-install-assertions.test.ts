@@ -19,10 +19,10 @@ const CODEX_NPM_PLUGIN_LIVE_ASSERTIONS_SCRIPT =
 const DISABLE_EXPERIMENTAL_WARNING = "--disable-warning=ExperimentalWarning";
 const tempDirs: string[] = [];
 const tmpFixtureFiles = [
-  "/tmp/openclaw-codex-agent.err",
-  "/tmp/openclaw-codex-agent.json",
-  "/tmp/openclaw-codex-inspect.json",
-  "/tmp/openclaw-plugins-list.json",
+  "/tmp/operator-codex-agent.err",
+  "/tmp/operator-codex-agent.json",
+  "/tmp/operator-codex-inspect.json",
+  "/tmp/operator-plugins-list.json",
 ];
 
 afterEach(() => {
@@ -46,7 +46,7 @@ function writeJson(filePath: string, value: unknown) {
 
 function writeAuthProfileStoreSqlite(agentDir: string) {
   mkdirSync(agentDir, { recursive: true });
-  const db = new DatabaseSync(path.join(agentDir, "openclaw-agent.sqlite"));
+  const db = new DatabaseSync(path.join(agentDir, "operator-agent.sqlite"));
   try {
     db.exec(`
       CREATE TABLE IF NOT EXISTS auth_profile_store (
@@ -86,7 +86,7 @@ function runCodexOnDemandAssertions(root: string) {
       ...process.env,
       HOME: path.join(root, "home"),
       NODE_OPTIONS: nodeOptionsWithoutExperimentalWarnings(),
-      OPENCLAW_CONFIG_PATH: path.join(root, "state", "openclaw.json"),
+      OPENCLAW_CONFIG_PATH: path.join(root, "state", "operator.json"),
       OPENCLAW_STATE_DIR: path.join(root, "state"),
     },
   });
@@ -128,7 +128,7 @@ function runCodexNpmPluginLiveConfigure(root: string) {
       ...process.env,
       HOME: path.join(root, "home"),
       NODE_OPTIONS: nodeOptionsWithoutExperimentalWarnings(),
-      OPENCLAW_CONFIG_PATH: path.join(root, "state", "openclaw.json"),
+      OPENCLAW_CONFIG_PATH: path.join(root, "state", "operator.json"),
       OPENCLAW_STATE_DIR: path.join(root, "state"),
     },
   });
@@ -141,7 +141,7 @@ function writeCodexBindingStateSqlite(params: {
   storedSessionId?: string;
   threadId: string;
 }) {
-  const dbPath = path.join(params.stateDir, "state", "openclaw.sqlite");
+  const dbPath = path.join(params.stateDir, "state", "operator.sqlite");
   mkdirSync(path.dirname(dbPath), { recursive: true });
   const db = new DatabaseSync(dbPath);
   try {
@@ -191,7 +191,7 @@ function writeSessionStoreSqlite(params: {
   sessionId: string;
   sessionKey: string;
 }) {
-  const dbPath = path.join(params.stateDir, "agents", "main", "agent", "openclaw-agent.sqlite");
+  const dbPath = path.join(params.stateDir, "agents", "main", "agent", "operator-agent.sqlite");
   mkdirSync(path.dirname(dbPath), { recursive: true });
   const db = new DatabaseSync(dbPath);
   try {
@@ -251,7 +251,7 @@ function createCodexNpmPluginLiveFixture(root: string, storedSessionId?: string)
   const marker = "OPENCLAW-CODEX-NPM-PLUGIN-LIVE-OK";
   const threadId = "thread-codex-npm-live";
   const modelRef = "openai/gpt-5.4";
-  writeJson("/tmp/openclaw-codex-agent.json", {
+  writeJson("/tmp/operator-codex-agent.json", {
     payloads: [{ text: marker }],
     meta: { executionTrace: { winnerProvider: "openai" } },
   });
@@ -277,8 +277,8 @@ function createCodexNpmPluginLiveFixture(root: string, storedSessionId?: string)
 function createLegacyCodexNpmPluginLiveFixture(root: string) {
   const fixture = createCodexNpmPluginLiveFixture(root);
   const stateDir = path.join(root, "state");
-  rmSync(path.join(stateDir, "agents", "main", "agent", "openclaw-agent.sqlite"));
-  rmSync(path.join(stateDir, "state", "openclaw.sqlite"));
+  rmSync(path.join(stateDir, "agents", "main", "agent", "operator-agent.sqlite"));
+  rmSync(path.join(stateDir, "state", "operator.sqlite"));
   const sessionFile = path.join(stateDir, "agents", "main", "sessions", "session.jsonl");
   writeJson(sessionFile, { type: "message" });
   writeJson(`${sessionFile}.codex-app-server.json`, {
@@ -301,7 +301,7 @@ function createLegacyCodexNpmPluginLiveFixture(root: string) {
 function createCodexInstallFixture(root: string) {
   const stateDir = path.join(root, "state");
   const npmRoot = path.join(stateDir, "npm");
-  const installPath = path.join(npmRoot, "projects", "codex", "node_modules", "@openclaw", "codex");
+  const installPath = path.join(npmRoot, "projects", "codex", "node_modules", "@operator", "codex");
   const projectRoot = npmProjectRootForInstalledPackage(installPath, "@operator/codex");
   writeJson(path.join(installPath, "package.json"), { name: "@operator/codex" });
   const openAiCodexRoot = path.join(projectRoot, "node_modules", "@openai", "codex");
@@ -313,7 +313,7 @@ function createCodexInstallFixture(root: string) {
   mkdirSync(path.dirname(codexBin), { recursive: true });
   writeFileSync(codexBin, "#!/usr/bin/env node\n", { mode: 0o755 });
   chmodSync(codexBin, 0o755);
-  writeJson(path.join(stateDir, "openclaw.json"), {
+  writeJson(path.join(stateDir, "operator.json"), {
     agents: { defaults: { model: { primary: "openai/gpt-5.6" } } },
     models: { providers: { openai: { agentRuntime: { id: "codex" } } } },
     plugins: {
@@ -326,10 +326,10 @@ function createCodexInstallFixture(root: string) {
       },
     },
   });
-  writeJson("/tmp/openclaw-codex-inspect.json", {
+  writeJson("/tmp/operator-codex-inspect.json", {
     plugin: { id: "codex", status: "loaded", agentHarnessIds: ["codex"] },
   });
-  writeJson("/tmp/openclaw-plugins-list.json", {
+  writeJson("/tmp/operator-plugins-list.json", {
     plugins: [{ id: "codex", enabled: true, status: "loaded" }],
   });
   writeAuthProfileStoreSqlite(path.join(stateDir, "agents", "main", "agent"));
@@ -337,13 +337,13 @@ function createCodexInstallFixture(root: string) {
 
 describe("Codex install helpers", () => {
   it("configures the canonical OpenAI model for the Codex runtime by default", () => {
-    const root = makeTempDir(tempDirs, "openclaw-codex-npm-configure-");
+    const root = makeTempDir(tempDirs, "operator-codex-npm-configure-");
 
     const result = runCodexNpmPluginLiveConfigure(root);
 
     expect(result.status).toBe(0);
     expect(result.stderr).toBe("");
-    const config = JSON.parse(readFileSync(path.join(root, "state", "openclaw.json"), "utf8")) as {
+    const config = JSON.parse(readFileSync(path.join(root, "state", "operator.json"), "utf8")) as {
       agents: {
         defaults: {
           model: { primary: string; fallbacks: string[] };
@@ -363,7 +363,7 @@ describe("Codex install helpers", () => {
   });
 
   it("resolves package roots and package manifests inside managed npm installs", () => {
-    const root = makeTempDir(tempDirs, "openclaw-codex-install-utils-");
+    const root = makeTempDir(tempDirs, "operator-codex-install-utils-");
     const packageRoot = path.join(
       root,
       "state",
@@ -371,7 +371,7 @@ describe("Codex install helpers", () => {
       "projects",
       "codex",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "codex",
     );
     const projectRoot = npmProjectRootForInstalledPackage(packageRoot, "@operator/codex");
@@ -395,7 +395,7 @@ describe("Codex install helpers", () => {
   });
 
   it("accepts a complete on-demand Codex npm install fixture", () => {
-    const root = makeTempDir(tempDirs, "openclaw-codex-on-demand-");
+    const root = makeTempDir(tempDirs, "operator-codex-on-demand-");
     createCodexInstallFixture(root);
 
     const result = runCodexOnDemandAssertions(root);
@@ -405,7 +405,7 @@ describe("Codex install helpers", () => {
   });
 
   it("accepts SQLite-backed session and Codex binding state in the npm live assertion", () => {
-    const root = makeTempDir(tempDirs, "openclaw-codex-npm-live-");
+    const root = makeTempDir(tempDirs, "operator-codex-npm-live-");
     const fixture = createCodexNpmPluginLiveFixture(root);
 
     const result = runCodexNpmPluginLiveAssertions(fixture);
@@ -415,7 +415,7 @@ describe("Codex install helpers", () => {
   });
 
   it("accepts the explicit frozen-target JSON session and sidecar binding contract", () => {
-    const root = makeTempDir(tempDirs, "openclaw-codex-npm-live-legacy-");
+    const root = makeTempDir(tempDirs, "operator-codex-npm-live-legacy-");
     const fixture = createLegacyCodexNpmPluginLiveFixture(root);
 
     const result = runCodexNpmPluginLiveAssertions(fixture);
@@ -425,7 +425,7 @@ describe("Codex install helpers", () => {
   });
 
   it("keeps current targets fail-closed when the SQLite session database is missing", () => {
-    const root = makeTempDir(tempDirs, "openclaw-codex-npm-live-no-sqlite-");
+    const root = makeTempDir(tempDirs, "operator-codex-npm-live-no-sqlite-");
     const fixture = createLegacyCodexNpmPluginLiveFixture(root);
 
     const result = runCodexNpmPluginLiveAssertions({
@@ -438,7 +438,7 @@ describe("Codex install helpers", () => {
   });
 
   it("rejects a Codex binding owned by a stale physical session generation", () => {
-    const root = makeTempDir(tempDirs, "openclaw-codex-npm-live-stale-");
+    const root = makeTempDir(tempDirs, "operator-codex-npm-live-stale-");
     const fixture = createCodexNpmPluginLiveFixture(root, "previous-session");
 
     const result = runCodexNpmPluginLiveAssertions(fixture);
@@ -450,7 +450,7 @@ describe("Codex install helpers", () => {
   });
 
   it("rejects on-demand fixtures missing the managed @openai/codex dependency", () => {
-    const root = makeTempDir(tempDirs, "openclaw-codex-on-demand-missing-");
+    const root = makeTempDir(tempDirs, "operator-codex-on-demand-missing-");
     createCodexInstallFixture(root);
     rmSync(path.join(root, "state", "npm", "projects", "codex", "node_modules", "@openai"), {
       force: true,
@@ -464,7 +464,7 @@ describe("Codex install helpers", () => {
   });
 
   it("rejects on-demand fixtures missing the managed Codex executable", () => {
-    const root = makeTempDir(tempDirs, "openclaw-codex-on-demand-missing-bin-");
+    const root = makeTempDir(tempDirs, "operator-codex-on-demand-missing-bin-");
     createCodexInstallFixture(root);
     rmSync(
       path.join(

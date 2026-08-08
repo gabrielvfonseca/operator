@@ -541,7 +541,7 @@ describe("gateway lock", () => {
           platform: "linux",
           readProcessCmdline: () => [
             "node",
-            "/srv/openclaw/operator.mjs",
+            "/srv/operator/operator.mjs",
             "doctor",
             "--state-sqlite",
             "compact",
@@ -751,7 +751,7 @@ describe("gateway lock", () => {
         staleMs: 10_000,
         platform: "darwin",
         port: 18789,
-        readProcessCmdline: () => ["/usr/local/bin/openclaw", "gateway", "run"],
+        readProcessCmdline: () => ["/usr/local/bin/operator", "gateway", "run"],
       });
       await expect(pending).rejects.toBeInstanceOf(GatewayLockError);
     } finally {
@@ -779,7 +779,7 @@ describe("gateway lock", () => {
           now = 10;
         },
         lockDir: resolveTestLockDir(),
-        readProcessCmdline: () => ["/usr/local/bin/openclaw", "gateway", "run"],
+        readProcessCmdline: () => ["/usr/local/bin/operator", "gateway", "run"],
       }),
     ).rejects.toBeInstanceOf(GatewayLockError);
 
@@ -993,7 +993,7 @@ describe("gateway lock", () => {
       staleMs: 10_000,
       platform: "darwin",
       port: 18789,
-      readProcessCmdline: () => ["/usr/local/bin/openclaw", "gateway", "run", "--port", "18789"],
+      readProcessCmdline: () => ["/usr/local/bin/operator", "gateway", "run", "--port", "18789"],
     });
     await expect(pending).rejects.toBeInstanceOf(GatewayLockError);
 

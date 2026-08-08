@@ -1,4 +1,4 @@
-// operator Test State tests cover operator test state script behavior.
+// Openclaw Test State tests cover operator test state script behavior.
 import { execFile } from "node:child_process";
 import fs from "node:fs/promises";
 import os from "node:os";
@@ -23,7 +23,7 @@ function escapeRegex(value: string): string {
 function cleanupTestStateHomeTrap(): string {
   return [
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-    'cleanup_operator_test_state_home() { [ -z "${OPERATOR_TEST_STATE_HOME:-}" ] || rm -rf "$OPERATOR_TEST_STATE_HOME"; }',
+    'cleanup_operator_test_state_home() { [ -z "${OPENCLAW_TEST_STATE_HOME:-}" ] || rm -rf "$OPENCLAW_TEST_STATE_HOME"; }',
     "trap cleanup_operator_test_state_home EXIT",
   ].join("; ");
 }
@@ -58,14 +58,14 @@ describe("scripts/lib/operator-test-state", () => {
       expect(payload.stateDir).toBe(path.join(payload.home, ".operator"));
       expect(payload.configPath).toBe(path.join(payload.stateDir, "operator.json"));
       expect(payload.workspaceDir).toBe(path.join(payload.home, "workspace"));
-      expect(payload.env.OPERATOR_AUTH_PROFILE_SECRET_KEY).toMatch(secretKeyPattern);
+      expect(payload.env.OPENCLAW_AUTH_PROFILE_SECRET_KEY).toMatch(secretKeyPattern);
       expect(payload.env).toEqual({
         HOME: payload.home,
         USERPROFILE: payload.home,
-        OPERATOR_HOME: payload.home,
-        OPERATOR_STATE_DIR: payload.stateDir,
-        OPERATOR_CONFIG_PATH: payload.configPath,
-        OPERATOR_AUTH_PROFILE_SECRET_KEY: payload.env.OPERATOR_AUTH_PROFILE_SECRET_KEY,
+        OPENCLAW_HOME: payload.home,
+        OPENCLAW_STATE_DIR: payload.stateDir,
+        OPENCLAW_CONFIG_PATH: payload.configPath,
+        OPENCLAW_AUTH_PROFILE_SECRET_KEY: payload.env.OPENCLAW_AUTH_PROFILE_SECRET_KEY,
       });
       expect(payload.config).toEqual({
         update: {
@@ -76,19 +76,19 @@ describe("scripts/lib/operator-test-state", () => {
 
       const envFileText = await fs.readFile(envFile, "utf8");
       expect(envFileText).toContain("export HOME=");
-      expect(envFileText).toContain("export OPERATOR_HOME=");
-      expect(envFileText).toContain("export OPERATOR_STATE_DIR=");
-      expect(envFileText).toContain("export OPERATOR_CONFIG_PATH=");
-      expect(envFileText).toContain("export OPERATOR_AUTH_PROFILE_SECRET_KEY=");
+      expect(envFileText).toContain("export OPENCLAW_HOME=");
+      expect(envFileText).toContain("export OPENCLAW_STATE_DIR=");
+      expect(envFileText).toContain("export OPENCLAW_CONFIG_PATH=");
+      expect(envFileText).toContain("export OPENCLAW_AUTH_PROFILE_SECRET_KEY=");
 
       const probe = await execFileAsync("bash", [
         "-lc",
-        `source ${shellQuote(envFile)}; node -e 'const fs=require("node:fs"); const config=JSON.parse(fs.readFileSync(process.env.OPERATOR_CONFIG_PATH,"utf8")); process.stdout.write(JSON.stringify({home:process.env.HOME,stateDir:process.env.OPERATOR_STATE_DIR,secretKey:process.env.OPERATOR_AUTH_PROFILE_SECRET_KEY,channel:config.update.channel}));'`,
+        `source ${shellQuote(envFile)}; node -e 'const fs=require("node:fs"); const config=JSON.parse(fs.readFileSync(process.env.OPENCLAW_CONFIG_PATH,"utf8")); process.stdout.write(JSON.stringify({home:process.env.HOME,stateDir:process.env.OPENCLAW_STATE_DIR,secretKey:process.env.OPENCLAW_AUTH_PROFILE_SECRET_KEY,channel:config.update.channel}));'`,
       ]);
       expect(JSON.parse(probe.stdout)).toEqual({
         home: payload.home,
         stateDir: payload.stateDir,
-        secretKey: payload.env.OPERATOR_AUTH_PROFILE_SECRET_KEY,
+        secretKey: payload.env.OPENCLAW_AUTH_PROFILE_SECRET_KEY,
         channel: "stable",
       });
       await fs.rm(payload.root, { recursive: true, force: true });
@@ -111,18 +111,18 @@ describe("scripts/lib/operator-test-state", () => {
       ]);
       expect(stdout).toContain(
         // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-        'OPERATOR_TEST_STATE_TMP_ROOT="${OPERATOR_TEST_STATE_TMPDIR:-${TMPDIR:-/tmp}}"',
+        'OPENCLAW_TEST_STATE_TMP_ROOT="${OPENCLAW_TEST_STATE_TMPDIR:-${TMPDIR:-/tmp}}"',
       );
       expect(stdout).toContain(
-        'mktemp -d "$OPERATOR_TEST_STATE_TMP_ROOT/operator-update-channel-switch-update-stable-home.XXXXXX"',
+        'mktemp -d "$OPENCLAW_TEST_STATE_TMP_ROOT/operator-update-channel-switch-update-stable-home.XXXXXX"',
       );
-      expect(stdout).toContain("OPERATOR_TEST_STATE_JSON");
+      expect(stdout).toContain("OPENCLAW_TEST_STATE_JSON");
       expect(stdout).toContain('"channel": "stable"');
       await fs.writeFile(snippetFile, stdout, "utf8");
 
       const probe = await execFileAsync("bash", [
         "-lc",
-        `${cleanupTestStateHomeTrap()}; source ${shellQuote(snippetFile)}; node -e 'const fs=require("node:fs"); const config=JSON.parse(fs.readFileSync(process.env.OPERATOR_CONFIG_PATH,"utf8")); process.stdout.write(JSON.stringify({home:process.env.HOME,operatorHome:process.env.OPERATOR_HOME,workspace:process.env.OPERATOR_TEST_WORKSPACE_DIR,secretKey:process.env.OPERATOR_AUTH_PROFILE_SECRET_KEY,channel:config.update.channel}));'`,
+        `${cleanupTestStateHomeTrap()}; source ${shellQuote(snippetFile)}; node -e 'const fs=require("node:fs"); const config=JSON.parse(fs.readFileSync(process.env.OPENCLAW_CONFIG_PATH,"utf8")); process.stdout.write(JSON.stringify({home:process.env.HOME,operatorHome:process.env.OPENCLAW_HOME,workspace:process.env.OPENCLAW_TEST_WORKSPACE_DIR,secretKey:process.env.OPENCLAW_AUTH_PROFILE_SECRET_KEY,channel:config.update.channel}));'`,
       ]);
 
       const payload = JSON.parse(probe.stdout);
@@ -138,7 +138,7 @@ describe("scripts/lib/operator-test-state", () => {
       const customTemp = path.join(tempRoot, "state-tmp");
       const customProbe = await execFileAsync("bash", [
         "-lc",
-        `${cleanupTestStateHomeTrap()}; export OPERATOR_TEST_STATE_TMPDIR=${shellQuote(customTemp)}; source ${shellQuote(snippetFile)}; node -e 'process.stdout.write(JSON.stringify({home:process.env.HOME,tmpRoot:process.env.OPERATOR_TEST_STATE_TMP_ROOT}));'`,
+        `${cleanupTestStateHomeTrap()}; export OPENCLAW_TEST_STATE_TMPDIR=${shellQuote(customTemp)}; source ${shellQuote(snippetFile)}; node -e 'process.stdout.write(JSON.stringify({home:process.env.HOME,tmpRoot:process.env.OPENCLAW_TEST_STATE_TMP_ROOT}));'`,
       ]);
       const customPayload = JSON.parse(customProbe.stdout);
       expect(customPayload.tmpRoot).toBe(customTemp);
@@ -150,7 +150,7 @@ describe("scripts/lib/operator-test-state", () => {
 
       const trailingSlashProbe = await execFileAsync("bash", [
         "-lc",
-        `${cleanupTestStateHomeTrap()}; export OPERATOR_TEST_STATE_TMPDIR=${shellQuote(`${customTemp}/`)}; source ${shellQuote(snippetFile)}; node -e 'process.stdout.write(JSON.stringify({home:process.env.HOME,tmpRoot:process.env.OPERATOR_TEST_STATE_TMP_ROOT,stateDir:process.env.OPERATOR_STATE_DIR}));'`,
+        `${cleanupTestStateHomeTrap()}; export OPENCLAW_TEST_STATE_TMPDIR=${shellQuote(`${customTemp}/`)}; source ${shellQuote(snippetFile)}; node -e 'process.stdout.write(JSON.stringify({home:process.env.HOME,tmpRoot:process.env.OPENCLAW_TEST_STATE_TMP_ROOT,stateDir:process.env.OPENCLAW_STATE_DIR}));'`,
       ]);
       const trailingSlashPayload = JSON.parse(trailingSlashProbe.stdout);
       expect(trailingSlashPayload.tmpRoot).toBe(customTemp);
@@ -191,7 +191,7 @@ describe("scripts/lib/operator-test-state", () => {
 
       const shellProbe = await execFileAsync("bash", [
         "-lc",
-        `${cleanupTestStateHomeTrap()}; export PATH=${shellQuote(fakeBin)}:$PATH; source ${shellQuote(snippetFile)}; printf '%s' "$OPERATOR_AUTH_PROFILE_SECRET_KEY"`,
+        `${cleanupTestStateHomeTrap()}; export PATH=${shellQuote(fakeBin)}:$PATH; source ${shellQuote(snippetFile)}; printf '%s' "$OPENCLAW_AUTH_PROFILE_SECRET_KEY"`,
       ]);
       expect(shellProbe.stdout).toMatch(secretKeyPattern);
 
@@ -203,7 +203,7 @@ describe("scripts/lib/operator-test-state", () => {
 
       const functionProbe = await execFileAsync("bash", [
         "-lc",
-        `${cleanupTestStateHomeTrap()}; export PATH=${shellQuote(fakeBin)}:$PATH; export OPERATOR_TEST_STATE_TMPDIR=${shellQuote(path.join(tempRoot, "function-tmp"))}; source ${shellQuote(functionFile)}; operator_test_state_create "path node" minimal; printf '%s' "$OPERATOR_AUTH_PROFILE_SECRET_KEY"`,
+        `${cleanupTestStateHomeTrap()}; export PATH=${shellQuote(fakeBin)}:$PATH; export OPENCLAW_TEST_STATE_TMPDIR=${shellQuote(path.join(tempRoot, "function-tmp"))}; source ${shellQuote(functionFile)}; operator_test_state_create "path node" minimal; printf '%s' "$OPENCLAW_AUTH_PROFILE_SECRET_KEY"`,
       ]);
       expect(functionProbe.stdout).toMatch(secretKeyPattern);
     } finally {
@@ -252,13 +252,13 @@ describe("scripts/lib/operator-test-state", () => {
     try {
       const { stdout } = await execFileAsync(process.execPath, [scriptPath, "shell-function"]);
       expect(stdout).toContain("operator_test_state_create()");
-      expect(stdout).toContain("unset OPERATOR_AGENT_DIR");
+      expect(stdout).toContain("unset OPENCLAW_AGENT_DIR");
       expect(stdout).toContain("update-stable");
       await fs.writeFile(snippetFile, stdout, "utf8");
 
       const probe = await execFileAsync("bash", [
         "-lc",
-        `${cleanupTestStateHomeTrap()}; export OPERATOR_TEST_STATE_TMPDIR=${shellQuote(path.join(tempRoot, "function-tmp"))}; source ${shellQuote(snippetFile)}; export OPERATOR_AGENT_DIR=/tmp/outside-agent; operator_test_state_create "onboard case" minimal; node -e 'const fs=require("node:fs"); const config=JSON.parse(fs.readFileSync(process.env.OPERATOR_CONFIG_PATH,"utf8")); process.stdout.write(JSON.stringify({home:process.env.HOME,tmpDir:process.env.OPERATOR_TEST_STATE_TMPDIR,agentDir:process.env.OPERATOR_AGENT_DIR || null,workspace:process.env.OPERATOR_TEST_WORKSPACE_DIR,secretKey:process.env.OPERATOR_AUTH_PROFILE_SECRET_KEY,config}));'`,
+        `${cleanupTestStateHomeTrap()}; export OPENCLAW_TEST_STATE_TMPDIR=${shellQuote(path.join(tempRoot, "function-tmp"))}; source ${shellQuote(snippetFile)}; export OPENCLAW_AGENT_DIR=/tmp/outside-agent; operator_test_state_create "onboard case" minimal; node -e 'const fs=require("node:fs"); const config=JSON.parse(fs.readFileSync(process.env.OPENCLAW_CONFIG_PATH,"utf8")); process.stdout.write(JSON.stringify({home:process.env.HOME,tmpDir:process.env.OPENCLAW_TEST_STATE_TMPDIR,agentDir:process.env.OPENCLAW_AGENT_DIR || null,workspace:process.env.OPENCLAW_TEST_WORKSPACE_DIR,secretKey:process.env.OPENCLAW_AUTH_PROFILE_SECRET_KEY,config}));'`,
       ]);
 
       const payload = JSON.parse(probe.stdout);
@@ -272,7 +272,7 @@ describe("scripts/lib/operator-test-state", () => {
       const trailingTmpDir = path.join(tempRoot, "function-trailing-tmp");
       const trailingProbe = await execFileAsync("bash", [
         "-lc",
-        `${cleanupTestStateHomeTrap()}; export OPERATOR_TEST_STATE_TMPDIR=${shellQuote(`${trailingTmpDir}/`)}; source ${shellQuote(snippetFile)}; operator_test_state_create "onboard case" minimal; node -e 'process.stdout.write(JSON.stringify({home:process.env.HOME,tmpDir:process.env.OPERATOR_TEST_STATE_TMPDIR,stateDir:process.env.OPERATOR_STATE_DIR,workspace:process.env.OPERATOR_TEST_WORKSPACE_DIR}));'`,
+        `${cleanupTestStateHomeTrap()}; export OPENCLAW_TEST_STATE_TMPDIR=${shellQuote(`${trailingTmpDir}/`)}; source ${shellQuote(snippetFile)}; operator_test_state_create "onboard case" minimal; node -e 'process.stdout.write(JSON.stringify({home:process.env.HOME,tmpDir:process.env.OPENCLAW_TEST_STATE_TMPDIR,stateDir:process.env.OPENCLAW_STATE_DIR,workspace:process.env.OPENCLAW_TEST_WORKSPACE_DIR}));'`,
       ]);
 
       const trailingPayload = JSON.parse(trailingProbe.stdout);
@@ -283,7 +283,7 @@ describe("scripts/lib/operator-test-state", () => {
       const existingHome = path.join(tempRoot, "existing-home");
       const existingProbe = await execFileAsync("bash", [
         "-lc",
-        `source ${shellQuote(snippetFile)}; operator_test_state_create ${shellQuote(existingHome)} minimal; firstKey="$OPERATOR_AUTH_PROFILE_SECRET_KEY"; export firstKey; printf '{"kept":true}\\n' > "$OPERATOR_CONFIG_PATH"; operator_test_state_create ${shellQuote(existingHome)} empty; node -e 'const fs=require("node:fs"); const config=JSON.parse(fs.readFileSync(process.env.OPERATOR_CONFIG_PATH,"utf8")); process.stdout.write(JSON.stringify({home:process.env.HOME,secretKey:process.env.OPERATOR_AUTH_PROFILE_SECRET_KEY,firstKey:process.env.firstKey,config}));'`,
+        `source ${shellQuote(snippetFile)}; operator_test_state_create ${shellQuote(existingHome)} minimal; firstKey="$OPENCLAW_AUTH_PROFILE_SECRET_KEY"; export firstKey; printf '{"kept":true}\\n' > "$OPENCLAW_CONFIG_PATH"; operator_test_state_create ${shellQuote(existingHome)} empty; node -e 'const fs=require("node:fs"); const config=JSON.parse(fs.readFileSync(process.env.OPENCLAW_CONFIG_PATH,"utf8")); process.stdout.write(JSON.stringify({home:process.env.HOME,secretKey:process.env.OPENCLAW_AUTH_PROFILE_SECRET_KEY,firstKey:process.env.firstKey,config}));'`,
       ]);
 
       const existingPayload = JSON.parse(existingProbe.stdout);
@@ -299,7 +299,7 @@ describe("scripts/lib/operator-test-state", () => {
     const scriptText = await fs.readFile(onboardDockerScriptPath, "utf8");
     const scenarioText = await fs.readFile("scripts/e2e/lib/onboard/scenario.sh", "utf8");
 
-    expect(scriptText).toContain("OPERATOR_TEST_STATE_FUNCTION_B64");
+    expect(scriptText).toContain("OPENCLAW_TEST_STATE_FUNCTION_B64");
     expect(scriptText).toContain("scripts/e2e/lib/onboard/scenario.sh");
     expect(scenarioText).toContain("set_isolated_operator_env local-basic");
     expect(scenarioText).toContain("run_wizard_cmd channels channels");

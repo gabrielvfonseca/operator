@@ -148,7 +148,7 @@ describe("server-context hot-reload profiles", () => {
   });
 
   it("forProfile hot-reloads newly added profiles from config", () => {
-    // Start with only openclaw profile
+    // Start with only operator profile
     // 1. Prime the cache by calling getRuntimeConfig() first
     const cfg = getRuntimeConfig();
     const resolved = resolveBrowserConfig(cfg.browser, cfg);
@@ -305,9 +305,9 @@ describe("server-context hot-reload profiles", () => {
   it("captures the old profile before adopting changed invariants", async () => {
     const cfg = getRuntimeConfig();
     const resolved = resolveBrowserConfig(cfg.browser, cfg);
-    const openclawProfile = requireValue(
+    const operatorProfile = requireValue(
       resolveProfile(resolved, "@gabrielvfonseca/operator"),
-      "openclaw profile missing",
+      "operator profile missing",
     );
     const state: BrowserServerState = {
       server: null,
@@ -316,14 +316,14 @@ describe("server-context hot-reload profiles", () => {
       profiles: new Map([
         [
           "@gabrielvfonseca/operator",
-          runtimeState(openclawProfile, { pid: 123 } as never, "tab-1"),
+          runtimeState(operatorProfile, { pid: 123 } as never, "tab-1"),
         ],
       ]),
     };
 
     mockState.cfgProfiles.operator = { cdpPort: 19999, color: "#FF4500" };
     mockState.cachedConfig = null;
-    const oldCdpUrl = openclawProfile.cdpUrl;
+    const oldCdpUrl = operatorProfile.cdpUrl;
 
     refreshResolvedBrowserConfigFromDisk({
       current: state,
@@ -332,7 +332,7 @@ describe("server-context hot-reload profiles", () => {
 
     const runtime = requireValue(
       state.profiles.get("@gabrielvfonseca/operator"),
-      "openclaw runtime missing",
+      "operator runtime missing",
     );
     expect(runtime.profile.cdpPort).toBe(19999);
     expect(runtime.lastTargetId).toBeNull();
@@ -349,11 +349,11 @@ describe("server-context hot-reload profiles", () => {
   it("marks local managed runtime state for reconcile when profile headless changes", () => {
     const cfg = getRuntimeConfig();
     const resolved = resolveBrowserConfig(cfg.browser, cfg);
-    const openclawProfile = requireValue(
+    const operatorProfile = requireValue(
       resolveProfile(resolved, "@gabrielvfonseca/operator"),
-      "openclaw profile missing",
+      "operator profile missing",
     );
-    expect(openclawProfile.headless).toBe(true);
+    expect(operatorProfile.headless).toBe(true);
     const state: BrowserServerState = {
       server: null,
       port: 18791,
@@ -361,7 +361,7 @@ describe("server-context hot-reload profiles", () => {
       profiles: new Map([
         [
           "@gabrielvfonseca/operator",
-          runtimeState(openclawProfile, { pid: 123 } as never, "tab-1"),
+          runtimeState(operatorProfile, { pid: 123 } as never, "tab-1"),
         ],
       ]),
     };
@@ -380,7 +380,7 @@ describe("server-context hot-reload profiles", () => {
 
     const runtime = requireValue(
       state.profiles.get("@gabrielvfonseca/operator"),
-      "openclaw runtime missing",
+      "operator runtime missing",
     );
     expect(runtime.profile.headless).toBe(false);
     expect(runtime.lastTargetId).toBeNull();
@@ -396,11 +396,11 @@ describe("server-context hot-reload profiles", () => {
     mockState.cachedConfig = null;
     const cfg = getRuntimeConfig();
     const resolved = resolveBrowserConfig(cfg.browser, cfg);
-    const openclawProfile = requireValue(
+    const operatorProfile = requireValue(
       resolveProfile(resolved, "@gabrielvfonseca/operator"),
-      "openclaw profile missing",
+      "operator profile missing",
     );
-    expect(openclawProfile.executablePath).toBe("/usr/bin/chrome-old");
+    expect(operatorProfile.executablePath).toBe("/usr/bin/chrome-old");
     const state: BrowserServerState = {
       server: null,
       port: 18791,
@@ -408,7 +408,7 @@ describe("server-context hot-reload profiles", () => {
       profiles: new Map([
         [
           "@gabrielvfonseca/operator",
-          runtimeState(openclawProfile, { pid: 123 } as never, "tab-1"),
+          runtimeState(operatorProfile, { pid: 123 } as never, "tab-1"),
         ],
       ]),
     };
@@ -427,7 +427,7 @@ describe("server-context hot-reload profiles", () => {
 
     const runtime = requireValue(
       state.profiles.get("@gabrielvfonseca/operator"),
-      "openclaw runtime missing",
+      "operator runtime missing",
     );
     expect(runtime.profile.executablePath).toBe("/usr/bin/chrome-new");
     expect(runtime.lastTargetId).toBeNull();

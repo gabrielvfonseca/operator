@@ -727,7 +727,7 @@ function normalizeFallbackFailureReason(stepName: string): NonNullable<UpdateRun
     case "global install verify":
     case "global install swap":
       return "global-install-failed";
-    case "openclaw doctor":
+    case "operator doctor":
       return "doctor-failed";
     case "ui:build (post-doctor repair)":
       return "ui-build-failed";
@@ -869,7 +869,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
       status: "error",
       mode: "unknown",
       root: gitRoot,
-      reason: "not-openclaw-root",
+      reason: "not-operator-root",
       steps: [],
       durationMs: Date.now() - startedAt,
     };
@@ -1612,7 +1612,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
         .catch(() => false);
       if (!doctorEntryExists) {
         steps.push({
-          name: "openclaw doctor entry",
+          name: "operator doctor entry",
           command: `verify ${doctorEntry}`,
           cwd: gitRoot,
           durationMs: 0,
@@ -1636,7 +1636,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
         ...(doctorPolicy.fix ? ["--fix"] : []),
       ];
       const doctorStep = await runStep(
-        step("openclaw doctor", doctorArgv, gitRoot, {
+        step("operator doctor", doctorArgv, gitRoot, {
           OPERATOR_UPDATE_IN_PROGRESS: "1",
           [DOCTOR_DISABLE_CROSS_STATE_DIR_IMPORTS_ENV]: "1",
           ...(opts.deferConfiguredPluginInstallRepair
@@ -1725,7 +1725,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
     return {
       status: "error",
       mode: "unknown",
-      reason: "not-openclaw-root",
+      reason: "not-operator-root",
       steps: [],
       durationMs: Date.now() - startedAt,
     };
@@ -1822,7 +1822,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
         });
         return await runStep({
           runCommand,
-          name: "openclaw doctor",
+          name: "operator doctor",
           argv: [
             doctorNodePath,
             doctorEntry,

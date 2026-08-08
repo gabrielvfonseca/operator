@@ -13,7 +13,7 @@ const { audioPortMock } = vi.hoisted(() => ({
   },
 }));
 
-vi.mock("openclaw/plugin-sdk/outbound-media", () => ({
+vi.mock("operator/plugin-sdk/outbound-media", () => ({
   loadOutboundMediaFromUrl: vi.fn(),
 }));
 
@@ -71,12 +71,12 @@ import { OUTBOUND_ERROR_CODES } from "./outbound-types.js";
 import { sendMedia as sendOutboundMedia } from "./outbound.js";
 import { sendMedia as senderSendMedia } from "./sender.js";
 
-vi.mock("openclaw/plugin-sdk/security-runtime", { spy: true });
+vi.mock("operator/plugin-sdk/security-runtime", { spy: true });
 
 const mockedLoadOutboundMediaFromUrl = vi.mocked(loadOutboundMediaFromUrl);
 const mockedSenderSendMedia = vi.mocked(senderSendMedia);
 
-let openclawHome: string;
+let operatorHome: string;
 let originalOperatorHome: string | undefined;
 
 function makeCtx() {
@@ -105,10 +105,10 @@ beforeEach(async () => {
   originalOperatorHome = process.env.OPERATOR_HOME;
   // realpath: macOS tmpdir is a /var -> /private/var symlink and trusted-root
   // resolution returns canonicalized paths that assertions compare against.
-  openclawHome = await fs.realpath(
+  operatorHome = await fs.realpath(
     await fs.mkdtemp(path.join(os.tmpdir(), "qqbot-host-read-voice-")),
   );
-  process.env.OPERATOR_HOME = openclawHome;
+  process.env.OPERATOR_HOME = operatorHome;
   audioPortMock.audioFileToSilkBase64.mockResolvedValue(undefined);
   audioPortMock.isAudioFile.mockReturnValue(true);
   audioPortMock.shouldTranscodeVoice.mockReturnValue(false);
@@ -121,8 +121,8 @@ afterEach(async () => {
   } else {
     process.env.OPERATOR_HOME = originalOperatorHome;
   }
-  if (openclawHome) {
-    await fs.rm(openclawHome, { recursive: true, force: true });
+  if (operatorHome) {
+    await fs.rm(operatorHome, { recursive: true, force: true });
   }
 });
 
@@ -241,7 +241,7 @@ describe("trySendViaHostRead error handling", () => {
   });
 
   it("falls back to normal local sends for trusted media paths outside host-read roots", async () => {
-    const trustedMediaDir = path.join(openclawHome, ".operator", "media", "qqbot");
+    const trustedMediaDir = path.join(operatorHome, ".operator", "media", "qqbot");
     await fs.mkdir(trustedMediaDir, { recursive: true });
     const trustedMediaPath = path.join(trustedMediaDir, "trusted-report.docx");
     await fs.writeFile(trustedMediaPath, Buffer.from("trusted report"));
@@ -513,11 +513,11 @@ describe("trySendViaHostRead error handling", () => {
 
   it("loads virtual-root workspace media through the real outbound loader", async () => {
     const actualOutboundMedia = await vi.importActual<
-      typeof import("openclaw/plugin-sdk/outbound-media")
-    >("openclaw/plugin-sdk/outbound-media");
+      typeof import("operator/plugin-sdk/outbound-media")
+    >("operator/plugin-sdk/outbound-media");
     mockedLoadOutboundMediaFromUrl.mockImplementation(actualOutboundMedia.loadOutboundMediaFromUrl);
     mockedSenderSendMedia.mockResolvedValue({ id: "media-1", timestamp: 123 });
-    const workspaceDir = path.join(openclawHome, "agent-workspace");
+    const workspaceDir = path.join(operatorHome, "agent-workspace");
     const reportPath = path.join(workspaceDir, "attachments", "report.txt");
     await fs.mkdir(path.dirname(reportPath), { recursive: true });
     await fs.writeFile(reportPath, "hello");

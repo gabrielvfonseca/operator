@@ -29,7 +29,7 @@ describe("OperatorSchema marketplaces config", () => {
             verification: { mode: "unsigned" },
           },
           acme: {
-            url: "https://packages.acme.example/openclaw/feed",
+            url: "https://packages.acme.example/operator/feed",
             verification: {
               mode: "signed",
               keys: [
@@ -57,7 +57,7 @@ describe("OperatorSchema marketplaces config", () => {
     });
 
     const acmeFeed = expectDefined(marketplaces?.feeds?.acme, "Acme marketplace feed");
-    expect(acmeFeed.url).toBe("https://packages.acme.example/openclaw/feed");
+    expect(acmeFeed.url).toBe("https://packages.acme.example/operator/feed");
     expect(acmeFeed.verification).toEqual({
       mode: "signed",
       keys: [
@@ -81,11 +81,11 @@ describe("OperatorSchema marketplaces config", () => {
   });
 
   it.each([
-    "http://packages.acme.example/openclaw/feed",
-    "https://token@packages.acme.example/openclaw/feed",
-    "https://user:pass@packages.acme.example/openclaw/feed",
-    "https://packages.acme.example/openclaw/feed?token=secret",
-    "https://packages.acme.example/openclaw/feed#access-token",
+    "http://packages.acme.example/operator/feed",
+    "https://token@packages.acme.example/operator/feed",
+    "https://user:pass@packages.acme.example/operator/feed",
+    "https://packages.acme.example/operator/feed?token=secret",
+    "https://packages.acme.example/operator/feed#access-token",
     "not a url",
   ])("rejects invalid or auth-bearing hosted feed URL %s without throwing", (url) => {
     expect(() =>
@@ -115,7 +115,7 @@ describe("OperatorSchema marketplaces config", () => {
         marketplaces: {
           feeds: {
             acme: {
-              url: "https://packages.acme.example/openclaw/feed",
+              url: "https://packages.acme.example/operator/feed",
               auth: { scheme: "bearer", secret: "token" },
             },
           },
@@ -127,7 +127,7 @@ describe("OperatorSchema marketplaces config", () => {
         marketplaces: {
           feeds: {
             acme: {
-              url: "https://packages.acme.example/openclaw/feed",
+              url: "https://packages.acme.example/operator/feed",
               refresh: { onStartup: "if-stale" },
             },
           },
@@ -170,7 +170,7 @@ describe("OperatorSchema marketplaces config", () => {
           marketplaces: {
             feeds: {
               acme: {
-                url: "https://packages.acme.example/openclaw/feed",
+                url: "https://packages.acme.example/operator/feed",
                 verification,
               },
             },
@@ -211,7 +211,7 @@ describe("OperatorSchema marketplaces config", () => {
         marketplaces: {
           feeds: {
             acme: {
-              url: "https://packages.acme.example/openclaw/feed",
+              url: "https://packages.acme.example/operator/feed",
               verification,
             },
           },

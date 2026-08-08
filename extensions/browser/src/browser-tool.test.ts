@@ -74,7 +74,7 @@ const browserActionsMocks = vi.hoisted(() => ({
     ok: true,
     targetId: "tab-1",
     download: {
-      path: "/tmp/openclaw/downloads/report.pdf",
+      path: "/tmp/operator/downloads/report.pdf",
       suggestedFilename: "report.pdf",
       url: "https://example.com/report.pdf",
     },
@@ -85,7 +85,7 @@ const browserActionsMocks = vi.hoisted(() => ({
     ok: true,
     targetId: "tab-1",
     download: {
-      path: "/tmp/openclaw/downloads/export.csv",
+      path: "/tmp/operator/downloads/export.csv",
       suggestedFilename: "export.csv",
       url: "https://example.com/export.csv",
     },
@@ -158,10 +158,10 @@ const configMocks = vi.hoisted(() => ({
     }
   >(() => ({ browser: {} })),
 }));
-vi.mock("openclaw/plugin-sdk/runtime-config-snapshot", async () => {
+vi.mock("operator/plugin-sdk/runtime-config-snapshot", async () => {
   const actual = await vi.importActual<
-    typeof import("openclaw/plugin-sdk/runtime-config-snapshot")
-  >("openclaw/plugin-sdk/runtime-config-snapshot");
+    typeof import("operator/plugin-sdk/runtime-config-snapshot")
+  >("operator/plugin-sdk/runtime-config-snapshot");
   return {
     ...actual,
     getRuntimeConfig: configMocks.loadConfig,
@@ -528,7 +528,7 @@ describe("browser tool download actions", () => {
       profile: "@gabrielvfonseca/operator",
     });
     expect(result?.details).toMatchObject({
-      download: { path: "/tmp/openclaw/downloads/report.pdf" },
+      download: { path: "/tmp/operator/downloads/report.pdf" },
     });
     expect(sessionTabRegistryMocks.touchSessionBrowserTab).toHaveBeenCalledWith(
       expect.objectContaining({ sessionKey: "agent:main:main", targetId: "tab-1" }),
@@ -560,7 +560,7 @@ describe("browser tool download actions", () => {
         result: {
           ok: true,
           targetId: "tab-1",
-          download: { path: "/tmp/openclaw/downloads/export.csv" },
+          download: { path: "/tmp/operator/downloads/export.csv" },
         },
       },
     });
@@ -593,7 +593,7 @@ describe("browser tool download actions", () => {
         result: {
           ok: true,
           targetId: "tab-1",
-          download: { path: "/tmp/openclaw/downloads/report.pdf" },
+          download: { path: "/tmp/operator/downloads/report.pdf" },
         },
       },
     });

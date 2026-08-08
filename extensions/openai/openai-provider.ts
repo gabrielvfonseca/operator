@@ -701,7 +701,7 @@ function buildOpenAIUnknownModelHint(modelId: string): string | undefined {
   if (normalized !== OPENAI_GPT_53_CODEX_SPARK_MODEL_ID) {
     return undefined;
   }
-  return "gpt-5.3-codex-spark is available only through ChatGPT/Codex OAuth. Run `openclaw models auth login --provider openai` and use openai/gpt-5.3-codex-spark with that OAuth profile; OpenAI API-key auth cannot use this model.";
+  return "gpt-5.3-codex-spark is available only through ChatGPT/Codex OAuth. Run `operator models auth login --provider openai` and use openai/gpt-5.3-codex-spark with that OAuth profile; OpenAI API-key auth cannot use this model.";
 }
 
 function resolveOpenAIGptForwardCompatModel(ctx: ProviderResolveDynamicModelContext) {
@@ -884,7 +884,7 @@ export function buildOpenAIProvider(): ProviderPlugin {
         const auth = ctx.resolveProviderAuth(PROVIDER_ID);
         try {
           const { resolveApiKeyForProvider, resolveProviderAuthProfileMetadata } = await import(
-            "openclaw/plugin-sdk/provider-auth-runtime"
+            "operator/plugin-sdk/provider-auth-runtime"
           );
           const runtimeAuth = await resolveApiKeyForProvider({
             provider: PROVIDER_ID,

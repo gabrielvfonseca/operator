@@ -10,9 +10,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const resolveConfiguredBindingRouteMock = vi.hoisted(() => vi.fn());
 
-vi.mock("openclaw/plugin-sdk/conversation-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/conversation-runtime")>(
-    "openclaw/plugin-sdk/conversation-runtime",
+vi.mock("operator/plugin-sdk/conversation-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/conversation-runtime")>(
+    "operator/plugin-sdk/conversation-runtime",
   );
   return {
     ...actual,
@@ -413,7 +413,7 @@ describe("thread-level session keys", () => {
       account,
       message: buildChannelMessage({
         channel: "C0AHZFCAS1K",
-        text: "https://github.com/openclaw/openclaw/issues/50621",
+        text: "https://github.com/operator/operator/issues/50621",
         ts: "1777244714.000100",
         thread_ts: rootTs,
         parent_user_id: "U1",
@@ -456,7 +456,7 @@ describe("thread-level session keys", () => {
       account,
       message: buildChannelMessage({
         channel: "C0AHZFCAS1K",
-        text: "https://github.com/openclaw/openclaw/issues/50621",
+        text: "https://github.com/operator/operator/issues/50621",
         ts: "1777244714.000100",
         thread_ts: rootTs,
       }),

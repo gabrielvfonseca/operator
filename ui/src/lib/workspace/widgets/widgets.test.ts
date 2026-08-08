@@ -76,10 +76,10 @@ describe("table mapping", () => {
 describe("sessions mapping", () => {
   it("renders a link per session and an empty state", () => {
     const populated = renderToContainer(
-      renderSessions(widget(), { sessions: [{ key: "main:1", displayName: "One" }] }, "/openclaw"),
+      renderSessions(widget(), { sessions: [{ key: "main:1", displayName: "One" }] }, "/operator"),
     );
     expect(populated.querySelector(".workspace-list__link")?.getAttribute("href")).toBe(
-      "/openclaw/chat?session=main%3A1",
+      "/operator/chat?session=main%3A1",
     );
     const empty = renderToContainer(renderSessions(widget(), { sessions: [] }));
     expect(empty.querySelector(".workspace-widget__placeholder")).not.toBeNull();

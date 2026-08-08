@@ -107,7 +107,7 @@ function isOperatorCliImageCachePath(filePath: string): boolean {
       return true;
     }
     const parent = parts[index - 1] ?? "";
-    return part === "operator-cli-images" && /^openclaw(?:-\d+)?$/.test(parent);
+    return part === "operator-cli-images" && /^operator(?:-\d+)?$/.test(parent);
   });
 }
 

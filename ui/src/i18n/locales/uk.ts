@@ -2332,7 +2332,7 @@ export const uk: TranslationMap = {
       onboardingTitle: "No workspaces yet",
       onboardingSubtitle:
         "Ask your agent to build a workspace, or create one from the command line.",
-      onboardingCommand: "openclaw workspaces tabs create --title Main",
+      onboardingCommand: "operator workspaces tabs create --title Main",
       tabTitle: "This workspace is empty",
       tabSubtitle: "Ask your agent to add a widget, or add one yourself.",
       noVisibleTabs: "Every workspace tab is hidden. Restore one from the hidden menu.",
@@ -3261,9 +3261,9 @@ export const uk: TranslationMap = {
         title: "Потрібна автентифікація",
         summary:
           "Gateway доступний, але цьому браузеру потрібен відповідний токен або пароль перед підключенням.",
-        stepPaste: "Вставте токен з openclaw dashboard --no-open або введіть налаштований пароль.",
+        stepPaste: "Вставте токен з operator dashboard --no-open або введіть налаштований пароль.",
         stepGenerate:
-          "Якщо токен не налаштовано, виконайте openclaw doctor --generate-gateway-token на хості Gateway.",
+          "Якщо токен не налаштовано, виконайте operator doctor --generate-gateway-token на хості Gateway.",
         stepConnect: "Після оновлення облікових даних знову натисніть Connect.",
       },
       authFailed: {
@@ -3271,7 +3271,7 @@ export const uk: TranslationMap = {
         summary:
           "Надані облікові дані відхилено. Найпоширеніша причина — застарілий токен або токен, скопійований з іншого Gateway URL.",
         stepDashboard:
-          "Виконайте openclaw dashboard --no-open і відкрийте свіжий URL або вставте його токен.",
+          "Виконайте operator dashboard --no-open і відкрийте свіжий URL або вставте його токен.",
         stepReplace:
           "Замініть застарілі значення токена/пароля; не використовуйте повторно токен з іншого Gateway URL.",
         stepMode:
@@ -3295,8 +3295,8 @@ export const uk: TranslationMap = {
           "Цей браузер потребує одноразового схвалення від хоста Gateway перед використанням Control UI.",
         upgradeSummary:
           "Цей браузер уже відомий, але запитаний доступ змінився і потребує нового схвалення.",
-        stepList: "Виконайте openclaw devices list на хості Gateway.",
-        stepApproveId: "Схваліть цей запит: openclaw devices approve {requestId}.",
+        stepList: "Виконайте operator devices list на хості Gateway.",
+        stepApproveId: "Схваліть цей запит: operator devices approve {requestId}.",
         stepApprove: "Схваліть запит браузера/пристрою, що очікує, з цього списку.",
         stepReconnect: "Підключіться знову після завершення схвалення.",
       },
@@ -3323,7 +3323,7 @@ export const uk: TranslationMap = {
         summary:
           "Надана Control UI і запущений Gateway не узгоджуються щодо підтримуваного протоколу з’єднання.",
         stepDashboard:
-          "Знову відкрийте наданий dashboard через openclaw dashboard, щоб UI і Gateway походили з однієї інсталяції.",
+          "Знову відкрийте наданий dashboard через operator dashboard, щоб UI і Gateway походили з однієї інсталяції.",
         stepDevUi:
           "Якщо використовуєте pnpm ui:dev, перебудуйте або перезапустіть dev UI з поточного checkout.",
         stepRestart:
@@ -3334,11 +3334,11 @@ export const uk: TranslationMap = {
         summary:
           "Браузер не зміг завершити з’єднання з Gateway. Перевірте ціль і транспорт перед повторною спробою з обліковими даними.",
         stepGateway:
-          "Підтвердьте, що Gateway працює, через openclaw status або openclaw gateway run.",
+          "Підтвердьте, що Gateway працює, через operator status або operator gateway run.",
         stepUrl:
           "Перевірте WebSocket URL і використовуйте wss://, коли Gateway знаходиться за HTTPS/Tailscale Serve.",
         stepDashboard:
-          "Знову відкрийте dashboard через openclaw dashboard --no-open, щоб повторно скопіювати поточний URL і деталі auth.",
+          "Знову відкрийте dashboard через operator dashboard --no-open, щоб повторно скопіювати поточний URL і деталі auth.",
       },
     },
   },

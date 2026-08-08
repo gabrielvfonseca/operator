@@ -9,7 +9,7 @@ import {
 } from "../../scripts/bundled-plugin-assets.mjs";
 
 async function withPluginAssetFixture(run: (rootDir: string) => Promise<void>) {
-  const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-plugin-assets-"));
+  const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-plugin-assets-"));
   try {
     fs.mkdirSync(path.join(rootDir, "extensions", "canvas"), { recursive: true });
     fs.writeFileSync(
@@ -17,7 +17,7 @@ async function withPluginAssetFixture(run: (rootDir: string) => Promise<void>) {
       JSON.stringify(
         {
           name: "@operator/canvas-plugin",
-          openclaw: {
+          operator: {
             assetScripts: {
               build: "node scripts/bundle-a2ui.mjs",
               copy: "node scripts/copy-a2ui.mjs",
@@ -29,7 +29,7 @@ async function withPluginAssetFixture(run: (rootDir: string) => Promise<void>) {
       ),
     );
     fs.writeFileSync(
-      path.join(rootDir, "extensions", "canvas", "openclaw.plugin.json"),
+      path.join(rootDir, "extensions", "canvas", "operator.plugin.json"),
       JSON.stringify({ id: "canvas" }, null, 2),
     );
     await run(rootDir);

@@ -76,7 +76,7 @@ local proof.
       "minGatewayVersion": "2026.3.24-beta.2"
     },
     "build": {
-      "openclawVersion": "2026.3.24-beta.2",
+      "operatorVersion": "2026.3.24-beta.2",
       "pluginSdkVersion": "2026.3.24-beta.2"
     }
   }
@@ -126,7 +126,7 @@ local proof.
   <Step title="Register the tool">
     ```typescript index.ts
     import { Type } from "typebox";
-    import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
+    import { definePluginEntry } from "operator/plugin-sdk/plugin-entry";
 
     export default definePluginEntry({
       id: "my-plugin",
@@ -148,7 +148,7 @@ local proof.
     ```
 
     Use `definePluginEntry` for non-channel plugins. Channel plugins use
-    `defineChannelPluginEntry` from `openclaw/plugin-sdk/core` instead.
+    `defineChannelPluginEntry` from `operator/plugin-sdk/core` instead.
 
   </Step>
 
@@ -310,14 +310,14 @@ loading that plugin runtime until the tool is explicitly allowlisted.
 Import from focused SDK subpaths:
 
 ```typescript
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
-import { createPluginRuntimeStore } from "openclaw/plugin-sdk/runtime-store";
+import { definePluginEntry } from "operator/plugin-sdk/plugin-entry";
+import { createPluginRuntimeStore } from "operator/plugin-sdk/runtime-store";
 ```
 
 Do not import from the deprecated root barrel:
 
 ```typescript
-import { definePluginEntry } from "openclaw/plugin-sdk";
+import { definePluginEntry } from "operator/plugin-sdk";
 ```
 
 Within your plugin package, use local barrel files such as `api.ts` and
@@ -329,14 +329,14 @@ Custom Gateway RPC methods are an advanced entry point. Keep them on a
 plugin-specific prefix; core admin namespaces such as `config.*`,
 `exec.approvals.*`, `operator.admin.*`, `wizard.*`, and `update.*` stay reserved
 and resolve to `operator.admin`. The
-`openclaw/plugin-sdk/gateway-method-runtime` bridge is reserved for plugin HTTP
+`operator/plugin-sdk/gateway-method-runtime` bridge is reserved for plugin HTTP
 routes that declare `contracts.gatewayMethodDispatch: ["authenticated-request"]`.
 
 For the full import map, see [Plugin SDK overview](/plugins/sdk-overview).
 
 ## Pre-submission checklist
 
-<Check>**package.json** has correct `openclaw` metadata</Check>
+<Check>**package.json** has correct `operator` metadata</Check>
 <Check>**operator.plugin.json** manifest is present and valid</Check>
 <Check>Entry point uses `defineChannelPluginEntry` or `definePluginEntry`</Check>
 <Check>All imports use focused `plugin-sdk/<subpath>` paths</Check>
@@ -346,7 +346,7 @@ For the full import map, see [Plugin SDK overview](/plugins/sdk-overview).
 
 ## Test against beta releases
 
-1. Watch [openclaw/openclaw](https://github.com/gabrielvfonseca/operator/releases) releases (`Watch` > `Releases`). Beta tags look like `v2026.3.N-beta.1`. You can also follow [@openclaw](https://x.com/openclaw) on X for release announcements.
+1. Watch [operator/operator](https://github.com/gabrielvfonseca/operator/releases) releases (`Watch` > `Releases`). Beta tags look like `v2026.3.N-beta.1`. You can also follow [@operator](https://x.com/operator) on X for release announcements.
 2. Test your plugin against the beta tag as soon as it appears. The window before stable is typically only a few hours.
 3. Post in your plugin's thread in the `plugin-forum` Discord channel ([discord.gg/clawd](https://discord.gg/clawd)) after testing, with either `all good` or what broke. Create a thread if you do not have one yet.
 4. If something breaks, open or update an issue titled `Beta blocker: <plugin-name> - <summary>` and apply the `beta-blocker` label. Link the issue in your thread.

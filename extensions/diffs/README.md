@@ -144,7 +144,7 @@ Example:
       diffs: {
         enabled: true,
         config: {
-          viewerBaseUrl: "https://gateway.example.com/openclaw",
+          viewerBaseUrl: "https://gateway.example.com/operator",
         },
       },
     },

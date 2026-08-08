@@ -71,7 +71,7 @@ function createMockQaRuntime(params?: {
     channel: {
       mentions: {
         buildMentionRegexes() {
-          return [/^@openclaw\b/i];
+          return [/^@operator\b/i];
         },
         matchesMentionPatterns(text: string, patterns: RegExp[]) {
           return patterns.some((pattern) => pattern.test(text));
@@ -488,12 +488,12 @@ describe("qa-channel plugin", () => {
         conversation: { id: "qa-room", kind: "group", title: "QA Room" },
         senderId: "alice",
         senderName: "Alice",
-        text: "@openclaw hello",
+        text: "@operator hello",
       });
 
       const outbound = await harness.state.waitFor({
         kind: "message-text",
-        textIncludes: "qa-echo: @openclaw hello",
+        textIncludes: "qa-echo: @operator hello",
         direction: "outbound",
         timeoutMs: 15_000,
       });

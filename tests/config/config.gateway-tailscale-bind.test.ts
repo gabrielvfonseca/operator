@@ -33,7 +33,7 @@ describe("gateway tailscale bind validation", () => {
     for (const serviceName of [
       "@gabrielvfonseca/operator",
       "svc:",
-      "svc:-openclaw",
+      "svc:-operator",
       "svc:Operator",
     ]) {
       const res = validateConfigObject({
@@ -47,7 +47,7 @@ describe("gateway tailscale bind validation", () => {
         expect(res.issues).toContainEqual({
           path: "gateway.tailscale.serviceName",
           message:
-            'Tailscale serviceName must use the "svc:<dns-label>" format, for example "svc:openclaw"',
+            'Tailscale serviceName must use the "svc:<dns-label>" format, for example "svc:operator"',
         });
       }
     }

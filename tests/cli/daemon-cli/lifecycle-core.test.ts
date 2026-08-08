@@ -144,7 +144,7 @@ describe("runServiceRestart token drift", () => {
         runServiceStart({
           serviceNoun: "Gateway",
           service: unsupportedService,
-          renderStartHints: () => ["openclaw gateway install"],
+          renderStartHints: () => ["operator gateway install"],
           opts: { json: true },
           onNotLoaded,
         }),
@@ -188,7 +188,7 @@ describe("runServiceRestart token drift", () => {
         runServiceRestart({
           serviceNoun: "Gateway",
           service: unsupportedService,
-          renderStartHints: () => ["openclaw gateway install"],
+          renderStartHints: () => ["operator gateway install"],
           opts: { json: true },
           onNotLoaded,
           postRestartCheck,
@@ -210,7 +210,7 @@ describe("runServiceRestart token drift", () => {
       service,
       renderStartHints: () => [
         "Restart the container or the service that manages it for operator-demo-container.",
-        "openclaw gateway install",
+        "operator gateway install",
       ],
       opts: { json: false },
     });
@@ -645,7 +645,7 @@ describe("runServiceRestart token drift", () => {
     const payload = readJsonLog<{ ok?: boolean; error?: string; hints?: string[] }>();
     expect(payload.ok).toBe(false);
     expect(payload.error).toContain("service needs repair");
-    expect(payload.hints).toEqual(["openclaw gateway install --force"]);
+    expect(payload.hints).toEqual(["operator gateway install --force"]);
     expect(service.restart).not.toHaveBeenCalled();
   });
 
@@ -667,7 +667,7 @@ describe("runServiceRestart token drift", () => {
     await runServiceStart({
       serviceNoun: "Gateway",
       service,
-      renderStartHints: () => ["openclaw gateway install"],
+      renderStartHints: () => ["operator gateway install"],
       opts: { json: true },
     });
 
@@ -679,10 +679,10 @@ describe("runServiceRestart token drift", () => {
     }>();
     expect(payload.ok).toBe(true);
     expect(payload.result).toBe("not-loaded");
-    expect(payload.hints?.includes("openclaw gateway install")).toBe(true);
+    expect(payload.hints?.includes("operator gateway install")).toBe(true);
     expect(
       payload.hintItems?.some(
-        (item) => item.kind === "install" && item.text === "openclaw gateway install",
+        (item) => item.kind === "install" && item.text === "operator gateway install",
       ),
     ).toBe(true);
     expect(service.restart).not.toHaveBeenCalled();

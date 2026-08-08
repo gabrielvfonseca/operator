@@ -190,7 +190,7 @@ Increase resources on single instance:
 version: "3.8"
 services:
   operator:
-    image: openclaw/operator:latest
+    image: operator/operator:latest
     deploy:
       resources:
         limits:

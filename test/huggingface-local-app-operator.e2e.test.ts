@@ -52,7 +52,7 @@ describe("Hugging Face Operator local-app CLI contract", () => {
         name: `hf-local-app-${providerId}`,
         env: {
           CUSTOM_API_KEY: undefined,
-          OPERATOR_TEST_FAST: "1",
+          OPENCLAW_TEST_FAST: "1",
         },
       });
       instances.push(instance);

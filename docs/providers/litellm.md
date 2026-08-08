@@ -38,7 +38,7 @@ spend limits, and backend failover without changing Operator config.
       <Step title="Point Operator to LiteLLM">
         ```bash
         export LITELLM_API_KEY="your-litellm-key"
-        openclaw
+        operator
         ```
       </Step>
     </Steps>

@@ -83,7 +83,7 @@ type Args = {
   mentionUserId?: string;
   instruction?: string;
   stateDir: string;
-  openclawBin: string;
+  operatorBin: string;
   json: boolean;
 };
 
@@ -324,13 +324,13 @@ function safeErrorMessage(error: unknown): string {
 function usage(): string {
   return (
     "Usage: bun scripts/dev/discord-acp-plain-language-smoke.ts " +
-    "--channel <discord-channel-id> [--token <driver-token> | --driver webhook --bot-token <bot-token> | --driver openclaw] [options]\n\n" +
+    "--channel <discord-channel-id> [--token <driver-token> | --driver webhook --bot-token <bot-token> | --driver operator] [options]\n\n" +
     "Manual live smoke only (not CI). Sends a plain-language instruction in Discord and verifies:\n" +
     "1) Operator spawned an ACP thread binding\n" +
     "2) agent replied in that bound thread with the expected ACK token\n\n" +
     "Options:\n" +
     "  --channel <id>               Parent Discord channel id (required)\n" +
-    "  --driver <token|webhook|openclaw> Driver transport mode (default: token)\n" +
+    "  --driver <token|webhook|operator> Driver transport mode (default: token)\n" +
     "  --token <token>              Driver Discord token (required for driver=token)\n" +
     "  --token-prefix <prefix>      Auth prefix for --token (default: Bot)\n" +
     "  --bot-token <token>          Bot token for webhook driver mode\n" +
@@ -341,7 +341,7 @@ function usage(): string {
     "  --timeout-ms <n>             Total timeout in ms (default: 240000)\n" +
     "  --poll-ms <n>                Poll interval in ms (default: 1500)\n" +
     "  --state-dir <p>              Override Operator state dir for plugin-state polling\n" +
-    "  --operator-bin <path>        Operator CLI binary for driver=openclaw (default: openclaw)\n" +
+    "  --operator-bin <path>        Operator CLI binary for driver=operator (default: operator)\n" +
     "  --json                       Emit JSON output\n" +
     "\n" +
     "Environment fallbacks:\n" +
@@ -403,7 +403,7 @@ function parseArgs(argv = process.argv.slice(2)): Args {
     "--poll-ms",
   );
   const stateDir = path.resolve(resolveArg("--state-dir", argv) || resolveStateDir());
-  const openclawBin =
+  const operatorBin =
     resolveArg("--operator-bin", argv) ||
     process.env.OPERATOR_DISCORD_SMOKE_OPERATOR_BIN ||
     "@gabrielvfonseca/operator";
@@ -432,13 +432,13 @@ function parseArgs(argv = process.argv.slice(2)): Args {
     mentionUserId,
     instruction,
     stateDir,
-    openclawBin,
+    operatorBin,
     json,
   };
 }
 
-async function openclawCliJson<T>(params: {
-  openclawBin: string;
+async function operatorCliJson<T>(params: {
+  operatorBin: string;
   args: string[];
   timeoutMs?: number;
 }): Promise<T> {
@@ -450,23 +450,23 @@ async function openclawCliJson<T>(params: {
   });
   const stdout = (result.stdout || "").trim();
   if (!stdout) {
-    throw new Error(`openclaw ${params.args.join(" ")} returned empty stdout`);
+    throw new Error(`operator ${params.args.join(" ")} returned empty stdout`);
   }
   return JSON.parse(stdout) as T;
 }
 
 async function readMessagesWithOpenclaw(params: {
-  openclawBin: string;
+  operatorBin: string;
   target: string;
   limit: number;
   timeoutMs?: number;
 }): Promise<DiscordMessage[]> {
-  const response = await openclawCliJson<{
+  const response = await operatorCliJson<{
     payload?: {
       messages?: DiscordMessage[];
     };
   }>({
-    openclawBin: params.operatorBin,
+    operatorBin: params.operatorBin,
     args: [
       "message",
       "read",
@@ -726,7 +726,7 @@ async function loadParentRecentMessages(params: {
 }): Promise<DiscordMessage[]> {
   if (params.args.driverMode === "@gabrielvfonseca/operator") {
     return await readMessagesWithOpenclaw({
-      openclawBin: params.args.operatorBin,
+      operatorBin: params.args.operatorBin,
       target: params.args.channelId,
       limit: 20,
       timeoutMs: params.timeoutMs,
@@ -912,14 +912,14 @@ async function run(argv = process.argv.slice(2)): Promise<SuccessResult | Failur
     } else {
       setupStage = "send-message";
       minBindingBoundAt = Date.now() - 3_000;
-      const sent = await openclawCliJson<{
+      const sent = await operatorCliJson<{
         payload?: {
           result?: {
             messageId?: string;
           };
         };
       }>({
-        openclawBin: args.operatorBin,
+        operatorBin: args.operatorBin,
         args: [
           "message",
           "send",
@@ -935,7 +935,7 @@ async function run(argv = process.argv.slice(2)): Promise<SuccessResult | Failur
       });
       sentMessageId = sent.payload?.result?.messageId || "";
       if (!sentMessageId) {
-        throw new Error("openclaw message send did not return payload.result.messageId");
+        throw new Error("operator message send did not return payload.result.messageId");
       }
     }
   } catch (err) {
@@ -1005,7 +1005,7 @@ async function run(argv = process.argv.slice(2)): Promise<SuccessResult | Failur
         const threadMessages =
           args.driverMode === "@gabrielvfonseca/operator"
             ? await readMessagesWithOpenclaw({
-                openclawBin: args.operatorBin,
+                operatorBin: args.operatorBin,
                 target: threadId,
                 limit: 50,
                 timeoutMs: remainingTimeoutMs(deadline),

@@ -2,7 +2,7 @@ import CoreText
 import SwiftUI
 import UIKit
 
-enum operatorType {
+enum OperatorType {
     // MARK: - Display — Red Hat Display
 
     static var title1: Font {

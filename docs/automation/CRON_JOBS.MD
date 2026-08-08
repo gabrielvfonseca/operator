@@ -310,7 +310,7 @@ For template files, keep the language instruction in the rendered prompt and ver
     operator cron create "0 18 * * 1-5" \
       "Summarize today's deploys as JSON." \
       --name "Deploy digest" \
-      --webhook "https://example.invalid/openclaw/cron"
+      --webhook "https://example.invalid/operator/cron"
     ```
   </Tab>
   <Tab title="Command output">
@@ -473,7 +473,7 @@ Wire Gmail inbox triggers to Operator via Google PubSub.
 ### Wizard setup (recommended)
 
 ```bash
-operator webhooks gmail setup --account openclaw@gmail.com
+operator webhooks gmail setup --account operator@gmail.com
 ```
 
 This writes `hooks.gmail` config, enables the Gmail preset, and defaults to Tailscale Funnel for the push endpoint (`--tailscale funnel|serve|off`).
@@ -512,7 +512,7 @@ When `hooks.enabled=true` and `hooks.gmail.account` is set, the Gateway starts `
   <Step title="Start the watch">
     ```bash
     gog gmail watch start \
-      --account openclaw@gmail.com \
+      --account operator@gmail.com \
       --label INBOX \
       --topic projects/<project-id>/topics/gog-gmail-watch
     ```

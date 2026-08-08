@@ -1,14 +1,14 @@
 // STT live audio tests validate live speech-to-text audio fixtures.
 import {
-  expectOpenClawLiveTranscriptMarker,
+  expectOperatorLiveTranscriptMarker,
   normalizeTranscriptForMatch,
   OPENCLAW_LIVE_TRANSCRIPT_MARKER_RE,
-} from "openclaw/plugin-sdk/provider-test-contracts";
+} from "operator/plugin-sdk/provider-test-contracts";
 import { describe, expect, it } from "vitest";
 
 describe("normalizeTranscriptForMatch", () => {
-  it("normalizes punctuation and common OpenClaw live transcription variants", () => {
-    expect(normalizeTranscriptForMatch("Open-Claw integration OK")).toBe("openclawintegrationok");
+  it("normalizes punctuation and common Operator live transcription variants", () => {
+    expect(normalizeTranscriptForMatch("Open-Claw integration OK")).toBe("operatorintegrationok");
     expect(normalizeTranscriptForMatch("Testing OpenFlaw realtime transcription")).toMatch(
       /open(?:claw|flaw)/,
     );
@@ -18,6 +18,6 @@ describe("normalizeTranscriptForMatch", () => {
     expect(normalizeTranscriptForMatch("OpenCL xAI realtime transcription")).toMatch(
       OPENCLAW_LIVE_TRANSCRIPT_MARKER_RE,
     );
-    expectOpenClawLiveTranscriptMarker("OpenClar integration OK");
+    expectOperatorLiveTranscriptMarker("OpenClar integration OK");
   });
 });

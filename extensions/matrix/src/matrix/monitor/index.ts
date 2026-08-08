@@ -65,7 +65,7 @@ type MonitorMatrixOpts = {
   initialSyncLimit?: number;
   replyToMode?: ReplyToMode;
   accountId?: string | null;
-  setStatus?: (next: import("openclaw/plugin-sdk/channel-contract").ChannelAccountSnapshot) => void;
+  setStatus?: (next: import("operator/plugin-sdk/channel-contract").ChannelAccountSnapshot) => void;
 };
 
 // Account entries are schema-open (accounts: z.record(z.unknown())), so

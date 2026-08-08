@@ -7,7 +7,7 @@ import {
   resolveAuthProfileDatabasePath,
   writePersistedAuthProfileStoreRaw,
 } from "../../src/agents/auth-profiles/sqlite.js";
-import { closeOperatorAgentDatabasesForTest } from "../../src/state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../src/state/operator-agent-db.js";
 import { runSecretsAudit } from "../../src/secrets/audit.js";
 
 type AuditFixture = {
@@ -689,7 +689,7 @@ describe("secrets audit", () => {
     },
   );
 
-  it("does not flag non-sensitive routing headers in openclaw config", async () => {
+  it("does not flag non-sensitive routing headers in operator config", async () => {
     await writeJsonFile(fixture.configPath, {
       models: {
         providers: {
@@ -718,7 +718,7 @@ describe("secrets audit", () => {
     ).toBe(false);
   });
 
-  it("keeps request headers in openclaw config covered by plaintext audit", async () => {
+  it("keeps request headers in operator config covered by plaintext audit", async () => {
     await writeJsonFile(fixture.configPath, {
       models: {
         providers: {

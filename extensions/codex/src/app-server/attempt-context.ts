@@ -230,10 +230,10 @@ export async function buildCodexWorkspaceBootstrapContext(params: {
       excludeMemory: memoryToolsAvailable,
       memoryWorkspaceDir: params.effectiveWorkspace,
     });
-    const developerInstructionFiles = shouldInjectCodexOpenClawPromptContext(params.params)
+    const developerInstructionFiles = shouldInjectCodexOperatorPromptContext(params.params)
       ? selectCodexWorkspaceInheritedDeveloperInstructionFiles(contextFiles)
       : [];
-    const turnScopedDeveloperInstructionFiles = shouldInjectCodexOpenClawPromptContext(
+    const turnScopedDeveloperInstructionFiles = shouldInjectCodexOperatorPromptContext(
       params.params,
     )
       ? selectCodexWorkspaceTurnScopedDeveloperInstructionFiles(contextFiles)
@@ -256,7 +256,7 @@ export async function buildCodexWorkspaceBootstrapContext(params: {
       turnScopedDeveloperInstructions: renderCodexWorkspaceCollaborationDeveloperInstructions(
         turnScopedDeveloperInstructionFiles,
       ),
-      memoryCollaborationInstructions: shouldInjectCodexOpenClawPromptContext(params.params)
+      memoryCollaborationInstructions: shouldInjectCodexOperatorPromptContext(params.params)
         ? renderCodexWorkspaceMemoryCollaborationInstructions({
             files: memoryReferenceFiles,
             toolNames: params.memoryToolNames,
@@ -521,11 +521,11 @@ function readNonEmptyString(value: unknown): string | undefined {
 /**
  * Builds Operator-provided workspace prompt context for the current Codex turn.
  */
-export function buildCodexOpenClawPromptContext(params: {
+export function buildCodexOperatorPromptContext(params: {
   params: EmbeddedRunAttemptParams;
   workspacePromptContext?: string;
 }): string | undefined {
-  if (!shouldInjectCodexOpenClawPromptContext(params.params)) {
+  if (!shouldInjectCodexOperatorPromptContext(params.params)) {
     return undefined;
   }
   const sections = [
@@ -544,7 +544,7 @@ export function buildCodexOpenClawPromptContext(params: {
   ].join("\n");
 }
 
-function shouldInjectCodexOpenClawPromptContext(params: EmbeddedRunAttemptParams): boolean {
+function shouldInjectCodexOperatorPromptContext(params: EmbeddedRunAttemptParams): boolean {
   // Lightweight cron runs are commonly exact commands. Keep the user input byte-for-byte
   // to avoid changing command intent while Codex keeps its native project-doc loader.
   return !(
@@ -557,7 +557,7 @@ export function renderCodexSkillsCollaborationInstructions(params: {
   attempt: EmbeddedRunAttemptParams;
   skillsPrompt?: string;
 }): string | undefined {
-  if (!shouldInjectCodexOpenClawPromptContext(params.attempt)) {
+  if (!shouldInjectCodexOperatorPromptContext(params.attempt)) {
     return undefined;
   }
   return params.skillsPrompt?.trim()
@@ -569,7 +569,7 @@ export function renderCodexSkillsCollaborationInstructions(params: {
  * Prepends Operator context while preserving leading delivery metadata as
  * routing guidance instead of user request text.
  */
-export function prependCodexOpenClawPromptContext(
+export function prependCodexOperatorPromptContext(
   prompt: string,
   context: string | undefined,
   options: { preservePromptWithoutContext?: boolean } = {},

@@ -11,7 +11,7 @@
  *   - During plugin startup, if the live config has an empty appId or
  *     secret, the gateway consults the backup and restores the values
  *     via the config mutation API.
- *   - Legacy JSON backups are imported by `openclaw doctor --fix`, not by
+ *   - Legacy JSON backups are imported by `operator doctor --fix`, not by
  *     runtime startup.
  *
  * Safety notes:

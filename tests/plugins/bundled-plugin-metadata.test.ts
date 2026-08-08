@@ -182,7 +182,7 @@ function listExternalRepoBundledPluginManifestDirs(): string[] | null {
   }
   return manifestFiles
     .flatMap((file) => {
-      const match = /^extensions\/([^/]+)\/openclaw\.plugin\.json$/u.exec(file);
+      const match = /^extensions\/([^/]+)\/operator\.plugin\.json$/u.exec(file);
       return match?.[1] ? [match[1]] : [];
     })
     .toSorted();

@@ -2,12 +2,12 @@
 
 import { PageHeader, LoadingState, ErrorState } from "@/components/page.tsx";
 import { useGatewayRequest } from "@/lib/gateway-client.tsx";
-import { Card, CardContent, CardHeader, CardTitle } from "@operator/design-system";
-
 export default function UsagePage() {
-  const cost = useGatewayRequest<{ totalCost?: number; currency?: string; byProvider?: Record<string, number> }>(
-    "usage.cost",
-  );
+  const cost = useGatewayRequest<{
+    totalCost?: number;
+    currency?: string;
+    byProvider?: Record<string, number>;
+  }>("usage.cost");
   const status = useGatewayRequest<{ healthy?: boolean; models?: number }>("usage.status");
 
   return (

@@ -38,7 +38,7 @@ import {
   type DiscordMessageEvent,
 } from "./message-handler.preflight.test-helpers.js";
 
-vi.mock("openclaw/plugin-sdk/media-runtime", { spy: true });
+vi.mock("operator/plugin-sdk/media-runtime", { spy: true });
 let preflightDiscordMessage: typeof import("./message-handler.preflight.js").preflightDiscordMessage;
 let resolvePreflightMentionRequirement: typeof import("./message-handler.preflight.js").resolvePreflightMentionRequirement;
 let shouldIgnoreBoundThreadWebhookMessage: typeof import("./message-handler.preflight.js").shouldIgnoreBoundThreadWebhookMessage;
@@ -71,7 +71,7 @@ beforeEach(() => {
 });
 
 function createThreadBinding(
-  overrides?: Partial<import("openclaw/plugin-sdk/conversation-runtime").SessionBindingRecord>,
+  overrides?: Partial<import("operator/plugin-sdk/conversation-runtime").SessionBindingRecord>,
 ) {
   return {
     bindingId: "default:thread-1",
@@ -92,11 +92,11 @@ function createThreadBinding(
       webhookToken: "tok-1",
     },
     ...overrides,
-  } satisfies import("openclaw/plugin-sdk/conversation-runtime").SessionBindingRecord;
+  } satisfies import("operator/plugin-sdk/conversation-runtime").SessionBindingRecord;
 }
 
 function createPreflightArgs(params: {
-  cfg: import("openclaw/plugin-sdk/config-contracts").OperatorConfig;
+  cfg: import("operator/plugin-sdk/config-contracts").OperatorConfig;
   discordConfig: DiscordConfig;
   data: DiscordMessageEvent;
   client: DiscordClient;
@@ -173,7 +173,7 @@ async function runThreadBoundPreflight(params: {
   threadId: string;
   parentId: string;
   message: import("../internal/discord.js").Message;
-  threadBinding: import("openclaw/plugin-sdk/conversation-runtime").SessionBindingRecord;
+  threadBinding: import("operator/plugin-sdk/conversation-runtime").SessionBindingRecord;
   discordConfig: DiscordConfig;
   registerBindingAdapter?: boolean;
 }) {
@@ -215,7 +215,7 @@ async function runGuildPreflight(params: {
   guildId: string;
   message: import("../internal/discord.js").Message;
   discordConfig: DiscordConfig;
-  cfg?: import("openclaw/plugin-sdk/config-contracts").OperatorConfig;
+  cfg?: import("operator/plugin-sdk/config-contracts").OperatorConfig;
   guildEntries?: Parameters<typeof preflightDiscordMessage>[0]["guildEntries"];
   includeGuildObject?: boolean;
   abortSignal?: AbortSignal;
@@ -258,7 +258,7 @@ async function runDmPreflight(params: {
 }
 
 async function runUnresolvedDmPreflight(params: {
-  cfg?: import("openclaw/plugin-sdk/config-contracts").OperatorConfig;
+  cfg?: import("operator/plugin-sdk/config-contracts").OperatorConfig;
   channelId: string;
   message: import("../internal/discord.js").Message;
   discordConfig: DiscordConfig;
@@ -527,7 +527,7 @@ describe("preflightDiscordMessage", () => {
   });
 
   it("preflights direct-message voice notes without mention gating", async () => {
-    transcribeFirstAudioMock.mockResolvedValue("hello openclaw from dm audio");
+    transcribeFirstAudioMock.mockResolvedValue("hello operator from dm audio");
 
     const result = await runDmPreflight({
       channelId: "dm-channel-audio-1",
@@ -564,7 +564,7 @@ describe("preflightDiscordMessage", () => {
     expect(dmAudioCall?.ctx?.MediaTypes).toEqual(["audio/ogg"]);
     const preflight = expectPreflightResult(result);
     expect(preflight.isDirectMessage).toBe(true);
-    expect(preflight.preflightAudioTranscript).toBe("hello openclaw from dm audio");
+    expect(preflight.preflightAudioTranscript).toBe("hello operator from dm audio");
   });
 
   it("downloads attachments during preflight, before the message reaches the run queue", async () => {
@@ -1140,7 +1140,7 @@ describe("preflightDiscordMessage", () => {
       createPreflightArgs({
         cfg: {
           ...DEFAULT_PREFLIGHT_CFG,
-        } as import("openclaw/plugin-sdk/config-contracts").OperatorConfig,
+        } as import("operator/plugin-sdk/config-contracts").OperatorConfig,
         discordConfig: {
           allowBots: true,
         } as DiscordConfig,
@@ -1356,7 +1356,7 @@ describe("preflightDiscordMessage", () => {
             unmentionedInbound: "room_event",
           },
         },
-      } as import("openclaw/plugin-sdk/config-contracts").OperatorConfig,
+      } as import("operator/plugin-sdk/config-contracts").OperatorConfig,
       guildEntries: {
         [guildId]: {
           channels: {
@@ -1440,7 +1440,7 @@ describe("preflightDiscordMessage", () => {
               mentionPatterns: ["@gabrielvfonseca/operator"],
             },
           },
-        } as import("openclaw/plugin-sdk/config-contracts").OperatorConfig,
+        } as import("operator/plugin-sdk/config-contracts").OperatorConfig,
         discordConfig: {} as DiscordConfig,
         data: createGuildEvent({
           channelId,
@@ -1678,7 +1678,7 @@ describe("preflightDiscordMessage", () => {
     const guildHistories = new Map();
     saveRemoteMediaMock.mockResolvedValueOnce({
       id: "test-media",
-      path: "C:\\openclaw\\media\\history.png",
+      path: "C:\\operator\\media\\history.png",
       size: 5,
       contentType: "image/png",
     });
@@ -1753,7 +1753,7 @@ describe("preflightDiscordMessage", () => {
     });
     expect(entries?.[0]?.media?.[0]?.path).toContain("history");
     expect(entries?.[0]?.media?.[0]?.path).not.toMatch(/^https?:/);
-    expect(entries?.[0]?.media?.[0]?.path).toBe("C:\\openclaw\\media\\history.png");
+    expect(entries?.[0]?.media?.[0]?.path).toBe("C:\\operator\\media\\history.png");
     expect(saveRemoteMediaMock).toHaveBeenCalledTimes(1);
   });
 
@@ -2061,7 +2061,7 @@ describe("preflightDiscordMessage", () => {
   });
 
   it("uses attachment content_type for guild audio preflight mention detection", async () => {
-    transcribeFirstAudioMock.mockResolvedValue("hey openclaw");
+    transcribeFirstAudioMock.mockResolvedValue("hey operator");
 
     const channelId = "channel-audio-1";
     const client = createGuildTextClient(channelId);
@@ -2094,7 +2094,7 @@ describe("preflightDiscordMessage", () => {
               mentionPatterns: ["@gabrielvfonseca/operator"],
             },
           },
-        } as import("openclaw/plugin-sdk/config-contracts").OperatorConfig,
+        } as import("operator/plugin-sdk/config-contracts").OperatorConfig,
         discordConfig: {} as DiscordConfig,
         data: createGuildEvent({
           channelId,
@@ -2126,7 +2126,7 @@ describe("preflightDiscordMessage", () => {
     expect(guildAudioCall?.ctx?.MediaTypes).toEqual(["audio/ogg"]);
     const preflight = expectPreflightResult(result);
     expect(preflight.wasMentioned).toBe(true);
-    expect(preflight.preflightAudioTranscript).toBe("hey openclaw");
+    expect(preflight.preflightAudioTranscript).toBe("hey operator");
   });
 
   it("does not transcribe guild audio from unauthorized members", async () => {
@@ -2162,7 +2162,7 @@ describe("preflightDiscordMessage", () => {
               mentionPatterns: ["@gabrielvfonseca/operator"],
             },
           },
-        } as import("openclaw/plugin-sdk/config-contracts").OperatorConfig,
+        } as import("operator/plugin-sdk/config-contracts").OperatorConfig,
         discordConfig: {} as DiscordConfig,
         data: createGuildEvent({
           channelId,
@@ -2190,7 +2190,7 @@ describe("preflightDiscordMessage", () => {
   });
 
   it("drops guild message without mention when channel has configuredBinding and requireMention: true", async () => {
-    const conversationRuntime = await import("openclaw/plugin-sdk/conversation-runtime");
+    const conversationRuntime = await import("operator/plugin-sdk/conversation-runtime");
     const channelId = "ch-binding-1";
     const bindingRoute = {
       bindingResolution: {
@@ -2233,7 +2233,7 @@ describe("preflightDiscordMessage", () => {
   });
 
   it("allows guild message with mention when channel has configuredBinding and requireMention: true", async () => {
-    const conversationRuntime = await import("openclaw/plugin-sdk/conversation-runtime");
+    const conversationRuntime = await import("operator/plugin-sdk/conversation-runtime");
     const channelId = "ch-binding-2";
     const bindingRoute = {
       bindingResolution: {

@@ -35,23 +35,23 @@ const resolveApprovalOverGatewayMock = vi.hoisted(() =>
 
 let registerSlackInteractionEvents: typeof import("./interactions.js").registerSlackInteractionEvents;
 
-vi.mock("openclaw/plugin-sdk/system-event-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/system-event-runtime")>();
+vi.mock("operator/plugin-sdk/system-event-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/system-event-runtime")>();
   return {
     ...actual,
     enqueueSystemEvent: (...args: unknown[]) => enqueueSystemEventMock(...args),
   };
 });
 
-vi.mock("openclaw/plugin-sdk/heartbeat-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/heartbeat-runtime")>();
+vi.mock("operator/plugin-sdk/heartbeat-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/heartbeat-runtime")>();
   return {
     ...actual,
     requestHeartbeat: (...args: unknown[]) => requestHeartbeatMock(...args),
   };
 });
 
-vi.mock("openclaw/plugin-sdk/approval-gateway-runtime", () => ({
+vi.mock("operator/plugin-sdk/approval-gateway-runtime", () => ({
   resolveApprovalOverGateway: (arg: unknown) => resolveApprovalOverGatewayMock(arg),
 }));
 
@@ -3233,7 +3233,7 @@ describe("registerSlackInteractionEvents", () => {
     expect(enqueueSystemEventMock).not.toHaveBeenCalled();
   });
 
-  it("dispatches metadata-routed plugin modal submissions with non-openclaw callback ids", async () => {
+  it("dispatches metadata-routed plugin modal submissions with non-operator callback ids", async () => {
     enqueueSystemEventMock.mockClear();
     dispatchPluginInteractiveHandlerMock.mockResolvedValueOnce({
       matched: true,

@@ -65,7 +65,7 @@ describe("noteSessionLockHealth", () => {
     await noteSessionLockHealth({
       shouldRepair: false,
       staleMs: 60_000,
-      readOwnerProcessArgs: () => ["node", "/opt/openclaw/operator.mjs", "doctor"],
+      readOwnerProcessArgs: () => ["node", "/opt/operator/operator.mjs", "doctor"],
     });
 
     expect(note).toHaveBeenCalledTimes(1);
@@ -98,7 +98,7 @@ describe("noteSessionLockHealth", () => {
     await noteSessionLockHealth({
       shouldRepair: true,
       staleMs: 30_000,
-      readOwnerProcessArgs: () => ["node", "/opt/openclaw/operator.mjs", "doctor"],
+      readOwnerProcessArgs: () => ["node", "/opt/operator/operator.mjs", "doctor"],
     });
 
     expect(note).toHaveBeenCalledTimes(1);
@@ -130,7 +130,7 @@ describe("noteSessionLockHealth", () => {
 
     const locks = await detectStaleSessionLocks({
       staleMs: 30_000,
-      readOwnerProcessArgs: () => ["node", "/opt/openclaw/operator.mjs", "doctor"],
+      readOwnerProcessArgs: () => ["node", "/opt/operator/operator.mjs", "doctor"],
     });
 
     expect(locks).toHaveLength(1);
@@ -151,7 +151,7 @@ describe("noteSessionLockHealth", () => {
 
     const [lock] = await detectStaleSessionLocks({
       staleMs: 30_000,
-      readOwnerProcessArgs: () => ["node", "/opt/openclaw/operator.mjs", "doctor"],
+      readOwnerProcessArgs: () => ["node", "/opt/operator/operator.mjs", "doctor"],
     });
     if (!lock) {
       throw new Error("expected stale session lock");
@@ -181,7 +181,7 @@ describe("noteSessionLockHealth", () => {
 
     const [lock] = await detectStaleSessionLocks({
       staleMs: 30_000,
-      readOwnerProcessArgs: () => ["node", "/opt/openclaw/operator.mjs", "doctor"],
+      readOwnerProcessArgs: () => ["node", "/opt/operator/operator.mjs", "doctor"],
     });
     if (!lock) {
       throw new Error("expected stale session lock");
@@ -217,7 +217,7 @@ describe("noteSessionLockHealth", () => {
       const locks = await detectStaleSessionLocks({
         env: other.env,
         staleMs: 30_000,
-        readOwnerProcessArgs: () => ["node", "/opt/openclaw/operator.mjs", "doctor"],
+        readOwnerProcessArgs: () => ["node", "/opt/operator/operator.mjs", "doctor"],
       });
 
       expect(locks.map((lock) => lock.lockPath)).toEqual([lockPath]);
@@ -239,7 +239,7 @@ describe("noteSessionLockHealth", () => {
 
     const [lock] = await detectStaleSessionLocks({
       staleMs: 30_000,
-      readOwnerProcessArgs: () => ["node", "/opt/openclaw/operator.mjs", "doctor"],
+      readOwnerProcessArgs: () => ["node", "/opt/operator/operator.mjs", "doctor"],
     });
     if (!lock) {
       throw new Error("expected stale session lock");
@@ -272,7 +272,7 @@ describe("noteSessionLockHealth", () => {
     await noteSessionLockHealth({
       shouldRepair: true,
       config: { session: { writeLock: { staleMs: 30_000 } } },
-      readOwnerProcessArgs: () => ["node", "/opt/openclaw/operator.mjs", "doctor"],
+      readOwnerProcessArgs: () => ["node", "/opt/operator/operator.mjs", "doctor"],
     });
 
     expect(note).toHaveBeenCalledTimes(1);

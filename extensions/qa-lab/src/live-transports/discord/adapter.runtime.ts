@@ -118,7 +118,7 @@ export async function createDiscordQaTransportAdapter(
       heartbeat.throwIfFailed();
     },
     async sendInbound(input) {
-      const text = input.text.replaceAll("@openclaw", `<@${runtimeEnv.sutApplicationId}>`);
+      const text = input.text.replaceAll("@operator", `<@${runtimeEnv.sutApplicationId}>`);
       const sent = await discordQaScenarioSupport.testing.sendChannelMessage(
         runtimeEnv.driverBotToken,
         runtimeEnv.channelId,

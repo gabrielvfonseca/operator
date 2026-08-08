@@ -343,7 +343,7 @@ For a dedicated 1Password guide covering service accounts, the bundled agent ski
             apiKey: {
               source: "exec",
               provider: "bws",
-              id: "openclaw/providers/openai/apiKey",
+              id: "operator/providers/openai/apiKey",
             },
           },
         },
@@ -351,7 +351,7 @@ For a dedicated 1Password guide covering service accounts, the bundled agent ski
     }
     ```
 
-    The resolver batches requested ids, runs `bws secret list`, and returns values for matching secret `key` fields. Use keys that satisfy the exec SecretRef id contract, such as `openclaw/providers/openai/apiKey`; env-var-style keys with underscores are rejected before the resolver runs. If more than one visible Bitwarden secret shares the requested key, the resolver fails that id as ambiguous instead of guessing. After updating config, verify the resolver path:
+    The resolver batches requested ids, runs `bws secret list`, and returns values for matching secret `key` fields. Use keys that satisfy the exec SecretRef id contract, such as `operator/providers/openai/apiKey`; env-var-style keys with underscores are rejected before the resolver runs. If more than one visible Bitwarden secret shares the requested key, the resolver fails that id as ambiguous instead of guessing. After updating config, verify the resolver path:
 
     ```bash
     operator secrets audit --allow-exec
@@ -368,7 +368,7 @@ For a dedicated 1Password guide covering service accounts, the bundled agent ski
             command: "/opt/homebrew/bin/vault",
             allowSymlinkCommand: true, // required for Homebrew symlinked binaries
             trustedDirs: ["/opt/homebrew"],
-            args: ["kv", "get", "-field=OPENAI_API_KEY", "secret/openclaw"],
+            args: ["kv", "get", "-field=OPENAI_API_KEY", "secret/operator"],
             passEnv: ["VAULT_ADDR", "VAULT_TOKEN"],
             jsonOnly: false,
           },
@@ -450,7 +450,7 @@ For a dedicated 1Password guide covering service accounts, the bundled agent ski
             apiKey: {
               source: "exec",
               provider: "pass_store",
-              id: "openclaw/providers/openai/apiKey",
+              id: "operator/providers/openai/apiKey",
             },
           },
         },

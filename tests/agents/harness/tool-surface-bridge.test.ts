@@ -25,12 +25,12 @@ function createRuntime(config: OperatorConfig) {
 
 describe("createAgentHarnessToolSurfaceRuntime", () => {
   it("suppresses catalog controls for a host-scoped ring-zero run", () => {
-    const openclaw = {
+    const operator = {
       ...createStubTool("@gabrielvfonseca/operator"),
       catalogMode: "direct-only" as const,
     };
 
-    runWithAgentRingZeroTools([openclaw], () => {
+    runWithAgentRingZeroTools([operator], () => {
       const runtime = createAgentHarnessToolSurfaceRuntime({
         config: { tools: { toolSearch: true } },
         executeTool: async () => ({ content: [], details: {} }),
@@ -43,7 +43,7 @@ describe("createAgentHarnessToolSurfaceRuntime", () => {
       expect(runtime.toolSearchControlsEnabled).toBe(false);
       expect(runtime.includeToolSearchControls).toBe(false);
       expect(runtime.runtimeToolAllowlist).toEqual(["@gabrielvfonseca/operator"]);
-      expect(runtime.compactTools([openclaw]).tools).toEqual([openclaw]);
+      expect(runtime.compactTools([operator]).tools).toEqual([operator]);
       runtime.cleanup();
     });
   });

@@ -32,7 +32,7 @@ type CreateDiscordComponentModal =
   typeof import("./agent-components.js").createDiscordComponentModal;
 type CreateDiscordComponentStringSelect = CreateDiscordComponentButton;
 type DispatchReplyWithBufferedBlockDispatcherFn =
-  typeof import("openclaw/plugin-sdk/reply-dispatch-runtime").dispatchReplyWithBufferedBlockDispatcher;
+  typeof import("operator/plugin-sdk/reply-dispatch-runtime").dispatchReplyWithBufferedBlockDispatcher;
 type DispatchReplyWithBufferedBlockDispatcherResult = Awaited<
   ReturnType<DispatchReplyWithBufferedBlockDispatcherFn>
 >;

@@ -46,7 +46,7 @@ title: Operator QA Scenario Pack
 #   workspace rows remain separately tracked until native/live behavior is the
 #   asserted surface. Rows that explicitly target searchable/deferred Operator
 #   dynamic loading stay report-only unless a fixture promotes them to required. Selected with
-#   `operator qa suite --runtime-pair openclaw,codex --runtime-parity-tier standard`
+#   `operator qa suite --runtime-pair operator,codex --runtime-parity-tier standard`
 # - `optional`: profile-, plugin-, or external-service-dependent runtime-tool
 #   fixtures that stay out of the default release gate
 # - `live-only`: scenarios that need real provider/runtime behavior rather than

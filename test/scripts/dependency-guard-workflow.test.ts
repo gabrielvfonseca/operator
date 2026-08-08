@@ -194,7 +194,7 @@ describe("dependency guard workflow", () => {
     const runStep = workflowStep(detectSteps, 1, "dependency guard bounded comment run step");
     const script = readFileSync("scripts/github/dependency-guard.mjs", "utf8");
 
-    expect(runStep.env?.OPENCLAW_SECURITY_TEAM_SLUG).toBe("openclaw-secops");
+    expect(runStep.env?.OPENCLAW_SECURITY_TEAM_SLUG).toBe("operator-secops");
     expect(runStep.env?.OPENCLAW_SECURITY_APPROVERS).toBe("vincentkoc,steipete,joshavant");
     expect(workflow).toContain("scripts/github/dependency-guard.mjs");
     expect(script).toContain('"dependencies-changed"');
@@ -224,7 +224,7 @@ describe("dependency guard workflow", () => {
     expect(script).toContain('"overrides"');
     expect(script).toContain('"packageManager"');
     expect(script).toContain("/allow-dependencies-change");
-    expect(script).toContain("openclaw-secops");
+    expect(script).toContain("operator-secops");
     expect(script).toContain("securityApproverSet");
     expect(guardSources).toContain("/memberships/");
     expect(guardSources).toContain("isCommentNewerThan");
@@ -270,15 +270,15 @@ describe("dependency guard workflow", () => {
   it("requires secops review for future workflow or guard changes", () => {
     const codeowners = readFileSync(CODEOWNERS, "utf8");
     expect(codeowners).toContain(
-      "/.github/workflows/dependency-guard.yml @operator/openclaw-secops",
+      "/.github/workflows/dependency-guard.yml @operator/operator-secops",
     );
     expect(codeowners).toContain(
-      "/test/scripts/dependency-guard-workflow.test.ts @operator/openclaw-secops",
+      "/test/scripts/dependency-guard-workflow.test.ts @operator/operator-secops",
     );
-    expect(codeowners).toContain("/scripts/github/dependency-guard.mjs @operator/openclaw-secops");
-    expect(codeowners).toContain("/package-lock.json @operator/openclaw-secops");
-    expect(codeowners).toContain("/npm-shrinkwrap.json @operator/openclaw-secops");
-    expect(codeowners).toContain("/extensions/*/package-lock.json @operator/openclaw-secops");
-    expect(codeowners).toContain("/extensions/*/npm-shrinkwrap.json @operator/openclaw-secops");
+    expect(codeowners).toContain("/scripts/github/dependency-guard.mjs @operator/operator-secops");
+    expect(codeowners).toContain("/package-lock.json @operator/operator-secops");
+    expect(codeowners).toContain("/npm-shrinkwrap.json @operator/operator-secops");
+    expect(codeowners).toContain("/extensions/*/package-lock.json @operator/operator-secops");
+    expect(codeowners).toContain("/extensions/*/npm-shrinkwrap.json @operator/operator-secops");
   });
 });

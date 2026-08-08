@@ -29,13 +29,13 @@ describe("prepareSessionManagerForRun", () => {
     await fs.writeFile(sessionFile, '{"type":"session"}\n', "utf-8");
     const sessionManager = {
       sessionId: "old-session",
-      cwd: "/srv/openclaw/main",
+      cwd: "/srv/operator/main",
       flushed: true,
       fileEntries: [
         {
           type: "session",
           id: "old-session",
-          cwd: "/srv/openclaw/main",
+          cwd: "/srv/operator/main",
         },
         {
           type: "message",
@@ -144,7 +144,7 @@ describe("prepareSessionManagerForRun", () => {
           type: "session",
           id: "parent-session",
           timestamp: "2026-05-27T00:00:00.000Z",
-          cwd: "/srv/openclaw/main",
+          cwd: "/srv/operator/main",
         }),
         JSON.stringify({
           type: "message",
@@ -165,14 +165,14 @@ describe("prepareSessionManagerForRun", () => {
     };
     const sessionManager = {
       sessionId: "parent-session",
-      cwd: "/srv/openclaw/main",
+      cwd: "/srv/operator/main",
       flushed: true,
       fileEntries: [
         {
           type: "session",
           id: "parent-session",
           timestamp: "2026-05-27T00:00:00.000Z",
-          cwd: "/srv/openclaw/main",
+          cwd: "/srv/operator/main",
         },
         assistantEntry,
       ],
@@ -312,13 +312,13 @@ describe("prepareSessionManagerForRun", () => {
     await fs.writeFile(sessionFile, originalTranscript, "utf-8");
     const sessionManager = {
       sessionId: "fresh-session",
-      cwd: "/srv/openclaw/main",
+      cwd: "/srv/operator/main",
       flushed: true,
       fileEntries: [
         {
           type: "session",
           id: "fresh-session",
-          cwd: "/srv/openclaw/main",
+          cwd: "/srv/operator/main",
         },
         {
           type: "message",
@@ -345,7 +345,7 @@ describe("prepareSessionManagerForRun", () => {
       {
         type: "session",
         id: "fresh-session",
-        cwd: "/srv/openclaw/main",
+        cwd: "/srv/operator/main",
       },
       {
         type: "message",
@@ -372,13 +372,13 @@ describe("prepareSessionManagerForRun", () => {
     await fs.writeFile(sessionFile, originalTranscript, "utf-8");
     const sessionManager = {
       sessionId: "fresh-session",
-      cwd: "/srv/openclaw/main",
+      cwd: "/srv/operator/main",
       flushed: true,
       fileEntries: [
         {
           type: "session",
           id: "fresh-session",
-          cwd: "/srv/openclaw/main",
+          cwd: "/srv/operator/main",
         },
         {
           type: "message",
@@ -413,7 +413,7 @@ describe("prepareSessionManagerForRun", () => {
         JSON.stringify({
           type: "session",
           id: "fresh-session",
-          cwd: "/srv/openclaw/main",
+          cwd: "/srv/operator/main",
         }),
         JSON.stringify({
           type: "message",
@@ -427,13 +427,13 @@ describe("prepareSessionManagerForRun", () => {
     await fs.writeFile(sessionFile, originalTranscript, "utf-8");
     const sessionManager = {
       sessionId: "fresh-session",
-      cwd: "/srv/openclaw/main",
+      cwd: "/srv/operator/main",
       flushed: true,
       fileEntries: [
         {
           type: "session",
           id: "fresh-session",
-          cwd: "/srv/openclaw/main",
+          cwd: "/srv/operator/main",
         },
         {
           type: "message",

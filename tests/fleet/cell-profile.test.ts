@@ -25,12 +25,12 @@ import {
 
 const FLEET_BASE_PORT = 19_100;
 const FLEET_CONTAINER_STATE_DIR = "/home/node/.operator";
-const FLEET_CONTAINER_AUTH_SECRET_DIR = "/home/node/.config/openclaw";
+const FLEET_CONTAINER_AUTH_SECRET_DIR = "/home/node/.config/operator";
 const TEST_ENVIRONMENT_FILE = "/tmp/operator-fleet-env/cell.env";
 
 function makeProfile(overrides: Partial<CellContainerProfile> = {}): CellContainerProfile {
   const tenantId = overrides.tenantId ?? "acme";
-  const dataDir = overrides.dataDir ?? "/tmp/openclaw/fleet/cells/acme";
+  const dataDir = overrides.dataDir ?? "/tmp/operator/fleet/cells/acme";
   return {
     tenantId,
     containerName: overrides.containerName ?? cellContainerName(tenantId),
@@ -39,7 +39,7 @@ function makeProfile(overrides: Partial<CellContainerProfile> = {}): CellContain
     runtime: "docker",
     hostPort: FLEET_BASE_PORT,
     dataDir,
-    authSecretDir: overrides.authSecretDir ?? "/tmp/openclaw/fleet/auth-profile-secrets/acme",
+    authSecretDir: overrides.authSecretDir ?? "/tmp/operator/fleet/auth-profile-secrets/acme",
     ownerId: overrides.ownerId ?? cellOwnerId(dataDir),
     attemptId: overrides.attemptId ?? "11111111111111111111111111111111",
     memory: "2g",
@@ -83,11 +83,11 @@ describe("fleet tenant ids", () => {
   it("derives stable container and data paths", () => {
     expect(cellContainerName("acme-2")).toBe("operator-cell-acme-2");
     expect(cellNetworkName("acme-2")).toBe("operator-cell-acme-2-net");
-    expect(cellDataDir("/srv/openclaw", "acme-2")).toBe(
-      path.join("/srv/openclaw", "fleet", "cells", "acme-2"),
+    expect(cellDataDir("/srv/operator", "acme-2")).toBe(
+      path.join("/srv/operator", "fleet", "cells", "acme-2"),
     );
-    expect(cellAuthSecretDir("/srv/openclaw", "acme-2")).toBe(
-      path.join("/srv/openclaw", "fleet", "auth-profile-secrets", "acme-2"),
+    expect(cellAuthSecretDir("/srv/operator", "acme-2")).toBe(
+      path.join("/srv/operator", "fleet", "auth-profile-secrets", "acme-2"),
     );
   });
 });
@@ -112,8 +112,8 @@ describe("fleet port allocation", () => {
 
 describe("fleet image references", () => {
   it("normalizes valid references and rejects option-like values", () => {
-    expect(validateFleetImage(" ghcr.io/openclaw/operator:v1 ")).toBe(
-      "ghcr.io/openclaw/operator:v1",
+    expect(validateFleetImage(" ghcr.io/operator/operator:v1 ")).toBe(
+      "ghcr.io/operator/operator:v1",
     );
     expect(() => validateFleetImage("--help")).toThrow(/must not begin/iu);
     expect(() => validateFleetImage(" ")).toThrow(/must not be empty/iu);

@@ -38,7 +38,7 @@ function git(cwd: string, args: string[]) {
 }
 
 function makeRepo() {
-  const dir = makeTempRepoRoot(tempDirs, "openclaw-package-patches-");
+  const dir = makeTempRepoRoot(tempDirs, "operator-package-patches-");
   git(dir, ["init", "-q", "--initial-branch=main"]);
   writeJsonFile(path.join(dir, "package.json"), { name: "fixture" });
   writeFileSync(path.join(dir, "pnpm-workspace.yaml"), "packages:\n  - .\n", "utf8");
@@ -60,7 +60,7 @@ describe("check-package-patches", () => {
       `packages:
   - .
 patchedDependencies:
-  "@operator/fs-safe@0.4.1": "patches/@openclaw__fs-safe@0.4.1.patch"
+  "@operator/fs-safe@0.4.1": "patches/@operator__fs-safe@0.4.1.patch"
   "baileys@7.0.0-rc12": "patches/baileys@7.0.0-rc12.patch"
 `,
       "utf8",
@@ -75,7 +75,7 @@ patchedDependencies:
       "utf8",
     );
     writeFileSync(path.join(dir, "patches", "baileys@7.0.0-rc12.patch"), "diff\n", "utf8");
-    writeFileSync(path.join(dir, "patches", "@openclaw__fs-safe@0.4.1.patch"), "diff\n", "utf8");
+    writeFileSync(path.join(dir, "patches", "@operator__fs-safe@0.4.1.patch"), "diff\n", "utf8");
     git(dir, ["add", "pnpm-workspace.yaml", "pnpm-lock.yaml", "patches"]);
 
     expect(collectPackagePatchViolations(dir)).toEqual([]);

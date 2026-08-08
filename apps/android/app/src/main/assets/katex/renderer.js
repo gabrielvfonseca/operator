@@ -1,5 +1,3 @@
-"use strict";
-
 window.renderMath = async (job) => {
   const container = document.getElementById("math");
   try {

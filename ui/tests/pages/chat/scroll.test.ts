@@ -14,11 +14,7 @@ import {
 
 /** Minimal ScrollHost stub for unit tests. */
 function createScrollHost(
-  overrides: {
-    scrollHeight?: number;
-    scrollTop?: number;
-    clientHeight?: number;
-  } = {},
+  overrides: { scrollHeight?: number; scrollTop?: number; clientHeight?: number } = {},
 ) {
   const { scrollHeight = 2000, scrollTop = 1500, clientHeight = 500 } = overrides;
 

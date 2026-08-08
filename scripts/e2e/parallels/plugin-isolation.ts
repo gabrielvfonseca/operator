@@ -50,7 +50,7 @@ export function windowsCodexPlatformPackageRepairFunction(): string {
   }
   $projectsRoot = Join-Path $env:USERPROFILE '.operator\npm\projects'
   $codexManifest = Get-ChildItem -Path $projectsRoot -Filter package.json -File -Recurse -ErrorAction SilentlyContinue |
-    Where-Object { $_.FullName -match 'node_modules[\\/]@openclaw[\\/]codex[\\/]package\.json$' } |
+    Where-Object { $_.FullName -match 'node_modules[\\/]@operator[\\/]codex[\\/]package\.json$' } |
     Select-Object -First 1
   if (-not $codexManifest) {
     Write-Warning 'codex-platform-repair: managed Codex project not found'
@@ -199,7 +199,7 @@ if (providerEntry && typeof providerEntry === "object" && !Array.isArray(provide
   }
 }
 
-fs.rmSync(path.join(stateDir, "npm", "node_modules", "@openclaw", "codex"), {
+fs.rmSync(path.join(stateDir, "npm", "node_modules", "@operator", "codex"), {
   recursive: true,
   force: true,
 });

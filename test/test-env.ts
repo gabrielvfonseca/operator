@@ -219,7 +219,7 @@ function createIsolatedTestHome(restore: RestoreEntry[]): {
   cleanup: () => void;
   tempHome: string;
 } {
-  const tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-test-home-"));
+  const tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "operator-test-home-"));
 
   setTestEnvValue("HOME", tempHome);
   setTestEnvValue("USERPROFILE", tempHome);
@@ -253,7 +253,7 @@ function createIsolatedTestHome(restore: RestoreEntry[]): {
 
   // Windows: prefer the default state dir so auth/profile tests match real paths.
   if (process.platform === "win32") {
-    setTestEnvValue("OPENCLAW_STATE_DIR", path.join(tempHome, ".openclaw"));
+    setTestEnvValue("OPENCLAW_STATE_DIR", path.join(tempHome, ".operator"));
   }
 
   setTestEnvValue("XDG_CONFIG_HOME", path.join(tempHome, ".config"));
@@ -418,28 +418,28 @@ function stageLiveTestState(params: {
   const rawStateDir = params.env.OPENCLAW_STATE_DIR?.trim();
   let realStateDir = rawStateDir
     ? resolveHomeRelativePath(rawStateDir, params.realHome)
-    : path.join(params.realHome, ".openclaw");
+    : path.join(params.realHome, ".operator");
   const priorIsolatedHome = params.env.OPENCLAW_TEST_HOME?.trim();
   const snapshotHome = params.env.HOME?.trim();
   if (
     priorIsolatedHome &&
     snapshotHome &&
     snapshotHome !== priorIsolatedHome &&
-    realStateDir === path.join(priorIsolatedHome, ".openclaw")
+    realStateDir === path.join(priorIsolatedHome, ".operator")
   ) {
-    realStateDir = path.join(params.realHome, ".openclaw");
+    realStateDir = path.join(params.realHome, ".operator");
   }
-  const tempStateDir = path.join(params.tempHome, ".openclaw");
+  const tempStateDir = path.join(params.tempHome, ".operator");
   fs.mkdirSync(tempStateDir, { recursive: true });
   fs.mkdirSync(path.join(params.tempHome, ".gemini"), { recursive: true });
 
   const realConfigPath = params.env.OPENCLAW_CONFIG_PATH?.trim()
     ? resolveHomeRelativePath(params.env.OPENCLAW_CONFIG_PATH, params.realHome)
-    : path.join(realStateDir, "openclaw.json");
+    : path.join(realStateDir, "operator.json");
   if (fs.existsSync(realConfigPath)) {
     const rawConfig = fs.readFileSync(realConfigPath, "utf8");
     fs.writeFileSync(
-      path.join(tempStateDir, "openclaw.json"),
+      path.join(tempStateDir, "operator.json"),
       sanitizeLiveConfig(rawConfig),
       "utf8",
     );

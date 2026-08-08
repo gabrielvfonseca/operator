@@ -12,7 +12,7 @@ import type { GoogleChatEvent } from "./types.js";
 const resolveApprovalOverGateway = vi.hoisted(() => vi.fn());
 const updateGoogleChatMessage = vi.hoisted(() => vi.fn());
 
-vi.mock("openclaw/plugin-sdk/approval-gateway-runtime", () => ({
+vi.mock("operator/plugin-sdk/approval-gateway-runtime", () => ({
   resolveApprovalOverGateway,
 }));
 vi.mock("./api.js", () => ({ updateGoogleChatMessage }));

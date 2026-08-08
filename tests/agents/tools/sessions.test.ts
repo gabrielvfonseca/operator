@@ -801,7 +801,7 @@ describe("sessions_list transcriptPath resolution", () => {
   });
 
   it("resolves absolute {agentId} template paths per session agent", async () => {
-    const templateStorePath = "/tmp/openclaw/agents/{agentId}/sessions/sessions.json";
+    const templateStorePath = "/tmp/operator/agents/{agentId}/sessions/sessions.json";
 
     callGatewayMock.mockResolvedValueOnce({
       path: templateStorePath,

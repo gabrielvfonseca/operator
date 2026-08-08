@@ -259,8 +259,8 @@ describe("resolveSandboxedMediaSource", () => {
       expected: /sandbox/i,
     },
     {
-      name: "absolute paths under host tmp outside openclaw tmp root",
-      media: path.join(os.tmpdir(), "outside-openclaw", "passwd"),
+      name: "absolute paths under host tmp outside operator tmp root",
+      media: path.join(os.tmpdir(), "outside-operator", "passwd"),
       expected: /sandbox/i,
     },
     {

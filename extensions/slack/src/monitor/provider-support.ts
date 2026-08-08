@@ -23,7 +23,7 @@ type SlackSocketDisconnect = Awaited<ReturnType<typeof waitForSlackSocketDisconn
 
 const OPERATOR_SLACK_CLIENT_PING_TIMEOUT_MS = 15_000;
 const OPERATOR_SLACK_SOCKET_START_FAILED_EVENT = "unable_to_socket_mode_start";
-const OPERATOR_SLACK_NATIVE_RECONNECT_OBSERVER_KEY = "__openclawNativeReconnectFailureObserver";
+const OPERATOR_SLACK_NATIVE_RECONNECT_OBSERVER_KEY = "__operatorNativeReconnectFailureObserver";
 const SLACK_SOCKET_PONG_TIMEOUT_WARNING_PREFIX = "A pong wasn't received from the server";
 const SLACK_SOCKET_PING_TIMEOUT_WARNING_PREFIX = "A ping wasn't received from the server";
 const SLACK_SOCKET_LOG_LEVEL_IGNORED_WARNING_RE =

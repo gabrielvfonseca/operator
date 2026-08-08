@@ -84,7 +84,7 @@ function createMissingSdkError(
     "(~260 MB after pulling its platform-specific @github/copilot CLI binary).",
     "Reinstall the plugin once with:",
     "",
-    "  openclaw plugins install @gabrielvfonseca/copilot",
+    "  operator plugins install @gabrielvfonseca/copilot",
     "",
     "For source checkouts or offline repair, install the SDK directly:",
     "",

@@ -809,7 +809,7 @@ console.log(match[1] + " " + match[2]);
     exit 3
   fi
   if [ "$setup_gateway" = "1" ]; then
-    export OPERATOR_HOME="$HOME/.operator-mantis/slack-openclaw"
+    export OPERATOR_HOME="$HOME/.operator-mantis/slack-operator"
     mkdir -p "$OPERATOR_HOME"    cat >"$out/slack.socket.patch.json5" <<MANTIS_SLACK_PATCH
 {
   gateway: {
@@ -837,9 +837,9 @@ console.log(match[1] + " " + match[2]);
   },
 }
 MANTIS_SLACK_PATCH
-    pnpm openclaw config patch --file "$out/slack.socket.patch.json5" --dry-run
-    pnpm openclaw config patch --file "$out/slack.socket.patch.json5"
-    nohup pnpm openclaw gateway run --dev --allow-unconfigured --port 38973 --cli-backend-logs </dev/null >"$out/operator-gateway.log" 2>&1 &    gateway_pid="$!"
+    pnpm operator config patch --file "$out/slack.socket.patch.json5" --dry-run
+    pnpm operator config patch --file "$out/slack.socket.patch.json5"
+    nohup pnpm operator gateway run --dev --allow-unconfigured --port 38973 --cli-backend-logs </dev/null >"$out/operator-gateway.log" 2>&1 &    gateway_pid="$!"
     echo "$gateway_pid" >"$out/operator-gateway.pid"
     sleep 12
     if ! kill -0 "$gateway_pid" >/dev/null 2>&1; then

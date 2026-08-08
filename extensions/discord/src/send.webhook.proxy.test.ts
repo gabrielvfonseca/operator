@@ -5,9 +5,9 @@ import { DiscordError, RateLimitError } from "./internal/rest-errors.js";
 import { sendWebhookMessageDiscord } from "./send.webhook.js";
 
 const makeProxyFetchMock = vi.hoisted(() => vi.fn());
-vi.mock("openclaw/plugin-sdk/fetch-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/fetch-runtime")>(
-    "openclaw/plugin-sdk/fetch-runtime",
+vi.mock("operator/plugin-sdk/fetch-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/fetch-runtime")>(
+    "operator/plugin-sdk/fetch-runtime",
   );
   return {
     ...actual,

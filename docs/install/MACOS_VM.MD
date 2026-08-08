@@ -34,7 +34,7 @@ If you want macOS in the cloud, hosted Mac providers work too:
 - [MacStadium](https://www.macstadium.com/) (hosted Macs)
 - Other hosted Mac vendors also work; follow their VM + SSH docs
 
-Once you have SSH access to a macOS VM, continue at [Install Operator](#6-install-openclaw) below.
+Once you have SSH access to a macOS VM, continue at [Install Operator](#6-install-operator) below.
 
 ## Quick path (Lume, experienced users)
 
@@ -101,7 +101,7 @@ After setup completes:
 ## 4) Get the VM IP address
 
 ```bash
-lume get openclaw
+lume get operator
 ```
 
 Look for the IP address (usually `192.168.64.x`).
@@ -119,7 +119,7 @@ Replace `youruser` with the account you created, and the IP with your VM's IP.
 Inside the VM:
 
 ```bash
-npm install -g openclaw@latest
+npm install -g operator@latest
 operator onboard --install-daemon
 ```
 
@@ -160,7 +160,7 @@ operator channels login
 Stop the VM and restart without display:
 
 ```bash
-lume stop openclaw
+lume stop operator
 lume run operator --no-display
 ```
 
@@ -202,15 +202,15 @@ Restart the gateway. Your agent can now send and receive iMessages. Full setup d
 Before customizing further, snapshot your clean state:
 
 ```bash
-lume stop openclaw
+lume stop operator
 lume clone operator operator-golden
 ```
 
 Reset anytime:
 
 ```bash
-lume stop operator && lume delete openclaw
-lume clone operator-golden openclaw
+lume stop operator && lume delete operator
+lume clone operator-golden operator
 lume run operator --no-display
 ```
 
@@ -229,7 +229,7 @@ For true always-on, consider a dedicated Mac mini or a small VPS. See [VPS hosti
 | Problem                  | Solution                                                                            |
 | ------------------------ | ----------------------------------------------------------------------------------- |
 | Cannot SSH into VM       | Check "Remote Login" is enabled in the VM's System Settings                         |
-| VM IP not showing        | Wait for VM to fully boot, run `lume get openclaw` again                            |
+| VM IP not showing        | Wait for VM to fully boot, run `lume get operator` again                            |
 | Lume command not found   | Add `~/.local/bin` to your PATH                                                     |
 | WhatsApp QR not scanning | Ensure you are logged into the VM (not host) when running `operator channels login` |
 

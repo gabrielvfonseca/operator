@@ -10,9 +10,9 @@ const agentSessionMocks = vi.hoisted(() => ({
   estimateTokens: vi.fn((_message: unknown) => 100),
 }));
 
-vi.mock("openclaw/plugin-sdk/agent-sessions", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/agent-sessions")>(
-    "openclaw/plugin-sdk/agent-sessions",
+vi.mock("operator/plugin-sdk/agent-sessions", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/agent-sessions")>(
+    "operator/plugin-sdk/agent-sessions",
   );
   return {
     ...actual,

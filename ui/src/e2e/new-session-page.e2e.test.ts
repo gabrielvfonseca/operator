@@ -26,8 +26,8 @@ const uiProofArtifactDir = path.join(
   "cloud-worker-session",
 );
 
-const WORKSPACE = "/home/peter/openclaw";
-const PICKED = "/home/peter/openclaw/packages";
+const WORKSPACE = "/home/peter/operator";
+const PICKED = "/home/peter/operator/packages";
 const SOURCE_REPO = "/tmp/source-repo";
 const TARGET_REPO = "/tmp/target-repo";
 const REFRESHED_RESEARCH_WORKSPACE = "/home/peter/research-next";
@@ -157,11 +157,11 @@ async function deferTargetRepositorySelection(
 
 async function replaceGatewayClient(page: Page) {
   await page.evaluate(() => {
-    const app = document.querySelector("openclaw-app") as HTMLElement & {
+    const app = document.querySelector("operator-app") as HTMLElement & {
       runtime?: { context: { gateway: { connect: () => void } } };
     };
     if (!app.runtime) {
-      throw new Error("OpenClaw application runtime is unavailable");
+      throw new Error("Operator application runtime is unavailable");
     }
     app.runtime.context.gateway.connect();
   });
@@ -320,7 +320,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
         .toBe(1);
 
       await page.evaluate(() => {
-        const app = document.querySelector("openclaw-app") as HTMLElement & {
+        const app = document.querySelector("operator-app") as HTMLElement & {
           runtime?: { context: { navigate: (routeId: string) => void } };
         };
         app.runtime?.context.navigate("chat");
@@ -375,7 +375,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
     const navigate = (routeId: string, search = "") =>
       page.evaluate(
         ({ targetRouteId, targetSearch }) => {
-          const app = document.querySelector("openclaw-app") as HTMLElement & {
+          const app = document.querySelector("operator-app") as HTMLElement & {
             runtime?: {
               context: {
                 navigate: (routeId: string, options?: { search?: string }) => void;
@@ -383,7 +383,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
             };
           };
           if (!app.runtime) {
-            throw new Error("OpenClaw application runtime is unavailable");
+            throw new Error("Operator application runtime is unavailable");
           }
           app.runtime.context.navigate(targetRouteId, { search: targetSearch });
         },
@@ -607,7 +607,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
             .locator("#new-session-folder-trigger .new-session-page__trigger-label")
             .textContent(),
         )
-        .toBe("openclaw");
+        .toBe("operator");
 
       // Browse from the workspace, descend one level, then adopt the folder.
       await page.locator("#new-session-folder-trigger").click();
@@ -910,7 +910,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
             kind: "direct",
             label: "Cloud session",
             updatedAt: Date.now(),
-            worktree: { id: "worktree-1", branch: "openclaw/cloud-e2e", repoRoot: WORKSPACE },
+            worktree: { id: "worktree-1", branch: "operator/cloud-e2e", repoRoot: WORKSPACE },
             placement: { state: "active" },
           },
           {
@@ -933,7 +933,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
       await sessionRow.hover();
       await sessionRow.getByRole("button", { name: "Open session menu" }).click();
       const stopWorker = page
-        .locator("openclaw-session-menu")
+        .locator("operator-session-menu")
         .getByRole("menuitem", { name: "Stop cloud worker…" });
       await stopWorker.waitFor();
       await captureUiProof(page, "02-active-cloud-worker-stop.png");
@@ -1107,8 +1107,8 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
         const originalSetItem = sessionStorage.setItem.bind(sessionStorage);
         Storage.prototype.setItem = (key: string, value: string) => {
           if (
-            key.startsWith("openclaw.new-session.cloud-recovery.v1:") ||
-            key.startsWith("openclaw.control-ui-e2e.")
+            key.startsWith("operator.new-session.cloud-recovery.v1:") ||
+            key.startsWith("operator.control-ui-e2e.")
           ) {
             originalSetItem(key, value);
             return;
@@ -1200,7 +1200,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
       await page.goto(`${server.baseUrl}new`);
       await gateway.waitForRequest("environments.list");
       const recoveryIdentity = await page.evaluate(() => {
-        const app = document.querySelector("openclaw-app") as HTMLElement & {
+        const app = document.querySelector("operator-app") as HTMLElement & {
           runtime?: {
             context: {
               gateway: {
@@ -1223,7 +1223,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
       await expect
         .poll(() =>
           page.evaluate(() => {
-            const app = document.querySelector("openclaw-app") as HTMLElement & {
+            const app = document.querySelector("operator-app") as HTMLElement & {
               runtime?: { context: { gateway: { snapshot: { connected: boolean } } } };
             };
             return app.runtime?.context.gateway.snapshot.connected ?? false;
@@ -1232,7 +1232,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
         .toBe(false);
       await page.evaluate(({ gatewayUrl, recoveryScope }) => {
         sessionStorage.setItem(
-          `openclaw.new-session.cloud-recovery.v1:${gatewayUrl}:${recoveryScope}`,
+          `operator.new-session.cloud-recovery.v1:${gatewayUrl}:${recoveryScope}`,
           JSON.stringify({
             sessionKey: "agent:cloud:offline-recovery",
             messageId: "message-offline-recovery",
@@ -1264,7 +1264,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
         .poll(() => page.getByRole("button", { name: "Start session" }).isDisabled())
         .toBe(false);
       await page.evaluate(() => {
-        const app = document.querySelector("openclaw-app") as HTMLElement & {
+        const app = document.querySelector("operator-app") as HTMLElement & {
           runtime?: {
             context: {
               gateway: {
@@ -1281,7 +1281,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
         }
         client.recoveryScopeTracker.ready = false;
         (
-          document.querySelector("openclaw-new-session-page") as
+          document.querySelector("operator-new-session-page") as
             | (HTMLElement & { requestUpdate: () => void })
             | null
         )?.requestUpdate();
@@ -1405,7 +1405,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
     const readRecovery = () =>
       page.evaluate(() => {
         const key = Object.keys(sessionStorage).find((candidate) =>
-          candidate.startsWith("openclaw.new-session.cloud-recovery.v1:"),
+          candidate.startsWith("operator.new-session.cloud-recovery.v1:"),
         );
         return key ? (JSON.parse(sessionStorage.getItem(key) ?? "null") as unknown) : null;
       });
@@ -1530,7 +1530,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
       await page.evaluate(() => {
         const originalSetItem = sessionStorage.setItem.bind(sessionStorage);
         Storage.prototype.setItem = (key: string, value: string) => {
-          if (key.startsWith("openclaw.new-session.cloud-recovery.v1:")) {
+          if (key.startsWith("operator.new-session.cloud-recovery.v1:")) {
             originalSetItem(key, value);
             return;
           }
@@ -1794,7 +1794,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
       await page.goto(`${server.baseUrl}new?agent=research`);
       await page.getByRole("heading", { name: "Research" }).waitFor();
       await gateway.setOnline(false);
-      await page.locator("openclaw-connection-banner").waitFor({ timeout: 10_000 });
+      await page.locator("operator-connection-banner").waitFor({ timeout: 10_000 });
 
       await page.evaluate(() => {
         history.pushState(null, "", "new?agent=research&catalog=claude");
@@ -1906,7 +1906,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
       const branchRequestsBefore = (await gateway.getRequests("worktrees.branches")).length;
 
       await gateway.setOnline(false);
-      await page.locator("openclaw-connection-banner").waitFor({ timeout: 10_000 });
+      await page.locator("operator-connection-banner").waitFor({ timeout: 10_000 });
       await gateway.setMethodResponse("agents.list", {
         agents: [
           {
@@ -1964,7 +1964,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
       const branchesBeforeSameWorkspaceReconnect = (await gateway.getRequests("worktrees.branches"))
         .length;
       await gateway.setOnline(false);
-      await page.locator("openclaw-connection-banner").waitFor({ timeout: 10_000 });
+      await page.locator("operator-connection-banner").waitFor({ timeout: 10_000 });
       await gateway.setOnline(true);
 
       await expect
@@ -2047,7 +2047,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
       const nodeRequestsBefore = (await gateway.getRequests("node.list")).length;
 
       await gateway.setOnline(false);
-      await page.locator("openclaw-connection-banner").waitFor({ timeout: 10_000 });
+      await page.locator("operator-connection-banner").waitFor({ timeout: 10_000 });
       await gateway.deferNext("node.list");
       await gateway.setOnline(true);
       await expect
@@ -2274,7 +2274,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
         } else {
           const agentRequestsBefore = (await gateway.getRequests("agents.list")).length;
           await gateway.setOnline(false);
-          await page.locator("openclaw-connection-banner").waitFor({ timeout: 10_000 });
+          await page.locator("operator-connection-banner").waitFor({ timeout: 10_000 });
           await gateway.setOnline(true);
           await expect
             .poll(async () => (await gateway.getRequests("agents.list")).length)
@@ -2363,7 +2363,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
       await expect
         .poll(() => page.locator(".new-session-page__runtime").textContent())
         .toContain("Claude Code");
-      await expect.poll(() => folderLabel.textContent()).toBe("openclaw");
+      await expect.poll(() => folderLabel.textContent()).toBe("operator");
       await page.locator(".new-session-page__message").fill("retarget this draft");
       await page.getByRole("button", { name: "Start session" }).click();
 
@@ -2651,7 +2651,7 @@ describeControlUiE2e("Control UI new-session page mocked Gateway E2E", () => {
       const setItem = Object.getOwnPropertyDescriptor(Storage.prototype, "setItem")
         ?.value as Storage["setItem"];
       Storage.prototype.setItem = function (key: string, value: string) {
-        if (key.startsWith("openclaw.control.chatComposer.v2:")) {
+        if (key.startsWith("operator.control.chatComposer.v2:")) {
           throw new DOMException("Quota exceeded", "QuotaExceededError");
         }
         return setItem.call(this, key, value);

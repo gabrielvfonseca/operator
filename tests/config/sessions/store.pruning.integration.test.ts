@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import { closeOperatorAgentDatabasesForTest } from "../../../src/state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../../src/state/operator-agent-db.js";
 import { createSuiteTempRootTracker } from "../../../src/test-helpers/temp-dir.js";
 import {
   resolveTrajectoryFilePath,

@@ -116,7 +116,7 @@ async function main() {
   const gatewayUrl = process.env.GW_URL?.trim();
   const gatewayToken = process.env.GW_TOKEN?.trim();
   const stateDir = process.env.OPERATOR_STATE_DIR?.trim();
-  const model = process.env.OPERATOR_MCP_CODE_MODE_MODEL?.trim() || "openclaw/main";
+  const model = process.env.OPERATOR_MCP_CODE_MODE_MODEL?.trim() || "operator/main";
   assert(gatewayUrl, "missing GW_URL");
   assert(gatewayToken, "missing GW_TOKEN");
   assert(stateDir, "missing OPERATOR_STATE_DIR");

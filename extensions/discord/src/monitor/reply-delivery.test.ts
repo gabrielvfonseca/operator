@@ -14,9 +14,9 @@ const sendDurableMessageBatchMock = vi.hoisted(() =>
 const sendMessageDiscordMock = vi.hoisted(() => vi.fn());
 const sendVoiceMessageDiscordMock = vi.hoisted(() => vi.fn());
 
-vi.mock("openclaw/plugin-sdk/channel-outbound", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/channel-outbound")>(
-    "openclaw/plugin-sdk/channel-outbound",
+vi.mock("operator/plugin-sdk/channel-outbound", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/channel-outbound")>(
+    "operator/plugin-sdk/channel-outbound",
   );
   return {
     ...actual,
@@ -231,7 +231,7 @@ describe("deliverDiscordReply", () => {
           text: [
             "📊 Session Status: current",
             "🛠️ run git status",
-            "⚠️ 🛠️ `run openclaw definitely-not-a-real-subcommand (agent)` failed",
+            "⚠️ 🛠️ `run operator definitely-not-a-real-subcommand (agent)` failed",
             "🛠️ `gh pr view`",
             "🛠️ `docker compose up`",
             "🛠️ elevated · `cd /tmp && pnpm test`",
@@ -257,7 +257,7 @@ describe("deliverDiscordReply", () => {
     await deliverDiscordReply({
       replies: [
         {
-          text: "⚠️ 🛠️ `run openclaw definitely-not-a-real-subcommand (agent)` failed",
+          text: "⚠️ 🛠️ `run operator definitely-not-a-real-subcommand (agent)` failed",
           isError: true,
         },
       ],
@@ -280,7 +280,7 @@ describe("deliverDiscordReply", () => {
           text: [
             "[tool:exec]",
             "<parameter=command>",
-            'cat /proc/mounts 2>/dev/null | grep -i "libra|rav|openclaw" | head -20',
+            'cat /proc/mounts 2>/dev/null | grep -i "libra|rav|operator" | head -20',
             "</parameter>",
             "",
             "<function=exec>",

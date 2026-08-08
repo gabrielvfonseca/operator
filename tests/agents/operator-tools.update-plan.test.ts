@@ -60,7 +60,9 @@ describe("operator-tools update_plan gating", () => {
     });
 
     expect(
-      emittedNames.filter((name) => resolveCoreToolFactoryFamily(name) !== "operator"),
+      emittedNames.filter(
+        (name) => resolveCoreToolFactoryFamily(name) !== "@gabrielvfonseca/operator",
+      ),
     ).toEqual([]);
   });
 
@@ -134,10 +136,10 @@ describe("operator-tools update_plan gating", () => {
       agentSessionKey: "agent:main:main",
     });
 
-    expect(regular).toContain("operator");
-    expect(sandboxed).not.toContain("operator");
-    expect(system).not.toContain("operator");
-    expect(embedded).not.toContain("operator");
+    expect(regular).toContain("@gabrielvfonseca/operator");
+    expect(sandboxed).not.toContain("@gabrielvfonseca/operator");
+    expect(system).not.toContain("@gabrielvfonseca/operator");
+    expect(embedded).not.toContain("@gabrielvfonseca/operator");
   });
 
   it("requires explicit transcripts enablement before registering the transcripts tool", () => {

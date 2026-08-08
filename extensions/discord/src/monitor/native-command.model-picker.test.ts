@@ -33,7 +33,7 @@ import {
 } from "./native-command-ui.js";
 import { createNoopThreadBindingManager, type ThreadBindingManager } from "./thread-bindings.js";
 
-vi.mock("openclaw/plugin-sdk/runtime-env", { spy: true });
+vi.mock("operator/plugin-sdk/runtime-env", { spy: true });
 
 type ModelPickerContext = Parameters<typeof createDiscordModelPickerFallbackButton>[0]["ctx"];
 type PickerButton = ReturnType<typeof createDiscordModelPickerFallbackButton>;

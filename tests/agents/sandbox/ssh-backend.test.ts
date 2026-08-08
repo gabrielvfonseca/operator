@@ -56,7 +56,7 @@ function createConfig(): OperatorConfig {
           ssh: {
             target: "peter@example.com:2222",
             command: "ssh",
-            workspaceRoot: "/remote/openclaw",
+            workspaceRoot: "/remote/operator",
             strictHostKeyChecking: true,
             updateHostKeys: true,
           },
@@ -115,7 +115,7 @@ function createBackendSandboxConfig(params?: { binds?: string[]; target?: string
     },
     ssh: {
       ...createSandboxSshConfig(
-        "/remote/openclaw",
+        "/remote/operator",
         params?.target ? { target: params.target } : {},
       ),
     },
@@ -209,9 +209,9 @@ describe("ssh sandbox backend", () => {
       "ssh session settings",
     );
     expect(sessionSettings.target).toBe("peter@example.com:2222");
-    expect(sessionSettings.workspaceRoot).toBe("/remote/openclaw");
+    expect(sessionSettings.workspaceRoot).toBe("/remote/operator");
     const commandParams = requireSshRunCommandParams();
-    expect(commandParams.remoteCommand).toContain("/remote/openclaw/operator-ssh-agent-worker");
+    expect(commandParams.remoteCommand).toContain("/remote/operator/operator-ssh-agent-worker");
   });
 
   it("removes runtimes by deleting the remote scope root", async () => {
@@ -279,7 +279,7 @@ describe("ssh sandbox backend", () => {
         ssh: {
           target: "peter@example.com:2222",
           command: "ssh",
-          workspaceRoot: "/remote/openclaw",
+          workspaceRoot: "/remote/operator",
           strictHostKeyChecking: true,
           updateHostKeys: true,
         },
@@ -315,7 +315,7 @@ describe("ssh sandbox backend", () => {
       "-T",
       createSession().host,
     ]);
-    expect(execSpec.argv.at(-1)).toContain("/remote/openclaw/operator-ssh-agent-worker");
+    expect(execSpec.argv.at(-1)).toContain("/remote/operator/operator-ssh-agent-worker");
     expect(sshMocks.uploadDirectoryToSshTarget).toHaveBeenCalledTimes(3);
     const workspaceUploadParams = requireSshUploadParams(0, "workspace upload params");
     expect(workspaceUploadParams.localDir).toBe("/tmp/workspace");
@@ -351,7 +351,7 @@ describe("ssh sandbox backend", () => {
         code: 0,
       })
       .mockResolvedValueOnce({
-        stdout: Buffer.from("/remote/openclaw/operator-ssh-agent-worker-abcd1234/workspace/src\n"),
+        stdout: Buffer.from("/remote/operator/operator-ssh-agent-worker-abcd1234/workspace/src\n"),
         stderr: Buffer.alloc(0),
         code: 0,
       })
@@ -361,7 +361,7 @@ describe("ssh sandbox backend", () => {
         code: 1,
       })
       .mockResolvedValueOnce({
-        stdout: Buffer.from("/remote/openclaw/operator-ssh-agent-worker-abcd1234/agent/src\n"),
+        stdout: Buffer.from("/remote/operator/operator-ssh-agent-worker-abcd1234/agent/src\n"),
         stderr: Buffer.alloc(0),
         code: 0,
       });
@@ -378,31 +378,31 @@ describe("ssh sandbox backend", () => {
 
     await expect(
       backend.validateWorkdir?.(
-        "/remote/openclaw/operator-ssh-agent-worker-abcd1234/workspace/src",
+        "/remote/operator/operator-ssh-agent-worker-abcd1234/workspace/src",
       ),
-    ).resolves.toBe("/remote/openclaw/operator-ssh-agent-worker-abcd1234/workspace/src");
+    ).resolves.toBe("/remote/operator/operator-ssh-agent-worker-abcd1234/workspace/src");
     await expect(
       backend.validateWorkdir?.(
-        "/remote/openclaw/operator-ssh-agent-worker-abcd1234/workspace/missing",
+        "/remote/operator/operator-ssh-agent-worker-abcd1234/workspace/missing",
       ),
     ).resolves.toBeNull();
     await expect(
-      backend.validateWorkdir?.("/remote/openclaw/operator-ssh-agent-worker-abcd1234/agent/src"),
-    ).resolves.toBe("/remote/openclaw/operator-ssh-agent-worker-abcd1234/agent/src");
+      backend.validateWorkdir?.("/remote/operator/operator-ssh-agent-worker-abcd1234/agent/src"),
+    ).resolves.toBe("/remote/operator/operator-ssh-agent-worker-abcd1234/agent/src");
 
     const validationCommand = String(requireSshRunCommandParams(1).remoteCommand);
     expect(validationCommand).toContain("operator-validate-workdir");
     expect(validationCommand).toContain("remote directory must stay under root");
     const agentValidationCommand = String(requireSshRunCommandParams(3).remoteCommand);
     expect(agentValidationCommand).toContain(
-      "/remote/openclaw/operator-ssh-agent-worker-abcd1234/agent",
+      "/remote/operator/operator-ssh-agent-worker-abcd1234/agent",
     );
   });
 
   it("refreshes materialized skills before validating a skills workdir", async () => {
     const skillsWorkspaceDir = await createTempDir("operator-ssh-skills-");
     await fs.mkdir(path.join(skillsWorkspaceDir, "skills", "demo"), { recursive: true });
-    const runtimePaths = resolveSshRuntimePaths("/remote/openclaw", "agent:worker");
+    const runtimePaths = resolveSshRuntimePaths("/remote/operator", "agent:worker");
     const skillsWorkdir = path.posix.join(runtimePaths.remoteSkillsWorkspaceDir, "skills", "demo");
     sshMocks.runSshSandboxCommand
       .mockResolvedValueOnce({
@@ -456,7 +456,7 @@ describe("ssh sandbox backend", () => {
   it("discards validated materialized skills refreshes that do not launch", async () => {
     const skillsWorkspaceDir = await createTempDir("operator-ssh-skills-");
     await fs.mkdir(path.join(skillsWorkspaceDir, "skills", "demo"), { recursive: true });
-    const runtimePaths = resolveSshRuntimePaths("/remote/openclaw", "agent:worker");
+    const runtimePaths = resolveSshRuntimePaths("/remote/operator", "agent:worker");
     const skillsWorkdir = path.posix.join(runtimePaths.remoteSkillsWorkspaceDir, "skills", "demo");
     sshMocks.runSshSandboxCommand
       .mockResolvedValueOnce({

@@ -264,7 +264,7 @@ describe("runStartupSessionMigration", () => {
         log,
         deps: makeDeps(migrate, 0, runDoctorSessionSqlite),
       }),
-    ).rejects.toThrow("openclaw doctor --session-sqlite recover --session-sqlite-all-agents");
+    ).rejects.toThrow("operator doctor --session-sqlite recover --session-sqlite-all-agents");
   });
 
   it("auto-restores the current failed session SQLite migration run after files moved", async () => {

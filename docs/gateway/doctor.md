@@ -301,8 +301,8 @@ That stages grounded durable candidates into the short-term dreaming store while
 
     <Note>
       The `plugins.entries.voice-call.config.*` rows above are normalized by
-      the Voice Call plugin itself on every config load, not by `openclaw
-      doctor`. The plugin also logs a startup warning pointing at `openclaw
+      the Voice Call plugin itself on every config load, not by `operator
+      doctor`. The plugin also logs a startup warning pointing at `operator
       doctor --fix`, but doctor does not currently rewrite
       `operator.json` for these keys; the plugin's own normalization is what
       applies the change at runtime.
@@ -315,7 +315,7 @@ That stages grounded durable candidates into the short-term dreaming store while
 
   </Accordion>
   <Accordion title="2b. OpenCode provider overrides">
-    If you have added `models.providers.opencode`, `opencode-zen`, or `opencode-go` manually, it overrides the built-in OpenCode catalog from `openclaw/plugin-sdk/llm`. That can force models onto the wrong API or zero out costs. Doctor warns so you can remove the override and restore per-model API routing + costs.
+    If you have added `models.providers.opencode`, `opencode-zen`, or `opencode-go` manually, it overrides the built-in OpenCode catalog from `operator/plugin-sdk/llm`. That can force models onto the wrong API or zero out costs. Doctor warns so you can remove the override and restore per-model API routing + costs.
   </Accordion>
   <Accordion title="2c. Browser migration and Chrome MCP readiness">
     If your browser config still points at the removed Chrome extension path, doctor normalizes it to the current host-local Chrome MCP attach model (`browser.profiles.*.driver: "extension"` → `"existing-session"`; `browser.relayBindHost` removed).
@@ -432,7 +432,7 @@ That stages grounded durable candidates into the short-term dreaming store while
     When sandboxing is enabled, doctor checks Docker images and offers to build or switch to legacy names if the current image is missing.
   </Accordion>
   <Accordion title="7b. Plugin install cleanup">
-    Doctor removes legacy Operator-generated plugin dependency staging state in `operator doctor --fix` / `operator doctor --repair` mode: stale generated dependency roots, old install-stage directories, package-local debris from earlier bundled-plugin dependency repair code, and orphaned or recovered managed npm copies of bundled `@gabrielvfonseca/*` plugins that can shadow the current bundled manifest. Doctor also relinks the host `openclaw` package into managed npm plugins that declare `peerDependencies.operator`, so package-local runtime imports such as `openclaw/plugin-sdk/*` keep resolving after updates or npm repairs.
+    Doctor removes legacy Operator-generated plugin dependency staging state in `operator doctor --fix` / `operator doctor --repair` mode: stale generated dependency roots, old install-stage directories, package-local debris from earlier bundled-plugin dependency repair code, and orphaned or recovered managed npm copies of bundled `@gabrielvfonseca/*` plugins that can shadow the current bundled manifest. Doctor also relinks the host `operator` package into managed npm plugins that declare `peerDependencies.operator`, so package-local runtime imports such as `operator/plugin-sdk/*` keep resolving after updates or npm repairs.
 
     Doctor can also reinstall missing downloadable plugins when config references them but the local plugin registry cannot find them (material `plugins.entries`, configured channel/provider/search settings, configured agent runtimes). During package updates, doctor avoids reinstalling plugin packages while the core package is being swapped; run `operator doctor --fix` again after the update if a configured plugin still needs recovery. Outside the container image startup exception below, gateway startup and config reload do not run package repair; plugin installs remain explicit doctor/install/update work.
 

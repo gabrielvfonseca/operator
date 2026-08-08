@@ -38,7 +38,7 @@ Copilot CLI environment.
 
 ## Install
 
-The Copilot runtime ships as an external plugin so the core `openclaw`
+The Copilot runtime ships as an external plugin so the core `operator`
 package does not carry `@github/copilot-sdk` or its platform-specific
 `@github/copilot-<platform>-<arch>` CLI binary (roughly 260 MB together).
 Install it only for agents that opt into this runtime:
@@ -339,7 +339,7 @@ can enforce at the SDK boundary: `includeCoreTools`, the runtime tool
 allowlist, and `toolConstructionPlan`.
 
 The bridge also uses the shared harness tool-surface helper from
-`openclaw/plugin-sdk/agent-harness-tool-runtime` for PI parity. When
+`operator/plugin-sdk/agent-harness-tool-runtime` for PI parity. When
 tool-search is enabled, the SDK sees compact control tools plus a hidden
 catalog executor instead of every Operator tool schema. When code mode is
 enabled, the helper builds the same code-mode control surface and catalog

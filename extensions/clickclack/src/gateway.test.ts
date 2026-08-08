@@ -46,7 +46,7 @@ vi.mock("./inbound.js", () => ({
   handleClickClackInbound: mocks.handleClickClackInbound,
 }));
 
-vi.mock("openclaw/plugin-sdk/native-command-registry", () => ({
+vi.mock("operator/plugin-sdk/native-command-registry", () => ({
   listNativeCommandSpecsForConfig: () => [],
 }));
 

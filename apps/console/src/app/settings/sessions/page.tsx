@@ -26,10 +26,7 @@ export default function SessionsPage() {
       {data?.sessions && data.sessions.length > 0 ? (
         <ul className="flex flex-col gap-2">
           {data.sessions.map((session) => (
-            <li
-              key={session.id}
-              className="rounded-md border border-border bg-card p-3 text-sm"
-            >
+            <li key={session.id} className="rounded-md border border-border bg-card p-3 text-sm">
               <div className="font-medium">{session.title ?? session.id}</div>
               <div className="text-xs text-muted-foreground">
                 {session.agentId ?? "agent"} · {session.id}

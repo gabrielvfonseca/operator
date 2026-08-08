@@ -2311,7 +2311,7 @@ export const ko: TranslationMap = {
       onboardingTitle: "No workspaces yet",
       onboardingSubtitle:
         "Ask your agent to build a workspace, or create one from the command line.",
-      onboardingCommand: "openclaw workspaces tabs create --title Main",
+      onboardingCommand: "operator workspaces tabs create --title Main",
       tabTitle: "This workspace is empty",
       tabSubtitle: "Ask your agent to add a widget, or add one yourself.",
       noVisibleTabs: "Every workspace tab is hidden. Restore one from the hidden menu.",
@@ -3236,9 +3236,9 @@ export const ko: TranslationMap = {
         title: "인증 필요",
         summary:
           "Gateway에 연결할 수 있지만 이 브라우저가 연결되기 전에 일치하는 토큰 또는 비밀번호가 필요합니다.",
-        stepPaste: "openclaw dashboard --no-open의 토큰을 붙여넣거나 구성된 비밀번호를 입력하세요.",
+        stepPaste: "operator dashboard --no-open의 토큰을 붙여넣거나 구성된 비밀번호를 입력하세요.",
         stepGenerate:
-          "토큰이 구성되어 있지 않으면 Gateway 호스트에서 openclaw doctor --generate-gateway-token을 실행하세요.",
+          "토큰이 구성되어 있지 않으면 Gateway 호스트에서 operator doctor --generate-gateway-token을 실행하세요.",
         stepConnect: "자격 증명을 업데이트한 뒤 Connect를 다시 클릭하세요.",
       },
       authFailed: {
@@ -3246,7 +3246,7 @@ export const ko: TranslationMap = {
         summary:
           "제공한 자격 증명이 거부되었습니다. 가장 흔한 원인은 오래된 토큰이거나 다른 Gateway URL에서 복사한 토큰입니다.",
         stepDashboard:
-          "openclaw dashboard --no-open을 실행하고 새 URL을 열거나 해당 토큰을 붙여넣으세요.",
+          "operator dashboard --no-open을 실행하고 새 URL을 열거나 해당 토큰을 붙여넣으세요.",
         stepReplace:
           "오래된 토큰/비밀번호 값을 교체하세요. 다른 Gateway URL의 토큰을 재사용하지 마세요.",
         stepMode:
@@ -3268,8 +3268,8 @@ export const ko: TranslationMap = {
         summary: "이 브라우저가 Control UI를 사용하려면 Gateway 호스트의 일회성 승인이 필요합니다.",
         upgradeSummary:
           "이 브라우저는 이미 알려져 있지만 요청한 액세스가 변경되어 새 승인이 필요합니다.",
-        stepList: "Gateway 호스트에서 openclaw devices list를 실행하세요.",
-        stepApproveId: "이 요청을 승인하세요: openclaw devices approve {requestId}.",
+        stepList: "Gateway 호스트에서 operator devices list를 실행하세요.",
+        stepApproveId: "이 요청을 승인하세요: operator devices approve {requestId}.",
         stepApprove: "해당 목록에서 대기 중인 브라우저/장치 요청을 승인하세요.",
         stepReconnect: "승인이 완료된 뒤 다시 연결하세요.",
       },
@@ -3296,7 +3296,7 @@ export const ko: TranslationMap = {
         summary:
           "제공된 Control UI와 실행 중인 Gateway가 지원되는 연결 프로토콜에 동의하지 않습니다.",
         stepDashboard:
-          "UI와 Gateway가 같은 설치에서 오도록 openclaw dashboard로 제공된 dashboard를 다시 여세요.",
+          "UI와 Gateway가 같은 설치에서 오도록 operator dashboard로 제공된 dashboard를 다시 여세요.",
         stepDevUi:
           "pnpm ui:dev를 사용하는 경우 현재 checkout 기준으로 개발 UI를 다시 빌드하거나 다시 시작하세요.",
         stepRestart:
@@ -3307,11 +3307,11 @@ export const ko: TranslationMap = {
         summary:
           "브라우저가 Gateway 연결을 완료할 수 없습니다. 자격 증명을 다시 시도하기 전에 대상과 전송 방식을 확인하세요.",
         stepGateway:
-          "openclaw status 또는 openclaw gateway run으로 Gateway가 실행 중인지 확인하세요.",
+          "operator status 또는 operator gateway run으로 Gateway가 실행 중인지 확인하세요.",
         stepUrl:
           "WebSocket URL을 확인하고 Gateway가 HTTPS/Tailscale Serve 뒤에 있으면 wss://를 사용하세요.",
         stepDashboard:
-          "openclaw dashboard --no-open으로 dashboard를 다시 열어 현재 URL과 인증 세부 정보를 다시 복사하세요.",
+          "operator dashboard --no-open으로 dashboard를 다시 열어 현재 URL과 인증 세부 정보를 다시 복사하세요.",
       },
     },
   },

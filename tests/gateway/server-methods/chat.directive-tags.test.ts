@@ -2548,7 +2548,7 @@ describe("chat directive tag stripping for non-streaming final payloads", () => 
         payload: {
           text: [
             "Trajectory exports can include prompts, model messages, tool schemas, tool results, runtime events, and local paths.",
-            "Trajectory bundle: requested `openclaw sessions export-trajectory` through exec approval. Approve once to create the bundle; do not use allow-all for trajectory exports.",
+            "Trajectory bundle: requested `operator sessions export-trajectory` through exec approval. Approve once to create the bundle; do not use allow-all for trajectory exports.",
           ].join("\n"),
         },
       },
@@ -2649,7 +2649,7 @@ describe("chat directive tag stripping for non-streaming final payloads", () => 
         payload: {
           text: "Scan this QR code with the Operator iOS app:",
           channelData: {
-            openclawPairingQr: {
+            operatorPairingQr: {
               setupCode,
               expiresAtMs: Date.now() + 10 * 60_000,
             },

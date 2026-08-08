@@ -1,3 +1,3 @@
 // Public package facade for runtime doctor contracts.
-
-export * from "../../../src/plugin-sdk/runtime-doctor.js";
+export { archiveLegacyStateSource, legacyStateFileExists } from "../../../src/plugins/doctor-state-migration-fs";
+export { PluginDoctorStateMigration, PluginDoctorStateMigrationContext } from "../../../src/plugins/doctor-contract-registry";

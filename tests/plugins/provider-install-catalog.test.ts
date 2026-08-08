@@ -297,9 +297,9 @@ describe("provider install catalog", () => {
         installRecords: {
           vllm: {
             source: "clawhub",
-            spec: "clawhub:openclaw/vllm@2026.5.2",
+            spec: "clawhub:operator/vllm@2026.5.2",
             integrity: "sha256-clawpack",
-            clawhubPackage: "openclaw/vllm",
+            clawhubPackage: "operator/vllm",
           },
         },
         plugins: [vllmPluginWithPackageInstall()],
@@ -317,14 +317,14 @@ describe("provider install catalog", () => {
       label: "vLLM",
       origin: "global",
       install: {
-        clawhubSpec: "clawhub:openclaw/vllm@2026.5.2",
+        clawhubSpec: "clawhub:operator/vllm@2026.5.2",
         defaultChoice: "clawhub",
       },
       installSource: {
         defaultChoice: "clawhub",
         clawhub: {
-          spec: "clawhub:openclaw/vllm@2026.5.2",
-          packageName: "openclaw/vllm",
+          spec: "clawhub:operator/vllm@2026.5.2",
+          packageName: "operator/vllm",
           version: "2026.5.2",
           exactVersion: true,
         },
@@ -705,7 +705,7 @@ describe("provider install catalog", () => {
             id: "moonshot",
             package: "@gabrielvfonseca/plugin-moonshot",
             install: {
-              clawhubSpec: "clawhub:openclaw/moonshot@2026.5.2",
+              clawhubSpec: "clawhub:operator/moonshot@2026.5.2",
               npmSpec: "@gabrielvfonseca/plugin-moonshot@2026.5.2",
               defaultChoice: "clawhub",
               expectedIntegrity: "sha512-moonshot",
@@ -735,7 +735,7 @@ describe("provider install catalog", () => {
       label: "Moonshot AI",
       origin: "bundled",
       install: {
-        clawhubSpec: "clawhub:openclaw/moonshot@2026.5.2",
+        clawhubSpec: "clawhub:operator/moonshot@2026.5.2",
         npmSpec: "@gabrielvfonseca/plugin-moonshot@2026.5.2",
         defaultChoice: "clawhub",
         expectedIntegrity: "sha512-moonshot",
@@ -743,8 +743,8 @@ describe("provider install catalog", () => {
       installSource: {
         defaultChoice: "clawhub",
         clawhub: {
-          spec: "clawhub:openclaw/moonshot@2026.5.2",
-          packageName: "openclaw/moonshot",
+          spec: "clawhub:operator/moonshot@2026.5.2",
+          packageName: "operator/moonshot",
           version: "2026.5.2",
           exactVersion: true,
         },
@@ -875,7 +875,7 @@ describe("provider install catalog", () => {
             id: "moonshot",
             package: "@gabrielvfonseca/plugin-moonshot",
             install: {
-              clawhubSpec: "clawhub:openclaw/moonshot@2026.5.2",
+              clawhubSpec: "clawhub:operator/moonshot@2026.5.2",
               npmSpec: "@gabrielvfonseca/plugin-moonshot@2026.5.2",
               defaultChoice: "clawhub",
             },
@@ -895,7 +895,7 @@ describe("provider install catalog", () => {
             id: "vllm",
             package: "@gabrielvfonseca/plugin-vllm",
             install: {
-              clawhubSpec: "clawhub:openclaw/vllm@2026.5.2",
+              clawhubSpec: "clawhub:operator/vllm@2026.5.2",
               npmSpec: "@gabrielvfonseca/plugin-vllm@2026.5.2",
               defaultChoice: "clawhub",
             },
@@ -924,15 +924,15 @@ describe("provider install catalog", () => {
       label: "vLLM",
       origin: "bundled",
       install: {
-        clawhubSpec: "clawhub:openclaw/vllm@2026.5.2",
+        clawhubSpec: "clawhub:operator/vllm@2026.5.2",
         npmSpec: "@gabrielvfonseca/plugin-vllm@2026.5.2",
         defaultChoice: "clawhub",
       },
       installSource: {
         defaultChoice: "clawhub",
         clawhub: {
-          spec: "clawhub:openclaw/vllm@2026.5.2",
-          packageName: "openclaw/vllm",
+          spec: "clawhub:operator/vllm@2026.5.2",
+          packageName: "operator/vllm",
           version: "2026.5.2",
           exactVersion: true,
         },

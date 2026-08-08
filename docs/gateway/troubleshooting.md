@@ -47,12 +47,12 @@ Look for:
 
 ## Split brain installs and newer config guard
 
-Use when a gateway service unexpectedly stops after an update, or logs show one `openclaw` binary is older than the version that last wrote `operator.json`.
+Use when a gateway service unexpectedly stops after an update, or logs show one `operator` binary is older than the version that last wrote `operator.json`.
 
 Operator stamps config writes with `meta.lastTouchedVersion`. Read-only commands can inspect a config written by a newer Operator, but process and service mutations refuse to run from an older binary. Blocked actions: gateway service start/stop/restart/uninstall, forced service reinstall, service-mode gateway startup, and `gateway --force` port cleanup.
 
 ```bash
-which openclaw
+which operator
 operator --version
 operator gateway status --deep
 operator config get meta.lastTouchedVersion
@@ -60,7 +60,7 @@ operator config get meta.lastTouchedVersion
 
 <Steps>
   <Step title="Fix PATH">
-    Fix `PATH` so `openclaw` resolves to the newer install, then rerun the action.
+    Fix `PATH` so `operator` resolves to the newer install, then rerun the action.
   </Step>
   <Step title="Reinstall the gateway service">
     Reinstall the intended gateway service from the newer install:
@@ -72,7 +72,7 @@ operator config get meta.lastTouchedVersion
 
   </Step>
   <Step title="Remove stale wrappers">
-    Remove stale system package or old wrapper entries that still point at an old `openclaw` binary.
+    Remove stale system package or old wrapper entries that still point at an old `operator` binary.
   </Step>
 </Steps>
 
@@ -86,7 +86,7 @@ Use when logs keep printing `protocol mismatch` after a downgrade or rollback. A
 
 ```bash
 operator --version
-which -a openclaw
+which -a operator
 operator gateway status --deep
 operator doctor --deep
 operator logs --follow
@@ -452,7 +452,7 @@ Common signatures:
 
 - A stability bundle whose `error.code` is `ENETDOWN` or a sibling code, with the call stack pointing into Node `net` `lookupAndConnect` / `Socket.connect`. Operator `2026.5.26` and newer classify these as benign transient network errors so they no longer propagate to the top-level uncaught handler; if you are on an older release, upgrade first.
 - Long quiet periods that end the instant you connect to the Control UI or SSH into the host: the user-visible activity is what re-arms launchd's respawn gate, not anything the dashboard does to the gateway.
-- `runs` count incrementing across the day with no corresponding `received SIG*; shutting down` line in `~/Library/Logs/openclaw/gateway.log`: clean shutdowns log a signal; transient crashes do not.
+- `runs` count incrementing across the day with no corresponding `received SIG*; shutting down` line in `~/Library/Logs/operator/gateway.log`: clean shutdowns log a signal; transient crashes do not.
 
 What to do:
 
@@ -485,7 +485,7 @@ Related:
 
 ## macOS launchd supervisor loop with duplicate gateway/node LaunchAgents
 
-Use this when a macOS install keeps restarting every few seconds, `openclaw`
+Use this when a macOS install keeps restarting every few seconds, `operator`
 health checks flap between healthy and unavailable, and channel dispatch stalls
 even though the service appears to be running.
 
@@ -504,7 +504,7 @@ done
 operator gateway status --deep
 operator node status
 launchctl print gui/$UID/ai.operator.gateway | grep -E 'state|last exit|runs'
-tail -n 80 ~/Library/Logs/openclaw/gateway.log
+tail -n 80 ~/Library/Logs/operator/gateway.log
 ```
 
 Look for:
@@ -814,7 +814,7 @@ Use when browser tool actions fail even though the gateway itself is healthy.
 
 ```bash
 operator browser status
-operator browser start --browser-profile openclaw
+operator browser start --browser-profile operator
 operator browser profiles
 operator logs --follow
 operator doctor
@@ -839,7 +839,7 @@ Look for:
 
   </Accordion>
   <Accordion title="Chrome MCP / existing-session signatures">
-    - `Could not find DevToolsActivePort for chrome` → Chrome MCP existing-session could not attach to the selected browser data dir yet. Open the browser inspect page, enable remote debugging, keep the browser open, approve the first attach prompt, then retry. If signed-in state is not required, prefer the managed `openclaw` profile.
+    - `Could not find DevToolsActivePort for chrome` → Chrome MCP existing-session could not attach to the selected browser data dir yet. Open the browser inspect page, enable remote debugging, keep the browser open, approve the first attach prompt, then retry. If signed-in state is not required, prefer the managed `operator` profile.
     - `No browser tabs found for profile="user"` → the Chrome MCP attach profile has no open local Chrome tabs.
     - `Remote CDP for profile "<name>" is not reachable` → the configured remote CDP endpoint is not reachable from the gateway host.
     - `Browser attachOnly is enabled ... not reachable` or `Browser attachOnly is enabled and CDP websocket ... is not reachable` → attach-only profile has no reachable target, or the HTTP endpoint answered but the CDP WebSocket still could not be opened.

@@ -336,8 +336,8 @@ describe("resolveNpmSpecMetadata", () => {
     });
   });
 
-  it("accepts metadata without an openclaw block", async () => {
-    const { operator: _openclaw, ...withoutOperator } = npmViewMetadata;
+  it("accepts metadata without an operator block", async () => {
+    const { operator: _operator, ...withoutOperator } = npmViewMetadata;
     mockPackCommandResult({ stdout: JSON.stringify(withoutOperator) });
 
     const result = await resolveNpmSpecMetadata({ spec: "@gabrielvfonseca/codex" });

@@ -13,7 +13,7 @@ import {
   registerMemoryEmbeddingProvider,
 } from "../../src/plugins/memory-embedding-providers.js";
 import { MAX_TIMER_TIMEOUT_MS } from "../../src/shared/number-coercion.js";
-import { resolveOperatorAgentSqlitePath } from "../../src/state/openclaw-agent-db.paths.js";
+import { resolveOperatorAgentSqlitePath } from "../../src/state/operator-agent-db.paths.js";
 import { resolveMemorySearchConfig } from "../../src/agents/memory-search.js";
 
 const asConfig = (cfg: OperatorConfig): OperatorConfig => ({

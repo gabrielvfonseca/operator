@@ -175,7 +175,7 @@ function resolveBrowserFetchOperatorHint(
   }
   const isLocal = !isAbsoluteHttp(url);
   return isLocal
-    ? `Restart the Operator gateway (Operator.app menubar, or \`${formatCliCommand("openclaw gateway")}\`).`
+    ? `Restart the Operator gateway (Operator.app menubar, or \`${formatCliCommand("operator gateway")}\`).`
     : "If this is a sandboxed session, ensure the sandbox browser is running.";
 }
 

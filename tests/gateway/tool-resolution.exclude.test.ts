@@ -62,7 +62,7 @@ const hoisted = vi.hoisted(() => {
   };
 });
 
-vi.mock("../agents/openclaw-tools.js", () => ({
+vi.mock("../agents/operator-tools.js", () => ({
   createOperatorTools: (args: CreateOperatorToolsArg) => hoisted.createOperatorToolsMock(args),
 }));
 

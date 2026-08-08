@@ -15,7 +15,7 @@ import {
   resolveSourcePackageAliasesForVite,
   resolveTsconfigPathAliasesForVite,
 } from "../../vite.config.ts";
-import type { ControlUiBuildInfo } from "../build-info.ts";
+import type { ControlUiBuildInfo } from "../../src/build-info.ts";
 
 const require = createRequire(import.meta.url);
 const json5EsmPath = require.resolve("json5/dist/index.mjs");

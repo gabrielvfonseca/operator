@@ -23,9 +23,9 @@ describe("qqbot local media path remapping", () => {
 
   function createOperatorTestRoot() {
     const actualHome = getHomeDir();
-    const openclawDir = path.join(actualHome, ".operator");
-    fs.mkdirSync(openclawDir, { recursive: true });
-    const testRoot = fs.mkdtempSync(path.join(openclawDir, "qqbot-platform-test-"));
+    const operatorDir = path.join(actualHome, ".operator");
+    fs.mkdirSync(operatorDir, { recursive: true });
+    const testRoot = fs.mkdtempSync(path.join(operatorDir, "qqbot-platform-test-"));
     createdPaths.push(testRoot);
     return { actualHome, testRootName: path.basename(testRoot) };
   }
@@ -157,7 +157,7 @@ describe("qqbot local media path remapping", () => {
   });
 });
 
-// Regression coverage for https://github.com/openclaw/openclaw/issues/83562 —
+// Regression coverage for https://github.com/operator/operator/issues/83562 —
 // when HOME and OPERATOR_HOME diverge (Docker, multi-user hosts), QQ Bot media
 // paths must be anchored on OPERATOR_HOME so files written under
 // `$OPERATOR_HOME/.operator/media/qqbot/` are accepted by the outbound
@@ -297,7 +297,7 @@ describe("qqbot media path resolution honors OPERATOR_HOME (#83562)", () => {
     expect(resolveQQBotLocalMediaPath(homeWorkspacePath)).toBe(mediaFile);
 
     // Same path but under OPERATOR_HOME should also remap.
-    const openclawWorkspacePath = path.join(
+    const operatorWorkspacePath = path.join(
       fakeOpenclawHome,
       ".operator",
       "workspace",
@@ -306,6 +306,6 @@ describe("qqbot media path resolution honors OPERATOR_HOME (#83562)", () => {
       baseName,
       "remap.png",
     );
-    expect(resolveQQBotLocalMediaPath(openclawWorkspacePath)).toBe(mediaFile);
+    expect(resolveQQBotLocalMediaPath(operatorWorkspacePath)).toBe(mediaFile);
   });
 });

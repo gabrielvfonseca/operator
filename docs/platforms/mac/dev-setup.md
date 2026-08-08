@@ -50,10 +50,10 @@ matching user-space CLI and runtime before starting the Gateway wizard.
 For manual development recovery, install the matching CLI yourself:
 
 ```bash
-npm install -g openclaw@<version>
+npm install -g operator@<version>
 ```
 
-`pnpm add -g openclaw@<version>` and `bun add -g openclaw@<version>` also
+`pnpm add -g operator@<version>` and `bun add -g operator@<version>` also
 work. Node remains the recommended runtime for the Gateway itself.
 
 ## Troubleshooting

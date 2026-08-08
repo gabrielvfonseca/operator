@@ -142,7 +142,7 @@ The Gateway is the single source of truth for sessions, routing, and channel con
 <Steps>
   <Step title="Install Operator">
     ```bash
-    npm install -g openclaw@latest
+    npm install -g operator@latest
     ```
   </Step>
   <Step title="Onboard and install the service">
@@ -192,7 +192,7 @@ Example:
       groups: { "*": { requireMention: true } },
     },
   },
-  messages: { groupChat: { mentionPatterns: ["@openclaw"] } },
+  messages: { groupChat: { mentionPatterns: ["@operator"] } },
 }
 ```
 

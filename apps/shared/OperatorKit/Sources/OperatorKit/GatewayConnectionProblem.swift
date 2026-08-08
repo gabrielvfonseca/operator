@@ -270,7 +270,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/tailscale"),
+                        fallback: "https://docs.operator.ai/gateway/tailscale"),
                     requestId: authError.requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -287,7 +287,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/tailscale"),
+                        fallback: "https://docs.operator.ai/gateway/tailscale"),
                     requestId: authError.requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -304,7 +304,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/tailscale"),
+                        fallback: "https://docs.operator.ai/gateway/tailscale"),
                     requestId: authError.requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -321,7 +321,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/tailscale"),
+                        fallback: "https://docs.operator.ai/gateway/tailscale"),
                     requestId: authError.requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -338,7 +338,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/troubleshooting"),
+                        fallback: "https://docs.operator.ai/gateway/troubleshooting"),
                     requestId: authError.requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -376,7 +376,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/authentication"),
+                        fallback: "https://docs.operator.ai/gateway/authentication"),
                     requestId: authError.requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -394,7 +394,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/authentication"),
+                        fallback: "https://docs.operator.ai/gateway/authentication"),
                     requestId: authError.requestId,
                     retryable: authError.canRetryWithDeviceToken,
                     pauseReconnect: !authError.canRetryWithDeviceToken),
@@ -412,7 +412,7 @@ public enum GatewayConnectionProblemMapper {
                         ?? "operator config set gateway.auth.token <new-token>",
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/authentication"),
+                        fallback: "https://docs.operator.ai/gateway/authentication"),
                     requestId: authError.requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -429,7 +429,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/authentication"),
+                        fallback: "https://docs.operator.ai/gateway/authentication"),
                     requestId: authError.requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -446,7 +446,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/authentication"),
+                        fallback: "https://docs.operator.ai/gateway/authentication"),
                     requestId: authError.requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -465,7 +465,7 @@ public enum GatewayConnectionProblemMapper {
                         ?? "operator config set gateway.auth.password <new-password>",
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/authentication"),
+                        fallback: "https://docs.operator.ai/gateway/authentication"),
                     requestId: authError.requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -494,7 +494,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/platforms/ios"),
+                        fallback: "https://docs.operator.ai/platforms/ios"),
                     requestId: authError.requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -511,7 +511,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand ?? pairingCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/pairing"),
+                        fallback: "https://docs.operator.ai/gateway/pairing"),
                     requestId: authError.requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -528,7 +528,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand ?? pairingCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/pairing"),
+                        fallback: "https://docs.operator.ai/gateway/pairing"),
                     requestId: authError.requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -556,7 +556,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/platforms/ios"),
+                        fallback: "https://docs.operator.ai/platforms/ios"),
                     requestId: authError.requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -572,7 +572,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/troubleshooting"),
+                        fallback: "https://docs.operator.ai/gateway/troubleshooting"),
                     requestId: authError.requestId,
                     retryable: true,
                     pauseReconnect: true),
@@ -589,7 +589,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/troubleshooting"),
+                        fallback: "https://docs.operator.ai/gateway/troubleshooting"),
                     requestId: authError.requestId,
                     retryable: true,
                     pauseReconnect: true),
@@ -605,7 +605,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/troubleshooting"),
+                        fallback: "https://docs.operator.ai/gateway/troubleshooting"),
                     requestId: authError.requestId,
                     retryable: true,
                     pauseReconnect: true),
@@ -622,7 +622,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/pairing"),
+                        fallback: "https://docs.operator.ai/gateway/pairing"),
                     requestId: authError.requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -639,7 +639,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/pairing"),
+                        fallback: "https://docs.operator.ai/gateway/pairing"),
                     requestId: authError.requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -656,7 +656,7 @@ public enum GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/pairing"),
+                        fallback: "https://docs.operator.ai/gateway/pairing"),
                     requestId: authError.requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -719,7 +719,7 @@ extension GatewayConnectionProblemMapper {
                 actionLabel: "Review certificate",
                 messagePresentation: messagePresentation,
                 actionCommand: nil,
-                docsURL: URL(string: "https://docs.openclaw.ai/gateway/troubleshooting"),
+                docsURL: URL(string: "https://docs.operator.ai/gateway/troubleshooting"),
                 retryable: false,
                 pauseReconnect: true,
                 technicalDetails: tlsError.localizedDescription,
@@ -738,7 +738,7 @@ extension GatewayConnectionProblemMapper {
                     "operator could not read the gateway certificate for %@.",
                     [failure.host]),
                 actionCommand: nil,
-                docsURL: URL(string: "https://docs.openclaw.ai/gateway/troubleshooting"),
+                docsURL: URL(string: "https://docs.operator.ai/gateway/troubleshooting"),
                 retryable: true,
                 pauseReconnect: false,
                 technicalDetails: tlsError.localizedDescription)
@@ -753,7 +753,7 @@ extension GatewayConnectionProblemMapper {
                     "This device does not trust the TLS certificate presented by %@.",
                     [failure.host]),
                 actionCommand: nil,
-                docsURL: URL(string: "https://docs.openclaw.ai/gateway/troubleshooting"),
+                docsURL: URL(string: "https://docs.operator.ai/gateway/troubleshooting"),
                 retryable: false,
                 pauseReconnect: true,
                 technicalDetails: tlsError.localizedDescription)
@@ -779,7 +779,7 @@ extension GatewayConnectionProblemMapper {
                     message: "The gateway did not respond before the connection timed out.",
                     actionLabel: "Retry",
                     actionCommand: nil,
-                    docsURL: URL(string: "https://docs.openclaw.ai/gateway/troubleshooting"),
+                    docsURL: URL(string: "https://docs.operator.ai/gateway/troubleshooting"),
                     retryable: true,
                     pauseReconnect: false,
                     technicalDetails: rawMessage)
@@ -791,7 +791,7 @@ extension GatewayConnectionProblemMapper {
                     message: "The gateway host was reachable, but it refused the connection.",
                     actionLabel: "Retry",
                     actionCommand: nil,
-                    docsURL: URL(string: "https://docs.openclaw.ai/gateway/troubleshooting"),
+                    docsURL: URL(string: "https://docs.operator.ai/gateway/troubleshooting"),
                     retryable: true,
                     pauseReconnect: false,
                     technicalDetails: rawMessage)
@@ -804,7 +804,7 @@ extension GatewayConnectionProblemMapper {
                     message: "operator could not reach the gateway over the current network.",
                     actionLabel: "Check network",
                     actionCommand: nil,
-                    docsURL: URL(string: "https://docs.openclaw.ai/gateway/troubleshooting"),
+                    docsURL: URL(string: "https://docs.operator.ai/gateway/troubleshooting"),
                     retryable: true,
                     pauseReconnect: false,
                     technicalDetails: rawMessage)
@@ -816,7 +816,7 @@ extension GatewayConnectionProblemMapper {
                     message: "The connection to the gateway was interrupted before setup completed.",
                     actionLabel: "Retry",
                     actionCommand: nil,
-                    docsURL: URL(string: "https://docs.openclaw.ai/gateway/troubleshooting"),
+                    docsURL: URL(string: "https://docs.operator.ai/gateway/troubleshooting"),
                     retryable: true,
                     pauseReconnect: false,
                     technicalDetails: rawMessage)
@@ -833,7 +833,7 @@ extension GatewayConnectionProblemMapper {
                 message: "The gateway did not respond before the connection timed out.",
                 actionLabel: "Retry",
                 actionCommand: nil,
-                docsURL: URL(string: "https://docs.openclaw.ai/gateway/troubleshooting"),
+                docsURL: URL(string: "https://docs.operator.ai/gateway/troubleshooting"),
                 retryable: true,
                 pauseReconnect: false,
                 technicalDetails: rawMessage)
@@ -846,7 +846,7 @@ extension GatewayConnectionProblemMapper {
                 message: "The gateway host was reachable, but it refused the connection.",
                 actionLabel: "Retry",
                 actionCommand: nil,
-                docsURL: URL(string: "https://docs.openclaw.ai/gateway/troubleshooting"),
+                docsURL: URL(string: "https://docs.operator.ai/gateway/troubleshooting"),
                 retryable: true,
                 pauseReconnect: false,
                 technicalDetails: rawMessage)
@@ -861,7 +861,7 @@ extension GatewayConnectionProblemMapper {
                 message: "operator could not reach the gateway over the current network.",
                 actionLabel: "Check network",
                 actionCommand: nil,
-                docsURL: URL(string: "https://docs.openclaw.ai/gateway/troubleshooting"),
+                docsURL: URL(string: "https://docs.operator.ai/gateway/troubleshooting"),
                 retryable: true,
                 pauseReconnect: false,
                 technicalDetails: rawMessage)
@@ -874,7 +874,7 @@ extension GatewayConnectionProblemMapper {
                 message: "The connection to the gateway was interrupted before setup completed.",
                 actionLabel: "Retry",
                 actionCommand: nil,
-                docsURL: URL(string: "https://docs.openclaw.ai/gateway/troubleshooting"),
+                docsURL: URL(string: "https://docs.operator.ai/gateway/troubleshooting"),
                 retryable: true,
                 pauseReconnect: false,
                 technicalDetails: rawMessage)
@@ -900,7 +900,7 @@ extension GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand ?? pairingCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/pairing"),
+                        fallback: "https://docs.operator.ai/gateway/pairing"),
                     requestId: requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -917,7 +917,7 @@ extension GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand ?? pairingCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/pairing"),
+                        fallback: "https://docs.operator.ai/gateway/pairing"),
                     requestId: requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -935,7 +935,7 @@ extension GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand ?? pairingCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/pairing"),
+                        fallback: "https://docs.operator.ai/gateway/pairing"),
                     requestId: requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -952,7 +952,7 @@ extension GatewayConnectionProblemMapper {
                     actionCommand: authError.actionCommand ?? pairingCommand,
                     docsURL: self.docsURL(
                         authError.docsURLString,
-                        fallback: "https://docs.openclaw.ai/gateway/pairing"),
+                        fallback: "https://docs.operator.ai/gateway/pairing"),
                     requestId: requestId,
                     retryable: false,
                     pauseReconnect: true),
@@ -1004,7 +1004,7 @@ extension GatewayConnectionProblemMapper {
                 actionCommand: actionCommand,
                 docsURL: self.docsURL(
                     authError.docsURLString,
-                    fallback: "https://docs.openclaw.ai/gateway/troubleshooting"),
+                    fallback: "https://docs.operator.ai/gateway/troubleshooting"),
                 requestId: authError.requestId,
                 retryable: false,
                 pauseReconnect: true),

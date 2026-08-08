@@ -89,7 +89,7 @@ async function main() {
   );
   clearConfigCache();
 
-  const denied = await invoke("/openclaw status", {
+  const denied = await invoke("/operator status", {
     systemAgent: { rescue: { enabled: true } },
     agents: { defaults: { sandbox: { mode: "all" } } },
   });
@@ -103,7 +103,7 @@ async function main() {
       latencyMs: 1,
     }),
   };
-  const refusedTui = await invoke("/openclaw talk to agent", cfg);
+  const refusedTui = await invoke("/operator talk to agent", cfg);
   assert(
     refusedTui.includes("cannot open the local TUI"),
     "remote rescue TUI handoff was not refused",
@@ -111,62 +111,62 @@ async function main() {
 
   // This packaged smoke verifies rescue persistence, not live provider credentials.
   const plan = await invokeWithDeps(
-    "/openclaw set default model openai/gpt-5.2",
+    "/operator set default model openai/gpt-5.2",
     cfg,
     deterministicInference,
   );
   assert(
-    plan.includes("Reply /openclaw yes to apply"),
+    plan.includes("Reply /operator yes to apply"),
     "persistent change did not require approval",
   );
-  const applied = await invokeWithDeps("/openclaw yes", cfg, deterministicInference);
+  const applied = await invokeWithDeps("/operator yes", cfg, deterministicInference);
   assert(applied.includes("Default model: openai/gpt-5.2"), "approved change did not apply");
 
-  const configValid = await invoke("/openclaw validate config", cfg);
+  const configValid = await invoke("/operator validate config", cfg);
   assert(configValid.includes("Config valid:"), "config validation did not report valid config");
 
-  const configSetPlan = await invoke("/openclaw config set gateway.port 19001", cfg);
+  const configSetPlan = await invoke("/operator config set gateway.port 19001", cfg);
   assert(
-    configSetPlan.includes("Reply /openclaw yes to apply"),
+    configSetPlan.includes("Reply /operator yes to apply"),
     "generic config set did not require approval",
   );
-  const configSetApplied = await invoke("/openclaw yes", cfg);
-  assert(configSetApplied.includes("[openclaw] done: config.set"), "generic config set failed");
+  const configSetApplied = await invoke("/operator yes", cfg);
+  assert(configSetApplied.includes("[operator] done: config.set"), "generic config set failed");
 
   const refPlan = await invoke(
-    "/openclaw config set-ref gateway.auth.token env OPERATOR_GATEWAY_TOKEN",
+    "/operator config set-ref gateway.auth.token env OPERATOR_GATEWAY_TOKEN",
     cfg,
   );
   assert(
-    refPlan.includes("Reply /openclaw yes to apply"),
+    refPlan.includes("Reply /operator yes to apply"),
     "SecretRef set did not require approval",
   );
-  const refApplied = await invoke("/openclaw yes", cfg);
-  assert(refApplied.includes("[openclaw] done: config.setRef"), "SecretRef set failed");
+  const refApplied = await invoke("/operator yes", cfg);
+  assert(refApplied.includes("[operator] done: config.setRef"), "SecretRef set failed");
 
-  const agentPlan = await invoke("/openclaw create agent work workspace /tmp/operator-work", cfg);
+  const agentPlan = await invoke("/operator create agent work workspace /tmp/operator-work", cfg);
   assert(
-    agentPlan.includes("Reply /openclaw yes to apply"),
+    agentPlan.includes("Reply /operator yes to apply"),
     "agent creation did not require approval",
   );
-  const agentApplied = await invoke("/openclaw yes", cfg);
-  assert(agentApplied.includes("[openclaw] done: agents.create"), "agent creation did not apply");
+  const agentApplied = await invoke("/operator yes", cfg);
+  assert(agentApplied.includes("[operator] done: agents.create"), "agent creation did not apply");
 
   const setupPlan = await invokeWithDeps(
-    "/openclaw setup workspace /tmp/operator-setup model openai/gpt-5.2",
+    "/operator setup workspace /tmp/operator-setup model openai/gpt-5.2",
     cfg,
     deterministicInference,
   );
-  assert(setupPlan.includes("Reply /openclaw yes to apply"), "setup did not require approval");
-  const setupApplied = await invokeWithDeps("/openclaw yes", cfg, deterministicInference);
-  assert(setupApplied.includes("[openclaw] done: operator.setup"), "setup did not apply");
+  assert(setupPlan.includes("Reply /operator yes to apply"), "setup did not require approval");
+  const setupApplied = await invokeWithDeps("/operator yes", cfg, deterministicInference);
+  assert(setupApplied.includes("[operator] done: operator.setup"), "setup did not apply");
 
   const gatewayRestarts: string[] = [];
-  const gatewayCommand = makeParams("/openclaw restart gateway", cfg).command;
+  const gatewayCommand = makeParams("/operator restart gateway", cfg).command;
   const gatewayPlan = await runSystemAgentRescueMessage({
     cfg,
     command: gatewayCommand,
-    commandBody: "/openclaw restart gateway",
+    commandBody: "/operator restart gateway",
     agentId: "default",
     isGroup: false,
     deps: {
@@ -176,13 +176,13 @@ async function main() {
     },
   });
   assert(
-    gatewayPlan?.includes("Reply /openclaw yes to apply"),
+    gatewayPlan?.includes("Reply /operator yes to apply"),
     "gateway restart did not require approval",
   );
   const pluginList = await runSystemAgentRescueMessage({
     cfg,
     command: gatewayCommand,
-    commandBody: "/openclaw plugins list",
+    commandBody: "/operator plugins list",
     agentId: "default",
     isGroup: false,
     deps: {
@@ -193,7 +193,7 @@ async function main() {
   const revokedApproval = await runSystemAgentRescueMessage({
     cfg,
     command: gatewayCommand,
-    commandBody: "/openclaw yes",
+    commandBody: "/operator yes",
     agentId: "default",
     isGroup: false,
     deps: {
@@ -210,14 +210,14 @@ async function main() {
   await runSystemAgentRescueMessage({
     cfg,
     command: gatewayCommand,
-    commandBody: "/openclaw restart gateway",
+    commandBody: "/operator restart gateway",
     agentId: "default",
     isGroup: false,
   });
   const gatewayApplied = await runSystemAgentRescueMessage({
     cfg,
     command: gatewayCommand,
-    commandBody: "/openclaw yes",
+    commandBody: "/operator yes",
     agentId: "default",
     isGroup: false,
     deps: {
@@ -227,17 +227,17 @@ async function main() {
     },
   });
   assert(
-    gatewayApplied?.includes("[openclaw] done: gateway.restart"),
+    gatewayApplied?.includes("[operator] done: gateway.restart"),
     "gateway restart did not apply",
   );
   assert(gatewayRestarts.length === 1, "gateway restart dependency was not invoked once");
 
   const doctorRuns: string[] = [];
-  const doctorCommand = makeParams("/openclaw doctor fix", cfg).command;
+  const doctorCommand = makeParams("/operator doctor fix", cfg).command;
   const doctorReply = await runSystemAgentRescueMessage({
     cfg,
     command: doctorCommand,
-    commandBody: "/openclaw doctor fix",
+    commandBody: "/operator doctor fix",
     agentId: "default",
     isGroup: false,
     deps: {
@@ -247,7 +247,7 @@ async function main() {
     },
   });
   assert(
-    doctorReply?.includes("openclaw doctor --fix"),
+    doctorReply?.includes("operator doctor --fix"),
     "remote doctor fix did not point to the local repair command",
   );
   assert(doctorRuns.length === 0, "remote rescue must not invoke doctor repair");

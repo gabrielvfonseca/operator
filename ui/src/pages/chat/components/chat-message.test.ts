@@ -140,7 +140,7 @@ function renderAssistantMessages(
     renderMessageGroup(group, {
       showReasoning: true,
       showToolCalls: true,
-      assistantName: "OpenClaw",
+      assistantName: "Operator",
       assistantAvatar: null,
       ...opts,
     }),
@@ -165,7 +165,7 @@ function renderAssistantMessageEntries(
     renderMessageGroup(group, {
       showReasoning: true,
       showToolCalls: true,
-      assistantName: "OpenClaw",
+      assistantName: "Operator",
       assistantAvatar: null,
       ...opts,
     }),
@@ -197,7 +197,7 @@ function renderGroupedMessage(
     renderMessageGroup(group, {
       showReasoning: true,
       showToolCalls: true,
-      assistantName: "OpenClaw",
+      assistantName: "Operator",
       assistantAvatar: null,
       ...opts,
     }),
@@ -230,7 +230,7 @@ function createAssistantCanvasBlock(params: {
   presentationTarget?: "assistant_message" | "tool_card";
 }) {
   const viewId = `cv_inline_${params.suffix}`;
-  const url = params.url ?? `/__openclaw__/canvas/documents/${viewId}/index.html`;
+  const url = params.url ?? `/__operator__/canvas/documents/${viewId}/index.html`;
   const title = params.title ?? "Inline demo";
   const preferredHeight = params.preferredHeight ?? 360;
   return {
@@ -270,7 +270,7 @@ function renderMessageGroups(
       renderMessageGroup(group, {
         showReasoning: true,
         showToolCalls: true,
-        assistantName: "OpenClaw",
+        assistantName: "Operator",
         assistantAvatar: null,
         ...opts,
       }),
@@ -280,7 +280,7 @@ function renderMessageGroups(
 }
 
 function clearDeleteConfirmSkip() {
-  localStorageValues.delete("openclaw:skipDeleteConfirm");
+  localStorageValues.delete("operator:skipDeleteConfirm");
 }
 
 function stubAnimationFrameQueue() {
@@ -994,7 +994,7 @@ describe("grouped chat rendering", () => {
         timestamp: Date.UTC(2026, 0, 15, 19, 30),
       });
 
-      expect(container.querySelector("openclaw-tooltip")?.getAttribute("content")).toMatch(
+      expect(container.querySelector("operator-tooltip")?.getAttribute("content")).toMatch(
         expected,
       );
     },
@@ -1180,7 +1180,7 @@ describe("grouped chat rendering", () => {
       renderMessageGroup(group, {
         showReasoning: true,
         showToolCalls: true,
-        assistantName: "OpenClaw",
+        assistantName: "Operator",
         assistantAvatar: null,
       }),
       container,
@@ -1313,8 +1313,8 @@ describe("grouped chat rendering", () => {
           key: "running-edit",
           message: {
             role: "assistant",
-            __openclawToolStreamLive: true,
-            __openclawToolStreamResultReceived: false,
+            __operatorToolStreamLive: true,
+            __operatorToolStreamResultReceived: false,
             content: [
               {
                 type: "tool_use",
@@ -2087,7 +2087,7 @@ describe("grouped chat rendering", () => {
   });
 
   it("renders verified local assistant attachments through the authenticated media route", async () => {
-    const source = `/tmp/openclaw/${crypto.randomUUID()} test image.png`;
+    const source = `/tmp/operator/${crypto.randomUUID()} test image.png`;
     const fetchMock = vi.fn(async (url: string, init?: RequestInit) => {
       if (url.includes("meta=1")) {
         const headers = init?.headers as Headers;
@@ -2109,9 +2109,9 @@ describe("grouped chat rendering", () => {
         },
         {
           showToolCalls: false,
-          basePath: "/openclaw",
+          basePath: "/operator",
           assistantAttachmentAuthToken: "session-token",
-          localMediaPreviewRoots: ["/tmp/openclaw"],
+          localMediaPreviewRoots: ["/tmp/operator"],
           onRequestUpdate: renderMessage,
         },
       );
@@ -2122,7 +2122,7 @@ describe("grouped chat rendering", () => {
     );
     await flushAssistantAttachmentAvailabilityChecks();
 
-    const expectedMetaUrl = `/openclaw/__openclaw__/assistant-media?source=${encodeURIComponent(source).replaceAll("%20", "+")}&meta=1`;
+    const expectedMetaUrl = `/operator/__operator__/assistant-media?source=${encodeURIComponent(source).replaceAll("%20", "+")}&meta=1`;
     const [, fetchInit] = requireFetchCallForUrl(fetchMock, expectedMetaUrl);
     expectSameOriginGet(fetchInit);
     expect(
@@ -2133,7 +2133,7 @@ describe("grouped chat rendering", () => {
   it("refreshes local assistant media tickets before expiry without another render", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-04-30T00:00:00Z"));
-    const source = `/tmp/openclaw/${crypto.randomUUID()}-refresh.png`;
+    const source = `/tmp/operator/${crypto.randomUUID()}-refresh.png`;
     const fetchMock = vi
       .fn<
         (url: string, init?: RequestInit) => Promise<{ ok: true; json: () => Promise<unknown> }>
@@ -2159,9 +2159,9 @@ describe("grouped chat rendering", () => {
         },
         {
           showToolCalls: false,
-          basePath: "/openclaw",
+          basePath: "/operator",
           assistantAttachmentAuthToken: "test-auth-token",
-          localMediaPreviewRoots: ["/tmp/openclaw"],
+          localMediaPreviewRoots: ["/tmp/operator"],
           onRequestUpdate: rerender,
         },
       );
@@ -2182,7 +2182,7 @@ describe("grouped chat rendering", () => {
   });
 
   it("rechecks local assistant media when its auth token changes", async () => {
-    const source = `/tmp/openclaw/${crypto.randomUUID()}-auth.png`;
+    const source = `/tmp/operator/${crypto.randomUUID()}-auth.png`;
     const fetchMock = vi.fn(async (url: string, init?: RequestInit) => {
       if (!url.includes("meta=1")) {
         throw new Error(`Unexpected fetch: ${url}`);
@@ -2210,9 +2210,9 @@ describe("grouped chat rendering", () => {
         },
         {
           showToolCalls: false,
-          basePath: "/openclaw",
+          basePath: "/operator",
           assistantAttachmentAuthToken: token,
-          localMediaPreviewRoots: ["/tmp/openclaw"],
+          localMediaPreviewRoots: ["/tmp/operator"],
           onRequestUpdate: () => renderWithToken(token),
         },
       );
@@ -2233,7 +2233,7 @@ describe("grouped chat rendering", () => {
 
   it("retries unavailable local assistant media after the retry window", async () => {
     vi.useFakeTimers();
-    const source = `/tmp/openclaw/${crypto.randomUUID()}-retry.png`;
+    const source = `/tmp/operator/${crypto.randomUUID()}-retry.png`;
     const fetchMock = vi
       .fn<(url: string) => Promise<{ ok: true; json: () => Promise<unknown> }>>()
       .mockResolvedValueOnce({ ok: true, json: async () => ({ available: false }) })
@@ -2254,8 +2254,8 @@ describe("grouped chat rendering", () => {
         },
         {
           showToolCalls: false,
-          basePath: "/openclaw",
-          localMediaPreviewRoots: ["/tmp/openclaw"],
+          basePath: "/operator",
+          localMediaPreviewRoots: ["/tmp/operator"],
           onRequestUpdate: rerender,
         },
       );
@@ -2284,13 +2284,13 @@ describe("grouped chat rendering", () => {
         id: "assistant-same-origin-media-inline",
         role: "assistant",
         content:
-          "Inline\nMEDIA:/media/inbound/test-image.png\nMEDIA:/__openclaw__/media/test-doc.pdf",
+          "Inline\nMEDIA:/media/inbound/test-image.png\nMEDIA:/__operator__/media/test-doc.pdf",
         timestamp: Date.now(),
       },
       {
         showToolCalls: false,
-        basePath: "/openclaw",
-        localMediaPreviewRoots: ["/tmp/openclaw"],
+        basePath: "/operator",
+        localMediaPreviewRoots: ["/tmp/operator"],
       },
     );
 
@@ -2301,7 +2301,7 @@ describe("grouped chat rendering", () => {
       container
         .querySelector<HTMLAnchorElement>(".chat-assistant-attachment-card__link")
         ?.getAttribute("href"),
-    ).toBe("/__openclaw__/media/test-doc.pdf");
+    ).toBe("/__operator__/media/test-doc.pdf");
     expect(container.querySelector(".chat-assistant-attachment-card--blocked")).toBeNull();
   });
 
@@ -2317,8 +2317,8 @@ describe("grouped chat rendering", () => {
       },
       {
         showToolCalls: false,
-        basePath: "/openclaw",
-        localMediaPreviewRoots: ["/tmp/openclaw"],
+        basePath: "/operator",
+        localMediaPreviewRoots: ["/tmp/operator"],
       },
     );
 
@@ -2354,11 +2354,11 @@ describe("grouped chat rendering", () => {
   });
 
   it("renders transcript image variants and structured image blocks", async () => {
-    const firstSource = `/tmp/openclaw/${crypto.randomUUID()}-first.png`;
-    const secondSource = `/tmp/openclaw/${crypto.randomUUID()}-second.jpg`;
+    const firstSource = `/tmp/operator/${crypto.randomUUID()}-first.png`;
+    const secondSource = `/tmp/operator/${crypto.randomUUID()}-second.jpg`;
     const fetchMock = vi.fn(async (url: string, init?: RequestInit) => {
       const mediaUrl = new URL(url, "http://control.test");
-      expect(mediaUrl.pathname).toBe("/openclaw/__openclaw__/assistant-media");
+      expect(mediaUrl.pathname).toBe("/operator/__operator__/assistant-media");
       expect(mediaUrl.searchParams.get("meta")).toBe("1");
       expect(new Headers(init?.headers).get("Authorization")).toBe("Bearer test-auth-token");
       return { ok: true, json: async () => mediaTicketPayload("ticket-transcript") };
@@ -2370,9 +2370,9 @@ describe("grouped chat rendering", () => {
       const rerender = () =>
         renderGroupedMessage(container, message, "user", {
           showToolCalls: false,
-          basePath: "/openclaw",
+          basePath: "/operator",
           assistantAttachmentAuthToken: "test-auth-token",
-          localMediaPreviewRoots: ["/tmp/openclaw"],
+          localMediaPreviewRoots: ["/tmp/operator"],
           onRequestUpdate: rerender,
         });
       rerender();
@@ -2444,7 +2444,7 @@ describe("grouped chat rendering", () => {
         "user",
         {
           showToolCalls: false,
-          basePath: "/openclaw",
+          basePath: "/operator",
           assistantAttachmentAuthToken: "test-auth-token",
           localMediaPreviewRoots: [],
           onRequestUpdate: rerender,
@@ -2458,7 +2458,7 @@ describe("grouped chat rendering", () => {
     expect(
       container.querySelector<HTMLImageElement>(".chat-message-image")?.getAttribute("src"),
     ).toBe(
-      `/openclaw/__openclaw__/assistant-media?source=${encodeURIComponent(source)}&mediaTicket=ticket-inbound`,
+      `/operator/__operator__/assistant-media?source=${encodeURIComponent(source)}&mediaTicket=ticket-inbound`,
     );
   });
 
@@ -2474,9 +2474,9 @@ describe("grouped chat rendering", () => {
         role: "assistant",
         content: [
           {
-            type: "openclaw_pairing_qr",
+            type: "operator_pairing_qr",
             image_url: "data:image/png;base64,cXJwbmc=",
-            alt: "OpenClaw pairing QR code",
+            alt: "Operator pairing QR code",
             expiresAtMs: Date.now() + 1_000,
           },
         ],
@@ -2487,7 +2487,7 @@ describe("grouped chat rendering", () => {
 
     const image = container.querySelector<HTMLImageElement>(".chat-message-image");
     expect(image?.getAttribute("src")).toBe("data:image/png;base64,cXJwbmc=");
-    expect(image?.getAttribute("alt")).toBe("OpenClaw pairing QR code");
+    expect(image?.getAttribute("alt")).toBe("Operator pairing QR code");
     await vi.advanceTimersByTimeAsync(999);
     expect(onRequestUpdate).not.toHaveBeenCalled();
     await vi.advanceTimersByTimeAsync(1);
@@ -2497,9 +2497,9 @@ describe("grouped chat rendering", () => {
       role: "assistant",
       content: [
         {
-          type: "openclaw_pairing_qr",
+          type: "operator_pairing_qr",
           image_url: "data:image/png;base64,ZXhwaXJlZA==",
-          alt: "OpenClaw pairing QR code",
+          alt: "Operator pairing QR code",
           expiresAtMs: Date.now() - 1,
         },
       ],
@@ -2560,7 +2560,7 @@ describe("grouped chat rendering", () => {
     const fetchMock = vi.fn(async (_url: string, init?: RequestInit) => {
       const headers = new Headers(init?.headers);
       expect(headers.get("Authorization")).toBe("Bearer test-auth-token");
-      expect(headers.get("x-openclaw-requester-session-key")).toBe("agent:main:main");
+      expect(headers.get("x-operator-requester-session-key")).toBe("agent:main:main");
       return { ok: true, blob: async () => new Blob(["png"], { type: "image/png" }) };
     });
     vi.stubGlobal("fetch", fetchMock as unknown as typeof fetch);
@@ -2755,7 +2755,7 @@ describe("grouped chat rendering", () => {
               render: "url",
               viewId: "cv_inline_scoped",
               title: "Scoped preview",
-              url: "/__openclaw__/canvas/documents/cv_inline_scoped/index.html",
+              url: "/__operator__/canvas/documents/cv_inline_scoped/index.html",
               preferredHeight: 320,
             },
           },
@@ -2763,13 +2763,13 @@ describe("grouped chat rendering", () => {
         timestamp: Date.now(),
       },
       {
-        canvasPluginSurfaceUrl: "http://127.0.0.1:19003/__openclaw__/cap/cap_123",
+        canvasPluginSurfaceUrl: "http://127.0.0.1:19003/__operator__/cap/cap_123",
       },
     );
 
     const iframe = container.querySelector(".chat-tool-card__preview-frame");
     expect(iframe?.getAttribute("src")).toBe(
-      "http://127.0.0.1:19003/__openclaw__/cap/cap_123/__openclaw__/canvas/documents/cv_inline_scoped/index.html",
+      "http://127.0.0.1:19003/__operator__/cap/cap_123/__operator__/canvas/documents/cv_inline_scoped/index.html",
     );
   });
 
@@ -2791,7 +2791,7 @@ describe("grouped chat rendering", () => {
               render: "url",
               viewId: "cv_canvas_live_history",
               title: "Live history preview",
-              url: "/__openclaw__/canvas/documents/cv_canvas_live_history/index.html",
+              url: "/__operator__/canvas/documents/cv_canvas_live_history/index.html",
               preferredHeight: 420,
             },
             rawText: JSON.stringify({
@@ -2799,7 +2799,7 @@ describe("grouped chat rendering", () => {
               view: {
                 backend: "canvas",
                 id: "cv_canvas_live_history",
-                url: "/__openclaw__/canvas/documents/cv_canvas_live_history/index.html",
+                url: "/__operator__/canvas/documents/cv_canvas_live_history/index.html",
               },
               presentation: {
                 target: "assistant_message",
@@ -2817,7 +2817,7 @@ describe("grouped chat rendering", () => {
     const bubble = expectElement(container, ".chat-group.assistant .chat-bubble", HTMLElement);
     const iframe = expectElement(bubble, ".chat-tool-card__preview-frame", HTMLIFrameElement);
     expect(iframe.getAttribute("src")).toBe(
-      "/__openclaw__/canvas/documents/cv_canvas_live_history/index.html",
+      "/__operator__/canvas/documents/cv_canvas_live_history/index.html",
     );
     expect(bubble.querySelector(".chat-text")?.textContent?.trim()).toBe("This item is ready.");
     expect(bubble.querySelector(".chat-tool-card__preview-label")?.textContent?.trim()).toBe(
@@ -2850,7 +2850,7 @@ describe("grouped chat rendering", () => {
     expectElement(container, ".chat-bubble--tool-shell", HTMLElement);
     const iframe = expectElement(container, ".chat-tool-card__preview-frame", HTMLIFrameElement);
     expect(iframe.getAttribute("src")).toBe(
-      "/__openclaw__/canvas/documents/cv_inline_tool_canvas/index.html",
+      "/__operator__/canvas/documents/cv_inline_tool_canvas/index.html",
     );
     expect(container.querySelector(".chat-tool-msg-summary")).not.toBeNull();
   });
@@ -2901,7 +2901,7 @@ describe("grouped chat rendering", () => {
     let iframe = expectElement(container, ".chat-tool-card__preview-frame", HTMLIFrameElement);
     expect(iframe.getAttribute("sandbox")).toBe("allow-scripts");
     expect(iframe.getAttribute("src")).toBe(
-      "/__openclaw__/canvas/documents/cv_inline_default/index.html",
+      "/__operator__/canvas/documents/cv_inline_default/index.html",
     );
     expect(container.querySelector(".chat-text")?.textContent?.trim()).toBe(
       "Inline canvas result.",
@@ -2986,7 +2986,7 @@ describe("grouped chat rendering", () => {
               view: {
                 backend: "canvas",
                 id: "cv_inline_visible",
-                url: "/__openclaw__/canvas/documents/cv_inline_visible/index.html",
+                url: "/__operator__/canvas/documents/cv_inline_visible/index.html",
                 title: "Inline demo",
                 preferred_height: 360,
               },
@@ -3009,7 +3009,7 @@ describe("grouped chat rendering", () => {
     const bubble = expectElement(container, ".chat-group.assistant .chat-bubble", HTMLElement);
     const iframe = expectElement(bubble, ".chat-tool-card__preview-frame", HTMLIFrameElement);
     expect(iframe.getAttribute("src")).toBe(
-      "/__openclaw__/canvas/documents/cv_inline_visible/index.html",
+      "/__operator__/canvas/documents/cv_inline_visible/index.html",
     );
     expect(bubble.querySelector(".chat-text")?.textContent?.trim()).toBe("Inline canvas result.");
     expect(bubble.querySelector(".chat-tool-card__preview-label")?.textContent?.trim()).toBe(
@@ -3086,7 +3086,7 @@ describe("grouped chat rendering", () => {
       {
         role: "assistant",
         content: [{ type: "text", text: "abcde\n...(truncated)..." }],
-        __openclaw: { id: "msg-truncated-1", seq: 1 },
+        __operator: { id: "msg-truncated-1", seq: 1 },
       },
       {
         sessionKey: "global",
@@ -3117,7 +3117,7 @@ describe("grouped chat rendering", () => {
       {
         role: "assistant",
         content: [{ type: "text", text: "full visible message" }],
-        __openclaw: { id: "msg-visible-1", seq: 1 },
+        __operator: { id: "msg-visible-1", seq: 1 },
       },
       {
         sessionKey: "global",
@@ -3144,7 +3144,7 @@ describe("grouped chat rendering", () => {
         role: "assistant",
         content: [{ type: "text", text: "mirrored text\n...(truncated)..." }],
         operatorMessageToolMirror: { toolName: "message", toolCallId: "call-1" },
-        __openclaw: { id: "msg-tool-result", seq: 2, truncated: true },
+        __operator: { id: "msg-tool-result", seq: 2, truncated: true },
       },
       {
         sessionKey: "global",

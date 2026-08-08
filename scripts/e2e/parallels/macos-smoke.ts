@@ -110,7 +110,7 @@ interface MacosSummary {
 const guestPath =
   "/opt/homebrew/bin:/opt/homebrew/opt/node/bin:/usr/local/bin:/usr/local/sbin:/opt/homebrew/sbin:/usr/bin:/bin:/usr/sbin:/sbin";
 const guestOperator = "@gabrielvfonseca/operator";
-const guestOperatorEntry = '"$(npm root -g)/openclaw/operator.mjs"';
+const guestOperatorEntry = '"$(npm root -g)/operator/operator.mjs"';
 const guestOperatorEntryRunner = `node ${guestOperatorEntry}`;
 const guestNode = "node";
 const guestNpm = "npm";
@@ -619,7 +619,7 @@ class MacosSmoke {
     const argv = args.map((arg) => shellQuote(arg)).join(" ");
     return this.guestSh(
       `set -e
-entry="$(npm root -g)/openclaw/operator.mjs"
+entry="$(npm root -g)/operator/operator.mjs"
 exec node "$entry" ${argv}`,
       options.env,
     );
@@ -807,7 +807,7 @@ printf 'preflight.home=%s\n' "$HOME"
 printf 'preflight.path=%s\n' "$PATH"
 printf 'preflight.umask=%s\n' "$(umask)"
 printf 'preflight.npmRoot=%s\n' "$(${guestNpm} root -g 2>/dev/null || true)"
-${guestNpm} uninstall -g openclaw >/dev/null 2>&1 || true
+${guestNpm} uninstall -g operator >/dev/null 2>&1 || true
 rm -rf "$HOME/.operator"
 # Restored snapshots can contain corrupt optional-dependency tarballs that npm silently skips.
 rm -rf "$HOME/.npm/_cacache"
@@ -891,12 +891,12 @@ check_path() {
     exit 1
   fi
 }
-check_path "$root/openclaw"
-check_path "$root/openclaw/extensions"
-if [ -d "$root/openclaw/extensions" ]; then
+check_path "$root/operator"
+check_path "$root/operator/extensions"
+if [ -d "$root/operator/extensions" ]; then
   while IFS= read -r -d '' extension_dir; do
     check_path "$extension_dir"
-  done < <(/usr/bin/find "$root/openclaw/extensions" -mindepth 1 -maxdepth 1 -type d -print0)
+  done < <(/usr/bin/find "$root/operator/extensions" -mindepth 1 -maxdepth 1 -type d -print0)
 fi`);
   }
 
@@ -952,7 +952,7 @@ npm install --prefix "$bootstrap_root" --no-save pnpm@11
     const home = this.guestHome();
     this.guestSh(
       `set -eu
-rm -rf ${shellQuote(`${home}/openclaw`)}
+rm -rf ${shellQuote(`${home}/operator`)}
 export PATH=${shellQuote(`/tmp/operator-smoke-pnpm-bootstrap/node_modules/.bin:${guestPath}`)}
 ${guestNode} - <<'JS'
 const fs = require("node:fs");
@@ -1049,7 +1049,7 @@ sleep 1`,
     this.log(result.stdout);
     this.log(result.stderr);
     if (check && result.status !== 0) {
-      throw new Error(`openclaw ${args.join(" ")} failed`);
+      throw new Error(`operator ${args.join(" ")} failed`);
     }
     return result.status === 0;
   }
@@ -1163,7 +1163,7 @@ for attempt in 1 2; do
   fi
 done
 if [ "$agent_ok" != true ]; then
-  echo "openclaw agent finished without OK response" >&2
+  echo "operator agent finished without OK response" >&2
   exit 1
 fi`,
     );

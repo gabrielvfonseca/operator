@@ -1636,7 +1636,7 @@ describe("updateNpmInstalledPlugins", () => {
       { pluginId: "codex", packageName: "@gabrielvfonseca/codex" },
       { pluginId: "discord", packageName: "@gabrielvfonseca/discord" },
     ];
-    const { installPaths, peerLinkPath, linkPeer } = createOpenClawPeerLinkFixtures(plugins);
+    const { installPaths, peerLinkPath, linkPeer } = createOperatorPeerLinkFixtures(plugins);
     for (const { packageName } of plugins) {
       mockNpmViewMetadata({
         name: packageName,
@@ -1712,7 +1712,7 @@ describe("updateNpmInstalledPlugins", () => {
       { pluginId: "codex", packageName: "@gabrielvfonseca/codex" },
       { pluginId: "discord", packageName: "@gabrielvfonseca/discord" },
     ];
-    const { installPaths, peerLinkPath, linkPeer } = createOpenClawPeerLinkFixtures(plugins);
+    const { installPaths, peerLinkPath, linkPeer } = createOperatorPeerLinkFixtures(plugins);
     linkPeer("brave");
     linkPeer("discord");
     mockNpmViewMetadata({
@@ -1774,7 +1774,7 @@ describe("updateNpmInstalledPlugins", () => {
       { pluginId: "brave", packageName: "@gabrielvfonseca/brave-plugin" },
       { pluginId: "codex", packageName: "@gabrielvfonseca/codex" },
     ];
-    const { installPaths, peerLinkPath, linkPeer } = createOpenClawPeerLinkFixtures(plugins);
+    const { installPaths, peerLinkPath, linkPeer } = createOperatorPeerLinkFixtures(plugins);
     const brokenInstallPath = createInstalledPackageDir({
       name: "@gabrielvfonseca/broken-plugin",
       version: "2026.5.4",
@@ -3292,7 +3292,7 @@ describe("updateNpmInstalledPlugins", () => {
         pluginId: "opik-operator",
         status: "error",
         message:
-          "Failed to update opik-operator: aborted: npm package integrity drift detected for @opik/opik-openclaw@0.2.5",
+          "Failed to update opik-operator: aborted: npm package integrity drift detected for @opik/opik-operator@0.2.5",
       },
     ]);
   });
@@ -4041,7 +4041,7 @@ describe("updateNpmInstalledPlugins", () => {
       ok: false,
       code: "clawhub_download_blocked",
       error:
-        'ClawHub blocked artifact download for "@gabrielvfonseca/discord@2026.5.16-beta.5"; install was not started. ClawHub /api/v1/packages/%40openclaw%2Fdiscord/versions/2026.5.16-beta.5/artifact/download failed (403): Blocked: this package release has been flagged as malicious and cannot be downloaded.',
+        'ClawHub blocked artifact download for "@gabrielvfonseca/discord@2026.5.16-beta.5"; install was not started. ClawHub /api/v1/packages/%40operator%2Fdiscord/versions/2026.5.16-beta.5/artifact/download failed (403): Blocked: this package release has been flagged as malicious and cannot be downloaded.',
       version: "2026.5.16-beta.5",
     });
 
@@ -4077,7 +4077,7 @@ describe("updateNpmInstalledPlugins", () => {
         code: "clawhub_download_blocked",
         currentVersion: "2026.5.12",
         message:
-          'Skipped discord ClawHub update: ClawHub blocked artifact download for "@gabrielvfonseca/discord@2026.5.16-beta.5"; install was not started. ClawHub /api/v1/packages/%40openclaw%2Fdiscord/versions/2026.5.16-beta.5/artifact/download failed (403): Blocked: this package release has been flagged as malicious and cannot be downloaded. Existing installed plugin left unchanged.',
+          'Skipped discord ClawHub update: ClawHub blocked artifact download for "@gabrielvfonseca/discord@2026.5.16-beta.5"; install was not started. ClawHub /api/v1/packages/%40operator%2Fdiscord/versions/2026.5.16-beta.5/artifact/download failed (403): Blocked: this package release has been flagged as malicious and cannot be downloaded. Existing installed plugin left unchanged.',
       },
     ]);
     expect(warnMessages).toStrictEqual([]);

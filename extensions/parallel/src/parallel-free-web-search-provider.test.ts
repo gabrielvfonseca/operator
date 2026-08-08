@@ -16,8 +16,8 @@ function requireEndpointCall(index: number): EndpointCall {
   return expectDefined(endpointMockState.calls[index], `Parallel endpoint call ${index}`);
 }
 
-vi.mock("openclaw/plugin-sdk/provider-web-search", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/provider-web-search")>();
+vi.mock("operator/plugin-sdk/provider-web-search", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/provider-web-search")>();
   const runEndpoint = async (
     params: EndpointCall,
     run: (response: Response) => Promise<unknown>,

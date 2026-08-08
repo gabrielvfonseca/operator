@@ -15,19 +15,19 @@ const imageOps = vi.hoisted(() => ({
   resizeToJpeg: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/channel-activity-runtime", async () => {
+vi.mock("operator/plugin-sdk/channel-activity-runtime", async () => {
   const actual = await vi.importActual<
-    typeof import("openclaw/plugin-sdk/channel-activity-runtime")
-  >("openclaw/plugin-sdk/channel-activity-runtime");
+    typeof import("operator/plugin-sdk/channel-activity-runtime")
+  >("operator/plugin-sdk/channel-activity-runtime");
   return {
     ...actual,
     recordChannelActivity: (...args: unknown[]) => recordChannelActivity(...args),
   };
 });
 
-vi.mock("openclaw/plugin-sdk/media-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/media-runtime")>(
-    "openclaw/plugin-sdk/media-runtime",
+vi.mock("operator/plugin-sdk/media-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/media-runtime")>(
+    "operator/plugin-sdk/media-runtime",
   );
   return {
     ...actual,

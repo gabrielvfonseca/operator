@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import "./subagent-registry.mocks.shared.js";
-import { closeOperatorStateDatabaseForTest as closeSeedStateDatabase } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest as closeSeedStateDatabase } from "../../src/state/operator-state-db.js";
 import { withEnvAsync } from "../../src/test-utils/env.js";
 import { cleanupSessionStateForTest } from "../../src/test-utils/session-state-cleanup.js";
 import {
@@ -27,7 +27,7 @@ vi.mock("./subagent-orphan-recovery.js", () => ({
 let mod: typeof import("./subagent-registry.test-helpers.js");
 let callGatewayModule: typeof import("../gateway/call.js");
 let agentEventsModule: typeof import("../infra/agent-events.js");
-let registryStateDbModule: typeof import("../state/openclaw-state-db.js");
+let registryStateDbModule: typeof import("../state/operator-state-db.js");
 
 describe("subagent registry persistence resume", () => {
   let tempStateDir: string | null = null;
@@ -37,7 +37,7 @@ describe("subagent registry persistence resume", () => {
     mod = await import("./subagent-registry.test-helpers.js");
     callGatewayModule = await import("../gateway/call.js");
     agentEventsModule = await import("../infra/agent-events.js");
-    registryStateDbModule = await import("../state/openclaw-state-db.js");
+    registryStateDbModule = await import("../state/operator-state-db.js");
   });
 
   beforeEach(() => {

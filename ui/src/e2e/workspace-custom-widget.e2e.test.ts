@@ -372,17 +372,17 @@ describeControlUiE2e("Control UI custom-widget host mocked Gateway E2E", () => {
       // legitimate value and never shows the injected marker.
       await frame.locator("#value").evaluate((node) => {
         type SpoofObservationWindow = Window & {
-          openclawSawSpoofed?: boolean;
+          operatorSawSpoofed?: boolean;
           operatorSpoofObserver?: MutationObserver;
         };
         const targetWindow = window as SpoofObservationWindow;
         const valueNode = node as HTMLElement;
         const recordSpoof = () => {
           if (valueNode.textContent?.includes("SPOOFED")) {
-            targetWindow.openclawSawSpoofed = true;
+            targetWindow.operatorSawSpoofed = true;
           }
         };
-        targetWindow.openclawSawSpoofed = false;
+        targetWindow.operatorSawSpoofed = false;
         targetWindow.operatorSpoofObserver?.disconnect();
         targetWindow.operatorSpoofObserver = new MutationObserver(recordSpoof);
         targetWindow.operatorSpoofObserver.observe(valueNode, {
@@ -442,12 +442,12 @@ describeControlUiE2e("Control UI custom-widget host mocked Gateway E2E", () => {
       });
       const sawSpoofed = await frame.locator("#value").evaluate((node) => {
         type SpoofObservationWindow = Window & {
-          openclawSawSpoofed?: boolean;
+          operatorSawSpoofed?: boolean;
           operatorSpoofObserver?: MutationObserver;
         };
         const targetWindow = window as SpoofObservationWindow;
         targetWindow.operatorSpoofObserver?.disconnect();
-        return targetWindow.openclawSawSpoofed === true || node.textContent?.includes("SPOOFED");
+        return targetWindow.operatorSawSpoofed === true || node.textContent?.includes("SPOOFED");
       });
       expect(sawSpoofed).toBe(false);
     } finally {

@@ -41,7 +41,7 @@ describe("qa docker harness", () => {
       qaLabPort: 43124,
       gatewayToken: "qa-token",
       providerBaseUrl: "http://host.docker.internal:45123/v1",
-      repoRoot: "/repo/openclaw",
+      repoRoot: "/repo/operator",
       usePrebuiltImage: true,
       bindUiDist: true,
     });
@@ -72,7 +72,7 @@ describe("qa docker harness", () => {
     expect(services["qa-lab"]?.environment).toMatchObject({
       OPERATOR_ENABLE_PRIVATE_QA_CLI: "1",
       OPERATOR_CONFIG_PATH: "/opt/operator-scaffold/operator.json",
-      OPERATOR_STATE_DIR: "/tmp/openclaw/state",
+      OPERATOR_STATE_DIR: "/tmp/operator/state",
     });
     expect(services["qa-lab"]?.volumes).toContain("./state:/opt/operator-scaffold:ro");
     expect(compose).toContain('      - "127.0.0.1:18889:18789"');
@@ -91,10 +91,10 @@ describe("qa docker harness", () => {
     expect(compose).toContain(":/opt/operator-repo:ro");
     expect(compose).toContain("./state:/opt/operator-scaffold:ro");
     expect(compose).toContain(
-      "cp -R /opt/operator-scaffold/seed-workspace/. /tmp/openclaw/workspace/ && rm -rf /tmp/openclaw/workspace/repo && ln -s /opt/operator-repo /tmp/openclaw/workspace/repo",
+      "cp -R /opt/operator-scaffold/seed-workspace/. /tmp/operator/workspace/ && rm -rf /tmp/operator/workspace/repo && ln -s /opt/operator-repo /tmp/operator/workspace/repo",
     );
-    expect(compose).toContain("OPERATOR_CONFIG_PATH: /tmp/openclaw/operator.json");
-    expect(compose).toContain("OPERATOR_STATE_DIR: /tmp/openclaw/state");
+    expect(compose).toContain("OPERATOR_CONFIG_PATH: /tmp/operator/operator.json");
+    expect(compose).toContain("OPERATOR_STATE_DIR: /tmp/operator/state");
     expect(compose).toContain('OPERATOR_NO_RESPAWN: "1"');
 
     const envExample = await readFile(path.join(outputDir, ".env.example"), "utf8");
@@ -115,7 +115,7 @@ describe("qa docker harness", () => {
     expect(configText).toContain('"openClawToolsMcpBridge": true');
     expect(configText).toContain("/app/dist/control-ui");
     expect(configText).toContain("C-3PO QA");
-    expect(configText).toContain('"/tmp/openclaw/workspace"');
+    expect(configText).toContain('"/tmp/operator/workspace"');
     expect(config.plugins?.allow).toContain("qa-lab");
     expect(config.plugins?.entries?.["qa-lab"]?.enabled).toBe(true);
 
@@ -141,7 +141,7 @@ describe("qa docker harness", () => {
     const calls: string[] = [];
     const result = await buildQaDockerHarnessImage(
       {
-        repoRoot: "/repo/openclaw",
+        repoRoot: "/repo/operator",
         imageName: "operator:qa-local-prebaked",
       },
       {
@@ -154,7 +154,7 @@ describe("qa docker harness", () => {
 
     expect(result.imageName).toBe("operator:qa-local-prebaked");
     expect(calls).toEqual([
-      "docker build -t operator:qa-local-prebaked --build-arg OPERATOR_EXTENSIONS=qa-channel qa-lab -f Dockerfile . @/repo/openclaw",
+      "docker build -t operator:qa-local-prebaked --build-arg OPERATOR_EXTENSIONS=qa-channel qa-lab -f Dockerfile . @/repo/operator",
     ]);
   });
 

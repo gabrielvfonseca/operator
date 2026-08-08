@@ -13,9 +13,9 @@ import {
   closeOperatorAgentDatabasesForTest,
   OPERATOR_AGENT_SCHEMA_VERSION,
   openOperatorAgentDatabase,
-} from "../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
-import { resolveOperatorStateSqlitePath } from "../../src/state/openclaw-state-db.paths.js";
+} from "../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
+import { resolveOperatorStateSqlitePath } from "../../src/state/operator-state-db.paths.js";
 import { withEnvAsync } from "../../src/test-utils/env.js";
 import { resolveAgentDir } from "../../src/agents/agent-scope.js";
 import { loadPersistedAuthProfileStore } from "../../src/agents/auth-profiles/persisted.js";

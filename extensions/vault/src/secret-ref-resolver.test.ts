@@ -247,7 +247,7 @@ describe("plugin manifest", () => {
       secretProviderIntegrations?: Record<string, Record<string, unknown>>;
     };
     const packageJson = JSON.parse(readFileSync(packagePath, "utf8")) as {
-      openclaw?: {
+      operator?: {
         build?: {
           staticAssets?: Array<{ source?: string; output?: string }>;
         };

@@ -14,7 +14,7 @@ is_canonical_pr_number() {
 pr_operation_lock_ref() {
   local pr="$1"
   is_canonical_pr_number "$pr" || return 1
-  printf 'refs/openclaw/pr-operation-locks/%s\n' "$pr"
+  printf 'refs/operator/pr-operation-locks/%s\n' "$pr"
 }
 
 pr_operation_lock_zero_oid() {

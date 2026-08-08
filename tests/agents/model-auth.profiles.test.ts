@@ -750,7 +750,7 @@ describe("getApiKeyForModel", () => {
               "zai:default": {
                 type: "api_key",
                 provider: "zai",
-                key: "openclaw onboard --auth-choice zai-coding-global",
+                key: "operator onboard --auth-choice zai-coding-global",
               },
             },
           },

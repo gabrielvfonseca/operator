@@ -22,7 +22,7 @@ const cfg = {
   agents: {
     defaults: {
       model: "openai/gpt-5.4",
-      workspace: "/tmp/openclaw",
+      workspace: "/tmp/operator",
     },
   },
   session: {

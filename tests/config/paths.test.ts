@@ -296,7 +296,7 @@ describe("resolveIncludeRoots", () => {
   });
 
   it("expands a leading tilde in each entry using the resolved home dir", () => {
-    const env = envWith({ OPERATOR_INCLUDE_ROOTS: "~/share/openclaw" });
+    const env = envWith({ OPERATOR_INCLUDE_ROOTS: "~/share/operator" });
     expect(resolveIncludeRoots(env, () => HOME)).toEqual([
       path.join(HOME, "share", "@gabrielvfonseca/operator"),
     ]);

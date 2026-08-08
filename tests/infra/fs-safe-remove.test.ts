@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { __setFsSafeTestHooksForTest } from "@openclaw/fs-safe/test-hooks";
+import { __setFsSafeTestHooksForTest } from "@operator/fs-safe/test-hooks";
 import { afterEach, describe, expect, it } from "vitest";
 import { createRebindableDirectoryAlias } from "../../src/test-utils/symlink-rebind-race.js";
 import { createTrackedTempDirs } from "../../src/test-utils/tracked-temp-dirs.js";

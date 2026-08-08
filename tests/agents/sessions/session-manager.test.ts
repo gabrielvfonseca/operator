@@ -14,7 +14,7 @@ import {
 import { formatSqliteSessionFileMarker } from "../../../src/config/sessions/sqlite-marker.js";
 import { withOwnedSessionTranscriptWrites } from "../../../src/config/sessions/transcript-write-context.js";
 import * as Logger from "../../../src/logger.js";
-import { isTranscriptOnlyOperatorAssistantMessage } from "../../../src/shared/transcript-only-openclaw-assistant.js";
+import { isTranscriptOnlyOperatorAssistantMessage } from "../../../src/shared/transcript-only-operator-assistant.js";
 import { prepareSessionManagerForRun } from "../../../src/agents/embedded-agent-runner/session-manager-init.js";
 import { repairSessionFileIfNeeded } from "../../../src/agents/session-file-repair.js";
 import { loadSqliteMarkedSessionFile } from "../../../src/agents/sessions/session-manager-file.js";
@@ -473,7 +473,7 @@ describe("SessionManager.open", () => {
       version: 3,
       id: "original-session",
       timestamp: "2026-05-27T00:00:00.000Z",
-      cwd: "/srv/openclaw/main",
+      cwd: "/srv/operator/main",
     };
     const userEntry = {
       type: "message",

@@ -21,7 +21,7 @@ vi.mock("../plugins/manifest-registry.js", () => ({
   loadPluginManifestRegistry,
 }));
 
-vi.mock("../infra/openclaw-root.js", () => ({
+vi.mock("../infra/operator-root.js", () => ({
   resolveOperatorPackageRootSync,
 }));
 

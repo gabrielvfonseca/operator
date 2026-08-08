@@ -22,8 +22,8 @@ const cliMocks = vi.hoisted(() => ({
   createOpenShellSshSession: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/sandbox", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/sandbox")>();
+vi.mock("operator/plugin-sdk/sandbox", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/sandbox")>();
   return {
     ...actual,
     runSshSandboxCommand: sdkMocks.runSshSandboxCommand,

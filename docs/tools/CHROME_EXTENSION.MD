@@ -139,4 +139,4 @@ extension popup shows **Connected**.
   keeps the shared surface scoped to a tab group you control at a glance.
 
 See also: [Browser](/tools/browser) for the full profile model and the
-managed `openclaw` and Chrome MCP `user` profiles.
+managed `operator` and Chrome MCP `user` profiles.

@@ -5,11 +5,11 @@ import { cleanupTempDirs, makeTempDir } from "../../test/helpers/temp-dir.js";
 import {
   closeOperatorAgentDatabasesForTest,
   openOperatorAgentDatabase,
-} from "../../src/state/openclaw-agent-db.js";
+} from "../../src/state/operator-agent-db.js";
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 
 const planTempDirs: string[] = [];
 

@@ -74,7 +74,7 @@ describe("operator test instance", () => {
         },
       },
       env: {
-        OPERATOR_SKIP_CRON: "0",
+        OPENCLAW_SKIP_CRON: "0",
       },
     });
 
@@ -84,9 +84,9 @@ describe("operator test instance", () => {
       expect(inst.stateDir).toBe(path.join(inst.homeDir, ".operator"));
       expect(inst.configPath).toBe(path.join(inst.stateDir, "operator.json"));
       expect(inst.env.HOME).toBe(inst.homeDir);
-      expect(inst.env.OPERATOR_STATE_DIR).toBe(inst.stateDir);
-      expect(inst.env.OPERATOR_CONFIG_PATH).toBe(inst.configPath);
-      expect(inst.env.OPERATOR_SKIP_CRON).toBe("0");
+      expect(inst.env.OPENCLAW_STATE_DIR).toBe(inst.stateDir);
+      expect(inst.env.OPENCLAW_CONFIG_PATH).toBe(inst.configPath);
+      expect(inst.env.OPENCLAW_SKIP_CRON).toBe("0");
 
       const config = JSON.parse(await fs.readFile(inst.configPath, "utf8"));
       expect(config).toStrictEqual({

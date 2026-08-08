@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { openOperatorStateDatabase } from "../../../src/state/openclaw-state-db.js";
+import { openOperatorStateDatabase } from "../../../src/state/operator-state-db.js";
 import type { CronJob } from "../../../src/cron/types.js";
 import {
   loadedCronStoreFromRows,

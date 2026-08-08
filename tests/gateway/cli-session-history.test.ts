@@ -37,7 +37,7 @@ function readRecord(value: unknown): Record<string, unknown> {
 }
 
 function expectCliSessionMarker(message: unknown, sessionId: string): void {
-  expectFields(readRecord(message)["__openclaw"], { cliSessionId: sessionId });
+  expectFields(readRecord(message)["__operator"], { cliSessionId: sessionId });
 }
 
 function augmentBoundClaudeHistory(params: {
@@ -181,7 +181,7 @@ describe("cli session history", () => {
         role: "user",
       });
       expect(String(messages[0]?.content)).toContain("[Thu 2026-03-26 16:29 GMT] hi");
-      expectFields(messages[0]?.["__openclaw"], {
+      expectFields(messages[0]?.["__operator"], {
         id: "user-1",
         importedFrom: "claude-cli",
         externalId: "user-1",
@@ -198,7 +198,7 @@ describe("cli session history", () => {
         output: 7,
         cacheRead: 22,
       });
-      expectFields(messages[1]?.["__openclaw"], {
+      expectFields(messages[1]?.["__operator"], {
         id: "assistant-1",
         importedFrom: "claude-cli",
         externalId: "assistant-1",
@@ -239,7 +239,7 @@ describe("cli session history", () => {
       );
 
       const importedId = (message: Record<string, unknown> | undefined) =>
-        (message?.["__openclaw"] as { id?: string } | undefined)?.id;
+        (message?.["__operator"] as { id?: string } | undefined)?.id;
       const first = readClaudeCliSessionMessages({ cliSessionId: sessionId, homeDir });
       const second = readClaudeCliSessionMessages({ cliSessionId: sessionId, homeDir });
       expect(importedId(first[0])).toBe(`claude-cli:${sessionId}:line:1`);
@@ -799,7 +799,7 @@ describe("cli session history", () => {
     expectFields(merged[2], {
       role: "user",
     });
-    expectFields(readRecord(merged[2])["__openclaw"], {
+    expectFields(readRecord(merged[2])["__operator"], {
       importedFrom: "claude-cli",
       externalId: "user-2",
     });
@@ -942,7 +942,7 @@ describe("cli session history", () => {
         const record = readRecord(message);
         return (
           record.role === "user" &&
-          (record["__openclaw"] as { cliSessionId?: unknown } | undefined)?.cliSessionId ===
+          (record["__operator"] as { cliSessionId?: unknown } | undefined)?.cliSessionId ===
             sessionId
         );
       });

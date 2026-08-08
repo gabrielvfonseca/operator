@@ -90,7 +90,7 @@ const FIELD_PLACEHOLDERS: Record<string, string> = {
   "gateway.remote.tlsFingerprint": "sha256:ab12cd34…",
   "gateway.remote.sshTarget": "user@host",
   "gateway.remote.sshHostKeyPolicy": "strict",
-  "gateway.controlUi.basePath": "/openclaw",
+  "gateway.controlUi.basePath": "/operator",
   "gateway.controlUi.root": "dist/control-ui",
   "gateway.controlUi.allowedOrigins": "https://control.example.com",
   "gateway.push.apns.relay.baseUrl": "https://ios-push-relay.operator.ai",

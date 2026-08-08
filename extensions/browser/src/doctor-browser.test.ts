@@ -131,8 +131,8 @@ describe("browser doctor readiness", () => {
     const note = requireFirstNoteText(noteFn);
     expect(note).toContain("Legacy managed browser profile residue");
     expect(note).toContain("/tmp/operator-home/browser/clawd");
-    expect(note).toContain("/tmp/operator-home/browser/openclaw/user-data");
-    expect(note).toContain("openclaw doctor --fix");
+    expect(note).toContain("/tmp/operator-home/browser/operator/user-data");
+    expect(note).toContain("operator doctor --fix");
   });
 
   it("does not warn when clawd is still configured as a browser profile", async () => {
@@ -291,7 +291,7 @@ describe("legacy clawd browser profile cleanup", () => {
     expect(result.changes.join("\n")).toContain(
       "Archived legacy clawd managed browser profile residue.",
     );
-    expect(result.changes.join("\n")).toContain("/tmp/operator-home/browser/openclaw/user-data");
+    expect(result.changes.join("\n")).toContain("/tmp/operator-home/browser/operator/user-data");
   });
 
   it("does not archive a configured clawd browser profile", async () => {

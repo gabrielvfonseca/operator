@@ -79,7 +79,7 @@ import { deliverDiscordReply, formatDiscordReplyDeliveryFailure } from "./reply-
 import { sanitizeDiscordFrontChannelReplyPayloads } from "./reply-safety.js";
 import { createDiscordReplyTypingFeedback } from "./reply-typing-feedback.js";
 
-const loadReplyRuntime = createLazyRuntimeModule(() => import("openclaw/plugin-sdk/reply-runtime"));
+const loadReplyRuntime = createLazyRuntimeModule(() => import("operator/plugin-sdk/reply-runtime"));
 const TARGETED_ONLY_ALLOWED_MENTIONS = {
   parse: ["users", "roles"],
 } as APIAllowedMentions;

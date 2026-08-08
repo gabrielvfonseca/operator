@@ -1,5 +1,5 @@
 [Unit]
-Description=Check operator auth expiry every 30 minutes
+Description=Check Operator auth expiry every 30 minutes
 
 [Timer]
 OnBootSec=5min

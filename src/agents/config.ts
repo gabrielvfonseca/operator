@@ -84,7 +84,7 @@ export function getExamplesPath(): string {
 }
 
 // =============================================================================
-// App Config (from package.json openclawConfig)
+// App Config (from package.json operatorConfig)
 // =============================================================================
 
 interface PackageJson {

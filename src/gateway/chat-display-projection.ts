@@ -24,7 +24,7 @@ import {
   parseAssistantTextSignature,
   resolveAssistantMessagePhase,
 } from "../shared/chat-message-content.js";
-import { isOperatorDeliveryMirrorAssistantMessage } from "../shared/transcript-only-openclaw-assistant.js";
+import { isOperatorDeliveryMirrorAssistantMessage } from "../shared/transcript-only-operator-assistant.js";
 import { stripInlineDirectiveTagsForDisplay } from "../utils/directive-tags.js";
 import { stripEnvelopeFromMessages } from "./chat-sanitize.js";
 import { isSuppressedControlReplyText } from "./control-reply-text.js";
@@ -1061,7 +1061,7 @@ function readMessageToolSourceReplySink(
 function buildMessageToolVisibleReplyMirror(
   pending: PendingMessageToolVisibleReply,
 ): Record<string, unknown> {
-  const sourceMessageSeq = asPositiveSafeInteger(readRecord(pending.anchor["__openclaw"])?.seq);
+  const sourceMessageSeq = asPositiveSafeInteger(readRecord(pending.anchor["__operator"])?.seq);
   const mirror: Record<string, unknown> = {
     role: "assistant",
     content: [{ type: "text", text: pending.text }],
@@ -1077,9 +1077,9 @@ function buildMessageToolVisibleReplyMirror(
       mirror[field] = pending.anchor[field];
     }
   }
-  const transcriptMeta = readRecord((pending.completionAnchor ?? pending.anchor)["__openclaw"]);
+  const transcriptMeta = readRecord((pending.completionAnchor ?? pending.anchor)["__operator"]);
   if (transcriptMeta) {
-    mirror["__openclaw"] = { ...transcriptMeta };
+    mirror["__operator"] = { ...transcriptMeta };
   }
   return mirror;
 }
@@ -1491,7 +1491,7 @@ function isSubagentAnnounceInterSessionUserMessage(message: Record<string, unkno
 }
 
 function readChatHistoryRecordTimestampMs(message: unknown): number | undefined {
-  const meta = readRecord(readRecord(message)?.["__openclaw"]);
+  const meta = readRecord(readRecord(message)?.["__operator"]);
   const value = meta?.recordTimestampMs;
   if (typeof value === "number" && Number.isFinite(value)) {
     return value;
@@ -1619,7 +1619,7 @@ export function isHeartbeatHistoryTurnBoundaryMessage(message: unknown): boolean
 }
 
 function attachProjectedTurnBoundary(message: Record<string, unknown>): Record<string, unknown> {
-  const metadata = readRecord(message["__openclaw"]);
+  const metadata = readRecord(message["__operator"]);
   if (metadata?.turnBoundary === true) {
     return message;
   }
@@ -1636,7 +1636,7 @@ function canCarryProjectedTurnBoundary(message: RoleContentMessage | null): bool
   return Boolean(message && message.role !== "system" && message.role !== "custom");
 }
 
-function openclawAssistantModel(message: Record<string, unknown>): string | undefined {
+function operatorAssistantModel(message: Record<string, unknown>): string | undefined {
   return message.role === "assistant" &&
     message.provider === "@gabrielvfonseca/operator" &&
     typeof message.model === "string"
@@ -1657,8 +1657,8 @@ function isDuplicateAcpGatewayInjectedMessage(
     return false;
   }
   if (
-    openclawAssistantModel(previousVisible) !== "acp-runtime" ||
-    openclawAssistantModel(current) !== "gateway-injected"
+    operatorAssistantModel(previousVisible) !== "acp-runtime" ||
+    operatorAssistantModel(current) !== "gateway-injected"
   ) {
     return false;
   }
@@ -1690,7 +1690,7 @@ function isDuplicateChannelFinalDeliveryMirror(
   if (isProjectedSessionsSendForwardedMessage(previousVisible)) {
     return false;
   }
-  const previousMeta = readRecord(previousVisible["__openclaw"]);
+  const previousMeta = readRecord(previousVisible["__operator"]);
   if (typeof previousMeta?.mirrorIdentity !== "string" || !previousMeta.mirrorIdentity.trim()) {
     return false;
   }

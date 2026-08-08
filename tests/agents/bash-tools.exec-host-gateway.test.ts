@@ -1475,7 +1475,7 @@ describe("processGatewayAllowlist", () => {
     });
 
     const result = await runGatewayAllowlist({
-      command: "openclaw config set security.audit.suppressions '[]'",
+      command: "operator config set security.audit.suppressions '[]'",
       security: "full",
       ask: "on-miss",
     });
@@ -1494,7 +1494,7 @@ describe("processGatewayAllowlist", () => {
     });
 
     const result = await runGatewayAllowlist({
-      command: "openclaw config set security.audit.suppressions '[]'",
+      command: "operator config set security.audit.suppressions '[]'",
       security: "full",
       ask: "on-miss",
       autoReview: true,
@@ -1516,7 +1516,7 @@ describe("processGatewayAllowlist", () => {
     });
 
     await runGatewayAllowlist({
-      command: "openclaw config set security.audit.suppressions '[]'",
+      command: "operator config set security.audit.suppressions '[]'",
       security: "full",
       ask: "off",
     });
@@ -1546,7 +1546,7 @@ describe("processGatewayAllowlist", () => {
     });
 
     await runGatewayAllowlist({
-      command: "openclaw config get security.audit.suppressions",
+      command: "operator config get security.audit.suppressions",
       security: "full",
       ask: "on-miss",
     });
@@ -1583,7 +1583,7 @@ describe("processGatewayAllowlist", () => {
     });
 
     await runGatewayAllowlist({
-      command: "openclaw --profile rescue config get security.audit.suppressions",
+      command: "operator --profile rescue config get security.audit.suppressions",
       security: "full",
       ask: "on-miss",
     });
@@ -1617,7 +1617,7 @@ describe("processGatewayAllowlist", () => {
 
     const result = await runGatewayAllowlist({
       command:
-        "openclaw config get security.audit.suppressions; openclaw config set security.audit.suppressions '[]'",
+        "operator config get security.audit.suppressions; operator config set security.audit.suppressions '[]'",
       security: "full",
       ask: "on-miss",
     });
@@ -1648,7 +1648,7 @@ describe("processGatewayAllowlist", () => {
 
     const result = await runGatewayAllowlist({
       command:
-        "openclaw config get security.audit.suppressions; openclaw config set security.audit.suppressions '[]'",
+        "operator config get security.audit.suppressions; operator config set security.audit.suppressions '[]'",
       security: "full",
       ask: "on-miss",
     });
@@ -1664,12 +1664,12 @@ describe("processGatewayAllowlist", () => {
       allowlistSatisfied: false,
       segments: [
         {
-          raw: "openclaw config get security.audit.suppressions",
+          raw: "operator config get security.audit.suppressions",
           resolution: null,
           argv: ["@gabrielvfonseca/operator", "config", "get", "security.audit.suppressions"],
         },
         {
-          raw: "openclaw config patch --stdin <<'EOF'",
+          raw: "operator config patch --stdin <<'EOF'",
           resolution: null,
           argv: ["@gabrielvfonseca/operator", "config", "patch", "--stdin"],
         },
@@ -1684,7 +1684,7 @@ describe("processGatewayAllowlist", () => {
     });
 
     const result = await runGatewayAllowlist({
-      command: `openclaw config get security.audit.suppressions; openclaw config patch --stdin <<'EOF'
+      command: `operator config get security.audit.suppressions; operator config patch --stdin <<'EOF'
 {"security":{"audit":{"suppressions":[]}}}
 EOF`,
       security: "full",
@@ -1810,7 +1810,7 @@ EOF`,
     );
 
     const result = await runGatewayAllowlist({
-      command: "openclaw gateway diagnostics export --json",
+      command: "operator gateway diagnostics export --json",
       trigger: "diagnostics",
       approvalFollowupMode: "direct",
       approvalFollowup,
@@ -1865,7 +1865,7 @@ EOF`,
     });
 
     const result = await runGatewayAllowlist({
-      command: "openclaw sessions export-trajectory --json",
+      command: "operator sessions export-trajectory --json",
       approvalFollowupMode: "agent",
       sessionId: "approval-session",
       sessionStore: "/tmp/operator-sessions.json",

@@ -2,7 +2,7 @@ import UIKit
 import XCTest
 
 @MainActor
-final class operatorSnapshotUITests: XCTestCase {
+final class OperatorSnapshotUITests: XCTestCase {
     private struct ScreenshotTarget {
         let initialTab: String
         let initialDestination: String
@@ -386,7 +386,7 @@ final class operatorSnapshotUITests: XCTestCase {
         self.attachScreenshot(named: "chat-empty-starters")
 
         starter.tap()
-        let sentText = "Summarize the current operator status and tell me what needs attention."
+        let sentText = "Summarize the current Operator status and tell me what needs attention."
         let sentRows = self.app?.staticTexts.matching(NSPredicate(format: "label == %@", sentText))
         XCTAssertTrue(sentRows?.firstMatch.waitForExistence(timeout: 5) == true)
         XCTAssertEqual(sentRows?.count, 1)
@@ -411,12 +411,12 @@ final class operatorSnapshotUITests: XCTestCase {
             ])
 
         XCTAssertTrue(self.app?.staticTexts["Woran möchtest du arbeiten?"].waitForExistence(timeout: 8) == true)
-        let starter = try XCTUnwrap(self.app?.buttons["operator-Status prüfen"])
+        let starter = try XCTUnwrap(self.app?.buttons["Operator-Status prüfen"])
         XCTAssertTrue(starter.exists)
         starter.tap()
         XCTAssertTrue(
             self.app?.staticTexts[
-                "Fasse den aktuellen operator-Status zusammen und sage mir, was Aufmerksamkeit erfordert.",
+                "Fasse den aktuellen Operator-Status zusammen und sage mir, was Aufmerksamkeit erfordert.",
             ].waitForExistence(timeout: 5) == true)
         self.attachScreenshot(named: "chat-empty-starters-german")
     }
@@ -585,7 +585,7 @@ final class operatorSnapshotUITests: XCTestCase {
         activityChat.tap()
         XCTAssertTrue(chatTab.isSelected)
 
-        let returnButton = try XCTUnwrap(self.app?.buttons["operatorChatBackToControlDetailButton"])
+        let returnButton = try XCTUnwrap(self.app?.buttons["OperatorChatBackToControlDetailButton"])
         XCTAssertTrue(returnButton.waitForExistence(timeout: 5))
         XCTAssertEqual(returnButton.label, "Back to Activity")
         self.attachScreenshot(named: "chat-return-to-activity")
@@ -640,7 +640,7 @@ final class operatorSnapshotUITests: XCTestCase {
 
         // Build scrollable history through the paired app before checking reader behavior.
         for index in 0..<3 {
-            let seedMarker = "operator_E2E_SEED_\(index)_\(Int(Date().timeIntervalSince1970 * 1000))"
+            let seedMarker = "OPERATOR_E2E_SEED_\(index)_\(Int(Date().timeIntervalSince1970 * 1000))"
             let seedContext = String(repeating: "Reader context \(index). ", count: 6)
             self.sendLiveGatewayMessage(
                 "\(seedContext)Reply exactly with \(seedMarker) and no other text.",
@@ -648,7 +648,7 @@ final class operatorSnapshotUITests: XCTestCase {
                 in: app)
         }
 
-        let replyMarker = "operator_E2E_OK_\(Int(Date().timeIntervalSince1970 * 1000))"
+        let replyMarker = "OPERATOR_E2E_OK_\(Int(Date().timeIntervalSince1970 * 1000))"
         self.sendLiveGatewayMessage(
             "Reply exactly with \(replyMarker) and no other text.",
             expecting: replyMarker,
@@ -686,9 +686,9 @@ final class operatorSnapshotUITests: XCTestCase {
 
     func testManualAuthRetryUsesEditedToken() throws {
         try XCTSkipUnless(
-            ProcessInfo.processInfo.environment["operator_IOS_RETRY_E2E"] == "1",
-            "Set operator_IOS_RETRY_E2E=1 with a local token-auth Gateway on port 18920")
-        let token = try XCTUnwrap(ProcessInfo.processInfo.environment["operator_IOS_RETRY_TOKEN"])
+            ProcessInfo.processInfo.environment["OPERATOR_IOS_RETRY_E2E"] == "1",
+            "Set OPERATOR_IOS_RETRY_E2E=1 with a local token-auth Gateway on port 18920")
+        let token = try XCTUnwrap(ProcessInfo.processInfo.environment["OPERATOR_IOS_RETRY_TOKEN"])
 
         let app = XCUIApplication()
         addUIInterruptionMonitor(withDescription: "Local network access") { alert in
@@ -737,8 +737,8 @@ final class operatorSnapshotUITests: XCTestCase {
 
     func testPhotosLimitedAccess() throws {
         try XCTSkipUnless(
-            ProcessInfo.processInfo.environment["operator_IOS_PHOTOS_E2E"] == "1",
-            "Set operator_IOS_PHOTOS_E2E=1 to exercise the system Photos prompt")
+            ProcessInfo.processInfo.environment["OPERATOR_IOS_PHOTOS_E2E"] == "1",
+            "Set OPERATOR_IOS_PHOTOS_E2E=1 to exercise the system Photos prompt")
         addUIInterruptionMonitor(withDescription: "Photos access") { alert in
             for title in ["Limit Access…", "Select Photos…"] where alert.buttons[title].exists {
                 alert.buttons[title].tap()
@@ -831,10 +831,10 @@ final class operatorSnapshotUITests: XCTestCase {
         initialDestination: String) throws -> XCUIApplication
     {
         try XCTSkipUnless(
-            ProcessInfo.processInfo.environment["operator_IOS_LIVE_GATEWAY"] == "1",
-            "Set operator_IOS_LIVE_GATEWAY=1 and provide a fresh setup code")
+            ProcessInfo.processInfo.environment["OPERATOR_IOS_LIVE_GATEWAY"] == "1",
+            "Set OPERATOR_IOS_LIVE_GATEWAY=1 and provide a fresh setup code")
 
-        if let setupCode = ProcessInfo.processInfo.environment["operator_IOS_LIVE_SETUP_CODE"] {
+        if let setupCode = ProcessInfo.processInfo.environment["OPERATOR_IOS_LIVE_SETUP_CODE"] {
             UIPasteboard.general.string = setupCode
         }
 

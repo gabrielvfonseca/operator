@@ -58,7 +58,7 @@ type SkillsHandlerName = keyof typeof skillsHandlers;
 function emptySkillStatusReport() {
   return {
     workspaceDir: "/tmp/workspace",
-    managedSkillsDir: "/tmp/openclaw/skills",
+    managedSkillsDir: "/tmp/operator/skills",
     skills: [],
   };
 }
@@ -132,7 +132,7 @@ describe("skills gateway handlers (clawhub)", () => {
   it("fetches one bulk ClawHub verdict batch for linked installed skills", async () => {
     buildWorkspaceSkillStatusMock.mockReturnValue({
       workspaceDir: "/tmp/workspace",
-      managedSkillsDir: "/tmp/openclaw/skills",
+      managedSkillsDir: "/tmp/operator/skills",
       skills: [
         {
           name: "agentreceipt",
@@ -164,7 +164,7 @@ describe("skills gateway handlers (clawhub)", () => {
           requestedVersion: "1.2.3",
           version: "1.2.3",
           securityAuditUrl:
-            "https://clawhub.ai/openclaw/skills/agentreceipt/security-audit?version=1.2.3",
+            "https://clawhub.ai/operator/skills/agentreceipt/security-audit?version=1.2.3",
           security: { status: "clean", passed: true },
           scannerPayload: { ignored: true },
         },
@@ -202,7 +202,7 @@ describe("skills gateway handlers (clawhub)", () => {
   it("does not passively fetch verdicts from a non-default registry", async () => {
     buildWorkspaceSkillStatusMock.mockReturnValue({
       workspaceDir: "/tmp/workspace",
-      managedSkillsDir: "/tmp/openclaw/skills",
+      managedSkillsDir: "/tmp/operator/skills",
       skills: [
         {
           name: "agentreceipt",
@@ -225,7 +225,7 @@ describe("skills gateway handlers (clawhub)", () => {
   it("loads local Skill Card content for a known installed skill", async () => {
     buildWorkspaceSkillStatusMock.mockReturnValue({
       workspaceDir: "/tmp/workspace",
-      managedSkillsDir: "/tmp/openclaw/skills",
+      managedSkillsDir: "/tmp/operator/skills",
       skills: [
         {
           name: "AgentReceipt",

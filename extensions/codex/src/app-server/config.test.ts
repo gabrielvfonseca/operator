@@ -386,7 +386,7 @@ describe("Codex app-server config", () => {
           connectionClass: "remote",
           remoteAppsSubstrate: "preconfigured",
           remoteWorkspace: {
-            localRoot: "/Users/kevinlin/code/openclaw",
+            localRoot: "/Users/kevinlin/code/operator",
             remoteRoot: "/home/oai/operator-workspaces",
           },
         },
@@ -396,7 +396,7 @@ describe("Codex app-server config", () => {
       readCodexPluginConfig({
         appServer: {
           remoteWorkspace: {
-            localRoot: "/Users/kevinlin/code/openclaw",
+            localRoot: "/Users/kevinlin/code/operator",
             remoteRoot: "/home/oai/operator-workspaces",
           },
         },

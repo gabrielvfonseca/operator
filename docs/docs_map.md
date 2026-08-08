@@ -1467,7 +1467,7 @@ Do not edit it by hand; run `pnpm docs:map:gen`.
   - H3: operator devices revoke --device &lt;id&gt; --role &lt;role&gt;
   - H2: Notes
   - H2: Token drift recovery checklist
-  - H2: Paperclip / openclawgateway first-run approval
+  - H2: Paperclip / operatorgateway first-run approval
   - H2: Related
 
 ## cli/directory.md
@@ -1803,7 +1803,7 @@ Do not edit it by hand; run `pnpm docs:map:gen`.
 
 ## cli/operator.md
 
-- Route: /cli/openclaw
+- Route: /cli/operator
 - Headings:
   - H1: operator setup
   - H2: When it starts
@@ -4186,7 +4186,7 @@ Do not edit it by hand; run `pnpm docs:map:gen`.
   - H2: Live: Android node capability sweep
   - H2: Live: model smoke (profile keys)
   - H3: Layer 1: Direct model completion (no gateway)
-  - H3: Layer 2: Gateway + dev agent smoke (what "@openclaw" actually does)
+  - H3: Layer 2: Gateway + dev agent smoke (what "@operator" actually does)
   - H2: Live: CLI backend smoke (Claude, Gemini, or other local CLIs)
   - H2: Live: APNs HTTP/2 proxy reachability
   - H2: Live: ACP bind smoke (/acp spawn ... --bind here)
@@ -9287,7 +9287,7 @@ Do not edit it by hand; run `pnpm docs:map:gen`.
 
 ## start/operator.md
 
-- Route: /start/openclaw
+- Route: /start/operator
 - Headings:
   - H2: Safety first
   - H2: Prerequisites
@@ -9524,7 +9524,7 @@ Do not edit it by hand; run `pnpm docs:map:gen`.
   - H2: Plugin control
   - H2: Agent guidance
   - H2: Missing browser command or tool
-  - H2: Profiles: openclaw, user, chrome
+  - H2: Profiles: operator, user, chrome
   - H2: Configuration
   - H3: Screenshot vision (text-only model support)
   - H2: Use Brave or another Chromium-based browser

@@ -744,7 +744,7 @@ export async function getHealthSnapshot(params?: {
   return summary;
 }
 
-/** Runs the `openclaw health` command against the gateway and renders JSON or text. */
+/** Runs the `operator health` command against the gateway and renders JSON or text. */
 export async function healthCommand(
   opts: {
     json?: boolean;

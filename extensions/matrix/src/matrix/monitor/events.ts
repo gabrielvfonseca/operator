@@ -29,7 +29,7 @@ function formatMatrixPostHealthySyncDecryptionHint(accountId: string): string {
   return (
     "matrix: repeated fresh encrypted messages are still failing to decrypt after Matrix resumed healthy sync. " +
     "This device may still be missing new room keys. " +
-    `Check 'openclaw matrix verify status --verbose --account ${accountId}' and 'openclaw matrix devices list --account ${accountId}'.`
+    `Check 'operator matrix verify status --verbose --account ${accountId}' and 'operator matrix devices list --account ${accountId}'.`
   );
 }
 
@@ -151,7 +151,7 @@ function formatMatrixSelfDecryptionHint(accountId: string): string {
   return (
     "matrix: failed to decrypt a message from this same Matrix user. " +
     "This usually means another Matrix device did not share the room key, or another Operator runtime is using the same account. " +
-    `Check 'openclaw matrix verify status --verbose --account ${accountId}' and 'openclaw matrix devices list --account ${accountId}'.`
+    `Check 'operator matrix verify status --verbose --account ${accountId}' and 'operator matrix devices list --account ${accountId}'.`
   );
 }
 

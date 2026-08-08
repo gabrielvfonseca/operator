@@ -143,12 +143,12 @@ minimaxProviderHttpMocks.fetchWithTimeoutGuardedMock.mockImplementation(
   }),
 );
 
-vi.mock("openclaw/plugin-sdk/provider-auth-runtime", () => ({
+vi.mock("operator/plugin-sdk/provider-auth-runtime", () => ({
   resolveApiKeyForProvider: minimaxProviderHttpMocks.resolveApiKeyForProviderMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/provider-http", async (importActual) => {
-  const actual = await importActual<typeof import("openclaw/plugin-sdk/provider-http")>();
+vi.mock("operator/plugin-sdk/provider-http", async (importActual) => {
+  const actual = await importActual<typeof import("operator/plugin-sdk/provider-http")>();
   return {
     assertOkOrThrowHttpError: minimaxProviderHttpMocks.assertOkOrThrowHttpErrorMock,
     createProviderOperationDeadline: ({

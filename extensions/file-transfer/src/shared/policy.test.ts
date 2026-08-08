@@ -11,10 +11,10 @@ import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vites
 const getRuntimeConfigMock = vi.fn();
 const mutateConfigFileMock = vi.fn();
 
-vi.mock("openclaw/plugin-sdk/runtime-config-snapshot", () => ({
+vi.mock("operator/plugin-sdk/runtime-config-snapshot", () => ({
   getRuntimeConfig: () => getRuntimeConfigMock(),
 }));
-vi.mock("openclaw/plugin-sdk/config-mutation", () => ({
+vi.mock("operator/plugin-sdk/config-mutation", () => ({
   mutateConfigFile: (input: unknown) => mutateConfigFileMock(input),
 }));
 
@@ -31,8 +31,8 @@ afterEach(() => {
 });
 
 afterAll(() => {
-  vi.doUnmock("openclaw/plugin-sdk/runtime-config-snapshot");
-  vi.doUnmock("openclaw/plugin-sdk/config-mutation");
+  vi.doUnmock("operator/plugin-sdk/runtime-config-snapshot");
+  vi.doUnmock("operator/plugin-sdk/config-mutation");
   vi.resetModules();
 });
 

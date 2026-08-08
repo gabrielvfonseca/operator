@@ -136,13 +136,13 @@ run identities, the prepared tarball digest, and the core registry selectors.
 Independently confirm the result after the workflow succeeds:
 
 ```bash
-npm view openclaw@YYYY.M.P version --userconfig "$(mktemp)"
-npm view openclaw@extended-stable version --userconfig "$(mktemp)"
+npm view operator@YYYY.M.P version --userconfig "$(mktemp)"
+npm view operator@extended-stable version --userconfig "$(mktemp)"
 ```
 
 Both commands must return `YYYY.M.P`. If publish succeeds but selector
 readback fails, do not republish the immutable package version. Use the
-single `npm dist-tag add openclaw@YYYY.M.P extended-stable` repair command
+single `npm dist-tag add operator@YYYY.M.P extended-stable` repair command
 printed in the failed workflow's always-run summary, then repeat both
 independent readbacks. Rollback to the prior selector is a separate operator
 decision, not the readback repair path.
@@ -182,10 +182,10 @@ This checklist is the public shape of the release flow. Private credentials, sig
 
    `Operator Release Publish` dispatches the selected or all-publishable plugin packages to npm and the same set to ClawHub in parallel, then promotes the prepared Operator npm preflight artifact with the matching dist-tag once plugin npm publish succeeds. The release checkout remains the product/data root, while planning and final verification execute from the exact trusted workflow-source checkout so an older release commit cannot silently use obsolete release tooling. Before any publish child starts, it renders and caches the exact GitHub release body. When the complete matching `CHANGELOG.md` section fits GitHub's 125,000-character limit and the renderer's matching 125,000-byte safety ceiling, the page contains that exact `## YYYY.M.PATCH` section including its heading. When the source section does not fit, the page keeps the exact grouped editorial notes and replaces the oversized contribution record with a stable link to the full record in the tag-pinned `CHANGELOG.md`; partial records and truncated bullets are never published. The workflow chooses that full or compact body before adding `### Release verification`; if the proof tail would exceed the limit, it keeps the canonical body and relies on the immutable attached evidence instead. Stable releases published to npm `latest` become the GitHub latest release, while stable maintenance releases kept on npm `beta` are created with GitHub `latest=false`. The workflow also uploads the preflight dependency evidence, the full-validation manifest, and postpublish registry verification evidence to the GitHub release for post-release incident response. It prints child run IDs immediately, auto-approves release environment gates the workflow token is allowed to approve, summarizes failed child jobs with log tails, creates the draft GitHub release page up front and promotes Windows and Android assets concurrently with the Operator npm publish, closes out the release page and dependency evidence once those stages succeed, waits for ClawHub whenever Operator npm is being published, then runs the trusted-main beta verifier and uploads postpublish evidence for the GitHub release, npm package, selected plugin npm packages, selected ClawHub packages, child workflow run IDs, and optional NPM Telegram run ID. The ClawHub bootstrap verifier requires the exact trusted-main workflow path and SHA, producer and terminal run attempts, release SHA, requested package set, immutable package artifact tuple, and terminal registry readback artifact; a successful legacy release-ref run is not accepted.
 
-   Then run the post-publish package acceptance against the published `openclaw@YYYY.M.PATCH-beta.N` or `openclaw@beta` package. If a pushed or published prerelease needs a fix, cut the next matching prerelease number; never delete or rewrite the old one.
+   Then run the post-publish package acceptance against the published `operator@YYYY.M.PATCH-beta.N` or `operator@beta` package. If a pushed or published prerelease needs a fix, cut the next matching prerelease number; never delete or rewrite the old one.
 
 10. On a failed publish attempt, keep the Release SHA unchanged unless the failure proves a product or changelog defect. Resume successful immutable children and artifacts; never rebuild or republish a package version that already succeeded.
-11. For stable, continue only after the vetted beta or release candidate has the required validation evidence. Stable npm publish also goes through `Operator Release Publish`, reusing the successful preflight artifact via `preflight_run_id`. Stable macOS release readiness also requires the packaged `.zip`, `.dmg`, `.dSYM.zip`, and updated `appcast.xml` on `main`; the macOS publish workflow publishes the signed appcast to public `main` automatically after release assets verify, or opens/updates an appcast PR if branch protection blocks the direct push. Stable Windows Hub readiness requires the signed `OperatorCompanion-Setup-x64.exe`, `OperatorCompanion-Setup-arm64.exe`, and `OperatorCompanion-SHA256SUMS.txt` assets on the Operator GitHub release. Pass the exact signed `openclaw/operator-windows-node` release tag as `windows_node_tag` and its candidate-approved installer digest map as `windows_node_installer_digests`; `Operator Release Publish` keeps the release draft, dispatches `Windows Node Release`, and verifies all three assets before publication.
+11. For stable, continue only after the vetted beta or release candidate has the required validation evidence. Stable npm publish also goes through `Operator Release Publish`, reusing the successful preflight artifact via `preflight_run_id`. Stable macOS release readiness also requires the packaged `.zip`, `.dmg`, `.dSYM.zip`, and updated `appcast.xml` on `main`; the macOS publish workflow publishes the signed appcast to public `main` automatically after release assets verify, or opens/updates an appcast PR if branch protection blocks the direct push. Stable Windows Hub readiness requires the signed `OperatorCompanion-Setup-x64.exe`, `OperatorCompanion-Setup-arm64.exe`, and `OperatorCompanion-SHA256SUMS.txt` assets on the Operator GitHub release. Pass the exact signed `operator/operator-windows-node` release tag as `windows_node_tag` and its candidate-approved installer digest map as `windows_node_installer_digests`; `Operator Release Publish` keeps the release draft, dispatches `Windows Node Release`, and verifies all three assets before publication.
 12. After publish, run the npm post-publish verifier, optional standalone published-npm Telegram E2E when you need post-publish channel proof, dist-tag promotion when needed, verify the generated GitHub release page, run the release announcement steps, then complete [Stable main closeout](#stable-main-closeout) before calling a stable release finished.
 
 ## Stable main closeout
@@ -224,14 +224,14 @@ A legacy fallback correction tag may reuse base-package evidence only when the c
     --target-ref release/YYYY.M.PATCH
   ```
 
-- Run the manual `Package Acceptance` workflow when you want side-channel proof for a package candidate while release work continues. Use `source=npm` for `openclaw@beta`, `openclaw@latest`, or an exact release version; `source=ref` to pack a trusted `package_ref` branch/tag/SHA with the current `workflow_ref` harness; `source=url` for a public HTTPS tarball with a required SHA-256 and strict public URL policy; `source=trusted-url` for a named trusted-source policy using required `trusted_source_id` and SHA-256; or `source=artifact` for a tarball uploaded by another GitHub Actions run.
+- Run the manual `Package Acceptance` workflow when you want side-channel proof for a package candidate while release work continues. Use `source=npm` for `operator@beta`, `operator@latest`, or an exact release version; `source=ref` to pack a trusted `package_ref` branch/tag/SHA with the current `workflow_ref` harness; `source=url` for a public HTTPS tarball with a required SHA-256 and strict public URL policy; `source=trusted-url` for a named trusted-source policy using required `trusted_source_id` and SHA-256; or `source=artifact` for a tarball uploaded by another GitHub Actions run.
 
   The workflow resolves the candidate to `package-under-test`, reuses the Docker E2E release scheduler against that tarball, and can run Telegram QA against the same tarball with `telegram_mode=mock-openai` or `telegram_mode=live-frontier`. When the selected Docker lanes include `published-upgrade-survivor`, the package artifact is the candidate and `published_upgrade_survivor_baseline` selects the published baseline. `update-restart-auth` uses the candidate package as both the installed CLI and the package-under-test so it exercises the candidate update command's managed restart path.
 
   Example:
 
   ```bash
-  gh workflow run package-acceptance.yml --ref main -f workflow_ref=main -f source=npm -f package_spec=openclaw@beta -f suite_profile=product -f published_upgrade_survivor_baseline=openclaw@2026.4.26 -f telegram_mode=mock-openai
+  gh workflow run package-acceptance.yml --ref main -f workflow_ref=main -f source=npm -f package_spec=operator@beta -f suite_profile=product -f published_upgrade_survivor_baseline=operator@2026.4.26 -f telegram_mode=mock-openai
   ```
 
   Common profiles:
@@ -254,7 +254,7 @@ A legacy fallback correction tag may reuse base-package evidence only when the c
 - Run `pnpm release:check` before every tagged release.
 - `Operator NPM Release` preflight generates dependency release evidence before it packs the npm tarball. The npm advisory vulnerability gate is release-blocking. The transitive manifest risk, dependency ownership/install surface, and dependency change reports are release evidence only. The dependency change report compares the release candidate with the previous reachable release tag. The preflight uploads dependency evidence as `operator-release-dependency-evidence-<tag>` and also embeds it under `dependency-evidence/` inside the prepared npm preflight artifact. The real publish path reuses that preflight artifact, then attaches the same evidence to the GitHub release as `operator-<version>-dependency-evidence.zip`.
 - Run `Operator Release Publish` for the mutating publish sequence after the tag exists. Dispatch regular beta and stable publishes from trusted `main`; the release tag still selects the exact target commit and may point into `release/YYYY.M.PATCH`. Tideclaw alpha publishes remain on their matching alpha branch. Pass the successful Operator npm `preflight_run_id`, successful `full_release_validation_run_id`, and exact `full_release_validation_run_attempt`, and keep the default plugin publish scope `all-publishable` unless you are deliberately running a focused repair. The workflow serializes plugin npm publish, plugin ClawHub publish, and Operator npm publish so the core package is not published before its externalized plugins; Windows and Android promotion runs concurrently with the core npm publish against the draft release page. Publish reruns are resumable: an already-published core npm version skips the core dispatch after the workflow proves the registry tarball matches the tag's preflight artifact, and Windows/Android promotion is skipped when the release already carries the verified asset contract, so a retry only redoes the failed stages. Focused plugin-only repairs require `plugin_publish_scope=selected` and a nonempty plugin list. Plugin-only `all-publishable` runs require complete immutable preflight and Full Release Validation evidence; partial evidence is rejected.
-- Stable `Operator Release Publish` requires an exact `windows_node_tag` after the matching non-prerelease `openclaw/operator-windows-node` release exists, plus the candidate-approved `windows_node_installer_digests` map. Before dispatching any publish child, it verifies that source release is published, non-prerelease, contains the required x64/ARM64 installers, and still matches that approved map. It then dispatches `Windows Node Release` while the Operator release is still a draft, carrying the pinned installer digest map unchanged. The child workflow downloads the signed Windows Hub installers from that exact tag, matches them against the pinned digests, verifies their Authenticode signatures use the expected Operator Foundation signer on a Windows runner, writes a SHA-256 manifest, and uploads the installers plus manifest onto the canonical Operator GitHub release, then re-downloads the promoted assets and verifies manifest membership and hashes. The parent verifies the current x64, ARM64, and checksum asset contract before publication. Direct recovery rejects unexpected `OperatorCompanion-*` asset names before replacing the expected contract assets with the pinned source bytes.
+- Stable `Operator Release Publish` requires an exact `windows_node_tag` after the matching non-prerelease `operator/operator-windows-node` release exists, plus the candidate-approved `windows_node_installer_digests` map. Before dispatching any publish child, it verifies that source release is published, non-prerelease, contains the required x64/ARM64 installers, and still matches that approved map. It then dispatches `Windows Node Release` while the Operator release is still a draft, carrying the pinned installer digest map unchanged. The child workflow downloads the signed Windows Hub installers from that exact tag, matches them against the pinned digests, verifies their Authenticode signatures use the expected Operator Foundation signer on a Windows runner, writes a SHA-256 manifest, and uploads the installers plus manifest onto the canonical Operator GitHub release, then re-downloads the promoted assets and verifies manifest membership and hashes. The parent verifies the current x64, ARM64, and checksum asset contract before publication. Direct recovery rejects unexpected `OperatorCompanion-*` asset names before replacing the expected contract assets with the pinned source bytes.
 
   Manually dispatch `Windows Node Release` only for recovery, and always pass an exact tag, never `latest`, plus the explicit `expected_installer_digests` JSON map from the approved source release. Website download links should target exact Operator release asset URLs for the current stable release, or `releases/latest/download/...` only after verifying GitHub's latest redirect points at that same release; do not link only to the companion repo release page.
 
@@ -269,14 +269,14 @@ A legacy fallback correction tag may reuse base-package evidence only when the c
 - Before tagging a release candidate locally, run `RELEASE_TAG=vYYYY.M.PATCH-beta.N pnpm release:fast-pretag-check`. The helper runs the fast release guardrails, plugin npm/ClawHub release checks, build, UI build, and `release:operator:npm:check` in the order that catches common approval-blocking mistakes before the GitHub publish workflow starts.
 - Run `RELEASE_TAG=vYYYY.M.PATCH node --import tsx scripts/operator-npm-release-check.ts` (or the matching prerelease/correction tag) before approval.
 - After npm publish, run `node --import tsx scripts/operator-npm-postpublish-verify.ts YYYY.M.PATCH` (or the matching beta/correction version) to verify the published registry install path in a fresh temp prefix.
-- After a beta publish, run `OPERATOR_NPM_TELEGRAM_PACKAGE_SPEC=openclaw@YYYY.M.PATCH-beta.N OPERATOR_NPM_TELEGRAM_CREDENTIAL_SOURCE=convex OPERATOR_NPM_TELEGRAM_CREDENTIAL_ROLE=ci pnpm test:docker:npm-telegram-live` to verify installed-package onboarding, Telegram setup, and real Telegram E2E against the published npm package using the shared leased Telegram credential pool. Local maintainer one-offs may omit the Convex vars and pass the three `OPERATOR_QA_TELEGRAM_*` env credentials directly.
+- After a beta publish, run `OPERATOR_NPM_TELEGRAM_PACKAGE_SPEC=operator@YYYY.M.PATCH-beta.N OPERATOR_NPM_TELEGRAM_CREDENTIAL_SOURCE=convex OPERATOR_NPM_TELEGRAM_CREDENTIAL_ROLE=ci pnpm test:docker:npm-telegram-live` to verify installed-package onboarding, Telegram setup, and real Telegram E2E against the published npm package using the shared leased Telegram credential pool. Local maintainer one-offs may omit the Convex vars and pass the three `OPERATOR_QA_TELEGRAM_*` env credentials directly.
 - To run the full post-publish beta smoke from a maintainer machine, use `pnpm release:beta-smoke -- --beta betaN`. The helper runs Parallels npm update/fresh-target validation, dispatches `NPM Telegram Beta E2E`, polls the exact workflow run, downloads the artifact, and prints the Telegram report.
 - Maintainers can run the same post-publish check from GitHub Actions via the manual `NPM Telegram Beta E2E` workflow. It is intentionally manual-only and does not run on every merge.
 - Maintainer release automation uses preflight-then-promote:
   - Real npm publish must pass a successful npm `preflight_run_id`.
   - Regular beta and stable publish orchestration and preflight use trusted `main` against the exact target tag. Tideclaw alpha publish and preflight use the matching alpha branch.
   - Stable npm releases default to `beta`; stable npm publish can target `latest` explicitly via workflow input.
-  - Token-based npm dist-tag mutation lives in `openclaw/releases/.github/workflows/operator-npm-dist-tags.yml` because `npm dist-tag add` still needs `NPM_TOKEN` while the source repo keeps OIDC-only publish.
+  - Token-based npm dist-tag mutation lives in `operator/releases/.github/workflows/operator-npm-dist-tags.yml` because `npm dist-tag add` still needs `NPM_TOKEN` while the source repo keeps OIDC-only publish.
   - Public `macOS Release` is validation-only; when a tag lives only on a release branch but the workflow is dispatched from `main`, set `public_release_branch=release/YYYY.M.PATCH`.
   - Real macOS publish must pass successful macOS `preflight_run_id` and `validate_run_id`.
   - Real publish paths promote prepared artifacts instead of rebuilding them again.
@@ -328,7 +328,7 @@ Use `release_profile` to select live/provider breadth:
 
 Stable and full validation always run the exhaustive live/E2E, Docker release-path, and bounded published upgrade-survivor sweep before promotion. Use `run_release_soak=true` to request that same sweep for a beta. That sweep covers the latest four stable packages plus pinned `2026.4.23` and `2026.5.2` baselines plus older `2026.4.15` coverage, with duplicate baselines removed and each baseline sharded into its own Docker runner job.
 
-`Operator Release Checks` uses the trusted workflow ref to resolve the target ref once as `release-package-under-test` and reuses that artifact in cross-OS, Package Acceptance, and release-path Docker checks when soak runs. This keeps all package-facing boxes on the same bytes and avoids repeated package builds. After a beta is already on npm, set `release_package_spec=openclaw@YYYY.M.PATCH-beta.N` so release checks download the shipped package once, extract its build source SHA from `dist/build-info.json`, and reuse that artifact for cross-OS, Package Acceptance, release-path Docker, and package Telegram lanes.
+`Operator Release Checks` uses the trusted workflow ref to resolve the target ref once as `release-package-under-test` and reuses that artifact in cross-OS, Package Acceptance, and release-path Docker checks when soak runs. This keeps all package-facing boxes on the same bytes and avoids repeated package builds. After a beta is already on npm, set `release_package_spec=operator@YYYY.M.PATCH-beta.N` so release checks download the shipped package once, extract its build source SHA from `dist/build-info.json`, and reuse that artifact for cross-OS, Package Acceptance, release-path Docker, and package Telegram lanes.
 
 The cross-OS OpenAI install smoke uses `OPERATOR_CROSS_OS_OPENAI_MODEL` when the repo/org variable is set, otherwise `openai/gpt-5.6-luna`, because this lane is proving package install, onboarding, gateway startup, and one live agent turn rather than benchmarking the most capable model. The broader live provider matrix remains the place for model-specific coverage.
 
@@ -349,8 +349,8 @@ pnpm ci:full-release \
 pnpm ci:full-release \
   --sha <release-sha> \
   --target-ref release/YYYY.M.PATCH \
-  -f release_package_spec=openclaw@YYYY.M.PATCH-beta.N \
-  -f evidence_package_spec=openclaw@YYYY.M.PATCH-beta.N \
+  -f release_package_spec=operator@YYYY.M.PATCH-beta.N \
+  -f evidence_package_spec=operator@YYYY.M.PATCH-beta.N \
   -f npm_telegram_provider_mode=mock-openai
 ```
 
@@ -424,7 +424,7 @@ The Package box is the installable-product gate. It is backed by `Package Accept
 
 Supported candidate sources:
 
-- `source=npm`: `openclaw@beta`, `openclaw@latest`, or an exact Operator release version
+- `source=npm`: `operator@beta`, `operator@latest`, or an exact Operator release version
 - `source=ref`: pack a trusted `package_ref` branch, tag, or full commit SHA with the selected `workflow_ref` harness
 - `source=url`: download a public HTTPS `.tgz` with required `package_sha256`; URL credentials, non-default HTTPS ports, private/internal/special-use hostnames or resolved addresses, and unsafe redirects are rejected
 - `source=trusted-url`: download an HTTPS `.tgz` with required `package_sha256` and `trusted_source_id` from a named policy in `.github/package-trusted-sources.json`; use this for maintainer-owned enterprise mirrors or private package repositories instead of adding an input-level private-network bypass to `source=url`
@@ -445,9 +445,9 @@ gh workflow run package-acceptance.yml \
   --ref main \
   -f workflow_ref=main \
   -f source=npm \
-  -f package_spec=openclaw@beta \
+  -f package_spec=operator@beta \
   -f suite_profile=product \
-  -f published_upgrade_survivor_baseline=openclaw@2026.4.26
+  -f published_upgrade_survivor_baseline=operator@2026.4.26
 ```
 
 Common package profiles:
@@ -598,7 +598,7 @@ readback confirms that every exact package and `extended-stable` tag converged.
 - `preflight_run_id`: successful `Operator NPM Release` preflight run id; required when `publish_operator_npm=true` or `plugin_publish_scope=all-publishable`
 - `full_release_validation_run_id`: successful `Full Release Validation` run id; required when `publish_operator_npm=true` or `plugin_publish_scope=all-publishable`
 - `full_release_validation_run_attempt`: exact positive attempt paired with `full_release_validation_run_id`; required whenever the run id is provided
-- `windows_node_tag`: exact non-prerelease `openclaw/operator-windows-node` release tag; required for stable Operator publish
+- `windows_node_tag`: exact non-prerelease `operator/operator-windows-node` release tag; required for stable Operator publish
 - `windows_node_installer_digests`: candidate-approved compact JSON map of the current Windows installer names to their pinned `sha256:` digests; required for stable Operator publish
 - `npm_telegram_run_id`: optional successful `NPM Telegram Beta E2E` run id to include in final release evidence
 - `npm_dist_tag`: npm target tag for the Operator package, one of `alpha`, `beta`, or `latest`
@@ -630,10 +630,10 @@ When cutting a regular orchestrated stable release:
 1. Run `Operator NPM Release` with `preflight_only=true`. Before a tag exists, you may use the current full workflow-branch commit SHA for a validation-only dry run of the preflight workflow.
 2. Choose `npm_dist_tag=beta` for the normal beta-first flow, or `latest` only when you intentionally want a direct stable publish.
 3. Run `Full Release Validation` on the release branch, release tag, or full commit SHA when you want normal CI plus live prompt cache, Docker, QA Lab, Matrix, and Telegram coverage from one manual workflow. If you intentionally only need the deterministic normal test graph, run the manual `CI` workflow on the release ref instead.
-4. Select the exact non-prerelease `openclaw/operator-windows-node` release tag whose signed x64 and ARM64 installers should ship. Save it as `windows_node_tag`, and save their validated digest map as `windows_node_installer_digests`. The release-candidate helper records both and includes them in its generated publish command.
+4. Select the exact non-prerelease `operator/operator-windows-node` release tag whose signed x64 and ARM64 installers should ship. Save it as `windows_node_tag`, and save their validated digest map as `windows_node_installer_digests`. The release-candidate helper records both and includes them in its generated publish command.
 5. Save the successful `preflight_run_id`, `full_release_validation_run_id`, and exact `full_release_validation_run_attempt`.
 6. Run `Operator Release Publish` from trusted `main` with the same `tag`, the same `npm_dist_tag`, the selected `windows_node_tag`, its saved `windows_node_installer_digests`, the saved `preflight_run_id`, `full_release_validation_run_id`, and `full_release_validation_run_attempt`. It publishes externalized plugins to npm and ClawHub before promoting the Operator npm package.
-7. If the release landed on `beta`, use the `openclaw/releases/.github/workflows/operator-npm-dist-tags.yml` workflow to promote that stable version from `beta` to `latest`.
+7. If the release landed on `beta`, use the `operator/releases/.github/workflows/operator-npm-dist-tags.yml` workflow to promote that stable version from `beta` to `latest`.
 8. If the release intentionally published directly to `latest` and `beta` should follow the same stable build immediately, use that same release workflow to point both dist-tags at the stable version, or let its scheduled self-healing sync move `beta` later.
 
 The dist-tag mutation lives in the release ledger repo because it still requires `NPM_TOKEN`, while the source repo keeps OIDC-only publish. That keeps the direct publish path and the beta-first promotion path both documented and operator-visible.
@@ -652,7 +652,7 @@ If a maintainer must fall back to local npm authentication, run any 1Password CL
 - [`scripts/package-mac-dist.sh`](https://github.com/gabrielvfonseca/operator/blob/main/scripts/package-mac-dist.sh)
 - [`scripts/make_appcast.sh`](https://github.com/gabrielvfonseca/operator/blob/main/scripts/make_appcast.sh)
 
-Maintainers use the private release docs in [`openclaw/maintainers/release/README.md`](https://github.com/openclaw/maintainers/blob/main/release/README.md) for the actual runbook.
+Maintainers use the private release docs in [`operator/maintainers/release/README.md`](https://github.com/operator/maintainers/blob/main/release/README.md) for the actual runbook.
 
 ## Related
 

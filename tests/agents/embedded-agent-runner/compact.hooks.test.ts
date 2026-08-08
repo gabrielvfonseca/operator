@@ -3357,7 +3357,7 @@ describe("compactEmbeddedAgentSession hooks (ownsCompaction engine)", () => {
     );
   });
 
-  it("keeps unbound api-key queued compaction on openclaw without native harness compaction", async () => {
+  it("keeps unbound api-key queued compaction on operator without native harness compaction", async () => {
     resolveAgentHarnessPolicyMock.mockReturnValue({
       runtime: "@gabrielvfonseca/operator",
       runtimeSource: "implicit",

@@ -11,8 +11,8 @@ import { resolveOAuthDir } from "../../../src/config/paths.js";
 import {
   closeOperatorAgentDatabasesForTest,
   openOperatorAgentDatabase,
-} from "../../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../../src/state/openclaw-state-db.js";
+} from "../../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../../src/state/operator-state-db.js";
 import { withEnvAsync } from "../../../src/test-utils/env.js";
 import { AUTH_STORE_VERSION } from "../../../src/agents/auth-profiles/constants.js";
 import { testing as externalAuthTesting } from "../../../src/agents/auth-profiles/external-auth.test-support.js";

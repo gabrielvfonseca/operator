@@ -11,7 +11,7 @@ import type { CommitmentRecord } from "../../src/commitments/types.js";
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import { captureEnv, setTestEnvValue } from "../../src/test-utils/env.js";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../../src/infra/kysely-sync.js";
 import {

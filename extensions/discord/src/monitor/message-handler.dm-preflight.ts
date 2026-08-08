@@ -12,7 +12,7 @@ import type {
 } from "./message-handler.preflight.types.js";
 
 const loadConversationRuntime = createLazyRuntimeModule(
-  () => import("openclaw/plugin-sdk/conversation-binding-runtime"),
+  () => import("operator/plugin-sdk/conversation-binding-runtime"),
 );
 
 const loadDiscordSendRuntime = createLazyRuntimeModule(() => import("../send.js"));

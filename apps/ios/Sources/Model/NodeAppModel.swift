@@ -35,8 +35,8 @@ private struct WatchChatMetadataEnvelope: Decodable {
     var messageToolMirror: [String: String]?
 
     enum CodingKeys: String, CodingKey {
-        case metadata = "__openclaw"
-        case messageToolMirror = "openclawMessageToolMirror"
+        case metadata = "__operator"
+        case messageToolMirror = "operatorMessageToolMirror"
     }
 }
 
@@ -2155,7 +2155,7 @@ final class NodeAppModel {
             let json = try await screen.eval(javaScript: """
             (() => {
               const host = globalThis.operatorA2UI;
-              if (!host) return JSON.stringify({ ok: false, error: "missing openclawA2UI" });
+              if (!host) return JSON.stringify({ ok: false, error: "missing operatorA2UI" });
               return JSON.stringify(host.reset());
             })()
             """)
@@ -2194,7 +2194,7 @@ final class NodeAppModel {
             (() => {
               try {
                 const host = globalThis.operatorA2UI;
-                if (!host) return JSON.stringify({ ok: false, error: "missing openclawA2UI" });
+                if (!host) return JSON.stringify({ ok: false, error: "missing operatorA2UI" });
                 const messages = \(messagesJSON);
                 return JSON.stringify(host.applyMessages(messages));
               } catch (e) {
@@ -7981,7 +7981,7 @@ extension NodeAppModel {
         return String(raw.prefix(8))
     }
 
-    private static func openclawPushKind(_ userInfo: [AnyHashable: Any]) -> String {
+    private static func operatorPushKind(_ userInfo: [AnyHashable: Any]) -> String {
         if let payload = userInfo["@gabrielvfonseca/operator"] as? [String: Any],
            let kind = payload["kind"] as? String
         {

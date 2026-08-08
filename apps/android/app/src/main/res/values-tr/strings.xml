@@ -57,7 +57,7 @@
     <string name="native_0621d308bb3df463" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"1 zamanlanmış"</string>
     <string name="native_0623c0abcd81a5e0" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Yanıt yok"</string>
     <string name="native_0692ff7848b2cfc2" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Komut argv JSON dizisi"</string>
-    <string name="native_06ee275ccdbbf862" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Bu görüntü okunamadı. openclaw qr tarafından oluşturulan QR kodunun net bir ekran görüntüsünü veya görselini seçin."</string>
+    <string name="native_06ee275ccdbbf862" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Bu görüntü okunamadı. operator qr tarafından oluşturulan QR kodunun net bir ekran görüntüsünü veya görselini seçin."</string>
     <string name="native_06fcc3f73af64b5b" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Skill Workshop teklifi için %1$s işlemi gerçekleştirilemedi."</string>
     <string name="native_0728ba404eb8f8bd" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Gateway onayı bir kez kaydetti."</string>
     <string name="native_073c1634c496cdb6" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"status"</string>
@@ -224,7 +224,7 @@
     <string name="native_261de9be5f4a3b0a" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Bekleyen onay yok"</string>
     <string name="native_262121c5372be8af" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"edit"</string>
     <string name="native_262c897a1f408b0b" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Gateway\'nize bağlanın"</string>
-    <string name="native_2682bd813a3bccbc" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"openclaw qr tarafından oluşturulan kurulum kodunu girin."</string>
+    <string name="native_2682bd813a3bccbc" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"operator qr tarafından oluşturulan kurulum kodunu girin."</string>
     <string name="native_268f14bbfe119c1e" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Tanılama"</string>
     <string name="native_26f0dd993530eb2d" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Otomatik olarak yeniden deneniyor"</string>
     <string name="native_2728740a95d465c6" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"%1$s rol"</string>
@@ -442,7 +442,7 @@
     <string name="native_4ec30e9d85725d41" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"İzin verilenler listesi"</string>
     <string name="native_4ed379d418bb8629" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"groups"</string>
     <string name="native_4efca0d10c5feb8e" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Hakkında"</string>
-    <string name="native_4f1bc100d1dccc1e" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Bu görüntüde kurulum QR kodu bulunamadı. openclaw qr tarafından oluşturulan QR kodunu seçin veya kurulum kodunu manuel olarak girin."</string>
+    <string name="native_4f1bc100d1dccc1e" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Bu görüntüde kurulum QR kodu bulunamadı. operator qr tarafından oluşturulan QR kodunu seçin veya kurulum kodunu manuel olarak girin."</string>
     <string name="native_4f993457edb69110" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Oturumlara Göz At"</string>
     <string name="native_4fe3cdd404ea0290" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"permissions"</string>
     <string name="native_5047cfb3b607e7d0" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Düğümleri ve eşlenmiş cihazları yüklemek için gateway\'i bağlayın."</string>
@@ -496,10 +496,10 @@
     <string name="native_572739b05d138f8a" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"En son günlük parçası gösteriliyor."</string>
     <string name="native_57666930af1af35e" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Kurulum kodunu kullan"</string>
     <string name="native_57c4b13a4c7335e7" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"sticker"</string>
-    <string name="native_57efc4ebe625cab5" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Güvenli bir wss:// veya Tailscale Serve Gateway kullanın, Control UI\'da veya openclaw qr ile tam erişimli bir kurulum kodu oluşturun, ardından aşağıya tarayın veya yapıştırın ve ayarları ve yükseltmeleri etkinleştirmek için yeniden bağlanın."</string>
+    <string name="native_57efc4ebe625cab5" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Güvenli bir wss:// veya Tailscale Serve Gateway kullanın, Control UI\'da veya operator qr ile tam erişimli bir kurulum kodu oluşturun, ardından aşağıya tarayın veya yapıştırın ve ayarları ve yükseltmeleri etkinleştirmek için yeniden bağlanın."</string>
     <string name="native_57fce44d7c6df51a" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"steer"</string>
     <string name="native_57fd7a0cf33f2666" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Seçildi"</string>
-    <string name="native_58268edca12a81a1" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Android mevcut bir kurulum kodunu tarayabilir veya yapıştırabilir, ancak bu gateway henüz uygulamaya kurulum kodu oluşturma özelliği sunmuyor. Gateway ana makinesinde openclaw qr ile QR/kod oluşturun, ardından burada tarayın veya kurulum kodunu aşağıya yapıştırın."</string>
+    <string name="native_58268edca12a81a1" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Android mevcut bir kurulum kodunu tarayabilir veya yapıştırabilir, ancak bu gateway henüz uygulamaya kurulum kodu oluşturma özelliği sunmuyor. Gateway ana makinesinde operator qr ile QR/kod oluşturun, ardından burada tarayın veya kurulum kodunu aşağıya yapıştırın."</string>
     <string name="native_584162ac73e99ee6" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Canvas Durumu"</string>
     <string name="native_5855b3ac2fcc1b3e" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Bağlantıyı düzelt"</string>
     <string name="native_590b0003ccaad929" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Düğüm %1$s"</string>
@@ -701,7 +701,7 @@
     <string name="native_788011833a5a0f22" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Bildirimler"</string>
     <string name="native_78af93f13a7e5044" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Uygulama, reddetme ve karantina işlemleri operator.admin kapsamı gerektirir. Yaşam döngüsü işlemlerini etkinleştirmek için paylaşılan gateway kimlik doğrulamasıyla yeniden bağlanın veya bir operator.admin cihaz kapsamı yükseltmesini onaylayın."</string>
     <string name="native_78f25f393aa9bcbf" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"sticker upload"</string>
-    <string name="native_792175fb265c32bc" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"openclaw devices approve %1$s"</string>
+    <string name="native_792175fb265c32bc" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"operator devices approve %1$s"</string>
     <string name="native_7981cbd5763dfcbb" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Henüz eşleşen oturum yok."</string>
     <string name="native_79a68a0d42388125" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Okunabilir gateway günlük ayrıntısı."</string>
     <string name="native_79a7ab236717f90d" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Oluşturulan skill önerilerini canlı skill\'e dönüşmeden önce inceleyin."</string>
@@ -786,7 +786,7 @@
     <string name="native_8a20f46d5276b474" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"%1$s eşleştirildi"</string>
     <string name="native_8a51ea11834daf37" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Bu işlem \"%1$s\" teklifini uygulayacak ve Skill Workshop durumunu Gateway\'den yenileyecek."</string>
     <string name="native_8a6ec210c09d2e1d" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Gateway çevrimdışı"</string>
-    <string name="native_8a91d3fbc8c93e75" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"openclaw devices list"</string>
+    <string name="native_8a91d3fbc8c93e75" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"operator devices list"</string>
     <string name="native_8ad740f465465253" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Operator düğümü bağlantı durumu"</string>
     <string name="native_8b0f09e8f3b1c389" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Uyarılar bu telefonda kalır."</string>
     <string name="native_8b8f03b41e1c066b" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Operator seçilen uyarıları alabilir."</string>
@@ -800,7 +800,7 @@
     <string name="native_8cb2bab2ce6a17b2" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Gateway bilgisayarında şunu çalıştırın:"</string>
     <string name="native_8cb650539ec84aa5" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Oturumlarda ara"</string>
     <string name="native_8d0839802b4d6aca" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Günlükleri Yenile"</string>
-    <string name="native_8d20273207a2fe99" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"openclaw nodes approve %1$s"</string>
+    <string name="native_8d20273207a2fe99" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"operator nodes approve %1$s"</string>
     <string name="native_8d57374bc09c8756" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Sesli not · %1$s"</string>
     <string name="native_8d59829c1e15afe1" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Kullanım"</string>
     <string name="native_8d99e5d18d734856" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Bağlam %1$s%%"</string>
@@ -989,7 +989,7 @@
     <string name="native_adb7eb8a03ad699c" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"%1$s dk"</string>
     <string name="native_adca3171c270301a" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Bu Gateway oturumu bağlı düğümleri listeleyebilir, ancak yeni telefon eşleştirmelerini onaylayamaz. Yeni telefonları bir Gateway yönetici oturumundan eşleştirin. Düğüm yeteneği onayı ayrıdır ve yine nodes approve &lt;request id&gt; komutunu kullanır."</string>
     <string name="native_ade9248e0132b411" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Güven"</string>
-    <string name="native_ae27fa789a03c1db" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Bu QR kodu bir Operator kurulum QR kodu değil. openclaw qr ile yeni bir kod oluşturup tekrar deneyin."</string>
+    <string name="native_ae27fa789a03c1db" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Bu QR kodu bir Operator kurulum QR kodu değil. operator qr ile yeni bir kod oluşturup tekrar deneyin."</string>
     <string name="native_ae86062126fc1a52" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"\"%1$s\" içindeki oturumlar korunur ve Gruplanmamış\'a geri taşınır."</string>
     <string name="native_aea4a04a80426ed8" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Reddedildi"</string>
     <string name="native_aed306fbb63c0c68" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Android ve arka plan paketlerini dahil edin."</string>
@@ -1150,7 +1150,7 @@
     <string name="native_cc7a9a5cf8c4bc9d" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Onay komutunu Gateway üzerinde çalıştırın"</string>
     <string name="native_cc925e3c97ac7a35" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Skill Workshop önerileri yüklenemedi."</string>
     <string name="native_ccb4c324f516c633" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Şimdi Değil"</string>
-    <string name="native_cced0b0d83a9e400" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"openclaw qr"</string>
+    <string name="native_cced0b0d83a9e400" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"operator qr"</string>
     <string name="native_cced28c6dc3f99c2" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"start"</string>
     <string name="native_ccedc4f2299b2e40" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Operator Düğümü · Konuşma"</string>
     <string name="native_ccf1e5c9d39228b7" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Etkinlikleri oku ve güncelle"</string>
@@ -1248,7 +1248,7 @@
     <string name="native_dd167905de0defca" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Sürüm"</string>
     <string name="native_dd9d24965dbedc02" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Cron"</string>
     <string name="native_de2ae3a91cd112dd" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Uyandırma ifadesini kaldır"</string>
-    <string name="native_de356e01822d360d" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Kurulum kodu kabul edilmedi. openclaw qr ile yeni bir kod oluşturun."</string>
+    <string name="native_de356e01822d360d" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Kurulum kodu kabul edilmedi. operator qr ile yeni bir kod oluşturun."</string>
     <string name="native_de60af1d2f170722" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"14 mesaj · Android"</string>
     <string name="native_de67b9369f9812ea" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Transkripsiyon başarısız oldu: %1$s"</string>
     <string name="native_de9f057a471cdb8d" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Her Zaman"</string>
@@ -1258,7 +1258,7 @@
     <string name="native_df796c655f6f5ed4" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Yeni grup"</string>
     <string name="native_dfe0c2e802b1ff63" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Sunucu hatası"</string>
     <string name="native_dfe114ba9a41375d" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Video Generation"</string>
-    <string name="native_e008e2811a85cdb2" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Gateway onayı bekleniyor. Gateway ana makinesinde openclaw devices list komutunu çalıştırın, bu telefonu onaylayın ve ardından yeniden deneyin."</string>
+    <string name="native_e008e2811a85cdb2" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Gateway onayı bekleniyor. Gateway ana makinesinde operator devices list komutunu çalıştırın, bu telefonu onaylayın ve ardından yeniden deneyin."</string>
     <string name="native_e01552d86737c78f" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Bir rüya görme döngüsü anlatı özeti yazdıktan sonra kayıtlar görünür."</string>
     <string name="native_e0218943388a5872" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"%1$s ms"</string>
     <string name="native_e024430c7706c72b" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Bellek Deposu"</string>
@@ -1410,7 +1410,7 @@
     <string name="native_f8c2745155505d39" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Yanıt beklenirken zaman aşımına uğradı; tekrar deneyin veya yenileyin."</string>
     <string name="native_f8cd133f0ea1031b" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Önceki konuşmaları bulun"</string>
     <string name="native_f92e2ad582c0e13f" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Yenileniyor"</string>
-    <string name="native_f991ae9cb081e1f3" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Kamerayı açın ve openclaw qr kodunu çerçeveye alın."</string>
+    <string name="native_f991ae9cb081e1f3" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Kamerayı açın ve operator qr kodunu çerçeveye alın."</string>
     <string name="native_f9ea3f1540eaa584" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Cihaz yok"</string>
     <string name="native_fa0ddca1671f4d61" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Bildirimleri Yönlendir"</string>
     <string name="native_fa4f9ee12d15faec" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Gateway oturumu yeniden çevrimiçi oluyor. Aracı kısayolları kısa süre içinde otomatik olarak normale dönmelidir."</string>
@@ -1419,7 +1419,7 @@
     <string name="native_faab0dc4735c1cfe" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Bootstrap"</string>
     <string name="native_fad13bdbe9a8cd0f" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"%1$s · %2$s · %3$s"</string>
     <string name="native_fae8fa3bc050ab7e" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Sesli notu iptal et"</string>
-    <string name="native_fb7ad4cc59155311" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"openclaw gateway"</string>
+    <string name="native_fb7ad4cc59155311" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"operator gateway"</string>
     <string name="native_fbba7592ca9da80e" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Gateway eşleştirildi"</string>
     <string name="native_fbf2d2bbaee06fed" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Bir sonraki sıranız için dinleniyor."</string>
     <string name="native_fc0646722204f965" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Operator çalışıyor"</string>
@@ -1434,7 +1434,7 @@
     <string name="native_fdd0d769c49517c2" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Ağ zaman aşımına uğradı"</string>
     <string name="native_fe18013d93d22f4f" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Şimdi"</string>
     <string name="native_fe4e8d175e15f0a2" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Grubu yeniden adlandır…"</string>
-    <string name="native_fed2d83c98a40d55" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"openclaw nodes approve REQUEST_ID"</string>
+    <string name="native_fed2d83c98a40d55" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"operator nodes approve REQUEST_ID"</string>
     <string name="native_ff1cee74414621d8" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"Sabitle"</string>
     <string name="native_ff2670a0df18e148" formatted="false" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"thread list"</string>
     <string name="native_ff332eeb6b2de1da" tools:ignore="Typos,TypographyDashes,TypographyEllipsis">"%1$s öğesini aç"</string>

@@ -46,7 +46,7 @@ Make display-name pings work even when WhatsApp strips the visual `@` from the t
       {
         id: "main",
         groupChat: {
-          mentionPatterns: ["@?openclaw", "\\+?15555550123"],
+          mentionPatterns: ["@?operator", "\\+?15555550123"],
         },
       },
     ],
@@ -79,7 +79,7 @@ Only owner numbers (from `channels.whatsapp.allowFrom`, or the bot's own E.164 w
 ## Testing / verification
 
 - Manual smoke:
-  - Send an `@openclaw` ping in the group and confirm a reply that references the sender name.
+  - Send an `@operator` ping in the group and confirm a reply that references the sender name.
   - Send a second ping and verify the history block is included, then cleared on the next turn.
 - Check gateway logs (run with `--verbose`) for `inbound web message` entries showing `from: <groupJid>` and the sender-labeled body.
 

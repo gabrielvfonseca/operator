@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import plugin from "../index.js";
 
 /**
- * `openclaw dashboard` is a core command (it opens the Control UI). A plugin CLI
+ * `operator dashboard` is a core command (it opens the Control UI). A plugin CLI
  * group whose name overlaps a core command is skipped at registration, and the
  * skip is only a `logger.debug` line — so the whole CLI face of this plugin
  * silently disappears at runtime while its unit tests, which build their own

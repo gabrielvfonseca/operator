@@ -39,7 +39,7 @@ vi.mock("../plugins/plugin-metadata-snapshot.js", () => ({
   resolvePluginMetadataSnapshot: pluginRegistryMocks.resolvePluginMetadataSnapshot,
 }));
 vi.mock("./official-external-plugin-catalog.js", () => ({
-  getOfficialExternalPluginCatalogManifest: (entry: { openclaw?: unknown }) => entry.operator,
+  getOfficialExternalPluginCatalogManifest: (entry: { operator?: unknown }) => entry.operator,
   listOfficialExternalProviderCatalogEntries:
     officialCatalogMocks.listOfficialExternalProviderCatalogEntries,
 }));

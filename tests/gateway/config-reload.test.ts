@@ -3408,7 +3408,7 @@ describe("startGatewayConfigReloader", () => {
       "lossless-claw": {
         source: "npm",
         spec: "@martian-engineering/lossless-claw",
-        installPath: "/tmp/openclaw/plugins/lossless-claw",
+        installPath: "/tmp/operator/plugins/lossless-claw",
         installedAt: "2026-04-22T00:00:00.000Z",
       },
     } satisfies Record<string, PluginInstallRecord>);
@@ -3452,7 +3452,7 @@ describe("startGatewayConfigReloader", () => {
       telegram: {
         source: "npm",
         spec: "@gabrielvfonseca/telegram",
-        installPath: "/tmp/openclaw/plugins/telegram",
+        installPath: "/tmp/operator/plugins/telegram",
       },
     } satisfies Record<string, PluginInstallRecord>;
     const readSnapshot = vi.fn<() => Promise<ConfigFileSnapshot>>().mockResolvedValueOnce(
@@ -3563,7 +3563,7 @@ describe("startGatewayConfigReloader", () => {
       "lossless-claw": {
         source: "npm",
         spec: "@martian-engineering/lossless-claw",
-        installPath: "/tmp/openclaw/plugins/lossless-claw",
+        installPath: "/tmp/operator/plugins/lossless-claw",
         installedAt: "2026-04-22T00:00:00.000Z",
       },
     } satisfies Record<string, PluginInstallRecord>);

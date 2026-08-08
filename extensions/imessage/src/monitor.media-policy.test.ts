@@ -20,12 +20,12 @@ const dispatchInboundMessageMock = vi.hoisted(() =>
   })),
 );
 
-vi.mock("openclaw/plugin-sdk/transport-ready-runtime", () => ({
+vi.mock("operator/plugin-sdk/transport-ready-runtime", () => ({
   waitForTransportReady: waitForTransportReadyMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/conversation-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/conversation-runtime")>();
+vi.mock("operator/plugin-sdk/conversation-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/conversation-runtime")>();
   return {
     ...actual,
     readChannelAllowFromStore: readChannelAllowFromStoreMock,
@@ -34,8 +34,8 @@ vi.mock("openclaw/plugin-sdk/conversation-runtime", async (importOriginal) => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/channel-inbound", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/channel-inbound")>();
+vi.mock("operator/plugin-sdk/channel-inbound", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/channel-inbound")>();
   return {
     ...actual,
     createChannelInboundDebouncer: vi.fn((opts) => ({
@@ -47,8 +47,8 @@ vi.mock("openclaw/plugin-sdk/channel-inbound", async (importOriginal) => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/reply-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/reply-runtime")>();
+vi.mock("operator/plugin-sdk/reply-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/reply-runtime")>();
   return {
     ...actual,
     dispatchInboundMessage: dispatchInboundMessageMock,
@@ -80,7 +80,7 @@ describe("iMessage monitor attachment policy", () => {
     stageIMessageAttachmentsMock.mockResolvedValue({ attachments: [], unavailableCount: 0 });
     readChannelAllowFromStoreMock.mockResolvedValue([]);
 
-    const attachmentPath = "/Users/openclaw/Library/Messages/Attachments/AA/BB/photo.heic";
+    const attachmentPath = "/Users/operator/Library/Messages/Attachments/AA/BB/photo.heic";
     let onNotification:
       | ((message: { method: string; params: unknown }) => void | Promise<void>)
       | undefined;
@@ -132,7 +132,7 @@ describe("iMessage monitor attachment policy", () => {
             groups: { "*": { requireMention: true } },
           },
         },
-        messages: { groupChat: { mentionPatterns: ["@openclaw"] } },
+        messages: { groupChat: { mentionPatterns: ["@operator"] } },
         session: { mainKey: "main" },
       } as never,
     });
@@ -146,7 +146,7 @@ describe("iMessage monitor attachment policy", () => {
       name: "admits an attachment-only message when the image is unavailable",
       attachments: [
         {
-          original_path: "/Users/openclaw/Library/Messages/Attachments/missing.heic",
+          original_path: "/Users/operator/Library/Messages/Attachments/missing.heic",
           mime_type: "image/heic",
           missing: true,
         },
@@ -158,12 +158,12 @@ describe("iMessage monitor attachment policy", () => {
       name: "uses the first materialized attachment type when earlier media is unavailable",
       attachments: [
         {
-          original_path: "/Users/openclaw/Library/Messages/Attachments/missing.heic",
+          original_path: "/Users/operator/Library/Messages/Attachments/missing.heic",
           mime_type: "image/heic",
           missing: true,
         },
         {
-          original_path: "/Users/openclaw/Library/Messages/Attachments/report.pdf",
+          original_path: "/Users/operator/Library/Messages/Attachments/report.pdf",
           mime_type: "application/pdf",
           missing: false,
         },
@@ -171,7 +171,7 @@ describe("iMessage monitor attachment policy", () => {
       staged: {
         attachments: [
           {
-            path: "/Users/openclaw/Library/Messages/Attachments/report.pdf",
+            path: "/Users/operator/Library/Messages/Attachments/report.pdf",
             contentType: "application/pdf",
           },
         ],
@@ -221,7 +221,7 @@ describe("iMessage monitor attachment policy", () => {
         channels: {
           imessage: {
             includeAttachments: true,
-            attachmentRoots: ["/Users/openclaw/Library/Messages/Attachments"],
+            attachmentRoots: ["/Users/operator/Library/Messages/Attachments"],
             dmPolicy: "allowlist",
             allowFrom: ["+15550001111"],
             groupPolicy: "open",

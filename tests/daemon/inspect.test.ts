@@ -21,9 +21,9 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart=/usr/bin/node /home/openclaw/.npm-global/lib/node_modules/openclaw/dist/entry.js gateway --port 18789
+ExecStart=/usr/bin/node /home/operator/.npm-global/lib/node_modules/operator/dist/entry.js gateway --port 18789
 Restart=always
-Environment=OPERATOR_SERVICE_MARKER=openclaw
+Environment=OPERATOR_SERVICE_MARKER=operator
 Environment=OPERATOR_SERVICE_KIND=gateway
 Environment=OPERATOR_SERVICE_VERSION=2026.3.8
 
@@ -31,7 +31,7 @@ Environment=OPERATOR_SERVICE_VERSION=2026.3.8
 WantedBy=default.target
 `;
 
-// Real content from the operator-test.service unit file (a non-gateway openclaw service).
+// Real content from the operator-test.service unit file (a non-gateway operator service).
 const TEST_SERVICE_CONTENTS = `\
 [Unit]
 Description=Operator test service
@@ -69,15 +69,15 @@ const CUSTOM_OPERATOR_GATEWAY_CONTENTS = `\
 Description=Custom Operator gateway
 
 [Service]
-ExecStart=/usr/bin/node /opt/openclaw/dist/entry.js gateway --port 18888
+ExecStart=/usr/bin/node /opt/operator/dist/entry.js gateway --port 18888
 `;
 
 describe("detectMarkerLineWithGateway", () => {
-  it("returns null for operator-test.service (openclaw only in description, no gateway on same line)", () => {
+  it("returns null for operator-test.service (operator only in description, no gateway on same line)", () => {
     expect(detectMarkerLineWithGateway(TEST_SERVICE_CONTENTS)).toBeNull();
   });
 
-  it("returns openclaw for the canonical gateway unit (ExecStart has both openclaw and gateway)", () => {
+  it("returns operator for the canonical gateway unit (ExecStart has both operator and gateway)", () => {
     expect(detectMarkerLineWithGateway(GATEWAY_SERVICE_CONTENTS)).toBe("@gabrielvfonseca/operator");
   });
 
@@ -86,7 +86,7 @@ describe("detectMarkerLineWithGateway", () => {
   });
 
   it("handles line continuations — marker and gateway split across physical lines", () => {
-    const contents = `[Service]\nExecStart=/usr/bin/node /opt/openclaw/dist/entry.js \\\n  gateway --port 18789\n`;
+    const contents = `[Service]\nExecStart=/usr/bin/node /opt/operator/dist/entry.js \\\n  gateway --port 18789\n`;
     expect(detectMarkerLineWithGateway(contents)).toBe("@gabrielvfonseca/operator");
   });
 
@@ -184,7 +184,7 @@ describe("findExtraGatewayServices (linux / scanSystemdDir) — real filesystem"
   );
 
   it.skipIf(!isLinux)(
-    "reports custom-named gateway units that execute openclaw gateway",
+    "reports custom-named gateway units that execute operator gateway",
     async () => {
       const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "operator-test-"));
       const systemdDir = path.join(tmpHome, ".config", "systemd", "user");
@@ -289,7 +289,7 @@ describe("findExtraGatewayServices (darwin / scanLaunchdDir) — real filesystem
     }
   });
 
-  it("reports custom LaunchAgents that execute openclaw gateway", async () => {
+  it("reports custom LaunchAgents that execute operator gateway", async () => {
     const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "operator-test-"));
     const launchdDir = path.join(tmpHome, "Library", "LaunchAgents");
     const plistPath = path.join(launchdDir, "com.example.operator-gateway.plist");
@@ -300,7 +300,7 @@ describe("findExtraGatewayServices (darwin / scanLaunchdDir) — real filesystem
         `<?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0"><dict>
 <key>Label</key><string>com.example.operator-gateway</string>
-<key>ProgramArguments</key><array><string>/usr/local/bin/openclaw</string><string>gateway</string><string>--port</string><string>18888</string></array>
+<key>ProgramArguments</key><array><string>/usr/local/bin/operator</string><string>gateway</string><string>--port</string><string>18888</string></array>
 </dict></plist>`,
       );
       const result = await findExtraGatewayServices({ HOME: tmpHome });
@@ -355,7 +355,7 @@ describe("findExtraGatewayServices (win32)", () => {
     expect(result).toStrictEqual([]);
   });
 
-  it("collects only non-openclaw marker tasks from schtasks output", async () => {
+  it("collects only non-operator marker tasks from schtasks output", async () => {
     // Real schtasks /Query /FO LIST /V output prefixes root-folder task
     // names with a backslash (e.g. TaskName:\Operator Gateway).
     execSchtasksMock.mockResolvedValueOnce({

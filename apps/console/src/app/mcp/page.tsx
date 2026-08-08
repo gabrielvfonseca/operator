@@ -1,3 +1,5 @@
 "use client";
 import { redirect } from "next/navigation";
-export default function Page() { redirect("/settings/mcp"); }
+export default function Page() {
+  redirect("/settings/mcp");
+}

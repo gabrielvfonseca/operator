@@ -20,7 +20,7 @@ type UsageFieldMap = {
 };
 
 // Upstream agent runtimes should normalize Anthropic zero-token empty `stop`
-// turns before Operator sees them. Downstream: openclaw/openclaw#71880.
+// turns before Operator sees them. Downstream: operator/operator#71880.
 function readFiniteTokenCount(value: unknown): number | undefined {
   return asFiniteNumber(value);
 }

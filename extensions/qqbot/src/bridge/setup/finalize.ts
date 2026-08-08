@@ -154,7 +154,7 @@ export async function finalizeQQBotSetup(params: {
     });
   } else if (!configured) {
     await params.prompter.note(
-      ["您可以稍后运行以下命令重新选择 QQ Bot 进行配置：", "  openclaw channels add"].join("\n"),
+      ["您可以稍后运行以下命令重新选择 QQ Bot 进行配置：", "  operator channels add"].join("\n"),
       "QQ Bot",
     );
   }

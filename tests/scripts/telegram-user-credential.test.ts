@@ -18,7 +18,7 @@ import {
 import { resolveWindowsTaskkillPath } from "../../scripts/lib/windows-taskkill.mjs";
 
 const tempDirs: string[] = [];
-const CHUNKED_PAYLOAD_MARKER = "__openclawQaCredentialPayloadChunksV1";
+const CHUNKED_PAYLOAD_MARKER = "__operatorQaCredentialPayloadChunksV1";
 
 function expectedTaskkillPath(): string {
   return resolveWindowsTaskkillPath();

@@ -82,7 +82,7 @@ export function resolveWorkingStartedAt(
     ...streamSegments.map((segment) => segment.ts),
     ...toolMessages.map((message) => {
       const receivedAt = (message as Record<string, unknown> | null)?.[
-        "__openclawToolStreamReceivedAt"
+        "__operatorToolStreamReceivedAt"
       ];
       return typeof receivedAt === "number" ? receivedAt : null;
     }),

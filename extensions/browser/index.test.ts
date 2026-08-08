@@ -325,10 +325,10 @@ describe("browser plugin", () => {
     expect(typeof service?.stop).toBe("function");
     expect(runtimeApiMocks.createBrowserPluginService).not.toHaveBeenCalled();
 
-    await service.start({ config: {}, stateDir: "/tmp/openclaw", logger: { warn: vi.fn() } });
+    await service.start({ config: {}, stateDir: "/tmp/operator", logger: { warn: vi.fn() } });
     expect(runtimeApiMocks.createBrowserPluginService).not.toHaveBeenCalled();
 
-    await service.stop({ config: {}, stateDir: "/tmp/openclaw", logger: { warn: vi.fn() } });
+    await service.stop({ config: {}, stateDir: "/tmp/operator", logger: { warn: vi.fn() } });
     expect(runtimeApiMocks.stopBrowserControlService).toHaveBeenCalledOnce();
   });
 
@@ -342,7 +342,7 @@ describe("browser plugin", () => {
       start: (...args: unknown[]) => unknown;
     };
 
-    await service.start({ config: {}, stateDir: "/tmp/openclaw", logger: { warn: vi.fn() } });
+    await service.start({ config: {}, stateDir: "/tmp/operator", logger: { warn: vi.fn() } });
     expect(runtimeApiMocks.createBrowserPluginService).toHaveBeenCalledOnce();
   });
 
@@ -357,7 +357,7 @@ describe("browser plugin", () => {
         start: (...args: unknown[]) => unknown;
       };
 
-      await service.start({ config: {}, stateDir: "/tmp/openclaw", logger: { warn: vi.fn() } });
+      await service.start({ config: {}, stateDir: "/tmp/operator", logger: { warn: vi.fn() } });
       expect(runtimeApiMocks.createBrowserPluginService).not.toHaveBeenCalled();
     });
   }

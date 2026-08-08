@@ -4,7 +4,7 @@ import path from "node:path";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { tryReadJson } from "../infra/json-files.js";
-import { resolveOperatorPackageRootSync } from "../infra/openclaw-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
 import { parseStrictPositiveInteger } from "../infra/parse-finite-number.js";
 import {
   runInstallPolicy,

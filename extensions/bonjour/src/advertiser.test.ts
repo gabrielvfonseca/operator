@@ -166,7 +166,7 @@ describe("gateway bonjour advertiser", () => {
       sshPort: 2222,
       gatewayDirectReachable: true,
       tailnetDns: "host.tailnet.ts.net",
-      cliPath: "/opt/homebrew/bin/openclaw",
+      cliPath: "/opt/homebrew/bin/operator",
       minimal: false,
     });
 
@@ -186,7 +186,7 @@ describe("gateway bonjour advertiser", () => {
       "host.tailnet.ts.net",
     );
     expect((gatewayCall?.[0]?.txt as Record<string, string>)?.cliPath).toBe(
-      "/opt/homebrew/bin/openclaw",
+      "/opt/homebrew/bin/operator",
     );
     expect((gatewayCall?.[0]?.txt as Record<string, string>)?.transport).toBe("gateway");
 
@@ -210,7 +210,7 @@ describe("gateway bonjour advertiser", () => {
     const started = await startAdvertiser({
       gatewayPort: 18789,
       sshPort: 2222,
-      cliPath: "/opt/homebrew/bin/openclaw",
+      cliPath: "/opt/homebrew/bin/operator",
       tailnetDns: "host.tailnet.ts.net",
       minimal: true,
     });
@@ -602,7 +602,7 @@ describe("gateway bonjour advertiser", () => {
     await started.stop();
   });
 
-  it("falls back to openclaw when system hostname is invalid for DNS", async () => {
+  it("falls back to operator when system hostname is invalid for DNS", async () => {
     // Allow advertiser to run in unit tests.
     vi.stubEnv("VITEST", undefined);
     vi.stubEnv("NODE_ENV", "development");

@@ -284,7 +284,7 @@ describe("irc client fallback nick", () => {
     expect(nick).toMatch(/^mybot_\d*$/);
   });
 
-  it("falls back to openclaw when a colliding nick is entirely special characters", async () => {
+  it("falls back to operator when a colliding nick is entirely special characters", async () => {
     const nick = await connectAfterNickCollision("!!!");
     expect(nick).toMatch(/^operator_\d*$/);
   });

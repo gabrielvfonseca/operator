@@ -32,8 +32,8 @@ const setupToolsMocks = vi.hoisted(() => ({
 }));
 const installIMessageCliMock = vi.hoisted(() => vi.fn());
 
-vi.mock("openclaw/plugin-sdk/setup-tools", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("openclaw/plugin-sdk/setup-tools")>()),
+vi.mock("operator/plugin-sdk/setup-tools", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("operator/plugin-sdk/setup-tools")>()),
   ...setupToolsMocks,
 }));
 

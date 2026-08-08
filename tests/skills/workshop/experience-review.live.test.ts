@@ -34,7 +34,7 @@ function candidate(runId: string, messages: unknown[]): ExperienceReviewCandidat
         providers: {
           openai: {
             api: "openai-responses",
-            agentRuntime: { id: "openclaw" },
+            agentRuntime: { id: "operator" },
             apiKey: { source: "env", provider: "default", id: "OPENAI_API_KEY" },
             baseUrl: "https://api.openai.com/v1",
             models: [
@@ -42,7 +42,7 @@ function candidate(runId: string, messages: unknown[]): ExperienceReviewCandidat
                 id: modelId,
                 name: modelId,
                 api: "openai-responses",
-                agentRuntime: { id: "openclaw" },
+                agentRuntime: { id: "operator" },
                 input: ["text"],
                 reasoning: true,
                 contextWindow: 1_047_576,
@@ -58,7 +58,7 @@ function candidate(runId: string, messages: unknown[]): ExperienceReviewCandidat
           model: { primary: `openai/${modelId}` },
           models: {
             [`openai/${modelId}`]: {
-              agentRuntime: { id: "openclaw" },
+              agentRuntime: { id: "operator" },
               params: { maxTokens: 2_048 },
             },
           },
@@ -75,9 +75,9 @@ describeLive("skill experience review live OpenAI eval", () => {
   beforeAll(async () => {
     testState = await createOperatorTestState({
       layout: "state-only",
-      prefix: "openclaw-live-skill-review-state-",
+      prefix: "operator-live-skill-review-state-",
     });
-    workspaceDir = await tempDirs.make("openclaw-live-skill-review-workspace-");
+    workspaceDir = await tempDirs.make("operator-live-skill-review-workspace-");
   });
 
   afterAll(async () => {

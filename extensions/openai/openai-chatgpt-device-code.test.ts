@@ -112,7 +112,7 @@ describe("loginOpenAICodexDeviceCode", () => {
         "Content-Type": "application/json",
         originator: "@gabrielvfonseca/operator",
         version: "2026.3.22",
-        "User-Agent": "openclaw/2026.3.22",
+        "User-Agent": "operator/2026.3.22",
       });
 
       const deviceTokenRequest = fetchCall(fetchMock, 1);
@@ -122,7 +122,7 @@ describe("loginOpenAICodexDeviceCode", () => {
         "Content-Type": "application/json",
         originator: "@gabrielvfonseca/operator",
         version: "2026.3.22",
-        "User-Agent": "openclaw/2026.3.22",
+        "User-Agent": "operator/2026.3.22",
       });
 
       const oauthTokenRequest = fetchCall(fetchMock, 3);
@@ -132,7 +132,7 @@ describe("loginOpenAICodexDeviceCode", () => {
         "Content-Type": "application/x-www-form-urlencoded",
         originator: "@gabrielvfonseca/operator",
         version: "2026.3.22",
-        "User-Agent": "openclaw/2026.3.22",
+        "User-Agent": "operator/2026.3.22",
       });
       expect(onVerification).toHaveBeenCalledWith({
         verificationUrl: "https://auth.openai.com/codex/device",

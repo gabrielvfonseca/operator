@@ -1,13 +1,6 @@
 "use client";
 
 import * as React from "react";
-import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@operator/design-system";
 import { CONSOLE_BUILD_INFO } from "@/env.ts";
 import { useGatewayStatus } from "@/lib/gateway-client.tsx";
 
@@ -55,11 +48,7 @@ export default function AboutPage() {
   };
 
   const copyLabel =
-    copyState === "copied"
-      ? "Copied"
-      : copyState === "error"
-        ? "Copy failed"
-        : "Copy commit";
+    copyState === "copied" ? "Copied" : copyState === "error" ? "Copy failed" : "Copy commit";
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-4">
@@ -91,9 +80,7 @@ export default function AboutPage() {
             >
               <span className={waving ? "inline-block animate-wiggle" : "inline-block"}>🦅</span>
             </button>
-            <span className="text-xs text-muted-foreground">
-              Poke Clawd for a wave.
-            </span>
+            <span className="text-xs text-muted-foreground">Poke Clawd for a wave.</span>
           </div>
         </CardContent>
       </Card>

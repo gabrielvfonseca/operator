@@ -67,7 +67,7 @@ private class MascotPose(
 )
 
 /**
- * Animated operator mascot mirroring the openclaw.ai hero mark: body float,
+ * Animated operator mascot mirroring the operator.ai hero mark: body float,
  * antenna wiggle, eye blink, and staggered claw snaps. With [tint] the mascot
  * renders as a single-color silhouette (replacement for tinted [Icon] usage).
  */

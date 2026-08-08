@@ -177,7 +177,7 @@ describe("startOrResumeThread — user mcp.servers projection (regression: #8081
                 transport: "stdio",
                 command: "node",
                 args: [
-                  `/opt/openclaw/mcp/server-${index}/dist/index.js`,
+                  `/opt/operator/mcp/server-${index}/dist/index.js`,
                   "--description",
                   "x".repeat(400),
                 ],

@@ -1,10 +1,10 @@
 // Stores voice wake trigger configuration.
 import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
-import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../state/openclaw-state-db.js";
+} from "../state/operator-state-db.js";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "./kysely-sync.js";
 
 // Voice wake config stores trigger words used by local voice integrations.

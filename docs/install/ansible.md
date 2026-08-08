@@ -33,7 +33,7 @@ The [operator-ansible](https://github.com/gabrielvfonseca/operator-ansible) repo
 ## Quick start
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/openclaw/operator-ansible/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/operator/operator-ansible/main/install.sh | bash
 ```
 
 ## What gets installed
@@ -56,7 +56,7 @@ backend. See [Sandboxing](/gateway/sandboxing) for other backends.
 <Steps>
   <Step title="Switch to the operator user">
     ```bash
-    sudo -i -u openclaw
+    sudo -i -u operator
     ```
   </Step>
   <Step title="Run the onboarding wizard">
@@ -70,7 +70,7 @@ backend. See [Sandboxing](/gateway/sandboxing) for other backends.
   </Step>
   <Step title="Verify the installation">
     ```bash
-    sudo systemctl status openclaw
+    sudo systemctl status operator
     sudo journalctl -u operator -f
     ```
   </Step>
@@ -83,16 +83,16 @@ backend. See [Sandboxing](/gateway/sandboxing) for other backends.
 
 ```bash
 # Check service status
-sudo systemctl status openclaw
+sudo systemctl status operator
 
 # View live logs
 sudo journalctl -u operator -f
 
 # Restart gateway
-sudo systemctl restart openclaw
+sudo systemctl restart operator
 
 # Channel login (run as operator user)
-sudo -i -u openclaw
+sudo -i -u operator
 operator channels login --channel <name>
 ```
 
@@ -175,11 +175,11 @@ This is idempotent and safe to run multiple times.
     sudo journalctl -u operator -n 100
 
     # Verify permissions
-    sudo ls -la /opt/openclaw
+    sudo ls -la /opt/operator
 
     # Test manual start
-    sudo -i -u openclaw
-    cd ~/openclaw
+    sudo -i -u operator
+    cd ~/operator
     operator gateway run
     ```
 
@@ -193,7 +193,7 @@ This is idempotent and safe to run multiple times.
     sudo docker images | grep operator-sandbox
 
     # Build the sandbox image if missing (requires a source checkout)
-    cd /opt/openclaw/openclaw
+    cd /opt/operator/operator
     sudo -u operator ./scripts/sandbox-setup.sh
     # For npm installs without a source checkout, see
     # https://docs.operator.ai/gateway/sandboxing#images-and-setup
@@ -201,9 +201,9 @@ This is idempotent and safe to run multiple times.
 
   </Accordion>
   <Accordion title="Channel login fails">
-    Make sure you are running as the `openclaw` user:
+    Make sure you are running as the `operator` user:
     ```bash
-    sudo -i -u openclaw
+    sudo -i -u operator
     operator channels login --channel <name>
     ```
   </Accordion>

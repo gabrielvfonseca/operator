@@ -218,7 +218,7 @@ No remote provider? Local Docker fallback:
 node scripts/crabbox-wrapper.mjs run \
   --provider local-container \
   --local-container-image node:24-bookworm \
-  --no-hydrate --fresh-pr openclaw/openclaw#123 \
+  --no-hydrate --fresh-pr operator/operator#123 \
   --timing-json --shell -- \
   "corepack pnpm install --frozen-lockfile --store-dir .pnpm-store && \
    corepack pnpm test <path-or-filter>"

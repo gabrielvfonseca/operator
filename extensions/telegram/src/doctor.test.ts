@@ -7,7 +7,7 @@ const resolveCommandSecretRefsViaGatewayMock = vi.hoisted(() => vi.fn());
 const listTelegramAccountIdsMock = vi.hoisted(() => vi.fn());
 const inspectTelegramAccountMock = vi.hoisted(() => vi.fn());
 const lookupTelegramChatIdMock = vi.hoisted(() => vi.fn());
-const DOCTOR_FIX_COMMAND = "openclaw doctor --fix";
+const DOCTOR_FIX_COMMAND = "operator doctor --fix";
 
 async function collectPreviewWarnings(cfg: OperatorConfig, env?: NodeJS.ProcessEnv) {
   const collect = telegramDoctor.collectPreviewWarnings;
@@ -35,7 +35,7 @@ function collectEmptyAllowlistWarnings(
   return collect(params);
 }
 
-vi.mock("openclaw/plugin-sdk/runtime", () => {
+vi.mock("operator/plugin-sdk/runtime", () => {
   return {
     getChannelsCommandSecretTargetIds: () => ["channels"],
     resolveCommandSecretRefsViaGateway: resolveCommandSecretRefsViaGatewayMock,
@@ -631,7 +631,7 @@ describe("telegram doctor", () => {
     expect(
       await telegramDoctor.collectPreviewWarnings?.({
         cfg,
-        doctorFixCommand: "openclaw doctor --fix",
+        doctorFixCommand: "operator doctor --fix",
       }),
     ).toContain(
       "- channels.telegram.apiRoot points at a full Telegram bot endpoint; apiRoot must be the Bot API root only. This can make startup calls like deleteWebhook, deleteMyCommands, and setMyCommands fail with 404 even when direct curl commands work.",
@@ -639,7 +639,7 @@ describe("telegram doctor", () => {
 
     const repaired = await telegramDoctor.repairConfig?.({
       cfg,
-      doctorFixCommand: "openclaw doctor --fix",
+      doctorFixCommand: "operator doctor --fix",
     });
     expect(repaired?.config.channels?.telegram?.apiRoot).toBe("https://api.telegram.org");
     expect(repaired?.changes).toEqual([

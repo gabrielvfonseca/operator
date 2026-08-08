@@ -9,7 +9,7 @@ import {
   type OperatorTestState,
 } from "../../../src/test-utils/operator-test-state.js";
 import { createTrackedTempDirs } from "../../../src/test-utils/tracked-temp-dirs.js";
-import { createOperatorTools } from "../../../src/agents/openclaw-tools.js";
+import { createOperatorTools } from "../../../src/agents/operator-tools.js";
 import { createSkillWorkshopTool } from "../../../src/agents/tools/skill-workshop-tool.js";
 
 const tempDirs = createTrackedTempDirs();
@@ -19,7 +19,7 @@ let stateDir = "";
 beforeEach(async () => {
   testState = await createOperatorTestState({
     layout: "state-only",
-    prefix: "openclaw-skill-workshop-state-",
+    prefix: "operator-skill-workshop-state-",
   });
   stateDir = testState.stateDir;
 });
@@ -31,7 +31,7 @@ afterEach(async () => {
 
 describe("skill_workshop tool", () => {
   it("describes action selection and pending-proposal discovery in its schema", () => {
-    const tool = createSkillWorkshopTool({ workspaceDir: "/tmp/openclaw" });
+    const tool = createSkillWorkshopTool({ workspaceDir: "/tmp/operator" });
     const schema = JSON.stringify(tool.parameters);
 
     expect(schema).toContain("create = new skill");
@@ -45,7 +45,7 @@ describe("skill_workshop tool", () => {
   });
 
   it("is exposed in the Operator tool set", async () => {
-    const workspaceDir = await tempDirs.make("openclaw-skill-workshop-tool-");
+    const workspaceDir = await tempDirs.make("operator-skill-workshop-tool-");
     const tools = createOperatorTools({
       workspaceDir,
       config: {},
@@ -55,7 +55,7 @@ describe("skill_workshop tool", () => {
   });
 
   it("stays exposed when autonomous proposal capture is disabled", async () => {
-    const workspaceDir = await tempDirs.make("openclaw-skill-workshop-tool-");
+    const workspaceDir = await tempDirs.make("operator-skill-workshop-tool-");
     const tools = createOperatorTools({
       workspaceDir,
       config: {
@@ -74,11 +74,11 @@ describe("skill_workshop tool", () => {
 
   it("does not nudge the foreground model when autonomy is enabled", () => {
     const disabled = createSkillWorkshopTool({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       config: { skills: { workshop: { autonomous: { enabled: false } } } },
     });
     const enabled = createSkillWorkshopTool({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       config: { skills: { workshop: { autonomous: { enabled: true } } } },
     });
 
@@ -87,8 +87,8 @@ describe("skill_workshop tool", () => {
   });
 
   it("keeps proposal state inside an injected state directory", async () => {
-    const workspaceDir = await tempDirs.make("openclaw-skill-workshop-isolated-workspace-");
-    const isolatedStateDir = await tempDirs.make("openclaw-skill-workshop-isolated-state-");
+    const workspaceDir = await tempDirs.make("operator-skill-workshop-isolated-workspace-");
+    const isolatedStateDir = await tempDirs.make("operator-skill-workshop-isolated-state-");
     const env = { ...process.env, OPERATOR_STATE_DIR: isolatedStateDir };
     const isolatedTool = createSkillWorkshopTool({ workspaceDir, env, proposalOnly: true });
 
@@ -116,7 +116,7 @@ describe("skill_workshop tool", () => {
   });
 
   it("restricts internal review runs to one pending proposal mutation", async () => {
-    const workspaceDir = await tempDirs.make("openclaw-skill-workshop-review-");
+    const workspaceDir = await tempDirs.make("operator-skill-workshop-review-");
     const proposalMutationBudget: SkillWorkshopProposalMutationBudget = { remaining: 1 };
     const tool = createSkillWorkshopTool({
       workspaceDir,
@@ -162,7 +162,7 @@ describe("skill_workshop tool", () => {
   });
 
   it("does not refund the review mutation budget after a failed mutation", async () => {
-    const workspaceDir = await tempDirs.make("openclaw-skill-workshop-review-failure-");
+    const workspaceDir = await tempDirs.make("operator-skill-workshop-review-failure-");
     const proposalMutationBudget: SkillWorkshopProposalMutationBudget = { remaining: 1 };
     const tool = createSkillWorkshopTool({
       workspaceDir,
@@ -190,7 +190,7 @@ describe("skill_workshop tool", () => {
   });
 
   it("durably completes a proposal review and blocks later work", async () => {
-    const workspaceDir = await tempDirs.make("openclaw-skill-workshop-review-completion-");
+    const workspaceDir = await tempDirs.make("operator-skill-workshop-review-completion-");
     let completions = 0;
     const progress: Array<{ proposalIds: string[]; remaining: number }> = [];
     let releaseProgress!: () => void;
@@ -249,7 +249,7 @@ describe("skill_workshop tool", () => {
   });
 
   it("honors a larger internal review mutation budget", async () => {
-    const workspaceDir = await tempDirs.make("openclaw-skill-workshop-history-review-");
+    const workspaceDir = await tempDirs.make("operator-skill-workshop-history-review-");
     const proposalMutationBudget: SkillWorkshopProposalMutationBudget = { remaining: 3 };
     const tool = createSkillWorkshopTool({
       workspaceDir,
@@ -277,7 +277,7 @@ describe("skill_workshop tool", () => {
   });
 
   it("counts repeated revisions as one distinct proposal idea", async () => {
-    const workspaceDir = await tempDirs.make("openclaw-skill-workshop-distinct-review-");
+    const workspaceDir = await tempDirs.make("operator-skill-workshop-distinct-review-");
     const proposalMutationBudget: SkillWorkshopProposalMutationBudget = { remaining: 3 };
     const tool = createSkillWorkshopTool({
       workspaceDir,
@@ -304,7 +304,7 @@ describe("skill_workshop tool", () => {
   });
 
   it("is not exposed from sandboxed Operator tool sets", async () => {
-    const workspaceDir = await tempDirs.make("openclaw-skill-workshop-tool-");
+    const workspaceDir = await tempDirs.make("operator-skill-workshop-tool-");
     const tools = createOperatorTools({
       workspaceDir,
       config: {},
@@ -318,7 +318,7 @@ describe("skill_workshop tool", () => {
   it.each([0, 1.5, "1.5", "25items", "many"])(
     "rejects invalid list limit %s before touching proposal state",
     async (limit) => {
-      const workspaceDir = await tempDirs.make("openclaw-skill-workshop-tool-");
+      const workspaceDir = await tempDirs.make("operator-skill-workshop-tool-");
       const tool = createSkillWorkshopTool({
         workspaceDir,
         config: {},
@@ -333,7 +333,7 @@ describe("skill_workshop tool", () => {
   );
 
   it("preserves list limits through 50 and clamps larger requests", async () => {
-    const workspaceDir = await tempDirs.make("openclaw-skill-workshop-tool-");
+    const workspaceDir = await tempDirs.make("operator-skill-workshop-tool-");
     const tool = createSkillWorkshopTool({
       workspaceDir,
       config: { skills: { workshop: { maxPending: 200 } } },
@@ -362,7 +362,7 @@ describe("skill_workshop tool", () => {
   it("creates pending skill proposals without applying them", async () => {
     // Creation writes reviewable proposal artifacts under state, not live skill
     // files in the workspace.
-    const workspaceDir = await tempDirs.make("openclaw-skill-workshop-tool-");
+    const workspaceDir = await tempDirs.make("operator-skill-workshop-tool-");
     const tool = createSkillWorkshopTool({
       workspaceDir,
       config: {},
@@ -589,7 +589,7 @@ describe("skill_workshop tool", () => {
   });
 
   it("rejects whitespace-only proposal content while preserving raw valid markdown", async () => {
-    const workspaceDir = await tempDirs.make("openclaw-skill-workshop-tool-");
+    const workspaceDir = await tempDirs.make("operator-skill-workshop-tool-");
     const tool = createSkillWorkshopTool({
       workspaceDir,
       config: {},
@@ -628,7 +628,7 @@ describe("skill_workshop tool", () => {
   });
 
   it("applies, rejects, and quarantines proposals through the workshop service", async () => {
-    const workspaceDir = await tempDirs.make("openclaw-skill-workshop-tool-");
+    const workspaceDir = await tempDirs.make("operator-skill-workshop-tool-");
     const tool = createSkillWorkshopTool({ workspaceDir, config: {}, agentId: "main" });
 
     const created = await tool.execute("call-1", {
@@ -745,8 +745,8 @@ describe("skill_workshop tool", () => {
   });
 
   it("scopes proposal discovery to the tool workspace", async () => {
-    const firstWorkspaceDir = await tempDirs.make("openclaw-skill-workshop-tool-first-");
-    const secondWorkspaceDir = await tempDirs.make("openclaw-skill-workshop-tool-second-");
+    const firstWorkspaceDir = await tempDirs.make("operator-skill-workshop-tool-first-");
+    const secondWorkspaceDir = await tempDirs.make("operator-skill-workshop-tool-second-");
     const firstTool = createSkillWorkshopTool({
       workspaceDir: firstWorkspaceDir,
       config: {},

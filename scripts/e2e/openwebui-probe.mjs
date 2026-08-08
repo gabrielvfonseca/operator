@@ -324,12 +324,12 @@ for (let attempt = 1; attempt <= modelAttempts; attempt += 1) {
   if (modelsResult?.ok) {
     modelIds = extractModelIds(modelsResult.json);
     targetModel =
-      modelIds.find((id) => id === "openclaw/default") ??
+      modelIds.find((id) => id === "operator/default") ??
       modelIds.find((id) => id === "@gabrielvfonseca/operator");
     if (targetModel) {
       break;
     }
-    lastModelsError = `missing openclaw model: ${JSON.stringify(modelIds)}`;
+    lastModelsError = `missing operator model: ${JSON.stringify(modelIds)}`;
   } else if (modelsResult) {
     lastModelsError = `HTTP ${modelsResult.status} ${modelsResult.text}`;
   }
@@ -339,7 +339,7 @@ for (let attempt = 1; attempt <= modelAttempts; attempt += 1) {
 }
 if (!targetModel) {
   throw new Error(
-    `openclaw model missing from Open WebUI model list after retry: ${JSON.stringify(modelIds)} (${lastModelsError})`,
+    `operator model missing from Open WebUI model list after retry: ${JSON.stringify(modelIds)} (${lastModelsError})`,
   );
 }
 if (smokeMode === "models") {

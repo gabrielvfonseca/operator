@@ -32,7 +32,7 @@ import {
   normalizeHostOverrideEnvVarKey,
   sanitizeHostExecEnvWithDiagnostics,
 } from "../infra/host-env-security.js";
-import { OPERATOR_CLI_ENV_VAR } from "../infra/openclaw-exec-env.js";
+import { OPERATOR_CLI_ENV_VAR } from "../infra/operator-exec-env.js";
 import {
   getShellPathFromLoginShell,
   resolveShellEnvFallbackTimeoutMs,

@@ -133,7 +133,7 @@ operator honcho search <query> [-k N] [-d D] # Semantic search over memory
 
 - [Plugin source code](https://github.com/plastic-labs/operator-honcho)
 - [Honcho documentation](https://docs.honcho.dev)
-- [Honcho Operator integration guide](https://docs.honcho.dev/v3/guides/integrations/openclaw)
+- [Honcho Operator integration guide](https://docs.honcho.dev/v3/guides/integrations/operator)
 
 ## Related
 

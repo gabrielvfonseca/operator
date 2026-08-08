@@ -8,7 +8,7 @@ import { getWindowsCmdExePath } from "../../../src/infra/windows-install-roots.j
 import { prepareRestartScript, runRestartScript } from "../../../src/cli/update-cli/restart-helper.js";
 
 vi.mock("node:child_process", async () => {
-  const { mockNodeBuiltinModule } = await import("openclaw/plugin-sdk/test-node-mocks");
+  const { mockNodeBuiltinModule } = await import("operator/plugin-sdk/test-node-mocks");
   return mockNodeBuiltinModule(
     () => vi.importActual<typeof import("node:child_process")>("node:child_process"),
     {
@@ -86,7 +86,7 @@ exit 0
     const runningGuard = 'if ($taskState -eq "Running")';
     const endCommand =
       'Invoke-OperatorSchtasksWithTimeout -Arguments @("/End", "/TN", $taskName) -TimeoutSeconds 10';
-    const skipEndLog = "openclaw restart skipped schtasks end";
+    const skipEndLog = "operator restart skipped schtasks end";
     const pollLoop = "for ($attempt = 1; $attempt -le 10; $attempt++)";
     const pollCall = `Get-OperatorListenerPids -Port $port`;
     const forceKillBranch = "if ($attempt -eq 10)";
@@ -242,7 +242,7 @@ exit 1
       const calls = await fs.readFile(callsPath, "utf-8");
 
       expect(result.code).toBe(78);
-      expect(result.stderr).toContain("system-scoped openclaw gateway unit detected");
+      expect(result.stderr).toContain("system-scoped operator gateway unit detected");
       expect(result.stderr).toContain("sudo systemctl restart operator-gateway.service");
       expect(calls).toContain("--user is-active --quiet operator-gateway.service");
       expect(calls).toContain("is-active --quiet operator-gateway.service");
@@ -340,10 +340,10 @@ exit 0
       const log = await fs.readFile(path.join(stateDir, "logs", "gateway-restart.log"), "utf-8");
 
       expect(result.code).toBe(42);
-      expect(log).toContain("openclaw restart attempt source=update target=ai.operator.gateway");
+      expect(log).toContain("operator restart attempt source=update target=ai.operator.gateway");
       expect(log).toContain("launchctl kickstart -k gui/501/ai.operator.gateway");
-      expect(log).toContain("openclaw restart failed source=update status=42");
-      expect(log).not.toContain("openclaw restart done source=update");
+      expect(log).toContain("operator restart failed source=update status=42");
+      expect(log).not.toContain("operator restart done source=update");
     });
 
     it("continues the macOS restart path when log setup fails", async () => {
@@ -434,11 +434,11 @@ exit 0
       expect(content).toContain("function Get-OperatorScheduledTaskState");
       expect(content).toContain("function Invoke-OperatorStartupLauncher");
       expect(content).toContain("Get-ScheduledTask -TaskName $TaskName");
-      expect(content).toContain("openclaw restart skipped schtasks end");
+      expect(content).toContain("operator restart skipped schtasks end");
       expect(content).toContain(
         '$launcherPath = Join-Path $env:USERPROFILE ".operator\\gateway.cmd"',
       );
-      expect(content).toContain("openclaw restart launched startup fallback");
+      expect(content).toContain("operator restart launched startup fallback");
       expectWindowsRestartWaitOrdering(content);
       expect(content).toContain('del "%~f0" >nul 2>&1');
       expect(content).toContain('rmdir "%OPERATOR_RESTART_SCRIPT_DIR%" >nul 2>&1');

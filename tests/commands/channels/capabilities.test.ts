@@ -153,7 +153,7 @@ describe("channelsCapabilitiesCommand", () => {
     });
     plugin.status = {
       ...plugin.status,
-      formatCapabilitiesProbe: () => [{ text: "Bot: @openclaw" }, { text: "Team: team" }],
+      formatCapabilitiesProbe: () => [{ text: "Bot: @operator" }, { text: "Team: team" }],
       buildCapabilitiesDiagnostics: async () => ({
         lines: [
           { text: "Bot scopes (auth.scopes): chat:write" },
@@ -181,7 +181,7 @@ describe("channelsCapabilitiesCommand", () => {
         "slack:default",
         "Support: chatTypes=direct",
         "Actions: send, broadcast, poll",
-        "Bot: @openclaw",
+        "Bot: @operator",
         "Team: team",
         "Bot scopes (auth.scopes): chat:write",
         "User scopes (auth.scopes): users:read",

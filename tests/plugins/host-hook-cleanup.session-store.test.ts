@@ -6,8 +6,8 @@ import { loadSessionEntry, replaceSessionEntry } from "../../src/config/sessions
 import type { SessionEntry } from "../../src/config/sessions/types.js";
 import * as jsonFiles from "../../src/infra/json-files.js";
 import { resolvePreferredOperatorTmpDir } from "../../src/infra/tmp-operator-dir.js";
-import { closeOperatorAgentDatabasesForTest } from "../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { captureEnv, setTestEnvValue } from "../../src/test-utils/env.js";
 import { runPluginHostCleanup } from "../../src/plugins/host-hook-cleanup.js";
 import { createEmptyPluginRegistry } from "../../src/plugins/registry-empty.js";

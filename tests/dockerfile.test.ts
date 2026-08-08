@@ -502,7 +502,7 @@ describe("Dockerfile", () => {
 
     expect(workflow).toContain("REGISTRY: ghcr.io");
     expect(workflow).toContain("DOCKERHUB_REGISTRY: docker.io");
-    expect(workflow).toContain("DOCKERHUB_IMAGE_NAME: openclaw/openclaw");
+    expect(workflow).toContain("DOCKERHUB_IMAGE_NAME: operator/operator");
     expect(workflow).toContain("Validate Docker Hub publish credentials");
     expect(workflow).toContain("DOCKERHUB_USERNAME and DOCKERHUB_TOKEN secrets");
     expect(workflow).toContain("Login to GitHub Container Registry");
@@ -623,7 +623,7 @@ describe("Dockerfile", () => {
 
     expect(runtimeStageIndex).toBeGreaterThan(-1);
     // Regression: /home/node/.config parent must be created with node ownership
-    // before the leaf .config/openclaw dir (issue #85968).
+    // before the leaf .config/operator dir (issue #85968).
     expect(parentConfigDirIndex).toBeGreaterThan(-1);
     expect(stateDirIndex).toBeGreaterThan(-1);
     expect(userIndex).toBeGreaterThan(-1);
@@ -633,7 +633,7 @@ describe("Dockerfile", () => {
     expect(stateDirIndex).toBeLessThan(userIndex);
     expect(dockerfile).not.toContain("mkdir -p /home/node/.operator");
     expect(dockerfile).toContain("/home/node/.operator/workspace");
-    expect(dockerfile).toContain("/home/node/.config/openclaw");
+    expect(dockerfile).toContain("/home/node/.config/operator");
     expect(dockerfile).toContain(
       "stat -c '%U:%G %a' /home/node/.operator | grep -qx 'node:node 700'",
     );
@@ -645,7 +645,7 @@ describe("Dockerfile", () => {
       "stat -c '%U:%G %a' /home/node/.config | grep -qx 'node:node 755'",
     );
     expect(dockerfile).toContain(
-      "stat -c '%U:%G %a' /home/node/.config/openclaw | grep -qx 'node:node 700'",
+      "stat -c '%U:%G %a' /home/node/.config/operator | grep -qx 'node:node 700'",
     );
   });
 });

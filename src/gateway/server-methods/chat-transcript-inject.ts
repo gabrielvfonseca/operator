@@ -107,10 +107,10 @@ export async function appendInjectedAssistantMessageToTranscript(params: {
     provider: "@gabrielvfonseca/operator",
     model: "gateway-injected",
     ...(params.idempotencyKey ? { idempotencyKey: params.idempotencyKey } : {}),
-    ...(params.ttsSupplement ? { openclawTtsSupplement: params.ttsSupplement } : {}),
+    ...(params.ttsSupplement ? { operatorTtsSupplement: params.ttsSupplement } : {}),
     ...(params.abortMeta
       ? {
-          openclawAbort: {
+          operatorAbort: {
             aborted: true,
             origin: params.abortMeta.origin,
             runId: params.abortMeta.runId,

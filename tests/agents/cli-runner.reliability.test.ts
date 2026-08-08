@@ -3869,11 +3869,11 @@ describe("runCliAgent reliability", () => {
       );
       expect(JSON.stringify(blockedLine)).not.toContain("secret prompt");
       expect(JSON.stringify(blockedLine)).not.toContain("matched secret prompt");
-      expect(blockedLine.message["__openclaw"].beforeAgentRunBlocked.blockedBy).toBe(
+      expect(blockedLine.message["__operator"].beforeAgentRunBlocked.blockedBy).toBe(
         "policy-plugin",
       );
-      expect(blockedLine.message["__openclaw"].beforeAgentRunBlocked).not.toHaveProperty("reason");
-      expect(Object.hasOwn(blockedLine.message["__openclaw"], "beforeAgentRunBlocked")).toBe(true);
+      expect(blockedLine.message["__operator"].beforeAgentRunBlocked).not.toHaveProperty("reason");
+      expect(Object.hasOwn(blockedLine.message["__operator"], "beforeAgentRunBlocked")).toBe(true);
     } finally {
       fs.rmSync(dir, { recursive: true, force: true });
     }

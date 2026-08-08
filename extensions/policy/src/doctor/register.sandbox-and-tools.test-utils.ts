@@ -1198,7 +1198,7 @@ describe("registerPolicyDoctorChecks", () => {
     const cfg = {
       ...cfgWithPolicy(),
       tools: {
-        deny: ["group:openclaw"],
+        deny: ["group:operator"],
       },
     } as unknown as OperatorConfig;
     await fs.writeFile(configPath, "{}", "utf-8");
@@ -1221,7 +1221,7 @@ describe("registerPolicyDoctorChecks", () => {
         expect.objectContaining({
           id: "tools-deny",
           kind: "deny",
-          entries: ["group:openclaw"],
+          entries: ["group:operator"],
           source: "oc://operator.config/tools/deny",
         }),
       ]),

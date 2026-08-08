@@ -692,7 +692,7 @@ describe("gatherDaemonStatus", () => {
           pid: 4242,
           ppid: 1,
           command: "node",
-          commandLine: "node /tmp/newer-openclaw/dist/index.js logs --follow",
+          commandLine: "node /tmp/newer-operator/dist/index.js logs --follow",
           address: "TCP 127.0.0.1:50123->127.0.0.1:19001 (ESTABLISHED)",
           direction: "client",
         },
@@ -711,7 +711,7 @@ describe("gatherDaemonStatus", () => {
         pid: 4242,
         ppid: 1,
         command: "node",
-        commandLine: "node /tmp/newer-openclaw/dist/index.js logs --follow",
+        commandLine: "node /tmp/newer-operator/dist/index.js logs --follow",
         address: "TCP 127.0.0.1:50123->127.0.0.1:19001 (ESTABLISHED)",
         direction: "client",
       },
@@ -1159,7 +1159,7 @@ describe("gatherDaemonStatus", () => {
     inspectPortUsage.mockResolvedValueOnce({
       port: 19001,
       status: "busy",
-      listeners: [{ pid: 8000, ppid: 1, commandLine: "openclaw gateway" }],
+      listeners: [{ pid: 8000, ppid: 1, commandLine: "operator gateway" }],
       hints: [],
     });
     callGatewayStatusProbe.mockResolvedValueOnce({
@@ -1195,7 +1195,7 @@ describe("gatherDaemonStatus", () => {
     inspectPortUsage.mockResolvedValueOnce({
       port: 19001,
       status: "busy",
-      listeners: [{ pid: 8000, ppid: 1, commandLine: "openclaw gateway" }],
+      listeners: [{ pid: 8000, ppid: 1, commandLine: "operator gateway" }],
       hints: [],
     });
     callGatewayStatusProbe.mockResolvedValueOnce({
@@ -1225,7 +1225,7 @@ describe("gatherDaemonStatus", () => {
     inspectPortUsage.mockResolvedValueOnce({
       port: 19001,
       status: "busy",
-      listeners: [{ pid: 8000, ppid: 1, commandLine: "openclaw gateway" }],
+      listeners: [{ pid: 8000, ppid: 1, commandLine: "operator gateway" }],
       hints: [],
     });
     callGatewayStatusProbe.mockResolvedValueOnce({

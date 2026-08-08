@@ -3,7 +3,7 @@
    ============================================= */
 
 /* Main chat card - flex column layout, transparent background */
-openclaw-chat-page {
+operator-chat-page {
   display: flex;
   flex: 1 1 0;
   min-width: 0;
@@ -140,9 +140,9 @@ openclaw-chat-page {
 
 /* Split panes spend their top row on the pane header (which is both the
    toggle host and the drag surface), so their threads keep a compact inset.
-   The single-pane view is also an openclaw-chat-pane but renders no header,
+   The single-pane view is also an operator-chat-pane but renders no header,
    hence the :has() guard. */
-openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
+operator-chat-pane:has(> .chat-pane__header) .chat-thread {
   padding-top: clamp(20px, 3vh, 28px);
 }
 

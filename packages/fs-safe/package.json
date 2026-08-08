@@ -1,0 +1,64 @@
+{
+  "name": "@operator/fs-safe",
+  "version": "0.4.1",
+  "private": true,
+  "description": "FS-safe package for Operator",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.mjs"
+    },
+    "./advanced": {
+      "types": "./dist/advanced.d.ts",
+      "import": "./dist/advanced.mjs",
+      "require": "./dist/advanced.cjs",
+      "default": "./dist/advanced.mjs"
+    },
+    "./root": {
+      "types": "./dist/root.d.ts",
+      "import": "./dist/root.mjs",
+      "require": "./dist/root.cjs",
+      "default": "./dist/root.mjs"
+    },
+    "./errors": {
+      "types": "./dist/errors.d.ts",
+      "import": "./dist/errors.mjs",
+      "require": "./dist/errors.cjs",
+      "default": "./dist/errors.mjs"
+    },
+    "./path": {
+      "types": "./dist/path.d.ts",
+      "import": "./dist/path.mjs",
+      "require": "./dist/path.cjs",
+      "default": "./dist/path.mjs"
+    },
+    "./store": {
+      "types": "./dist/store.d.ts",
+      "import": "./dist/store.mjs",
+      "require": "./dist/store.cjs",
+      "default": "./dist/store.mjs"
+    },
+    "./config": {
+      "types": "./dist/config.d.ts",
+      "import": "./dist/config.mjs",
+      "require": "./dist/config.cjs",
+      "default": "./dist/config.mjs"
+    },
+    "./secure-file": {
+      "types": "./dist/secure-file.d.ts",
+      "import": "./dist/secure-file.mjs",
+      "require": "./dist/secure-file.cjs",
+      "default": "./dist/secure-file.mjs"
+    },
+    "./walk": {
+      "types": "./dist/walk.d.ts",
+      "import": "./dist/walk.mjs",
+      "require": "./dist/walk.cjs",
+      "default": "./dist/walk.mjs"
+    }
+  }
+}

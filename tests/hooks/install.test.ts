@@ -333,11 +333,11 @@ describe("installHooksFromPath", () => {
       error: "package.json operator.hooks is empty",
       code: HOOK_INSTALL_ERROR_CODE.EMPTY_OPERATOR_HOOKS,
     },
-  ])("returns a stable code for $error", async ({ openclaw, error, code }) => {
+  ])("returns a stable code for $error", async ({ operator, error, code }) => {
     const pkgDir = makeTempDir();
     fs.writeFileSync(
       path.join(pkgDir, "package.json"),
-      JSON.stringify({ name: "@gabrielvfonseca/test-hooks", openclaw }),
+      JSON.stringify({ name: "@gabrielvfonseca/test-hooks", operator }),
     );
 
     const result = await installHooksFromPath({ path: pkgDir, hooksDir: makeTempDir() });

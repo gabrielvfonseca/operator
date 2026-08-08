@@ -7,7 +7,11 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "lib": ["DOM", "DOM.Iterable", "ES2023"],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ES2023"
+    ],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "noImplicitOverride": true,
@@ -21,28 +25,66 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2023",
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "useDefineForClassFields": false,
     "verbatimModuleSyntax": true,
     "paths": {
-      "openclaw/extension-api": ["./src/extensionAPI.ts"],
-      "openclaw/plugin-sdk": ["./src/plugin-sdk/index.ts"],
-      "openclaw/plugin-sdk/*": ["./src/plugin-sdk/*.ts"],
-      "@gabrielvfonseca/ai": ["./packages/ai/src/index.ts"],
-      "@gabrielvfonseca/ai/diagnostics": ["./packages/ai/src/utils/diagnostics.ts"],
-      "@gabrielvfonseca/ai/event-stream": ["./packages/ai/src/utils/event-stream.ts"],
-      "@gabrielvfonseca/ai/providers": ["./packages/ai/src/providers.ts"],
-      "@gabrielvfonseca/ai/types": ["./packages/ai/src/types.ts"],
-      "@gabrielvfonseca/ai/validation": ["./packages/ai/src/validation.ts"],
-      "@gabrielvfonseca/ai/internal/*": ["./packages/ai/src/internal/*.ts"],
-      "@gabrielvfonseca/agent-core": ["./packages/agent-core/src/index.ts"],
-      "@gabrielvfonseca/agent-core/*": ["./packages/agent-core/src/*"],
-      "@gabrielvfonseca/llm-core": ["./packages/llm-core/src/index.ts"],
-      "@gabrielvfonseca/llm-core/diagnostics": ["./packages/llm-core/src/utils/diagnostics.ts"],
-      "@gabrielvfonseca/llm-core/event-stream": ["./packages/llm-core/src/utils/event-stream.ts"],
-      "@gabrielvfonseca/llm-core/validation": ["./packages/llm-core/src/validation.ts"],
-      "@gabrielvfonseca/llm-core/*": ["./packages/llm-core/src/*"],
-      "@gabrielvfonseca/model-catalog-core": ["./packages/model-catalog-core/src/index.ts"],
+      "operator/extension-api": [
+        "./src/extensionAPI.ts"
+      ],
+      "operator/plugin-sdk": [
+        "./src/plugin-sdk/index.ts"
+      ],
+      "operator/plugin-sdk/*": [
+        "./src/plugin-sdk/*.ts"
+      ],
+      "@gabrielvfonseca/ai": [
+        "./packages/ai/src/index.ts"
+      ],
+      "@gabrielvfonseca/ai/diagnostics": [
+        "./packages/ai/src/utils/diagnostics.ts"
+      ],
+      "@gabrielvfonseca/ai/event-stream": [
+        "./packages/ai/src/utils/event-stream.ts"
+      ],
+      "@gabrielvfonseca/ai/providers": [
+        "./packages/ai/src/providers.ts"
+      ],
+      "@gabrielvfonseca/ai/types": [
+        "./packages/ai/src/types.ts"
+      ],
+      "@gabrielvfonseca/ai/validation": [
+        "./packages/ai/src/validation.ts"
+      ],
+      "@gabrielvfonseca/ai/internal/*": [
+        "./packages/ai/src/internal/*.ts"
+      ],
+      "@gabrielvfonseca/agent-core": [
+        "./packages/agent-core/src/index.ts"
+      ],
+      "@gabrielvfonseca/agent-core/*": [
+        "./packages/agent-core/src/*"
+      ],
+      "@gabrielvfonseca/llm-core": [
+        "./packages/llm-core/src/index.ts"
+      ],
+      "@gabrielvfonseca/llm-core/diagnostics": [
+        "./packages/llm-core/src/utils/diagnostics.ts"
+      ],
+      "@gabrielvfonseca/llm-core/event-stream": [
+        "./packages/llm-core/src/utils/event-stream.ts"
+      ],
+      "@gabrielvfonseca/llm-core/validation": [
+        "./packages/llm-core/src/validation.ts"
+      ],
+      "@gabrielvfonseca/llm-core/*": [
+        "./packages/llm-core/src/*"
+      ],
+      "@gabrielvfonseca/model-catalog-core": [
+        "./packages/model-catalog-core/src/index.ts"
+      ],
       "@gabrielvfonseca/model-catalog-core/configured-model-refs": [
         "./packages/model-catalog-core/src/configured-model-refs.ts"
       ],
@@ -64,11 +106,21 @@
       "@gabrielvfonseca/model-catalog-core/provider-model-id-normalize": [
         "./packages/model-catalog-core/src/provider-model-id-normalize.ts"
       ],
-      "@gabrielvfonseca/model-catalog-core/*": ["./packages/model-catalog-core/src/*"],
-      "@gabrielvfonseca/gateway-client": ["./packages/gateway-client/src/index.ts"],
-      "@gabrielvfonseca/gateway-client/browser": ["./packages/gateway-client/src/browser.ts"],
-      "@gabrielvfonseca/gateway-client/*": ["./packages/gateway-client/src/*"],
-      "@gabrielvfonseca/gateway-protocol": ["./packages/gateway-protocol/src/index.ts"],
+      "@gabrielvfonseca/model-catalog-core/*": [
+        "./packages/model-catalog-core/src/*"
+      ],
+      "@gabrielvfonseca/gateway-client": [
+        "./packages/gateway-client/src/index.ts"
+      ],
+      "@gabrielvfonseca/gateway-client/browser": [
+        "./packages/gateway-client/src/browser.ts"
+      ],
+      "@gabrielvfonseca/gateway-client/*": [
+        "./packages/gateway-client/src/*"
+      ],
+      "@gabrielvfonseca/gateway-protocol": [
+        "./packages/gateway-protocol/src/index.ts"
+      ],
       "@gabrielvfonseca/gateway-protocol/client-info": [
         "./packages/gateway-protocol/src/client-info.ts"
       ],
@@ -78,13 +130,21 @@
       "@gabrielvfonseca/gateway-protocol/frame-guards": [
         "./packages/gateway-protocol/src/frame-guards.ts"
       ],
-      "@gabrielvfonseca/gateway-protocol/schema": ["./packages/gateway-protocol/src/schema.ts"],
+      "@gabrielvfonseca/gateway-protocol/schema": [
+        "./packages/gateway-protocol/src/schema.ts"
+      ],
       "@gabrielvfonseca/gateway-protocol/startup-unavailable": [
         "./packages/gateway-protocol/src/startup-unavailable.ts"
       ],
-      "@gabrielvfonseca/gateway-protocol/version": ["./packages/gateway-protocol/src/version.ts"],
-      "@gabrielvfonseca/gateway-protocol/*": ["./packages/gateway-protocol/src/*"],
-      "@gabrielvfonseca/media-generation-core": ["./packages/media-generation-core/src/index.ts"],
+      "@gabrielvfonseca/gateway-protocol/version": [
+        "./packages/gateway-protocol/src/version.ts"
+      ],
+      "@gabrielvfonseca/gateway-protocol/*": [
+        "./packages/gateway-protocol/src/*"
+      ],
+      "@gabrielvfonseca/media-generation-core": [
+        "./packages/media-generation-core/src/index.ts"
+      ],
       "@gabrielvfonseca/media-generation-core/capability-model-ref": [
         "./packages/media-generation-core/src/capability-model-ref.ts"
       ],
@@ -97,12 +157,24 @@
       "@gabrielvfonseca/media-generation-core/normalization": [
         "./packages/media-generation-core/src/normalization.ts"
       ],
-      "@gabrielvfonseca/media-generation-core/*": ["./packages/media-generation-core/src/*"],
-      "@gabrielvfonseca/media-core": ["./packages/media-core/src/index.ts"],
-      "@gabrielvfonseca/media-core/base64": ["./packages/media-core/src/base64.ts"],
-      "@gabrielvfonseca/media-core/constants": ["./packages/media-core/src/constants.ts"],
-      "@gabrielvfonseca/media-core/content-length": ["./packages/media-core/src/content-length.ts"],
-      "@gabrielvfonseca/media-core/file-name": ["./packages/media-core/src/file-name.ts"],
+      "@gabrielvfonseca/media-generation-core/*": [
+        "./packages/media-generation-core/src/*"
+      ],
+      "@gabrielvfonseca/media-core": [
+        "./packages/media-core/src/index.ts"
+      ],
+      "@gabrielvfonseca/media-core/base64": [
+        "./packages/media-core/src/base64.ts"
+      ],
+      "@gabrielvfonseca/media-core/constants": [
+        "./packages/media-core/src/constants.ts"
+      ],
+      "@gabrielvfonseca/media-core/content-length": [
+        "./packages/media-core/src/content-length.ts"
+      ],
+      "@gabrielvfonseca/media-core/file-name": [
+        "./packages/media-core/src/file-name.ts"
+      ],
       "@gabrielvfonseca/media-core/inbound-path-policy": [
         "./packages/media-core/src/inbound-path-policy.ts"
       ],
@@ -112,27 +184,51 @@
       "@gabrielvfonseca/media-core/media-source-url": [
         "./packages/media-core/src/media-source-url.ts"
       ],
-      "@gabrielvfonseca/media-core/mime": ["./packages/media-core/src/mime.ts"],
+      "@gabrielvfonseca/media-core/mime": [
+        "./packages/media-core/src/mime.ts"
+      ],
       "@gabrielvfonseca/media-core/read-byte-stream-with-limit": [
         "./packages/media-core/src/read-byte-stream-with-limit.ts"
       ],
-      "@gabrielvfonseca/media-core/*": ["./packages/media-core/src/*"],
+      "@gabrielvfonseca/media-core/*": [
+        "./packages/media-core/src/*"
+      ],
       "@gabrielvfonseca/media-understanding-common/*": [
         "./packages/media-understanding-common/src/*"
       ],
-      "@gabrielvfonseca/markdown-core": ["./packages/markdown-core/src/index.ts"],
-      "@gabrielvfonseca/markdown-core/code-spans": ["./packages/markdown-core/src/code-spans.ts"],
-      "@gabrielvfonseca/markdown-core/fences": ["./packages/markdown-core/src/fences.ts"],
-      "@gabrielvfonseca/markdown-core/frontmatter": ["./packages/markdown-core/src/frontmatter.ts"],
-      "@gabrielvfonseca/markdown-core/ir": ["./packages/markdown-core/src/ir.ts"],
-      "@gabrielvfonseca/markdown-core/render": ["./packages/markdown-core/src/render.ts"],
+      "@gabrielvfonseca/markdown-core": [
+        "./packages/markdown-core/src/index.ts"
+      ],
+      "@gabrielvfonseca/markdown-core/code-spans": [
+        "./packages/markdown-core/src/code-spans.ts"
+      ],
+      "@gabrielvfonseca/markdown-core/fences": [
+        "./packages/markdown-core/src/fences.ts"
+      ],
+      "@gabrielvfonseca/markdown-core/frontmatter": [
+        "./packages/markdown-core/src/frontmatter.ts"
+      ],
+      "@gabrielvfonseca/markdown-core/ir": [
+        "./packages/markdown-core/src/ir.ts"
+      ],
+      "@gabrielvfonseca/markdown-core/render": [
+        "./packages/markdown-core/src/render.ts"
+      ],
       "@gabrielvfonseca/markdown-core/render-aware-chunking": [
         "./packages/markdown-core/src/render-aware-chunking.ts"
       ],
-      "@gabrielvfonseca/markdown-core/tables": ["./packages/markdown-core/src/tables.ts"],
-      "@gabrielvfonseca/markdown-core/types": ["./packages/markdown-core/src/types.ts"],
-      "@gabrielvfonseca/markdown-core/*": ["./packages/markdown-core/src/*"],
-      "@gabrielvfonseca/normalization-core": ["./packages/normalization-core/src/index.ts"],
+      "@gabrielvfonseca/markdown-core/tables": [
+        "./packages/markdown-core/src/tables.ts"
+      ],
+      "@gabrielvfonseca/markdown-core/types": [
+        "./packages/markdown-core/src/types.ts"
+      ],
+      "@gabrielvfonseca/markdown-core/*": [
+        "./packages/markdown-core/src/*"
+      ],
+      "@gabrielvfonseca/normalization-core": [
+        "./packages/normalization-core/src/index.ts"
+      ],
       "@gabrielvfonseca/normalization-core/agent-id": [
         "./packages/normalization-core/src/agent-id.ts"
       ],
@@ -142,7 +238,9 @@
       "@gabrielvfonseca/normalization-core/error-coercion": [
         "./packages/normalization-core/src/error-coercion.ts"
       ],
-      "@gabrielvfonseca/normalization-core/expect": ["./packages/normalization-core/src/expect.ts"],
+      "@gabrielvfonseca/normalization-core/expect": [
+        "./packages/normalization-core/src/expect.ts"
+      ],
       "@gabrielvfonseca/normalization-core/number-coercion": [
         "./packages/normalization-core/src/number-coercion.ts"
       ],
@@ -161,46 +259,84 @@
       "@gabrielvfonseca/normalization-core/utf16-slice": [
         "./packages/normalization-core/src/utf16-slice.ts"
       ],
-      "@gabrielvfonseca/normalization-core/*": ["./packages/normalization-core/src/*"],
-      "@gabrielvfonseca/retry": ["./packages/retry/src/index.ts"],
-      "@gabrielvfonseca/workboard-contract": ["./packages/workboard-contract/src/index.ts"],
-      "@gabrielvfonseca/acp-core": ["./packages/acp-core/src/index.ts"],
-      "@gabrielvfonseca/acp-core/meta": ["./packages/acp-core/src/meta.ts"],
-      "@gabrielvfonseca/acp-core/numeric-options": ["./packages/acp-core/src/numeric-options.ts"],
-      "@gabrielvfonseca/acp-core/normalize-text": ["./packages/acp-core/src/normalize-text.ts"],
-      "@gabrielvfonseca/acp-core/record-shared": ["./packages/acp-core/src/record-shared.ts"],
-      "@gabrielvfonseca/acp-core/session": ["./packages/acp-core/src/session.ts"],
+      "@gabrielvfonseca/normalization-core/*": [
+        "./packages/normalization-core/src/*"
+      ],
+      "@gabrielvfonseca/retry": [
+        "./packages/retry/src/index.ts"
+      ],
+      "@gabrielvfonseca/workboard-contract": [
+        "./packages/workboard-contract/src/index.ts"
+      ],
+      "@gabrielvfonseca/acp-core": [
+        "./packages/acp-core/src/index.ts"
+      ],
+      "@gabrielvfonseca/acp-core/meta": [
+        "./packages/acp-core/src/meta.ts"
+      ],
+      "@gabrielvfonseca/acp-core/numeric-options": [
+        "./packages/acp-core/src/numeric-options.ts"
+      ],
+      "@gabrielvfonseca/acp-core/normalize-text": [
+        "./packages/acp-core/src/normalize-text.ts"
+      ],
+      "@gabrielvfonseca/acp-core/record-shared": [
+        "./packages/acp-core/src/record-shared.ts"
+      ],
+      "@gabrielvfonseca/acp-core/session": [
+        "./packages/acp-core/src/session.ts"
+      ],
       "@gabrielvfonseca/acp-core/session-interaction-mode": [
         "./packages/acp-core/src/session-interaction-mode.ts"
       ],
       "@gabrielvfonseca/acp-core/session-lineage-meta": [
         "./packages/acp-core/src/session-lineage-meta.ts"
       ],
-      "@gabrielvfonseca/acp-core/types": ["./packages/acp-core/src/types.ts"],
+      "@gabrielvfonseca/acp-core/types": [
+        "./packages/acp-core/src/types.ts"
+      ],
       "@gabrielvfonseca/acp-core/runtime/error-text": [
         "./packages/acp-core/src/runtime/error-text.ts"
       ],
-      "@gabrielvfonseca/acp-core/runtime/errors": ["./packages/acp-core/src/runtime/errors.ts"],
+      "@gabrielvfonseca/acp-core/runtime/errors": [
+        "./packages/acp-core/src/runtime/errors.ts"
+      ],
       "@gabrielvfonseca/acp-core/runtime/session-identifiers": [
         "./packages/acp-core/src/runtime/session-identifiers.ts"
       ],
       "@gabrielvfonseca/acp-core/runtime/session-identity": [
         "./packages/acp-core/src/runtime/session-identity.ts"
       ],
-      "@gabrielvfonseca/acp-core/runtime/types": ["./packages/acp-core/src/runtime/types.ts"],
-      "@gabrielvfonseca/acp-core/*": ["./packages/acp-core/src/*"],
-      "@gabrielvfonseca/terminal-core": ["./packages/terminal-core/src/index.ts"],
-      "@gabrielvfonseca/terminal-core/ansi": ["./packages/terminal-core/src/ansi.ts"],
+      "@gabrielvfonseca/acp-core/runtime/types": [
+        "./packages/acp-core/src/runtime/types.ts"
+      ],
+      "@gabrielvfonseca/acp-core/*": [
+        "./packages/acp-core/src/*"
+      ],
+      "@gabrielvfonseca/terminal-core": [
+        "./packages/terminal-core/src/index.ts"
+      ],
+      "@gabrielvfonseca/terminal-core/ansi": [
+        "./packages/terminal-core/src/ansi.ts"
+      ],
       "@gabrielvfonseca/terminal-core/decorative-emoji": [
         "./packages/terminal-core/src/decorative-emoji.ts"
       ],
       "@gabrielvfonseca/terminal-core/health-style": [
         "./packages/terminal-core/src/health-style.ts"
       ],
-      "@gabrielvfonseca/terminal-core/links": ["./packages/terminal-core/src/links.ts"],
-      "@gabrielvfonseca/terminal-core/note": ["./packages/terminal-core/src/note.ts"],
-      "@gabrielvfonseca/terminal-core/osc-progress": ["./packages/terminal-core/src/osc-progress.ts"],
-      "@gabrielvfonseca/terminal-core/palette": ["./packages/terminal-core/src/palette.ts"],
+      "@gabrielvfonseca/terminal-core/links": [
+        "./packages/terminal-core/src/links.ts"
+      ],
+      "@gabrielvfonseca/terminal-core/note": [
+        "./packages/terminal-core/src/note.ts"
+      ],
+      "@gabrielvfonseca/terminal-core/osc-progress": [
+        "./packages/terminal-core/src/osc-progress.ts"
+      ],
+      "@gabrielvfonseca/terminal-core/palette": [
+        "./packages/terminal-core/src/palette.ts"
+      ],
       "@gabrielvfonseca/terminal-core/progress-line": [
         "./packages/terminal-core/src/progress-line.ts"
       ],
@@ -213,47 +349,121 @@
       "@gabrielvfonseca/terminal-core/prompt-style": [
         "./packages/terminal-core/src/prompt-style.ts"
       ],
-      "@gabrielvfonseca/terminal-core/restore": ["./packages/terminal-core/src/restore.ts"],
-      "@gabrielvfonseca/terminal-core/safe-text": ["./packages/terminal-core/src/safe-text.ts"],
+      "@gabrielvfonseca/terminal-core/restore": [
+        "./packages/terminal-core/src/restore.ts"
+      ],
+      "@gabrielvfonseca/terminal-core/safe-text": [
+        "./packages/terminal-core/src/safe-text.ts"
+      ],
       "@gabrielvfonseca/terminal-core/stream-writer": [
         "./packages/terminal-core/src/stream-writer.ts"
       ],
-      "@gabrielvfonseca/terminal-core/table": ["./packages/terminal-core/src/table.ts"],
+      "@gabrielvfonseca/terminal-core/table": [
+        "./packages/terminal-core/src/table.ts"
+      ],
       "@gabrielvfonseca/terminal-core/terminal-link": [
         "./packages/terminal-core/src/terminal-link.ts"
       ],
-      "@gabrielvfonseca/terminal-core/theme": ["./packages/terminal-core/src/theme.ts"],
-      "@gabrielvfonseca/terminal-core/*": ["./packages/terminal-core/src/*"],
-      "@gabrielvfonseca/net-policy": ["./packages/net-policy/src/index.ts"],
-      "@gabrielvfonseca/net-policy/ip": ["./packages/net-policy/src/ip.ts"],
-      "@gabrielvfonseca/net-policy/ipv4": ["./packages/net-policy/src/ipv4.ts"],
+      "@gabrielvfonseca/terminal-core/theme": [
+        "./packages/terminal-core/src/theme.ts"
+      ],
+      "@gabrielvfonseca/terminal-core/*": [
+        "./packages/terminal-core/src/*"
+      ],
+      "@gabrielvfonseca/net-policy": [
+        "./packages/net-policy/src/index.ts"
+      ],
+      "@gabrielvfonseca/net-policy/ip": [
+        "./packages/net-policy/src/ip.ts"
+      ],
+      "@gabrielvfonseca/net-policy/ipv4": [
+        "./packages/net-policy/src/ipv4.ts"
+      ],
       "@gabrielvfonseca/net-policy/redact-sensitive-url": [
         "./packages/net-policy/src/redact-sensitive-url.ts"
       ],
-      "@gabrielvfonseca/net-policy/url-protocol": ["./packages/net-policy/src/url-protocol.ts"],
-      "@gabrielvfonseca/net-policy/url-userinfo": ["./packages/net-policy/src/url-userinfo.ts"],
-      "@gabrielvfonseca/net-policy/*": ["./packages/net-policy/src/*"],
+      "@gabrielvfonseca/net-policy/url-protocol": [
+        "./packages/net-policy/src/url-protocol.ts"
+      ],
+      "@gabrielvfonseca/net-policy/url-userinfo": [
+        "./packages/net-policy/src/url-userinfo.ts"
+      ],
+      "@gabrielvfonseca/net-policy/*": [
+        "./packages/net-policy/src/*"
+      ],
       "@gabrielvfonseca/web-content-core/provider-runtime-shared": [
         "./packages/web-content-core/src/provider-runtime-shared.ts"
       ],
-      "@gabrielvfonseca/web-content-core/*": ["./packages/web-content-core/src/*"],
-      "@gabrielvfonseca/speech-core": ["./packages/speech-core/runtime-api.ts"],
-      "@gabrielvfonseca/speech-core/runtime-api": ["./packages/speech-core/runtime-api.ts"],
-      "@gabrielvfonseca/speech-core/speaker": ["./packages/speech-core/speaker.ts"],
-      "@gabrielvfonseca/speech-core/voice-models": ["./packages/speech-core/voice-models.ts"],
-      "@gabrielvfonseca/speech-core/*": ["./packages/speech-core/*"],
-      "@gabrielvfonseca/sdk": ["./packages/sdk/src/index.ts"],
-      "@gabrielvfonseca/plugin-sdk": ["./src/plugin-sdk/index.ts"],
-      "@gabrielvfonseca/plugin-sdk/*": ["./src/plugin-sdk/*.ts"],
-      "operator": ["./src/index.ts"],
-      "operator/plugin-sdk": ["./src/plugin-sdk/index.ts"],
-      "operator/plugin-sdk/*": ["./src/plugin-sdk/*.ts"],
-      "@gabrielvfonseca/operator/plugin-sdk": ["./src/plugin-sdk/index.ts"],
-      "@gabrielvfonseca/operator/plugin-sdk/*": ["./src/plugin-sdk/*.ts"],
-      "@gabrielvfonseca/operator/typescript-config": ["./packages/typescript-config/src/index.ts"],
-      "@gabrielvfonseca/*": ["./extensions/*"]
+      "@gabrielvfonseca/web-content-core/*": [
+        "./packages/web-content-core/src/*"
+      ],
+      "@gabrielvfonseca/speech-core": [
+        "./packages/speech-core/runtime-api.ts"
+      ],
+      "@gabrielvfonseca/speech-core/runtime-api": [
+        "./packages/speech-core/runtime-api.ts"
+      ],
+      "@gabrielvfonseca/speech-core/speaker": [
+        "./packages/speech-core/speaker.ts"
+      ],
+      "@gabrielvfonseca/speech-core/voice-models": [
+        "./packages/speech-core/voice-models.ts"
+      ],
+      "@gabrielvfonseca/speech-core/*": [
+        "./packages/speech-core/*"
+      ],
+      "@gabrielvfonseca/sdk": [
+        "./packages/sdk/src/index.ts"
+      ],
+      "@gabrielvfonseca/plugin-sdk": [
+        "./src/plugin-sdk/index.ts"
+      ],
+      "@gabrielvfonseca/plugin-sdk/*": [
+        "./src/plugin-sdk/*.ts"
+      ],
+      "operator": [
+        "./src/index.ts"
+      ],
+      "@gabrielvfonseca/operator/plugin-sdk": [
+        "./packages/plugin-sdk/src/index.ts"
+      ],
+      "@gabrielvfonseca/operator/plugin-sdk/*": [
+        "./packages/plugin-sdk/src/*.ts"
+      ],
+      "@gabrielvfonseca/operator/typescript-config": [
+        "./packages/typescript-config/src/index.ts"
+      ],
+      "@gabrielvfonseca/*": [
+        "./extensions/*"
+      ],
+      "@operator/fs-safe": [
+        "./packages/fs-safe/*"
+      ],
+      "@operator/libterminal": [
+        "./packages/libterminal/*"
+      ],
+      "@operator/crabline": [
+        "./packages/crabline/*"
+      ],
+      "@operator/proxyline": [
+        "./packages/proxyline/*"
+      ],
+      "@operator/uirouter": [
+        "./packages/uirouter/*"
+      ]
     }
   },
-  "include": ["src/**/*", "ui/**/*", "extensions/**/*", "packages/**/*"],
-  "exclude": ["node_modules", "dist", "**/dist/**"]
+  "include": [
+    "src/**/*",
+    "ui/**/*",
+    "extensions/**/*",
+    "packages/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/dist/**",
+    "**/*.test.ts",
+    "**/*.e2e.test.ts"
+  ]
 }

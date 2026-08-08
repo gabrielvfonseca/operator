@@ -358,7 +358,7 @@ describe("setupPluginConfig", () => {
   });
 
   it("rejects prototype-polluting dotted uiHint paths without mutating config", async () => {
-    const pollutionProbe = "openclawPluginPollutionProbe";
+    const pollutionProbe = "operatorPluginPollutionProbe";
     loadPluginManifestRegistry.mockReturnValue({
       plugins: [
         {

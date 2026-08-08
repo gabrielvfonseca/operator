@@ -136,7 +136,7 @@ vi.mock("../infra/windows-gateway-firewall-diagnostics.js", () => ({
   formatWindowsGatewayFirewallGuidance: (params: { bind?: string }) =>
     params.bind === "lan"
       ? [
-          "Windows firewall: if another device cannot connect to the LAN URL, run `openclaw gateway status --deep` from this Windows host.",
+          "Windows firewall: if another device cannot connect to the LAN URL, run `operator gateway status --deep` from this Windows host.",
         ]
       : [],
 }));
@@ -793,7 +793,7 @@ describe("finalizeSetupWizard", () => {
     expect(launchTuiCli).toHaveBeenCalledWith(expect.objectContaining({ message: undefined }), {});
     expectNoteTitleNotCalled(prompter, "Model auth missing");
     expectNoteNotContains(prompter, "No credentials are configured");
-    expectNoteNotContains(prompter, "openclaw configure --section model");
+    expectNoteNotContains(prompter, "operator configure --section model");
   });
 
   it("hatches without a seed and omits setup advice for an incompatible model route", async () => {
@@ -815,7 +815,7 @@ describe("finalizeSetupWizard", () => {
     expect(launchTuiCli).toHaveBeenCalledWith(expect.objectContaining({ message: undefined }), {});
     expectNoteTitleNotCalled(prompter, "Model auth missing");
     expectNoteNotContains(prompter, "No credentials are configured");
-    expectNoteNotContains(prompter, "openclaw configure --section model");
+    expectNoteNotContains(prompter, "operator configure --section model");
   });
 
   it("does not resend the bootstrap hatch message on setup reruns", async () => {

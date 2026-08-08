@@ -280,7 +280,7 @@ export async function handleOpenAiEmbeddingsHttpRequest(
   if (requestModel !== OPERATOR_MODEL_ID && !resolveAgentIdFromModel(requestModel, cfg)) {
     sendJson(res, 400, {
       error: {
-        message: "Invalid `model`. Use `openclaw` or `openclaw/<agentId>`.",
+        message: "Invalid `model`. Use `operator` or `operator/<agentId>`.",
         type: "invalid_request_error",
       },
     });

@@ -180,10 +180,10 @@ function mockReadGatewayServiceFile(
 }
 
 async function expectExecStartWithoutEnvironment(envFileLine: string) {
-  mockReadGatewayServiceFile(["[Service]", "ExecStart=/usr/bin/openclaw gateway run", envFileLine]);
+  mockReadGatewayServiceFile(["[Service]", "ExecStart=/usr/bin/operator gateway run", envFileLine]);
 
   const command = await readSystemdServiceExecStart({ HOME: TEST_SERVICE_HOME });
-  expect(command?.programArguments).toEqual(["/usr/bin/openclaw", "gateway", "run"]);
+  expect(command?.programArguments).toEqual(["/usr/bin/operator", "gateway", "run"]);
   expect(command?.environment).toBeUndefined();
 }
 
@@ -546,7 +546,7 @@ describe("isSystemdUnitActive", () => {
   });
 });
 
-describe("system-scope gateway unit detection (openclaw#87577)", () => {
+describe("system-scope gateway unit detection (operator#87577)", () => {
   beforeEach(() => {
     vi.restoreAllMocks();
     execFileMock.mockReset();
@@ -674,7 +674,7 @@ describe("system-scope gateway unit detection (openclaw#87577)", () => {
     await expect(
       restartSystemdService({ stdout, env: { HOME: TEST_MANAGED_HOME } }),
     ).rejects.toThrow(
-      /openclaw\.service is a system-scope unit \(\/etc\/systemd\/system\/openclaw\.service\); run `sudo systemctl restart openclaw\.service`/,
+      /operator\.service is a system-scope unit \(\/etc\/systemd\/system\/operator\.service\); run `sudo systemctl restart operator\.service`/,
     );
     expect(execFileMock).not.toHaveBeenCalled();
     expect(write).not.toHaveBeenCalled();
@@ -939,7 +939,7 @@ describe("readSystemdServiceRuntime", () => {
   });
 
   // Regression for #84698: status probes must bound the systemctl subprocess so a
-  // wedged systemd socket cannot hang `openclaw status` (which advertises --timeout).
+  // wedged systemd socket cannot hang `operator status` (which advertises --timeout).
   it("passes a kill-backed timeout to systemctl when a read deadline is set", async () => {
     execFileMock.mockReset();
     execFileMock.mockImplementation((_cmd, _args, _opts, cb) => cb(null, "", ""));
@@ -1044,8 +1044,8 @@ describe("resolveSystemdUserUnitPath", () => {
 
 describe("splitArgsPreservingQuotes", () => {
   it("splits on whitespace outside quotes", () => {
-    expect(splitArgsPreservingQuotes('/usr/bin/openclaw gateway start --name "My Bot"')).toEqual([
-      "/usr/bin/openclaw",
+    expect(splitArgsPreservingQuotes('/usr/bin/operator gateway start --name "My Bot"')).toEqual([
+      "/usr/bin/operator",
       "gateway",
       "start",
       "--name",
@@ -1055,7 +1055,7 @@ describe("splitArgsPreservingQuotes", () => {
 
   it("supports systemd-style backslash escaping", () => {
     expect(
-      splitArgsPreservingQuotes('openclaw --name "My \\"Bot\\"" --foo bar', {
+      splitArgsPreservingQuotes('operator --name "My \\"Bot\\"" --foo bar', {
         escapeMode: "backslash",
       }),
     ).toEqual(["@gabrielvfonseca/operator", "--name", 'My "Bot"', "--foo", "bar"]);
@@ -1063,13 +1063,13 @@ describe("splitArgsPreservingQuotes", () => {
 
   it("supports schtasks-style escaped quotes while preserving other backslashes", () => {
     expect(
-      splitArgsPreservingQuotes('openclaw --path "C:\\\\Program Files\\\\Operator"', {
+      splitArgsPreservingQuotes('operator --path "C:\\\\Program Files\\\\Operator"', {
         escapeMode: "backslash-quote-only",
       }),
     ).toEqual(["@gabrielvfonseca/operator", "--path", "C:\\\\Program Files\\\\Operator"]);
 
     expect(
-      splitArgsPreservingQuotes('openclaw --label "My \\"Quoted\\" Name"', {
+      splitArgsPreservingQuotes('operator --label "My \\"Quoted\\" Name"', {
         escapeMode: "backslash-quote-only",
       }),
     ).toEqual(["@gabrielvfonseca/operator", "--label", 'My "Quoted" Name']);
@@ -1096,9 +1096,9 @@ describe("parseSystemdEnvAssignments", () => {
 
 describe("parseSystemdExecStart", () => {
   it("preserves quoted arguments", () => {
-    const execStart = '/usr/bin/openclaw gateway start --name "My Bot"';
+    const execStart = '/usr/bin/operator gateway start --name "My Bot"';
     expect(parseSystemdExecStart(execStart)).toEqual([
-      "/usr/bin/openclaw",
+      "/usr/bin/operator",
       "gateway",
       "start",
       "--name",
@@ -1114,7 +1114,7 @@ describe("readSystemdServiceExecStart", () => {
 
   it("loads OPERATOR_GATEWAY_TOKEN from EnvironmentFile", async () => {
     const readFileSpy = mockReadGatewayServiceFile(
-      ["[Service]", "ExecStart=/usr/bin/openclaw gateway run", "EnvironmentFile=%h/.operator/.env"],
+      ["[Service]", "ExecStart=/usr/bin/operator gateway run", "EnvironmentFile=%h/.operator/.env"],
       { [`${TEST_SERVICE_HOME}/.operator/.env`]: "OPERATOR_GATEWAY_TOKEN=env-file-token\n" },
     );
 
@@ -1127,7 +1127,7 @@ describe("readSystemdServiceExecStart", () => {
     mockReadGatewayServiceFile(
       [
         "[Service]",
-        "ExecStart=/usr/bin/openclaw gateway run",
+        "ExecStart=/usr/bin/operator gateway run",
         "EnvironmentFile=%h/.operator/.env",
         'Environment="OPERATOR_GATEWAY_TOKEN=inline-token"',
       ],
@@ -1153,7 +1153,7 @@ describe("readSystemdServiceExecStart", () => {
       if (pathValue.endsWith("/operator-gateway.service")) {
         return [
           "[Service]",
-          "ExecStart=/usr/bin/openclaw gateway run",
+          "ExecStart=/usr/bin/operator gateway run",
           'EnvironmentFile=%h/.operator/first.env "%h/.operator/second env.env"',
         ].join("\n");
       }
@@ -1179,7 +1179,7 @@ describe("readSystemdServiceExecStart", () => {
       if (pathValue.endsWith("/operator-gateway.service")) {
         return [
           "[Service]",
-          "ExecStart=/usr/bin/openclaw gateway run",
+          "ExecStart=/usr/bin/operator gateway run",
           "EnvironmentFile=./gateway.env ./override.env",
         ].join("\n");
       }
@@ -1208,7 +1208,7 @@ describe("readSystemdServiceExecStart", () => {
       if (pathValue.endsWith("/operator-gateway.service")) {
         return [
           "[Service]",
-          "ExecStart=/usr/bin/openclaw gateway run",
+          "ExecStart=/usr/bin/operator gateway run",
           "EnvironmentFile=%h/.operator/gateway.env",
         ].join("\n");
       }
@@ -1296,7 +1296,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "gateway", "run"],
+        programArguments: ["/usr/bin/operator", "gateway", "run"],
         workingDirectory: "/tmp",
         environment: {
           OPERATOR_GATEWAY_TOKEN: "dotenv-token",
@@ -1330,7 +1330,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "node", "run"],
+        programArguments: ["/usr/bin/operator", "node", "run"],
         workingDirectory: "/tmp",
         environment: {
           OPERATOR_GATEWAY_TOKEN: "file-backed-token",
@@ -1384,7 +1384,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "node", "run"],
+        programArguments: ["/usr/bin/operator", "node", "run"],
         workingDirectory: "/tmp",
         environment: {
           OPERATOR_GATEWAY_TOKEN: "fresh-file-token",
@@ -1427,7 +1427,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "node", "run"],
+        programArguments: ["/usr/bin/operator", "node", "run"],
         workingDirectory: "/tmp",
         environment: {
           OPERATOR_GATEWAY_PORT: "18789",
@@ -1460,7 +1460,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "gateway", "run"],
+        programArguments: ["/usr/bin/operator", "gateway", "run"],
         workingDirectory: "/tmp",
         environment: {
           LLM_API_KEY: "$SECRET_FROM_SHELL",
@@ -1486,7 +1486,7 @@ describe("stageSystemdService", () => {
         unitPath,
         [
           "[Service]",
-          "ExecStart=/usr/bin/openclaw node run",
+          "ExecStart=/usr/bin/operator node run",
           "Environment=FOO=bar OPERATOR_GATEWAY_TOKEN=inline-token BAZ=qux",
           "Environment=OPERATOR_GATEWAY_TOKEN=token-only-line",
           "Environment='OPERATOR_GATEWAY_TOKEN=single-quoted-token' FROM_SINGLE=kept",
@@ -1501,7 +1501,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "node", "run"],
+        programArguments: ["/usr/bin/operator", "node", "run"],
         workingDirectory: "/tmp",
         environment: {
           OPERATOR_GATEWAY_TOKEN: "fresh-token",
@@ -1543,7 +1543,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "gateway", "run"],
+        programArguments: ["/usr/bin/operator", "gateway", "run"],
         workingDirectory: "/tmp",
         environment: {
           OPERATOR_GATEWAY_TOKEN: "fresh-token",
@@ -1582,7 +1582,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "gateway", "run"],
+        programArguments: ["/usr/bin/operator", "gateway", "run"],
         workingDirectory: "/tmp",
         // Staging manages OPERATOR_GATEWAY_TOKEN inline; OPERATOR_SERVICE_MANAGED_ENV_KEYS
         // marks it as an Operator-managed key so the stale env-file copy is cleared.
@@ -1629,7 +1629,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "gateway", "run"],
+        programArguments: ["/usr/bin/operator", "gateway", "run"],
         workingDirectory: "/tmp",
         environment: { OPERATOR_GATEWAY_PORT: "18789" },
       });
@@ -1661,7 +1661,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "gateway", "run"],
+        programArguments: ["/usr/bin/operator", "gateway", "run"],
         workingDirectory: "/tmp",
         environment: { LLM_API_KEY: "new-value" },
       });
@@ -1692,7 +1692,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "gateway", "run"],
+        programArguments: ["/usr/bin/operator", "gateway", "run"],
         workingDirectory: "/tmp",
         environment: { OPERATOR_GATEWAY_PORT: "18789" },
       });
@@ -1724,7 +1724,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "gateway", "run"],
+        programArguments: ["/usr/bin/operator", "gateway", "run"],
         workingDirectory: "/tmp",
         environment: { OPERATOR_GATEWAY_PORT: "18789" },
       });
@@ -1751,7 +1751,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "gateway", "run"],
+        programArguments: ["/usr/bin/operator", "gateway", "run"],
         workingDirectory: "/tmp",
         environment: { OPERATOR_GATEWAY_PORT: "18789" },
       });
@@ -1786,7 +1786,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "gateway", "run"],
+        programArguments: ["/usr/bin/operator", "gateway", "run"],
         workingDirectory: "/tmp",
         environment: { OPERATOR_GATEWAY_PORT: "18789" },
       });
@@ -1856,7 +1856,7 @@ describe("systemd service install and uninstall", () => {
       await installSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "node", "run"],
+        programArguments: ["/usr/bin/operator", "node", "run"],
         workingDirectory: "/tmp",
         environment: {
           OPERATOR_SYSTEMD_UNIT: "operator-node",
@@ -1865,7 +1865,7 @@ describe("systemd service install and uninstall", () => {
 
       const unit = await fs.readFile(unitPath, "utf8");
       expect(unitPath).toMatch(/operator-node\.service$/);
-      expect(unit).toContain("openclaw node run");
+      expect(unit).toContain("operator node run");
       expect(execFileMock).toHaveBeenCalledTimes(4);
     });
   });
@@ -1905,7 +1905,7 @@ describe("systemd service install and uninstall", () => {
       await installSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "node", "run"],
+        programArguments: ["/usr/bin/operator", "node", "run"],
         workingDirectory: "/tmp",
         environment: {
           OPERATOR_SYSTEMD_UNIT: "operator-node",
@@ -1950,7 +1950,7 @@ describe("systemd service install and uninstall", () => {
       await installSystemdService({
         env: installEnv,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "node", "run"],
+        programArguments: ["/usr/bin/operator", "node", "run"],
         workingDirectory: "/tmp",
         environment: {
           OPERATOR_SYSTEMD_UNIT: "operator-node",
@@ -1996,7 +1996,7 @@ describe("systemd service install and uninstall", () => {
       await installSystemdService({
         env: installEnv,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/openclaw", "node", "run"],
+        programArguments: ["/usr/bin/operator", "node", "run"],
         workingDirectory: "/tmp",
         environment: {
           OPERATOR_SYSTEMD_UNIT: "operator-node",
@@ -2036,7 +2036,7 @@ describe("systemd service install and uninstall", () => {
         installSystemdService({
           env,
           stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-          programArguments: ["/usr/bin/openclaw", "node", "run"],
+          programArguments: ["/usr/bin/operator", "node", "run"],
           workingDirectory: "/tmp",
           environment: {
             OPERATOR_SYSTEMD_UNIT: "operator-node",

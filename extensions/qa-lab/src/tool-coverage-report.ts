@@ -50,7 +50,7 @@ type QaToolCoverageRow = {
   operator: QaToolCoverageStatus;
   codex: QaToolCoverageStatus;
   drift: QaToolCoverageDrift;
-  openclawToolCalls: number;
+  operatorToolCalls: number;
   codexToolCalls: number;
   tracking?: string;
   codexDefaultImpact?: string;
@@ -224,7 +224,7 @@ function buildRow(params: {
     operator: result ? cellStatus(result.cells.operator) : "not-run",
     codex: result ? cellStatus(result.cells.codex) : "not-run",
     drift: result?.drift ?? "not-run",
-    openclawToolCalls: countRuntimeToolCalls(result, "@gabrielvfonseca/operator", runtimeToolName),
+    operatorToolCalls: countRuntimeToolCalls(result, "@gabrielvfonseca/operator", runtimeToolName),
     codexToolCalls: countRuntimeToolCalls(result, "codex", runtimeToolName),
     ...(tracking ? { tracking } : {}),
     ...(rowMetadata.codexDefaultImpact
@@ -244,13 +244,13 @@ function coverageFailureForRow(row: QaToolCoverageRow): string | undefined {
     return `${row.tool} drift=not-run`;
   }
   if (row.operator !== "pass" || row.codex !== "pass") {
-    return `${row.tool} status openclaw=${row.operator} codex=${row.codex}`;
+    return `${row.tool} status operator=${row.operator} codex=${row.codex}`;
   }
   if (row.drift === "failure-mode") {
     return `${row.tool} drift=failure-mode${row.details ? ` (${row.details})` : ""}`;
   }
   if (row.runtimeToolName && row.operatorToolCalls === 0) {
-    return `${row.tool} missing openclaw tool call ${row.runtimeToolName}`;
+    return `${row.tool} missing operator tool call ${row.runtimeToolName}`;
   }
   if (row.runtimeToolName && row.codexToolCalls === 0) {
     return `${row.tool} missing codex tool call ${row.runtimeToolName}`;

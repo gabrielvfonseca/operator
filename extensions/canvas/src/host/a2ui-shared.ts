@@ -142,7 +142,7 @@ export function injectCanvasRuntime(html: string, options: { liveReload?: boolea
   // Works on:
   // - iOS: window.webkit.messageHandlers.operatorCanvasA2UIAction.postMessage(...)
   // - Android: window.operatorCanvasA2UIAction.postMessage(...)
-  const handlerNames = ["openclawCanvasA2UIAction"];
+  const handlerNames = ["operatorCanvasA2UIAction"];
   function createActionId() {
     const crypto = globalThis.crypto;
     if (typeof crypto?.randomUUID === "function") return crypto.randomUUID();

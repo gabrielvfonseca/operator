@@ -96,11 +96,11 @@ vi.mock("ws", () => ({
   default: FakeWebSocket,
 }));
 
-vi.mock("openclaw/plugin-sdk/ssrf-runtime", () => ({
+vi.mock("operator/plugin-sdk/ssrf-runtime", () => ({
   fetchWithSsrFGuard: fetchWithSsrFGuardMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/provider-auth", () => ({
+vi.mock("operator/plugin-sdk/provider-auth", () => ({
   isProviderAuthProfileConfigured: isProviderAuthProfileConfiguredMock,
   resolveProviderAuthProfileApiKey: resolveProviderAuthProfileApiKeyMock,
 }));
@@ -341,7 +341,7 @@ describe("buildOpenAIRealtimeVoiceProvider", () => {
     expectRecordFields(options?.headers, "websocket headers", {
       originator: "@gabrielvfonseca/operator",
       version: "2026.3.22",
-      "User-Agent": "openclaw/2026.3.22",
+      "User-Agent": "operator/2026.3.22",
     });
     expect(options?.headers).not.toHaveProperty("OpenAI-Beta");
     expect(options?.maxPayload).toBe(16 * 1024 * 1024);
@@ -526,7 +526,7 @@ describe("buildOpenAIRealtimeVoiceProvider", () => {
       "Content-Type": "application/json",
       originator: "@gabrielvfonseca/operator",
       version: "2026.3.22",
-      "User-Agent": "openclaw/2026.3.22",
+      "User-Agent": "operator/2026.3.22",
     });
     const body = requireFetchJsonBody();
     const bodySession = requireRecord(body.session, "fetch session");

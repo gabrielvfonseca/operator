@@ -1,9 +1,9 @@
 // Memory Core helper module supports test helpers behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { OpenKeyedStoreOptions } from "openclaw/plugin-sdk/plugin-state-runtime";
-import { createPluginStateKeyedStoreForTests } from "openclaw/plugin-sdk/plugin-state-test-runtime";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+import type { OpenKeyedStoreOptions } from "operator/plugin-sdk/plugin-state-runtime";
+import { createPluginStateKeyedStoreForTests } from "operator/plugin-sdk/plugin-state-test-runtime";
+import { resolvePreferredOperatorTmpDir } from "operator/plugin-sdk/temp-path";
 import { afterAll, beforeAll } from "vitest";
 import { normalizeDailyIngestionState, normalizeSessionIngestionState } from "./dreaming-phases.js";
 import {

@@ -1,5 +1,5 @@
 #!/usr/bin/env -S node --import tsx
-// operator Npm Release Check script supports Operator repository automation.
+// Openclaw Npm Release Check script supports Operator repository automation.
 
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -64,7 +64,7 @@ type NpmDistTagMirrorAuth = {
 };
 const EXPECTED_REPOSITORY_URL = "https://github.com/operator/operator";
 const OPTIONAL_LOCAL_EMBEDDING_RUNTIME_PACKAGE = "node-llama-cpp";
-const FS_SAFE_PACKAGE = "@openclaw/fs-safe";
+const FS_SAFE_PACKAGE = "@operator/fs-safe";
 const REQUIRED_PACKED_PATHS = [
   "npm-shrinkwrap.json",
   PACKAGE_DIST_INVENTORY_RELATIVE_PATH,
@@ -354,8 +354,10 @@ export function collectReleasePackageMetadataErrors(pkg: PackageJson): string[] 
   );
   const errors: string[] = [];
 
-  if (pkg.name !== "operator") {
-    errors.push(`package.json name must be "operator"; found "${pkg.name ?? ""}".`);
+  if (pkg.name !== "@gabrielvfonseca/operator") {
+    errors.push(
+      `package.json name must be "@gabrielvfonseca/operator"; found "${pkg.name ?? ""}".`,
+    );
   }
   if (!pkg.description?.trim()) {
     errors.push("package.json description must be non-empty.");

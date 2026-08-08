@@ -12,7 +12,7 @@ import { managedWorktrees } from "../../src/agents/worktrees/service.js";
 import { upsertSqliteSessionEntry } from "../../src/config/sessions/session-accessor.sqlite.js";
 import { clearSessionStoreCacheForTest } from "../../src/config/sessions/store.js";
 import type { OperatorConfig } from "../../src/config/types.operator.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { testing as agentCommandTesting } from "../../src/commands/agent.js";
 import { createThrowingTestRuntime } from "../../src/commands/test-runtime-config-helpers.js";
 

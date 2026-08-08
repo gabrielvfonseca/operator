@@ -12,12 +12,12 @@ const mocks = vi.hoisted(() => ({
   resolveAuthProfileDisplayLabel: vi.fn(({ profileId }: { profileId: string }) => profileId),
   resolveModelsTargetAgent: vi.fn((_cfg: OperatorConfig, rawAgentId?: string) => {
     const agentId = rawAgentId ?? "main";
-    return { agentDir: `/tmp/openclaw/agents/${agentId}`, agentId };
+    return { agentDir: `/tmp/operator/agents/${agentId}`, agentId };
   }),
 }));
 
 vi.mock("../../agents/agent-scope.js", () => ({
-  resolveAgentDir: (_cfg: OperatorConfig, agentId: string) => `/tmp/openclaw/agents/${agentId}`,
+  resolveAgentDir: (_cfg: OperatorConfig, agentId: string) => `/tmp/operator/agents/${agentId}`,
   resolveDefaultAgentId: () => "main",
 }));
 
@@ -100,9 +100,9 @@ describe("modelsAuthListCommand", () => {
     });
     expect(runtime.jsonPayloads).toStrictEqual([
       {
-        agentDir: "/tmp/openclaw/agents/coder",
+        agentDir: "/tmp/operator/agents/coder",
         agentId: "coder",
-        authStatePath: "/tmp/openclaw/agents/coder/operator-agent.sqlite",
+        authStatePath: "/tmp/operator/agents/coder/operator-agent.sqlite",
         profiles: [
           {
             cooldownUntil: "2027-01-15T08:00:10.000Z",
@@ -155,9 +155,9 @@ describe("modelsAuthListCommand", () => {
     });
     expect(runtime.jsonPayloads).toStrictEqual([
       {
-        agentDir: "/tmp/openclaw/agents/main",
+        agentDir: "/tmp/operator/agents/main",
         agentId: "main",
-        authStatePath: "/tmp/openclaw/agents/main/operator-agent.sqlite",
+        authStatePath: "/tmp/operator/agents/main/operator-agent.sqlite",
         profiles: [
           {
             id: "openai:api-key-backup",
@@ -188,7 +188,7 @@ describe("modelsAuthListCommand", () => {
 
     expect(runtime.logs).toEqual([
       "Agent: main",
-      "Auth state store: /tmp/openclaw/agents/main/operator-agent.sqlite",
+      "Auth state store: /tmp/operator/agents/main/operator-agent.sqlite",
       "Profiles: (none)",
     ]);
   });
@@ -219,9 +219,9 @@ describe("modelsAuthListCommand", () => {
 
     expect(runtime.jsonPayloads).toStrictEqual([
       {
-        agentDir: "/tmp/openclaw/agents/main",
+        agentDir: "/tmp/operator/agents/main",
         agentId: "main",
-        authStatePath: "/tmp/openclaw/agents/main/operator-agent.sqlite",
+        authStatePath: "/tmp/operator/agents/main/operator-agent.sqlite",
         profiles: [
           {
             email: "user@example.com",

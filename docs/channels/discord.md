@@ -807,7 +807,7 @@ See [Slash commands](/tools/slash-commands) for the command catalog and behavior
             agent: "codex",
             backend: "acpx",
             mode: "persistent",
-            cwd: "/workspace/openclaw",
+            cwd: "/workspace/operator",
           },
         },
       },
@@ -1050,7 +1050,7 @@ See [Slash commands](/tools/slash-commands) for the command catalog and behavior
     discord: {
       activity: "Live coding",
       activityType: 1,
-      activityUrl: "https://twitch.tv/openclaw",
+      activityUrl: "https://twitch.tv/operator",
     },
   },
 }

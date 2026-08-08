@@ -16,7 +16,7 @@ describe("buildPlatformRuntimeLogHints", () => {
         windowsTaskName: "Operator Gateway",
       }),
     ).toEqual([
-      "Launchd stdout (if installed): /Users/test/Library/Logs/openclaw/gateway.log",
+      "Launchd stdout (if installed): /Users/test/Library/Logs/operator/gateway.log",
       "Launchd stderr (if installed): suppressed",
       "Restart attempts: /tmp/operator-state/logs/gateway-restart.log",
     ]);
@@ -57,29 +57,29 @@ describe("buildPlatformServiceStartHints", () => {
     expect(
       buildPlatformServiceStartHints({
         platform: "darwin",
-        installCommand: "openclaw gateway install",
-        startCommand: "openclaw gateway",
+        installCommand: "operator gateway install",
+        startCommand: "operator gateway",
         launchAgentPlistPath: "~/Library/LaunchAgents/com.operator.gateway.plist",
         systemdServiceName: "operator-gateway",
         windowsTaskName: "Operator Gateway",
       }),
     ).toEqual([
-      "openclaw gateway install",
-      "openclaw gateway",
+      "operator gateway install",
+      "operator gateway",
       "launchctl bootstrap gui/$UID ~/Library/LaunchAgents/com.operator.gateway.plist",
     ]);
     expect(
       buildPlatformServiceStartHints({
         platform: "linux",
-        installCommand: "openclaw gateway install",
-        startCommand: "openclaw gateway",
+        installCommand: "operator gateway install",
+        startCommand: "operator gateway",
         launchAgentPlistPath: "~/Library/LaunchAgents/com.operator.gateway.plist",
         systemdServiceName: "operator-gateway",
         windowsTaskName: "Operator Gateway",
       }),
     ).toEqual([
-      "openclaw gateway install",
-      "openclaw gateway",
+      "operator gateway install",
+      "operator gateway",
       "systemctl --user start operator-gateway.service",
     ]);
   });

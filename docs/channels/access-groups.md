@@ -163,7 +163,7 @@ More Discord-specific examples: [Discord access control](/channels/discord#acces
 Plugin authors can inspect structured access-group state without expanding it back into a flat allowlist:
 
 ```typescript
-import { resolveAccessGroupAllowFromState } from "openclaw/plugin-sdk/access-groups";
+import { resolveAccessGroupAllowFromState } from "operator/plugin-sdk/access-groups";
 
 const state = await resolveAccessGroupAllowFromState({
   accessGroups: cfg.accessGroups,

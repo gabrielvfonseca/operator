@@ -8,8 +8,8 @@ import { writeAcpSessionMetaForMigration } from "../../src/acp/runtime/session-m
 import { resolveStorePath, type SessionEntry } from "../../src/config/sessions.js";
 import { replaceSessionEntry } from "../../src/config/sessions/session-accessor.js";
 import type { OperatorConfig } from "../../src/config/types.operator.js";
-import { closeOperatorAgentDatabasesForTest } from "../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { withStateDirEnv as withRawStateDirEnv } from "../../src/test-helpers/state-dir-env.js";
 import { resolveSessionKeyFromResolveParams } from "../../src/gateway/sessions-resolve.js";
 

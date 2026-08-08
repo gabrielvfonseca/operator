@@ -32,7 +32,7 @@ describe("managed npm plugin install paths", () => {
       String.raw`C:\Users\Administrator\.operator\npm\projects`,
       projectName,
       "node_modules",
-      "@openclaw",
+      "@operator",
       "codex",
       "node_modules",
       "@openai",
@@ -48,7 +48,7 @@ describe("managed npm plugin install paths", () => {
   it("keeps generation project names under the recoverable package prefix", () => {
     const packageName = "@gabrielvfonseca/codex";
     const projectDir = resolvePluginNpmGenerationProjectDir({
-      npmDir: "/tmp/openclaw/npm",
+      npmDir: "/tmp/operator/npm",
       packageName,
       generationKey: "codex-v2",
     });

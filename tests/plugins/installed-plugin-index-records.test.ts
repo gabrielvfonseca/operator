@@ -8,7 +8,7 @@ import type { PluginInstallRecord } from "../../src/config/types.plugins.js";
 import {
   closeOperatorStateDatabaseForTest,
   runOperatorStateWriteTransaction,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import { withMockedWindowsPlatform } from "../../src/test-utils/vitest-spies.js";
 import type { PluginCandidate } from "../../src/plugins/discovery.js";
 import {
@@ -390,7 +390,7 @@ describe("plugin index install records store", () => {
 
   it("keeps persisted install record metadata over recovered npm records", async () => {
     const stateDir = makeStateDir();
-    const customInstallPath = path.join(stateDir, "custom", "node_modules", "@openclaw", "discord");
+    const customInstallPath = path.join(stateDir, "custom", "node_modules", "@operator", "discord");
     writeManagedNpmPlugin({
       stateDir,
       packageName: "@gabrielvfonseca/discord",

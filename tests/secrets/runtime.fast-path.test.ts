@@ -10,7 +10,7 @@ import { clearConfigCache, clearRuntimeConfigSnapshot } from "../../src/config/c
 import { resolveOAuthPath } from "../../src/config/paths.js";
 import { createEmptyPluginRegistry } from "../../src/plugins/registry-empty.js";
 import { setActivePluginRegistry } from "../../src/plugins/runtime.js";
-import { closeOperatorAgentDatabasesForTest } from "../../src/state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../src/state/operator-agent-db.js";
 import { clearSecretsRuntimeSnapshot } from "../../src/secrets/runtime.js";
 import { asConfig } from "../../src/secrets/runtime.test-support.js";
 

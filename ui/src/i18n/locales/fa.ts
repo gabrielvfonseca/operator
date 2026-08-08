@@ -2319,7 +2319,7 @@ export const fa: TranslationMap = {
       onboardingTitle: "No workspaces yet",
       onboardingSubtitle:
         "Ask your agent to build a workspace, or create one from the command line.",
-      onboardingCommand: "openclaw workspaces tabs create --title Main",
+      onboardingCommand: "operator workspaces tabs create --title Main",
       tabTitle: "This workspace is empty",
       tabSubtitle: "Ask your agent to add a widget, or add one yourself.",
       noVisibleTabs: "Every workspace tab is hidden. Restore one from the hidden menu.",
@@ -3250,9 +3250,9 @@ export const fa: TranslationMap = {
         summary:
           "Gateway در دسترس است، اما قبل از اتصال این مرورگر به یک توکن یا گذرواژه منطبق نیاز دارد.",
         stepPaste:
-          "توکن openclaw dashboard --no-open را جای گذاری کنید یا گذرواژه پیکربندی شده را وارد کنید.",
+          "توکن operator dashboard --no-open را جای گذاری کنید یا گذرواژه پیکربندی شده را وارد کنید.",
         stepGenerate:
-          "اگر توکنی پیکربندی نشده است، openclaw doctor --generate-gateway-token را روی میزبان Gateway اجرا کنید.",
+          "اگر توکنی پیکربندی نشده است، operator doctor --generate-gateway-token را روی میزبان Gateway اجرا کنید.",
         stepConnect: "پس از به روز کردن اعتبارنامه، دوباره روی Connect کلیک کنید.",
       },
       authFailed: {
@@ -3260,7 +3260,7 @@ export const fa: TranslationMap = {
         summary:
           "اعتبارنامه ارائه شده رد شد. رایج ترین علت، توکن قدیمی یا توکنی است که از URL یک Gateway دیگر کپی شده است.",
         stepDashboard:
-          "openclaw dashboard --no-open را اجرا کنید و URL تازه را باز کنید یا توکن آن را جای گذاری کنید.",
+          "operator dashboard --no-open را اجرا کنید و URL تازه را باز کنید یا توکن آن را جای گذاری کنید.",
         stepReplace:
           "مقادیر قدیمی توکن/گذرواژه را جایگزین کنید؛ از توکن URL یک Gateway دیگر دوباره استفاده نکنید.",
         stepMode:
@@ -3284,8 +3284,8 @@ export const fa: TranslationMap = {
           "این مرورگر قبل از استفاده از Control UI به تأیید یک باره از میزبان Gateway نیاز دارد.",
         upgradeSummary:
           "این مرورگر از قبل شناخته شده است، اما دسترسی درخواستی تغییر کرده و به تأیید تازه نیاز دارد.",
-        stepList: "openclaw devices list را روی میزبان Gateway اجرا کنید.",
-        stepApproveId: "این درخواست را تأیید کنید: openclaw devices approve {requestId}.",
+        stepList: "operator devices list را روی میزبان Gateway اجرا کنید.",
+        stepApproveId: "این درخواست را تأیید کنید: operator devices approve {requestId}.",
         stepApprove: "درخواست در انتظار مرورگر/دستگاه را از آن فهرست تأیید کنید.",
         stepReconnect: "پس از تکمیل تأیید، دوباره وصل شوید.",
       },
@@ -3313,7 +3313,7 @@ export const fa: TranslationMap = {
         summary:
           "Control UI سرو شده و Gateway در حال اجرا درباره پروتکل اتصال پشتیبانی شده توافق ندارند.",
         stepDashboard:
-          "داشبورد سرو شده را با openclaw dashboard دوباره باز کنید تا UI و Gateway از همان نصب باشند.",
+          "داشبورد سرو شده را با operator dashboard دوباره باز کنید تا UI و Gateway از همان نصب باشند.",
         stepDevUi:
           "اگر از pnpm ui:dev استفاده می کنید، UI توسعه را بر اساس checkout فعلی دوباره بسازید یا راه اندازی کنید.",
         stepRestart:
@@ -3324,11 +3324,11 @@ export const fa: TranslationMap = {
         summary:
           "مرورگر نتوانست اتصال Gateway را کامل کند. پیش از تلاش دوباره با اعتبارنامه ها، هدف و انتقال را بررسی کنید.",
         stepGateway:
-          "با openclaw status یا openclaw gateway run تأیید کنید که Gateway در حال اجرا است.",
+          "با operator status یا operator gateway run تأیید کنید که Gateway در حال اجرا است.",
         stepUrl:
           "URL WebSocket را بررسی کنید و وقتی Gateway پشت HTTPS/Tailscale Serve است از wss:// استفاده کنید.",
         stepDashboard:
-          "داشبورد را با openclaw dashboard --no-open دوباره باز کنید تا URL و جزئیات احراز هویت فعلی را دوباره کپی کنید.",
+          "داشبورد را با operator dashboard --no-open دوباره باز کنید تا URL و جزئیات احراز هویت فعلی را دوباره کپی کنید.",
       },
     },
   },

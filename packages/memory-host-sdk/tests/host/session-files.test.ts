@@ -5,7 +5,7 @@ import path from "node:path";
 import {
   clearConfigCache,
   clearRuntimeConfigSnapshot,
-} from "openclaw/plugin-sdk/runtime-config-snapshot";
+} from "operator/plugin-sdk/runtime-config-snapshot";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import {
   persistSessionTranscriptTurn,
@@ -454,7 +454,7 @@ describe("listSessionTranscriptCorpusEntriesForAgent", () => {
     const sessionsDir = path.join(tmpDir, "custom-sessions");
     const sessionFile = path.join(sessionsDir, "custom-thread.jsonl");
     const storePath = path.join(sessionsDir, "sessions.json");
-    const configPath = path.join(tmpDir, "openclaw.json");
+    const configPath = path.join(tmpDir, "operator.json");
     fsSync.mkdirSync(sessionsDir, { recursive: true });
     fsSync.writeFileSync(sessionFile, "");
     fsSync.writeFileSync(configPath, JSON.stringify({ session: { store: storePath } }));
@@ -476,7 +476,7 @@ describe("listSessionTranscriptCorpusEntriesForAgent", () => {
   it("keeps unowned archives from an agent-owned fixed session store", async () => {
     const sessionsDir = path.join(tmpDir, "agents", "main", "sessions");
     const archivePath = path.join(sessionsDir, "retained.jsonl.deleted.2026-02-16T22-27-33.000Z");
-    const configPath = path.join(tmpDir, "openclaw.json");
+    const configPath = path.join(tmpDir, "operator.json");
     fsSync.mkdirSync(sessionsDir, { recursive: true });
     fsSync.writeFileSync(archivePath, "");
     fsSync.writeFileSync(path.join(sessionsDir, "sessions.json"), "{}");
@@ -508,7 +508,7 @@ describe("listSessionTranscriptCorpusEntriesForAgent", () => {
       "absolute-thread.jsonl.deleted.2026-02-16T22-27-33.000Z",
     );
     const storePath = path.join(storeDir, "sessions.json");
-    const configPath = path.join(tmpDir, "openclaw.json");
+    const configPath = path.join(tmpDir, "operator.json");
     fsSync.mkdirSync(storeDir, { recursive: true });
     fsSync.mkdirSync(sessionsDir, { recursive: true });
     fsSync.writeFileSync(sessionFile, "");
@@ -550,7 +550,7 @@ describe("listSessionTranscriptCorpusEntriesForAgent", () => {
   it("keeps legacy main aliases in a renamed default agent store", async () => {
     const sessionsDir = path.join(tmpDir, "agents", "ops", "sessions");
     const sessionFile = path.join(sessionsDir, "legacy-main.jsonl");
-    const configPath = path.join(tmpDir, "openclaw.json");
+    const configPath = path.join(tmpDir, "operator.json");
     fsSync.mkdirSync(sessionsDir, { recursive: true });
     fsSync.writeFileSync(sessionFile, "");
     fsSync.writeFileSync(
@@ -683,7 +683,7 @@ describe("buildSessionEntry", () => {
     // Line 7: user message
     const jsonlLines = [
       JSON.stringify({ type: "custom", customType: "model-snapshot", data: {} }),
-      JSON.stringify({ type: "custom", customType: "openclaw.cache-ttl", data: {} }),
+      JSON.stringify({ type: "custom", customType: "operator.cache-ttl", data: {} }),
       JSON.stringify({ type: "session-meta", agentId: "test" }),
       JSON.stringify({ type: "message", message: { role: "user", content: "Hello world" } }),
       JSON.stringify({ type: "custom", customType: "tool-result", data: {} }),

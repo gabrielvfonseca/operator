@@ -14,7 +14,7 @@ describe("scripts/test-live-models-docker.sh", () => {
     expect(script).toContain('LIVE_MAX_MODELS="${OPENCLAW_LIVE_MAX_MODELS:-}"');
     expect(script).toContain('[[ -n "$LIVE_MAX_MODELS" && ! "$LIVE_MAX_MODELS" =~ ^\\+?[0-9]+$ ]]');
     expect(script).toContain(
-      'openclaw_live_read_positive_int_env OPENCLAW_LIVE_MODEL_TIMEOUT_MS "$LIVE_MODEL_TIMEOUT_MS"',
+      'operator_live_read_positive_int_env OPENCLAW_LIVE_MODEL_TIMEOUT_MS "$LIVE_MODEL_TIMEOUT_MS"',
     );
     expect(script).toContain('-e OPENCLAW_LIVE_MAX_MODELS="$LIVE_MAX_MODELS"');
     expect(script).toContain('-e OPENCLAW_LIVE_MODEL_TIMEOUT_MS="$LIVE_MODEL_TIMEOUT_MS"');

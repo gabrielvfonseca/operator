@@ -2,7 +2,7 @@
 // bypass, and concurrent drain suppression.
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../../../src/config/config.js";
-import { openOperatorStateDatabase } from "../../../src/state/openclaw-state-db.js";
+import { openOperatorStateDatabase } from "../../../src/state/operator-state-db.js";
 import { loadPendingDeliveries } from "../../../src/infra/outbound/delivery-queue-storage.js";
 import {
   type DeliverFn,
@@ -522,7 +522,7 @@ describe("drainPendingDeliveries for reconnect", () => {
   });
 
   it("skips entries that an in-flight live delivery has actively claimed", async () => {
-    // Regression for openclaw/openclaw#70386: a reconnect drain that runs
+    // Regression for operator/operator#70386: a reconnect drain that runs
     // while the live send is still writing to the adapter must not re-drive
     // the same entry. The live delivery path holds an in-memory active claim
     // for `queueId` across its send; drain honors that claim via the same

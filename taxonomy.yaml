@@ -1011,7 +1011,7 @@ surfaces:
             description: "`operator.plugin.json` declares plugin identity, capabilities, and config schema."
           - name: Package metadata
             coverageIds: [plugins.package-metadata]
-            description: "`package.json` carries the required `openclaw` metadata for discovery and release flows."
+            description: "`package.json` carries the required `operator` metadata for discovery and release flows."
           - name: Runtime compatibility
             coverageIds: [plugins.runtime-compatibility]
             description: Plugin packages declare supported runtime and plugin API compatibility.
@@ -4336,7 +4336,7 @@ surfaces:
             description: Dependency ownership between plugin packages and Operator
           - name: Peer dependency relinking
             coverageIds: [clawhub.peer-dependency-relinking]
-            description: Peer dependency relinking for openclaw/plugin-sdk/*
+            description: Peer dependency relinking for operator/plugin-sdk/*
           - name: Legacy dependency root cleanup
             coverageIds: [clawhub.legacy-dependency-root-cleanup]
             description: Legacy dependency root cleanup and doctor repair
@@ -4588,7 +4588,7 @@ surfaces:
       status: complete
       completed_at: "2026-06-01"
       by: codex
-      source_ref: openclaw@29dd7847fd
+      source_ref: operator@29dd7847fd
       process_version: 3
   - id: macos-gateway-host
     name: macOS Gateway host
@@ -6934,7 +6934,7 @@ surfaces:
       status: complete
       completed_at: "2026-06-01"
       by: codex
-      source_ref: openclaw@29dd7847fd
+      source_ref: operator@29dd7847fd
       process_version: 3
   - id: nix-install-path
     name: Nix install path
@@ -6949,16 +6949,16 @@ surfaces:
         features:
           - name: Nix install overview
             coverageIds: [nix.install-overview]
-            description: Covers Nix install overview across public Nix install page, install index discoverability, docs navigation, and the handoff to the first-party `nix-openclaw` Home Manager module. It excludes the actual external `openclaw/nix-openclaw` repository implementation, and related public nix docs and nix-operator handoff behavior.
+            description: Covers Nix install overview across public Nix install page, install index discoverability, docs navigation, and the handoff to the first-party `nix-operator` Home Manager module. It excludes the actual external `operator/nix-operator` repository implementation, and related public nix docs and nix-operator handoff behavior.
           - name: nix-operator source-of-truth
             coverageIds: [nix.operator-source-of-truth]
-            description: Covers nix-operator source-of-truth across public Nix install page, install index discoverability, docs navigation, and the handoff to the first-party `nix-openclaw` Home Manager module. It excludes the actual external `openclaw/nix-openclaw` repository implementation, and related public nix docs and nix-operator handoff behavior.
+            description: Covers nix-operator source-of-truth across public Nix install page, install index discoverability, docs navigation, and the handoff to the first-party `nix-operator` Home Manager module. It excludes the actual external `operator/nix-operator` repository implementation, and related public nix docs and nix-operator handoff behavior.
           - name: Install discoverability
             coverageIds: [nix.install-discoverability]
-            description: Covers Install discoverability across public Nix install page, install index discoverability, docs navigation, and the handoff to the first-party `nix-openclaw` Home Manager module. It excludes the actual external `openclaw/nix-openclaw` repository implementation, and related public nix docs and nix-operator handoff behavior.
+            description: Covers Install discoverability across public Nix install page, install index discoverability, docs navigation, and the handoff to the first-party `nix-operator` Home Manager module. It excludes the actual external `operator/nix-operator` repository implementation, and related public nix docs and nix-operator handoff behavior.
           - name: Verification handoff
             coverageIds: [nix.verification-handoff]
-            description: Covers Verification handoff across public Nix install page, install index discoverability, docs navigation, and the handoff to the first-party `nix-openclaw` Home Manager module. It excludes the actual external `openclaw/nix-openclaw` repository implementation, and related public nix docs and nix-operator handoff behavior.
+            description: Covers Verification handoff across public Nix install page, install index discoverability, docs navigation, and the handoff to the first-party `nix-operator` Home Manager module. It excludes the actual external `operator/nix-operator` repository implementation, and related public nix docs and nix-operator handoff behavior.
         docs:
           - docs/install/nix.md
           - docs/install/index.md

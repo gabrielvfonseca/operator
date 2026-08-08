@@ -18,9 +18,9 @@ vi.mock("./proxy.js", () => ({
 
 // readResponseWithLimit requires a real Response body; pass-through so existing plain-object
 // fetch mocks continue to work. The size-cap behavior is verified by the proof script.
-vi.mock("openclaw/plugin-sdk/response-limit-runtime", async (importOriginal) => {
+vi.mock("operator/plugin-sdk/response-limit-runtime", async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import("openclaw/plugin-sdk/response-limit-runtime")>();
+    await importOriginal<typeof import("operator/plugin-sdk/response-limit-runtime")>();
   return {
     ...actual,
     readResponseWithLimit: async (response: Response) => {

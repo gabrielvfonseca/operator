@@ -201,7 +201,7 @@ function formatLegacyClawdBrowserProfileResidueNote(
   return [
     `- Legacy managed browser profile residue was found at ${residue.legacyProfileDir}.`,
     `- The canonical Operator-managed browser profile is ${residue.canonicalUserDataDir}.`,
-    `- If no browser is using the legacy profile, run ${formatCliCommand("openclaw doctor --fix")} to archive it safely instead of deleting it in place.`,
+    `- If no browser is using the legacy profile, run ${formatCliCommand("operator doctor --fix")} to archive it safely instead of deleting it in place.`,
   ].join("\n");
 }
 

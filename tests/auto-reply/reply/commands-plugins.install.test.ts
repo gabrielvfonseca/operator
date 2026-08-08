@@ -829,7 +829,7 @@ describe("handleCommands /plugins install", () => {
       expect(result.reply?.text).toContain("scan=suspicious");
       expect(result.reply?.text).toContain("payload_string");
       expect(result.reply?.text).toContain("--acknowledge-clawhub-risk");
-      expect(result.reply?.text).toContain("local openclaw plugins install command");
+      expect(result.reply?.text).toContain("local operator plugins install command");
       expect(result.reply?.text).toContain("trusted shell");
       const installParams = mockFirstObjectArg(installPluginFromClawHubMock);
       expectObjectFields(installParams, {
@@ -884,7 +884,7 @@ describe("handleCommands /plugins install", () => {
         }
 
         expect(result.reply?.text).toContain("OPERATOR_NIX_MODE=1");
-        expect(result.reply?.text).toContain("nix-openclaw#quick-start");
+        expect(result.reply?.text).toContain("nix-operator#quick-start");
         expect(installPluginFromNpmSpecMock).not.toHaveBeenCalled();
         expect(installPluginFromPathMock).not.toHaveBeenCalled();
         expect(installPluginFromClawHubMock).not.toHaveBeenCalled();

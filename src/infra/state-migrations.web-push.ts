@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
 import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
-import { root, type Root } from "@openclaw/fs-safe";
+import { root, type Root } from "@operator/fs-safe";
 import { formatErrorMessage } from "./errors.js";
 import { acquireGatewayLock, GatewayLockError } from "./gateway-lock.js";
 import {
@@ -28,7 +28,7 @@ import {
   type WebPushSubscription,
 } from "./push-web-store.js";
 import type { LegacyStateDetection, MigrationMessages } from "./state-migrations.types.js";
-import { runOperatorStateWriteTransaction } from "../state/openclaw-state-db.js";
+import { runOperatorStateWriteTransaction } from "../state/operator-state-db.js";
 
 const LEGACY_SUBSCRIPTIONS_MAX_BYTES = 4 * 1024 * 1024;
 const LEGACY_VAPID_KEYS_MAX_BYTES = 64 * 1024;
@@ -698,7 +698,7 @@ export async function migrateLegacyWebPush(params: {
     return {
       changes: [],
       warnings: [
-        `Failed migrating legacy Web Push state: ${detail}. Stop the Gateway and run \`openclaw doctor --fix\` again.`,
+        `Failed migrating legacy Web Push state: ${detail}. Stop the Gateway and run \`operator doctor --fix\` again.`,
       ],
     };
   }

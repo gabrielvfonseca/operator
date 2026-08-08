@@ -79,7 +79,7 @@ describe("plugin runtime symlink health findings", () => {
         path: staleLink,
         target: staleLink,
         requirement: "stale-plugin-runtime-symlink-removed",
-        fixHint: "Run `openclaw doctor --fix` to remove stale plugin-runtime symlinks.",
+        fixHint: "Run `operator doctor --fix` to remove stale plugin-runtime symlinks.",
       },
     ]);
     await expectSymlinkPresent(staleLink);

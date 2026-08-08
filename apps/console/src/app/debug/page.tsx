@@ -2,8 +2,6 @@
 
 import { PageHeader, LoadingState, ErrorState } from "@/components/page.tsx";
 import { useGatewayRequest } from "@/lib/gateway-client.tsx";
-import { Card, CardContent, CardHeader, CardTitle } from "@operator/design-system";
-
 export default function DebugPage() {
   const { data, error, loading } = useGatewayRequest<Record<string, unknown>>("logbook.status");
 

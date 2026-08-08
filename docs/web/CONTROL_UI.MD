@@ -10,7 +10,7 @@ sidebarTitle: "Control UI"
 The Control UI is a small **Vite + Lit** single-page app served by the Gateway:
 
 - default: `http://<host>:18789/`
-- optional prefix: set `gateway.controlUi.basePath` (e.g. `/openclaw`)
+- optional prefix: set `gateway.controlUi.basePath` (e.g. `/operator`)
 
 It speaks **directly to the Gateway WebSocket** on the same port.
 
@@ -119,8 +119,8 @@ Appearance also has a browser-local Text size setting, stored with the rest of C
 
 Open **Plugins** in the sidebar, or use `/settings/plugins` relative to the
 configured Control UI base path, to browse and manage plugins without leaving
-the Control UI. For example, a base path of `/openclaw` uses
-`/openclaw/settings/plugins`. The page is always available, even when every
+the Control UI. For example, a base path of `/operator` uses
+`/operator/settings/plugins`. The page is always available, even when every
 optional plugin is disabled.
 
 Plugins is a hub with four tabs: **Installed** and **Discover** manage plugin
@@ -177,7 +177,7 @@ The sidebar pins navigation above a scrollable session list. In multi-agent setu
 
 ## New session page
 
-The **+** in the sidebar session-list header opens a full-page draft at `/new`: nothing is created until you send the first message. A target row above the message box picks where the session works: the agent (multi-agent setups), where exec runs (**Gateway · local** or a paired node that exposes `system.run`; requires `operator.admin`), the folder (defaults to the agent workspace; other absolute Gateway paths require `operator.admin` and a worktree), and an optional **Worktree** toggle with a base-branch picker (backed by `worktrees.branches`, so no fetch happens) and an optional worktree name (the branch becomes `openclaw/<name>`). The composer footer chooses the new session's model and reasoning level, and cloud starts persist both choices before dispatching the session to its worker. The folder chip's browse button opens an inline directory picker backed by the admin-only `fs.listDir` method. Its top level shows the Gateway and every known node; offline nodes and nodes without directory-browsing support stay visible but disabled. Selecting the Gateway starts from the current folder or Gateway home. Selecting a capable node browses that node's host filesystem, binds exec to it, and uses the selected absolute node path directly (managed worktrees remain Gateway-only). Submitting calls `sessions.create` with the first message, so the run starts in the same round-trip and the UI jumps to the new session's chat. If the Gateway creates the session but rejects that first send, the chat preserves the prompt and error across reloads; **Retry** sends it through the already-created session instead of creating another one.
+The **+** in the sidebar session-list header opens a full-page draft at `/new`: nothing is created until you send the first message. A target row above the message box picks where the session works: the agent (multi-agent setups), where exec runs (**Gateway · local** or a paired node that exposes `system.run`; requires `operator.admin`), the folder (defaults to the agent workspace; other absolute Gateway paths require `operator.admin` and a worktree), and an optional **Worktree** toggle with a base-branch picker (backed by `worktrees.branches`, so no fetch happens) and an optional worktree name (the branch becomes `operator/<name>`). The composer footer chooses the new session's model and reasoning level, and cloud starts persist both choices before dispatching the session to its worker. The folder chip's browse button opens an inline directory picker backed by the admin-only `fs.listDir` method. Its top level shows the Gateway and every known node; offline nodes and nodes without directory-browsing support stay visible but disabled. Selecting the Gateway starts from the current folder or Gateway home. Selecting a capable node browses that node's host filesystem, binds exec to it, and uses the selected absolute node path directly (managed worktrees remain Gateway-only). Submitting calls `sessions.create` with the first message, so the run starts in the same round-trip and the UI jumps to the new session's chat. If the Gateway creates the session but rejects that first send, the chat preserves the prompt and error across reloads; **Retry** sends it through the already-created session instead of creating another one.
 
 Inside **Settings**, the dedicated sidebar starts with a **Search settings** field for quickly finding settings sections.
 
@@ -393,7 +393,7 @@ The macOS app keeps its native link-browser sidebar for links clicked in the das
     - Click **Stop** (calls `chat.abort`).
     - While a run is active, normal follow-ups steer into the running turn by default. Messages fall back to the queue when steering is unavailable; click **Steer** on a queued message to inject it into the running turn.
     - **Settings → Appearance → Chat → Follow-ups while the agent is working** changes that default: `Steer into the active run` (default) sends follow-ups into the running turn immediately, while `Queue until the run ends` holds them until the run finishes. Either way, queued rows keep their per-message **Steer** and remove controls, and messages fall back to the queue when steering is unavailable.
-    - Type `/stop` (or standalone abort phrases like `stop`, `stop action`, `stop run`, `stop openclaw`, `please stop`) to abort out-of-band.
+    - Type `/stop` (or standalone abort phrases like `stop`, `stop action`, `stop run`, `stop operator`, `please stop`) to abort out-of-band.
     - `chat.abort` supports `{ sessionKey }` (no `runId`) to abort all active runs for that session.
 
   </Accordion>
@@ -630,7 +630,7 @@ This keeps media rendering compatible with browser-native media elements without
 
 ## Approval links
 
-Operator approval notifications can deep-link to a standalone approval document served under the reserved `${controlUiBasePath}/approve/{approvalId}` namespace (for example `/approve/<approvalId>`, or `/openclaw/approve/<approvalId>` with a configured base path). The URL is stable for the lifetime of the approval and safe to forward between your own devices: it identifies the approval, never authorizes it.
+Operator approval notifications can deep-link to a standalone approval document served under the reserved `${controlUiBasePath}/approve/{approvalId}` namespace (for example `/approve/<approvalId>`, or `/operator/approve/<approvalId>` with a configured base path). The URL is stable for the lifetime of the approval and safe to forward between your own devices: it identifies the approval, never authorizes it.
 
 - The one-segment `/approve/<approvalId>` namespace is reserved by the Gateway ahead of plugin HTTP routes for **all** HTTP methods, so a plugin route can never shadow or intercept an approval document.
 - Opening an approval document requires the same gateway auth as the rest of the Control UI (token/password, Tailscale Serve identity, or trusted-proxy identity); credentials are never part of the approval URL.
@@ -646,7 +646,7 @@ pnpm ui:build
 Optional absolute base (fixed asset URLs):
 
 ```bash
-OPERATOR_CONTROL_UI_BASE_PATH=/openclaw/ pnpm ui:build
+OPERATOR_CONTROL_UI_BASE_PATH=/operator/ pnpm ui:build
 ```
 
 Local development (separate dev server):

@@ -310,7 +310,7 @@ describe("resolvePreferredOperatorTmpDir", () => {
 
   it("uses an unscoped fallback suffix when process uid is unavailable", () => {
     const tmpdirPath = "/var/fallback";
-    const fallbackPath = path.join(tmpdirPath, "@gabrielvfonseca/operator");
+    const fallbackPath = path.join(tmpdirPath, "operator");
 
     const resolved = resolvePreferredOperatorTmpDir({
       accessSync: vi.fn((target: string) => {

@@ -1,7 +1,7 @@
 {
   "signingRepo": "git@github.com:operator/apps-signing.git",
   "signingBranch": "main",
-  "assetPath": "android/openclaw",
+  "assetPath": "android/operator",
   "uploadKeystoreEncryptedFile": "upload-keystore.jks.enc",
   "gradlePropertiesEncryptedFile": "gradle.properties.enc",
   "apkCertificateSha256": "80dbc62315ea216dd6e8a7060735a866ddc464a48ed50fef29ff0550468b9a63",

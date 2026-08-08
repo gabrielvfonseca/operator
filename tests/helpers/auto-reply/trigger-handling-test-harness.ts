@@ -190,7 +190,7 @@ type TempHomeEnvSnapshot = {
   userProfile: string | undefined;
   homeDrive: string | undefined;
   homePath: string | undefined;
-  openclawHome: string | undefined;
+  operatorHome: string | undefined;
   stateDir: string | undefined;
 };
 
@@ -203,7 +203,7 @@ function snapshotTempHomeEnv(): TempHomeEnvSnapshot {
     userProfile: process.env.USERPROFILE,
     homeDrive: process.env.HOMEDRIVE,
     homePath: process.env.HOMEPATH,
-    openclawHome: process.env.OPERATOR_HOME,
+    operatorHome: process.env.OPERATOR_HOME,
     stateDir: process.env.OPERATOR_STATE_DIR,
   };
 }

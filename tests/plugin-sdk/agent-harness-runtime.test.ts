@@ -231,7 +231,7 @@ describe("agent harness user input helpers", () => {
             options: [{ label: "Fast" }, { label: "Deep" }],
           },
         ],
-        "repo: openclaw\nmode: 2",
+        "repo: operator\nmode: 2",
       ),
     ).toEqual({
       answers: {

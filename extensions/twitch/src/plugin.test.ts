@@ -20,8 +20,8 @@ describe("twitchPlugin outbound session routing", () => {
     });
 
     expect(route).toMatchObject({
-      sessionKey: "agent:ops:twitch:group:openclaw",
-      baseSessionKey: "agent:ops:twitch:group:openclaw",
+      sessionKey: "agent:ops:twitch:group:operator",
+      baseSessionKey: "agent:ops:twitch:group:operator",
       recipientSessionExact: true,
       peer: { kind: "group", id: "@gabrielvfonseca/operator" },
       chatType: "group",

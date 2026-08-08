@@ -8,7 +8,7 @@ import {
 import {
   openOperatorAgentDatabase,
   runOperatorAgentWriteTransaction,
-} from "../../state/openclaw-agent-db.js";
+} from "../../state/operator-agent-db.js";
 import {
   materializeSqliteSessionStateDeletePlans,
   type MaterializedSqliteSessionStateDeletePlan,

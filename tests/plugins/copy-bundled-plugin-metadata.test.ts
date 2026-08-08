@@ -58,7 +58,7 @@ function readBundledManifest(repoRoot: string, pluginId: string): Record<string,
 function readBundledPackageJson(repoRoot: string, pluginId: string) {
   return JSON.parse(
     fs.readFileSync(path.join(repoRoot, "dist", "extensions", pluginId, "package.json"), "utf8"),
-  ) as { openclaw?: { extensions?: string[] } };
+  ) as { operator?: { extensions?: string[] } };
 }
 
 function bundledPluginDir(repoRoot: string, pluginId: string) {

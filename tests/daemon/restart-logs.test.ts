@@ -37,16 +37,16 @@ describe("restart log conventions", () => {
   it("keeps macOS LaunchAgent stdout outside the state directory", () => {
     const env = {
       HOME: "/Users/test",
-      OPERATOR_STATE_DIR: "/Volumes/External/openclaw",
+      OPERATOR_STATE_DIR: "/Volumes/External/operator",
     };
 
     expect(resolveGatewaySupervisorLogPaths(env, { platform: "darwin" })).toEqual({
-      logDir: "/Users/test/Library/Logs/openclaw",
-      stdoutPath: "/Users/test/Library/Logs/openclaw/gateway.log",
-      stderrPath: "/Users/test/Library/Logs/openclaw/gateway.err.log",
+      logDir: "/Users/test/Library/Logs/operator",
+      stdoutPath: "/Users/test/Library/Logs/operator/gateway.log",
+      stderrPath: "/Users/test/Library/Logs/operator/gateway.err.log",
     });
     expect(resolveGatewayRestartLogPath(env)).toBe(
-      "/Volumes/External/openclaw/logs/gateway-restart.log",
+      "/Volumes/External/operator/logs/gateway-restart.log",
     );
   });
 
@@ -57,9 +57,9 @@ describe("restart log conventions", () => {
     };
 
     expect(resolveGatewaySupervisorLogPaths(env, { platform: "darwin" })).toEqual({
-      logDir: "/Users/test/Library/Logs/openclaw",
-      stdoutPath: "/Users/test/Library/Logs/openclaw/gateway-work.log",
-      stderrPath: "/Users/test/Library/Logs/openclaw/gateway-work.err.log",
+      logDir: "/Users/test/Library/Logs/operator",
+      stdoutPath: "/Users/test/Library/Logs/operator/gateway-work.log",
+      stderrPath: "/Users/test/Library/Logs/operator/gateway-work.err.log",
     });
   });
 

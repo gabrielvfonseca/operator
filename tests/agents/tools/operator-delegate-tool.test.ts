@@ -74,6 +74,6 @@ describe("operator delegation tool", () => {
   });
 
   it("uses the owner-only core gate", () => {
-    expect(GATEWAY_OWNER_ONLY_CORE_TOOLS).toContain("operator");
+    expect(GATEWAY_OWNER_ONLY_CORE_TOOLS).toContain("@gabrielvfonseca/operator");
   });
 });

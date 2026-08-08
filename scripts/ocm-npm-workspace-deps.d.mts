@@ -15,7 +15,7 @@ export function buildInstallManifest(
 ): {
   private: boolean;
   dependencies: {
-    openclaw: string;
+    operator: string;
   };
 };
 export function resolveNpmEnvironment(args: string[], env?: NodeJS.ProcessEnv): NodeJS.ProcessEnv;

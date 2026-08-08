@@ -3,13 +3,13 @@ import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-sync.js";
 import { DEFAULT_ACCOUNT_ID } from "../routing/session-key.js";
-import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
   type OperatorStateDatabase,
   type OperatorStateDatabaseOptions,
-} from "../state/openclaw-state-db.js";
+} from "../state/operator-state-db.js";
 import {
   dedupePreserveOrder,
   resolveAllowFromAccountId,

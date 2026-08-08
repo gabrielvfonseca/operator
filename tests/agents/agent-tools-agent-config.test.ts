@@ -9,7 +9,7 @@ import path from "node:path";
 import { beforeEach, describe, expect, it } from "vitest";
 import "./test-helpers/fast-bash-tools.js";
 import "./test-helpers/fast-coding-tools.js";
-import "./test-helpers/fast-openclaw-tools.js";
+import "./test-helpers/fast-operator-tools.js";
 import type { OperatorConfig } from "../../src/config/config.js";
 import { resolveChannelGroupToolsPolicy } from "../../src/config/group-policy.js";
 import { setActivePluginRegistry } from "../../src/plugins/runtime.js";
@@ -127,7 +127,7 @@ describe("Agent-specific tool filtering", () => {
         list: [
           {
             id: "main",
-            workspace: "~/openclaw",
+            workspace: "~/operator",
             ...(params.agentTools ? { tools: params.agentTools } : {}),
           },
         ],
@@ -361,7 +361,7 @@ describe("Agent-specific tool filtering", () => {
         list: [
           {
             id: "main",
-            workspace: "~/openclaw",
+            workspace: "~/operator",
             // No tools restriction - all tools available
           },
           {

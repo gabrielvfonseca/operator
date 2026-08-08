@@ -16,8 +16,8 @@ import {
   replaceSessionEntry,
 } from "../../src/config/sessions/session-accessor.js";
 import { registerAgentRunContext, resetAgentEventsForTest } from "../../src/infra/agent-events.js";
-import { closeOperatorAgentDatabasesForTest } from "../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import {
   buildGatewaySessionInfo,
   filterAndSortSessionEntries,

@@ -11,11 +11,11 @@ import {
 describe("defineChannelMessageAdapter", () => {
   const loadPluginSdkSubpaths = async () =>
     await Promise.all([
-      import("openclaw/plugin-sdk/channel-outbound"),
-      import("openclaw/plugin-sdk/channel-message"),
-      import("openclaw/plugin-sdk/channel-message-runtime"),
-      import("openclaw/plugin-sdk/channel-reply-pipeline"),
-      import("openclaw/plugin-sdk/compat"),
+      import("operator/plugin-sdk/channel-outbound"),
+      import("operator/plugin-sdk/channel-message"),
+      import("operator/plugin-sdk/channel-message-runtime"),
+      import("operator/plugin-sdk/channel-reply-pipeline"),
+      import("operator/plugin-sdk/compat"),
     ] as const);
   let pluginSdkSubpaths: Awaited<ReturnType<typeof loadPluginSdkSubpaths>>;
 

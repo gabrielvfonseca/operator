@@ -221,8 +221,8 @@ describeBrowserLayout("mount fallback cursor", () => {
           return getComputedStyle(node).cursor;
         };
         return {
-          retry: cursor("#openclaw-mount-retry"),
-          wait: cursor("#openclaw-mount-wait"),
+          retry: cursor("#operator-mount-retry"),
+          wait: cursor("#operator-mount-wait"),
           docs: cursor('.mount-fallback__panel a[href^="https://"]'),
         };
       });

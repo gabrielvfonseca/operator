@@ -1,6 +1,6 @@
-# OpenClaw Installer for Windows
-# Usage: powershell -c "irm https://openclaw.ai/install.ps1 | iex"
-#        powershell -c "& ([scriptblock]::Create((irm https://openclaw.ai/install.ps1))) -Tag beta -NoOnboard -DryRun"
+# Operator Installer for Windows
+# Usage: powershell -c "irm https://operator.ai/install.ps1 | iex"
+#        powershell -c "& ([scriptblock]::Create((irm https://operator.ai/install.ps1))) -Tag beta -NoOnboard -DryRun"
 
 param(
     [string]$Tag = "latest",
@@ -101,11 +101,11 @@ function Complete-Install {
         exit $script:InstallExitCode
     }
 
-    throw "OpenClaw installation failed with exit code $($script:InstallExitCode)."
+    throw "Operator installation failed with exit code $($script:InstallExitCode)."
 }
 
 Write-Host ""
-Write-Host "  OpenClaw Installer" -ForegroundColor Cyan
+Write-Host "  Operator Installer" -ForegroundColor Cyan
 Write-Host ""
 
 # Check if running in PowerShell
@@ -145,7 +145,7 @@ if (-not $PSBoundParameters.ContainsKey("DryRun")) {
 
 if ([string]::IsNullOrWhiteSpace($GitDir)) {
     $userHome = [Environment]::GetFolderPath("UserProfile")
-    $GitDir = (Join-Path $userHome "openclaw")
+    $GitDir = (Join-Path $userHome "operator")
 }
 
 # Check for Node.js
@@ -260,7 +260,7 @@ function Get-WindowsPortableArchitecture {
     return "x64"
 }
 
-function Get-OpenClawDepsRoot {
+function Get-OperatorDepsRoot {
     $localAppData = $env:LOCALAPPDATA
     if ([string]::IsNullOrWhiteSpace($localAppData)) {
         $localAppData = [Environment]::GetFolderPath("LocalApplicationData")
@@ -268,11 +268,11 @@ function Get-OpenClawDepsRoot {
     if ([string]::IsNullOrWhiteSpace($localAppData)) {
         $localAppData = Join-Path ([Environment]::GetFolderPath("UserProfile")) "AppData\Local"
     }
-    return (Join-Path $localAppData "OpenClaw\deps")
+    return (Join-Path $localAppData "Operator\deps")
 }
 
 function Get-PortableNodeRoot {
-    return (Join-Path (Get-OpenClawDepsRoot) "portable-node")
+    return (Join-Path (Get-OperatorDepsRoot) "portable-node")
 }
 
 function Get-PortableNodeCommandPath {
@@ -302,7 +302,7 @@ function Ensure-PortableNodeOnUserPath {
 
     $nodeDir = Split-Path -Parent $nodeExe
     if (Add-ToUserPath $nodeDir) {
-        Write-Host "[!] Added $nodeDir to user PATH (restart terminal if node or openclaw is not found)" -ForegroundColor Yellow
+        Write-Host "[!] Added $nodeDir to user PATH (restart terminal if node or operator is not found)" -ForegroundColor Yellow
     }
 }
 
@@ -486,10 +486,10 @@ function Install-Node {
     return $false
 }
 
-# Check for existing OpenClaw installation
-function Check-ExistingOpenClaw {
-    if (Get-OpenClawCommandPath) {
-        Write-Host "[*] Existing OpenClaw installation detected" -ForegroundColor Yellow
+# Check for existing Operator installation
+function Check-ExistingOperator {
+    if (Get-OperatorCommandPath) {
+        Write-Host "[*] Existing Operator installation detected" -ForegroundColor Yellow
         return $true
     }
     return $false
@@ -585,7 +585,7 @@ function Add-ToUserPath {
 }
 
 function Get-PortableGitRoot {
-    return (Join-Path (Get-OpenClawDepsRoot) "portable-git")
+    return (Join-Path (Get-OperatorDepsRoot) "portable-git")
 }
 
 function Get-PortableGitCommandPath {
@@ -649,7 +649,7 @@ function Ensure-PortableGitOnUserPath {
 function Resolve-PortableGitDownload {
     $releaseApi = "https://api.github.com/repos/git-for-windows/git/releases/latest"
     $headers = @{
-        "User-Agent" = "openclaw-installer"
+        "User-Agent" = "operator-installer"
         "Accept" = "application/vnd.github+json"
     }
     $release = Invoke-RestMethod -Uri $releaseApi -Headers $headers
@@ -695,7 +695,7 @@ function Install-PortableGit {
     $portableRoot = Get-PortableGitRoot
     $portableParent = Split-Path -Parent $portableRoot
     $tmpZip = Join-Path $env:TEMP $download.Name
-    $tmpExtract = Join-Path $env:TEMP ("openclaw-portable-git-" + [guid]::NewGuid().ToString("N"))
+    $tmpExtract = Join-Path $env:TEMP ("operator-portable-git-" + [guid]::NewGuid().ToString("N"))
 
     New-Item -ItemType Directory -Force -Path $portableParent | Out-Null
     if (Test-Path $portableRoot) {
@@ -745,55 +745,55 @@ function Ensure-Git {
     }
 
     Write-Host ""
-    Write-Host "Error: Git is required to install OpenClaw." -ForegroundColor Red
+    Write-Host "Error: Git is required to install Operator." -ForegroundColor Red
     Write-Host "Auto-bootstrap of user-local Git did not succeed." -ForegroundColor Yellow
     Write-Host "Install Git for Windows manually, then re-run this installer:" -ForegroundColor Yellow
     Write-Host "  https://git-scm.com/download/win" -ForegroundColor Cyan
     return $false
 }
 
-function Get-OpenClawCommandPath {
-    $openclawCmd = Get-Command openclaw.cmd -ErrorAction SilentlyContinue
-    if ($openclawCmd -and $openclawCmd.Source) {
-        return $openclawCmd.Source
+function Get-OperatorCommandPath {
+    $operatorCmd = Get-Command operator.cmd -ErrorAction SilentlyContinue
+    if ($operatorCmd -and $operatorCmd.Source) {
+        return $operatorCmd.Source
     }
 
-    $openclaw = Get-Command openclaw -ErrorAction SilentlyContinue
-    if ($openclaw -and $openclaw.Source) {
-        return $openclaw.Source
+    $operator = Get-Command operator -ErrorAction SilentlyContinue
+    if ($operator -and $operator.Source) {
+        return $operator.Source
     }
 
     return $null
 }
 
-function Invoke-OpenClawCommand {
+function Invoke-OperatorCommand {
     param(
         [Parameter(ValueFromRemainingArguments = $true)]
         [string[]]$Arguments
     )
 
-    $commandPath = Get-OpenClawCommandPath
+    $commandPath = Get-OperatorCommandPath
     if (-not $commandPath) {
-        throw "openclaw command not found on PATH."
+        throw "operator command not found on PATH."
     }
 
     & $commandPath @Arguments
 }
 
-function Invoke-InteractiveOpenClawCommand {
+function Invoke-InteractiveOperatorCommand {
     param(
         [Parameter(ValueFromRemainingArguments = $true)]
         [string[]]$Arguments
     )
 
-    $commandPath = Get-OpenClawCommandPath
+    $commandPath = Get-OperatorCommandPath
     if (-not $commandPath) {
-        throw "openclaw command not found on PATH."
+        throw "operator command not found on PATH."
     }
 
     $process = Start-Process -FilePath $commandPath -ArgumentList $Arguments -NoNewWindow -Wait -PassThru
     if ($process.ExitCode -ne 0) {
-        throw "openclaw $($Arguments -join ' ') failed with exit code $($process.ExitCode)."
+        throw "operator $($Arguments -join ' ') failed with exit code $($process.ExitCode)."
     }
 }
 
@@ -893,8 +893,8 @@ function Get-NpmGlobalBinCandidates {
     return $candidates | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Select-Object -Unique
 }
 
-function Ensure-OpenClawOnPath {
-    if (Get-OpenClawCommandPath) {
+function Ensure-OperatorOnPath {
+    if (Get-OperatorCommandPath) {
         return $true
     }
 
@@ -907,7 +907,7 @@ function Ensure-OpenClawOnPath {
 
     $npmBins = Get-NpmGlobalBinCandidates -NpmPrefix $npmPrefix
     foreach ($npmBin in $npmBins) {
-        if (-not (Test-Path (Join-Path $npmBin "openclaw.cmd"))) {
+        if (-not (Test-Path (Join-Path $npmBin "operator.cmd"))) {
             continue
         }
 
@@ -917,7 +917,7 @@ function Ensure-OpenClawOnPath {
         return $true
     }
 
-    Write-Host "[!] openclaw is not on PATH yet." -ForegroundColor Yellow
+    Write-Host "[!] operator is not on PATH yet." -ForegroundColor Yellow
     Write-Host "Restart PowerShell or add the npm global install folder to PATH." -ForegroundColor Yellow
     if ($npmBins.Count -gt 0) {
         Write-Host "Expected path (one of):" -ForegroundColor Gray
@@ -1031,7 +1031,7 @@ function Ensure-Pnpm {
     Write-Host "[OK] pnpm installed" -ForegroundColor Green
 }
 
-# Install OpenClaw
+# Install Operator
 function Resolve-LocalNpmPackagePath {
     param([string]$PackagePath)
 
@@ -1078,7 +1078,7 @@ function Resolve-LocalNpmPackageInstallSpec {
     }
 }
 
-function Resolve-NpmOpenClawInstallSpec {
+function Resolve-NpmOperatorInstallSpec {
     param(
         [string]$PackageName,
         [string]$RequestedTag
@@ -1103,7 +1103,7 @@ function Resolve-NpmOpenClawInstallSpec {
     return "$PackageName@$trimmedTag"
 }
 
-function Test-OpenClawSourcePackageInstallSpec {
+function Test-OperatorSourcePackageInstallSpec {
     param([string]$RequestedTag)
 
     if ([string]::IsNullOrWhiteSpace($RequestedTag)) {
@@ -1111,14 +1111,14 @@ function Test-OpenClawSourcePackageInstallSpec {
     }
 
     $normalizedTag = $RequestedTag.Trim().ToLowerInvariant()
-    if ($normalizedTag.StartsWith("openclaw@")) {
-        $normalizedTag = $normalizedTag.Substring("openclaw@".Length)
+    if ($normalizedTag.StartsWith("operator@")) {
+        $normalizedTag = $normalizedTag.Substring("operator@".Length)
     }
 
     if ($normalizedTag -eq "main") {
         return $true
     }
-    if ($normalizedTag -match '^github:openclaw/openclaw($|[#/])') {
+    if ($normalizedTag -match '^github:operator/operator($|[#/])') {
         return $true
     }
 
@@ -1126,10 +1126,10 @@ function Test-OpenClawSourcePackageInstallSpec {
         $normalizedTag = $normalizedTag.Substring("git+".Length)
     }
     return (
-        $normalizedTag -match '^https?://github\.com/openclaw/openclaw(\.git)?($|[?#])' -or
-        $normalizedTag -match '^ssh://git@github\.com[:/]openclaw/openclaw(\.git)?($|[?#])' -or
-        $normalizedTag -match '^git://github\.com/openclaw/openclaw(\.git)?($|[?#])' -or
-        $normalizedTag -match '^git@github\.com:openclaw/openclaw(\.git)?($|[?#])'
+        $normalizedTag -match '^https?://github\.com/operator/operator(\.git)?($|[?#])' -or
+        $normalizedTag -match '^ssh://git@github\.com[:/]operator/operator(\.git)?($|[?#])' -or
+        $normalizedTag -match '^git://github\.com/operator/operator(\.git)?($|[?#])' -or
+        $normalizedTag -match '^git@github\.com:operator/operator(\.git)?($|[?#])'
     )
 }
 
@@ -1268,12 +1268,12 @@ function Write-NpmInstallFailureDetails {
     }
 }
 
-function Install-OpenClaw {
+function Install-Operator {
     if ([string]::IsNullOrWhiteSpace($Tag)) {
         $Tag = "latest"
     }
-    if (Test-OpenClawSourcePackageInstallSpec -RequestedTag $Tag) {
-        Write-Host "Error: npm installs do not support OpenClaw GitHub source targets like '$Tag'." -ForegroundColor Red
+    if (Test-OperatorSourcePackageInstallSpec -RequestedTag $Tag) {
+        Write-Host "Error: npm installs do not support Operator GitHub source targets like '$Tag'." -ForegroundColor Red
         Write-Host "Use -InstallMethod git -Tag main for the moving main checkout, or use latest, beta, an exact version, or a built .tgz package." -ForegroundColor Yellow
         return $false
     }
@@ -1281,13 +1281,13 @@ function Install-OpenClaw {
         return $false
     }
 
-    # Use openclaw package for beta, openclaw for stable
-    $packageName = "openclaw"
+    # Use operator package for beta, operator for stable
+    $packageName = "operator"
     if ($Tag -eq "beta" -or $Tag -match "^beta\.") {
-        $packageName = "openclaw"
+        $packageName = "operator"
     }
-    $installSpec = Resolve-NpmOpenClawInstallSpec -PackageName $packageName -RequestedTag $Tag
-    Write-Host "[*] Installing OpenClaw ($installSpec)..." -ForegroundColor Yellow
+    $installSpec = Resolve-NpmOperatorInstallSpec -PackageName $packageName -RequestedTag $Tag
+    Write-Host "[*] Installing Operator ($installSpec)..." -ForegroundColor Yellow
     $freshnessArgs = @("--min-release-age=0")
     $minReleaseAge = (Invoke-NpmCommand -Arguments @("config", "get", "min-release-age", "--global") 2>$null)
     $minReleaseAgeStatus = $LASTEXITCODE
@@ -1323,7 +1323,7 @@ function Install-OpenClaw {
                 Write-Host "  https://git-scm.com/download/win" -ForegroundColor Cyan
             } else {
                 Write-Host "Re-run with verbose output to see the full error:" -ForegroundColor Yellow
-                Write-Host '  powershell -c "irm https://openclaw.ai/install.ps1 | iex"' -ForegroundColor Cyan
+                Write-Host '  powershell -c "irm https://operator.ai/install.ps1 | iex"' -ForegroundColor Cyan
             }
             Write-NpmInstallFailureDetails -Output $npmOutput
             return $false
@@ -1337,12 +1337,12 @@ function Install-OpenClaw {
         $env:NPM_CONFIG_BEFORE = $prevBefore
         $env:NPM_CONFIG_MIN_RELEASE_AGE = $prevMinReleaseAge
     }
-    Write-Host "[OK] OpenClaw installed" -ForegroundColor Green
+    Write-Host "[OK] Operator installed" -ForegroundColor Green
     return $true
 }
 
-# Install OpenClaw from GitHub
-function Install-OpenClawFromGit {
+# Install Operator from GitHub
+function Install-OperatorFromGit {
     param(
         [string]$RepoDir,
         [switch]$SkipUpdate
@@ -1351,8 +1351,8 @@ function Install-OpenClawFromGit {
         return $false
     }
 
-    $repoUrl = "https://github.com/openclaw/openclaw.git"
-    Write-Host "[*] Installing OpenClaw from GitHub ($repoUrl)..." -ForegroundColor Yellow
+    $repoUrl = "https://github.com/operator/operator.git"
+    Write-Host "[*] Installing Operator from GitHub ($repoUrl)..." -ForegroundColor Yellow
 
     if (-not (Test-Path $RepoDir)) {
         git clone $repoUrl $RepoDir
@@ -1445,7 +1445,7 @@ function Install-OpenClawFromGit {
 
     $entryPath = Join-Path $RepoDir "dist\\entry.js"
     if (-not (Test-Path $entryPath)) {
-        Write-Host "[!] OpenClaw build did not produce $entryPath" -ForegroundColor Red
+        Write-Host "[!] Operator build did not produce $entryPath" -ForegroundColor Red
         return $false
     }
 
@@ -1453,7 +1453,7 @@ function Install-OpenClawFromGit {
     if (-not (Test-Path $binDir)) {
         New-Item -ItemType Directory -Force -Path $binDir | Out-Null
     }
-    $cmdPath = Join-Path $binDir "openclaw.cmd"
+    $cmdPath = Join-Path $binDir "operator.cmd"
     $cmdContents = "@echo off`r`nnode ""$entryPath"" %*`r`n"
     Set-Content -Path $cmdPath -Value $cmdContents -NoNewline
 
@@ -1461,7 +1461,7 @@ function Install-OpenClawFromGit {
         Write-Host "[!] Added $binDir to user PATH (restart terminal if command not found)" -ForegroundColor Yellow
     }
 
-    Write-Host "[OK] OpenClaw wrapper installed to $cmdPath" -ForegroundColor Green
+    Write-Host "[OK] Operator wrapper installed to $cmdPath" -ForegroundColor Green
     Write-Host "[i] This checkout uses pnpm. For deps, run: pnpm install (avoid npm install in the repo)." -ForegroundColor Gray
     return $true
 }
@@ -1470,7 +1470,7 @@ function Install-OpenClawFromGit {
 function Run-Doctor {
     Write-Host "[*] Running doctor to migrate settings..." -ForegroundColor Yellow
     try {
-        Invoke-OpenClawCommand doctor --non-interactive
+        Invoke-OperatorCommand doctor --non-interactive
     } catch {
         # Ignore errors from doctor
     }
@@ -1479,7 +1479,7 @@ function Run-Doctor {
 
 function Test-GatewayServiceLoaded {
     try {
-        $statusJson = (Invoke-OpenClawCommand daemon status --json 2>$null)
+        $statusJson = (Invoke-OperatorCommand daemon status --json 2>$null)
         if ([string]::IsNullOrWhiteSpace($statusJson)) {
             return $false
         }
@@ -1494,7 +1494,7 @@ function Test-GatewayServiceLoaded {
 }
 
 function Refresh-GatewayServiceIfLoaded {
-    if (-not (Get-OpenClawCommandPath)) {
+    if (-not (Get-OperatorCommandPath)) {
         return
     }
     if (-not (Test-GatewayServiceLoaded)) {
@@ -1503,18 +1503,18 @@ function Refresh-GatewayServiceIfLoaded {
 
     Write-Host "[*] Refreshing loaded gateway service..." -ForegroundColor Yellow
     try {
-        Invoke-OpenClawCommand gateway install --force | Out-Null
+        Invoke-OperatorCommand gateway install --force | Out-Null
     } catch {
         Write-Host "[!] Gateway service refresh failed; continuing." -ForegroundColor Yellow
         return
     }
 
     try {
-        Invoke-OpenClawCommand gateway restart | Out-Null
-        Invoke-OpenClawCommand gateway status --json | Out-Null
+        Invoke-OperatorCommand gateway restart | Out-Null
+        Invoke-OperatorCommand gateway status --json | Out-Null
         Write-Host "[OK] Gateway service refreshed" -ForegroundColor Green
     } catch {
-        Write-Host "[!] Gateway service restart failed; continuing. Run: openclaw gateway restart" -ForegroundColor Yellow
+        Write-Host "[!] Gateway service restart failed; continuing. Run: operator gateway restart" -ForegroundColor Yellow
     }
 }
 
@@ -1523,7 +1523,7 @@ function Get-LegacyRepoDir {
         return $env:OPENCLAW_GIT_DIR
     }
     $userHome = [Environment]::GetFolderPath("UserProfile")
-    return (Join-Path $userHome "openclaw")
+    return (Join-Path $userHome "operator")
 }
 
 function Remove-LegacySubmodule {
@@ -1565,7 +1565,7 @@ function Main {
     }
 
     # Check for existing installation
-    $isUpgrade = Check-ExistingOpenClaw
+    $isUpgrade = Check-ExistingOperator
 
     # Step 1: Node.js
     if (-not (Check-Node)) {
@@ -1584,35 +1584,35 @@ function Main {
 
     $finalGitDir = $null
 
-    # Step 2: OpenClaw
+    # Step 2: Operator
     if ($InstallMethod -eq "git") {
         try {
             $npmCommand = Get-NpmCommandPath
             if ($npmCommand) {
-                Invoke-NpmCommand -Arguments @("uninstall", "-g", "openclaw") 2>$null | Out-Null
+                Invoke-NpmCommand -Arguments @("uninstall", "-g", "operator") 2>$null | Out-Null
                 Write-Host "[OK] Removed npm global install if present" -ForegroundColor Green
             }
         } catch { }
         $finalGitDir = $GitDir
-        $gitInstallResults = @(Install-OpenClawFromGit -RepoDir $GitDir -SkipUpdate:$NoGitUpdate)
+        $gitInstallResults = @(Install-OperatorFromGit -RepoDir $GitDir -SkipUpdate:$NoGitUpdate)
         if (-not (Test-BooleanSuccessResult -Results $gitInstallResults)) {
             return (Fail-Install)
         }
     } else {
-        $gitWrapper = Join-Path (Join-Path $env:USERPROFILE ".local\\bin") "openclaw.cmd"
+        $gitWrapper = Join-Path (Join-Path $env:USERPROFILE ".local\\bin") "operator.cmd"
         if (Test-Path $gitWrapper) {
             Remove-Item -Force $gitWrapper
             Write-Host "[OK] Removed git wrapper (switching to npm)" -ForegroundColor Green
         }
-        $npmInstallResults = @(Install-OpenClaw)
+        $npmInstallResults = @(Install-Operator)
         if (-not (Test-BooleanSuccessResult -Results $npmInstallResults)) {
             return (Fail-Install)
         }
     }
 
-    if (-not (Ensure-OpenClawOnPath)) {
-        Write-Host "Install completed, but OpenClaw is not on PATH yet." -ForegroundColor Yellow
-        Write-Host "Open a new terminal, then run: openclaw doctor" -ForegroundColor Cyan
+    if (-not (Ensure-OperatorOnPath)) {
+        Write-Host "Install completed, but Operator is not on PATH yet." -ForegroundColor Yellow
+        Write-Host "Open a new terminal, then run: operator doctor" -ForegroundColor Cyan
         return
     }
 
@@ -1625,15 +1625,15 @@ function Main {
 
     $installedVersion = $null
     try {
-        $installedVersion = (Invoke-OpenClawCommand --version 2>$null).Trim()
+        $installedVersion = (Invoke-OperatorCommand --version 2>$null).Trim()
     } catch {
         $installedVersion = $null
     }
     if (-not $installedVersion) {
         try {
             $npmList = Invoke-NpmCommand -Arguments @("list", "-g", "--depth", "0", "--json") 2>$null | ConvertFrom-Json
-            if ($npmList -and $npmList.dependencies -and $npmList.dependencies.openclaw -and $npmList.dependencies.openclaw.version) {
-                $installedVersion = $npmList.dependencies.openclaw.version
+            if ($npmList -and $npmList.dependencies -and $npmList.dependencies.operator -and $npmList.dependencies.operator.version) {
+                $installedVersion = $npmList.dependencies.operator.version
             }
         } catch {
             $installedVersion = $null
@@ -1642,9 +1642,9 @@ function Main {
 
     Write-Host ""
     if ($installedVersion) {
-        Write-Host "OpenClaw installed successfully ($installedVersion)!" -ForegroundColor Green
+        Write-Host "Operator installed successfully ($installedVersion)!" -ForegroundColor Green
     } else {
-        Write-Host "OpenClaw installed successfully!" -ForegroundColor Green
+        Write-Host "Operator installed successfully!" -ForegroundColor Green
     }
     Write-Host ""
     if ($isUpgrade) {
@@ -1691,23 +1691,23 @@ function Main {
 
     if ($InstallMethod -eq "git") {
         Write-Host "Source checkout: $finalGitDir" -ForegroundColor Cyan
-        Write-Host "Wrapper: $env:USERPROFILE\\.local\\bin\\openclaw.cmd" -ForegroundColor Cyan
+        Write-Host "Wrapper: $env:USERPROFILE\\.local\\bin\\operator.cmd" -ForegroundColor Cyan
         Write-Host ""
     }
 
     if ($isUpgrade) {
         Write-Host "Upgrade complete. Run " -NoNewline
-        Write-Host "openclaw doctor" -ForegroundColor Cyan -NoNewline
+        Write-Host "operator doctor" -ForegroundColor Cyan -NoNewline
         Write-Host " to check for additional migrations."
     } else {
         if ($NoOnboard) {
             Write-Host "Skipping onboard (requested). Run " -NoNewline
-            Write-Host "openclaw onboard" -ForegroundColor Cyan -NoNewline
+            Write-Host "operator onboard" -ForegroundColor Cyan -NoNewline
             Write-Host " later."
         } else {
             Write-Host "Starting setup..." -ForegroundColor Cyan
             Write-Host ""
-            Invoke-InteractiveOpenClawCommand onboard
+            Invoke-InteractiveOperatorCommand onboard
         }
     }
 

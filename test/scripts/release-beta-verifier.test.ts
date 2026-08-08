@@ -11,7 +11,7 @@ import {
   parseNpmViewFields,
   parseReleaseVerifyBetaArgs,
   readBoundedJsonResponse,
-  resolveOpenClawNpmPostpublishVerifier,
+  resolveOperatorNpmPostpublishVerifier,
   runNpmViewWithRetry,
   validateClawHubBootstrapEvidence,
 } from "../../scripts/lib/release-beta-verifier.ts";
@@ -85,7 +85,7 @@ describe("parseReleaseVerifyBetaArgs", () => {
       version: "2026.5.10-beta.3",
       tag: "v2026.5.10-beta.3",
       distTag: "beta",
-      repo: "openclaw/openclaw",
+      repo: "operator/operator",
       registry: "https://clawhub.ai",
       releaseSha: undefined,
       workflowRef: undefined,
@@ -117,7 +117,7 @@ describe("parseReleaseVerifyBetaArgs", () => {
         "@operator/plugin-a,@operator/plugin-b",
         "--full-release-validation-run",
         "10",
-        "--openclaw-npm-run",
+        "--operator-npm-run",
         "11",
         "--plugin-npm-run",
         "22",
@@ -141,7 +141,7 @@ describe("parseReleaseVerifyBetaArgs", () => {
       version: "2026.5.10-beta.3",
       tag: "v2026.5.10-beta.3",
       distTag: "beta",
-      repo: "openclaw/openclaw",
+      repo: "operator/operator",
       registry: "https://clawhub.ai",
       releaseSha: "a".repeat(40),
       workflowRef: "release/2026.5.10",
@@ -156,7 +156,7 @@ describe("parseReleaseVerifyBetaArgs", () => {
       rerunFailedClawHub: true,
       workflowRuns: {
         fullReleaseValidation: "10",
-        openclawNpm: "11",
+        operatorNpm: "11",
         pluginNpm: "22",
         pluginClawHub: "33",
         pluginClawHubBootstrap: "34",
@@ -166,15 +166,15 @@ describe("parseReleaseVerifyBetaArgs", () => {
   });
 
   it("only accepts the trusted tooling postpublish verifier override", () => {
-    expect(resolveOpenClawNpmPostpublishVerifier("/tmp/release")).toBe(
-      "/tmp/release/scripts/openclaw-npm-postpublish-verify.ts",
+    expect(resolveOperatorNpmPostpublishVerifier("/tmp/release")).toBe(
+      "/tmp/release/scripts/operator-npm-postpublish-verify.ts",
     );
-    const trustedVerifier = resolve("scripts/openclaw-npm-postpublish-verify.ts");
-    expect(resolveOpenClawNpmPostpublishVerifier("/tmp/release", trustedVerifier)).toBe(
+    const trustedVerifier = resolve("scripts/operator-npm-postpublish-verify.ts");
+    expect(resolveOperatorNpmPostpublishVerifier("/tmp/release", trustedVerifier)).toBe(
       trustedVerifier,
     );
     expect(() =>
-      resolveOpenClawNpmPostpublishVerifier("/tmp/release", "/tmp/untrusted-verifier.ts"),
+      resolveOperatorNpmPostpublishVerifier("/tmp/release", "/tmp/untrusted-verifier.ts"),
     ).toThrow("must select the trusted tooling verifier");
     expect(() =>
       parseReleaseVerifyBetaArgs([
@@ -228,7 +228,7 @@ describe("validateClawHubBootstrapEvidence", () => {
     run_attempt: 2,
     status: "completed",
     conclusion: "success",
-    html_url: "https://github.com/openclaw/openclaw/actions/runs/34",
+    html_url: "https://github.com/operator/operator/actions/runs/34",
     created_at: "2026-07-10T00:00:00Z",
     updated_at: "2026-07-10T00:02:00Z",
   };
@@ -254,7 +254,7 @@ describe("validateClawHubBootstrapEvidence", () => {
   };
   const evidence = {
     schemaVersion: 2,
-    repository: "openclaw/openclaw",
+    repository: "operator/operator",
     targetSha: releaseSha,
     workflowSha,
     runId: "34",
@@ -301,7 +301,7 @@ describe("validateClawHubBootstrapEvidence", () => {
     } = {},
   ) {
     return validateClawHubBootstrapEvidence({
-      repo: "openclaw/openclaw",
+      repo: "operator/operator",
       runId: "34",
       releaseSha,
       expectedVersion: "2026.7.1-beta.3",
@@ -443,8 +443,8 @@ describe("downloadClawHubBootstrapReadback", () => {
     path: ".github/workflows/plugin-clawhub-new.yml",
     status: "completed",
     conclusion: "success",
-    repository: { full_name: "openclaw/openclaw" },
-    head_repository: { full_name: "openclaw/openclaw" },
+    repository: { full_name: "operator/operator" },
+    head_repository: { full_name: "operator/operator" },
   };
 
   function createFixture(
@@ -501,7 +501,7 @@ describe("downloadClawHubBootstrapReadback", () => {
   }> {
     const fixture = createFixture(archive, overrides);
     const result = await downloadClawHubBootstrapReadback({
-      repo: "openclaw/openclaw",
+      repo: "operator/operator",
       runId: "34",
       run,
       readbackArtifact: fixture.readbackArtifact,
@@ -575,7 +575,7 @@ describe("parseNpmViewFields", () => {
           version: "2026.5.10-beta.3",
           "dist-tags.beta": "2026.5.10-beta.3",
           "dist.integrity": "sha512-test",
-          "dist.tarball": "https://registry.example/openclaw.tgz",
+          "dist.tarball": "https://registry.example/operator.tgz",
         }),
         "beta",
       ),
@@ -583,7 +583,7 @@ describe("parseNpmViewFields", () => {
       version: "2026.5.10-beta.3",
       distTagVersion: "2026.5.10-beta.3",
       integrity: "sha512-test",
-      tarball: "https://registry.example/openclaw.tgz",
+      tarball: "https://registry.example/operator.tgz",
     });
   });
 
@@ -595,7 +595,7 @@ describe("parseNpmViewFields", () => {
           "dist-tags": { beta: "2026.5.10-beta.3" },
           dist: {
             integrity: "sha512-test",
-            tarball: "https://registry.example/openclaw.tgz",
+            tarball: "https://registry.example/operator.tgz",
           },
         }),
         "beta",
@@ -604,7 +604,7 @@ describe("parseNpmViewFields", () => {
       version: "2026.5.10-beta.3",
       distTagVersion: "2026.5.10-beta.3",
       integrity: "sha512-test",
-      tarball: "https://registry.example/openclaw.tgz",
+      tarball: "https://registry.example/operator.tgz",
     });
   });
 });
@@ -615,7 +615,7 @@ describe("runNpmViewWithRetry", () => {
     const delays: number[] = [];
 
     await expect(
-      runNpmViewWithRetry(["view", "openclaw@2026.5.10-beta.3", "version", "--json"], {
+      runNpmViewWithRetry(["view", "operator@2026.5.10-beta.3", "version", "--json"], {
         attempts: 3,
         delay: async (delayMs) => {
           delays.push(delayMs);

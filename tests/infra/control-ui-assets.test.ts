@@ -66,7 +66,7 @@ vi.mock("./control-ui-assets.fs.runtime.js", async () => {
   return wrapped;
 });
 
-vi.mock("./openclaw-root.js", () => ({
+vi.mock("./operator-root.js", () => ({
   resolveOperatorPackageRoot: vi.fn(async () => null),
   resolveOperatorPackageRootSync: vi.fn(() => null),
 }));
@@ -79,7 +79,7 @@ let resolveControlUiDistIndexHealth: typeof import("./control-ui-assets.js").res
 let isPackageProvenControlUiRootSync: typeof import("./control-ui-assets.js").isPackageProvenControlUiRootSync;
 let resolveControlUiRootOverrideSync: typeof import("./control-ui-assets.js").resolveControlUiRootOverrideSync;
 let resolveControlUiRootSync: typeof import("./control-ui-assets.js").resolveControlUiRootSync;
-let operatorRoot: typeof import("./openclaw-root.js");
+let operatorRoot: typeof import("./operator-root.js");
 
 describe("control UI assets helpers (fs-mocked)", () => {
   beforeAll(async () => {
@@ -90,7 +90,7 @@ describe("control UI assets helpers (fs-mocked)", () => {
       resolveControlUiRootOverrideSync,
       resolveControlUiRootSync,
     } = await import("./control-ui-assets.js"));
-    operatorRoot = await import("./openclaw-root.js");
+    operatorRoot = await import("./operator-root.js");
   });
 
   beforeEach(() => {
@@ -196,8 +196,8 @@ describe("control UI assets helpers (fs-mocked)", () => {
   });
 
   it("resolves control-ui root for symlinked argv1 via realpath", () => {
-    const pkgRoot = abs("fixtures/bun-global/openclaw");
-    const wrapperArgv1 = abs("fixtures/bin/openclaw");
+    const pkgRoot = abs("fixtures/bun-global/operator");
+    const wrapperArgv1 = abs("fixtures/bin/operator");
     const realEntrypoint = path.join(pkgRoot, "dist", "index.js");
     const uiDir = path.join(pkgRoot, "dist", "control-ui");
 

@@ -28,7 +28,7 @@ function run(args: string[], env: NodeJS.ProcessEnv = {}) {
 }
 
 function fakeApkSigner(certificateSha256: string, signerCount = 1) {
-  const tempRoot = tempRoots.make("openclaw-apksigner-");
+  const tempRoot = tempRoots.make("operator-apksigner-");
   const buildToolsDir = path.join(tempRoot, "build-tools", "36.0.0");
   fs.mkdirSync(buildToolsDir, { recursive: true });
   const apkSignerPath = path.join(buildToolsDir, "apksigner");
@@ -41,7 +41,7 @@ function fakeApkSigner(certificateSha256: string, signerCount = 1) {
     `#!/bin/sh\nprintf '%s\\n' ${signerLines.map((line) => `'${line}'`).join(" ")}\n`,
   );
   fs.chmodSync(apkSignerPath, 0o755);
-  const apkPath = path.join(tempRoot, "OpenClaw-Android.apk");
+  const apkPath = path.join(tempRoot, "Operator-Android.apk");
   fs.writeFileSync(apkPath, "fake apk bytes");
   return { apkPath, sdkRoot: tempRoot };
 }
@@ -126,8 +126,8 @@ describe("Android release artifacts", () => {
         timestamp: "2026-07-10T01:02:03.000Z",
       }),
     ).toEqual([
-      `-PopenclawBuildCommit=${"a".repeat(40)}`,
-      "-PopenclawBuildTimestamp=2026-07-10T01:02:03.000Z",
+      `-PoperatorBuildCommit=${"a".repeat(40)}`,
+      "-PoperatorBuildTimestamp=2026-07-10T01:02:03.000Z",
     ]);
   });
 

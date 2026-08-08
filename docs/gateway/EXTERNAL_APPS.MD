@@ -22,7 +22,7 @@ for results, cancel work, or inspect Gateway resources.
 
 <Note>
   This page is for code outside the Operator process. Plugin code that runs
-  inside Operator should use documented `openclaw/plugin-sdk/*` subpaths instead.
+  inside Operator should use documented `operator/plugin-sdk/*` subpaths instead.
 </Note>
 
 ## What is available today
@@ -171,7 +171,7 @@ Use the Plugin SDK when code runs inside Operator:
 - agent harness plugins
 - trusted runtime helpers
 
-External apps should not import `openclaw/plugin-sdk/*`; those subpaths are for
+External apps should not import `operator/plugin-sdk/*`; those subpaths are for
 plugins loaded by Operator.
 
 ## Related

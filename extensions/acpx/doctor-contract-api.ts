@@ -5,6 +5,7 @@ import {
   archiveLegacyStateSource,
   type PluginDoctorStateMigration,
 } from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
+import type { OperatorConfig } from "../../src/config/types";
 import {
   normalizeAcpxProcessLease,
   normalizeAcpxProcessLeaseFile,
@@ -53,7 +54,13 @@ export const stateMigrations: PluginDoctorStateMigration[] = [
   {
     id: "acpx-runtime-state-to-plugin-state",
     label: "ACPX runtime state",
-    async detectLegacyState(params) {
+    async detectLegacyState(params: {
+      config: OperatorConfig;
+      env: NodeJS.ProcessEnv;
+      stateDir: string;
+      oauthDir: string;
+      context: PluginDoctorStateMigrationContext;
+    }) {
       const gatewayInstanceId = await readLegacyGatewayInstanceId(
         resolveLegacyGatewayInstancePath(params.stateDir),
       );
@@ -76,7 +83,13 @@ export const stateMigrations: PluginDoctorStateMigration[] = [
       }
       return { preview };
     },
-    async migrateLegacyState(params) {
+    async migrateLegacyState(params: {
+      config: OperatorConfig;
+      env: NodeJS.ProcessEnv;
+      stateDir: string;
+      oauthDir: string;
+      context: PluginDoctorStateMigrationContext;
+    }) {
       const changes: string[] = [];
       const warnings: string[] = [];
       const gatewayInstancePath = resolveLegacyGatewayInstancePath(params.stateDir);

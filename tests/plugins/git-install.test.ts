@@ -602,7 +602,7 @@ describe("installPluginFromGitSpec", () => {
         await fs.realpath(path.dirname(persistentRepoDir)),
       );
       // withTempDir roots fallback staging at resolvePreferredOperatorTmpDir(), which
-      // prefers /tmp/openclaw and only degrades to a uid-scoped os.tmpdir path when
+      // prefers /tmp/operator and only degrades to a uid-scoped os.tmpdir path when
       // that is unsafe. Recompute it here so the assertion holds on every host.
       expect(path.dirname(expectDefined(fallbackPrefix, "fallbackPrefix test invariant"))).toBe(
         await fs.realpath(resolvePreferredOperatorTmpDir()),

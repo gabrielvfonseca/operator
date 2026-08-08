@@ -2287,7 +2287,7 @@ export const th: TranslationMap = {
       onboardingTitle: "No workspaces yet",
       onboardingSubtitle:
         "Ask your agent to build a workspace, or create one from the command line.",
-      onboardingCommand: "openclaw workspaces tabs create --title Main",
+      onboardingCommand: "operator workspaces tabs create --title Main",
       tabTitle: "This workspace is empty",
       tabSubtitle: "Ask your agent to add a widget, or add one yourself.",
       noVisibleTabs: "Every workspace tab is hidden. Restore one from the hidden menu.",
@@ -3207,15 +3207,15 @@ export const th: TranslationMap = {
       authRequired: {
         title: "ต้องยืนยันตัวตน",
         summary: "เข้าถึง Gateway ได้ แต่ต้องมีโทเค็นหรือรหัสผ่านที่ตรงกันก่อนที่เบราว์เซอร์นี้จะเชื่อมต่อได้",
-        stepPaste: "วางโทเค็นจาก openclaw dashboard --no-open หรือป้อนรหัสผ่านที่ตั้งค่าไว้",
+        stepPaste: "วางโทเค็นจาก operator dashboard --no-open หรือป้อนรหัสผ่านที่ตั้งค่าไว้",
         stepGenerate:
-          "ถ้ายังไม่ได้ตั้งค่าโทเค็น ให้รัน openclaw doctor --generate-gateway-token บนโฮสต์ Gateway",
+          "ถ้ายังไม่ได้ตั้งค่าโทเค็น ให้รัน operator doctor --generate-gateway-token บนโฮสต์ Gateway",
         stepConnect: "คลิก Connect อีกครั้งหลังจากอัปเดตข้อมูลรับรอง",
       },
       authFailed: {
         title: "การยืนยันตัวตนไม่ตรงกัน",
         summary: "ข้อมูลรับรองที่ให้มาถูกปฏิเสธ สาเหตุที่พบบ่อยคือโทเค็นเก่าหรือโทเค็นที่คัดลอกจาก Gateway URL อื่น",
-        stepDashboard: "รัน openclaw dashboard --no-open แล้วเปิด URL ใหม่หรือวางโทเค็นของ URL นั้น",
+        stepDashboard: "รัน operator dashboard --no-open แล้วเปิด URL ใหม่หรือวางโทเค็นของ URL นั้น",
         stepReplace: "แทนที่ค่าโทเค็น/รหัสผ่านเก่า อย่าใช้โทเค็นจาก Gateway URL อื่นซ้ำ",
         stepMode:
           "ใช้โหมด auth ที่ตรงกันทีละโหมด: gateway token สำหรับโหมด token, รหัสผ่านสำหรับโหมด password",
@@ -3234,8 +3234,8 @@ export const th: TranslationMap = {
         metadataTitle: "การรีเฟรชอุปกรณ์รออนุมัติ",
         summary: "เบราว์เซอร์นี้ต้องได้รับการอนุมัติครั้งเดียวจากโฮสต์ Gateway ก่อนใช้ Control UI",
         upgradeSummary: "เบราว์เซอร์นี้เป็นที่รู้จักแล้ว แต่สิทธิ์ที่ขอเปลี่ยนไปและต้องอนุมัติใหม่",
-        stepList: "รัน openclaw devices list บนโฮสต์ Gateway",
-        stepApproveId: "อนุมัติคำขอนี้: openclaw devices approve {requestId}.",
+        stepList: "รัน operator devices list บนโฮสต์ Gateway",
+        stepApproveId: "อนุมัติคำขอนี้: operator devices approve {requestId}.",
         stepApprove: "อนุมัติคำขอเบราว์เซอร์/อุปกรณ์ที่รอดำเนินการจากรายการนั้น",
         stepReconnect: "เชื่อมต่อใหม่หลังการอนุมัติเสร็จสิ้น",
       },
@@ -3258,7 +3258,7 @@ export const th: TranslationMap = {
         title: "โปรโตคอลไม่ตรงกัน",
         summary: "Control UI ที่เสิร์ฟอยู่และ Gateway ที่ทำงานอยู่ไม่ตรงกันเรื่องโปรโตคอลการเชื่อมต่อที่รองรับ",
         stepDashboard:
-          "เปิด dashboard ที่เสิร์ฟอีกครั้งด้วย openclaw dashboard เพื่อให้ UI และ Gateway มาจากการติดตั้งเดียวกัน",
+          "เปิด dashboard ที่เสิร์ฟอีกครั้งด้วย operator dashboard เพื่อให้ UI และ Gateway มาจากการติดตั้งเดียวกัน",
         stepDevUi: "ถ้าใช้ pnpm ui:dev ให้ build ใหม่หรือรีสตาร์ท UI dev กับ checkout ปัจจุบัน",
         stepRestart: "รีสตาร์ท Gateway หลังอัปเดต Operator เพื่อให้เสิร์ฟโปรโตคอลปัจจุบัน",
       },
@@ -3266,10 +3266,10 @@ export const th: TranslationMap = {
         title: "เชื่อมต่อไม่ได้",
         summary:
           "เบราว์เซอร์ไม่สามารถเชื่อมต่อ Gateway ให้เสร็จสมบูรณ์ได้ ตรวจสอบเป้าหมายและ transport ก่อนลองข้อมูลรับรองอีกครั้ง",
-        stepGateway: "ยืนยันว่า Gateway กำลังทำงานด้วย openclaw status หรือ openclaw gateway run",
+        stepGateway: "ยืนยันว่า Gateway กำลังทำงานด้วย operator status หรือ operator gateway run",
         stepUrl: "ตรวจสอบ WebSocket URL และใช้ wss:// เมื่อ Gateway อยู่หลัง HTTPS/Tailscale Serve",
         stepDashboard:
-          "เปิด dashboard อีกครั้งด้วย openclaw dashboard --no-open เพื่อคัดลอก URL และรายละเอียด auth ปัจจุบันใหม่",
+          "เปิด dashboard อีกครั้งด้วย operator dashboard --no-open เพื่อคัดลอก URL และรายละเอียด auth ปัจจุบันใหม่",
       },
     },
   },

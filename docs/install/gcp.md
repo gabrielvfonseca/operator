@@ -120,7 +120,7 @@ This guide uses Debian on GCP Compute Engine. Ubuntu also works; map packages ac
   <Step title="Clone the Operator repository">
     ```bash
     git clone https://github.com/gabrielvfonseca/operator.git
-    cd openclaw
+    cd operator
     ```
 
     This guide builds a custom image so any binaries you bake in survive restarts.

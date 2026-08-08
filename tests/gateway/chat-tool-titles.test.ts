@@ -18,8 +18,8 @@ vi.mock("../agents/utility-model.js", () => ({
 }));
 
 import type { OperatorConfig } from "../../src/config/types.operator.js";
-import { closeOperatorAgentDatabases } from "../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorAgentDatabases } from "../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { generateToolCallTitles } from "../../src/gateway/chat-tool-titles.js";
 
 const AGENT_ID = "main";

@@ -16,8 +16,8 @@ const liveToolState = vi.hoisted(() => ({
   toolName: "live_echo",
 }));
 
-vi.mock("openclaw/plugin-sdk/agent-harness", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/agent-harness")>();
+vi.mock("operator/plugin-sdk/agent-harness", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/agent-harness")>();
 
   return {
     ...actual,

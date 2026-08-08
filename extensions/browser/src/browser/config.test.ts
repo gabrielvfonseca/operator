@@ -81,10 +81,10 @@ describe("browser config", () => {
     expect(profile?.cdpPort).toBe(18800);
     expect(profile?.cdpUrl).toBe("http://127.0.0.1:18800");
 
-    const openclaw = resolveProfile(resolved, "@gabrielvfonseca/operator");
-    expect(openclaw?.driver).toBe("@gabrielvfonseca/operator");
-    expect(openclaw?.cdpPort).toBe(18800);
-    expect(openclaw?.cdpUrl).toBe("http://127.0.0.1:18800");
+    const operator = resolveProfile(resolved, "@gabrielvfonseca/operator");
+    expect(operator?.driver).toBe("@gabrielvfonseca/operator");
+    expect(operator?.cdpPort).toBe(18800);
+    expect(operator?.cdpUrl).toBe("http://127.0.0.1:18800");
     const user = resolveProfile(resolved, "user");
     expect(user?.driver).toBe("existing-session");
     expect(user?.cdpPort).toBe(0);
@@ -161,9 +161,9 @@ describe("browser config", () => {
       expect(resolved.controlPort).toBe(19003);
       expect(resolveProfile(resolved, "chrome-relay")).toBe(null);
 
-      const openclaw = resolveProfile(resolved, "@gabrielvfonseca/operator");
-      expect(openclaw?.cdpPort).toBe(19012);
-      expect(openclaw?.cdpUrl).toBe("http://127.0.0.1:19012");
+      const operator = resolveProfile(resolved, "@gabrielvfonseca/operator");
+      expect(operator?.cdpPort).toBe(19012);
+      expect(operator?.cdpUrl).toBe("http://127.0.0.1:19012");
     });
   });
 
@@ -173,9 +173,9 @@ describe("browser config", () => {
       expect(resolved.controlPort).toBe(19013);
       expect(resolveProfile(resolved, "chrome-relay")).toBe(null);
 
-      const openclaw = resolveProfile(resolved, "@gabrielvfonseca/operator");
-      expect(openclaw?.cdpPort).toBe(19022);
-      expect(openclaw?.cdpUrl).toBe("http://127.0.0.1:19022");
+      const operator = resolveProfile(resolved, "@gabrielvfonseca/operator");
+      expect(operator?.cdpPort).toBe(19022);
+      expect(operator?.cdpUrl).toBe("http://127.0.0.1:19022");
     });
   });
 
@@ -183,10 +183,10 @@ describe("browser config", () => {
     const resolved = resolveBrowserConfig({
       cdpPortRangeStart: 19000,
     });
-    const openclaw = resolveProfile(resolved, "@gabrielvfonseca/operator");
+    const operator = resolveProfile(resolved, "@gabrielvfonseca/operator");
     expect(resolved.cdpPortRangeStart).toBe(19000);
-    expect(openclaw?.cdpPort).toBe(19000);
-    expect(openclaw?.cdpUrl).toBe("http://127.0.0.1:19000");
+    expect(operator?.cdpPort).toBe(19000);
+    expect(operator?.cdpUrl).toBe("http://127.0.0.1:19000");
   });
 
   it("rejects cdpPortRangeStart values that overflow the CDP range window", () => {
@@ -1135,7 +1135,7 @@ describe("browser config", () => {
   });
 
   describe("default profile preference", () => {
-    it("defaults to openclaw profile when defaultProfile is not configured", () => {
+    it("defaults to operator profile when defaultProfile is not configured", () => {
       const resolved = resolveBrowserConfig({
         headless: false,
         noSandbox: false,
@@ -1143,21 +1143,21 @@ describe("browser config", () => {
       expect(resolved.defaultProfile).toBe("@gabrielvfonseca/operator");
     });
 
-    it("keeps openclaw default when headless=true", () => {
+    it("keeps operator default when headless=true", () => {
       const resolved = resolveBrowserConfig({
         headless: true,
       });
       expect(resolved.defaultProfile).toBe("@gabrielvfonseca/operator");
     });
 
-    it("keeps openclaw default when noSandbox=true", () => {
+    it("keeps operator default when noSandbox=true", () => {
       const resolved = resolveBrowserConfig({
         noSandbox: true,
       });
       expect(resolved.defaultProfile).toBe("@gabrielvfonseca/operator");
     });
 
-    it("keeps openclaw default when both headless and noSandbox are true", () => {
+    it("keeps operator default when both headless and noSandbox are true", () => {
       const resolved = resolveBrowserConfig({
         headless: true,
         noSandbox: true,

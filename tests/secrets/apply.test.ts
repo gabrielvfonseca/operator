@@ -23,7 +23,7 @@ import type { AuthProfileStore } from "../../src/agents/auth-profiles/types.js";
 import {
   closeOperatorAgentDatabasesForTest,
   openOperatorAgentDatabase,
-} from "../../src/state/openclaw-agent-db.js";
+} from "../../src/state/operator-agent-db.js";
 import {
   buildTalkTestProviderConfig,
   TALK_TEST_PROVIDER_API_KEY_PATH,

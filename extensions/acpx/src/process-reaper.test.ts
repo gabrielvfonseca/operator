@@ -13,7 +13,7 @@ const CODEX_WRAPPER_COMMAND = `node ${WRAPPER_ROOT}/codex-acp-wrapper.mjs`;
 const CODEX_WRAPPER_COMMAND_WITH_LEASE = `${CODEX_WRAPPER_COMMAND} ${OPERATOR_ACPX_LEASE_ID_ARG} lease-1 ${OPERATOR_GATEWAY_INSTANCE_ID_ARG} gateway-1`;
 const CLAUDE_WRAPPER_COMMAND = `node ${WRAPPER_ROOT}/claude-agent-acp-wrapper.mjs`;
 const PLUGIN_DEPS_CODEX_COMMAND =
-  "node /tmp/openclaw/plugin-runtime-deps/node_modules/@zed-industries/codex-acp/bin/codex-acp.js";
+  "node /tmp/operator/plugin-runtime-deps/node_modules/@zed-industries/codex-acp/bin/codex-acp.js";
 const LOCAL_NODE_MODULES_CODEX_COMMAND = `node ${path.resolve(
   "node_modules/@zed-industries/codex-acp/bin/codex-acp.js",
 )}`;

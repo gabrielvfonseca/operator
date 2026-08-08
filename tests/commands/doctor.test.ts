@@ -255,7 +255,7 @@ describe("doctorCommand", () => {
       },
       integrityCheck: "ok",
       mode: "compact",
-      path: "/tmp/openclaw/state/operator.sqlite",
+      path: "/tmp/operator/state/operator.sqlite",
       quickCheck: "ok",
       reclaimedBytes: 12_288,
       skipped: false,
@@ -289,7 +289,7 @@ describe("doctorCommand", () => {
       body: "sanitized body",
       bodyPath: "/tmp/session.failure.md",
       title: "Session SQLite migration recovery report (run-1)",
-      url: "https://github.com/openclaw/openclaw/issues/new?title=run-1",
+      url: "https://github.com/operator/operator/issues/new?title=run-1",
     };
     const report = {
       mode: "recover",
@@ -312,7 +312,7 @@ describe("doctorCommand", () => {
     mocks.runDoctorSessionSqlite.mockResolvedValueOnce(report);
     mocks.createSessionSqliteGithubIssue.mockReturnValueOnce({
       ok: true,
-      url: "https://github.com/openclaw/openclaw/issues/123",
+      url: "https://github.com/operator/operator/issues/123",
     });
     const runtime = {
       log: vi.fn(),
@@ -334,7 +334,7 @@ describe("doctorCommand", () => {
 
     expect(mocks.createSessionSqliteGithubIssue).toHaveBeenCalledWith(supportIssue);
     expect(runtime.log).toHaveBeenCalledWith(
-      "session-sqlite recover: created GitHub issue https://github.com/openclaw/openclaw/issues/123",
+      "session-sqlite recover: created GitHub issue https://github.com/operator/operator/issues/123",
     );
     expect(runtime.exit).toHaveBeenCalledWith(0);
   });
@@ -345,7 +345,7 @@ describe("doctorCommand", () => {
       supportIssue: {
         body: "sanitized body",
         title: "Session SQLite migration recovery report (run-1)",
-        url: "https://github.com/openclaw/openclaw/issues/new?title=run-1",
+        url: "https://github.com/operator/operator/issues/new?title=run-1",
       },
       targets: [],
       totals: {

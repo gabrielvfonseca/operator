@@ -33,7 +33,7 @@ type PluginPackageJson = {
   name?: string;
   version?: string;
   private?: boolean;
-  openclaw?: {
+  operator?: {
     extensions?: string[];
     install?: {
       npmSpec?: string;
@@ -101,7 +101,7 @@ const CLAWHUB_REQUEST_TIMEOUT_MS = 30_000;
 const CLAWHUB_RESPONSE_BODY_MAX_BYTES = 64 * 1024;
 const CLAWHUB_ERROR_BODY_MAX_BYTES = 8 * 1024;
 const CLAWHUB_ERROR_BODY_MAX_CHARS = 400;
-const OPERATOR_PLUGIN_CLAWHUB_REPOSITORY = "openclaw/openclaw";
+const OPERATOR_PLUGIN_CLAWHUB_REPOSITORY = "operator/operator";
 const OPERATOR_PLUGIN_CLAWHUB_WORKFLOW_FILENAME = "plugin-clawhub-release.yml";
 const SAFE_EXTENSION_ID_RE = /^[a-z0-9][a-z0-9._-]*$/;
 const CLAWHUB_SHARED_RELEASE_INPUT_PATHS = [

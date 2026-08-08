@@ -16,20 +16,20 @@ const CASES: GuidanceCase[] = [
     file: "skills/session-logs/SKILL.md",
     required: ["OPERATOR_STATE_DIR"],
     forbidden: [
-      "for f in ~/.openclaw/agents/<agentId>/sessions/*.jsonl",
-      'rg -l "phrase" ~/.openclaw/agents/<agentId>/sessions/*.jsonl',
-      "~/.openclaw/agents/<agentId>/sessions/<id>.jsonl",
+      "for f in ~/.operator/agents/<agentId>/sessions/*.jsonl",
+      'rg -l "phrase" ~/.operator/agents/<agentId>/sessions/*.jsonl',
+      "~/.operator/agents/<agentId>/sessions/<id>.jsonl",
     ],
   },
   {
     file: "skills/gh-issues/SKILL.md",
     required: ["OPERATOR_CONFIG_PATH"],
-    forbidden: ["cat ~/.openclaw/openclaw.json"],
+    forbidden: ["cat ~/.operator/operator.json"],
   },
   {
     file: "extensions/canvas/skills/canvas/SKILL.md",
     required: ["OPERATOR_CONFIG_PATH"],
-    forbidden: ["cat ~/.openclaw/openclaw.json"],
+    forbidden: ["cat ~/.operator/operator.json"],
   },
   {
     file: "skills/openai-whisper-api/SKILL.md",
@@ -41,18 +41,18 @@ const CASES: GuidanceCase[] = [
       "OPERATOR_STATE_DIR",
       "OPERATOR_CONFIG_PATH",
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-      'STATE_DIR="${OPERATOR_STATE_DIR:-$HOME/.openclaw}"',
+      'STATE_DIR="${OPERATOR_STATE_DIR:-$HOME/.operator}"',
     ],
     forbidden: [
-      'SHERPA_ONNX_RUNTIME_DIR: "~/.openclaw/tools/sherpa-onnx-tts/runtime"',
-      'SHERPA_ONNX_MODEL_DIR: "~/.openclaw/tools/sherpa-onnx-tts/models/vits-piper-en_US-lessac-high"',
+      'SHERPA_ONNX_RUNTIME_DIR: "~/.operator/tools/sherpa-onnx-tts/runtime"',
+      'SHERPA_ONNX_MODEL_DIR: "~/.operator/tools/sherpa-onnx-tts/models/vits-piper-en_US-lessac-high"',
       "<state-dir>",
     ],
   },
   {
     file: "skills/coding-agent/SKILL.md",
     required: ["OPERATOR_STATE_DIR"],
-    forbidden: ["NEVER start Codex in ~/.openclaw/"],
+    forbidden: ["NEVER start Codex in ~/.operator/"],
   },
 ];
 

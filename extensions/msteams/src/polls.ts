@@ -124,15 +124,15 @@ export function extractMSTeamsPollVote(
     return null;
   }
   const pollId =
-    readNestedString(value, ["openclawPollId"]) ??
+    readNestedString(value, ["operatorPollId"]) ??
     readNestedString(value, ["pollId"]) ??
     readNestedString(value, ["@gabrielvfonseca/operator", "pollId"]) ??
     readNestedString(value, ["@gabrielvfonseca/operator", "poll", "id"]) ??
-    readNestedString(value, ["data", "openclawPollId"]) ??
+    readNestedString(value, ["data", "operatorPollId"]) ??
     readNestedString(value, ["data", "pollId"]) ??
     readNestedString(value, ["data", "@gabrielvfonseca/operator", "pollId"]) ??
     // Action.Execute (Universal Action Model) payload shape: value.action.data
-    readNestedString(value, ["action", "data", "openclawPollId"]) ??
+    readNestedString(value, ["action", "data", "operatorPollId"]) ??
     readNestedString(value, ["action", "data", "pollId"]);
   if (!pollId) {
     return null;
@@ -216,7 +216,7 @@ export function buildMSTeamsPollCard(params: {
         title: "Vote",
         verb: "operator.poll.vote",
         data: {
-          openclawPollId: pollId,
+          operatorPollId: pollId,
           pollId,
         },
       },

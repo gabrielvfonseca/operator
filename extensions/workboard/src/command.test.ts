@@ -335,7 +335,7 @@ describe("handleWorkboardCommand", () => {
     createWorktree.mockResolvedValue({
       id: "managed-id",
       path: "/state/worktrees/fingerprint/wb-card",
-      branch: "openclaw/wb-card",
+      branch: "operator/wb-card",
     });
     await store.create({
       title: "Denied checkout",

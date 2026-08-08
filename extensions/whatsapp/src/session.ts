@@ -367,7 +367,7 @@ export async function createWaSocket(
           if (status === LOGGED_OUT_STATUS) {
             console.error(
               danger(
-                `WhatsApp session logged out. Run: ${formatCliCommand("openclaw channels login")}`,
+                `WhatsApp session logged out. Run: ${formatCliCommand("operator channels login")}`,
               ),
             );
           }

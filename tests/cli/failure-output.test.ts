@@ -12,11 +12,11 @@ describe("formatCliFailureLines", () => {
     });
 
     expect(lines).toEqual([
-      "[openclaw] Could not start the CLI.",
-      "[openclaw] Reason: config file is invalid",
-      "[openclaw] Debug: set OPERATOR_DEBUG=1 to include the stack trace.",
-      "[openclaw] Try: openclaw doctor",
-      "[openclaw] Help: openclaw --help",
+      "[operator] Could not start the CLI.",
+      "[operator] Reason: config file is invalid",
+      "[operator] Debug: set OPERATOR_DEBUG=1 to include the stack trace.",
+      "[operator] Try: operator doctor",
+      "[operator] Help: operator --help",
     ]);
   });
 
@@ -28,10 +28,10 @@ describe("formatCliFailureLines", () => {
     });
 
     expect(lines.slice(0, 4)).toEqual([
-      "[openclaw] The CLI command failed.",
-      "[openclaw] Reason: boom",
-      "[openclaw] Stack:",
-      "[openclaw] Error: boom",
+      "[operator] The CLI command failed.",
+      "[operator] Reason: boom",
+      "[operator] Stack:",
+      "[operator] Error: boom",
     ]);
     expect(lines.join("\n")).toContain("Error: boom");
   });

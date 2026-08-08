@@ -233,7 +233,7 @@ describe("browser remote profile fallback and attachOnly behavior", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it("does not enforce managed tab cap for remote openclaw profiles", async () => {
+  it("does not enforce managed tab cap for remote operator profiles", async () => {
     const listPagesViaPlaywright = vi
       .fn()
       .mockResolvedValueOnce([

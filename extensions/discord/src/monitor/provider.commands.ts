@@ -13,10 +13,10 @@ import {
 } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 export type GetPluginCommandSpecs =
-  typeof import("openclaw/plugin-sdk/plugin-runtime").getPluginCommandSpecs;
+  typeof import("operator/plugin-sdk/plugin-runtime").getPluginCommandSpecs;
 
 const loadPluginCommandSpecs = createLazyRuntimeNamedExport(
-  () => import("openclaw/plugin-sdk/plugin-runtime"),
+  () => import("operator/plugin-sdk/plugin-runtime"),
   "getPluginCommandSpecs",
 );
 

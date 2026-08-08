@@ -13,7 +13,7 @@ Internal note for the docs publish pipeline. This file is under `docs/.i18n`, wh
 
 ## Event flow
 
-1. `openclaw/openclaw` syncs English docs into `openclaw/docs`.
+1. `operator/operator` syncs English docs into `operator/docs`.
 2. GitHub Pages deploys English/source changes immediately from the sync commit.
 3. `Translate All` is triggered by the sync commit, release dispatch, manual dispatch, or weekly schedule.
 4. The coordinator waits a cooldown window before starting translation.

@@ -191,7 +191,7 @@ function rpcMethodsFromPayload(payload: Record<string, unknown>): string[] {
 }
 
 // Probe whether the installed imsg CLI accepts `--file` on the `send-rich`
-// subcommand (added by openclaw/imsg#114, which lets a single bridge call
+// subcommand (added by operator/imsg#114, which lets a single bridge call
 // combine `--reply-to` and an attachment). We grep the help output rather
 // than trying a real send so the probe is side-effect-free, and we resolve
 // to `false` on any failure (timeout, non-zero exit, missing binary) so
@@ -236,7 +236,7 @@ export async function probeIMessagePrivateApi(
     // 26 AMFI gate). Carry it forward so blocked actions can show the reason.
     const statusMessage = typeof payload?.message === "string" ? payload.message : undefined;
     // Probe `imsg send-rich --help` for the `--file` flag added by
-    // openclaw/imsg#114. We do this even when the bridge is unavailable
+    // operator/imsg#114. We do this even when the bridge is unavailable
     // because the help output ships with the CLI binary itself, and the
     // result is what gates whether reply-with-attachment can route through
     // the threaded send path. Treat any failure as "not supported" so

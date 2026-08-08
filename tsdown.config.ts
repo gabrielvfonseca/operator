@@ -221,8 +221,8 @@ function shouldNeverBundleDependency(id: string): boolean {
 function shouldAlwaysBundleDependency(id: string): boolean {
   return (
     id === "operator/plugin-sdk/ssrf-runtime-internal" ||
-    id === "@openclaw/fs-safe" ||
-    id.startsWith("@openclaw/fs-safe/") ||
+    id === "@operator/fs-safe" ||
+    id.startsWith("@operator/fs-safe/") ||
     id === "@gabrielvfonseca/normalization-core" ||
     id.startsWith("@gabrielvfonseca/normalization-core/") ||
     id === "@gabrielvfonseca/retry" ||

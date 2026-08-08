@@ -14,13 +14,13 @@ const issueDeviceBootstrapToken = vi.hoisted(() =>
 const resolveTelegramMiniAppUrls = vi.hoisted(() =>
   vi.fn(async () => ({
     pageUrl: "https://host.tailnet.ts.net/__operator_tg_miniapp/",
-    controlUiUrl: "https://host.tailnet.ts.net/openclaw",
+    controlUiUrl: "https://host.tailnet.ts.net/operator",
     gatewayUrl: "wss://host.tailnet.ts.net",
   })),
 );
 
-vi.mock("openclaw/plugin-sdk/device-bootstrap", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("openclaw/plugin-sdk/device-bootstrap")>()),
+vi.mock("operator/plugin-sdk/device-bootstrap", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("operator/plugin-sdk/device-bootstrap")>()),
   issueDeviceBootstrapToken,
 }));
 
@@ -145,7 +145,7 @@ describe("registerTelegramMiniAppRoutes", () => {
     expect(res.statusCode).toBe(200);
     expect(JSON.parse(res.body)).toEqual({
       bootstrapToken: "issued",
-      controlUiUrl: "https://host.tailnet.ts.net/openclaw",
+      controlUiUrl: "https://host.tailnet.ts.net/operator",
       gatewayUrl: "wss://host.tailnet.ts.net",
     });
     expect(issueDeviceBootstrapToken).toHaveBeenCalledWith({

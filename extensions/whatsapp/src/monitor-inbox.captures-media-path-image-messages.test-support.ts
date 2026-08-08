@@ -12,9 +12,9 @@ import {
 let monitorWebInbox: typeof import("./inbound.js").monitorWebInbox;
 const inboundLoggerInfoMock = vi.hoisted(() => vi.fn());
 
-vi.mock("openclaw/plugin-sdk/logging-core", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/logging-core")>(
-    "openclaw/plugin-sdk/logging-core",
+vi.mock("operator/plugin-sdk/logging-core", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/logging-core")>(
+    "operator/plugin-sdk/logging-core",
   );
   return {
     ...actual,

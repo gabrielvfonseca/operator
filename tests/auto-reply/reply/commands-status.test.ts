@@ -72,7 +72,7 @@ vi.mock("../../infra/provider-usage.js", async (importOriginal) => {
 
 vi.mock("../../status/status-plugin-health.runtime.js", () => pluginHealthRuntimeMock);
 
-vi.mock("../../agents/harness/builtin-openclaw.js", () => ({
+vi.mock("../../agents/harness/builtin-operator.js", () => ({
   createOperatorAgentHarness: () => ({
     id: "@gabrielvfonseca/operator",
     label: "Operator Default",

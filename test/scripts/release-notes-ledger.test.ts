@@ -4,31 +4,31 @@ import {
   ledgerChecks,
   ledgerFor,
   renderContributionRecordEntry,
-} from "../../.agents/skills/openclaw-changelog-update/scripts/verify-release-notes.mjs";
+} from "../../.agents/skills/operator-changelog-update/scripts/verify-release-notes.mjs";
 
 describe("renderContributionRecordEntry", () => {
   it("keeps source and linked issue references without repeating PR titles", () => {
     expect(
       renderContributionRecordEntry({
         number: 123,
-        title: "Fix local openclaw/openclaw#45 and openclaw/imsg#141",
+        title: "Fix local operator/operator#45 and operator/imsg#141",
         linkedIssues: [{ number: 45 }, { number: 67 }],
         thanks: ["alice", "bob"],
       }),
-    ).toBe("- **PR #123** Related #45, openclaw/imsg#141, #67. Thanks @alice and @bob.");
+    ).toBe("- **PR #123** Related #45, operator/imsg#141, #67. Thanks @alice and @bob.");
   });
 
   it("deduplicates title references and retains seeded cross-repository references", () => {
     expect(
       renderContributionRecordEntry({
         number: 124,
-        title: "Fix #45, #45, and OpenClaw/imsg#141",
-        externalReferences: ["openclaw/imsg#141"],
+        title: "Fix #45, #45, and Operator/imsg#141",
+        externalReferences: ["operator/imsg#141"],
         priorReferences: [67],
         linkedIssues: [{ number: 45 }],
         thanks: [],
       }),
-    ).toBe("- **PR #124** Related #45, OpenClaw/imsg#141, #67.");
+    ).toBe("- **PR #124** Related #45, Operator/imsg#141, #67.");
   });
 
   it("renders every source PR even without issue references or credits", () => {
@@ -43,7 +43,7 @@ describe("renderContributionRecordEntry", () => {
   });
 
   it("retains references and credits when a compact record is seeded again", () => {
-    const line = "- **PR #125** Related #45, openclaw/imsg#141. Thanks @alice and @bob.";
+    const line = "- **PR #125** Related #45, operator/imsg#141. Thanks @alice and @bob.";
     const record = contributionRecordFor({
       source: [
         "## 2026.7.1",
@@ -58,7 +58,7 @@ describe("renderContributionRecordEntry", () => {
     const seeded = record.pullRequests.get(125);
 
     expect(seeded).toEqual({
-      externalReferences: ["openclaw/imsg#141"],
+      externalReferences: ["operator/imsg#141"],
       references: [45],
       thanks: ["alice", "bob"],
     });
@@ -129,13 +129,13 @@ describe("renderContributionRecordEntry", () => {
         "",
         "#### Pull requests",
         "",
-        "- **PR #126** Fix #46 and openclaw/imsg#142. Related #68. Thanks @alice.",
+        "- **PR #126** Fix #46 and operator/imsg#142. Related #68. Thanks @alice.",
       ].join("\n"),
     });
     const seeded = record.pullRequests.get(126);
 
     expect(seeded).toEqual({
-      externalReferences: ["openclaw/imsg#142"],
+      externalReferences: ["operator/imsg#142"],
       references: [46, 68],
       thanks: ["alice"],
     });
@@ -161,7 +161,7 @@ describe("renderContributionRecordEntry", () => {
       "",
       "#### Pull requests",
       "",
-      "- **PR #456** Related openclaw/imsg#141.",
+      "- **PR #456** Related operator/imsg#141.",
     ].join("\n");
     const entry = {
       number: 456,
@@ -182,7 +182,7 @@ describe("renderContributionRecordEntry", () => {
   });
 
   it("accepts case-only differences in cross-repository references", () => {
-    const line = "- **PR #127** Related OpenClaw/imsg#143.";
+    const line = "- **PR #127** Related Operator/imsg#143.";
     const source = [
       "## 2026.7.1",
       "",
@@ -209,7 +209,7 @@ describe("renderContributionRecordEntry", () => {
       title: "Internal cleanup",
       editorialEligible: false,
       priorReferences: [],
-      externalReferences: ["openclaw/imsg#143"],
+      externalReferences: ["operator/imsg#143"],
       linkedIssues: [],
       thanks: [],
     };

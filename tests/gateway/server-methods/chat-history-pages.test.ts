@@ -29,12 +29,12 @@ describe("enrichChatHistoryCompactionMarkers", () => {
     expect(result[0]).toEqual({
       ...marker,
       __operator: {
-        ...marker["__openclaw"],
+        ...marker["__operator"],
         tokensBefore: 900_000,
         tokensAfter: 24_700,
       },
     });
-    expect(marker["__openclaw"]).not.toHaveProperty("tokensBefore");
+    expect(marker["__operator"]).not.toHaveProperty("tokensBefore");
   });
 
   it("preserves message identity without a matching checkpoint", () => {

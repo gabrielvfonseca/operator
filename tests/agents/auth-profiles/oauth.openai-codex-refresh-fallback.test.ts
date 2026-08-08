@@ -9,7 +9,7 @@ import path from "node:path";
 import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { FILE_LOCK_TIMEOUT_ERROR_CODE, resetFileLockStateForTest } from "../../../src/infra/file-lock.js";
-import { closeOperatorAgentDatabasesForTest } from "../../../src/state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../../src/state/operator-agent-db.js";
 import { captureEnv, setTestEnvValue } from "../../../src/test-utils/env.js";
 import { OAuthRefreshFailureError } from "../../../src/agents/auth-profiles/oauth-refresh-failure.js";
 import { buildRefreshContentionError } from "../../../src/agents/auth-profiles/oauth-refresh-lock-errors.js";

@@ -10,7 +10,7 @@ import { testing } from "./gateway-mcp-real-transports.js";
 const tempDirs = useAutoCleanupTempDirTracker(afterEach);
 
 function createRepoRoot() {
-  return tempDirs.make("openclaw-qalab-cli-entry-");
+  return tempDirs.make("operator-qalab-cli-entry-");
 }
 
 async function writeEntry(root: string, relativePath: string) {
@@ -35,7 +35,7 @@ describe("gateway MCP real transport producer", () => {
     expect(mcp.command).toBe(process.execPath);
     expect(mcp.args.slice(0, 3)).toStrictEqual(["--import", "tsx", "--eval"]);
     expect(mcp.args[3]).toContain(channelServerPath);
-    expect(mcp.args[3]).toContain("serveOpenClawChannelMcp");
+    expect(mcp.args[3]).toContain("serveOperatorChannelMcp");
     expect(mcp.cwd).toBe(root);
     expect(mcp.envPatch).toStrictEqual({
       OPENCLAW_QA_GATEWAY_TOKEN: "secret-token",
@@ -73,7 +73,7 @@ describe("gateway MCP real transport producer", () => {
   it("isolates the source plugin-tools MCP invocation", () => {
     const root = createRepoRoot();
     const invocation = testing.resolvePluginToolsMcpInvocation({
-      configPath: "/tmp/plugin-tools/openclaw.json",
+      configPath: "/tmp/plugin-tools/operator.json",
       homeDir: "/tmp/plugin-tools/home",
       repoRoot: root,
       stateDir: "/tmp/plugin-tools/state",
@@ -89,7 +89,7 @@ describe("gateway MCP real transport producer", () => {
       cwd: root,
       env: {
         HOME: "/tmp/plugin-tools/home",
-        OPENCLAW_CONFIG_PATH: "/tmp/plugin-tools/openclaw.json",
+        OPENCLAW_CONFIG_PATH: "/tmp/plugin-tools/operator.json",
         OPENCLAW_DISABLE_BUNDLED_PLUGINS: "1",
         OPENCLAW_HOME: "/tmp/plugin-tools/home",
         OPENCLAW_STATE_DIR: "/tmp/plugin-tools/state",

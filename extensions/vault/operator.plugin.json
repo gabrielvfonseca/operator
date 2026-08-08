@@ -28,12 +28,12 @@
         "VAULT_TOKEN",
         "VAULT_TOKEN_FILE",
         "VAULT_NAMESPACE",
-        "operator_VAULT_AUTH_METHOD",
-        "operator_VAULT_AUTH_MOUNT",
-        "operator_VAULT_AUTH_ROLE",
-        "operator_VAULT_JWT_FILE",
-        "operator_VAULT_KV_MOUNT",
-        "operator_VAULT_KV_VERSION",
+        "OPERATOR_VAULT_AUTH_METHOD",
+        "OPERATOR_VAULT_AUTH_MOUNT",
+        "OPERATOR_VAULT_AUTH_ROLE",
+        "OPERATOR_VAULT_JWT_FILE",
+        "OPERATOR_VAULT_KV_MOUNT",
+        "OPERATOR_VAULT_KV_VERSION",
         "NODE_EXTRA_CA_CERTS",
         "NODE_USE_SYSTEM_CA"
       ]

@@ -29,7 +29,7 @@ const {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/sandbox", () => ({
+vi.mock("operator/plugin-sdk/sandbox", () => ({
   registerSandboxBackend: registerSandboxBackendMock,
 }));
 

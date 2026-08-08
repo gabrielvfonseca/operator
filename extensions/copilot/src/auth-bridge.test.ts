@@ -107,11 +107,11 @@ describe("resolveCopilotAuth - copilotHome resolution", () => {
   it("respects OPERATOR_HOME env var as the home root", () => {
     const result = resolveCopilotAuth({
       agentId: "agent-1",
-      env: { OPERATOR_HOME: "/custom/openclaw" } as NodeJS.ProcessEnv,
+      env: { OPERATOR_HOME: "/custom/operator" } as NodeJS.ProcessEnv,
       homeDir: fakeHomeDir,
     });
     expect(result.copilotHome).toBe(
-      resolve(join("/custom/openclaw", ".operator", "agents", "agent-1", "copilot")),
+      resolve(join("/custom/operator", ".operator", "agents", "agent-1", "copilot")),
     );
   });
 

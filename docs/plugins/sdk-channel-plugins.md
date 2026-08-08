@@ -37,7 +37,7 @@ generic `:thread:` bookkeeping, and dispatch.
 ## Message adapter
 
 Expose a `message` adapter with `defineChannelMessageAdapter` from
-`openclaw/plugin-sdk/channel-outbound`. Declare only the durable final-send
+`operator/plugin-sdk/channel-outbound`. Declare only the durable final-send
 capabilities your native transport actually supports, backed by a contract
 test that proves the native side effect and returned receipt. Point text/media
 sends at the same transport functions the legacy `outbound` adapter uses. For
@@ -79,12 +79,12 @@ Legacy reply helpers such as `dispatchInboundReplyWithBase` and
 `recordInboundSessionAndDispatchReply` remain available for compatibility
 dispatchers. Do not use them for new channel code; start with the `message`
 adapter, receipts, and receive/send lifecycle helpers on
-`openclaw/plugin-sdk/channel-outbound` instead.
+`operator/plugin-sdk/channel-outbound` instead.
 
 ### Inbound ingress (experimental)
 
 Channels migrating inbound authorization can use the experimental
-`openclaw/plugin-sdk/channel-ingress-runtime` subpath from runtime receive
+`operator/plugin-sdk/channel-ingress-runtime` subpath from runtime receive
 paths. It accepts platform facts, raw allowlists, route descriptors, command
 facts, and access group config, then returns sender/route/command/activation
 projections plus the ordered ingress graph, while platform lookup and side
@@ -116,7 +116,7 @@ still works for params intentionally shared across every exposed action.
 
 Channels that must expose a temporary public URL for a platform-side media
 fetch can use `createHostedOutboundMediaStore(...)` from
-`openclaw/plugin-sdk/outbound-media` with plugin state stores. Keep platform
+`operator/plugin-sdk/outbound-media` with plugin state stores. Keep platform
 route parsing and token enforcement in the channel plugin; the shared helper
 only owns media loading, expiry metadata, chunk rows, and cleanup.
 
@@ -151,7 +151,7 @@ can expose a top-level `session-key-api.ts` file with a matching
 plugins). Core uses that bootstrap-safe surface only when the runtime plugin
 registry is not available yet.
 
-Use `openclaw/plugin-sdk/channel-route` when plugin code needs to normalize
+Use `operator/plugin-sdk/channel-route` when plugin code needs to normalize
 route-like fields, compare a child thread with its parent route, or build a
 stable dedupe key from `{ channel, to, accountId, threadId }`. The helper
 normalizes numeric thread ids the same way core does, so prefer it over ad hoc
@@ -177,7 +177,7 @@ hook gates only generic current-conversation bindings; it does not replace
 configured binding rules or plugin-owned session routing. Contract tests
 should cover at least one supported and one unsupported account through the
 `ChannelPlugin["conversationBindings"]` contract exported by
-`openclaw/plugin-sdk/channel-core`.
+`operator/plugin-sdk/channel-core`.
 
 ## Approvals and channel capabilities
 
@@ -210,11 +210,11 @@ custom approval payloads instead of the shared renderer.
   the common case.
 - If a channel can infer stable owner-like DM identities from existing config,
   use `createResolvedApproverActionAuthAdapter` from
-  `openclaw/plugin-sdk/approval-runtime` to restrict same-chat `/approve`
+  `operator/plugin-sdk/approval-runtime` to restrict same-chat `/approve`
   without adding approval-specific core logic.
 - If custom approval auth intentionally allows only same-chat fallback, return
   `markImplicitSameChatApprovalAuthorization({ authorized: true })` from
-  `openclaw/plugin-sdk/approval-auth-runtime`; otherwise core treats the
+  `operator/plugin-sdk/approval-auth-runtime`; otherwise core treats the
   result as explicit approver authorization.
 - If a channel-owned native callback resolves approvals directly, use
   `isImplicitSameChatApprovalAuthorization(...)` before resolving so implicit
@@ -245,7 +245,7 @@ target normalization plus transport/presentation facts. Use
 `createChannelExecApprovalProfile`, `createChannelNativeOriginTargetResolver`,
 `createChannelApproverDmTargetResolver`, and
 `createApproverRestrictedNativeApprovalCapability` from
-`openclaw/plugin-sdk/approval-runtime`. Put the channel-specific facts behind
+`operator/plugin-sdk/approval-runtime`. Put the channel-specific facts behind
 `approvalCapability.nativeRuntime`, ideally via
 `createChannelApprovalNativeRuntimeAdapter(...)` or
 `createLazyChannelApprovalNativeRuntimeAdapter(...)`, so core can assemble the
@@ -271,7 +271,7 @@ subscription, and routed-elsewhere notices.
 Other approval helpers:
 
 - Use `createNativeApprovalChannelRouteGates` from
-  `openclaw/plugin-sdk/approval-native-runtime` when a channel supports both
+  `operator/plugin-sdk/approval-native-runtime` when a channel supports both
   session-origin native delivery and explicit approval forwarding targets. The
   helper centralizes approval config selection, `mode` handling, agent/session
   filters, account binding, session-target matching, and target-list matching
@@ -289,7 +289,7 @@ Other approval helpers:
   delivery target itself should be canonicalized.
 - If the channel needs runtime-owned objects such as a client, token, Bolt
   app, or webhook receiver, register them through
-  `openclaw/plugin-sdk/channel-runtime-context`. The generic runtime-context
+  `operator/plugin-sdk/channel-runtime-context`. The generic runtime-context
   registry lets core bootstrap capability-driven handlers from channel
   startup state without adding approval-specific wrapper glue.
 - Reach for the lower-level `createChannelApprovalHandler` or
@@ -328,37 +328,37 @@ Other approval helpers:
 For hot channel entrypoints, prefer these narrower subpaths over the broader
 `approval-runtime` barrel when you only need one part of that family:
 
-- `openclaw/plugin-sdk/approval-auth-runtime`
-- `openclaw/plugin-sdk/approval-client-runtime`
-- `openclaw/plugin-sdk/approval-delivery-runtime`
-- `openclaw/plugin-sdk/approval-gateway-runtime`
-- `openclaw/plugin-sdk/approval-reference-runtime`
-- `openclaw/plugin-sdk/approval-handler-adapter-runtime`
-- `openclaw/plugin-sdk/approval-handler-runtime`
-- `openclaw/plugin-sdk/approval-native-runtime`
-- `openclaw/plugin-sdk/approval-reply-runtime`
-- `openclaw/plugin-sdk/channel-runtime-context`
+- `operator/plugin-sdk/approval-auth-runtime`
+- `operator/plugin-sdk/approval-client-runtime`
+- `operator/plugin-sdk/approval-delivery-runtime`
+- `operator/plugin-sdk/approval-gateway-runtime`
+- `operator/plugin-sdk/approval-reference-runtime`
+- `operator/plugin-sdk/approval-handler-adapter-runtime`
+- `operator/plugin-sdk/approval-handler-runtime`
+- `operator/plugin-sdk/approval-native-runtime`
+- `operator/plugin-sdk/approval-reply-runtime`
+- `operator/plugin-sdk/channel-runtime-context`
 
-Likewise, prefer `openclaw/plugin-sdk/reply-runtime`,
-`openclaw/plugin-sdk/reply-dispatch-runtime`,
-`openclaw/plugin-sdk/reply-reference`, and
-`openclaw/plugin-sdk/reply-chunking` over broader umbrella surfaces when you
+Likewise, prefer `operator/plugin-sdk/reply-runtime`,
+`operator/plugin-sdk/reply-dispatch-runtime`,
+`operator/plugin-sdk/reply-reference`, and
+`operator/plugin-sdk/reply-chunking` over broader umbrella surfaces when you
 do not need them all.
 
 ### Setup subpaths
 
-- `openclaw/plugin-sdk/setup-runtime` covers the runtime-safe setup helpers:
+- `operator/plugin-sdk/setup-runtime` covers the runtime-safe setup helpers:
   `createSetupTranslator`, import-safe setup patch adapters
   (`createPatchedAccountSetupAdapter`, `createEnvPatchedAccountSetupAdapter`,
   `createSetupInputPresenceValidator`), lookup-note output,
   `promptResolvedAllowFrom`, `splitSetupEntries`, and the delegated
   setup-proxy builders.
-- `openclaw/plugin-sdk/channel-setup` covers the optional-install setup
+- `operator/plugin-sdk/channel-setup` covers the optional-install setup
   builders plus a few setup-safe primitives: `createOptionalChannelSetupSurface`,
   `createOptionalChannelSetupAdapter`, `createOptionalChannelSetupWizard`,
   `DEFAULT_ACCOUNT_ID`, `createTopLevelChannelDmPolicy`,
   `setSetupChannelEnabled`, and `splitSetupEntries`.
-- Use the broader `openclaw/plugin-sdk/setup` seam only when you also need
+- Use the broader `operator/plugin-sdk/setup` seam only when you also need
   the heavier shared setup/config helpers such as
   `moveSingleAccountChannelSectionToDefaultAccount(...)`.
 
@@ -394,28 +394,28 @@ setters, or lazy capability adapters.
 For other hot channel paths, prefer the narrow helpers over broader legacy
 surfaces:
 
-- `openclaw/plugin-sdk/account-core`, `openclaw/plugin-sdk/account-id`,
-  `openclaw/plugin-sdk/account-resolution`, and
-  `openclaw/plugin-sdk/account-helpers` for multi-account config and
+- `operator/plugin-sdk/account-core`, `operator/plugin-sdk/account-id`,
+  `operator/plugin-sdk/account-resolution`, and
+  `operator/plugin-sdk/account-helpers` for multi-account config and
   default-account fallback
-- `openclaw/plugin-sdk/inbound-envelope` and
-  `openclaw/plugin-sdk/channel-inbound` for inbound route/envelope and
+- `operator/plugin-sdk/inbound-envelope` and
+  `operator/plugin-sdk/channel-inbound` for inbound route/envelope and
   record-and-dispatch wiring
-- `openclaw/plugin-sdk/channel-targets` for target parsing helpers
-- `openclaw/plugin-sdk/outbound-media` for media loading and
-  `openclaw/plugin-sdk/channel-outbound` for outbound identity/send delegates
+- `operator/plugin-sdk/channel-targets` for target parsing helpers
+- `operator/plugin-sdk/outbound-media` for media loading and
+  `operator/plugin-sdk/channel-outbound` for outbound identity/send delegates
   and payload planning
 - `buildThreadAwareOutboundSessionRoute(...)` from
-  `openclaw/plugin-sdk/channel-core` when an outbound route should preserve
+  `operator/plugin-sdk/channel-core` when an outbound route should preserve
   an explicit `replyToId`/`threadId` or recover the current `:thread:`
   session after the base session key still matches. Provider plugins can
   override precedence, suffix behavior, and thread id normalization when
   their platform has native thread delivery semantics.
-- `openclaw/plugin-sdk/thread-bindings-runtime` for thread-binding lifecycle
+- `operator/plugin-sdk/thread-bindings-runtime` for thread-binding lifecycle
   and adapter registration
-- `openclaw/plugin-sdk/agent-media-payload` only when a legacy agent/media
+- `operator/plugin-sdk/agent-media-payload` only when a legacy agent/media
   payload field layout is still required
-- `openclaw/plugin-sdk/telegram-command-config` (deprecated: no bundled
+- `operator/plugin-sdk/telegram-command-config` (deprecated: no bundled
   plugin uses it in production) for Telegram custom-command normalization,
   duplicate/conflict validation, and a fallback-stable command config
   contract; prefer plugin-local command config handling for new plugin code
@@ -433,8 +433,8 @@ Keep inbound mention handling split in two layers:
 - plugin-owned evidence gathering
 - shared policy evaluation
 
-Use `openclaw/plugin-sdk/channel-mention-gating` for mention-policy decisions.
-Use `openclaw/plugin-sdk/channel-inbound` only when you need the broader
+Use `operator/plugin-sdk/channel-mention-gating` for mention-policy decisions.
+Use `operator/plugin-sdk/channel-inbound` only when you need the broader
 inbound helper barrel.
 
 Good fit for plugin-local logic:
@@ -465,7 +465,7 @@ import {
   implicitMentionKindWhen,
   matchesMentionWithExplicit,
   resolveInboundMentionDecision,
-} from "openclaw/plugin-sdk/channel-inbound";
+} from "operator/plugin-sdk/channel-inbound";
 
 const wasMentioned = matchesMentionWithExplicit({
   text,
@@ -513,7 +513,7 @@ bundled channel plugins that already depend on runtime injection:
 `implicitMentionKindWhen`, `resolveInboundMentionDecision`.
 
 If you only need `implicitMentionKindWhen` and `resolveInboundMentionDecision`,
-import from `openclaw/plugin-sdk/channel-mention-gating` to avoid loading
+import from `operator/plugin-sdk/channel-mention-gating` to avoid loading
 unrelated inbound runtime helpers.
 
 ## Walkthrough
@@ -600,8 +600,8 @@ unrelated inbound runtime helpers.
     import {
       createChatChannelPlugin,
       createChannelPluginBase,
-    } from "openclaw/plugin-sdk/channel-core";
-    import type { OperatorConfig } from "openclaw/plugin-sdk/channel-core";
+    } from "operator/plugin-sdk/channel-core";
+    import type { OperatorConfig } from "operator/plugin-sdk/channel-core";
     import { acmeChatApi } from "./client.js"; // your platform API client
 
     type ResolvedAccount = {
@@ -731,7 +731,7 @@ unrelated inbound runtime helpers.
     Create `index.ts`:
 
     ```typescript index.ts
-    import { defineChannelPluginEntry } from "openclaw/plugin-sdk/channel-core";
+    import { defineChannelPluginEntry } from "operator/plugin-sdk/channel-core";
     import { acmeChatPlugin } from "./src/channel.js";
 
     export default defineChannelPluginEntry({
@@ -781,7 +781,7 @@ unrelated inbound runtime helpers.
     Create `setup-entry.ts` for lightweight loading during onboarding:
 
     ```typescript setup-entry.ts
-    import { defineSetupPluginEntry } from "openclaw/plugin-sdk/channel-core";
+    import { defineSetupPluginEntry } from "operator/plugin-sdk/channel-core";
     import { acmeChatPlugin } from "./src/channel.js";
 
     export default defineSetupPluginEntry(acmeChatPlugin);
@@ -793,7 +793,7 @@ unrelated inbound runtime helpers.
 
     Bundled workspace channels that split setup-safe exports into sidecar
     modules can use `defineBundledChannelSetupEntry(...)` from
-    `openclaw/plugin-sdk/channel-entry-contract` when they also need an
+    `operator/plugin-sdk/channel-entry-contract` when they also need an
     explicit setup-time runtime setter.
 
   </Step>

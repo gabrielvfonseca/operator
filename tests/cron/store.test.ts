@@ -8,7 +8,7 @@ import {
   archiveLegacyCronStoreForMigration,
   loadLegacyCronStoreForMigration,
 } from "../../src/commands/doctor/cron/legacy-store-migration.js";
-import { openOperatorStateDatabase } from "../../src/state/openclaw-state-db.js";
+import { openOperatorStateDatabase } from "../../src/state/operator-state-db.js";
 import { captureEnv, setTestEnvValue } from "../../src/test-utils/env.js";
 import {
   loadCronJobsStoreWithConfigJobs,

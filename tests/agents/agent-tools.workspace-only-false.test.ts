@@ -9,9 +9,9 @@ import path from "node:path";
 import { createReadTool } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("openclaw/plugin-sdk/llm", async () => {
+vi.mock("operator/plugin-sdk/llm", async () => {
   const original =
-    await vi.importActual<typeof import("openclaw/plugin-sdk/llm")>("openclaw/plugin-sdk/llm");
+    await vi.importActual<typeof import("operator/plugin-sdk/llm")>("operator/plugin-sdk/llm");
   return {
     ...original,
   };

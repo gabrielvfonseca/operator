@@ -10,8 +10,8 @@ import { replaceFileAtomic } from "../infra/replace-file.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../state/openclaw-state-db.js";
-import { resolveOperatorStateSqlitePath } from "../state/openclaw-state-db.paths.js";
+} from "../state/operator-state-db.js";
+import { resolveOperatorStateSqlitePath } from "../state/operator-state-db.paths.js";
 import { resolveConfigDir } from "../utils.js";
 import { parseJsonWithJson5Fallback } from "../utils/parse-json-compat.js";
 import { cronStoreKey } from "./store/key.js";

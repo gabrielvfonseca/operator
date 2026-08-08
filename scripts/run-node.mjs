@@ -758,7 +758,7 @@ const logRunner = (message, deps) => {
   if (deps.env.OPERATOR_RUNNER_LOG === "0") {
     return;
   }
-  const line = `[openclaw] ${message}\n`;
+  const line = `[operator] ${message}\n`;
   deps.runNodeProgress?.clearLine();
   deps.stderr.write(line);
   deps.runNodeProgress?.render();
@@ -796,7 +796,7 @@ const createRunNodeProgress = (label, deps) => {
     const elapsedSeconds = Math.max(0, Math.round((Date.now() - startedAt) / 1000));
     const frame = RUN_NODE_PROGRESS_FRAMES[frameIndex % RUN_NODE_PROGRESS_FRAMES.length];
     frameIndex += 1;
-    deps.stderr.write(`\r[openclaw] ${frame} ${label} (${elapsedSeconds}s)`);
+    deps.stderr.write(`\r[operator] ${frame} ${label} (${elapsedSeconds}s)`);
     visible = true;
   };
   const timer = setInterval(render, 120);
@@ -1132,7 +1132,7 @@ const closeRunNodeOutputTee = async (deps, exitCode) => {
     await deps.outputTee.close();
   } catch (error) {
     deps.stderr.write(
-      `[openclaw] Failed to write output log: ${error?.message ?? "unknown error"}\n`,
+      `[operator] Failed to write output log: ${error?.message ?? "unknown error"}\n`,
     );
     return exitCode === 0 ? 1 : exitCode;
   }

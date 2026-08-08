@@ -7,7 +7,7 @@ This plugin adds persistent memory tools backed by LanceDB, vector search, auto-
 ## Install
 
 ```bash
-openclaw plugins install @operator/memory-lancedb
+operator plugins install @operator/memory-lancedb
 ```
 
 Restart the Gateway after installing or updating the plugin.
@@ -23,7 +23,7 @@ Restart the Gateway after installing or updating the plugin.
 
 Use the memory plugin docs for embedding provider setup, storage paths, indexing, and recall behavior:
 
-- https://docs.openclaw.ai/plugins/memory-lancedb
+- https://docs.operator.ai/plugins/memory-lancedb
 
 ## Package
 

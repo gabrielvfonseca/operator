@@ -35,7 +35,7 @@ const CREATE_GENERATED_PR_TOKENS_ACTION = ".github/actions/create-generated-pr-t
 const PUBLISH_GENERATED_PR_ACTION = ".github/actions/publish-generated-pr/action.yml";
 const MATURITY_SCORECARD_WORKFLOW = ".github/workflows/maturity-scorecard.yml";
 const MATURITY_SCORECARD_WORKFLOW_REF =
-  "openclaw/openclaw/.github/workflows/maturity-scorecard.yml@refs/heads/main";
+  "operator/operator/.github/workflows/maturity-scorecard.yml@refs/heads/main";
 const OIDC_BOUND_MAIN_REUSABLE_WORKFLOWS = new Set<string>();
 const MATURITY_GENERATED_PR_PATHS = [
   "qa/maturity-scores.yaml",
@@ -88,7 +88,7 @@ function runCiManifestFixture(options: {
   nodeFastCiRouting?: boolean;
   runNode?: boolean;
 }) {
-  const root = mkdtempSync(path.join(tmpdir(), "openclaw-ci-manifest-"));
+  const root = mkdtempSync(path.join(tmpdir(), "operator-ci-manifest-"));
   try {
     const scriptsDir = path.join(root, "scripts", "lib");
     mkdirSync(scriptsDir, { recursive: true });
@@ -225,7 +225,7 @@ function runCiManifestFixture(options: {
             : "false",
         OPENCLAW_CI_RELEASE_CANDIDATE_TARGET:
           options.releaseCandidateCompatibility === true ? "true" : "false",
-        OPENCLAW_CI_REPOSITORY: "openclaw/openclaw",
+        OPENCLAW_CI_REPOSITORY: "operator/operator",
         OPENCLAW_CI_RUN_ANDROID: "true",
         OPENCLAW_CI_RUN_CONTROL_UI_I18N: "true",
         OPENCLAW_CI_RUN_IOS_BUILD: "true",
@@ -298,7 +298,7 @@ function runMaturityInvocationScenario(options: {
       CALLER_WORKFLOW_REF: options.callerWorkflowRef,
       JOB_WORKFLOW_FILE_PATH: MATURITY_SCORECARD_WORKFLOW,
       JOB_WORKFLOW_REF: options.jobWorkflowRef ?? MATURITY_SCORECARD_WORKFLOW_REF,
-      JOB_WORKFLOW_REPOSITORY: "openclaw/openclaw",
+      JOB_WORKFLOW_REPOSITORY: "operator/operator",
       PATH: process.env.PATH ?? "",
       PUBLISH_PULL_REQUEST: String(options.publishPullRequest),
     },
@@ -316,7 +316,7 @@ function runMaturityArtifactCopyScenario(
   const copyStep = workflow.jobs.publish_generated_pr.steps.find(
     (step: { name?: string }) => step.name === "Validate and copy generated PR files",
   );
-  const root = mkdtempSync(path.join(tmpdir(), "openclaw-maturity-copy-"));
+  const root = mkdtempSync(path.join(tmpdir(), "operator-maturity-copy-"));
   const staging = path.join(root, "staging");
   try {
     for (const generatedPath of MATURITY_GENERATED_PR_PATHS) {
@@ -369,7 +369,7 @@ function readQaProfileEvidenceWorkflow() {
 }
 
 function readReleaseChecksWorkflow() {
-  return parse(readFileSync(".github/workflows/openclaw-release-checks.yml", "utf8"));
+  return parse(readFileSync(".github/workflows/operator-release-checks.yml", "utf8"));
 }
 
 function readCriticalQualityWorkflow() {
@@ -453,7 +453,7 @@ function runDependencyCheckFixture(options: { historicalTarget: boolean; scripts
   output: string;
   status: number | null;
 } {
-  const root = mkdtempSync(path.join(tmpdir(), "openclaw-ci-deadcode-"));
+  const root = mkdtempSync(path.join(tmpdir(), "operator-ci-deadcode-"));
   try {
     const fakeBin = path.join(root, "bin");
     const callsPath = path.join(root, "pnpm-calls.txt");
@@ -508,7 +508,7 @@ function runGeneratedPublisherScenario(
     updateSource?: boolean;
   } = {},
 ) {
-  const root = mkdtempSync(path.join(tmpdir(), "openclaw-generated-pr-"));
+  const root = mkdtempSync(path.join(tmpdir(), "operator-generated-pr-"));
   try {
     const origin = path.join(root, "origin.git");
     const updater = path.join(root, "updater");
@@ -598,12 +598,12 @@ function runGeneratedPublisherScenario(
       "      else",
       '        head="$(git --git-dir="$FAKE_ORIGIN" rev-parse refs/heads/automation/locale)"',
       "      fi",
-      '      printf "https://github.com/openclaw/openclaw/pull/1\\t%s\\n" "$head"',
+      '      printf "https://github.com/operator/operator/pull/1\\t%s\\n" "$head"',
       "    fi",
       "    ;;",
       "  pr:create)",
       '    : > "$FAKE_PR_STATE"',
-      '    printf "%s\\n" "https://github.com/openclaw/openclaw/pull/1"',
+      '    printf "%s\\n" "https://github.com/operator/operator/pull/1"',
       "    ;;",
       "  pr:edit) exit 0 ;;",
       '  *) printf "unexpected gh call: %s\\n" "$*" >&2; exit 2 ;;',
@@ -629,8 +629,8 @@ function runGeneratedPublisherScenario(
         OVERLAP_POLICY: options.overlapPolicy ?? "defer",
         CONTENTS_TOKEN: "contents-token",
         GH_TOKEN: "test-token",
-        GITHUB_REPOSITORY: "openclaw/openclaw",
-        GITHUB_REPOSITORY_OWNER: "openclaw",
+        GITHUB_REPOSITORY: "operator/operator",
+        GITHUB_REPOSITORY_OWNER: "operator",
         GITHUB_STEP_SUMMARY: summary,
         HEAD_BRANCH: "automation/locale",
         PATH: `${fakeBin}:${process.env.PATH ?? ""}`,
@@ -880,12 +880,12 @@ describe("ci workflow guards", () => {
     expect(nativeResolveBase.if).not.toContain("chore(i18n): refresh native locales");
     const controlResolveCondition = controlUiResolveBase.if.replace(/\s+/gu, " ");
     expect(controlResolveCondition).toBe(
-      "github.repository == 'openclaw/openclaw' && (github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/main')",
+      "github.repository == 'operator/operator' && (github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/main')",
     );
     expect(controlResolveCondition).not.toContain("inputs.token_preflight_only");
     expect(controlResolveCondition).not.toContain("github.ref_type");
     expect(nativeResolveBase.if).toBe(
-      "github.repository == 'openclaw/openclaw' && (github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/main')",
+      "github.repository == 'operator/operator' && (github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/main')",
     );
     expect(controlUiWorkflow.on.workflow_dispatch.inputs.token_preflight_only).toEqual({
       description: "Verify generated PR App permissions without running locale generation.",
@@ -929,7 +929,7 @@ describe("ci workflow guards", () => {
       "apps/.i18n/native",
       "apps/.i18n/native-source.json",
       "apps/.i18n/apple-translation-contradictions.json",
-      "apps/android/app/src/main/java/ai/openclaw/app/i18n/NativeStringResources.kt",
+      "apps/android/app/src/main/java/ai/operator/app/i18n/NativeStringResources.kt",
       "apps/android/app/src/main/res/values*/assistant.xml",
       "apps/android/app/src/main/res/values*/strings.xml",
       "apps/ios/Resources/Localizable.xcstrings",
@@ -1371,7 +1371,7 @@ describe("ci workflow guards", () => {
 
       expect(result.branchExists).toBe(true);
       expect(result.generatedA).toBe("desired-a");
-      expect(result.summary).toContain("https://github.com/openclaw/openclaw/pull/1");
+      expect(result.summary).toContain("https://github.com/operator/operator/pull/1");
     },
   );
 
@@ -1620,7 +1620,7 @@ describe("ci workflow guards", () => {
     expect(workflow.jobs["security-fast"].needs).toContain("runner-admission");
     expect(source).toContain(
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-      "cancel-in-progress: ${{ github.event_name == 'pull_request' || (github.event_name == 'push' && github.repository == 'openclaw/openclaw' && github.ref == 'refs/heads/main') }}",
+      "cancel-in-progress: ${{ github.event_name == 'pull_request' || (github.event_name == 'push' && github.repository == 'operator/operator' && github.ref == 'refs/heads/main') }}",
     );
   });
 
@@ -1681,16 +1681,16 @@ describe("ci workflow guards", () => {
         (job as { "runs-on": string })["runs-on"],
         `${jobName} must route fork pull requests to GitHub-hosted runners`,
       ).toContain(
-        "github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw'",
+        "github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'operator/operator'",
       );
     }
     expect(stickyCondition).toContain("github.event_name != 'workflow_dispatch'");
     expect(stickyCondition).toContain(
-      "github.event.pull_request.head.repo.full_name == 'openclaw/openclaw'",
+      "github.event.pull_request.head.repo.full_name == 'operator/operator'",
     );
     expect(cacheCondition).toContain("github.event_name != 'workflow_dispatch'");
     expect(cacheCondition).toContain(
-      "github.event.pull_request.head.repo.full_name == 'openclaw/openclaw'",
+      "github.event.pull_request.head.repo.full_name == 'operator/operator'",
     );
     expect(cacheCondition).toContain("&& 'false' || 'true'");
     expect(action.inputs["sticky-disk"].default).toBe("false");
@@ -1710,7 +1710,7 @@ describe("ci workflow guards", () => {
       if: "inputs.sticky-disk == 'true'",
       uses: "useblacksmith/stickydisk@5b350170ae4ef55b536b548ef5f5896e76a6b54f",
       with: {
-        path: "/var/tmp/openclaw-node-deps",
+        path: "/var/tmp/operator-node-deps",
         commit: "if-missing",
       },
     });
@@ -1742,7 +1742,7 @@ describe("ci workflow guards", () => {
     expect(installStep.env).toMatchObject({
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       STICKY_DISK: "${{ inputs.sticky-disk }}",
-      STICKY_ROOT: "/var/tmp/openclaw-node-deps",
+      STICKY_ROOT: "/var/tmp/operator-node-deps",
     });
     expect(installStep.run).toContain('sticky_ready_marker="$STICKY_ROOT/.install-complete-v2"');
     expect(installStep.run).toContain(
@@ -1776,7 +1776,7 @@ describe("ci workflow guards", () => {
   });
 
   it("restores importer-local node_modules from sticky snapshots", () => {
-    const root = mkdtempSync(path.join(tmpdir(), "openclaw-sticky-importers-"));
+    const root = mkdtempSync(path.join(tmpdir(), "operator-sticky-importers-"));
     try {
       const workspace = path.join(root, "workspace");
       const stickyRoot = path.join(root, "sticky");
@@ -3136,7 +3136,7 @@ describe("ci workflow guards", () => {
     ];
 
     expect(workflow.on.pull_request).not.toHaveProperty("paths-ignore");
-    expect(gate.name).toBe("openclaw/ci-gate");
+    expect(gate.name).toBe("operator/ci-gate");
     expect(gate.needs).toEqual([...requiredJobs, ...selectedJobs]);
     expect(gate.needs.toSorted()).toEqual(
       Object.keys(workflow.jobs)
@@ -3211,7 +3211,7 @@ describe("ci workflow guards", () => {
         type: "string",
       },
       ref: {
-        description: "OpenClaw branch, tag, or SHA containing the maturity score source",
+        description: "Operator branch, tag, or SHA containing the maturity score source",
         required: true,
         type: "string",
       },
@@ -3363,7 +3363,7 @@ describe("ci workflow guards", () => {
       `github.workflow_ref == '${MATURITY_SCORECARD_WORKFLOW_REF}' &&`,
       `needs.validate_selected_ref.outputs.workflow_file_path == '${MATURITY_SCORECARD_WORKFLOW}' &&`,
       `needs.validate_selected_ref.outputs.workflow_ref == '${MATURITY_SCORECARD_WORKFLOW_REF}' &&`,
-      "needs.validate_selected_ref.outputs.workflow_repository == 'openclaw/openclaw' }}",
+      "needs.validate_selected_ref.outputs.workflow_repository == 'operator/operator' }}",
     ].join(" ");
     expect(publisherPreflight.needs).toBe("validate_selected_ref");
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
@@ -3598,7 +3598,7 @@ describe("ci workflow guards", () => {
     "keeps a reusable maturity call artifact-only even when its caller was dispatched",
     () => {
       const callerWorkflowRef =
-        "openclaw/openclaw/.github/workflows/openclaw-release-checks.yml@refs/heads/main";
+        "operator/operator/.github/workflows/operator-release-checks.yml@refs/heads/main";
       const artifactOnly = runMaturityInvocationScenario({
         callerEventName: "workflow_dispatch",
         callerWorkflowRef,
@@ -3788,9 +3788,9 @@ describe("ci workflow guards", () => {
     );
     expect(smokeDockerCacheStep.if).toContain("matrix.docker_cache == true");
     expect(smokeDockerCacheStep.if).toContain("github.event_name != 'workflow_dispatch'");
-    expect(smokeDockerCacheStep.if).toContain("github.repository == 'openclaw/openclaw'");
+    expect(smokeDockerCacheStep.if).toContain("github.repository == 'operator/operator'");
     expect(smokeDockerCacheStep.if).toContain(
-      "github.event.pull_request.head.repo.full_name == 'openclaw/openclaw'",
+      "github.event.pull_request.head.repo.full_name == 'operator/operator'",
     );
     expect(smokeDockerCacheStep.with["max-cache-size-mb"]).toBe(800000);
     expect(smokeRunStep.run).toContain("createQaSmokeCiPart");
@@ -3807,10 +3807,10 @@ describe("ci workflow guards", () => {
     expect(compatibilityScenarioBlock).toContain('"gateway-smoke"');
     expect(compatibilityScenarioBlock).toContain('"matrix-restart-resume"');
     expect(smokeRunStep.run).toContain("No QA smoke runs assigned");
-    expect(smokeRunStep.run).toContain("node openclaw.mjs qa run");
-    expect(smokeRunStep.run).not.toContain("pnpm openclaw qa run");
+    expect(smokeRunStep.run).toContain("node operator.mjs qa run");
+    expect(smokeRunStep.run).not.toContain("pnpm operator qa run");
     expect(smokeRunStep.run).toContain(
-      "timeout --signal=TERM --kill-after=15s 10m node openclaw.mjs qa run",
+      "timeout --signal=TERM --kill-after=15s 10m node operator.mjs qa run",
     );
     expect(smokeRunStep.run).toContain("--qa-profile smoke-ci");
     expect(smokeRunStep.run).toContain("--concurrency 10");
@@ -3818,7 +3818,7 @@ describe("ci workflow guards", () => {
       "github.event_name != 'workflow_dispatch'",
     );
     expect(smokeRunStep.env.OPENCLAW_QA_SUITE_WORKER_START_STAGGER_MS).toContain(
-      "github.repository == 'openclaw/openclaw'",
+      "github.repository == 'operator/operator'",
     );
     expect(smokeRunStep.env.OPENCLAW_QA_SUITE_WORKER_START_STAGGER_MS).toContain("'0'");
     expect(smokeRunStep.env.OPENCLAW_QA_SUITE_WORKER_START_STAGGER_MS).toContain("'1500'");
@@ -3850,7 +3850,7 @@ describe("ci workflow guards", () => {
   it("keeps push docs validation ClawHub-backed", () => {
     const workflow = readFileSync(".github/workflows/docs.yml", "utf8");
 
-    expect(workflow).toContain("repository: openclaw/clawhub");
+    expect(workflow).toContain("repository: operator/clawhub");
     expect(workflow).toContain("path: clawhub-source");
     expect(workflow).toContain(
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
@@ -3865,7 +3865,7 @@ describe("ci workflow guards", () => {
       "utf8",
     );
     const rawSocketQuery = readFileSync(
-      ".github/codeql/openclaw-boundary/queries/raw-socket-callsite-classification.ql",
+      ".github/codeql/operator-boundary/queries/raw-socket-callsite-classification.ql",
       "utf8",
     );
     const networkSelector = workflow.slice(

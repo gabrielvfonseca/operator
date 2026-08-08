@@ -36,9 +36,9 @@ const loggerMock = vi.hoisted(() => ({
   fatal: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/runtime-env", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/runtime-env")>(
-    "openclaw/plugin-sdk/runtime-env",
+vi.mock("operator/plugin-sdk/runtime-env", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/runtime-env")>(
+    "operator/plugin-sdk/runtime-env",
   );
   return {
     ...actual,
@@ -1142,7 +1142,7 @@ describe("imessage message actions", () => {
     });
   });
 
-  describe("reply with attachment (openclaw/imsg#114 plumbing)", () => {
+  describe("reply with attachment (operator/imsg#114 plumbing)", () => {
     // The core message-action runner hydrates path/media/filePath/etc.
     // through the outbound media resolver (mediaLocalRoots/sandbox/size)
     // before reaching this handler, writing the result into `buffer` +
@@ -1291,7 +1291,7 @@ describe("imessage message actions", () => {
     it("rejects reply + attachment when imsg does not advertise send-rich --file", async () => {
       // Older imsg builds reject `--file` on send-rich, so refuse loudly
       // here rather than letting send-rich ship the text alone and silently
-      // drop the attachment (the original openclaw/openclaw#79822 symptom).
+      // drop the attachment (the original operator/operator#79822 symptom).
       probeMock.getCachedIMessagePrivateApiStatus.mockReturnValue({
         available: true,
         v2Ready: true,

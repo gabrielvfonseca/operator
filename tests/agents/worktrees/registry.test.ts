@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { closeOperatorStateDatabaseForTest } from "../../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../../src/state/operator-state-db.js";
 import {
   deleteRegistryWorktree,
   findRegistryWorktreeByPath,
@@ -36,7 +36,7 @@ describe("managed worktree registry", () => {
       repoFingerprint: "0123456789abcdef",
       repoRoot: path.join(root, "repo"),
       path: path.join(root, "worktrees", "task"),
-      branch: "openclaw/task",
+      branch: "operator/task",
       baseRef: "HEAD",
       ownerKind: "workboard",
       ownerId: "card-1",
@@ -63,12 +63,12 @@ describe("managed worktree registry", () => {
     updateRegistryWorktree(env, "first", {
       lastActiveAt: 30,
       removedAt: 40,
-      snapshotRef: "refs/openclaw/snapshots/first",
+      snapshotRef: "refs/operator/snapshots/first",
     });
     expect(getRegistryWorktree(env, "first")).toMatchObject({
       lastActiveAt: 30,
       removedAt: 40,
-      snapshotRef: "refs/openclaw/snapshots/first",
+      snapshotRef: "refs/operator/snapshots/first",
     });
     expect(findLiveRegistryWorktreeByPath(env, record.path)).toBeUndefined();
     expect(findRegistryWorktreeByPath(env, record.path)?.id).toBe("first");

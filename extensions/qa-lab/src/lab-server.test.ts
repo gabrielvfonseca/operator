@@ -14,7 +14,7 @@ const qaChannelMock = vi.hoisted(() => ({
   startAccount: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/qa-channel", () => ({
+vi.mock("operator/plugin-sdk/qa-channel", () => ({
   qaChannelPlugin: {
     config: {
       resolveAccount: qaChannelMock.resolveAccount,
@@ -139,7 +139,7 @@ const captureMock = vi.hoisted(() => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/proxy-capture", () => ({
+vi.mock("operator/plugin-sdk/proxy-capture", () => ({
   acquireDebugProxyCaptureStore: () => ({
     store: captureMock.store,
     release: captureMock.store.close,

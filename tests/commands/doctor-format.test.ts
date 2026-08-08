@@ -37,7 +37,7 @@ describe("buildGatewayRuntimeHints", () => {
       "This usually means old helper or browser processes may still be attached to the gateway service.",
       "Run: systemctl --user show operator-gateway.service -p KillMode -p TasksCurrent -p MemoryCurrent -p MainPID",
       "Run: systemd-cgls --user-unit operator-gateway.service",
-      "After reviewing service settings, run: openclaw gateway restart",
+      "After reviewing service settings, run: operator gateway restart",
     ]);
   });
 
@@ -71,7 +71,7 @@ describe("buildGatewayRuntimeHints", () => {
     ).join("\n");
 
     expect(text).toContain("systemd stopped restarting the gateway after repeated crashes");
-    expect(text).toContain("openclaw gateway restart");
+    expect(text).toContain("operator gateway restart");
     expect(text).not.toContain("likely exited immediately");
   });
 

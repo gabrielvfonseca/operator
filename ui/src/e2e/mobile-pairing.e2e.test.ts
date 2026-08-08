@@ -78,7 +78,7 @@ describeControlUiE2e("Control UI mobile pairing mocked Gateway E2E", () => {
       expect(response?.status()).toBe(200);
 
       // Pairing folded into the footer agent-chip menu.
-      const sidebar = page.locator("openclaw-app-sidebar");
+      const sidebar = page.locator("operator-app-sidebar");
       await sidebar.getByRole("button", { name: /Agent menu/ }).click();
       const sidebarPairingButton = sidebar
         .locator("wa-dropdown.sidebar-agent-menu")
@@ -88,8 +88,8 @@ describeControlUiE2e("Control UI mobile pairing mocked Gateway E2E", () => {
       await gateway.deferNext("device.pair.list");
       await sidebarPairingButton.click();
 
-      const dialog = page.getByRole("dialog", { name: "OpenClaw mobile" });
-      const qr = page.getByAltText("OpenClaw mobile pairing QR code");
+      const dialog = page.getByRole("dialog", { name: "Operator mobile" });
+      const qr = page.getByAltText("Operator mobile pairing QR code");
       await dialog.waitFor();
       expect(await dialog.isVisible()).toBe(true);
       expect(await qr.count()).toBe(0);

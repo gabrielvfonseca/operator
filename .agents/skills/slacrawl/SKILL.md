@@ -3,7 +3,7 @@ name: slacrawl
 description: "Slack archive: search, sync freshness, threads/DMs, SQL counts, and Slacrawl repo work."
 metadata:
   operator:
-    homepage: https://github.com/openclaw/slacrawl
+    homepage: https://github.com/operator/slacrawl
     requires:
       bins:
         - slacrawl

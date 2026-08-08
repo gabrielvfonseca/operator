@@ -111,7 +111,7 @@ describe("fleet cli", () => {
 
     expect(mocks.runFleetCreateCommand).toHaveBeenCalledWith({
       tenant: "tenant-b",
-      image: "ghcr.io/openclaw/operator:latest",
+      image: "ghcr.io/operator/operator:latest",
       runtime: "docker",
       port: undefined,
       memory: "2g",

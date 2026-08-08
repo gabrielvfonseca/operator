@@ -520,7 +520,7 @@ describe("buildCachedChatItems row identity", () => {
             timestamp: 2,
           },
           ...siblings.map((message) => ({
-            __operator: { seq: message["__openclaw"].seq },
+            __operator: { seq: message["__operator"].seq },
             role: message.role,
             content: message.content,
             timestamp: message.timestamp,
@@ -547,9 +547,9 @@ describe("buildCachedChatItems working spark", () => {
     toolCallId: "tool-1",
     content: [{ type: "toolcall", name: "exec", arguments: {} }],
     timestamp: 1_000,
-    __openclawToolStreamLive: true,
-    __openclawToolStreamResultReceived: resultReceived,
-    __openclawToolStreamReceivedAt: 1_000,
+    __operatorToolStreamLive: true,
+    __operatorToolStreamResultReceived: resultReceived,
+    __operatorToolStreamReceivedAt: 1_000,
   });
 
   it("shows the spark while a run works with nothing streaming", () => {
@@ -2748,8 +2748,8 @@ function mcpAppLiveResult(viewId: string, toolCallId: string, timestamp: number 
       },
     ],
     ...(timestamp == null ? {} : { timestamp }),
-    __openclawToolStreamLive: true,
-    __openclawToolStreamResultReceived: true,
+    __operatorToolStreamLive: true,
+    __operatorToolStreamResultReceived: true,
   };
 }
 

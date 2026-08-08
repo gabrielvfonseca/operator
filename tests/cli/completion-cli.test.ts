@@ -86,13 +86,13 @@ describe("completion-cli", () => {
           "-fc",
           `
             source ${JSON.stringify(scriptPath)}
-            [[ -z "\${_comps[openclaw]-}" ]] || exit 10
+            [[ -z "\${_comps[operator]-}" ]] || exit 10
             [[ "\${precmd_functions[(r)_operator_register_completion]}" = "_operator_register_completion" ]] || exit 11
             autoload -Uz compinit
             compinit -C
             _operator_register_completion
             [[ -z "\${precmd_functions[(r)_operator_register_completion]}" ]] || exit 12
-            [[ "\${_comps[openclaw]-}" = "_operator_root_completion" ]]
+            [[ "\${_comps[operator]-}" = "_operator_root_completion" ]]
           `,
         ],
         {
@@ -117,7 +117,7 @@ describe("completion-cli", () => {
 
     expect(script).toContain("if ($commandPath -eq 'gateway') {");
     expect(script).toContain("if ($commandPath -eq 'gateway status') {");
-    expect(script).not.toContain("if ($commandPath -eq 'openclaw gateway') {");
+    expect(script).not.toContain("if ($commandPath -eq 'operator gateway') {");
     expect(script).toContain("$completions = @('status','restart','--force','--token')");
     expect(script).not.toContain("'-t,'");
   });
@@ -139,16 +139,16 @@ describe("completion-cli", () => {
     const script = getCompletionScript("fish", createCompletionProgram());
 
     expect(script).toContain(
-      'complete -c openclaw -n "__fish_use_subcommand" -a "gateway" -d \'Gateway commands\'',
+      'complete -c operator -n "__fish_use_subcommand" -a "gateway" -d \'Gateway commands\'',
     );
     expect(script).toContain(
-      'complete -c openclaw -n "__operator_command_path_matches gateway -- -t --token" -a "status" -d \'Show gateway status\'',
+      'complete -c operator -n "__operator_command_path_matches gateway -- -t --token" -a "status" -d \'Show gateway status\'',
     );
     expect(script).toContain(
-      "complete -c openclaw -n \"__operator_command_path_matches gateway -- -t --token\" -l force -d 'Force the action'",
+      "complete -c operator -n \"__operator_command_path_matches gateway -- -t --token\" -l force -d 'Force the action'",
     );
     expect(script).toContain(
-      "complete -c openclaw -n \"__operator_command_path_matches gateway status -- -t --token\" -l json -d 'JSON output'",
+      "complete -c operator -n \"__operator_command_path_matches gateway status -- -t --token\" -l json -d 'JSON output'",
     );
     expect(script).toContain("__operator_command_path_matches gateway -- -t --token");
     expect(script).toContain("if contains -- $flag $value_options");
@@ -161,7 +161,7 @@ describe("completion-cli", () => {
     expect(script).toContain("__operator_command_path_matches sessions cleanup --");
     expect(script).not.toContain("__operator_command_path_matches sessions cleanup -- --verbose");
     expect(script).toContain(
-      "complete -c openclaw -n \"__operator_command_path_matches sessions cleanup --\" -l dry-run -d 'Preview cleanup'",
+      "complete -c operator -n \"__operator_command_path_matches sessions cleanup --\" -l dry-run -d 'Preview cleanup'",
     );
   });
 
@@ -188,7 +188,7 @@ describe("completion-cli", () => {
   });
 });
 
-// Commander aliases are typeable commands (`openclaw capability` == `openclaw infer`),
+// Commander aliases are typeable commands (`operator capability` == `operator infer`),
 // so every shell must complete alias names and keep completing after an alias.
 function createAliasedCompletionProgram(): Command {
   const program = new Command();
@@ -239,7 +239,7 @@ describe("completion-cli command aliases", () => {
         "--norc",
         "-c",
         `${script}
-COMP_WORDS=(openclaw --profile work cron create --a)
+COMP_WORDS=(operator --profile work cron create --a)
 COMP_CWORD=5
 _operator_completion
 printf '%s\\n' "\${COMPREPLY[@]}"
@@ -266,16 +266,16 @@ printf '%s\\n' "\${COMPREPLY[@]}"
     const script = getCompletionScript("fish", createAliasedCompletionProgram());
 
     expect(script).toContain(
-      'complete -c openclaw -n "__fish_use_subcommand" -a "capability" -d \'Run inference\'',
+      'complete -c operator -n "__fish_use_subcommand" -a "capability" -d \'Run inference\'',
     );
     expect(script).toContain(
-      'complete -c openclaw -n "__operator_command_path_matches capability -- --profile" -a "embed" -d \'Embed text\'',
+      'complete -c operator -n "__operator_command_path_matches capability -- --profile" -a "embed" -d \'Embed text\'',
     );
     expect(script).toContain(
-      'complete -c openclaw -n "__operator_command_path_matches cron -- --profile" -a "create" -d \'Add a job\'',
+      'complete -c operator -n "__operator_command_path_matches cron -- --profile" -a "create" -d \'Add a job\'',
     );
     expect(script).toContain(
-      "complete -c openclaw -n \"__operator_command_path_matches cron create -- --profile --at\" -l at -d 'Schedule time'",
+      "complete -c operator -n \"__operator_command_path_matches cron create -- --profile --at\" -l at -d 'Schedule time'",
     );
   });
 

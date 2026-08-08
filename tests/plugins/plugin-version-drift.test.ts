@@ -333,7 +333,7 @@ describe("resolvePluginVersionDriftUpdateCommand", () => {
         packageName: "@gabrielvfonseca/brave-plugin",
         spec: "@gabrielvfonseca/brave-plugin@2026.6.9",
       }),
-    ).toBe("openclaw plugins update @gabrielvfonseca/brave-plugin@2026.6.10-beta.1");
+    ).toBe("operator plugins update @gabrielvfonseca/brave-plugin@2026.6.10-beta.1");
   });
 
   it("parses the package name from exact npm specs when drift metadata is sparse", () => {
@@ -345,7 +345,7 @@ describe("resolvePluginVersionDriftUpdateCommand", () => {
         source: "npm",
         spec: "@gabrielvfonseca/brave-plugin@2026.6.9",
       }),
-    ).toBe("openclaw plugins update @gabrielvfonseca/brave-plugin@2026.6.10-beta.1");
+    ).toBe("operator plugins update @gabrielvfonseca/brave-plugin@2026.6.10-beta.1");
   });
 
   it("prefers the parsed exact npm spec package over inconsistent drift metadata", () => {
@@ -358,7 +358,7 @@ describe("resolvePluginVersionDriftUpdateCommand", () => {
         packageName: "@gabrielvfonseca/other-plugin",
         spec: "@gabrielvfonseca/brave-plugin@2026.6.9",
       }),
-    ).toBe("openclaw plugins update @gabrielvfonseca/brave-plugin@2026.6.10-beta.1");
+    ).toBe("operator plugins update @gabrielvfonseca/brave-plugin@2026.6.10-beta.1");
   });
 
   it("keeps plugin-id updates for floating npm install records", () => {
@@ -371,7 +371,7 @@ describe("resolvePluginVersionDriftUpdateCommand", () => {
         packageName: "@gabrielvfonseca/brave-plugin",
         spec: "@gabrielvfonseca/brave-plugin",
       }),
-    ).toBe("openclaw plugins update brave");
+    ).toBe("operator plugins update brave");
   });
 
   it("keeps plugin-id updates when the gateway version is not a registry version", () => {
@@ -384,6 +384,6 @@ describe("resolvePluginVersionDriftUpdateCommand", () => {
         packageName: "@gabrielvfonseca/brave-plugin",
         spec: "@gabrielvfonseca/brave-plugin@2026.6.9",
       }),
-    ).toBe("openclaw plugins update brave");
+    ).toBe("operator plugins update brave");
   });
 });

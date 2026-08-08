@@ -213,8 +213,8 @@ describe("dev tooling safety helpers", () => {
   });
 
   it("redacts home paths and masks opaque ids", () => {
-    expect(redactHomePath("/home/alice/.openclaw/state.json", "/home/alice")).toBe(
-      "~/.openclaw/state.json",
+    expect(redactHomePath("/home/alice/.operator/state.json", "/home/alice")).toBe(
+      "~/.operator/state.json",
     );
     expect(maskIdentifier("session-key-abcdef123456")).toBe("sessio...3456");
   });
@@ -226,7 +226,7 @@ describe("script-specific dev tooling hardening", () => {
     expect(() => discordSmokeTesting.parseDriverMode("curl")).toThrow(/Invalid --driver/u);
   });
 
-  it("rejects unknown Discord smoke args before live Discord/OpenClaw work", async () => {
+  it("rejects unknown Discord smoke args before live Discord/Operator work", async () => {
     expect(() => discordSmokeTesting.parseArgs(["--wat"])).toThrow("Unknown argument: --wat");
     const [result] = await getDiscordCliResults();
 
@@ -442,7 +442,7 @@ describe("script-specific dev tooling hardening", () => {
   });
 
   it("reads TUI PTY mirror updates incrementally with a bounded chunk", async () => {
-    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-tui-watch-test-"));
+    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-tui-watch-test-"));
     tempDirs.push(tempRoot);
     const mirrorPath = path.join(tempRoot, "mirror.ansi");
     await fs.writeFile(mirrorPath, "first-second-third", "utf8");
@@ -457,7 +457,7 @@ describe("script-specific dev tooling hardening", () => {
   });
 
   it("restarts TUI PTY mirror reads when the mirror file is truncated", async () => {
-    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-tui-watch-test-"));
+    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-tui-watch-test-"));
     tempDirs.push(tempRoot);
     const mirrorPath = path.join(tempRoot, "mirror.ansi");
     await fs.writeFile(mirrorPath, "fresh", "utf8");
@@ -469,7 +469,7 @@ describe("script-specific dev tooling hardening", () => {
   });
 
   it("drains all pending TUI PTY mirror chunks after the child exits", async () => {
-    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-tui-watch-test-"));
+    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-tui-watch-test-"));
     tempDirs.push(tempRoot);
     const mirrorPath = path.join(tempRoot, "mirror.ansi");
     await fs.writeFile(mirrorPath, "first-second-third", "utf8");
@@ -722,7 +722,7 @@ describe("script-specific dev tooling hardening", () => {
   });
 
   it("reads only the bounded Anthropic prompt probe gateway log tail", async () => {
-    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-prompt-probe-log-"));
+    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-prompt-probe-log-"));
     tempDirs.push(tempRoot);
     const logPath = path.join(tempRoot, "gateway.log");
     const token = "sk-test1234567890abcdefghijklmnop"; // pragma: allowlist secret
@@ -744,7 +744,7 @@ describe("script-specific dev tooling hardening", () => {
   });
 
   it("drops partial Anthropic prompt probe log lines before redaction", async () => {
-    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-prompt-probe-log-"));
+    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-prompt-probe-log-"));
     tempDirs.push(tempRoot);
     const logPath = path.join(tempRoot, "gateway.log");
     const token = `sk-test${"a".repeat(80)}`; // pragma: allowlist secret
@@ -757,8 +757,8 @@ describe("script-specific dev tooling hardening", () => {
   });
 
   it("cleans Anthropic prompt probe temp dirs unless explicitly kept", async () => {
-    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-prompt-probe-test-"));
-    const keepRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-prompt-probe-test-"));
+    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-prompt-probe-test-"));
+    const keepRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-prompt-probe-test-"));
 
     expect(promptProbeTesting.promptProbeTmpResult(tempRoot, false)).toEqual({});
     expect(promptProbeTesting.promptProbeTmpResult(keepRoot, true)).toEqual({ tmpDir: keepRoot });
@@ -774,7 +774,7 @@ describe("script-specific dev tooling hardening", () => {
   it.runIf(process.platform !== "win32")(
     "cleans Anthropic direct prompt descendants after timeout",
     async () => {
-      const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-direct-prompt-tree-"));
+      const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-direct-prompt-tree-"));
       tempDirs.push(tempRoot);
       const descendantPidPath = path.join(tempRoot, "descendant.pid");
       let descendantPid = 0;
@@ -806,7 +806,7 @@ describe("script-specific dev tooling hardening", () => {
   it.runIf(process.platform !== "win32")(
     "cleans Anthropic direct prompt descendants on parent signal",
     async () => {
-      const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-direct-parent-signal-"));
+      const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-direct-parent-signal-"));
       tempDirs.push(tempRoot);
       const descendantPidPath = path.join(tempRoot, "descendant.pid");
       let descendantPid = 0;
@@ -917,7 +917,7 @@ describe("script-specific dev tooling hardening", () => {
   it.runIf(process.platform !== "win32")(
     "cleans Anthropic prompt gateway descendants after leader exit",
     async () => {
-      const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-prompt-gateway-tree-"));
+      const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-prompt-gateway-tree-"));
       tempDirs.push(tempRoot);
       const descendantPidPath = path.join(tempRoot, "descendant.pid");
       let descendantPid = 0;
@@ -977,7 +977,7 @@ describe("script-specific dev tooling hardening", () => {
   it.runIf(process.platform !== "win32")(
     "cleans Anthropic prompt gateway descendants on parent signal",
     async () => {
-      const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-prompt-parent-signal-"));
+      const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-prompt-parent-signal-"));
       tempDirs.push(tempRoot);
       const descendantPidPath = path.join(tempRoot, "descendant.pid");
       const readyPath = path.join(tempRoot, "ready");

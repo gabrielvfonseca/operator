@@ -7,7 +7,7 @@ const bundledSources = new Map<string, BundledPluginSource>([
     "discord",
     {
       pluginId: "discord",
-      localPath: "/opt/openclaw/extensions/discord",
+      localPath: "/opt/operator/extensions/discord",
       npmSpec: "@gabrielvfonseca/discord",
     },
   ],
@@ -18,7 +18,7 @@ describe("plugin install provenance", () => {
     "discord",
     "@gabrielvfonseca/discord",
     "npm:@gabrielvfonseca/discord",
-    "/opt/openclaw/extensions/discord",
+    "/opt/operator/extensions/discord",
     "brave",
     "npm:@gabrielvfonseca/brave-plugin",
     "clawhub:operator-demo",

@@ -550,7 +550,7 @@ describe("buildEmbeddedRunPayloads", () => {
             type: "toolCall",
             id: "toolu_01",
             name: "browser",
-            arguments: { action: "search", query: "openclaw docs" },
+            arguments: { action: "search", query: "operator docs" },
           },
         ],
       }),
@@ -667,7 +667,7 @@ describe("buildEmbeddedRunPayloads", () => {
         error: "invoke timed out",
         timedOut: true,
         mutatingAction: true,
-        fileTarget: { path: "/tmp/openclaw/output.md" },
+        fileTarget: { path: "/tmp/operator/output.md" },
       },
     });
 

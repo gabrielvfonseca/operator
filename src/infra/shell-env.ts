@@ -249,7 +249,7 @@ export function loadShellEnvFallback(opts: ShellEnvFallbackOptions): ShellEnvFal
     platform: opts.platform,
   });
   if (!probe.ok) {
-    logger.warn(`[openclaw] shell env fallback failed: ${probe.error}`);
+    logger.warn(`[operator] shell env fallback failed: ${probe.error}`);
     lastAppliedKeys = [];
     return { ok: false, error: probe.error, applied: [] };
   }

@@ -16,7 +16,7 @@ Reference for plugin packaging (`package.json` metadata), manifests (`operator.p
 
 ## Package metadata
 
-Your `package.json` needs an `openclaw` field that tells the plugin system what your plugin provides:
+Your `package.json` needs an `operator` field that tells the plugin system what your plugin provides:
 
 <Tabs>
   <Tab title="Channel plugin">
@@ -56,7 +56,7 @@ Your `package.json` needs an `openclaw` field that tells the plugin system what 
           "minGatewayVersion": "2026.3.24-beta.2"
         },
         "build": {
-          "openclawVersion": "2026.3.24-beta.2",
+          "operatorVersion": "2026.3.24-beta.2",
           "pluginSdkVersion": "2026.3.24-beta.2"
         }
       }
@@ -69,7 +69,7 @@ Your `package.json` needs an `openclaw` field that tells the plugin system what 
 Publishing externally on ClawHub requires `compat` and `build`. Canonical publish snippets live in `docs/snippets/plugin-publish/`.
 </Note>
 
-### `openclaw` fields
+### `operator` fields
 
 <ParamField path="extensions" type="string[]">
   Entry point files (relative to package root). Valid source entries for workspace and git checkout development.
@@ -305,7 +305,7 @@ clawhub package publish your-org/your-plugin
 
 ```typescript
 // setup-entry.ts
-import { defineSetupPluginEntry } from "openclaw/plugin-sdk/channel-core";
+import { defineSetupPluginEntry } from "operator/plugin-sdk/channel-core";
 import { myChannelPlugin } from "./src/channel.js";
 
 export default defineSetupPluginEntry(myChannelPlugin);
@@ -313,7 +313,7 @@ export default defineSetupPluginEntry(myChannelPlugin);
 
 This avoids loading heavy runtime code (crypto libraries, CLI registrations, background services) during setup flows.
 
-Bundled workspace channels that keep setup-safe exports in sidecar modules can use `defineBundledChannelSetupEntry(...)` from `openclaw/plugin-sdk/channel-entry-contract` instead of `defineSetupPluginEntry(...)`. That bundled contract also supports an optional `runtime` export so setup-time runtime wiring can stay lightweight and explicit.
+Bundled workspace channels that keep setup-safe exports in sidecar modules can use `defineBundledChannelSetupEntry(...)` from `operator/plugin-sdk/channel-entry-contract` instead of `defineSetupPluginEntry(...)`. That bundled contract also supports an optional `runtime` export so setup-time runtime wiring can stay lightweight and explicit.
 
 <AccordionGroup>
   <Accordion title="When Operator uses setupEntry instead of the full entry">
@@ -408,7 +408,7 @@ Use `buildChannelConfigSchema` to convert a Zod schema into the `ChannelConfigSc
 
 ```typescript
 import { z } from "zod";
-import { buildChannelConfigSchema } from "openclaw/plugin-sdk/channel-config-schema";
+import { buildChannelConfigSchema } from "operator/plugin-sdk/channel-config-schema";
 
 const accountSchema = z.object({
   token: z.string().optional(),
@@ -424,7 +424,7 @@ If you already author the contract as JSON Schema or TypeBox, use the direct hel
 
 ```typescript
 import { Type } from "typebox";
-import { buildJsonChannelConfigSchema } from "openclaw/plugin-sdk/channel-config-schema";
+import { buildJsonChannelConfigSchema } from "operator/plugin-sdk/channel-config-schema";
 
 const configSchema = buildJsonChannelConfigSchema(
   Type.Object({
@@ -441,7 +441,7 @@ For third-party plugins, the cold-path contract is still the plugin manifest: mi
 Channel plugins can provide interactive setup wizards for `operator onboard`. The wizard is a `ChannelSetupWizard` object on the `ChannelPlugin`:
 
 ```typescript
-import type { ChannelSetupWizard } from "openclaw/plugin-sdk/channel-setup";
+import type { ChannelSetupWizard } from "operator/plugin-sdk/channel-setup";
 
 const setupWizard: ChannelSetupWizard = {
   channel: "my-channel",
@@ -475,16 +475,16 @@ const setupWizard: ChannelSetupWizard = {
 
 <AccordionGroup>
   <Accordion title="Shared allowFrom prompts">
-    For DM allowlist prompts that only need the standard `note -> prompt -> parse -> merge -> patch` flow, prefer the shared setup helpers from `openclaw/plugin-sdk/setup`: `createPromptParsedAllowFromForAccount(...)`, `createTopLevelChannelParsedAllowFromPrompt(...)`, and `createNestedChannelParsedAllowFromPrompt(...)`.
+    For DM allowlist prompts that only need the standard `note -> prompt -> parse -> merge -> patch` flow, prefer the shared setup helpers from `operator/plugin-sdk/setup`: `createPromptParsedAllowFromForAccount(...)`, `createTopLevelChannelParsedAllowFromPrompt(...)`, and `createNestedChannelParsedAllowFromPrompt(...)`.
   </Accordion>
   <Accordion title="Standard channel setup status">
-    For channel setup status blocks that only vary by labels, scores, and optional extra lines, prefer `createStandardChannelSetupStatus(...)` from `openclaw/plugin-sdk/setup` instead of hand-rolling the same `status` object in each plugin.
+    For channel setup status blocks that only vary by labels, scores, and optional extra lines, prefer `createStandardChannelSetupStatus(...)` from `operator/plugin-sdk/setup` instead of hand-rolling the same `status` object in each plugin.
   </Accordion>
   <Accordion title="Optional channel setup surface">
-    For optional setup surfaces that should only appear in certain contexts, use `createOptionalChannelSetupSurface` from `openclaw/plugin-sdk/channel-setup`:
+    For optional setup surfaces that should only appear in certain contexts, use `createOptionalChannelSetupSurface` from `operator/plugin-sdk/channel-setup`:
 
     ```typescript
-    import { createOptionalChannelSetupSurface } from "openclaw/plugin-sdk/channel-setup";
+    import { createOptionalChannelSetupSurface } from "operator/plugin-sdk/channel-setup";
 
     const setupSurface = createOptionalChannelSetupSurface({
       channel: "my-channel",

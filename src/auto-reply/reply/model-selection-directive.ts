@@ -20,7 +20,7 @@ export type ModelDirectiveSelection = {
 };
 
 function formatAddModelCommand(modelRef: string): string {
-  return `openclaw config set agents.defaults.models '${JSON.stringify({ [modelRef]: {} })}' --strict-json --merge`;
+  return `operator config set agents.defaults.models '${JSON.stringify({ [modelRef]: {} })}' --strict-json --merge`;
 }
 
 function formatNotAllowedError(params: {
@@ -37,7 +37,7 @@ function formatNotAllowedError(params: {
     `Then retry: ${retryCommand}`,
   ];
   if (rawRuntime && normalizeProviderId(rawRuntime) === "codex") {
-    lines.push("If the Codex runtime is missing, run: openclaw plugins enable codex");
+    lines.push("If the Codex runtime is missing, run: operator plugins enable codex");
   }
   return lines.join("\n");
 }

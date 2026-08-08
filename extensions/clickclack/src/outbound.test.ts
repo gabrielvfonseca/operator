@@ -25,7 +25,7 @@ const message = vi.hoisted(() =>
 const createClientOptions = vi.hoisted(() => vi.fn());
 const loadOutboundMediaFromUrl = vi.hoisted(() => vi.fn());
 
-vi.mock("openclaw/plugin-sdk/outbound-media", () => ({ loadOutboundMediaFromUrl }));
+vi.mock("operator/plugin-sdk/outbound-media", () => ({ loadOutboundMediaFromUrl }));
 
 vi.mock("./accounts.js", () => ({
   resolveClickClackAccount: () => ({

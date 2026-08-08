@@ -32,8 +32,8 @@ describe("resolveConfig", () => {
       timeoutSeconds: 60,
       debug: true,
       mxcPolicyPaths: [
-        "  C:\\ProgramData\\openclaw\\mxc-machine-policy.json  ",
-        "  /opt/openclaw/mxc-user-policy.json  ",
+        "  C:\\ProgramData\\operator\\mxc-machine-policy.json  ",
+        "  /opt/operator/mxc-user-policy.json  ",
       ],
     });
 
@@ -45,8 +45,8 @@ describe("resolveConfig", () => {
       timeoutSecondsConfigured: true,
       debug: true,
       mxcPolicyPaths: [
-        "C:\\ProgramData\\openclaw\\mxc-machine-policy.json",
-        "/opt/openclaw/mxc-user-policy.json",
+        "C:\\ProgramData\\operator\\mxc-machine-policy.json",
+        "/opt/operator/mxc-user-policy.json",
       ],
     });
   });

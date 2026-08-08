@@ -362,7 +362,7 @@ See our [Contributing Guide](CONTRIBUTING.md) for information on contributing co
 - **Documentation**: [https://docs.operator.ai](https://docs.operator.ai)
 - **GitHub Repository**: [https://github.com/gabrielvfonseca/operator](https://github.com/gabrielvfonseca/operator)
 - **Community Discord**: [https://discord.gg/clawd](https://discord.gg/clawd)
-- **X/Twitter**: [@openclaw](https://x.com/openclaw)
+- **X/Twitter**: [@operator](https://x.com/operator)
 
 ## Related Resources
 

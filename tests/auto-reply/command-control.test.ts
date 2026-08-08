@@ -1174,7 +1174,7 @@ describe("control command parsing", () => {
     });
 
     expect(shouldComputeCommandAuthorized("/ pair qr")).toBe(true);
-    expect(shouldComputeCommandAuthorized("@openclaw / pair qr")).toBe(true);
+    expect(shouldComputeCommandAuthorized("@operator / pair qr")).toBe(true);
     expect(shouldComputeCommandAuthorized("hey / pair qr")).toBe(true);
 
     clearPluginCommands();
@@ -1188,7 +1188,7 @@ describe("control command parsing", () => {
       }),
     ).toBe(false);
     expect(
-      hasControlCommand("/help@openclaw", undefined, {
+      hasControlCommand("/help@operator", undefined, {
         botUsername: "@gabrielvfonseca/operator",
       }),
     ).toBe(true);

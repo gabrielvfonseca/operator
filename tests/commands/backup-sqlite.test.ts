@@ -5,12 +5,12 @@ import { useAutoCleanupTempDirTracker } from "../../test/helpers/temp-dir.js";
 import { requireNodeSqlite } from "../../src/infra/node-sqlite.js";
 import type { RuntimeEnv } from "../../src/runtime.js";
 import { createLocalSqliteSnapshotProvider } from "../../src/snapshot/local-repository.js";
-import { OPERATOR_AGENT_SCHEMA_VERSION } from "../../src/state/openclaw-agent-db.js";
-import { resolveOperatorAgentSqlitePath } from "../../src/state/openclaw-agent-db.paths.js";
-import { OPERATOR_AGENT_SCHEMA_SQL } from "../../src/state/openclaw-agent-schema.generated.js";
-import { OPERATOR_STATE_SCHEMA_VERSION } from "../../src/state/openclaw-state-db.js";
-import { resolveOperatorStateSqlitePath } from "../../src/state/openclaw-state-db.paths.js";
-import { OPERATOR_STATE_SCHEMA_SQL } from "../../src/state/openclaw-state-schema.generated.js";
+import { OPERATOR_AGENT_SCHEMA_VERSION } from "../../src/state/operator-agent-db.js";
+import { resolveOperatorAgentSqlitePath } from "../../src/state/operator-agent-db.paths.js";
+import { OPERATOR_AGENT_SCHEMA_SQL } from "../../src/state/operator-agent-schema.generated.js";
+import { OPERATOR_STATE_SCHEMA_VERSION } from "../../src/state/operator-state-db.js";
+import { resolveOperatorStateSqlitePath } from "../../src/state/operator-state-db.paths.js";
+import { OPERATOR_STATE_SCHEMA_SQL } from "../../src/state/operator-state-schema.generated.js";
 import {
   backupSqliteCreateCommand,
   backupSqliteListCommand,

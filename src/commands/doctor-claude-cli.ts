@@ -240,7 +240,7 @@ export function noteClaudeCliHealth(
     lines.push("- Headless Claude auth: unavailable without interactive prompting.");
     fixHints.push(
       `- Fix: run ${formatCliCommand("claude auth login")}, then ${formatCliCommand(
-        "openclaw models auth login --provider anthropic --method cli --set-default",
+        "operator models auth login --provider anthropic --method cli --set-default",
       )}.`,
     );
   }
@@ -249,7 +249,7 @@ export function noteClaudeCliHealth(
     lines.push(`- Operator auth profile: missing (${CLAUDE_CLI_PROFILE_ID}) in ${authStorePath}.`);
     fixHints.push(
       `- Fix: run ${formatCliCommand(
-        "openclaw models auth login --provider anthropic --method cli --set-default",
+        "operator models auth login --provider anthropic --method cli --set-default",
       )}.`,
     );
   } else if (storedProfile.provider !== CLAUDE_CLI_PROVIDER) {
@@ -258,7 +258,7 @@ export function noteClaudeCliHealth(
     );
     fixHints.push(
       `- Fix: rerun ${formatCliCommand(
-        "openclaw models auth login --provider anthropic --method cli --set-default",
+        "operator models auth login --provider anthropic --method cli --set-default",
       )} to rewrite the profile cleanly.`,
     );
   }

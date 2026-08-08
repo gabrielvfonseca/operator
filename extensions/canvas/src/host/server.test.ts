@@ -258,14 +258,14 @@ describe("canvas host", () => {
   });
 
   it("injects the Canvas runtime before authored page scripts", () => {
-    const authoredScript = "globalThis.bridgeReadyAtStartup = typeof openclawSendUserAction";
+    const authoredScript = "globalThis.bridgeReadyAtStartup = typeof operatorSendUserAction";
     const out = injectCanvasRuntime(
       `<!doctype html><html><head><script>${authoredScript}</script></head><body>Hello</body></html>`,
     );
     expect(out).toContain(CANVAS_WS_PATH);
     expect(out).toContain("location.reload");
-    expect(out).toContain("openclawCanvasA2UIAction");
-    expect(out).toContain("openclawSendUserAction");
+    expect(out).toContain("operatorCanvasA2UIAction");
+    expect(out).toContain("operatorSendUserAction");
     expect(out).toContain("crypto?.getRandomValues");
     expect(out).not.toContain("String(Date.now())");
     expect(out.indexOf("globalThis.Operator.postMessage")).toBeGreaterThan(out.indexOf("<head>"));
@@ -276,14 +276,14 @@ describe("canvas host", () => {
 
   it("keeps the Canvas bridge when live reload is disabled", () => {
     const out = injectCanvasRuntime("<html><body>Hello</body></html>", { liveReload: false });
-    expect(out).toContain("openclawCanvasA2UIAction");
-    expect(out).toContain("openclawSendUserAction");
+    expect(out).toContain("operatorCanvasA2UIAction");
+    expect(out).toContain("operatorSendUserAction");
     expect(out).not.toContain(CANVAS_WS_PATH);
     expect(out).not.toContain("new WebSocket");
   });
 
   it("ignores commented tags and quoted closing brackets when injecting", () => {
-    const authoredScript = "globalThis.bridgeReadyAfterComment = typeof openclawSendUserAction";
+    const authoredScript = "globalThis.bridgeReadyAfterComment = typeof operatorSendUserAction";
     const comment = "<!-- example: <head> -->";
     const head = '<head data-note="quoted > bracket">';
     const out = injectCanvasRuntime(
@@ -382,7 +382,7 @@ describe("canvas host", () => {
       const response = await captureHandlerResponse(handler, `${CANVAS_HOST_PATH}/`);
       expect(response.status).toBe(200);
       expect(response.body).toContain("Interactive test page");
-      expect(response.body).toContain("openclawSendUserAction");
+      expect(response.body).toContain("operatorSendUserAction");
       expect(response.body).toContain(CANVAS_WS_PATH);
       expect(response.body).toContain('document.createElement("span")');
       expect(response.body).not.toContain("statusEl.innerHTML");
@@ -400,7 +400,7 @@ describe("canvas host", () => {
       const response = await captureHandlerResponse(handler, `${CANVAS_HOST_PATH}/`);
       expect(response.status).toBe(200);
       expect(response.body).toContain("no-reload");
-      expect(response.body).toContain("openclawSendUserAction");
+      expect(response.body).toContain("operatorSendUserAction");
       expect(response.body).not.toContain(CANVAS_WS_PATH);
 
       const wsResponse = await captureHandlerResponse(handler, CANVAS_WS_PATH);
@@ -678,7 +678,7 @@ describe("canvas host", () => {
       await fs.writeFile(
         path.join(a2uiRoot, "index.html"),
         `<operator-a2ui-host></operator-a2ui-host>
-<script>openclawCanvasA2UIAction</script>`,
+<script>operatorCanvasA2UIAction</script>`,
         "utf8",
       );
       await fs.writeFile(bundlePath, "window.operatorA2UI = {};", "utf8");
@@ -689,16 +689,16 @@ describe("canvas host", () => {
       const html = res.body;
       expect(res.status).toBe(200);
       expect(html).toContain("operator-a2ui-host");
-      expect(html).toContain("openclawCanvasA2UIAction");
+      expect(html).toContain("operatorCanvasA2UIAction");
 
       const noReloadRes = await captureA2uiFixtureResponse(`${A2UI_PATH}/`, "GET", false);
-      expect(noReloadRes.body).toContain("openclawCanvasA2UIAction");
+      expect(noReloadRes.body).toContain("operatorCanvasA2UIAction");
       expect(noReloadRes.body).not.toContain(CANVAS_WS_PATH);
 
       const bundleRes = await captureA2uiFixtureResponse(`${A2UI_PATH}/a2ui.bundle.js`);
       const js = bundleRes.body;
       expect(bundleRes.status).toBe(200);
-      expect(js).toContain("openclawA2UI");
+      expect(js).toContain("operatorA2UI");
 
       const assetRes = await captureA2uiFixtureResponse(
         `${A2UI_PATH}/${nestedAssetUrlPath}/sample.txt`,

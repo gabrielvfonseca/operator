@@ -11,7 +11,7 @@ Prepares local App Store release inputs without touching local signing overrides
 - writes apps/ios/build/AppStoreRelease.xcconfig with canonical bundle IDs
 - configures the release build for relay-backed APNs registration
 - configures manual App Store distribution signing with pinned provisioning profiles
-- regenerates apps/ios/OpenClaw.xcodeproj via xcodegen
+- regenerates apps/ios/Operator.xcodeproj via xcodegen
 EOF
 }
 
@@ -122,7 +122,7 @@ if [[ -z "${TEAM_ID}" ]]; then
 fi
 
 if [[ "${TEAM_ID}" != "${CANONICAL_TEAM_ID}" ]]; then
-  echo "iOS App Store release must use canonical OpenClaw Team ID ${CANONICAL_TEAM_ID}; got ${TEAM_ID}." >&2
+  echo "iOS App Store release must use canonical Operator Team ID ${CANONICAL_TEAM_ID}; got ${TEAM_ID}." >&2
   exit 1
 fi
 
@@ -132,7 +132,7 @@ if [[ -n "${OPENCLAW_PUSH_RELAY_BASE_URL:-}" || -n "${IOS_PUSH_RELAY_BASE_URL:-}
 fi
 
 source "${ROOT_DIR}/scripts/lib/build-metadata.sh"
-RELEASE_GIT_COMMIT="$(OPENCLAW_REQUIRE_BUILD_METADATA=1 openclaw_resolve_git_commit "${ROOT_DIR}")"
+RELEASE_GIT_COMMIT="$(OPENCLAW_REQUIRE_BUILD_METADATA=1 operator_resolve_git_commit "${ROOT_DIR}")"
 bash "${RELEASE_SOURCE_HELPER}" --root "${ROOT_DIR}" --expected-commit "${RELEASE_GIT_COMMIT}"
 export GIT_COMMIT="${RELEASE_GIT_COMMIT}"
 
@@ -166,11 +166,11 @@ write_generated_file "${RELEASE_XCCONFIG}" <<EOF
 ${RELEASE_SIGNING_XCCONFIG}
 OPENCLAW_DEVELOPMENT_TEAM = ${TEAM_ID}
 OPENCLAW_IOS_SELECTED_TEAM = ${TEAM_ID}
-OPENCLAW_APP_BUNDLE_ID = ai.openclawfoundation.app
-OPENCLAW_SHARE_BUNDLE_ID = ai.openclawfoundation.app.share
-OPENCLAW_ACTIVITY_WIDGET_BUNDLE_ID = ai.openclawfoundation.app.activitywidget
-OPENCLAW_WATCH_APP_BUNDLE_ID = ai.openclawfoundation.app.watchkitapp
-OPENCLAW_CODE_SIGN_ENTITLEMENTS = Sources/OpenClawAppAttest.entitlements
+OPENCLAW_APP_BUNDLE_ID = ai.operatorfoundation.app
+OPENCLAW_SHARE_BUNDLE_ID = ai.operatorfoundation.app.share
+OPENCLAW_ACTIVITY_WIDGET_BUNDLE_ID = ai.operatorfoundation.app.activitywidget
+OPENCLAW_WATCH_APP_BUNDLE_ID = ai.operatorfoundation.app.watchkitapp
+OPENCLAW_CODE_SIGN_ENTITLEMENTS = Sources/OperatorAppAttest.entitlements
 OPENCLAW_APNS_ENTITLEMENT_ENVIRONMENT = production
 OPENCLAW_APP_ATTEST_ENVIRONMENT = production
 OPENCLAW_PUSH_MODE = appStore

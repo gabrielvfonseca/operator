@@ -56,7 +56,7 @@ runtime behavior. Runtime behavior starts when the plugin entry calls
           "minGatewayVersion": "2026.3.24-beta.2"
         },
         "build": {
-          "openclawVersion": "2026.3.24-beta.2",
+          "operatorVersion": "2026.3.24-beta.2",
           "pluginSdkVersion": "2026.3.24-beta.2"
         }
       },
@@ -108,12 +108,12 @@ runtime behavior. Runtime behavior starts when the plugin entry calls
 
   <Step title="Register the backend">
     ```typescript index.ts
-    import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
+    import { definePluginEntry } from "operator/plugin-sdk/plugin-entry";
     import {
       CLI_FRESH_WATCHDOG_DEFAULTS,
       CLI_RESUME_WATCHDOG_DEFAULTS,
       type CliBackendPlugin,
-    } from "openclaw/plugin-sdk/cli-backend";
+    } from "operator/plugin-sdk/cli-backend";
 
     function buildAcmeCliBackend(): CliBackendPlugin {
       return {

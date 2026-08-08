@@ -7,7 +7,7 @@ Welcome to the lobster tank! 🦞
 - **GitHub:** https://github.com/gabrielvfonseca/operator
 - **Vision:** [`VISION.md`](VISION.md)
 - **Discord:** https://discord.gg/clawd
-- **X/Twitter:** [@openclaw](https://x.com/openclaw)
+- **X/Twitter:** [@operator](https://x.com/operator)
 
 ## Maintainers
 
@@ -159,12 +159,12 @@ Please allow a few weeks for a response.
 
 We take security reports seriously. Report vulnerabilities directly to the repository where the issue lives:
 
-- **Core CLI and gateway** — [openclaw/openclaw](https://github.com/gabrielvfonseca/operator)
-- **macOS desktop app** — [openclaw/openclaw](https://github.com/gabrielvfonseca/operator) (apps/macos)
-- **iOS app** — [openclaw/openclaw](https://github.com/gabrielvfonseca/operator) (apps/ios)
-- **Android app** — [openclaw/openclaw](https://github.com/gabrielvfonseca/operator) (apps/android)
-- **ClawHub** — [openclaw/clawhub](https://github.com/openclaw/clawhub)
-- **Trust and threat model** — [openclaw/trust](https://github.com/openclaw/trust)
+- **Core CLI and gateway** — [operator/operator](https://github.com/gabrielvfonseca/operator)
+- **macOS desktop app** — [operator/operator](https://github.com/gabrielvfonseca/operator) (apps/macos)
+- **iOS app** — [operator/operator](https://github.com/gabrielvfonseca/operator) (apps/ios)
+- **Android app** — [operator/operator](https://github.com/gabrielvfonseca/operator) (apps/android)
+- **ClawHub** — [operator/clawhub](https://github.com/operator/clawhub)
+- **Trust and threat model** — [operator/trust](https://github.com/operator/trust)
 
 For issues that don't fit a specific repo, or if you're unsure, email **security@operator.ai** and we'll route it.
 

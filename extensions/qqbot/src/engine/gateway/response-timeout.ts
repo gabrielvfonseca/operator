@@ -8,7 +8,7 @@ import {
  * QQBot outbound response watchdog timeout resolver.
  *
  * Background — issue #85267:
- *   The reporter ran openclaw + ollama + `qwen3.5:27b` (a slow local model)
+ *   The reporter ran operator + ollama + `qwen3.5:27b` (a slow local model)
  *   with `models.providers.ollama.timeoutSeconds: 1800` and saw the
  *   QQBot reply path abort at ~5 minutes with "LLM request timed out",
  *   despite the direct ollama call to the same model working. The

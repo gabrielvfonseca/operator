@@ -7,11 +7,11 @@ read_when:
 title: "Hostinger"
 ---
 
-Run a persistent Operator Gateway on [Hostinger](https://www.hostinger.com/openclaw), either as a **1-Click** managed deployment or as a **VPS** install you administer yourself.
+Run a persistent Operator Gateway on [Hostinger](https://www.hostinger.com/operator), either as a **1-Click** managed deployment or as a **VPS** install you administer yourself.
 
 ## Prerequisites
 
-- Hostinger account ([signup](https://www.hostinger.com/openclaw))
+- Hostinger account ([signup](https://www.hostinger.com/operator))
 - About 5-10 minutes
 
 ## Option A: 1-Click Operator
@@ -20,7 +20,7 @@ Hostinger handles infrastructure, Docker, and automatic updates. Fastest path to
 
 <Steps>
   <Step title="Purchase and launch">
-    1. From the [Hostinger Operator page](https://www.hostinger.com/openclaw), choose a Managed Operator plan and complete checkout.
+    1. From the [Hostinger Operator page](https://www.hostinger.com/operator), choose a Managed Operator plan and complete checkout.
 
     <Note>
     During checkout you can select **Ready-to-Use AI** credits that are pre-purchased and integrated instantly inside Operator -- no external accounts or API keys from other providers needed. You can start chatting right away. Alternatively, provide your own key from Anthropic, OpenAI, Google Gemini, or xAI during setup.
@@ -48,7 +48,7 @@ More control over the server. Hostinger deploys Operator via Docker on your VPS;
 
 <Steps>
   <Step title="Purchase a VPS">
-    1. From the [Hostinger Operator page](https://www.hostinger.com/openclaw), choose an Operator on VPS plan and complete checkout.
+    1. From the [Hostinger Operator page](https://www.hostinger.com/operator), choose an Operator on VPS plan and complete checkout.
 
     <Note>
     You can select **Ready-to-Use AI** credits during checkout -- these are pre-purchased and integrated instantly inside Operator, so you can start chatting without any external accounts or API keys from other providers.

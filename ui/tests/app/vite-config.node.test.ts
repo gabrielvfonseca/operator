@@ -266,9 +266,9 @@ describe("Control UI Vite config", () => {
 
   it("resolves published Operator packages before the broad plugin alias", () => {
     const aliases = resolveExternalPackageAliasesForVite();
-    expect(aliases.find((alias) => alias.find === "@openclaw/libterminal/browser")).toEqual({
-      find: "@openclaw/libterminal/browser",
-      replacement: path.join(repoRoot, "node_modules/@openclaw/libterminal/dist/browser.js"),
+    expect(aliases.find((alias) => alias.find === "@operator/libterminal/browser")).toEqual({
+      find: "@operator/libterminal/browser",
+      replacement: path.join(repoRoot, "node_modules/@operator/libterminal/dist/browser.js"),
     });
   });
 

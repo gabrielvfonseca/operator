@@ -93,7 +93,7 @@ const CLAUDE_BYPASS_PERMISSION_MODE = "bypassPermissions";
 const CLAUDE_DEFAULT_PERMISSION_MODE = "default";
 const CLAUDE_NO_TOOLS_VALUE = "";
 const CLAUDE_DENY_MCP_TOOLS_VALUE = "mcp__*";
-const CLAUDE_SYSTEM_AGENT_MCP_TOOL = "mcp__operator__openclaw";
+const CLAUDE_SYSTEM_AGENT_MCP_TOOL = "mcp__operator__operator";
 const CLAUDE_SYSTEM_AGENT_SETTINGS =
   '{"disableAllHooks":true,"enabledPlugins":{},"autoMemoryEnabled":false,"claudeMdExcludes":["**/CLAUDE.MD","**/CLAUDE.local.md","**/.claude/rules/**"]}';
 

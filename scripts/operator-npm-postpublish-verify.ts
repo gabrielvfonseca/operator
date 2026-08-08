@@ -1,5 +1,5 @@
 #!/usr/bin/env -S node --import tsx
-// operator Npm Postpublish Verify script supports Operator repository automation.
+// Openclaw Npm Postpublish Verify script supports Operator repository automation.
 
 import { createPublicKey, verify as verifySignature } from "node:crypto";
 import {
@@ -111,7 +111,7 @@ type OperatorNpmPostpublishVerifyArgs =
       version: "";
     };
 
-export function operatorNpmPostpublishVerifyUsage(): string {
+export function openClawNpmPostpublishVerifyUsage(): string {
   return "Usage: node --import tsx scripts/operator-npm-postpublish-verify.ts <version>";
 }
 
@@ -124,7 +124,7 @@ export function parseOperatorNpmPostpublishVerifyArgs(
     return { help: true, version: "" };
   }
   if (!version) {
-    throw new Error(operatorNpmPostpublishVerifyUsage());
+    throw new Error(openClawNpmPostpublishVerifyUsage());
   }
   if (version.startsWith("-")) {
     throw new Error(`Unknown operator npm postpublish verifier option: ${version}`);
@@ -694,7 +694,7 @@ export function collectInstalledPluginSdkZodArtifactErrors(packageRoot: string):
 function collectInstalledPluginSdkDeclarationErrors(packageRoot: string): string[] {
   const pluginSdkDistRoot = join(packageRoot, "dist", "plugin-sdk");
   const errors: string[] = [];
-  const forbiddenPrivateWorkspaceSpecifiers = ["@operator/llm-core"];
+  const forbiddenPrivateWorkspaceSpecifiers = ["@gabrielvfonseca/llm-core"];
 
   if (!existsSync(pluginSdkDistRoot)) {
     return [];
@@ -910,7 +910,7 @@ function isBundledExtensionOwnedRuntimeImport(params: {
 export function resolveInstalledBinaryPath(prefixDir: string, platform = process.platform): string {
   return platform === "win32"
     ? pathWin32.join(prefixDir, "operator.cmd")
-    : pathPosix.join(prefixDir, "bin", "operator");
+    : pathPosix.join(prefixDir, "bin", "@gabrielvfonseca/operator");
 }
 
 export function resolveInstalledBinaryCommandInvocation(
@@ -1130,7 +1130,7 @@ async function verifyPublishedRegistryProvenanceOnce(version: string): Promise<v
   if (!registry.pathname.endsWith("/")) {
     registry.pathname = `${registry.pathname}/`;
   }
-  const packageName = "operator";
+  const packageName = "@gabrielvfonseca/operator";
   const packageDocument = (await fetchRegistryJson(
     new URL(
       `${encodeURIComponent(packageName)}/${encodeURIComponent(version)}`,
@@ -1227,7 +1227,7 @@ function verifyScenario(version: string, scenario: PublishedInstallScenario): vo
     }
 
     const globalRoot = resolveGlobalRoot(prefixDir, workingDir);
-    const packageRoot = join(globalRoot, "operator");
+    const packageRoot = join(globalRoot, "@gabrielvfonseca/operator");
     const pkg = JSON.parse(
       readFileSync(join(packageRoot, "package.json"), "utf8"),
     ) as InstalledPackageJson;
@@ -1261,7 +1261,7 @@ function verifyScenario(version: string, scenario: PublishedInstallScenario): vo
 async function main(argv = process.argv.slice(2)): Promise<void> {
   const args = parseOperatorNpmPostpublishVerifyArgs(argv);
   if (args.help) {
-    console.log(operatorNpmPostpublishVerifyUsage());
+    console.log(openClawNpmPostpublishVerifyUsage());
     return;
   }
 

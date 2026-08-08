@@ -765,7 +765,7 @@ struct OnboardingAISetupView: View {
 }
 
 /// Friendly error presentation with a consistent docs escape hatch.
-/// Every onboarding failure points at a docs.openclaw.ai page so people are
+/// Every onboarding failure points at a docs.operator.ai page so people are
 /// never stuck staring at a raw error string.
 struct OnboardingErrorCard: View {
     let title: String
@@ -814,7 +814,7 @@ struct OnboardingErrorCard: View {
                             .controlSize(.small)
                     }
                     Button("Open help…") {
-                        if let url = URL(string: "https://docs.openclaw.ai/\(docsSlug)") {
+                        if let url = URL(string: "https://docs.operator.ai/\(docsSlug)") {
                             NSWorkspace.shared.open(url)
                         }
                     }

@@ -199,7 +199,7 @@ describe("doctor session transcript repair", () => {
     const [message, title] = requireFirstMockCall(note, "doctor note") as [string, string];
     expect(title).toBe("Session transcripts");
     expect(message).toContain("legacy state");
-    expect(message).toContain('Run "openclaw doctor --fix"');
+    expect(message).toContain('Run "operator doctor --fix"');
     expect(countNonEmptyLines(await fs.readFile(filePath, "utf-8"))).toBe(3);
   });
 
@@ -230,7 +230,7 @@ describe("doctor session transcript repair", () => {
       checkId: "core/doctor/session-transcripts",
       severity: "info",
       path: filePath,
-      fixHint: expect.stringContaining("openclaw doctor --fix"),
+      fixHint: expect.stringContaining("operator doctor --fix"),
     });
     expect(sessionTranscriptIssueToRepairEffect(issue)).toEqual({
       kind: "file",

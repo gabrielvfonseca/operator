@@ -19,9 +19,9 @@ type ClickClackSetupConnectionResult =
 type ClickClackGatewayStatus = "running" | "not-running" | "unavailable";
 
 const GATEWAY_RUNNING_MESSAGE = "Operator is running — ClickClack will connect automatically.";
-const GATEWAY_NOT_RUNNING_MESSAGE = "Start Operator to connect: openclaw gateway";
+const GATEWAY_NOT_RUNNING_MESSAGE = "Start Operator to connect: operator gateway";
 const GATEWAY_UNKNOWN_MESSAGE =
-  "If Operator is running it connects automatically; otherwise start it with: openclaw gateway";
+  "If Operator is running it connects automatically; otherwise start it with: operator gateway";
 
 function isHttpStatus(error: unknown, status: number): boolean {
   return (
@@ -122,7 +122,7 @@ function isGatewayNotRunningError(error: unknown): boolean {
 
 async function probeClickClackGatewayStatus(): Promise<ClickClackGatewayStatus> {
   try {
-    const { callGatewayFromCli } = await import("openclaw/plugin-sdk/gateway-runtime");
+    const { callGatewayFromCli } = await import("operator/plugin-sdk/gateway-runtime");
     await callGatewayFromCli("health", { timeout: "1000", json: true }, undefined, {
       expectFinal: false,
       progress: false,

@@ -66,9 +66,9 @@ vi.mock("../send-reactions.js", () => ({
   removeReactionSignal: removeReactionSignalMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/reply-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/reply-runtime")>(
-    "openclaw/plugin-sdk/reply-runtime",
+vi.mock("operator/plugin-sdk/reply-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/reply-runtime")>(
+    "operator/plugin-sdk/reply-runtime",
   );
   return {
     ...actual,
@@ -78,9 +78,9 @@ vi.mock("openclaw/plugin-sdk/reply-runtime", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/conversation-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/conversation-runtime")>(
-    "openclaw/plugin-sdk/conversation-runtime",
+vi.mock("operator/plugin-sdk/conversation-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/conversation-runtime")>(
+    "operator/plugin-sdk/conversation-runtime",
   );
   return {
     ...actual,
@@ -90,9 +90,9 @@ vi.mock("openclaw/plugin-sdk/conversation-runtime", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/system-event-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/system-event-runtime")>(
-    "openclaw/plugin-sdk/system-event-runtime",
+vi.mock("operator/plugin-sdk/system-event-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/system-event-runtime")>(
+    "operator/plugin-sdk/system-event-runtime",
   );
   return {
     ...actual,

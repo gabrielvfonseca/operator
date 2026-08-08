@@ -1111,8 +1111,8 @@ describe("registerPolicyDoctorChecks", () => {
 
   it("uses OPERATOR_HOME for the default exec approvals artifact path", async () => {
     const configPath = join(workspaceDir, "operator.jsonc");
-    const openclawHome = join(workspaceDir, "home");
-    const approvalsDir = join(openclawHome, ".operator");
+    const operatorHome = join(workspaceDir, "home");
+    const approvalsDir = join(operatorHome, ".operator");
     const previousOperatorHome = process.env.OPERATOR_HOME;
     await fs.mkdir(approvalsDir, { recursive: true });
     await fs.writeFile(configPath, "{}", "utf-8");
@@ -1127,7 +1127,7 @@ describe("registerPolicyDoctorChecks", () => {
       "utf-8",
     );
 
-    process.env.OPERATOR_HOME = openclawHome;
+    process.env.OPERATOR_HOME = operatorHome;
     try {
       registerPolicyDoctorChecks();
       const result = await runDoctorLintChecks(ctx(configPath, cfgWithPolicy()));

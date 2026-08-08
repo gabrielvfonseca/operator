@@ -266,7 +266,7 @@ Mention-gated group with bounded context:
   },
   messages: {
     groupChat: {
-      mentionPatterns: ["\\bopenclaw\\b"],
+      mentionPatterns: ["\\boperator\\b"],
     },
   },
 }
@@ -425,7 +425,7 @@ Extra checks:
 ```bash
 operator pairing list signal
 pgrep -af signal-cli
-grep -i "signal" "/tmp/openclaw/operator-$(date +%Y-%m-%d).log" | tail -20
+grep -i "signal" "/tmp/operator/operator-$(date +%Y-%m-%d).log" | tail -20
 ```
 
 For triage flow: [Channels Troubleshooting](/channels/troubleshooting).

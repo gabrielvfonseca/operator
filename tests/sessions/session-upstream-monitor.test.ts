@@ -8,7 +8,7 @@ import type { SessionCatalogProvider, SessionUpstreamProbe } from "../../src/plu
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import { listSessionStateEventsSince, registerSessionStateWatch } from "../../src/sessions/session-state-events.js";
 import {
   deleteSessionUpstreamLink,

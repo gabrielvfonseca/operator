@@ -1165,10 +1165,10 @@ describe("/model chat UX", () => {
     expect(resolved.modelSelection).toBeUndefined();
     expect(resolved.errorText).toContain('Model "openai/gpt-5.5" is not allowed.');
     expect(resolved.errorText).toContain(
-      `openclaw config set agents.defaults.models '{"openai/gpt-5.5":{}}' --strict-json --merge`,
+      `operator config set agents.defaults.models '{"openai/gpt-5.5":{}}' --strict-json --merge`,
     );
     expect(resolved.errorText).toContain("Then retry: /model openai/gpt-5.5 --runtime codex");
-    expect(resolved.errorText).toContain("openclaw plugins enable codex");
+    expect(resolved.errorText).toContain("operator plugins enable codex");
   });
 
   it("treats explicit default /model selection as resettable default", () => {
@@ -1503,7 +1503,7 @@ describe("/model chat UX", () => {
     setOpenAiRuntimeScopedUltraProvider();
     const sessionEntry = createSessionEntry({ thinkingLevel: "high" });
     const { persisted } = await persistModelDirectiveForTest({
-      command: "/model openai/gpt-5.6-luna --runtime openclaw /think ultra please solve",
+      command: "/model openai/gpt-5.6-luna --runtime operator /think ultra please solve",
       allowedModelKeys: ["openai/gpt-5.6-luna"],
       sessionEntry,
     });
@@ -1680,13 +1680,13 @@ describe("handleDirectiveOnly model persist behavior (fixes #1435)", () => {
     const sessionEntry = createSessionEntry();
     const result = await handleDirectiveOnly(
       createHandleParams({
-        directives: parseInlineDirectives("/model openai/gpt-4o --runtime openclaw"),
+        directives: parseInlineDirectives("/model openai/gpt-4o --runtime operator"),
         sessionEntry,
       }),
     );
 
     expect(result?.text).toContain("Model set to openai/gpt-4o for this session.");
-    expect(result?.text).toContain("Runtime set to openclaw for this session.");
+    expect(result?.text).toContain("Runtime set to operator for this session.");
     expect(sessionEntry).toMatchObject({
       providerOverride: "openai",
       modelOverride: "gpt-4o",
@@ -1739,7 +1739,7 @@ describe("handleDirectiveOnly model persist behavior (fixes #1435)", () => {
 
     const result = await handleDirectiveOnly(
       createHandleParams({
-        directives: parseInlineDirectives("/model openai/gpt-4o --runtime openclaw"),
+        directives: parseInlineDirectives("/model openai/gpt-4o --runtime operator"),
         sessionEntry,
       }),
     );

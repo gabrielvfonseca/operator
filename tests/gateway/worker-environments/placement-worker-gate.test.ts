@@ -6,7 +6,7 @@ import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
   type OperatorStateDatabase,
-} from "../../../src/state/openclaw-state-db.js";
+} from "../../../src/state/operator-state-db.js";
 import type { WorkerSessionPlacementIdentity } from "../../../src/gateway/worker-environments/placement-record.js";
 import {
   createWorkerSessionPlacementStore,

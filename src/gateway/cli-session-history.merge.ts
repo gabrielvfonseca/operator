@@ -72,10 +72,10 @@ function resolveImportedExternalIdentity(message: unknown): ImportedExternalIden
     return undefined;
   }
   const meta =
-    "__openclaw" in message &&
-    (message as { __openclaw?: unknown })["__openclaw"] &&
-    typeof (message as { __openclaw?: unknown })["__openclaw"] === "object"
-      ? ((message as { __openclaw?: Record<string, unknown> })["__openclaw"] ?? {})
+    "__operator" in message &&
+    (message as { __operator?: unknown })["__operator"] &&
+    typeof (message as { __operator?: unknown })["__operator"] === "object"
+      ? ((message as { __operator?: Record<string, unknown> })["__operator"] ?? {})
       : undefined;
   const externalId = normalizeOptionalString(meta?.externalId);
   return externalId

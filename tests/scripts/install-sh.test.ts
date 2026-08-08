@@ -776,9 +776,9 @@ NODE
   it("uses OPERATOR_HOME for git defaults", () => {
     const tmp = mkdtempSync(join(tmpdir(), "operator-install-home-"));
     const osHome = join(tmp, "os-home");
-    const openclawHome = join(tmp, "operator-home");
+    const operatorHome = join(tmp, "operator-home");
     mkdirSync(osHome, { recursive: true });
-    mkdirSync(openclawHome, { recursive: true });
+    mkdirSync(operatorHome, { recursive: true });
 
     let result: ReturnType<typeof runInstallShell> | undefined;
     try {
@@ -790,7 +790,7 @@ NODE
         ].join("\n"),
         {
           HOME: osHome,
-          OPERATOR_HOME: openclawHome,
+          OPERATOR_HOME: operatorHome,
           OPERATOR_GIT_DIR: undefined,
           TERM: "dumb",
         },
@@ -801,7 +801,7 @@ NODE
 
     expect(result?.status).toBe(0);
     const output = result?.stdout ?? "";
-    expect(output).toContain(`git=${join(openclawHome, "@gabrielvfonseca/operator")}`);
+    expect(output).toContain(`git=${join(operatorHome, "@gabrielvfonseca/operator")}`);
     const mkdirParentIndex = script.indexOf('mkdir -p "$(dirname "$repo_dir")"');
     const cloneIndex = script.indexOf(
       'run_quiet_step "Cloning Operator" git clone "$repo_url" "$repo_dir"',
@@ -814,10 +814,10 @@ NODE
   it("does not treat OS HOME config as active when OPERATOR_HOME is set", () => {
     const tmp = mkdtempSync(join(tmpdir(), "operator-install-legacy-config-"));
     const osHome = join(tmp, "os-home");
-    const openclawHome = join(tmp, "operator-home");
+    const operatorHome = join(tmp, "operator-home");
     const legacyConfigDir = join(osHome, ".operator");
     mkdirSync(legacyConfigDir, { recursive: true });
-    mkdirSync(openclawHome, { recursive: true });
+    mkdirSync(operatorHome, { recursive: true });
     writeFileSync(join(legacyConfigDir, "operator.json"), "{}\n");
 
     let result: ReturnType<typeof runInstallShell> | undefined;
@@ -830,7 +830,7 @@ NODE
         ].join("\n"),
         {
           HOME: osHome,
-          OPERATOR_HOME: openclawHome,
+          OPERATOR_HOME: operatorHome,
           OPERATOR_CONFIG_PATH: undefined,
           TERM: "dumb",
         },
@@ -939,7 +939,7 @@ NODE
       detect_os_or_die() { OS=linux; }
       detect_operator_checkout() { return 1; }
       show_install_plan() { :; }
-      check_existing_openclaw() { return 0; }
+      check_existing_operator() { return 0; }
       load_nvm_for_node_detection() { :; }
       check_node() { return 0; }
       activate_supported_node_on_path() { :; }
@@ -997,7 +997,7 @@ NODE
       detect_os_or_die() { OS=linux; }
       detect_operator_checkout() { return 1; }
       show_install_plan() { :; }
-      check_existing_openclaw() { return 0; }
+      check_existing_operator() { return 0; }
       load_nvm_for_node_detection() { :; }
       check_node() { return 0; }
       activate_supported_node_on_path() { :; }
@@ -1042,14 +1042,14 @@ NODE
       detect_os_or_die() { OS=linux; }
       detect_operator_checkout() { return 1; }
       show_install_plan() { :; }
-      check_existing_openclaw() { return 0; }
+      check_existing_operator() { return 0; }
       load_nvm_for_node_detection() { :; }
       check_node() { return 0; }
       activate_supported_node_on_path() { :; }
       ensure_default_node_active_shell() { return 0; }
       check_git() { return 0; }
       fix_npm_permissions() { :; }
-      install_openclaw() {
+      install_operator() {
         mkdir -p "$HOME/.local/bin"
         printf '#!/bin/sh\\nexit 0\\n' > "$HOME/.local/bin/operator"
         chmod +x "$HOME/.local/bin/operator"
@@ -1085,7 +1085,7 @@ NODE
       set +e
       OPERATOR_VERSION=main
       USE_BETA=0
-      install_openclaw
+      install_operator
       status=$?
       printf 'status=%s\\n' "$status"
     `);
@@ -1666,11 +1666,11 @@ NODE
     mkdirSync(npmBin, { recursive: true });
     mkdirSync(staleBin, { recursive: true });
     mkdirSync(visibleBin, { recursive: true });
-    const openclawBin = join(npmBin, "@gabrielvfonseca/operator");
+    const operatorBin = join(npmBin, "@gabrielvfonseca/operator");
     const staleOpenclawBin = join(staleBin, "@gabrielvfonseca/operator");
-    writeFileSync(openclawBin, "#!/bin/sh\nexit 0\n");
+    writeFileSync(operatorBin, "#!/bin/sh\nexit 0\n");
     writeFileSync(staleOpenclawBin, "#!/bin/sh\nexit 0\n");
-    chmodSync(openclawBin, 0o755);
+    chmodSync(operatorBin, 0o755);
     chmodSync(staleOpenclawBin, 0o755);
 
     let result: ReturnType<typeof runInstallShell> | undefined;
@@ -1679,20 +1679,20 @@ NODE
         set -euo pipefail
         source "${SCRIPT_PATH}"
         ORIGINAL_PATH=${JSON.stringify(`${visibleBin}:/usr/bin:/bin`)}
-        printf 'missing=%s\\n' "$(operator_command_for_user "${openclawBin}")"
+        printf 'missing=%s\\n' "$(operator_command_for_user "${operatorBin}")"
         ORIGINAL_PATH=${JSON.stringify(`${npmBin}:${visibleBin}:/usr/bin:/bin`)}
-        printf 'present=%s\\n' "$(operator_command_for_user "${openclawBin}")"
+        printf 'present=%s\\n' "$(operator_command_for_user "${operatorBin}")"
         ORIGINAL_PATH=${JSON.stringify(`${staleBin}:${npmBin}:/usr/bin:/bin`)}
-        printf 'shadowed=%s\\n' "$(operator_command_for_user "${openclawBin}")"
+        printf 'shadowed=%s\\n' "$(operator_command_for_user "${operatorBin}")"
       `);
     } finally {
       rmSync(tmp, { recursive: true, force: true });
     }
 
     expect(result?.status).toBe(0);
-    expect(result?.stdout).toContain(`missing=${openclawBin.replace(/ /g, "\\ ")}`);
+    expect(result?.stdout).toContain(`missing=${operatorBin.replace(/ /g, "\\ ")}`);
     expect(result?.stdout).toContain("present=operator");
-    expect(result?.stdout).toContain(`shadowed=${openclawBin.replace(/ /g, "\\ ")}`);
+    expect(result?.stdout).toContain(`shadowed=${operatorBin.replace(/ /g, "\\ ")}`);
   });
 
   it("prefers the binary owned by the completed install method over stale PATH entries", () => {
@@ -1745,10 +1745,10 @@ NODE
     const staleBin = join(tmp, "stale-bin");
     mkdirSync(currentBin, { recursive: true });
     mkdirSync(staleBin, { recursive: true });
-    const openclawBin = join(currentBin, "@gabrielvfonseca/operator");
-    writeFileSync(openclawBin, "#!/bin/sh\nexit 0\n");
+    const operatorBin = join(currentBin, "@gabrielvfonseca/operator");
+    writeFileSync(operatorBin, "#!/bin/sh\nexit 0\n");
     writeFileSync(join(staleBin, "@gabrielvfonseca/operator"), "#!/bin/sh\nexit 0\n");
-    chmodSync(openclawBin, 0o755);
+    chmodSync(operatorBin, 0o755);
     chmodSync(join(staleBin, "@gabrielvfonseca/operator"), 0o755);
 
     let result: ReturnType<typeof runInstallShell> | undefined;
@@ -1756,7 +1756,7 @@ NODE
       result = runInstallShell(`
         set -euo pipefail
         source "${SCRIPT_PATH}"
-        OPERATOR_BIN=${JSON.stringify(openclawBin)}
+        OPERATOR_BIN=${JSON.stringify(operatorBin)}
         ORIGINAL_PATH=${JSON.stringify(`${staleBin}:${currentBin}:/usr/bin:/bin`)}
         VERIFY_INSTALL=1
         is_gateway_daemon_loaded() { return 0; }
@@ -1773,7 +1773,7 @@ NODE
       rmSync(tmp, { recursive: true, force: true });
     }
 
-    const quotedBin = openclawBin.replace(/ /g, "\\ ");
+    const quotedBin = operatorBin.replace(/ /g, "\\ ");
     expect(result?.status).toBe(0);
     expect(result?.stdout).toContain(`Run: ${quotedBin} gateway restart`);
     expect(result?.stdout).toContain(`Run: ${quotedBin} gateway status --deep`);

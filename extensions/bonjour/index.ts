@@ -9,7 +9,7 @@ function formatBonjourInstanceName(displayName: string) {
   if (!trimmed) {
     return "Operator";
   }
-  if (/openclaw/i.test(trimmed)) {
+  if (/operator/i.test(trimmed)) {
     return trimmed;
   }
   return `${trimmed} (Operator)`;
@@ -29,7 +29,7 @@ export default definePluginEntry({
           { registerUncaughtExceptionHandler, registerUnhandledRejectionHandler },
         ] = await Promise.all([
           import("./src/advertiser.js"),
-          import("openclaw/plugin-sdk/runtime"),
+          import("operator/plugin-sdk/runtime"),
         ]);
         const advertiser = await startGatewayBonjourAdvertiser(
           {

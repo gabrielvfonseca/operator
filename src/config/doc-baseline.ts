@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { sortUniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
-import { resolveOperatorPackageRootSync } from "../infra/openclaw-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
 import { replaceFileAtomicSync } from "../infra/replace-file.js";
 import { createLazyRuntimeModule } from "../shared/lazy-runtime.js";
 import type { ConfigSchemaResponse } from "./schema.js";

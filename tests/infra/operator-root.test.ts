@@ -28,7 +28,7 @@ function setFile(p: string, content = "") {
   state.entries.set(abs(p), { kind: "file", content });
 }
 
-function setPackageRoot(root: string, name = "operator") {
+function setPackageRoot(root: string, name = "@gabrielvfonseca/operator") {
   setFile(path.join(root, "package.json"), JSON.stringify({ name }));
 }
 
@@ -102,8 +102,8 @@ const mockFsPromisesModule = () => {
 };
 
 vi.mock("./operator-root.fs.runtime.js", () => ({
-  operatorRootFsSync: mockFsModule(),
-  operatorRootFs: mockFsPromisesModule(),
+  openClawRootFsSync: mockFsModule(),
+  openClawRootFs: mockFsPromisesModule(),
 }));
 
 describe("resolveOperatorPackageRoot", () => {
@@ -121,8 +121,8 @@ describe("resolveOperatorPackageRoot", () => {
       name: "resolves package root from .bin argv1",
       setup: () => {
         const project = fx("bin-scenario");
-        const argv1 = path.join(project, "node_modules", ".bin", "operator");
-        const pkgRoot = path.join(project, "node_modules", "operator");
+        const argv1 = path.join(project, "node_modules", ".bin", "@gabrielvfonseca/operator");
+        const pkgRoot = path.join(project, "node_modules", "@gabrielvfonseca/operator");
         setPackageRoot(pkgRoot);
         return { opts: { argv1 }, expected: pkgRoot };
       },
@@ -131,7 +131,7 @@ describe("resolveOperatorPackageRoot", () => {
       name: "resolves package root via symlinked argv1",
       setup: () => {
         const project = fx("symlink-scenario");
-        const bin = path.join(project, "bin", "operator");
+        const bin = path.join(project, "bin", "@gabrielvfonseca/operator");
         const realPkg = path.join(project, "real-pkg");
         state.realpaths.set(abs(bin), abs(path.join(realPkg, "operator.mjs")));
         setPackageRoot(realPkg);
@@ -142,14 +142,20 @@ describe("resolveOperatorPackageRoot", () => {
       name: "prefers a symlink target nested under another operator package",
       setup: () => {
         const sourceRoot = fx("nested-symlink-scenario");
-        const bin = path.join(sourceRoot, ".artifacts", "prefix", "bin", "operator");
+        const bin = path.join(
+          sourceRoot,
+          ".artifacts",
+          "prefix",
+          "bin",
+          "@gabrielvfonseca/operator",
+        );
         const installedRoot = path.join(
           sourceRoot,
           ".artifacts",
           "prefix",
           "lib",
           "node_modules",
-          "operator",
+          "@gabrielvfonseca/operator",
         );
         state.realpaths.set(abs(bin), abs(path.join(installedRoot, "operator.mjs")));
         setPackageRoot(sourceRoot);
@@ -161,8 +167,8 @@ describe("resolveOperatorPackageRoot", () => {
       name: "falls back when argv1 realpath throws",
       setup: () => {
         const project = fx("realpath-throw-scenario");
-        const argv1 = path.join(project, "node_modules", ".bin", "operator");
-        const pkgRoot = path.join(project, "node_modules", "operator");
+        const argv1 = path.join(project, "node_modules", ".bin", "@gabrielvfonseca/operator");
+        const pkgRoot = path.join(project, "node_modules", "@gabrielvfonseca/operator");
         state.realpathErrors.add(abs(argv1));
         setPackageRoot(pkgRoot);
         return { opts: { argv1 }, expected: pkgRoot };
@@ -218,12 +224,12 @@ describe("resolveOperatorPackageRoot", () => {
       name: "falls back from a symlinked argv1 to the node_modules package root",
       setup: () => {
         const project = fx("symlink-node-modules-fallback");
-        const argv1 = path.join(project, "node_modules", ".bin", "operator");
+        const argv1 = path.join(project, "node_modules", ".bin", "@gabrielvfonseca/operator");
         state.realpaths.set(
           abs(argv1),
           abs(path.join(project, "versions", "current", "operator.mjs")),
         );
-        const pkgRoot = path.join(project, "node_modules", "operator");
+        const pkgRoot = path.join(project, "node_modules", "@gabrielvfonseca/operator");
         setPackageRoot(pkgRoot);
         return { opts: { argv1 }, expected: pkgRoot };
       },
@@ -252,7 +258,7 @@ describe("resolveOperatorPackageRoot", () => {
       setup: () => {
         const project = fx("installed-below-boundary");
         setPackageRoot(project);
-        const pkgRoot = path.join(project, "node_modules", "operator");
+        const pkgRoot = path.join(project, "node_modules", "@gabrielvfonseca/operator");
         setPackageRoot(pkgRoot);
         return { opts: { argv1: path.join(pkgRoot, "dist", "entry.js") }, expected: pkgRoot };
       },

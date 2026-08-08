@@ -83,7 +83,7 @@ const BlockStreamingCoalesceSchema = z
 // ("partial" = streaming cards, default; "off" = single final message);
 // `chunkMode`/`block` are the shared delivery controls. Legacy boolean
 // `streaming` and flat chunkMode/blockStreaming/blockStreamingCoalesce keys
-// migrate via `openclaw doctor --fix`.
+// migrate via `operator doctor --fix`.
 const FeishuStreamingSchema = z
   .object({
     mode: z.enum(["off", "partial"]).optional(),

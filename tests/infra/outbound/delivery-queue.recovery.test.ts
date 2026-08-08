@@ -6,7 +6,7 @@ import { MAX_DATE_TIMESTAMP_MS } from "@gabrielvfonseca/normalization-core/numbe
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { TrustedMessageAuditEvent } from "../../../src/audit/message-audit-events.js";
 import { onTrustedMessageAuditEventForTest as onTrustedMessageAuditEvent } from "../../../src/audit/message-audit-events.test-support.js";
-import { openOperatorStateDatabase } from "../../../src/state/openclaw-state-db.js";
+import { openOperatorStateDatabase } from "../../../src/state/operator-state-db.js";
 import {
   OutboundDeliveryError,
   PlatformMessageNotDispatchedError,

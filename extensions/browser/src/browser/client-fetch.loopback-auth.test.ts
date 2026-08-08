@@ -10,9 +10,9 @@ type BridgeAuth = NonNullable<
   ReturnType<typeof import("./bridge-auth-registry.js").getBridgeAuthForPort>
 >;
 
-vi.mock("openclaw/plugin-sdk/ssrf-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/ssrf-runtime")>(
-    "openclaw/plugin-sdk/ssrf-runtime",
+vi.mock("operator/plugin-sdk/ssrf-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/ssrf-runtime")>(
+    "operator/plugin-sdk/ssrf-runtime",
   );
   return {
     ...actual,
@@ -340,7 +340,7 @@ describe("fetchBrowserJson loopback auth", () => {
     mocks.dispatch.mockRejectedValueOnce(new Error("Chrome CDP handshake timeout"));
 
     await expectThrownBrowserFetchError(
-      () => fetchBrowserJson<{ ok: boolean }>("/tabs?profile=openclaw"),
+      () => fetchBrowserJson<{ ok: boolean }>("/tabs?profile=operator"),
       {
         contains: ["Chrome CDP handshake timeout", "Restart the Operator gateway"],
         omits: ["browser profile is external to Operator", "Do NOT retry the browser tool"],

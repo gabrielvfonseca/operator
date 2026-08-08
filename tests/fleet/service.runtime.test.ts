@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { createSuiteTempRootTracker } from "../../src/test-helpers/temp-dir.js";
 import { cellAuthSecretDir, cellOwnerId } from "../../src/fleet/cell-profile.js";
 import type { FleetContainerInspectResult, FleetContainerRuntime } from "../../src/fleet/containers.runtime.js";
@@ -194,7 +194,7 @@ describe("fleet service", () => {
       tenant: "acme",
       containerName: "operator-cell-acme",
       port: 19_100,
-      image: "ghcr.io/openclaw/operator:latest",
+      image: "ghcr.io/operator/operator:latest",
       runtime: "docker",
       started: true,
       token: "gw-token",
@@ -297,7 +297,7 @@ describe("fleet service", () => {
     });
 
     await expect(service.create({ tenant: "sick", gatewayToken: "token" })).rejects.toThrow(
-      "Fleet cell sick was created but did not become healthy within 60s; inspect it with `openclaw fleet status sick` or `openclaw fleet logs sick`, or remove it with `openclaw fleet rm sick --force`.",
+      "Fleet cell sick was created but did not become healthy within 60s; inspect it with `operator fleet status sick` or `operator fleet logs sick`, or remove it with `operator fleet rm sick --force`.",
     );
 
     expect(getFleetCell(env, "sick")).toBeDefined();
@@ -615,21 +615,21 @@ describe("fleet service", () => {
       .mockResolvedValueOnce(runningInspection({ labels: diskLabels }))
       .mockResolvedValueOnce(runningInspection({ labels: fleetLabels("acme", NEXT_ATTEMPT_ID) }));
 
-    const result = await service.upgrade("acme", "ghcr.io/openclaw/operator:v2");
+    const result = await service.upgrade("acme", "ghcr.io/operator/operator:v2");
 
     expect(result).toEqual({
       tenant: "acme",
       action: "upgrade",
-      image: "ghcr.io/openclaw/operator:v2",
+      image: "ghcr.io/operator/operator:v2",
     });
-    expect(containers.pull).toHaveBeenCalledWith("docker", "ghcr.io/openclaw/operator:v2");
+    expect(containers.pull).toHaveBeenCalledWith("docker", "ghcr.io/operator/operator:v2");
     expect(containers.stop).toHaveBeenCalledWith("docker", "operator-cell-acme");
     expect(containers.remove).toHaveBeenCalledWith("docker", "operator-cell-acme", false);
     expect(containers.inspectNetwork).toHaveBeenCalledWith("docker", "operator-cell-acme-net");
     const [profile, start] = containers.run.mock.calls[0] ?? [];
     expect(start).toBe(true);
     expect(profile).toMatchObject({
-      image: "ghcr.io/openclaw/operator:v2",
+      image: "ghcr.io/operator/operator:v2",
       hostPort: 19_100,
       memory: "2147483648",
       cpus: "2",
@@ -643,12 +643,12 @@ describe("fleet service", () => {
       },
     });
     expect(profile?.environment).not.toHaveProperty("NODE_VERSION");
-    expect(getFleetCell(env, "acme")?.image).toBe("ghcr.io/openclaw/operator:v2");
+    expect(getFleetCell(env, "acme")?.image).toBe("ghcr.io/operator/operator:v2");
   });
 
   it("passes digest-pinned images verbatim to create and upgrade", async () => {
     const containers = createContainerMock();
-    const digest = `ghcr.io/openclaw/openclaw@sha256:${"a".repeat(64)}`;
+    const digest = `ghcr.io/operator/operator@sha256:${"a".repeat(64)}`;
     const service = createFleetService({
       env,
       containers: containers.runtime,
@@ -682,7 +682,7 @@ describe("fleet service", () => {
 
     expect(containers.run).toHaveBeenCalledTimes(2);
     expect(containers.run.mock.calls[1]?.[0].image).toBe("sha256:old-image-id");
-    expect(getFleetCell(env, "acme")?.image).toBe("ghcr.io/openclaw/operator:latest");
+    expect(getFleetCell(env, "acme")?.image).toBe("ghcr.io/operator/operator:latest");
   });
 
   it("restarts the old cell when removal fails after stop", async () => {
@@ -729,7 +729,7 @@ describe("fleet service", () => {
     expect(containers.run.mock.calls[1]?.[0].image).toBe("sha256:old-image-id");
     expect(containers.remove).toHaveBeenCalledWith("docker", "operator-cell-acme", true);
     expect(containers.removeNetwork).not.toHaveBeenCalled();
-    expect(getFleetCell(env, "acme")?.image).toBe("ghcr.io/openclaw/operator:latest");
+    expect(getFleetCell(env, "acme")?.image).toBe("ghcr.io/operator/operator:latest");
   });
 
   it("restores the previous cell when the replacement container is not running", async () => {
@@ -756,7 +756,7 @@ describe("fleet service", () => {
 
     expect(containers.run).toHaveBeenCalledTimes(2);
     expect(containers.run.mock.calls[1]?.[0].image).toBe("sha256:old-image-id");
-    expect(getFleetCell(env, "acme")?.image).toBe("ghcr.io/openclaw/operator:latest");
+    expect(getFleetCell(env, "acme")?.image).toBe("ghcr.io/operator/operator:latest");
   });
 
   it("restores the previous cell when the replacement crashes after starting", async () => {
@@ -790,7 +790,7 @@ describe("fleet service", () => {
 
     expect(containers.run).toHaveBeenCalledTimes(2);
     expect(containers.run.mock.calls[1]?.[0].image).toBe("sha256:old-image-id");
-    expect(getFleetCell(env, "acme")?.image).toBe("ghcr.io/openclaw/operator:latest");
+    expect(getFleetCell(env, "acme")?.image).toBe("ghcr.io/operator/operator:latest");
   });
 
   it("restores the previous cell when the replacement never becomes healthy", async () => {
@@ -821,7 +821,7 @@ describe("fleet service", () => {
 
     expect(containers.run).toHaveBeenCalledTimes(2);
     expect(containers.run.mock.calls[1]?.[0].image).toBe("sha256:old-image-id");
-    expect(getFleetCell(env, "acme")?.image).toBe("ghcr.io/openclaw/operator:latest");
+    expect(getFleetCell(env, "acme")?.image).toBe("ghcr.io/operator/operator:latest");
   });
 
   it("refuses upgrade before pull or removal when the inspected token is missing", async () => {

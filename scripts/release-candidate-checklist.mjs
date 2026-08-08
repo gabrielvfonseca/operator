@@ -33,7 +33,7 @@ import {
   validateFullReleaseValidationEvidence,
 } from "./validate-full-release-validation-evidence.mjs";
 
-const DEFAULT_REPO = "openclaw/openclaw";
+const DEFAULT_REPO = "operator/operator";
 const DEFAULT_PROVIDER = "openai";
 const DEFAULT_MODE = "both";
 const DEFAULT_NPM_DIST_TAG = "beta";
@@ -46,7 +46,7 @@ const TOOLING_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const TIDECLAW_ALPHA_WORKFLOW_REF_PATTERN =
   /^tideclaw\/alpha\/[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{4}Z$/u;
 const WINDOWS_NODE_TAG_PATTERN = /^v[0-9]+\.[0-9]+\.[0-9]+([-.][0-9A-Za-z]+([.-][0-9A-Za-z]+)*)?$/u;
-const WINDOWS_NODE_REPO = "openclaw/operator-windows-node";
+const WINDOWS_NODE_REPO = "operator/operator-windows-node";
 const WINDOWS_NODE_REQUIRED_ASSETS = [
   "OperatorCompanion-Setup-x64.exe",
   "OperatorCompanion-Setup-arm64.exe",
@@ -1304,7 +1304,7 @@ async function runTelegramIfNeeded(options, artifact, manifest, runAttempt, sour
     sourceSha,
   });
   const runId = dispatchWorkflow(options.repo, workflowFile, options.workflowRef, {
-    package_spec: `openclaw@${options.tag.replace(/^v/u, "")}`,
+    package_spec: `operator@${options.tag.replace(/^v/u, "")}`,
     package_label: options.tag,
     ...artifactInputs,
     harness_ref: options.workflowRef,

@@ -576,12 +576,12 @@ describe("launchctl list detection", () => {
       setLaunchAgentPlist({
         env,
         label: updaterLabel,
-        programArguments: ["/opt/homebrew/bin/openclaw", "update", "--yes", "--json"],
+        programArguments: ["/opt/homebrew/bin/operator", "update", "--yes", "--json"],
       });
       setLaunchAgentPlist({
         env,
         label: gatewayLikeLabel,
-        programArguments: ["/opt/homebrew/bin/openclaw", "gateway", "run"],
+        programArguments: ["/opt/homebrew/bin/operator", "gateway", "run"],
       });
       setLaunchAgentPlist({
         env,
@@ -615,7 +615,7 @@ describe("launchctl list detection", () => {
       setLaunchAgentPlist({
         env,
         label: updaterLabel,
-        programArguments: ["/opt/homebrew/bin/openclaw", "gateway", "run"],
+        programArguments: ["/opt/homebrew/bin/operator", "gateway", "run"],
         environment: { OPERATOR_UPDATE_RUN_HANDOFF: "1" },
       });
 
@@ -648,7 +648,7 @@ describe("launchctl list detection", () => {
           LAUNCH_AGENT_ENV_WRAPPER_SHELL,
           wrapperPath,
           envFilePath,
-          "/opt/homebrew/bin/openclaw",
+          "/opt/homebrew/bin/operator",
           "update",
           "--yes",
         ],
@@ -683,7 +683,7 @@ describe("launchctl list detection", () => {
           LAUNCH_AGENT_ENV_WRAPPER_SHELL,
           wrapperPath,
           envFilePath,
-          "/opt/homebrew/bin/openclaw",
+          "/opt/homebrew/bin/operator",
           "gateway",
           "run",
         ],
@@ -713,7 +713,7 @@ describe("launchctl list detection", () => {
       setLaunchAgentPlist({
         env,
         label: gatewayLikeLabel,
-        programArguments: ["/opt/homebrew/bin/openclaw", "gateway", "run"],
+        programArguments: ["/opt/homebrew/bin/operator", "gateway", "run"],
       });
 
       const jobs = await findStaleOperatorUpdateLaunchdJobs(env as NodeJS.ProcessEnv);
@@ -867,7 +867,7 @@ describe("launchctl list detection", () => {
       setLaunchAgentPlist({
         env,
         label,
-        programArguments: ["/usr/local/bin/node", "/opt/openclaw/operator.mjs", "update", "--yes"],
+        programArguments: ["/usr/local/bin/node", "/opt/operator/operator.mjs", "update", "--yes"],
       });
 
       await expect(
@@ -909,7 +909,7 @@ describe("launchctl list detection", () => {
       setLaunchAgentPlist({
         env,
         label,
-        programArguments: ["/opt/homebrew/bin/openclaw", "gateway", "run"],
+        programArguments: ["/opt/homebrew/bin/operator", "gateway", "run"],
       });
 
       await expect(
@@ -932,7 +932,7 @@ describe("launchctl list detection", () => {
       setLaunchAgentPlist({
         env,
         label,
-        programArguments: ["/opt/homebrew/bin/openclaw", "update", "--yes"],
+        programArguments: ["/opt/homebrew/bin/operator", "update", "--yes"],
       });
 
       await expect(
@@ -956,7 +956,7 @@ describe("launchctl list detection", () => {
       setLaunchAgentPlist({
         env,
         label,
-        programArguments: ["/opt/homebrew/bin/openclaw", "gateway", "run"],
+        programArguments: ["/opt/homebrew/bin/operator", "gateway", "run"],
       });
 
       await expect(
@@ -1261,7 +1261,7 @@ describe("launchd install", () => {
 
     expect(output).toContain("Warning:");
     expect(output).toContain("contains custom behavior and will be overwritten");
-    expect(output).toContain("openclaw gateway install --wrapper <path>");
+    expect(output).toContain("operator gateway install --wrapper <path>");
     expect(output).toContain("OPERATOR_WRAPPER");
     expect(state.files.get(wrapperPath)).toBe(generatedWrapper);
   });
@@ -1298,7 +1298,7 @@ describe("launchd install", () => {
 
     expect(output).toContain("Warning:");
     expect(output).toContain("contains custom behavior and will be overwritten");
-    expect(output).toContain("openclaw gateway install --wrapper <path>");
+    expect(output).toContain("operator gateway install --wrapper <path>");
     expect(output).toContain("OPERATOR_WRAPPER");
     expect(state.files.get(wrapperPath)).toBe(generatedWrapper);
   });
@@ -1436,7 +1436,7 @@ describe("launchd install", () => {
     expect(plist).toContain("<key>StandardInPath</key>");
     expect(plist).toContain("<string>/dev/null</string>");
     expect(plist).toContain("<key>StandardOutPath</key>");
-    expect(plist).toContain("<string>/Users/test/Library/Logs/openclaw/gateway.log</string>");
+    expect(plist).toContain("<string>/Users/test/Library/Logs/operator/gateway.log</string>");
     expect(plist).not.toContain("<key>SuccessfulExit</key>");
     expect(plist).toContain("<key>ExitTimeOut</key>");
     expect(plist).toContain(`<integer>${LAUNCH_AGENT_EXIT_TIMEOUT_SECONDS}</integer>`);
@@ -1480,7 +1480,7 @@ describe("launchd install", () => {
     const plist = state.files.get(plistPath) ?? "";
     expect(plist).toContain("<key>StandardInPath</key>");
     expect(plist).toContain("<key>StandardOutPath</key>");
-    expect(plist).toContain("<string>/Users/test/Library/Logs/openclaw/gateway.log</string>");
+    expect(plist).toContain("<string>/Users/test/Library/Logs/operator/gateway.log</string>");
     expect(plist).toContain("<key>StandardErrorPath</key>");
     expect(plist).toContain("<string>/dev/null</string>");
     expect(plist).toContain("<key>KeepAlive</key>");
@@ -2007,7 +2007,7 @@ describe("launchd install", () => {
     const plist = state.files.get(plistPath) ?? "";
     expect(plist).toContain("<key>StandardInPath</key>");
     expect(plist).toContain("<string>/dev/null</string>");
-    expect(plist).toContain("<string>/Users/test/Library/Logs/openclaw/gateway.log</string>");
+    expect(plist).toContain("<string>/Users/test/Library/Logs/operator/gateway.log</string>");
     expect(launchctlCommandNames()).toEqual(["enable", "bootout", "enable", "bootstrap"]);
     expect(launchctlCommandNames()).not.toContain("kickstart");
   });
@@ -2289,7 +2289,7 @@ describe("launchd install", () => {
       mode: "reload",
       waitForPid: process.pid,
     });
-    expect(state.files.get(plistPath)).toContain("/Users/test/Library/Logs/openclaw/gateway.log");
+    expect(state.files.get(plistPath)).toContain("/Users/test/Library/Logs/operator/gateway.log");
     expect(state.launchctlCalls).toStrictEqual([]);
   });
 

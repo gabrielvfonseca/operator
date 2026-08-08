@@ -15,7 +15,7 @@ const PLUGIN_UPDATE_REGISTRY_SCRIPT = "scripts/e2e/lib/plugin-update/registry-se
 const CORRUPT_PLUGIN_ID = "demo-corrupt-plugin";
 
 function runProbe(command: string, payload: unknown): void {
-  const root = mkdtempSync(path.join(tmpdir(), "openclaw-plugin-update-probe-"));
+  const root = mkdtempSync(path.join(tmpdir(), "operator-plugin-update-probe-"));
   const payloadPath = path.join(root, "payload.json");
   try {
     writeFileSync(payloadPath, `${JSON.stringify(payload, null, 2)}\n`);
@@ -32,7 +32,7 @@ function runProbeStatus(
   command: string,
   payload: unknown,
 ): { status: number | null; stderr: string } {
-  const root = mkdtempSync(path.join(tmpdir(), "openclaw-plugin-update-probe-"));
+  const root = mkdtempSync(path.join(tmpdir(), "operator-plugin-update-probe-"));
   const payloadPath = path.join(root, "payload.json");
   try {
     writeFileSync(payloadPath, `${JSON.stringify(payload, null, 2)}\n`);
@@ -94,7 +94,7 @@ describe("plugin update unchanged Docker E2E", () => {
     const script = readFileSync(PLUGIN_UPDATE_SCENARIO_SCRIPT, "utf8");
 
     expect(script).toContain("OPENCLAW_PLUGIN_UPDATE_TIMEOUT_SECONDS");
-    expect(script).toContain("registry_port_file=/tmp/openclaw-e2e-registry.port");
+    expect(script).toContain("registry_port_file=/tmp/operator-e2e-registry.port");
     expect(script).toContain(
       'node scripts/e2e/lib/plugin-update/registry-server.mjs "$registry_port_file"',
     );
@@ -103,11 +103,11 @@ describe("plugin update unchanged Docker E2E", () => {
     );
     expect(script).toContain('export npm_config_registry="$NPM_CONFIG_REGISTRY"');
     expect(script).toContain(
-      "openclaw_e2e_read_positive_int_env OPENCLAW_PLUGIN_UPDATE_TIMEOUT_SECONDS 180",
+      "operator_e2e_read_positive_int_env OPENCLAW_PLUGIN_UPDATE_TIMEOUT_SECONDS 180",
     );
     expect(script).toContain(
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-      'openclaw_e2e_maybe_timeout "${plugin_update_timeout_seconds}s" node "$entry" plugins update',
+      'operator_e2e_maybe_timeout "${plugin_update_timeout_seconds}s" node "$entry" plugins update',
     );
     expect(script).not.toContain(
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
@@ -118,14 +118,14 @@ describe("plugin update unchanged Docker E2E", () => {
     );
     expect(script).toContain('"--- plugin update output ---"');
     expect(script).toContain('"--- local registry output ---"');
-    expect(script).toContain("openclaw_e2e_print_log /tmp/plugin-update-output.log");
-    expect(script).toContain("openclaw_e2e_print_log /tmp/openclaw-e2e-registry.log");
+    expect(script).toContain("operator_e2e_print_log /tmp/plugin-update-output.log");
+    expect(script).toContain("operator_e2e_print_log /tmp/operator-e2e-registry.log");
     expect(script).not.toContain("cat /tmp/plugin-update-output.log");
-    expect(script).not.toContain("cat /tmp/openclaw-e2e-registry.log");
+    expect(script).not.toContain("cat /tmp/operator-e2e-registry.log");
   });
 
   it("serves plugin metadata from an ephemeral registry port", async () => {
-    const root = mkdtempSync(path.join(tmpdir(), "openclaw-plugin-update-registry-"));
+    const root = mkdtempSync(path.join(tmpdir(), "operator-plugin-update-registry-"));
     const portFile = path.join(root, "registry.port");
     const child = spawn("node", [PLUGIN_UPDATE_REGISTRY_SCRIPT, portFile], {
       stdio: "ignore",
@@ -148,7 +148,7 @@ describe("plugin update unchanged Docker E2E", () => {
   });
 
   it("bounds assert-output diagnostics to the saved command log tail", () => {
-    const root = mkdtempSync(path.join(tmpdir(), "openclaw-plugin-update-probe-"));
+    const root = mkdtempSync(path.join(tmpdir(), "operator-plugin-update-probe-"));
     const logPath = path.join(root, "plugin-update-output.log");
     try {
       writeFileSync(
@@ -171,7 +171,7 @@ describe("plugin update unchanged Docker E2E", () => {
   });
 
   it("detects unexpected download output before a large log tail", () => {
-    const root = mkdtempSync(path.join(tmpdir(), "openclaw-plugin-update-probe-"));
+    const root = mkdtempSync(path.join(tmpdir(), "operator-plugin-update-probe-"));
     const logPath = path.join(root, "plugin-update-output.log");
     try {
       writeFileSync(
@@ -197,7 +197,7 @@ describe("plugin update unchanged Docker E2E", () => {
     const script = readFileSync(PLUGIN_UPDATE_SCENARIO_SCRIPT, "utf8");
 
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-    expect(script).toContain('openclaw_e2e_stop_process "${registry_pid:-}"');
+    expect(script).toContain('operator_e2e_stop_process "${registry_pid:-}"');
     expect(script).not.toContain('kill "$registry_pid"');
   });
 
@@ -208,7 +208,7 @@ describe("plugin update unchanged Docker E2E", () => {
     expect(script).toContain("config set plugins.allow '[\"demo-corrupt-plugin\"]'");
     expect(script).toContain("OPENCLAW_UPDATE_CORRUPT_PLUGIN_TIMEOUT_SECONDS");
     expect(script).toContain(
-      "openclaw_e2e_read_positive_int_env OPENCLAW_UPDATE_CORRUPT_PLUGIN_TIMEOUT_SECONDS 900",
+      "operator_e2e_read_positive_int_env OPENCLAW_UPDATE_CORRUPT_PLUGIN_TIMEOUT_SECONDS 900",
     );
     expect(script).toContain("OPENCLAW_UPDATE_CORRUPT_PLUGIN_STEP_TIMEOUT_SECONDS");
     expect(script).toContain(
@@ -219,7 +219,7 @@ describe("plugin update unchanged Docker E2E", () => {
       'update_timeout_seconds="${OPENCLAW_UPDATE_CORRUPT_PLUGIN_TIMEOUT_SECONDS:-900}"',
     );
     expect(
-      script.match(/openclaw_e2e_maybe_timeout "\$\{update_timeout_seconds\}s" \\/gu)?.length,
+      script.match(/operator_e2e_maybe_timeout "\$\{update_timeout_seconds\}s" \\/gu)?.length,
     ).toBe(2);
     expect(script).toContain("--channel beta");
     expect(script.match(/--timeout "\$update_step_timeout_seconds"/g)).toHaveLength(2);
@@ -229,14 +229,14 @@ describe("plugin update unchanged Docker E2E", () => {
     );
     expect(script).toContain(
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-      "openclaw update failed or timed out after ${update_timeout_seconds}s",
+      "operator update failed or timed out after ${update_timeout_seconds}s",
     );
     expect(script).toContain(
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-      "updated OpenClaw entry failed or timed out after ${update_timeout_seconds}s",
+      "updated Operator entry failed or timed out after ${update_timeout_seconds}s",
     );
-    expect(script.match(/openclaw_e2e_print_log \/tmp\/openclaw-update-corrupt-/g)).toHaveLength(8);
-    expect(script).not.toContain("cat /tmp/openclaw-update-corrupt-");
+    expect(script.match(/operator_e2e_print_log \/tmp\/operator-update-corrupt-/g)).toHaveLength(8);
+    expect(script).not.toContain("cat /tmp/operator-update-corrupt-");
     expect(script.match(/assert-disabled-policy-preserved/g)).toHaveLength(2);
   });
 
@@ -267,7 +267,7 @@ describe("plugin update unchanged Docker E2E", () => {
           {
             pluginId: CORRUPT_PLUGIN_ID,
             status: "skipped",
-            message: `Disabled "${CORRUPT_PLUGIN_ID}" after plugin update failure; OpenClaw will continue without it. Failed to update ${CORRUPT_PLUGIN_ID}: registry timeout`,
+            message: `Disabled "${CORRUPT_PLUGIN_ID}" after plugin update failure; Operator will continue without it. Failed to update ${CORRUPT_PLUGIN_ID}: registry timeout`,
           },
         ],
       },
@@ -290,8 +290,8 @@ describe("plugin update unchanged Docker E2E", () => {
                 disabledAfterFailure.npm.outcomes[0],
                 "corrupt plugin update failure outcome",
               ).message +
-              " Run openclaw update repair to retry post-update plugin repair. " +
-              `Run openclaw plugins inspect ${CORRUPT_PLUGIN_ID} --runtime --json for details.`,
+              " Run operator update repair to retry post-update plugin repair. " +
+              `Run operator plugins inspect ${CORRUPT_PLUGIN_ID} --runtime --json for details.`,
           },
         ],
       }),

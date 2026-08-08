@@ -17,7 +17,7 @@ import {
   registerSqliteCacheExitClose,
   type SqliteWalMaintenance,
 } from "../infra/sqlite-wal.js";
-import { openOperatorStateDatabase } from "../state/openclaw-state-db.js";
+import { openOperatorStateDatabase } from "../state/operator-state-db.js";
 import type {
   CaptureBlobRecord,
   CaptureEventRecord,

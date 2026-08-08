@@ -335,7 +335,7 @@ describe("collectClawHubVersionGateErrors", () => {
               npmSpec: "@gabrielvfonseca/demo-plugin",
             },
             build: {
-              openclawVersion: "2026.4.1",
+              operatorVersion: "2026.4.1",
             },
             release: {
               publishToClawHub: true,
@@ -551,9 +551,9 @@ describe("collectPluginClawHubReleasePlan", () => {
     expect(plan.bootstrapCandidates).toStrictEqual([]);
     expect(plan.missingTrustedPublisher).toStrictEqual([]);
     expect(requests).toEqual([
-      "/api/v1/packages/%40openclaw%2Fdemo-plugin",
-      "/api/v1/packages/%40openclaw%2Fdemo-plugin/trusted-publisher",
-      "/api/v1/packages/%40openclaw%2Fdemo-plugin/versions/2026.4.1",
+      "/api/v1/packages/%40operator%2Fdemo-plugin",
+      "/api/v1/packages/%40operator%2Fdemo-plugin/trusted-publisher",
+      "/api/v1/packages/%40operator%2Fdemo-plugin/versions/2026.4.1",
     ]);
   });
 
@@ -565,7 +565,7 @@ describe("collectPluginClawHubReleasePlan", () => {
         typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
       const url = new URL(requestUrl);
 
-      if (url.pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin") {
+      if (url.pathname === "/api/v1/packages/%40operator%2Fdemo-plugin") {
         return new Response(
           new ReadableStream<Uint8Array>({
             cancel() {
@@ -575,7 +575,7 @@ describe("collectPluginClawHubReleasePlan", () => {
           { status: 200 },
         );
       }
-      if (url.pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin/trusted-publisher") {
+      if (url.pathname === "/api/v1/packages/%40operator%2Fdemo-plugin/trusted-publisher") {
         return new Response(
           JSON.stringify({
             trustedPublisher: {
@@ -586,7 +586,7 @@ describe("collectPluginClawHubReleasePlan", () => {
           { status: 200 },
         );
       }
-      if (url.pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin/versions/2026.4.1") {
+      if (url.pathname === "/api/v1/packages/%40operator%2Fdemo-plugin/versions/2026.4.1") {
         return new Response(
           new ReadableStream<Uint8Array>({
             cancel() {
@@ -619,10 +619,10 @@ describe("collectPluginClawHubReleasePlan", () => {
       const requestUrl =
         typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
       const pathname = new URL(requestUrl).pathname;
-      if (pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin") {
+      if (pathname === "/api/v1/packages/%40operator%2Fdemo-plugin") {
         return new Response("{}", { status: 200 });
       }
-      if (pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin/trusted-publisher") {
+      if (pathname === "/api/v1/packages/%40operator%2Fdemo-plugin/trusted-publisher") {
         trustedPublisherRequests += 1;
         if (trustedPublisherRequests === 1) {
           return new Response(
@@ -644,7 +644,7 @@ describe("collectPluginClawHubReleasePlan", () => {
           { status: 200 },
         );
       }
-      if (pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin/versions/2026.4.1") {
+      if (pathname === "/api/v1/packages/%40operator%2Fdemo-plugin/versions/2026.4.1") {
         return new Response("", { status: 404 });
       }
       throw new Error(`Unexpected ClawHub request to ${pathname}`);
@@ -677,7 +677,7 @@ describe("collectPluginClawHubReleasePlan", () => {
       const requestUrl =
         typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
       const pathname = new URL(requestUrl).pathname;
-      if (pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin") {
+      if (pathname === "/api/v1/packages/%40operator%2Fdemo-plugin") {
         packageRequests += 1;
         if (packageRequests === 1) {
           return new Response(
@@ -694,7 +694,7 @@ describe("collectPluginClawHubReleasePlan", () => {
         }
         return new Response("{}", { status: 200 });
       }
-      if (pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin/trusted-publisher") {
+      if (pathname === "/api/v1/packages/%40operator%2Fdemo-plugin/trusted-publisher") {
         return new Response(
           JSON.stringify({
             trustedPublisher: {
@@ -705,7 +705,7 @@ describe("collectPluginClawHubReleasePlan", () => {
           { status: 200 },
         );
       }
-      if (pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin/versions/2026.4.1") {
+      if (pathname === "/api/v1/packages/%40operator%2Fdemo-plugin/versions/2026.4.1") {
         return new Response("", { status: 404 });
       }
       throw new Error(`Unexpected ClawHub request to ${pathname}`);
@@ -737,10 +737,10 @@ describe("collectPluginClawHubReleasePlan", () => {
       const requestUrl =
         typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
       const pathname = new URL(requestUrl).pathname;
-      if (pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin") {
+      if (pathname === "/api/v1/packages/%40operator%2Fdemo-plugin") {
         return new Response("{}", { status: 200 });
       }
-      if (pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin/trusted-publisher") {
+      if (pathname === "/api/v1/packages/%40operator%2Fdemo-plugin/trusted-publisher") {
         return new Response(
           JSON.stringify({
             trustedPublisher: {
@@ -751,7 +751,7 @@ describe("collectPluginClawHubReleasePlan", () => {
           { status: 200 },
         );
       }
-      if (pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin/versions/2026.4.1") {
+      if (pathname === "/api/v1/packages/%40operator%2Fdemo-plugin/versions/2026.4.1") {
         versionRequests += 1;
         if (versionRequests === 1) {
           throw new TypeError("fetch failed");
@@ -814,10 +814,10 @@ describe("collectPluginClawHubReleasePlan", () => {
       const requestUrl =
         typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
       const pathname = new URL(requestUrl).pathname;
-      if (pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin") {
+      if (pathname === "/api/v1/packages/%40operator%2Fdemo-plugin") {
         return new Response("{}", { status: 200 });
       }
-      if (pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin/trusted-publisher") {
+      if (pathname === "/api/v1/packages/%40operator%2Fdemo-plugin/trusted-publisher") {
         trustedPublisherRequests += 1;
         if (trustedPublisherRequests === 1) {
           return new Response("", { status: 429, headers: { "retry-after": retryAfter } });
@@ -832,7 +832,7 @@ describe("collectPluginClawHubReleasePlan", () => {
           { status: 200 },
         );
       }
-      if (pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin/versions/2026.4.1") {
+      if (pathname === "/api/v1/packages/%40operator%2Fdemo-plugin/versions/2026.4.1") {
         return new Response("", { status: 404 });
       }
       throw new Error(`Unexpected ClawHub request to ${pathname}`);
@@ -864,10 +864,10 @@ describe("collectPluginClawHubReleasePlan", () => {
       const requestUrl =
         typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
       const pathname = new URL(requestUrl).pathname;
-      if (pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin") {
+      if (pathname === "/api/v1/packages/%40operator%2Fdemo-plugin") {
         return new Response("{}", { status: 200 });
       }
-      if (pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin/trusted-publisher") {
+      if (pathname === "/api/v1/packages/%40operator%2Fdemo-plugin/trusted-publisher") {
         trustedPublisherRequests += 1;
         if (trustedPublisherRequests === 1) {
           return new Response("", { status: 429, headers: { "retry-after": "999999999999" } });
@@ -882,7 +882,7 @@ describe("collectPluginClawHubReleasePlan", () => {
           { status: 200 },
         );
       }
-      if (pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin/versions/2026.4.1") {
+      if (pathname === "/api/v1/packages/%40operator%2Fdemo-plugin/versions/2026.4.1") {
         return new Response("", { status: 404 });
       }
       throw new Error(`Unexpected ClawHub request to ${pathname}`);
@@ -983,10 +983,10 @@ describe("collectPluginClawHubReleasePlan", () => {
       const requestUrl =
         typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
       const url = new URL(requestUrl);
-      if (url.pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin") {
+      if (url.pathname === "/api/v1/packages/%40operator%2Fdemo-plugin") {
         return new Response("{}", { status: 200 });
       }
-      if (url.pathname === "/api/v1/packages/%40openclaw%2Fdemo-plugin/trusted-publisher") {
+      if (url.pathname === "/api/v1/packages/%40operator%2Fdemo-plugin/trusted-publisher") {
         return new Response(new ReadableStream<Uint8Array>({ start() {} }), { status: 200 });
       }
       throw new Error(`Unexpected ClawHub request to ${url.pathname}`);
@@ -2055,7 +2055,7 @@ function createTempPluginRepo(
                     pluginApi: ">=2026.4.1",
                   },
                   build: {
-                    openclawVersion: "2026.4.1",
+                    operatorVersion: "2026.4.1",
                   },
                 }),
             install: {

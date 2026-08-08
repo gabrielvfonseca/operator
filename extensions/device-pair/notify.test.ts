@@ -24,15 +24,15 @@ const listDevicePairingMock = vi.hoisted(() =>
   vi.fn<typeof listDevicePairingFn>(async () => ({ pending: [], paired: [] })),
 );
 
-vi.mock("openclaw/plugin-sdk/device-bootstrap", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("openclaw/plugin-sdk/device-bootstrap")>()),
+vi.mock("operator/plugin-sdk/device-bootstrap", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("operator/plugin-sdk/device-bootstrap")>()),
   listDevicePairing: listDevicePairingMock,
 }));
 
 import { createPairingNotifierService, handleNotifyCommand } from "./notify.js";
 
 afterAll(() => {
-  vi.doUnmock("openclaw/plugin-sdk/device-bootstrap");
+  vi.doUnmock("operator/plugin-sdk/device-bootstrap");
   vi.resetModules();
 });
 

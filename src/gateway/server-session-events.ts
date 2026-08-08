@@ -50,11 +50,11 @@ function readMessageSenderIsOwner(message: unknown): boolean | undefined {
   if (!message || typeof message !== "object" || Array.isArray(message)) {
     return undefined;
   }
-  const openclaw = (message as Record<string, unknown>)["__openclaw"];
-  if (!openclaw || typeof openclaw !== "object" || Array.isArray(openclaw)) {
+  const operator = (message as Record<string, unknown>)["__operator"];
+  if (!operator || typeof operator !== "object" || Array.isArray(operator)) {
     return undefined;
   }
-  const value = (openclaw as Record<string, unknown>).senderIsOwner;
+  const value = (operator as Record<string, unknown>).senderIsOwner;
   return typeof value === "boolean" ? value : undefined;
 }
 

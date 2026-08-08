@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { closeOperatorStateDatabaseForTest } from "../../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../../src/state/operator-state-db.js";
 import { createDurableInboundReceiveJournalFromQueue } from "../../../src/channels/message/durable-receive.js";
 import { createChannelIngressQueue } from "../../../src/channels/message/ingress-queue.js";
 

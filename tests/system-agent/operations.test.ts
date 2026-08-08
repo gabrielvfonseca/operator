@@ -160,7 +160,7 @@ vi.mock("./overview.js", () => ({
     },
     references: {
       docsUrl: "https://docs.operator.ai",
-      sourceUrl: "https://github.com/openclaw/openclaw",
+      sourceUrl: "https://github.com/operator/operator",
     },
   })),
 }));
@@ -273,7 +273,7 @@ describe("parseSystemAgentOperation", () => {
     expect(parseSystemAgentOperation("plugin install npm:@example/plugin")).toEqual({
       kind: "none",
       message:
-        "Operator installs only ClawHub, bundled, or official-catalog plugins. Use `openclaw plugins install <spec>` in a trusted shell to review an arbitrary executable source.",
+        "Operator installs only ClawHub, bundled, or official-catalog plugins. Use `operator plugins install <spec>` in a trusted shell to review an arbitrary executable source.",
     });
   });
 
@@ -393,9 +393,9 @@ describe("parseSystemAgentOperation", () => {
     }
 
     const output = lines.join("\n");
-    expect(output).toContain("openclaw onboard`");
-    expect(output).toContain("openclaw onboard --classic");
-    expect(output).toContain("openclaw channels add --channel slack");
+    expect(output).toContain("operator onboard`");
+    expect(output).toContain("operator onboard --classic");
+    expect(output).toContain("operator channels add --channel slack");
   });
 
   it("routes one-shot model setup through the verified Operator flow", async () => {
@@ -404,8 +404,8 @@ describe("parseSystemAgentOperation", () => {
     const result = await executeSystemAgentOperation({ kind: "model-setup" }, runtime);
 
     expect(result.applied).toBe(false);
-    expect(lines.join("\n")).toContain("Exit Operator and run `openclaw onboard`");
-    expect(lines.join("\n")).not.toContain("openclaw configure --section model");
+    expect(lines.join("\n")).toContain("Exit Operator and run `operator onboard`");
+    expect(lines.join("\n")).not.toContain("operator configure --section model");
   });
 
   it("prints discovered channel metadata and sorted unknown-channel choices", async () => {
@@ -510,7 +510,7 @@ describe("parseSystemAgentOperation", () => {
     ).rejects.toThrow("Retry without `model`; the new agent will inherit");
 
     expect(runAgentsAdd).not.toHaveBeenCalled();
-    expect(lines.join("\n")).not.toContain("[openclaw] running: agents.create");
+    expect(lines.join("\n")).not.toContain("[operator] running: agents.create");
     await expect(fs.access(path.join(tempDir, "audit", "system-agent.jsonl"))).rejects.toThrow();
   });
 
@@ -534,7 +534,7 @@ describe("parseSystemAgentOperation", () => {
     ).rejects.toThrow('Agent id "@gabrielvfonseca/operator" is reserved');
 
     expect(runAgentsAdd).not.toHaveBeenCalled();
-    expect(lines.join("\n")).not.toContain("[openclaw] running: agents.create");
+    expect(lines.join("\n")).not.toContain("[operator] running: agents.create");
     await expect(fs.access(path.join(tempDir, "audit", "system-agent.jsonl"))).rejects.toThrow();
   });
 
@@ -586,8 +586,8 @@ describe("parseSystemAgentOperation", () => {
       }),
     ).rejects.toThrow("Gateway restart did not complete");
 
-    expect(lines.join("\n")).toContain("[openclaw] running: gateway.restart");
-    expect(lines.join("\n")).not.toContain("[openclaw] done: gateway.restart");
+    expect(lines.join("\n")).toContain("[operator] running: gateway.restart");
+    expect(lines.join("\n")).not.toContain("[operator] done: gateway.restart");
     await expect(fs.access(path.join(tempDir, "audit", "system-agent.jsonl"))).rejects.toThrow();
   });
 
@@ -623,7 +623,7 @@ describe("parseSystemAgentOperation", () => {
       value: "19001",
       cliOptions: {},
     });
-    expect(lines.join("\n")).toContain("[openclaw] done: config.set");
+    expect(lines.join("\n")).toContain("[operator] done: config.set");
     const auditPath = path.join(tempDir, "audit", "system-agent.jsonl");
     const audit = JSON.parse((await fs.readFile(auditPath, "utf8")).trim());
     expectAuditRecord(
@@ -657,7 +657,7 @@ describe("parseSystemAgentOperation", () => {
     expect(lines.join("\n")).toContain(
       "Set config gateway.port, but Operator could not record its audit entry:",
     );
-    expect(lines.join("\n")).toContain("[openclaw] done: config.set");
+    expect(lines.join("\n")).toContain("[operator] done: config.set");
   });
 
   it("applies SecretRef config set through typed deps and writes an audit entry", async () => {
@@ -690,7 +690,7 @@ describe("parseSystemAgentOperation", () => {
         refId: "OPERATOR_GATEWAY_TOKEN",
       },
     });
-    expect(lines.join("\n")).toContain("[openclaw] done: config.setRef");
+    expect(lines.join("\n")).toContain("[operator] done: config.setRef");
     const auditPath = path.join(tempDir, "audit", "system-agent.jsonl");
     const audit = JSON.parse((await fs.readFile(auditPath, "utf8")).trim());
     expectAuditRecord(
@@ -804,10 +804,10 @@ describe("parseSystemAgentOperation", () => {
         approved: true,
         deps: { runConfigSet },
       }),
-    ).rejects.toThrow("openclaw onboard");
+    ).rejects.toThrow("operator onboard");
 
     expect(runConfigSet).not.toHaveBeenCalled();
-    expect(lines.join("\n")).not.toContain("[openclaw] running:");
+    expect(lines.join("\n")).not.toContain("[operator] running:");
     await expect(fs.access(path.join(tempDir, "audit", "system-agent.jsonl"))).rejects.toThrow();
   });
 
@@ -872,7 +872,7 @@ describe("parseSystemAgentOperation", () => {
     const installCall = requireFirstMockCall(runPluginInstall, "runPluginInstall");
     expect(installCall[0]).toBe("clawhub:operator-demo");
     expectRuntimeArg(installCall[1]);
-    expect(lines.join("\n")).toContain("[openclaw] done: plugin.install");
+    expect(lines.join("\n")).toContain("[operator] done: plugin.install");
     const auditPath = path.join(tempDir, "audit", "system-agent.jsonl");
     const audit = JSON.parse((await fs.readFile(auditPath, "utf8")).trim());
     expectAuditRecord(
@@ -938,6 +938,6 @@ describe("parseSystemAgentOperation", () => {
     });
     expect(runPluginUninstall).not.toHaveBeenCalled();
     expect(lines.join("\n")).toContain("cannot prove that uninstalling a plugin");
-    expect(lines.join("\n")).toContain("openclaw plugins uninstall operator-demo");
+    expect(lines.join("\n")).toContain("operator plugins uninstall operator-demo");
   });
 });

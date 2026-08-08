@@ -223,7 +223,7 @@ describe("OpenAI-compatible HTTP API (e2e)", () => {
 
       await expectAgentSessionKeyMatch({
         body: {
-          model: "openclaw/beta",
+          model: "operator/beta",
           messages: [{ role: "user", content: "hi" }],
         },
         matcher: /^agent:beta:/,
@@ -231,7 +231,7 @@ describe("OpenAI-compatible HTTP API (e2e)", () => {
 
       await expectAgentSessionKeyMatch({
         body: {
-          model: "openclaw/default",
+          model: "operator/default",
           messages: [{ role: "user", content: "hi" }],
         },
         matcher: /^agent:main:/,
@@ -254,7 +254,7 @@ describe("OpenAI-compatible HTTP API (e2e)", () => {
       {
         agentCommand.mockClear();
         const res = await postChatCompletions(port, {
-          model: "openclaw/missing-agent",
+          model: "operator/missing-agent",
           messages: [{ role: "user", content: "hi" }],
         });
         expect(res.status).toBe(400);
@@ -399,7 +399,7 @@ describe("OpenAI-compatible HTTP API (e2e)", () => {
         const json = (await res.json()) as { error?: { type?: string; message?: string } };
         expect(json.error?.type).toBe("invalid_request_error");
         expect(json.error?.message).toBe(
-          "Invalid `model`. Use `openclaw` or `openclaw/<agentId>`.",
+          "Invalid `model`. Use `operator` or `operator/<agentId>`.",
         );
         expect(agentCommand).toHaveBeenCalledTimes(0);
       }

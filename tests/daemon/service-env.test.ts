@@ -907,8 +907,8 @@ describe("resolveGatewayStateDir", () => {
   });
 
   it("uses OPERATOR_STATE_DIR when provided", () => {
-    const env = { HOME: "/Users/test", OPERATOR_STATE_DIR: "/var/lib/openclaw" };
-    expect(resolveGatewayStateDir(env)).toBe(path.resolve("/var/lib/openclaw"));
+    const env = { HOME: "/Users/test", OPERATOR_STATE_DIR: "/var/lib/operator" };
+    expect(resolveGatewayStateDir(env)).toBe(path.resolve("/var/lib/operator"));
   });
 
   it("expands ~ in OPERATOR_STATE_DIR", () => {
@@ -917,8 +917,8 @@ describe("resolveGatewayStateDir", () => {
   });
 
   it("preserves Windows absolute paths without HOME", () => {
-    const env = { OPERATOR_STATE_DIR: "C:\\State\\openclaw" };
-    expect(resolveGatewayStateDir(env)).toBe("C:\\State\\openclaw");
+    const env = { OPERATOR_STATE_DIR: "C:\\State\\operator" };
+    expect(resolveGatewayStateDir(env)).toBe("C:\\State\\operator");
   });
 });
 

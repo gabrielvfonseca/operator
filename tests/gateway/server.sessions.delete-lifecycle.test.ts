@@ -22,7 +22,7 @@ import {
   beginSessionWorkAdmission,
   runExclusiveSessionLifecycleMutation,
 } from "../../src/sessions/session-lifecycle-admission.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { embeddedRunMock, rpcReq, testState, writeSessionStore } from "../../src/gateway/test-helpers.js";
 import {
   setupGatewaySessionsTestHarness,
@@ -146,7 +146,7 @@ test("sessions.delete removes clean session worktrees and keeps dirty ones", asy
     await expect(fs.access(cleanWorktree!.path)).rejects.toThrow();
     expect(getRegistryWorktree(process.env, cleanWorktree!.id)).toMatchObject({
       removedAt: expect.any(Number),
-      snapshotRef: expect.stringMatching(/^refs\/openclaw\/snapshots\//),
+      snapshotRef: expect.stringMatching(/^refs\/operator\/snapshots\//),
     });
 
     const dirty = await directSessionReq<{

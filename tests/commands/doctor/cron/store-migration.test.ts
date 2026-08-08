@@ -465,7 +465,7 @@ describe("normalizeStoredCronJobs", () => {
 
   it("converts legacy agent command prompts into command cron payloads", () => {
     const command =
-      "cd /home/openclaw/.razor/quant && ./scripts/system/run_position_control.sh --write-card --silent-token NO_REPLY";
+      "cd /home/operator/.razor/quant && ./scripts/system/run_position_control.sh --write-card --silent-token NO_REPLY";
     const { job, result } = normalizeOneJob(
       makeLegacyJob({
         id: "quant-position-card",
@@ -478,7 +478,7 @@ describe("normalizeStoredCronJobs", () => {
             "",
             "Command to run:",
             `- command: ${command}`,
-            "- workdir: /home/openclaw/.razor/quant",
+            "- workdir: /home/operator/.razor/quant",
             "- background: false",
             "- timeout: 840",
             "",
@@ -508,7 +508,7 @@ describe("normalizeStoredCronJobs", () => {
     expect(payload).toEqual({
       kind: "command",
       argv: ["sh", "-lc", command],
-      cwd: "/home/openclaw/.razor/quant",
+      cwd: "/home/operator/.razor/quant",
       timeoutSeconds: 900,
     });
   });
@@ -525,7 +525,7 @@ describe("normalizeStoredCronJobs", () => {
           message: [
             "Command to run:",
             `- command: ${command}`,
-            "- workdir: /home/openclaw/.razor/clawd",
+            "- workdir: /home/operator/.razor/clawd",
           ].join("\n"),
           toolsAllow: ["read", "message"],
         },

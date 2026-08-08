@@ -3,7 +3,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { maybeRefreshPromotionsFeed, recordPromotionClaim } from "../../../src/infra/promotions-feed.js";
 import type { RuntimeEnv } from "../../../src/runtime.js";
-import { closeOperatorStateDatabaseForTest } from "../../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../../src/state/operator-state-db.js";
 import {
   createOperatorTestState,
   type OperatorTestState,
@@ -123,7 +123,7 @@ describe("models list promotion decorations", () => {
     expect(text).toContain("Available via promotion:");
     expect(text).toContain("Free Example models");
     expect(text).toContain("example-provider/example/model-alpha");
-    expect(text).toContain("openclaw promos claim example-models-launch");
+    expect(text).toContain("operator promos claim example-models-launch");
     expect(text).toContain("New promotional model offers");
   });
 
@@ -155,7 +155,7 @@ describe("models list promotion decorations", () => {
     await printAvailablePromotionsSection({ configuredKeys: new Set(), runtime, nowMs: NOW });
     const text = lines.join("\n");
     expect(text).toContain("Available via promotion:");
-    expect(text).toContain("openclaw promos claim example-models-launch");
+    expect(text).toContain("operator promos claim example-models-launch");
   });
 
   it("stays silent when the cached window has passed", async () => {

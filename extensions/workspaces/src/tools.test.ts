@@ -19,9 +19,9 @@ const pluginRuntime = vi.hoisted(() => ({
     | undefined,
 }));
 
-vi.mock("openclaw/plugin-sdk/gateway-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/gateway-runtime")>(
-    "openclaw/plugin-sdk/gateway-runtime",
+vi.mock("operator/plugin-sdk/gateway-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/gateway-runtime")>(
+    "operator/plugin-sdk/gateway-runtime",
   );
   return {
     ...actual,
@@ -29,9 +29,9 @@ vi.mock("openclaw/plugin-sdk/gateway-runtime", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/plugin-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/plugin-runtime")>(
-    "openclaw/plugin-sdk/plugin-runtime",
+vi.mock("operator/plugin-sdk/plugin-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/plugin-runtime")>(
+    "operator/plugin-sdk/plugin-runtime",
   );
   return {
     ...actual,

@@ -80,9 +80,9 @@ Operator treats the OpenAI `model` field as an **agent target**, not a raw provi
 
 | `model` value                                | Routes to                                                                                                                |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `openclaw`                                   | Configured default agent                                                                                                 |
-| `openclaw/default`                           | Configured default agent (stable alias; safe to hardcode even if the real default agent id changes between environments) |
-| `openclaw/<agentId>` or `operator:<agentId>` | Specific agent                                                                                                           |
+| `operator`                                   | Configured default agent                                                                                                 |
+| `operator/default`                           | Configured default agent (stable alias; safe to hardcode even if the real default agent id changes between environments) |
+| `operator/<agentId>` or `operator:<agentId>` | Specific agent                                                                                                           |
 | `agent:<agentId>`                            | Specific agent (compatibility alias)                                                                                     |
 
 Optional request headers:
@@ -94,7 +94,7 @@ Optional request headers:
 | `x-operator-session-key: <sessionKey>`          | Explicit session routing. Rejected with `400 invalid_request_error` if it uses a reserved internal namespace (`subagent:`, `cron:`, `acp:`).                                                                                                                                |
 | `x-operator-message-channel: <channel>`         | Sets the synthetic ingress channel context for channel-aware prompts/policies.                                                                                                                                                                                              |
 
-`/v1/models` lists top-level agent targets (`openclaw`, `openclaw/default`, `openclaw/<agentId>`), not backend provider models and not sub-agents; sub-agents stay internal execution topology. If you omit `x-operator-model`, the selected agent runs with its normal configured model.
+`/v1/models` lists top-level agent targets (`operator`, `operator/default`, `operator/<agentId>`), not backend provider models and not sub-agents; sub-agents stay internal execution topology. If you omit `x-operator-model`, the selected agent runs with its normal configured model.
 
 `/v1/embeddings` uses the same agent-target `model` ids. Send `x-operator-model` (from a shared-secret caller, or an identity-bearing caller with `operator.admin`) to pick a specific embedding model; otherwise the request uses the selected agent's normal embedding setup.
 
@@ -224,9 +224,9 @@ Set `stream: true` to receive Server-Sent Events:
 - Base URL: `http://127.0.0.1:18789/v1`
 - Docker on macOS base URL: `http://host.docker.internal:18789/v1`
 - API key: your Gateway bearer token
-- Model: `openclaw/default`
+- Model: `operator/default`
 
-Expected behavior: `GET /v1/models` lists `openclaw/default`, and Open WebUI uses it as the chat model id. For a specific backend provider/model, set the agent's normal default model, or send `x-operator-model` (shared-secret caller, or identity-bearing caller with `operator.admin`).
+Expected behavior: `GET /v1/models` lists `operator/default`, and Open WebUI uses it as the chat model id. For a specific backend provider/model, set the agent's normal default model, or send `x-operator-model` (shared-secret caller, or identity-bearing caller with `operator.admin`).
 
 Quick smoke test:
 
@@ -235,7 +235,7 @@ curl -sS http://127.0.0.1:18789/v1/models \
   -H 'Authorization: Bearer YOUR_TOKEN'
 ```
 
-If that returns `openclaw/default`, most Open WebUI setups can connect with the same base URL and token.
+If that returns `operator/default`, most Open WebUI setups can connect with the same base URL and token.
 
 ## Examples
 
@@ -246,7 +246,7 @@ curl -sS http://127.0.0.1:18789/v1/chat/completions \
   -H 'Authorization: Bearer YOUR_TOKEN' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "openclaw/default",
+    "model": "operator/default",
     "user": "conv:YOUR_CONVERSATION_ID",
     "messages": [{"role":"user","content":"Summarize my tasks for today"}]
   }'
@@ -261,7 +261,7 @@ curl -sS http://127.0.0.1:18789/v1/chat/completions \
   -H 'Authorization: Bearer YOUR_TOKEN' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "openclaw/default",
+    "model": "operator/default",
     "messages": [{"role":"user","content":"hi"}]
   }'
 ```
@@ -274,7 +274,7 @@ curl -N http://127.0.0.1:18789/v1/chat/completions \
   -H 'Content-Type: application/json' \
   -H 'x-operator-model: openai/gpt-5.4' \
   -d '{
-    "model": "openclaw/research",
+    "model": "operator/research",
     "stream": true,
     "messages": [{"role":"user","content":"hi"}]
   }'
@@ -290,7 +290,7 @@ curl -sS http://127.0.0.1:18789/v1/models \
 Fetch one model:
 
 ```bash
-curl -sS http://127.0.0.1:18789/v1/models/openclaw%2Fdefault \
+curl -sS http://127.0.0.1:18789/v1/models/operator%2Fdefault \
   -H 'Authorization: Bearer YOUR_TOKEN'
 ```
 
@@ -302,7 +302,7 @@ curl -sS http://127.0.0.1:18789/v1/embeddings \
   -H 'Content-Type: application/json' \
   -H 'x-operator-model: openai/text-embedding-3-small' \
   -d '{
-    "model": "openclaw/default",
+    "model": "operator/default",
     "input": ["alpha", "beta"]
   }'
 ```

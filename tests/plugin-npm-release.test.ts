@@ -150,7 +150,7 @@ function externalPluginContract(version: string) {
       pluginApi: `>=${version}`,
     },
     build: {
-      openclawVersion: version,
+      operatorVersion: version,
     },
   };
 }

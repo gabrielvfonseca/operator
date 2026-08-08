@@ -220,7 +220,7 @@ describe("bootstrapWorker", () => {
       operatorVersion: VERSION,
       protocolFeatures: [],
       packageIntegrity: NPM_INTEGRITY,
-      packageSpec: `openclaw@${VERSION}`,
+      packageSpec: `operator@${VERSION}`,
     };
     const npmReceipt = JSON.stringify({
       bundleHash: BUNDLE_HASH,
@@ -245,9 +245,9 @@ describe("bootstrapWorker", () => {
       "OPERATOR_DISABLE_PLUGIN_REGISTRY_MIGRATION=1",
     );
     expect(npmRunner.calls[1]?.options.input).toContain("postinstall-inventory.json");
-    expect(npmRunner.calls[1]?.options.input).toContain("lib/node_modules/openclaw");
+    expect(npmRunner.calls[1]?.options.input).toContain("lib/node_modules/operator");
     expect(npmRunner.calls[1]?.options.input).toContain('cp -R "$package_dir/." "$staging/"');
-    expect(npmRunner.calls[1]?.argv.at(-1)).toContain(`openclaw@${VERSION}`);
+    expect(npmRunner.calls[1]?.argv.at(-1)).toContain(`operator@${VERSION}`);
   });
 
   it("rejects a non-exact npm package before opening SSH", async () => {
@@ -258,12 +258,12 @@ describe("bootstrapWorker", () => {
       operatorVersion: VERSION,
       protocolFeatures: [],
       packageIntegrity: NPM_INTEGRITY,
-      packageSpec: "openclaw@latest",
+      packageSpec: "operator@latest",
     };
 
     await expect(
       bootstrapWorker({ ssh: SSH, artifact }, { resolveIdentity, runCommand: runner.runCommand }),
-    ).rejects.toThrow(`exact package openclaw@${VERSION}`);
+    ).rejects.toThrow(`exact package operator@${VERSION}`);
     expect(runner.calls).toHaveLength(0);
   });
 
@@ -275,7 +275,7 @@ describe("bootstrapWorker", () => {
       operatorVersion: "latest",
       protocolFeatures: [],
       packageIntegrity: NPM_INTEGRITY,
-      packageSpec: "openclaw@latest",
+      packageSpec: "operator@latest",
     };
 
     await expect(
@@ -534,7 +534,7 @@ describe("bootstrapWorker", () => {
           operatorVersion: VERSION,
           protocolFeatures: [],
           packageIntegrity: NPM_INTEGRITY,
-          packageSpec: `openclaw@${VERSION}`,
+          packageSpec: `operator@${VERSION}`,
         };
         const receiptJson = JSON.stringify({
           bundleHash: bundle.bundleHash,

@@ -8,17 +8,17 @@ export type PluginNpmRuntimeBuildPlan = {
   packageFiles: string[];
   packagePeerMetadata: {
     peerDependencies: {
-      openclaw: string;
+      operator: string;
     };
     peerDependenciesMeta: {
-      openclaw: { optional: boolean };
+      operator: { optional: boolean };
     };
   };
   repoRoot: string;
   packageDir: string;
   pluginDir: string;
   packageJson: {
-    openclaw: { compat: { pluginApi: string } };
+    operator: { compat: { pluginApi: string } };
     [key: string]: unknown;
   };
   rootPackageJson: Record<string, unknown>;

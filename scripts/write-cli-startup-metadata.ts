@@ -266,7 +266,7 @@ function readBundledChannelCatalog(
       const raw = readFileSync(packageJsonPath, "utf8");
       signature.update(`${dirEntry.name}\0${raw}\0`);
       const parsed = JSON.parse(raw) as {
-        openclaw?: {
+        operator?: {
           channel?: {
             id?: unknown;
             order?: unknown;

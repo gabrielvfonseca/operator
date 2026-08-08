@@ -81,8 +81,8 @@ describe("resolveNpmChannelTag", () => {
     await expect(
       fetchNpmPackageTargetStatus({
         target: "latest",
-        spec: "openclaw@latest",
-        command: "/opt/openclaw/node/bin/npm",
+        spec: "operator@latest",
+        command: "/opt/operator/node/bin/npm",
         timeoutMs: 1000,
         cwd: "/tmp/operator-project",
         env,
@@ -96,9 +96,9 @@ describe("resolveNpmChannelTag", () => {
 
     expect(runCommandMock).toHaveBeenCalledWith(
       [
-        "/opt/openclaw/node/bin/npm",
+        "/opt/operator/node/bin/npm",
         "view",
-        "openclaw@latest",
+        "operator@latest",
         "version",
         "engines.node",
         "--json",
@@ -202,7 +202,7 @@ describe("resolveNpmChannelTag", () => {
           nodeEngine: ">=22.19.0",
         });
 
-        expect(requests.some((request) => request.url.startsWith("/user/openclaw"))).toBe(true);
+        expect(requests.some((request) => request.url.startsWith("/user/operator"))).toBe(true);
         expect(requests.some((request) => request.url.startsWith("/project/"))).toBe(false);
         expect(requests.some((request) => request.authorization === "Bearer test-token")).toBe(
           true,
@@ -217,7 +217,7 @@ describe("resolveNpmChannelTag", () => {
 
   it("uses the public registry when no npm command is available", async () => {
     mockHttp.intercept({
-      url: "https://registry.npmjs.org/openclaw/latest",
+      url: "https://registry.npmjs.org/operator/latest",
       reply: {
         json: {
           version: "2026.6.8",
@@ -271,7 +271,7 @@ describe("resolveNpmChannelTag", () => {
         error: "TimeoutError: request timed out",
       });
       expect(fetchMock).toHaveBeenCalledWith(
-        "https://registry.npmjs.org/openclaw/latest",
+        "https://registry.npmjs.org/operator/latest",
         expect.objectContaining({ signal: expect.any(AbortSignal) }),
       );
     } finally {
@@ -283,7 +283,7 @@ describe("resolveNpmChannelTag", () => {
   it("cancels public registry HTTP failure bodies", async () => {
     const cancel = vi.spyOn(ReadableStream.prototype, "cancel");
     mockHttp.intercept({
-      url: "https://registry.npmjs.org/openclaw/latest",
+      url: "https://registry.npmjs.org/operator/latest",
       reply: { status: 503, body: "unavailable" },
     });
 
@@ -301,7 +301,7 @@ describe("resolveNpmChannelTag", () => {
   it("returns error on oversized public registry response exceeding 16 MiB", async () => {
     const ONE_MIB = 1024 * 1024;
     mockHttp.intercept({
-      url: "https://registry.npmjs.org/openclaw/latest",
+      url: "https://registry.npmjs.org/operator/latest",
       reply: {
         body: Buffer.alloc(16 * ONE_MIB + 1, 0x41),
         headers: { "content-type": "application/json" },
@@ -321,7 +321,7 @@ describe("resolveNpmChannelTag", () => {
     const body = `{"version":"${"0".repeat(innerLen)}"}`;
 
     mockHttp.intercept({
-      url: "https://registry.npmjs.org/openclaw/latest",
+      url: "https://registry.npmjs.org/operator/latest",
       reply: { body, headers: { "content-type": "application/json" } },
     });
 
@@ -334,7 +334,7 @@ describe("resolveNpmChannelTag", () => {
 
   it("returns error on malformed JSON from registry", async () => {
     mockHttp.intercept({
-      url: "https://registry.npmjs.org/openclaw/latest",
+      url: "https://registry.npmjs.org/operator/latest",
       reply: {
         body: "not-json-at-all{{{",
         headers: { "content-type": "application/json" },
@@ -348,7 +348,7 @@ describe("resolveNpmChannelTag", () => {
 
   it("returns error on non-200 status from registry", async () => {
     mockHttp.intercept({
-      url: "https://registry.npmjs.org/openclaw/latest",
+      url: "https://registry.npmjs.org/operator/latest",
       reply: { status: 404 },
     });
 
@@ -432,11 +432,11 @@ describe("resolveNpmChannelTag", () => {
 describe("resolveExtendedStablePackage", () => {
   it("resolves and verifies an exact public package without falling back", async () => {
     mockHttp.intercept({
-      url: "https://registry.npmjs.org/openclaw/extended-stable",
+      url: "https://registry.npmjs.org/operator/extended-stable",
       reply: { json: { version: "2026.6.33" } },
     });
     mockHttp.intercept({
-      url: "https://registry.npmjs.org/openclaw/2026.6.33",
+      url: "https://registry.npmjs.org/operator/2026.6.33",
       reply: { json: { version: "2026.6.33" } },
     });
 
@@ -446,17 +446,17 @@ describe("resolveExtendedStablePackage", () => {
       status: "resolved",
       selector: "extended-stable",
       version: "2026.6.33",
-      packageSpec: "openclaw@2026.6.33",
+      packageSpec: "operator@2026.6.33",
     });
   });
 
   it("supports an explicit scoped-package override on a loopback test registry", async () => {
     mockHttp.intercept({
-      url: "http://127.0.0.1:4873/%40kevins8%2Fopenclaw/extended-stable",
+      url: "http://127.0.0.1:4873/%40kevins8%2Foperator/extended-stable",
       reply: { json: { version: "2000.4.34" } },
     });
     mockHttp.intercept({
-      url: "http://127.0.0.1:4873/%40kevins8%2Fopenclaw/2000.4.34",
+      url: "http://127.0.0.1:4873/%40kevins8%2Foperator/2000.4.34",
       reply: { json: { version: "2000.4.34" } },
     });
 
@@ -464,9 +464,9 @@ describe("resolveExtendedStablePackage", () => {
       resolveExtendedStablePackage({
         installKind: "package",
         timeoutMs: 1000,
-        packageName: "@kevins8/openclaw",
+        packageName: "@kevins8/operator",
         env: {
-          OPERATOR_UPDATE_PACKAGE_SPEC: "@kevins8/openclaw",
+          OPERATOR_UPDATE_PACKAGE_SPEC: "@kevins8/operator",
           NPM_CONFIG_REGISTRY: "http://127.0.0.1:4873/",
         },
       }),
@@ -474,17 +474,17 @@ describe("resolveExtendedStablePackage", () => {
       status: "resolved",
       selector: "extended-stable",
       version: "2000.4.34",
-      packageSpec: "@kevins8/openclaw@2000.4.34",
+      packageSpec: "@kevins8/operator@2000.4.34",
     });
   });
 
   it("ignores package overrides that do not use a loopback registry", async () => {
     mockHttp.intercept({
-      url: "https://registry.npmjs.org/openclaw/extended-stable",
+      url: "https://registry.npmjs.org/operator/extended-stable",
       reply: { json: { version: "2026.6.33" } },
     });
     mockHttp.intercept({
-      url: "https://registry.npmjs.org/openclaw/2026.6.33",
+      url: "https://registry.npmjs.org/operator/2026.6.33",
       reply: { json: { version: "2026.6.33" } },
     });
 
@@ -492,21 +492,21 @@ describe("resolveExtendedStablePackage", () => {
       resolveExtendedStablePackage({
         installKind: "package",
         timeoutMs: 1000,
-        packageName: "@kevins8/openclaw",
+        packageName: "@kevins8/operator",
         env: {
-          OPERATOR_UPDATE_PACKAGE_SPEC: "@kevins8/openclaw",
+          OPERATOR_UPDATE_PACKAGE_SPEC: "@kevins8/operator",
           NPM_CONFIG_REGISTRY: "https://registry.example.com/",
         },
       }),
     ).resolves.toMatchObject({
       status: "resolved",
-      packageSpec: "openclaw@2026.6.33",
+      packageSpec: "operator@2026.6.33",
     });
   });
 
   it("returns selector_missing for an absent public selector", async () => {
     mockHttp.intercept({
-      url: "https://registry.npmjs.org/openclaw/extended-stable",
+      url: "https://registry.npmjs.org/operator/extended-stable",
       reply: { status: 404, body: "not found" },
     });
 
@@ -517,7 +517,7 @@ describe("resolveExtendedStablePackage", () => {
 
   it("returns selector_query_failed for unusable selector metadata", async () => {
     mockHttp.intercept({
-      url: "https://registry.npmjs.org/openclaw/extended-stable",
+      url: "https://registry.npmjs.org/operator/extended-stable",
       reply: { body: "{", headers: { "content-type": "application/json" } },
     });
 
@@ -528,11 +528,11 @@ describe("resolveExtendedStablePackage", () => {
 
   it("returns exact_package_mismatch when exact readback differs", async () => {
     mockHttp.intercept({
-      url: "https://registry.npmjs.org/openclaw/extended-stable",
+      url: "https://registry.npmjs.org/operator/extended-stable",
       reply: { json: { version: "2026.6.33" } },
     });
     mockHttp.intercept({
-      url: "https://registry.npmjs.org/openclaw/2026.6.33",
+      url: "https://registry.npmjs.org/operator/2026.6.33",
       reply: { json: { version: "2026.6.34" } },
     });
 
@@ -540,7 +540,7 @@ describe("resolveExtendedStablePackage", () => {
       resolveExtendedStablePackage({ installKind: "package", timeoutMs: 1000 }),
     ).resolves.toEqual({ status: "failed", reason: "exact_package_mismatch" });
     expect(mockHttp.requests().map((request) => request.fullUrl)).not.toContain(
-      "https://registry.npmjs.org/openclaw/latest",
+      "https://registry.npmjs.org/operator/latest",
     );
   });
 
@@ -720,7 +720,7 @@ describe("checkUpdateStatus", () => {
   it("treats symlinked git installs as git roots", async () => {
     await withTempDir({ prefix: "operator-update-check-git-" }, async (base) => {
       const repoRoot = path.join(base, "repo");
-      const linkedRoot = path.join(base, "linked-openclaw");
+      const linkedRoot = path.join(base, "linked-operator");
       await fs.mkdir(repoRoot, { recursive: true });
       await fs.writeFile(
         path.join(repoRoot, "package.json"),

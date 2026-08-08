@@ -9,7 +9,7 @@ import {
 
 describe("irc normalize", () => {
   it("normalizes targets", () => {
-    expect(normalizeIrcMessagingTarget("irc:channel:openclaw")).toBe("#openclaw");
+    expect(normalizeIrcMessagingTarget("irc:channel:operator")).toBe("#operator");
     expect(normalizeIrcMessagingTarget("user:alice")).toBe("alice");
     expect(normalizeIrcMessagingTarget("\n")).toBeUndefined();
   });
@@ -20,14 +20,14 @@ describe("irc normalize", () => {
       resolveIrcOutboundSessionRoute({
         cfg,
         agentId: "main",
-        target: "irc:channel:openclaw",
+        target: "irc:channel:operator",
       }),
     ).toMatchObject({
-      sessionKey: "agent:main:irc:group:#openclaw",
-      peer: { kind: "group", id: "#openclaw" },
+      sessionKey: "agent:main:irc:group:#operator",
+      peer: { kind: "group", id: "#operator" },
       chatType: "group",
       recipientSessionExact: false,
-      to: "#openclaw",
+      to: "#operator",
     });
     expect(
       resolveIrcOutboundSessionRoute({ cfg, agentId: "main", target: "user:alice" }),

@@ -542,8 +542,8 @@ describe("gateway plugin HTTP auth boundary", () => {
     { label: "root-mounted", basePath: "", path: "/settings/plugins" },
     {
       label: "base-path-mounted",
-      basePath: "/openclaw",
-      path: "/openclaw/settings/plugins",
+      basePath: "/operator",
+      path: "/operator/settings/plugins",
     },
   ])(
     "reserves the $label plugin manager GET while preserving writes",

@@ -1,5 +1,5 @@
 /**
- * Knip configuration for OpenClaw root and bundled plugin dependency hygiene.
+ * Knip configuration for Operator root and bundled plugin dependency hygiene.
  */
 const BUNDLED_PLUGIN_ROOT_DIR = "extensions";
 
@@ -117,7 +117,7 @@ const rootEntries = [
   "src/infra/warning-filter.ts!",
   "src/infra/command-explainer/index.ts!",
   // Runtime modules loaded by path or namespace; static export tracing cannot see their contract.
-  // Jiti virtualizes openclaw/plugin-sdk/agent-sessions through this cycle-safe barrel.
+  // Jiti virtualizes operator/plugin-sdk/agent-sessions through this cycle-safe barrel.
   "src/agents/sessions/extension-sdk.ts!",
   // Plugin-SDK ACP facades expose the registry's runtime signatures.
   "src/acp/runtime/registry.ts!",
@@ -149,7 +149,7 @@ const rootEntries = [
   "apps/android/app/src/main/assets/katex/katex.min.js!",
   "apps/android/app/src/main/assets/katex/renderer.js!",
   "apps/linux/ui/main.js!",
-  "apps/shared/OpenClawKit/Sources/OpenClawKit/Resources/CanvasA2UI/a2ui.bundle.js!",
+  "apps/shared/OperatorKit/Sources/OperatorKit/Resources/CanvasA2UI/a2ui.bundle.js!",
   "scripts/qa/render-maturity-docs.ts!",
   bundledPluginFile("telegram", "src/audit.ts", "!"),
   bundledPluginFile("telegram", "src/token.ts", "!"),
@@ -206,7 +206,7 @@ const bundledPluginIgnoredRuntimeDependencies = [
   "json5",
   "lit",
   "linkedom",
-  "openclaw",
+  "operator",
   "clawpdf",
 ] as const;
 
@@ -541,7 +541,7 @@ const config = {
     "packages/speech-core": {
       entry: ["api.ts!", "runtime-api.ts!", "speaker.ts!", "voice-models.ts!"],
       project: ["**/*.ts!"],
-      ignoreDependencies: ["openclaw"],
+      ignoreDependencies: ["operator"],
     },
     "packages/*": {
       entry: ["index.js!", "scripts/postinstall.js!"],

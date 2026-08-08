@@ -873,11 +873,11 @@ describe("uninstallPlugin", () => {
       config: createPluginConfig({
         installs: {
           "missing-linked-plugin": createPathInstallRecord(
-            "/missing/openclaw/plugin",
-            "/missing/openclaw/plugin",
+            "/missing/operator/plugin",
+            "/missing/operator/plugin",
           ),
         },
-        loadPaths: ["/missing/openclaw/plugin", "/keep/this/plugin"],
+        loadPaths: ["/missing/operator/plugin", "/keep/this/plugin"],
       }),
       expectedActions: {
         entry: false,
@@ -1011,7 +1011,7 @@ describe("uninstallPlugin", () => {
     const stateDir = path.join(tempDir, "state");
     const extensionsDir = path.join(stateDir, "extensions");
     const npmRoot = path.join(stateDir, "npm");
-    const pluginDir = path.join(npmRoot, "node_modules", "@openclaw", "kitchen-sink");
+    const pluginDir = path.join(npmRoot, "node_modules", "@operator", "kitchen-sink");
     const hoistedDir = path.join(npmRoot, "node_modules", "is-number");
     await fs.mkdir(pluginDir, { recursive: true });
     await fs.mkdir(hoistedDir, { recursive: true });
@@ -1076,7 +1076,7 @@ describe("uninstallPlugin", () => {
       npmDir: npmBaseDir,
       packageName: "@gabrielvfonseca/kitchen-sink",
     });
-    const pluginDir = path.join(npmRoot, "node_modules", "@openclaw", "kitchen-sink");
+    const pluginDir = path.join(npmRoot, "node_modules", "@operator", "kitchen-sink");
     const hoistedDir = path.join(npmRoot, "node_modules", "is-number");
     await fs.mkdir(pluginDir, { recursive: true });
     await fs.mkdir(hoistedDir, { recursive: true });
@@ -1133,7 +1133,7 @@ describe("uninstallPlugin", () => {
     await expectPathAccessState(pluginDir, "missing");
   });
 
-  it("repairs remaining npm plugin openclaw peer links after npm uninstall prunes them", async () => {
+  it("repairs remaining npm plugin operator peer links after npm uninstall prunes them", async () => {
     const stateDir = path.join(tempDir, "state");
     const npmRoot = path.join(stateDir, "npm");
     const removedPluginDir = path.join(npmRoot, "node_modules", "removed-plugin");
@@ -1313,7 +1313,7 @@ describe("uninstallPlugin", () => {
       await fs.readFile(path.join(npmRoot, "package.json"), "utf8"),
     ) as {
       dependencies?: Record<string, string>;
-      openclaw?: { managedPeerDependencies?: string[] };
+      operator?: { managedPeerDependencies?: string[] };
     };
     expect(rootManifest.dependencies?.["removed-plugin"]).toBeUndefined();
     expect(rootManifest.dependencies?.["runtime-peer"]).toBeUndefined();

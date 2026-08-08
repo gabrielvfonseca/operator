@@ -44,13 +44,13 @@ const ACTION_BRIDGE_SCRIPT: &str = r#"
       const parsed = JSON.parse(String(message));
       const id = parsed?.userAction?.id;
       if (typeof id === "string") {
-        window.dispatchEvent(new CustomEvent("openclaw:a2ui-action-status", {
+        window.dispatchEvent(new CustomEvent("operator:a2ui-action-status", {
           detail: { id, ok: false, error: String(error) }
         }));
       }
     } catch {}
   };
-  Object.defineProperty(window, "openclawCanvasA2UIAction", {
+  Object.defineProperty(window, "operatorCanvasA2UIAction", {
     configurable: false,
     value: {
       postMessage(message) {
@@ -849,7 +849,7 @@ fn dispatch_action_status(app: &AppHandle, frame: &Value) {
         "error": frame.get("error").and_then(Value::as_str).unwrap_or("")
     });
     let _ = window.eval(format!(
-        "window.dispatchEvent(new CustomEvent('openclaw:a2ui-action-status', {{detail:{detail}}}));"
+        "window.dispatchEvent(new CustomEvent('operator:a2ui-action-status', {{detail:{detail}}}));"
     ));
 }
 

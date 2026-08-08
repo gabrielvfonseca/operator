@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { closeOperatorStateDatabaseForTest } from "../../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../../src/state/operator-state-db.js";
 import { getRegistryWorktree } from "../../../src/agents/worktrees/registry.js";
 import { acquireWorktreeRunLease } from "../../../src/agents/worktrees/run-lease.js";
 import { testing as runLeaseTesting } from "../../../src/agents/worktrees/run-lease.test-support.js";

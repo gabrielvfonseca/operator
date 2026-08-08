@@ -25,12 +25,12 @@ function installXSearchFetch(payload?: Record<string, unknown>) {
                 {
                   type: "output_text",
                   text: "Found X posts",
-                  annotations: [{ type: "url_citation", url: "https://x.com/openclaw/status/1" }],
+                  annotations: [{ type: "url_citation", url: "https://x.com/operator/status/1" }],
                 },
               ],
             },
           ],
-          citations: ["https://x.com/openclaw/status/1"],
+          citations: ["https://x.com/operator/status/1"],
         },
       ),
     ),
@@ -250,7 +250,7 @@ describe("xai x_search tool", () => {
       },
     ]);
     expect((result?.details as { citations?: string[] } | undefined)?.citations).toEqual([
-      "https://x.com/openclaw/status/1",
+      "https://x.com/operator/status/1",
     ]);
   });
 

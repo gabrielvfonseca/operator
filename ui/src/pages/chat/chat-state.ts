@@ -1512,7 +1512,7 @@ function preserveDeliveredQueuedUserTurn(state: ChatPageHost, item: ChatQueueIte
       if (!message || typeof message !== "object" || Array.isArray(message)) {
         return false;
       }
-      const marker = (message as { __openclaw?: unknown })["__openclaw"];
+      const marker = (message as { __operator?: unknown })["__operator"];
       return (
         Boolean(marker && typeof marker === "object" && !Array.isArray(marker)) &&
         (marker as { idempotencyKey?: unknown }).idempotencyKey === idempotencyKey

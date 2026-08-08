@@ -163,7 +163,7 @@ describeControlUiE2e("Control UI sidebar customization mocked Gateway E2E", () =
     try {
       await page.goto(`${server.baseUrl}chat`);
 
-      const sidebar = page.locator("openclaw-app-sidebar");
+      const sidebar = page.locator("operator-app-sidebar");
       const pinnedItems = sidebar.locator(
         ".sidebar-nav > .nav-section__items > .nav-item:not(.nav-item--action)",
       );
@@ -542,7 +542,7 @@ describeControlUiE2e("Control UI sidebar customization mocked Gateway E2E", () =
 
     try {
       await page.goto(`${server.baseUrl}chat`);
-      const sidebar = page.locator("openclaw-app-sidebar");
+      const sidebar = page.locator("operator-app-sidebar");
       await sidebar.locator("button.nav-item--action").click();
       await expect
         .poll(() =>
@@ -567,7 +567,7 @@ describeControlUiE2e("Control UI sidebar customization mocked Gateway E2E", () =
 
     try {
       await page.goto(`${server.baseUrl}chat?session=${encodeURIComponent("agent:main:work")}`);
-      const brand = page.locator("openclaw-app-sidebar").getByRole("link", { name: "New session" });
+      const brand = page.locator("operator-app-sidebar").getByRole("link", { name: "New session" });
       await expect.poll(() => brand.getAttribute("href")).toBe("/new");
 
       await brand.click();
@@ -617,8 +617,8 @@ describeControlUiE2e("Control UI sidebar customization mocked Gateway E2E", () =
 
     try {
       await page.goto(`${server.baseUrl}chat`);
-      const sidebar = page.locator("openclaw-app-sidebar");
-      const pet = sidebar.locator(".sidebar-shell openclaw-lobster-pet");
+      const sidebar = page.locator("operator-app-sidebar");
+      const pet = sidebar.locator(".sidebar-shell operator-lobster-pet");
       await expect.poll(() => pet.count()).toBe(1);
       await expect.poll(() => outcome(pet)).toBe("error");
       await expect.poll(() => page.locator(".topbar").isVisible()).toBe(false);
@@ -639,8 +639,8 @@ describeControlUiE2e("Control UI sidebar customization mocked Gateway E2E", () =
     const { context, page } = await openSidebarTestPage();
 
     try {
-      const sidebar = page.locator("openclaw-app-sidebar");
-      const pet = sidebar.locator("openclaw-lobster-pet");
+      const sidebar = page.locator("operator-app-sidebar");
+      const pet = sidebar.locator("operator-lobster-pet");
       const movement = await pet.evaluate(async (element) => {
         const lobster = element as HTMLElement & {
           anchor: "bar";
@@ -689,7 +689,7 @@ describeControlUiE2e("Control UI sidebar customization mocked Gateway E2E", () =
     const { context, page } = await openSidebarTestPage();
 
     try {
-      const sidebar = page.locator("openclaw-app-sidebar");
+      const sidebar = page.locator("operator-app-sidebar");
       const moreButton = sidebar.locator("button.nav-item--action");
       await moreButton.click();
       await sidebar
@@ -724,7 +724,7 @@ describeControlUiE2e("Control UI sidebar customization mocked Gateway E2E", () =
     const { context, page } = await openSidebarTestPage();
 
     try {
-      const sidebar = page.locator("openclaw-app-sidebar");
+      const sidebar = page.locator("operator-app-sidebar");
       await sidebar.locator("button.nav-item--action").click();
       const moreMenu = sidebar.locator("wa-dropdown.sidebar-more-menu");
       await expect
@@ -803,7 +803,7 @@ describeControlUiE2e("Control UI sidebar customization mocked Gateway E2E", () =
 
     try {
       await page.goto(`${server.baseUrl}chat`);
-      const sidebar = page.locator("openclaw-app-sidebar");
+      const sidebar = page.locator("operator-app-sidebar");
       await sidebar.getByRole("button", { name: /Agent menu/ }).click();
       const menu = sidebar.locator("wa-dropdown.sidebar-agent-menu");
       const mainSwitch = menu.getByRole("menuitemradio", { name: "Main" });

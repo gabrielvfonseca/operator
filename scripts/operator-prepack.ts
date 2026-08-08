@@ -1,14 +1,14 @@
 #!/usr/bin/env -S node --import tsx
-// operator Prepack script supports Operator repository automation.
+// Openclaw Prepack script supports Operator repository automation.
 
 import { spawnSync, type SpawnSyncOptions } from "node:child_process";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { basename, delimiter, join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { formatErrorMessage } from "../src/infra/errors.ts";
-import { createBunRunnerSpawnSpec } from "./bun-runner.mjs";
 import { writePackageDistInventoryForPublish } from "./lib/package-dist-inventory.ts";
 import { preparePackageChangelog } from "./package-changelog.mjs";
+import { createPnpmRunnerSpawnSpec } from "./pnpm-runner.mjs";
 const FULL_GIT_COMMIT_RE = /^[0-9a-f]{40}$/iu;
 const requiredPreparedPathGroups = [
   ["dist/index.js", "dist/index.mjs"],
@@ -170,7 +170,7 @@ function ensurePreparedArtifacts(): void {
   }
 
   console.error(
-    "prepack: requires an existing build and Control UI bundle. Run `bun build && bun ui:build` before packing or publishing.",
+    "prepack: requires an existing build and Control UI bundle. Run `pnpm build && pnpm ui:build` before packing or publishing.",
   );
   process.exit(1);
 }
@@ -279,9 +279,9 @@ export function resolvePrepackBuildEnvironment(
 }
 
 function runPnpm(args: string[], env: NodeJS.ProcessEnv): void {
-  const command = createBunRunnerSpawnSpec({
+  const command = createPnpmRunnerSpawnSpec({
     env,
-    bunArgs: args,
+    pnpmArgs: args,
     stdio: "inherit",
   });
   run(command.command, command.args, { ...command.options, env });

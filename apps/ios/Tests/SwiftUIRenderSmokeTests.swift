@@ -608,5 +608,5 @@ extension GatewayDiscoveryModel.DiscoveredGateway {
         canvasPort: 18789,
         tlsEnabled: true,
         tlsFingerprintSha256: "preview",
-        cliPath: "/opt/homebrew/bin/openclaw")
+        cliPath: "/opt/homebrew/bin/operator")
 }

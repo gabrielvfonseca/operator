@@ -10,7 +10,7 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vite
 import { DiscordRetryableInboundError } from "./inbound-dedupe.js";
 import type { DiscordMessagePreflightContext } from "./message-handler.preflight.js";
 
-vi.mock("openclaw/plugin-sdk/runtime-env", { spy: true });
+vi.mock("operator/plugin-sdk/runtime-env", { spy: true });
 
 const sendMocks = vi.hoisted(() => ({
   reactMessageDiscord: vi.fn<
@@ -64,7 +64,7 @@ const createDiscordDraftStream = deliveryMocks.createDiscordDraftStream;
 function createNonTerminalToolWarningPayload(): ReplyPayload {
   return setReplyPayloadMetadata(
     {
-      text: "⚠️ 🛠️ `run openclaw definitely-not-a-real-subcommand (agent)` failed",
+      text: "⚠️ 🛠️ `run operator definitely-not-a-real-subcommand (agent)` failed",
       isError: true,
     },
     { nonTerminalToolErrorWarning: true },
@@ -255,7 +255,7 @@ let formatDiscordReplySkip: typeof import("./message-handler.process.js").format
 let notifyDiscordInboundEventOutboundSuccess: typeof import("../inbound-event-delivery.js").notifyDiscordInboundEventOutboundSuccess;
 let createDiscordReplyTypingFeedback: typeof import("./reply-typing-feedback.js").createDiscordReplyTypingFeedback;
 
-vi.mock("openclaw/plugin-sdk/reply-runtime", () => ({
+vi.mock("operator/plugin-sdk/reply-runtime", () => ({
   dispatchReplyWithBufferedBlockDispatcher: async (params: {
     dispatcherOptions: {
       beforeDeliver?: (
@@ -373,7 +373,7 @@ vi.mock("openclaw/plugin-sdk/reply-runtime", () => ({
   },
 }));
 
-vi.mock("openclaw/plugin-sdk/conversation-runtime", () => ({
+vi.mock("operator/plugin-sdk/conversation-runtime", () => ({
   recordInboundSession: (...args: unknown[]) => recordInboundSession(...args),
   resolvePinnedMainDmOwnerFromAllowlist: (params: {
     dmScope?: string | null;
@@ -402,14 +402,14 @@ vi.mock("openclaw/plugin-sdk/conversation-runtime", () => ({
     bindingId.split(":").at(-1) ?? bindingId,
 }));
 
-vi.mock("openclaw/plugin-sdk/session-store-runtime", () => ({
+vi.mock("operator/plugin-sdk/session-store-runtime", () => ({
   getSessionEntry: (params?: unknown) => configSessionsMocks.getSessionEntry(params),
   readSessionUpdatedAt: (params?: unknown) => configSessionsMocks.readSessionUpdatedAt(params),
   resolveStorePath: (path?: unknown, opts?: unknown) =>
     configSessionsMocks.resolveStorePath(path, opts),
 }));
 
-vi.mock("openclaw/plugin-sdk/session-transcript-runtime", () => ({
+vi.mock("operator/plugin-sdk/session-transcript-runtime", () => ({
   readLatestAssistantTextByIdentity: (params?: unknown) =>
     configSessionsMocks.readLatestAssistantTextByIdentity(params),
 }));
@@ -1965,7 +1965,7 @@ describe("processDiscordMessage session routing", () => {
 
   it("prefers bound session keys and sets MessageThreadId for bound thread messages", async () => {
     const threadBindings = createThreadBindingManager({
-      cfg: {} as import("openclaw/plugin-sdk/config-contracts").OperatorConfig,
+      cfg: {} as import("operator/plugin-sdk/config-contracts").OperatorConfig,
       accountId: "default",
       persist: false,
       enableSweeper: false,

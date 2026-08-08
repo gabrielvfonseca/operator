@@ -212,21 +212,21 @@ Do not switch to broad live GitHub search unless `gitcrawl` is missing data, sta
 Start with the target and nearby threads:
 
 ```bash
-gitcrawl threads openclaw/operator --numbers <issue-or-pr-number> --include-closed --json
-gitcrawl neighbors openclaw/operator --number <issue-or-pr-number> --limit 20 --json
+gitcrawl threads operator/operator --numbers <issue-or-pr-number> --include-closed --json
+gitcrawl neighbors operator/operator --number <issue-or-pr-number> --limit 20 --json
 ```
 
 Then search key phrases and subsystem terms:
 
 ```bash
-gitcrawl search openclaw/operator --query "<key phrase from title or body>" --mode hybrid --limit 20 --json
-gitcrawl search openclaw/operator --query "<subsystem or error phrase>" --mode hybrid --limit 20 --json
+gitcrawl search operator/operator --query "<key phrase from title or body>" --mode hybrid --limit 20 --json
+gitcrawl search operator/operator --query "<subsystem or error phrase>" --mode hybrid --limit 20 --json
 ```
 
 Inspect likely clusters:
 
 ```bash
-gitcrawl cluster-detail openclaw/operator --id <cluster-id> --member-limit 20 --body-chars 280 --json
+gitcrawl cluster-detail operator/operator --id <cluster-id> --member-limit 20 --body-chars 280 --json
 ```
 
 For PRs, verify likely code overlap with live file data:
@@ -250,9 +250,9 @@ Use targeted live GitHub search after `gitcrawl` when:
 - the exact phrase did not appear in local results but the issue/PR is current enough that GitHub should know it
 
 ```bash
-gh search prs --repo openclaw/operator --match title,body --limit 50 -- "<key phrase>"
-gh search issues --repo openclaw/operator --match title,body --limit 50 -- "<key phrase>"
-gh search issues --repo openclaw/operator --match comments --limit 50 -- "<error or maintainer phrase>"
+gh search prs --repo operator/operator --match title,body --limit 50 -- "<key phrase>"
+gh search issues --repo operator/operator --match title,body --limit 50 -- "<key phrase>"
+gh search issues --repo operator/operator --match comments --limit 50 -- "<error or maintainer phrase>"
 ```
 
 ## Step 4: Decide The Outcome
@@ -280,9 +280,9 @@ Before creating a group, search `prtags` for an existing one.
 Start with text search over groups:
 
 ```bash
-prtags search text -R openclaw/operator "<problem phrase>" --types group --limit 10
-prtags search similar -R openclaw/operator "<problem summary>" --types group --limit 10
-prtags group list -R openclaw/openclaw
+prtags search text -R operator/operator "<problem phrase>" --types group --limit 10
+prtags search similar -R operator/operator "<problem summary>" --types group --limit 10
+prtags group list -R operator/operator
 ```
 
 Inspect likely groups:
@@ -306,7 +306,7 @@ Create a new group only when no existing group clearly fits.
 Create the group with a problem-based title and an intent-based description:
 
 ```bash
-prtags group create -R openclaw/operator \
+prtags group create -R operator/operator \
   --kind mixed \
   --title "<problem-centered title>" \
   --description "<same intent, subsystem, and duplicate-resolution path>" \
@@ -330,20 +330,20 @@ Use `field ensure` so the skill is idempotent.
 Recommended target-level fields:
 
 ```bash
-prtags field ensure -R openclaw/operator --name duplicate_status --scope pull_request --type enum --enum-values not_duplicate,candidate,confirmed --filterable
-prtags field ensure -R openclaw/operator --name duplicate_status --scope issue --type enum --enum-values not_duplicate,candidate,confirmed --filterable
-prtags field ensure -R openclaw/operator --name duplicate_confidence --scope pull_request --type enum --enum-values low,medium,high --filterable
-prtags field ensure -R openclaw/operator --name duplicate_confidence --scope issue --type enum --enum-values low,medium,high --filterable
-prtags field ensure -R openclaw/operator --name duplicate_rationale --scope pull_request --type text --searchable
-prtags field ensure -R openclaw/operator --name duplicate_rationale --scope issue --type text --searchable
+prtags field ensure -R operator/operator --name duplicate_status --scope pull_request --type enum --enum-values not_duplicate,candidate,confirmed --filterable
+prtags field ensure -R operator/operator --name duplicate_status --scope issue --type enum --enum-values not_duplicate,candidate,confirmed --filterable
+prtags field ensure -R operator/operator --name duplicate_confidence --scope pull_request --type enum --enum-values low,medium,high --filterable
+prtags field ensure -R operator/operator --name duplicate_confidence --scope issue --type enum --enum-values low,medium,high --filterable
+prtags field ensure -R operator/operator --name duplicate_rationale --scope pull_request --type text --searchable
+prtags field ensure -R operator/operator --name duplicate_rationale --scope issue --type text --searchable
 ```
 
 Recommended group-level fields:
 
 ```bash
-prtags field ensure -R openclaw/operator --name duplicate_confidence --scope group --type enum --enum-values low,medium,high --filterable
-prtags field ensure -R openclaw/operator --name duplicate_rationale --scope group --type text --searchable
-prtags field ensure -R openclaw/operator --name cluster_summary --scope group --type text --searchable
+prtags field ensure -R operator/operator --name duplicate_confidence --scope group --type enum --enum-values low,medium,high --filterable
+prtags field ensure -R operator/operator --name duplicate_rationale --scope group --type text --searchable
+prtags field ensure -R operator/operator --name cluster_summary --scope group --type text --searchable
 ```
 
 ## Step 7: Save The Maintainer Judgment In prtags
@@ -351,7 +351,7 @@ prtags field ensure -R openclaw/operator --name cluster_summary --scope group --
 For a PR:
 
 ```bash
-prtags annotation pr set -R openclaw/operator <pr-number> \
+prtags annotation pr set -R operator/operator <pr-number> \
   duplicate_status=confirmed \
   duplicate_confidence=high \
   duplicate_rationale="<same problem, same fix direction, overlapping files and comments>"
@@ -360,7 +360,7 @@ prtags annotation pr set -R openclaw/operator <pr-number> \
 For an issue:
 
 ```bash
-prtags annotation issue set -R openclaw/operator <issue-number> \
+prtags annotation issue set -R operator/operator <issue-number> \
   duplicate_status=confirmed \
   duplicate_confidence=high \
   duplicate_rationale="<same user-visible problem and same intended fix path>"
@@ -397,7 +397,7 @@ prtags group sync-comments <group-id>
 If the maintainer needs to see which groups still need attention, use:
 
 ```bash
-prtags group list-comment-sync-targets -R openclaw/openclaw
+prtags group list-comment-sync-targets -R operator/operator
 ```
 
 The skill should treat the GitHub comment as a consequence of correct `prtags` group state.

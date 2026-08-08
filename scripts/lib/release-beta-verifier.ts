@@ -33,7 +33,7 @@ type ReleaseVerifyBetaArgs = {
   rerunFailedClawHub: boolean;
   workflowRuns: {
     fullReleaseValidation?: string;
-    openclawNpm?: string;
+    operatorNpm?: string;
     pluginNpm?: string;
     pluginClawHub?: string;
     pluginClawHubBootstrap?: string;
@@ -75,7 +75,7 @@ type WorkflowRunSummary = {
   };
 };
 
-const DEFAULT_REPO = "openclaw/openclaw";
+const DEFAULT_REPO = "operator/operator";
 const DEFAULT_CLAWHUB_REGISTRY = "https://clawhub.ai";
 const CLAWHUB_BOOTSTRAP_WORKFLOW_PATH = ".github/workflows/plugin-clawhub-new.yml";
 const CLAWHUB_BOOTSTRAP_READBACK_FILE = "clawhub-bootstrap-readback.json";
@@ -1290,12 +1290,12 @@ export async function verifyBetaRelease(
     lines.push(`GitHub release OK: ${releaseUrl}`);
   }
 
-  const openclawNpm = await verifyNpmPackage(
+  const operatorNpm = await verifyNpmPackage(
     "@gabrielvfonseca/operator",
     args.version,
     args.distTag,
   );
-  lines.push(`openclaw npm OK: ${args.version} (${args.distTag})`);
+  lines.push(`operator npm OK: ${args.version} (${args.distTag})`);
 
   if (!args.skipPostpublish) {
     const postpublishVerifier = resolveOperatorNpmPostpublishVerifier(
@@ -1303,7 +1303,7 @@ export async function verifyBetaRelease(
       args.postpublishVerifier,
     );
     runCommandInherited("node", ["--import", "tsx", postpublishVerifier, args.version]);
-    lines.push("openclaw postpublish verifier OK");
+    lines.push("operator postpublish verifier OK");
   }
 
   const npmPlugins = collectPublishablePluginPackages(rootDir, {
@@ -1437,8 +1437,8 @@ export async function verifyBetaRelease(
           releaseTag: args.tag,
           npmDistTag: args.distTag,
           pluginSelection: args.pluginSelection,
-          openclawNpmIntegrity: openclawNpm.integrity,
-          openclawNpmTarball: openclawNpm.tarball,
+          operatorNpmIntegrity: operatorNpm.integrity,
+          operatorNpmTarball: operatorNpm.tarball,
           npmRegistrySignaturesVerified: args.skipPostpublish ? null : true,
           npmProvenanceAttestationMatched: args.skipPostpublish ? null : true,
           githubReleaseUrl: releaseUrl ?? null,

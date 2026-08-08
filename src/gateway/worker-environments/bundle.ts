@@ -6,7 +6,7 @@ import path from "node:path";
 import * as tar from "tar";
 import { resolveStateDir } from "../../config/paths.js";
 import { isExactSemverVersion } from "../../infra/npm-registry-spec.js";
-import { resolveOperatorPackageRootSync } from "../../infra/openclaw-root.js";
+import { resolveOperatorPackageRootSync } from "../../infra/operator-root.js";
 import { runCommandWithTimeout } from "../../process/exec.js";
 import { VERSION } from "../../version.js";
 import {
@@ -180,7 +180,7 @@ async function verifyPublishedNpmRelease(params: {
         argv: [
           "npm",
           "view",
-          `openclaw@${params.version}`,
+          `operator@${params.version}`,
           "name",
           "version",
           "dist.integrity",
@@ -198,14 +198,14 @@ async function verifyPublishedNpmRelease(params: {
       !NPM_SHA512_INTEGRITY_PATTERN.test(published.integrity)
     ) {
       throw new Error(
-        `Cannot verify exact public npm release openclaw@${params.version}; use the worker bundle install`,
+        `Cannot verify exact public npm release operator@${params.version}; use the worker bundle install`,
       );
     }
     const packedValue = await runNpmProofCommand({
       argv: [
         "npm",
         "pack",
-        `openclaw@${params.version}`,
+        `operator@${params.version}`,
         "--pack-destination",
         temporaryRoot,
         "--ignore-scripts",
@@ -518,6 +518,6 @@ export async function resolveWorkerNpmInstallationArtifact(params: {
     operatorVersion: version,
     packageIntegrity,
     protocolFeatures: params.bundle.protocolFeatures,
-    packageSpec: `openclaw@${version}`,
+    packageSpec: `operator@${version}`,
   };
 }

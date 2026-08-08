@@ -774,7 +774,7 @@
   min-width: 0;
 }
 
-/* openclaw-tooltip is display:contents, so the title span itself is the flex
+/* operator-tooltip is display:contents, so the title span itself is the flex
    item; growing it pins the stop button to the card's right edge even for
    short titles. */
 .chat-tasks-rail__task-title {

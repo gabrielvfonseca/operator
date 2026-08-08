@@ -34,7 +34,7 @@
       "pluginToolsMcpBridge": {
         "type": "boolean"
       },
-      "operatorToolsMcpBridge": {
+      "openClawToolsMcpBridge": {
         "type": "boolean"
       },
       "strictWindowsCmdWrapper": {
@@ -124,7 +124,7 @@
       "help": "Default off. When enabled, inject the built-in Operator plugin-tools MCP server into embedded ACP sessions so ACP agents can call plugin-registered tools.",
       "advanced": true
     },
-    "operatorToolsMcpBridge": {
+    "openClawToolsMcpBridge": {
       "label": "Operator Tools MCP Bridge",
       "help": "Default off. When enabled, inject the built-in Operator core-tools MCP server into embedded ACP sessions so ACP agents can call selected built-in tools such as cron.",
       "advanced": true

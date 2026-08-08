@@ -53,10 +53,10 @@ vi.mock("../plugins/official-external-plugin-repair-hints.js", () => ({
           channelId,
           label: "Feishu",
           installSpec: "@gabrielvfonseca/feishu",
-          installCommand: "openclaw plugins install @gabrielvfonseca/feishu",
-          doctorFixCommand: "openclaw doctor --fix",
+          installCommand: "operator plugins install @gabrielvfonseca/feishu",
+          doctorFixCommand: "operator doctor --fix",
           repairHint:
-            "Install the official external plugin with: openclaw plugins install @gabrielvfonseca/feishu, or run: openclaw doctor --fix.",
+            "Install the official external plugin with: operator plugins install @gabrielvfonseca/feishu, or run: operator doctor --fix.",
         }
       : null,
 }));
@@ -330,7 +330,7 @@ describe("channelsStatusCommand SecretRef fallback flow", () => {
     const joined = logs.join("\n");
     expect(joined).toContain("Missing official external plugins:");
     expect(joined).toContain(
-      "Feishu: Install the official external plugin with: openclaw plugins install @gabrielvfonseca/feishu, or run: openclaw doctor --fix.",
+      "Feishu: Install the official external plugin with: operator plugins install @gabrielvfonseca/feishu, or run: operator doctor --fix.",
     );
   });
 

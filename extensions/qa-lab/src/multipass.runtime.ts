@@ -14,7 +14,7 @@ import type { RuntimeId } from "./runtime-parity.js";
 import { shellQuote } from "./shell-quote.js";
 
 const MULTIPASS_MOUNTED_REPO_PATH = "/workspace/operator-host";
-const MULTIPASS_GUEST_REPO_PATH = "/workspace/openclaw";
+const MULTIPASS_GUEST_REPO_PATH = "/workspace/operator";
 const MULTIPASS_GUEST_CODEX_HOME_PATH = "/workspace/operator-codex-home";
 const MULTIPASS_GUEST_PACKAGES = [
   "build-essential",
@@ -627,7 +627,7 @@ export async function runQaMultipass(params: {
   }
 
   const hostTransferDirPath = await fs.promises.mkdtemp(
-    path.join(resolvePreferredOpenClawTmpDir(), `${plan.vmName}-qa-suite-`),
+    path.join(resolvePreferredOperatorTmpDir(), `${plan.vmName}-qa-suite-`),
   );
   const hostTransferScriptPath = path.join(hostTransferDirPath, "guest-run.sh");
   await writeFile(hostTransferScriptPath, renderQaMultipassGuestScript(plan), {

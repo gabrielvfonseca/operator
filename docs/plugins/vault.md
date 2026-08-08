@@ -114,7 +114,7 @@ For non-interactive JWT auth, use a workload JWT file and a Vault role of type
 export VAULT_ADDR=https://vault.example.com
 export OPERATOR_VAULT_AUTH_METHOD=jwt
 export OPERATOR_VAULT_AUTH_MOUNT=jwt
-export OPERATOR_VAULT_AUTH_ROLE=openclaw
+export OPERATOR_VAULT_AUTH_ROLE=operator
 export OPERATOR_VAULT_JWT_FILE=/var/run/secrets/tokens/vault
 ```
 
@@ -130,7 +130,7 @@ file is the standard service account token path:
 ```bash
 export VAULT_ADDR=https://vault.example.com
 export OPERATOR_VAULT_AUTH_METHOD=kubernetes
-export OPERATOR_VAULT_AUTH_ROLE=openclaw
+export OPERATOR_VAULT_AUTH_ROLE=operator
 ```
 
 Set `OPERATOR_VAULT_AUTH_MOUNT` only when Vault mounted Kubernetes auth somewhere

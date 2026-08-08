@@ -18,7 +18,7 @@ import {
   openaiTTS,
 } from "./tts.js";
 
-vi.mock("openclaw/plugin-sdk/ssrf-runtime", () => ({
+vi.mock("operator/plugin-sdk/ssrf-runtime", () => ({
   fetchWithSsrFGuard: async ({
     url,
     init,
@@ -144,7 +144,7 @@ describe("openai tts", () => {
       expect(url).toBe("https://api.openai.com/v1/audio/speech");
       expect(headers?.originator).toBe("@gabrielvfonseca/operator");
       expect(headers?.version).toBe("2026.3.22");
-      expect(headers?.["User-Agent"]).toBe("openclaw/2026.3.22");
+      expect(headers?.["User-Agent"]).toBe("operator/2026.3.22");
     });
 
     it("sends instructions to custom OpenAI-compatible endpoints", async () => {

@@ -9,7 +9,7 @@ import {
   withAcpManagerTaskStateDir,
 } from "../../../test/helpers/acp-manager-task-state.js";
 import { listSessionStateEventsSince } from "../../../src/sessions/session-state-events.js";
-import { closeOperatorStateDatabaseForTest } from "../../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../../src/state/operator-state-db.js";
 import { isAcpTurnActive } from "../../../src/acp/control-plane/active-turns.js";
 import {
   AcpRuntimeError,

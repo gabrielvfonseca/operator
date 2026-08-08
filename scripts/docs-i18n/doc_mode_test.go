@@ -57,8 +57,8 @@ type docFrontmatterTranslator struct{}
 
 func (docFrontmatterTranslator) Translate(_ context.Context, text, _, _ string) (string, error) {
 	replacer := strings.NewReplacer(
-		"Step-by-step Fly.io deployment for OpenClaw with persistent storage and HTTPS", "在 Fly.io 上逐步部署 OpenClaw，包含持久化存储和 HTTPS",
-		"Deploying OpenClaw on Fly.io", "在 Fly.io 上部署 OpenClaw",
+		"Step-by-step Fly.io deployment for Operator with persistent storage and HTTPS", "在 Fly.io 上逐步部署 Operator，包含持久化存储和 HTTPS",
+		"Deploying Operator on Fly.io", "在 Fly.io 上部署 Operator",
 		"Setting up Fly volumes, secrets, and first-run config", "设置 Fly volume、密钥和首次运行配置",
 	)
 	return replacer.Replace(text), nil
@@ -74,13 +74,13 @@ type docFrontmatterFallbackTranslator struct{}
 
 func (docFrontmatterFallbackTranslator) Translate(_ context.Context, text, _, _ string) (string, error) {
 	switch text {
-	case "Step-by-step Fly.io deployment for OpenClaw with persistent storage and HTTPS":
+	case "Step-by-step Fly.io deployment for Operator with persistent storage and HTTPS":
 		return strings.Join([]string{
 			"<frontmatter>",
 			"title: Fly.io",
-			"summary: \"在 Fly.io 上部署 OpenClaw 的逐步指南，包含持久化存储和 HTTPS 设置\"",
+			"summary: \"在 Fly.io 上部署 Operator 的逐步指南，包含持久化存储和 HTTPS 设置\"",
 			"read_when:",
-			"  - 在 Fly.io 上部署 OpenClaw",
+			"  - 在 Fly.io 上部署 Operator",
 			"  - 设置 Fly 卷、机密和初始运行配置",
 			"</frontmatter>",
 			"",
@@ -88,8 +88,8 @@ func (docFrontmatterFallbackTranslator) Translate(_ context.Context, text, _, _ 
 			"# Fly.io 部署",
 			"</body>",
 		}, "\n"), nil
-	case "Deploying OpenClaw on Fly.io":
-		return "在 Fly.io 上部署 OpenClaw", nil
+	case "Deploying Operator on Fly.io":
+		return "在 Fly.io 上部署 Operator", nil
 	case "Setting up Fly volumes, secrets, and first-run config":
 		return "设置 Fly 卷、机密和初始运行配置", nil
 	default:
@@ -975,8 +975,8 @@ func TestValidateDocChunkTranslationRejectsCodeAfterUnmatchedBacktick(t *testing
 func TestValidateDocChunkTranslationRejectsChangedCapitalizedPlaceholder(t *testing.T) {
 	t.Parallel()
 
-	source := "Run `openclaw pairing approve sms <CODE>`.\n"
-	translated := "Ejecuta `openclaw pairing approve sms <TOKEN>`.\n"
+	source := "Run `operator pairing approve sms <CODE>`.\n"
+	translated := "Ejecuta `operator pairing approve sms <TOKEN>`.\n"
 
 	err := validateDocChunkTranslation(source, translated)
 	if err == nil {
@@ -1468,8 +1468,8 @@ func TestValidateDocChunkTranslationPreservesEmbeddedAnglePlaceholders(t *testin
 		},
 		{
 			name:       "version token",
-			source:     "```text\nOpenClaw v<version>\n```\n",
-			translated: "```text\nOpenClaw v<versión>\n```\n",
+			source:     "```text\nOperator v<version>\n```\n",
+			translated: "```text\nOperator v<versión>\n```\n",
 		},
 		{
 			name:       "assignment token",
@@ -2281,7 +2281,7 @@ func TestTranslateDocBodyChunkedSplitsOversizedFenceBeforeTrailingProse(t *testi
 
 func TestTranslateDocBodyChunkedMasksInlineCodeAndListMarkers(t *testing.T) {
 	body := strings.Join([]string{
-		"- Visible prose uses `openclaw config`.",
+		"- Visible prose uses `operator config`.",
 		"  1. Visible prose keeps ``nested `ticks` `` exact.",
 		"- Channel configs:",
 		"  - Telegram: Visible prose.",
@@ -2307,7 +2307,7 @@ func TestTranslateDocBodyChunkedMasksInlineCodeAndListMarkers(t *testing.T) {
 		t.Fatal("expected raw translator inputs")
 	}
 	for _, input := range translator.rawInputs {
-		if strings.Contains(input, "`openclaw config`") || strings.Contains(input, "``nested `ticks` ``") {
+		if strings.Contains(input, "`operator config`") || strings.Contains(input, "``nested `ticks` ``") {
 			t.Fatalf("expected inline code outside fences to be masked:\n%s", input)
 		}
 		if strings.Contains(input, "- Visible prose uses") || strings.Contains(input, "1. Visible prose keeps") || strings.Contains(input, "> - Visible prose inside a quote.") {
@@ -2318,7 +2318,7 @@ func TestTranslateDocBodyChunkedMasksInlineCodeAndListMarkers(t *testing.T) {
 		}
 	}
 	for _, exact := range []string{
-		"- Видимый текст uses `openclaw config`.",
+		"- Видимый текст uses `operator config`.",
 		"  1. Видимый текст keeps ``nested `ticks` `` exact.",
 		"- Channel configs:\n  - Telegram: Видимый текст.\n  - WhatsApp: Видимый текст.",
 		"> - Видимый текст inside a quote.",
@@ -2435,9 +2435,9 @@ func TestProcessFileDocUsesFieldLevelFrontmatterTranslation(t *testing.T) {
 	source := strings.Join([]string{
 		"---",
 		"title: Fly.io",
-		"summary: \"Step-by-step Fly.io deployment for OpenClaw with persistent storage and HTTPS\"",
+		"summary: \"Step-by-step Fly.io deployment for Operator with persistent storage and HTTPS\"",
 		"read_when:",
-		"  - Deploying OpenClaw on Fly.io",
+		"  - Deploying Operator on Fly.io",
 		"  - Setting up Fly volumes, secrets, and first-run config",
 		"---",
 		"",
@@ -2461,10 +2461,10 @@ func TestProcessFileDocUsesFieldLevelFrontmatterTranslation(t *testing.T) {
 		t.Fatalf("read output failed: %v", err)
 	}
 	text := string(output)
-	if !strings.Contains(text, "在 Fly.io 上逐步部署 OpenClaw，包含持久化存储和 HTTPS") {
+	if !strings.Contains(text, "在 Fly.io 上逐步部署 Operator，包含持久化存储和 HTTPS") {
 		t.Fatalf("expected translated summary in output:\n%s", text)
 	}
-	if !strings.Contains(text, "在 Fly.io 上部署 OpenClaw") {
+	if !strings.Contains(text, "在 Fly.io 上部署 Operator") {
 		t.Fatalf("expected translated read_when entry in output:\n%s", text)
 	}
 	if !strings.Contains(text, fmt.Sprintf("prompt_version: %d", promptVersion)) {
@@ -2484,9 +2484,9 @@ func TestProcessFileDocRejectsSuspiciousFrontmatterScalarExpansion(t *testing.T)
 	source := strings.Join([]string{
 		"---",
 		"title: Fly.io",
-		"summary: \"Step-by-step Fly.io deployment for OpenClaw with persistent storage and HTTPS\"",
+		"summary: \"Step-by-step Fly.io deployment for Operator with persistent storage and HTTPS\"",
 		"read_when:",
-		"  - Deploying OpenClaw on Fly.io",
+		"  - Deploying Operator on Fly.io",
 		"  - Setting up Fly volumes, secrets, and first-run config",
 		"---",
 		"",
@@ -2510,10 +2510,10 @@ func TestProcessFileDocRejectsSuspiciousFrontmatterScalarExpansion(t *testing.T)
 	if strings.Contains(text, "<frontmatter>") || strings.Contains(text, "<body>") {
 		t.Fatalf("expected suspicious frontmatter expansion to be rejected:\n%s", text)
 	}
-	if !strings.Contains(text, "summary: Step-by-step Fly.io deployment for OpenClaw with persistent storage and HTTPS") {
+	if !strings.Contains(text, "summary: Step-by-step Fly.io deployment for Operator with persistent storage and HTTPS") {
 		t.Fatalf("expected original summary to be preserved after fallback:\n%s", text)
 	}
-	if !strings.Contains(text, "在 Fly.io 上部署 OpenClaw") {
+	if !strings.Contains(text, "在 Fly.io 上部署 Operator") {
 		t.Fatalf("expected read_when translation to survive fallback:\n%s", text)
 	}
 }
@@ -2596,8 +2596,8 @@ func TestValidateDocChunkTranslationRejectsDroppedDuplicateLink(t *testing.T) {
 func TestValidateDocChunkTranslationRejectsMovedProtectedProductLinkLabel(t *testing.T) {
 	t.Parallel()
 
-	source := "Deploy OpenClaw on [Render](https://render.com) using the Blueprint.\n"
-	translated := "Render पर Blueprint का उपयोग करके [OpenClaw](https://render.com) परिनियोजित करें।\n"
+	source := "Deploy Operator on [Render](https://render.com) using the Blueprint.\n"
+	translated := "Render पर Blueprint का उपयोग करके [Operator](https://render.com) परिनियोजित करें।\n"
 	for name, validate := range map[string]func(string, string) error{
 		"chunk": validateDocChunkTranslation,
 		"final": validateDocBodyFencedLiterals,
@@ -2633,7 +2633,7 @@ func TestValidateDocBodyRejectsMovedProtectedReferenceLinkLabel(t *testing.T) {
 	t.Parallel()
 
 	source := "Deploy on [Render][provider].\n\n[provider]: https://render.com\n"
-	translated := "Auf Render mit [OpenClaw][provider] bereitstellen.\n\n[provider]: https://render.com\n"
+	translated := "Auf Render mit [Operator][provider] bereitstellen.\n\n[provider]: https://render.com\n"
 	err := validateDocBodyFencedLiterals(source, translated)
 	if err == nil || !strings.Contains(err.Error(), "protected link label mismatch") {
 		t.Fatalf("expected protected reference-link label mismatch, got %v", err)

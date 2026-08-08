@@ -168,9 +168,9 @@ vi.mock("./send.js", () => ({
   sendMessageFeishu: sendMessageFeishuMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/conversation-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/conversation-runtime")>(
-    "openclaw/plugin-sdk/conversation-runtime",
+vi.mock("operator/plugin-sdk/conversation-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/conversation-runtime")>(
+    "operator/plugin-sdk/conversation-runtime",
   );
   return {
     ...actual,

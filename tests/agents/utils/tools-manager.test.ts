@@ -26,7 +26,7 @@ let tempAgentDir: string | undefined;
 
 beforeEach(() => {
   originalAgentDir = process.env.OPERATOR_AGENT_DIR;
-  tempAgentDir = mkdtempSync(join(tmpdir(), "openclaw-tools-manager-"));
+  tempAgentDir = mkdtempSync(join(tmpdir(), "operator-tools-manager-"));
   setTestEnvValue("OPERATOR_AGENT_DIR", tempAgentDir);
   fetchWithSsrFGuardMock.mockReset();
   extractArchiveMock.mockReset();

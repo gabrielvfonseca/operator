@@ -25,7 +25,7 @@ function canonicalPackages(value) {
   if (
     packages.length === 0 ||
     new Set(packages).size !== packages.length ||
-    packages.some((entry) => !/^@openclaw\/[a-z0-9][a-z0-9._-]*$/u.test(entry))
+    packages.some((entry) => !/^@operator\/[a-z0-9][a-z0-9._-]*$/u.test(entry))
   ) {
     fail("ClawHub bootstrap approval requires a unique @gabrielvfonseca/* package set.");
   }

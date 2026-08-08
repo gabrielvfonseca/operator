@@ -1,16 +1,16 @@
 import Testing
 import UIKit
-@testable import operator
+@testable import Operator
 
-struct operatorBrandTests {
+struct OperatorBrandTests {
     @Test func `brand colors meet text contrast in both appearances`() {
         let foregroundColors = [
-            ("accent", operatorBrand.uiAccentForeground),
-            ("accentHot", operatorBrand.uiAccentHotForeground),
-            ("ok", operatorBrand.uiOK),
-            ("warn", operatorBrand.uiWarn),
-            ("danger", operatorBrand.uiDanger),
-            ("info", operatorBrand.uiInfo),
+            ("accent", OperatorBrand.uiAccentForeground),
+            ("accentHot", OperatorBrand.uiAccentHotForeground),
+            ("ok", OperatorBrand.uiOK),
+            ("warn", OperatorBrand.uiWarn),
+            ("danger", OperatorBrand.uiDanger),
+            ("info", OperatorBrand.uiInfo),
         ]
         let backgrounds = [UIColor.systemBackground, UIColor.secondarySystemBackground]
 
@@ -34,12 +34,12 @@ struct operatorBrandTests {
             }
 
             let pillBackground = Self.composite(
-                operatorBrand.uiAccentForeground,
+                OperatorBrand.uiAccentForeground,
                 alpha: style == .dark ? 0.12 : 0.08,
                 over: .secondarySystemGroupedBackground,
                 traits: traits)
-            #expect(Self.contrastRatio(operatorBrand.uiAccentForeground, pillBackground, traits: traits) >= 4.5)
-            #expect(Self.contrastRatio(operatorBrand.uiAccent, .white, traits: traits) >= 4.5)
+            #expect(Self.contrastRatio(OperatorBrand.uiAccentForeground, pillBackground, traits: traits) >= 4.5)
+            #expect(Self.contrastRatio(OperatorBrand.uiAccent, .white, traits: traits) >= 4.5)
         }
     }
 

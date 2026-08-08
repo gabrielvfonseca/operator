@@ -32,7 +32,7 @@ Inspired by Simon Willison's [Running Operator in Docker](https://til.simonwilli
 **Install:**
 
 ```bash
-mkdir -p ~/.clawdock && curl -sL https://raw.githubusercontent.com/openclaw/openclaw/main/scripts/clawdock/clawdock-helpers.sh -o ~/.clawdock/clawdock-helpers.sh
+mkdir -p ~/.clawdock && curl -sL https://raw.githubusercontent.com/operator/operator/main/scripts/clawdock/clawdock-helpers.sh -o ~/.clawdock/clawdock-helpers.sh
 ```
 
 ```bash
@@ -51,7 +51,7 @@ clawdock-help
 
 On first command, ClawDock auto-detects your Operator directory:
 
-- Checks common paths (`~/openclaw`, `~/workspace/openclaw`, etc.)
+- Checks common paths (`~/operator`, `~/workspace/operator`, etc.)
 - If found, asks you to confirm
 - Saves to `~/.clawdock/config`
 
@@ -195,14 +195,14 @@ The `Dockerfile` supports optional build args:
 volumes:
   - ${OPERATOR_CONFIG_DIR}:/home/node/.operator
   - ${OPERATOR_WORKSPACE_DIR}:/home/node/.operator/workspace
-  - ${OPERATOR_AUTH_PROFILE_SECRET_DIR}:/home/node/.config/openclaw
+  - ${OPERATOR_AUTH_PROFILE_SECRET_DIR}:/home/node/.config/operator
 ```
 
 This means:
 
 - `~/.operator/.env` is available inside the container at `/home/node/.operator/.env` — Operator loads it automatically as the global env fallback
 - `~/.operator/operator.json` is available at `/home/node/.operator/operator.json` — the gateway watches it and hot-reloads most changes
-- `~/.operator-auth-profile-secrets` is available at `/home/node/.config/openclaw` — Operator stores the auth-profile encryption key there
+- `~/.operator-auth-profile-secrets` is available at `/home/node/.config/operator` — Operator stores the auth-profile encryption key there
 - Downloadable external plugin packages and install records live under the mounted Operator home
 - Bundled Operator channel plugins, such as Discord when present in the image,
   should normally load from the image-matched bundled copy. Avoid installing

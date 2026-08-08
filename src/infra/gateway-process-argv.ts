@@ -28,7 +28,7 @@ export function isOperatorCommandArgv(args: string[], command: string): boolean 
   if (normalized.some((arg) => ENTRY_CANDIDATES.some((entry) => arg.endsWith(entry)))) {
     return true;
   }
-  return exe.endsWith("/openclaw") || exe === "@gabrielvfonseca/operator";
+  return exe.endsWith("/operator") || exe === "@gabrielvfonseca/operator";
 }
 
 export function isGatewayArgv(args: string[], opts?: { allowGatewayBinary?: boolean }): boolean {

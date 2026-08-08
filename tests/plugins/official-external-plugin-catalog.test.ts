@@ -6,7 +6,7 @@ import { describe, expect, it, vi } from "vitest";
 import officialExternalPluginCatalog from "../../scripts/lib/official-external-plugin-catalog.json" with {
   type: "json",
 };
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { createSqliteHostedOfficialExternalPluginCatalogSnapshotStore } from "../../src/plugins/official-external-plugin-catalog-snapshot-store.js";
 import {
   type HostedOfficialExternalPluginCatalogSnapshot,
@@ -148,7 +148,7 @@ function signedCatalogConfig(publicKeyPem: string): HostedCatalogConfig {
   return {
     feeds: {
       acme: {
-        url: "https://packages.acme.example/openclaw/feed",
+        url: "https://packages.acme.example/operator/feed",
         verification: {
           mode: "signed",
           keys: [{ keyId: "acme-root", publicKey: publicKeyPem }],
@@ -393,7 +393,7 @@ describe("official external plugin catalog", () => {
 
   it("keeps signed SQLite snapshot writes monotonic when writes compete", async () => {
     const stateDir = mkdtempSync(path.join(os.tmpdir(), "operator-signed-snapshot-race-"));
-    const url = "https://packages.acme.example/openclaw/feed";
+    const url = "https://packages.acme.example/operator/feed";
     const newer = signedHostedCatalogFeed({
       feed: hostedCatalogFeed({ sequence: 10, pluginName: "@gabrielvfonseca/signed-v10" }),
     });
@@ -517,7 +517,7 @@ describe("official external plugin catalog", () => {
       {
         body: signed.body,
         metadata: {
-          url: "https://packages.acme.example/openclaw/feed",
+          url: "https://packages.acme.example/operator/feed",
           status: 200,
           checksum: `sha256:${crypto.createHash("sha256").update(signed.body).digest("hex")}`,
         },
@@ -545,7 +545,7 @@ describe("official external plugin catalog", () => {
       {
         body: unsignedBody,
         metadata: {
-          url: "https://packages.acme.example/openclaw/feed",
+          url: "https://packages.acme.example/operator/feed",
           status: 200,
           checksum: `sha256:${crypto.createHash("sha256").update(unsignedBody).digest("hex")}`,
         },
@@ -568,7 +568,7 @@ describe("official external plugin catalog", () => {
   it.each([
     [
       "off-allowlist hosts",
-      "https://packages.acme.example/openclaw/feed",
+      "https://packages.acme.example/operator/feed",
       "hostname is not allowed",
     ],
     [
@@ -646,7 +646,7 @@ describe("official external plugin catalog", () => {
     const result = await loadHostedCatalog({
       feedProfile: "acme",
       catalogConfig: {
-        feeds: { acme: { url: "https://packages.acme.example/openclaw/feed" } },
+        feeds: { acme: { url: "https://packages.acme.example/operator/feed" } },
         sources: {
           "acme-npm": { type: "npm", registry: "https://packages.acme.example/npm/" },
         },

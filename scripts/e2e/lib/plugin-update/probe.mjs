@@ -23,7 +23,7 @@ const readJson = (file) => {
 };
 
 const pluginRecordSnapshot = () => {
-  const config = readJson(openclawPath("operator.json"));
+  const config = readJson(operatorPath("operator.json"));
   const records = readPluginInstallRecords({ fallbackRecords: config.plugins?.installs ?? {} });
   const record = records["lossless-claw"] ?? records["@example/lossless-claw"];
   if (!record) {
@@ -33,7 +33,7 @@ const pluginRecordSnapshot = () => {
   return { source, spec, resolvedName, resolvedVersion, resolvedSpec, integrity, shasum };
 };
 
-function openclawPath(...parts) {
+function operatorPath(...parts) {
   return path.join(home, ".operator", ...parts);
 }
 
@@ -43,7 +43,7 @@ function writeJson(file, value) {
 }
 
 function seedInstallState() {
-  writeJson(openclawPath("extensions", "lossless-claw", "package.json"), {
+  writeJson(operatorPath("extensions", "lossless-claw", "package.json"), {
     name: "@example/lossless-claw",
     version: "0.9.0",
   });
@@ -241,13 +241,13 @@ function assertCorruptPluginDetails(plugins, pluginId) {
     ? [
         `Disabled "${pluginId}" after plugin update failure`,
         "Operator will continue without it",
-        "Run openclaw update repair to retry post-update plugin repair.",
-        `Run openclaw plugins inspect ${pluginId} --runtime --json for details.`,
+        "Run operator update repair to retry post-update plugin repair.",
+        `Run operator plugins inspect ${pluginId} --runtime --json for details.`,
       ]
     : [
         "package.json is missing",
-        "Run openclaw update repair to retry post-update plugin repair.",
-        `Run openclaw plugins inspect ${pluginId} --runtime --json for details.`,
+        "Run operator update repair to retry post-update plugin repair.",
+        `Run operator plugins inspect ${pluginId} --runtime --json for details.`,
       ];
   for (const expected of expectedFragments) {
     if (!text.includes(expected)) {

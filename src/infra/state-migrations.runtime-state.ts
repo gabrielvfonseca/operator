@@ -2,8 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveAgentIdFromSessionKey } from "../routing/session-key.js";
-import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
-import { runOperatorStateWriteTransaction } from "../state/openclaw-state-db.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import { runOperatorStateWriteTransaction } from "../state/operator-state-db.js";
 import { resolveRequiredHomeDir } from "./home-dir.js";
 import {
   executeSqliteQuerySync,

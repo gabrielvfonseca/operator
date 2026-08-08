@@ -4,7 +4,7 @@
   "description": "Operator diagnostics OpenTelemetry exporter for metrics, traces, and logs.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gabrielvfonseca/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "dependencies": {
@@ -21,10 +21,10 @@
     "@opentelemetry/semantic-conventions": "1.41.1"
   },
   "devDependencies": {
-    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   },
-  "@gabrielvfonseca/openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],

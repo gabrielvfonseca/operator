@@ -73,7 +73,7 @@ function listGitPluginManifestPaths(extensionsDir: string): string[] | null {
     return null;
   }
   return files
-    .filter((line) => /^extensions\/[^/]+\/openclaw\.plugin\.json$/u.test(line))
+    .filter((line) => /^extensions\/[^/]+\/operator\.plugin\.json$/u.test(line))
     .map((line) => path.join(process.cwd(), ...line.split("/")))
     .filter((filePath) => fs.existsSync(filePath))
     .toSorted();

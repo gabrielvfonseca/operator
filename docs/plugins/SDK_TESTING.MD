@@ -27,28 +27,28 @@ plugins, and they may import Vitest or other repo-only test dependencies.
 import {
   shouldAckReaction,
   removeAckReactionAfterReply,
-} from "openclaw/plugin-sdk/channel-feedback";
-import { installCommonResolveTargetErrorCases } from "openclaw/plugin-sdk/channel-target-testing";
-import { AUTH_PROFILE_RUNTIME_CONTRACT } from "openclaw/plugin-sdk/agent-runtime-test-contracts";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
-import { expectChannelInboundContextContract } from "openclaw/plugin-sdk/channel-contract-testing";
-import { createStartAccountContext } from "openclaw/plugin-sdk/channel-test-helpers";
-import { describePluginRegistrationContract } from "openclaw/plugin-sdk/plugin-test-contracts";
-import { registerSingleProviderPlugin } from "openclaw/plugin-sdk/plugin-test-runtime";
-import { describeOpenAIProviderRuntimeContract } from "openclaw/plugin-sdk/provider-test-contracts";
-import { getProviderHttpMocks } from "openclaw/plugin-sdk/provider-http-test-mocks";
-import { withEnv, withFetchPreconnect, withServer } from "openclaw/plugin-sdk/test-env";
+} from "operator/plugin-sdk/channel-feedback";
+import { installCommonResolveTargetErrorCases } from "operator/plugin-sdk/channel-target-testing";
+import { AUTH_PROFILE_RUNTIME_CONTRACT } from "operator/plugin-sdk/agent-runtime-test-contracts";
+import { createTestPluginApi } from "operator/plugin-sdk/plugin-test-api";
+import { expectChannelInboundContextContract } from "operator/plugin-sdk/channel-contract-testing";
+import { createStartAccountContext } from "operator/plugin-sdk/channel-test-helpers";
+import { describePluginRegistrationContract } from "operator/plugin-sdk/plugin-test-contracts";
+import { registerSingleProviderPlugin } from "operator/plugin-sdk/plugin-test-runtime";
+import { describeOpenAIProviderRuntimeContract } from "operator/plugin-sdk/provider-test-contracts";
+import { getProviderHttpMocks } from "operator/plugin-sdk/provider-http-test-mocks";
+import { withEnv, withFetchPreconnect, withServer } from "operator/plugin-sdk/test-env";
 import {
   bundledPluginRoot,
   createCliRuntimeCapture,
   typedCases,
-} from "openclaw/plugin-sdk/test-fixtures";
-import { mockNodeBuiltinModule } from "openclaw/plugin-sdk/test-node-mocks";
+} from "operator/plugin-sdk/test-fixtures";
+import { mockNodeBuiltinModule } from "operator/plugin-sdk/test-node-mocks";
 ```
 
 Use these focused subpaths for bundled plugin tests. The former
-`openclaw/plugin-sdk/testing` barrel was repo-local, excluded from shipped
-packages, and has been removed. The legacy `openclaw/plugin-sdk/test-utils`
+`operator/plugin-sdk/testing` barrel was repo-local, excluded from shipped
+packages, and has been removed. The legacy `operator/plugin-sdk/test-utils`
 alias remains repo-local; `pnpm run lint:plugins:no-extension-test-core-imports`
 (`scripts/check-no-extension-test-core-imports.ts`) rejects new extension-test
 imports of that alias.
@@ -136,9 +136,9 @@ Focused testing subpaths also re-export types useful in test files:
 import type {
   ChannelAccountSnapshot,
   ChannelGatewayContext,
-} from "openclaw/plugin-sdk/channel-contract";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { MockFn, PluginRuntime, RuntimeEnv } from "openclaw/plugin-sdk/plugin-test-runtime";
+} from "operator/plugin-sdk/channel-contract";
+import type { OperatorConfig } from "operator/plugin-sdk/config-contracts";
+import type { MockFn, PluginRuntime, RuntimeEnv } from "operator/plugin-sdk/plugin-test-runtime";
 ```
 
 ## Testing target resolution
@@ -148,7 +148,7 @@ channel target resolution:
 
 ```typescript
 import { describe } from "vitest";
-import { installCommonResolveTargetErrorCases } from "openclaw/plugin-sdk/channel-target-testing";
+import { installCommonResolveTargetErrorCases } from "operator/plugin-sdk/channel-target-testing";
 
 describe("my-channel target resolution", () => {
   installCommonResolveTargetErrorCases({
@@ -183,7 +183,7 @@ entry to declare `kind: "memory"`.
 
 ### Testing runtime config access
 
-Prefer the shared plugin runtime mock from `openclaw/plugin-sdk/plugin-test-runtime`.
+Prefer the shared plugin runtime mock from `operator/plugin-sdk/plugin-test-runtime`.
 Its `runtime.config.loadConfig()` and `runtime.config.writeConfigFile(...)`
 mocks throw by default so tests catch new usage of deprecated compatibility
 APIs. Override those mocks only when the test is explicitly covering legacy
@@ -258,8 +258,8 @@ describe("my-provider plugin", () => {
 For code that uses `createPluginRuntimeStore`, mock the runtime in tests:
 
 ```typescript
-import { createPluginRuntimeStore } from "openclaw/plugin-sdk/runtime-store";
-import type { PluginRuntime } from "openclaw/plugin-sdk/runtime-store";
+import { createPluginRuntimeStore } from "operator/plugin-sdk/runtime-store";
+import type { PluginRuntime } from "operator/plugin-sdk/runtime-store";
 
 const store = createPluginRuntimeStore<PluginRuntime>({
   pluginId: "test-plugin",
@@ -337,7 +337,7 @@ import-boundary checks in CI; each can also be run standalone locally:
 
 | Command                                                        | Enforces                                                                                    |
 | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `pnpm run lint:plugins:no-monolithic-plugin-sdk-entry-imports` | Bundled plugins cannot import the monolithic `openclaw/plugin-sdk` root barrel.             |
+| `pnpm run lint:plugins:no-monolithic-plugin-sdk-entry-imports` | Bundled plugins cannot import the monolithic `operator/plugin-sdk` root barrel.             |
 | `pnpm run lint:plugins:no-extension-src-imports`               | Production extension files cannot import the repo `src/**` tree directly (`../../src/...`). |
 | `pnpm run lint:plugins:no-extension-test-core-imports`         | Extension test files cannot import `plugin-sdk/test-utils` or other core-only test helpers. |
 

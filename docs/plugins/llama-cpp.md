@@ -18,7 +18,7 @@ Install it before using local memory embeddings:
 operator plugins install @gabrielvfonseca/llama-cpp-provider
 ```
 
-The main `openclaw` npm package does not include `node-llama-cpp`. Keeping the
+The main `operator` npm package does not include `node-llama-cpp`. Keeping the
 native dependency in this plugin prevents normal Operator npm updates from
 deleting a manually installed runtime inside the Operator package directory.
 

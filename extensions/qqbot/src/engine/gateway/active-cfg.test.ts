@@ -6,7 +6,7 @@ import { createActiveCfgProvider } from "./active-cfg.js";
 
 const getRuntimeConfigMock = vi.hoisted(() => vi.fn<() => OperatorConfig>());
 
-vi.mock("openclaw/plugin-sdk/runtime-config-snapshot", () => ({
+vi.mock("operator/plugin-sdk/runtime-config-snapshot", () => ({
   getRuntimeConfig: getRuntimeConfigMock,
 }));
 

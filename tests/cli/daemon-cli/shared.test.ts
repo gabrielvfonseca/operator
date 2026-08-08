@@ -84,7 +84,7 @@ describe("filterContainerGenericHints", () => {
       filterContainerGenericHints(
         [
           "systemd user services are unavailable; install/enable systemd or run the gateway under your supervisor.",
-          "If you're in a container, run the gateway in the foreground instead of `openclaw gateway`.",
+          "If you're in a container, run the gateway in the foreground instead of `operator gateway`.",
         ],
         { OPERATOR_CONTAINER: "operator-demo-container" } as NodeJS.ProcessEnv,
       ),
@@ -96,7 +96,7 @@ describe("filterContainerGenericHints", () => {
       filterContainerGenericHints(
         [
           "systemd user services are unavailable; install/enable systemd or run the gateway under your supervisor.",
-          "If you're in a container, run the gateway in the foreground instead of `openclaw gateway`.",
+          "If you're in a container, run the gateway in the foreground instead of `operator gateway`.",
         ],
         { OPERATOR_CONTAINER_HINT: "operator-demo-container" } as NodeJS.ProcessEnv,
       ),

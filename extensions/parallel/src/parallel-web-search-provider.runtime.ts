@@ -187,8 +187,8 @@ export async function executeParallelWebSearchProviderTool(
   }
   const endpoint = endpointResult.endpoint;
 
-  // Generic `query` arg fallback: openclaw's operator-facing CLI
-  // (`openclaw capability web.search ...`) always passes the shared
+  // Generic `query` arg fallback: operator's operator-facing CLI
+  // (`operator capability web.search ...`) always passes the shared
   // lowest-common-denominator shape `{ query, count, limit }` to whatever
   // provider is active and doesn't know about Parallel's richer
   // `{ objective, search_queries }` schema. When `search_queries` is absent
@@ -206,7 +206,7 @@ export async function executeParallelWebSearchProviderTool(
   const requestedCount =
     readNumberParam(args, "count", { integer: true }) ??
     (typeof searchConfig?.maxResults === "number" ? searchConfig.maxResults : undefined);
-  // Always pass max_results so Parallel matches the openclaw web_search default
+  // Always pass max_results so Parallel matches the operator web_search default
   // of 5 instead of Parallel's own default of 10.
   const count = resolveParallelSearchCount(requestedCount ?? DEFAULT_SEARCH_COUNT);
   const sessionId = normalizeParallelSessionId(

@@ -15,13 +15,13 @@ If you have not set up Docker yet, start with [Docker](/install/docker).
 ## Install
 
 ```bash
-mkdir -p ~/.clawdock && curl -sL https://raw.githubusercontent.com/openclaw/openclaw/main/scripts/clawdock/clawdock-helpers.sh -o ~/.clawdock/clawdock-helpers.sh
+mkdir -p ~/.clawdock && curl -sL https://raw.githubusercontent.com/operator/operator/main/scripts/clawdock/clawdock-helpers.sh -o ~/.clawdock/clawdock-helpers.sh
 echo 'source ~/.clawdock/clawdock-helpers.sh' >> ~/.zshrc && source ~/.zshrc
 ```
 
 If you previously installed ClawDock from `scripts/shell-helpers/clawdock-helpers.sh`, reinstall from the current `scripts/clawdock/clawdock-helpers.sh` path; the old raw GitHub path was removed.
 
-The helpers auto-detect your Operator checkout on first use (checking common paths like `~/openclaw`, `~/projects/openclaw`) and cache the result in `~/.clawdock/config`. Set `CLAWDOCK_DIR` yourself if your checkout lives elsewhere.
+The helpers auto-detect your Operator checkout on first use (checking common paths like `~/operator`, `~/projects/operator`) and cache the result in `~/.clawdock/config`. Set `CLAWDOCK_DIR` yourself if your checkout lives elsewhere.
 
 ## What you get
 

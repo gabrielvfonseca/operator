@@ -5,7 +5,7 @@ import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
   type OperatorStateDatabase,
-} from "../../state/openclaw-state-db.js";
+} from "../../state/operator-state-db.js";
 import {
   assertRecordShape,
   nextGeneration,

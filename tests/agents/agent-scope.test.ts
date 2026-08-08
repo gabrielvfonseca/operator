@@ -41,7 +41,7 @@ describe("resolveAgentConfig", () => {
   it("should return undefined when agent id does not exist", () => {
     const cfg: OperatorConfig = {
       agents: {
-        list: [{ id: "main", workspace: "~/openclaw" }],
+        list: [{ id: "main", workspace: "~/operator" }],
       },
     };
     const result = resolveAgentConfig(cfg, "nonexistent");
@@ -55,7 +55,7 @@ describe("resolveAgentConfig", () => {
           {
             id: "main",
             name: "Main Agent",
-            workspace: "~/openclaw",
+            workspace: "~/operator",
             agentDir: "~/.operator/agents/main",
             model: "anthropic/claude-sonnet-4-6",
             utilityModel: "openai/gpt-5.4-mini",
@@ -66,7 +66,7 @@ describe("resolveAgentConfig", () => {
     const result = resolveAgentConfig(cfg, "main");
     expect(result).toEqual({
       name: "Main Agent",
-      workspace: "~/openclaw",
+      workspace: "~/operator",
       agentDir: "~/.operator/agents/main",
       model: "anthropic/claude-sonnet-4-6",
       utilityModel: "openai/gpt-5.4-mini",
@@ -1143,12 +1143,12 @@ describe("resolveAgentConfig", () => {
   it("should normalize agent id", () => {
     const cfg: OperatorConfig = {
       agents: {
-        list: [{ id: "main", workspace: "~/openclaw" }],
+        list: [{ id: "main", workspace: "~/operator" }],
       },
     };
     // Should normalize to "main" (default)
     const result = resolveAgentConfig(cfg, "");
-    expect(result?.workspace).toBe("~/openclaw");
+    expect(result?.workspace).toBe("~/operator");
   });
 
   it("uses OPERATOR_HOME for default agent workspace", () => {

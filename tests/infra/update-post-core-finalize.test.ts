@@ -11,7 +11,7 @@ function gitOkResult(overrides: Partial<UpdateRunResult> = {}): UpdateRunResult 
   return {
     status: "ok",
     mode: "git",
-    root: "/srv/openclaw",
+    root: "/srv/operator",
     before: { sha: "aaa", version: "2026.5.3" },
     after: { sha: "bbb", version: "2026.6.1" },
     steps: [],
@@ -20,7 +20,7 @@ function gitOkResult(overrides: Partial<UpdateRunResult> = {}): UpdateRunResult 
   };
 }
 
-const ENTRYPOINT = "/srv/openclaw/dist/index.mjs";
+const ENTRYPOINT = "/srv/operator/dist/index.mjs";
 const resolveEntrypointOk = async () => ENTRYPOINT;
 type PostCoreFinalizeSpawner = NonNullable<
   Parameters<typeof runPostCoreFinalizeAfterGatewayUpdate>[0]["spawnFinalize"]

@@ -375,7 +375,7 @@ describe("backupVerifyCommand", () => {
         try {
           const runtime = createBackupVerifyRuntime();
           await expect(backupVerifyCommand(runtime, { archive: archivePath })).rejects.toThrow(
-            /Backup SQLite snapshot failed verification.*openclaw\.sqlite/iu,
+            /Backup SQLite snapshot failed verification.*operator\.sqlite/iu,
           );
           await expect(fs.readdir(verificationTempRoot)).resolves.toEqual([]);
         } finally {
@@ -446,7 +446,7 @@ describe("backupVerifyCommand", () => {
         async (archivePath) => {
           const runtime = createBackupVerifyRuntime();
           await expect(backupVerifyCommand(runtime, { archive: archivePath })).rejects.toThrow(
-            /contains a SQLite snapshot sidecar.*openclaw\.sqlite-wal/iu,
+            /contains a SQLite snapshot sidecar.*operator\.sqlite-wal/iu,
           );
         },
       );

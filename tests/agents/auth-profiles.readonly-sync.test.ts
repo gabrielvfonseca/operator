@@ -7,7 +7,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { closeOperatorAgentDatabasesForTest } from "../../src/state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../src/state/operator-agent-db.js";
 import { AUTH_STORE_VERSION } from "../../src/agents/auth-profiles/constants.js";
 import { externalCliDiscoveryScoped } from "../../src/agents/auth-profiles/external-cli-discovery.js";
 import { loadPersistedAuthProfileStore } from "../../src/agents/auth-profiles/persisted.js";

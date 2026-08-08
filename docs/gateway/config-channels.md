@@ -13,7 +13,7 @@ For agents, tools, gateway runtime, and other top-level keys, see [Configuration
 
 ## Channels
 
-Each channel starts automatically when its config section exists (unless `enabled: false`). Telegram and iMessage ship inside the core `openclaw` package. Other official channels (Discord, Slack, WhatsApp, Matrix, Microsoft Teams, IRC, Google Chat, Signal, Mattermost, and more) install as separate plugins with `operator plugins install <spec>`; see [Channels](/channels) for the full list and install specs.
+Each channel starts automatically when its config section exists (unless `enabled: false`). Telegram and iMessage ship inside the core `operator` package. Other official channels (Discord, Slack, WhatsApp, Matrix, Microsoft Teams, IRC, Google Chat, Signal, Mattermost, and more) install as separate plugins with `operator plugins install <spec>`; see [Channels](/channels) for the full list and install specs.
 
 ### DM and group access
 
@@ -271,7 +271,7 @@ WhatsApp runs through the gateway's web channel (Baileys Web). It starts automat
       dm: { enabled: true, groupEnabled: false, groupChannels: ["operator-dm"] },
       guilds: {
         "123456789012345678": {
-          slug: "friends-of-openclaw",
+          slug: "friends-of-operator",
           requireMention: false,
           ignoreOtherMentions: true,
           reactionNotifications: "own",
@@ -859,7 +859,7 @@ Fix: either pick a stronger tool-calling model, remove the explicit `"message_to
   },
   agents: {
     list: [
-      { id: "main", groupChat: { mentionPatterns: ["@openclaw", "@gabrielvfonseca/operator"] } },
+      { id: "main", groupChat: { mentionPatterns: ["@operator", "@gabrielvfonseca/operator"] } },
     ],
   },
 }
@@ -906,7 +906,7 @@ Include your own number in `allowFrom` to enable self-chat mode (ignores native 
     list: [
       {
         id: "main",
-        groupChat: { mentionPatterns: ["reisponde", "@openclaw"] },
+        groupChat: { mentionPatterns: ["reisponde", "@operator"] },
       },
     ],
   },

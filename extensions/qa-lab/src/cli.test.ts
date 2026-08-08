@@ -100,7 +100,7 @@ function requireQaSuiteOptions() {
   return options;
 }
 
-vi.mock("openclaw/plugin-sdk/qa-runner-runtime", () => ({
+vi.mock("operator/plugin-sdk/qa-runner-runtime", () => ({
   listQaRunnerCliContributions,
 }));
 
@@ -542,7 +542,7 @@ describe("qa cli registration", () => {
       "--lease-id",
       "cbx_123abc",
       "--fresh-pr",
-      "openclaw/openclaw#85141",
+      "operator/operator#85141",
       "--idle-timeout",
       "45m",
       "--ttl",
@@ -571,7 +571,7 @@ describe("qa cli registration", () => {
       credentialRole: "maintainer",
       credentialSource: "env",
       fastMode: true,
-      freshPr: "openclaw/openclaw#85141",
+      freshPr: "operator/operator#85141",
       gatewaySetup: undefined,
       idleTimeout: "45m",
       keepLease: true,
@@ -720,7 +720,7 @@ describe("qa cli registration", () => {
       "--transcripts",
       "qa/scenarios/jsonl-replay",
       "--runtime-pair",
-      "openclaw,codex",
+      "operator,codex",
       "--provider-mode",
       "mock-openai",
       "--output-dir",
@@ -730,7 +730,7 @@ describe("qa cli registration", () => {
     expect(runQaJsonlReplayCommand).toHaveBeenCalledWith({
       repoRoot: "/tmp/operator-repo",
       transcripts: "qa/scenarios/jsonl-replay",
-      runtimePair: "openclaw,codex",
+      runtimePair: "operator,codex",
       providerMode: "mock-openai",
       outputDir: ".artifacts/qa-e2e/jsonl-replay-test",
     });

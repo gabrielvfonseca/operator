@@ -115,7 +115,7 @@ and [Z.AI / GLM Coding Plan](/providers/zai).
 
 ## OAuth exchange (how login works)
 
-Operator's interactive login flows are implemented in `openclaw/plugin-sdk/llm.ts` and wired into the wizards/commands.
+Operator's interactive login flows are implemented in `operator/plugin-sdk/llm.ts` and wired into the wizards/commands.
 
 ### Anthropic setup-token
 

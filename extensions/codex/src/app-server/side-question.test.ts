@@ -89,7 +89,7 @@ vi.mock("./provider-capabilities.js", () => ({
     resolveCodexProviderWebSearchSupportForClientMock(...args),
 }));
 
-vi.mock("openclaw/plugin-sdk/agent-harness", () => ({
+vi.mock("operator/plugin-sdk/agent-harness", () => ({
   createOperatorCodingTools: (...args: unknown[]) => createOperatorCodingToolsMock(...args),
 }));
 

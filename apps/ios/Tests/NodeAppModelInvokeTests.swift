@@ -318,10 +318,10 @@ private func makeProjectedWatchChatRawMessage(
         "role": role,
         "content": [["type": "text", "text": text]],
         "timestamp": timestamp,
-        "__openclaw": ["id": serverId],
+        "__operator": ["id": serverId],
     ]
     if isMessageToolMirror {
-        object["openclawMessageToolMirror"] = ["toolName": "message"]
+        object["operatorMessageToolMirror"] = ["toolName": "message"]
     }
     let data = try JSONSerialization.data(withJSONObject: object)
     return try JSONDecoder().decode(AnyCodable.self, from: data)

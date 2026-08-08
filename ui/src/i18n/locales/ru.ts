@@ -2339,7 +2339,7 @@ export const ru: TranslationMap = {
       onboardingTitle: "No workspaces yet",
       onboardingSubtitle:
         "Ask your agent to build a workspace, or create one from the command line.",
-      onboardingCommand: "openclaw workspaces tabs create --title Main",
+      onboardingCommand: "operator workspaces tabs create --title Main",
       tabTitle: "This workspace is empty",
       tabSubtitle: "Ask your agent to add a widget, or add one yourself.",
       noVisibleTabs: "Every workspace tab is hidden. Restore one from the hidden menu.",
@@ -3278,9 +3278,9 @@ export const ru: TranslationMap = {
         title: "Требуется аутентификация",
         summary:
           "Gateway доступен, но для подключения этого браузера требуется соответствующий токен или пароль.",
-        stepPaste: "Вставьте токен из openclaw dashboard --no-open или введите настроенный пароль.",
+        stepPaste: "Вставьте токен из operator dashboard --no-open или введите настроенный пароль.",
         stepGenerate:
-          "Если токен не настроен, выполните openclaw doctor --generate-gateway-token на хосте шлюза.",
+          "Если токен не настроен, выполните operator doctor --generate-gateway-token на хосте шлюза.",
         stepConnect: "Нажмите «Подключиться» еще раз после обновления учетных данных.",
       },
       authFailed: {
@@ -3288,7 +3288,7 @@ export const ru: TranslationMap = {
         summary:
           "Предоставленные учетные данные были отклонены. Чаще всего причина — устаревший токен или токен, скопированный с другого URL Gateway.",
         stepDashboard:
-          "Запустите openclaw dashboard --no-open и откройте новый URL или вставьте его токен.",
+          "Запустите operator dashboard --no-open и откройте новый URL или вставьте его токен.",
         stepReplace:
           "Замените устаревшие значения токена/пароля; не используйте повторно токен с другого URL Gateway.",
         stepMode:
@@ -3312,8 +3312,8 @@ export const ru: TranslationMap = {
           "Этому браузеру требуется одноразовое подтверждение с хоста Gateway, прежде чем он сможет использовать Control UI.",
         upgradeSummary:
           "Этот браузер уже известен, но запрошенный доступ изменился и требует нового подтверждения.",
-        stepList: "Выполните openclaw devices list на хосте Gateway.",
-        stepApproveId: "Подтвердите этот запрос: openclaw devices approve {requestId}.",
+        stepList: "Выполните operator devices list на хосте Gateway.",
+        stepApproveId: "Подтвердите этот запрос: operator devices approve {requestId}.",
         stepApprove: "Подтвердите ожидающий запрос браузера/устройства из этого списка.",
         stepReconnect: "Подключитесь повторно после завершения подтверждения.",
       },
@@ -3341,7 +3341,7 @@ export const ru: TranslationMap = {
         summary:
           "Обслуживаемый Control UI и запущенный Gateway не согласованы по поддерживаемому протоколу подключения.",
         stepDashboard:
-          "Повторно откройте обслуживаемую панель командой openclaw dashboard, чтобы UI и Gateway были из одной установки.",
+          "Повторно откройте обслуживаемую панель командой operator dashboard, чтобы UI и Gateway были из одной установки.",
         stepDevUi:
           "Если используется pnpm ui:dev, пересоберите или перезапустите dev UI для текущей рабочей копии.",
         stepRestart:
@@ -3352,11 +3352,11 @@ export const ru: TranslationMap = {
         summary:
           "Браузер не смог завершить подключение к Gateway. Проверьте цель и транспорт перед повторной попыткой ввода учетных данных.",
         stepGateway:
-          "Убедитесь, что Gateway запущен, с помощью openclaw status или openclaw gateway run.",
+          "Убедитесь, что Gateway запущен, с помощью operator status или operator gateway run.",
         stepUrl:
           "Проверьте URL WebSocket и используйте wss://, когда Gateway находится за HTTPS/Tailscale Serve.",
         stepDashboard:
-          "Снова откройте панель управления с помощью openclaw dashboard --no-open, чтобы повторно скопировать текущий URL и данные аутентификации.",
+          "Снова откройте панель управления с помощью operator dashboard --no-open, чтобы повторно скопировать текущий URL и данные аутентификации.",
       },
     },
   },

@@ -26,7 +26,7 @@ const CHUNKED_PAYLOAD_MAX_BYTES_ENV = "OPERATOR_QA_CREDENTIAL_PAYLOAD_MAX_BYTES"
 const CHUNKED_PAYLOAD_MAX_CHUNKS_ENV = "OPERATOR_QA_CREDENTIAL_PAYLOAD_MAX_CHUNKS";
 const RETRY_BACKOFF_MS = [500, 1_000, 2_000, 4_000, 5_000] as const;
 const RETRYABLE_ACQUIRE_CODES = new Set(["POOL_EXHAUSTED", "NO_CREDENTIAL_AVAILABLE"]);
-const CHUNKED_PAYLOAD_MARKER = "__openclawQaCredentialPayloadChunksV1";
+const CHUNKED_PAYLOAD_MARKER = "__operatorQaCredentialPayloadChunksV1";
 
 const convexAcquireSuccessSchema = z.object({
   status: z.literal("ok"),

@@ -85,7 +85,7 @@ describe("nextcloud-talk doctor", () => {
             },
           },
         } as never,
-        doctorFixCommand: "openclaw doctor --fix",
+        doctorFixCommand: "operator doctor --fix",
       }),
     ).resolves.toEqual([
       '- channels.nextcloud-talk.default: Nextcloud Talk bot "Operator" (1) is missing the response feature (features=9); outbound replies will fail.',
@@ -117,7 +117,7 @@ describe("nextcloud-talk doctor", () => {
           },
         },
       } as never,
-      doctorFixCommand: "openclaw doctor --fix",
+      doctorFixCommand: "operator doctor --fix",
       env: { ...process.env, OPERATOR_STATE_DIR: stateDir },
     });
 

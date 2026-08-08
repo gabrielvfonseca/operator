@@ -126,8 +126,8 @@ describe("Android release artifacts", () => {
         timestamp: "2026-07-10T01:02:03.000Z",
       }),
     ).toEqual([
-      `-PopenclawBuildCommit=${"a".repeat(40)}`,
-      "-PopenclawBuildTimestamp=2026-07-10T01:02:03.000Z",
+      `-PoperatorBuildCommit=${"a".repeat(40)}`,
+      "-PoperatorBuildTimestamp=2026-07-10T01:02:03.000Z",
     ]);
   });
 

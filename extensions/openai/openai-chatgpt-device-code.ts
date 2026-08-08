@@ -22,7 +22,7 @@ function resolveOpenAICodexDeviceCodeHeaders(contentType: string): Record<string
     "Content-Type": contentType,
     originator: "@gabrielvfonseca/operator",
     ...(version ? { version } : {}),
-    "User-Agent": version ? `openclaw/${version}` : "@gabrielvfonseca/operator",
+    "User-Agent": version ? `operator/${version}` : "@gabrielvfonseca/operator",
   };
 }
 

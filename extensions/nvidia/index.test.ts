@@ -19,7 +19,7 @@ const ssrfRuntimeMocks = vi.hoisted(() => ({
   })),
 }));
 
-vi.mock("openclaw/plugin-sdk/ssrf-runtime", () => ssrfRuntimeMocks);
+vi.mock("operator/plugin-sdk/ssrf-runtime", () => ssrfRuntimeMocks);
 
 type NvidiaManifest = {
   providerAuthChoices?: Array<Record<string, unknown>>;

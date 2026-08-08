@@ -82,7 +82,7 @@ flow:
                       expr: "`channel:${config.channelId}`"
                     message:
                       expr: |-
-                        `Update-run self-upgrade QA check. The Operator package under test was installed from openclaw@${config.sourceVersion} and must update itself to openclaw@${config.targetTag}. Use the gateway tool with action=update.run. Do not run npm, pnpm, bun, git pull, or shell package-manager commands yourself. Set note exactly to "${marker} update.run complete" and restartDelayMs to 0 so the post-restart channel message proves recovery.`
+                        `Update-run self-upgrade QA check. The Operator package under test was installed from operator@${config.sourceVersion} and must update itself to operator@${config.targetTag}. Use the gateway tool with action=update.run. Do not run npm, pnpm, bun, git pull, or shell package-manager commands yourself. Set note exactly to "${marker} update.run complete" and restartDelayMs to 0 so the post-restart channel message proves recovery.`
                     timeoutMs:
                       expr: liveTurnTimeoutMs(env, 180000)
               - call: waitForGatewayHealthy

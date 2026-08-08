@@ -34,7 +34,7 @@ const ClickClackConfigSchema = ClickClackAccountConfigSchema.extend({
 }).strict();
 
 /**
- * Config schema exported to core so `openclaw doctor` and config validation
+ * Config schema exported to core so `operator doctor` and config validation
  * understand both default and named ClickClack accounts.
  */
 export const clickClackConfigSchema = buildChannelConfigSchema(ClickClackConfigSchema);

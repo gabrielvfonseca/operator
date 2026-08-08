@@ -108,7 +108,7 @@ function createProps(overrides: Partial<QuickSettingsProps> = {}): QuickSettings
     onUserAvatarChange: vi.fn(),
     connected: true,
     gatewayUrl: "ws://localhost:18789",
-    assistantName: "OpenClaw",
+    assistantName: "Operator",
     assistantAvatar: null,
     assistantAvatarUrl: null,
     assistantAvatarSource: null,
@@ -241,7 +241,7 @@ describe("renderQuickSettings", () => {
             memoryFreeBytes: 17_179_869_184,
             diskTotalBytes: 994_662_584_320,
             diskAvailableBytes: 497_331_292_160,
-            diskPath: "/Users/operator/.openclaw",
+            diskPath: "/Users/operator/.operator",
           },
         }),
       ),
@@ -287,7 +287,7 @@ describe("renderQuickSettings", () => {
     expect(disk.querySelector(".config-host__stat-detail")?.textContent?.trim()).toBe(
       "463 GB free of 926 GB",
     );
-    expect(disk.getAttribute("title")).toBe("/Users/operator/.openclaw");
+    expect(disk.getAttribute("title")).toBe("/Users/operator/.operator");
     for (const fill of container.querySelectorAll(".config-host__meter-fill")) {
       expect([...fill.classList]).toContain("config-host__meter-fill--ok");
     }
@@ -370,7 +370,7 @@ describe("renderQuickSettings", () => {
 
     const banner = container.querySelector(".config-apply-banner");
     expect(banner).not.toBeNull();
-    expect(banner?.textContent).toContain("Saved to openclaw.json — restart the gateway to apply.");
+    expect(banner?.textContent).toContain("Saved to operator.json — restart the gateway to apply.");
     const applyButton = expectButtonByText(container, "Restart & apply");
     expect(applyButton.disabled).toBe(false);
     applyButton.click();
@@ -599,7 +599,7 @@ describe("renderQuickSettings", () => {
 
     render(renderQuickSettings(createProps({ onPairMobile })), container);
 
-    expectRowByTitle(container, "OpenClaw mobile");
+    expectRowByTitle(container, "Operator mobile");
     const button = expectButtonByText(container, "Pair mobile device");
     expect(button.disabled).toBe(false);
     button.click();

@@ -18,7 +18,7 @@ const nowMs = Date.parse("2026-06-17T10:55:00Z");
 const BUILD_ARTIFACTS_WORKFLOW = "Blacksmith Build Artifacts Testbox";
 const requiredCliArgs = [
   "--repo",
-  "openclaw/openclaw",
+  "operator/operator",
   "--sha",
   sha,
   "--pr",
@@ -36,12 +36,12 @@ function successfulRun(name: string, id: number, updatedAt: string) {
     conclusion: "success",
     head_sha: sha,
     head_branch: "codex/clean-expanded-tool-calls",
-    head_repository: { full_name: "openclaw/openclaw" },
+    head_repository: { full_name: "operator/operator" },
     pull_requests: [{ number: pr }],
     path: ".github/workflows/ci.yml",
     created_at: "2026-06-17T10:46:24Z",
     updated_at: updatedAt,
-    html_url: `https://github.com/openclaw/openclaw/actions/runs/${id}`,
+    html_url: `https://github.com/operator/operator/actions/runs/${id}`,
   };
 }
 
@@ -179,7 +179,7 @@ describe("verify-pr-hosted-gates", () => {
 
   it("accepts a recent green fork head when GitHub omits pull request links", () => {
     const headBranch = "fix/token-listener";
-    const headRepository = "contributor/openclaw";
+    const headRepository = "contributor/operator";
     const evidence = collectHostedGateEvidence({
       sha,
       pullRequestCommitShas: [previousSha, sha],
@@ -216,13 +216,13 @@ describe("verify-pr-hosted-gates", () => {
         sha,
         pullRequestCommitShas: [sha],
         pullRequestHeadBranch: "fix/token-listener",
-        pullRequestHeadRepository: "other/openclaw",
+        pullRequestHeadRepository: "other/operator",
         workflowRuns: [
           {
             ...successfulRun("CI", 1, "2026-06-17T10:50:00Z"),
             head_sha: previousSha,
             head_branch: "fix/token-listener",
-            head_repository: { full_name: "other/openclaw" },
+            head_repository: { full_name: "other/operator" },
             pull_requests: [],
           },
           {
@@ -240,7 +240,7 @@ describe("verify-pr-hosted-gates", () => {
         sha,
         pullRequestCommitShas: [previousSha, sha],
         pullRequestHeadBranch: "fix/token-listener",
-        pullRequestHeadRepository: "contributor/openclaw",
+        pullRequestHeadRepository: "contributor/operator",
         workflowRuns: [
           {
             ...successfulRun("CI", 1, "2026-06-17T10:50:00Z"),
@@ -773,14 +773,14 @@ describe("verify-pr-hosted-gates", () => {
 
   it("parses required CLI arguments", () => {
     expect(parseArgs(requiredCliArgs)).toEqual({
-      repo: "openclaw/openclaw",
+      repo: "operator/operator",
       sha,
       pr,
       recentSha: "",
       output: ".local/gates-hosted-checks.json",
       changelogOnly: false,
     });
-    expect(() => parseArgs(["--repo", "openclaw/openclaw"])).toThrow("Usage:");
+    expect(() => parseArgs(["--repo", "operator/operator"])).toThrow("Usage:");
     expect(() => parseArgs(requiredCliArgs.with(1, "-h"))).toThrow("Expected --repo <value>.");
     expect(() => parseArgs(requiredCliArgs.with(3, "-h"))).toThrow("Expected --sha <value>.");
     expect(() => parseArgs(requiredCliArgs.with(5, "zero"))).toThrow(
@@ -793,7 +793,7 @@ describe("verify-pr-hosted-gates", () => {
 
   it("rejects duplicate hosted gate verifier CLI arguments", () => {
     const duplicateCases = [
-      ["--repo", [...requiredCliArgs, "--repo", "fork/openclaw"]],
+      ["--repo", [...requiredCliArgs, "--repo", "fork/operator"]],
       ["--sha", [...requiredCliArgs, "--sha", "other-sha"]],
       ["--pr", [...requiredCliArgs, "--pr", "7"]],
       ["--recent-sha", [...requiredCliArgs, "--recent-sha", "one", "--recent-sha", "other"]],
@@ -816,27 +816,27 @@ describe("verify-pr-hosted-gates", () => {
 
   it("queries the target and recorded pre-rebase SHAs", () => {
     expect(
-      workflowRunQueryPaths("openclaw/openclaw", {
+      workflowRunQueryPaths("operator/operator", {
         sha,
         recentSha: previousSha,
       }),
     ).toEqual([
-      `repos/openclaw/openclaw/actions/runs?head_sha=${sha}&per_page=100&page=1`,
-      `repos/openclaw/openclaw/actions/runs?head_sha=${previousSha}&per_page=100&page=1`,
+      `repos/operator/operator/actions/runs?head_sha=${sha}&per_page=100&page=1`,
+      `repos/operator/operator/actions/runs?head_sha=${previousSha}&per_page=100&page=1`,
     ]);
     expect(HOSTED_GATE_MAX_AGE_HOURS).toBe(24);
   });
 
   it("queries recent pull-request runs for the head branch", () => {
     expect(
-      workflowRunQueryPaths("openclaw/openclaw", {
+      workflowRunQueryPaths("operator/operator", {
         sha,
         recentSha: "",
         headBranch: "codex/relax hosted gates",
       }),
     ).toEqual([
-      `repos/openclaw/openclaw/actions/runs?head_sha=${sha}&per_page=100&page=1`,
-      "repos/openclaw/openclaw/actions/runs?branch=codex%2Frelax%20hosted%20gates&event=pull_request&per_page=100&page=1",
+      `repos/operator/operator/actions/runs?head_sha=${sha}&per_page=100&page=1`,
+      "repos/operator/operator/actions/runs?branch=codex%2Frelax%20hosted%20gates&event=pull_request&per_page=100&page=1",
     ]);
   });
 

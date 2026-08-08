@@ -87,7 +87,7 @@ Any model on the gateway is addressable as `kilocode/<upstream-id>` (for example
   </Accordion>
 
   <Accordion title="Stream wrapper and reasoning">
-    The Kilo stream wrapper adds an `X-KILOCODE-FEATURE` request header (default `openclaw`,
+    The Kilo stream wrapper adds an `X-KILOCODE-FEATURE` request header (default `operator`,
     override with the `KILOCODE_FEATURE` env var) and normalizes reasoning-effort payloads for
     models that support it.
 

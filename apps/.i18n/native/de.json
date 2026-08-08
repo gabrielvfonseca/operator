@@ -18800,8 +18800,8 @@
     },
     {
       "id": "native.apple.c663b8a50de8a7d8",
-      "source": "/home/you/Projects/openclaw",
-      "translated": "/home/you/Projects/openclaw"
+      "source": "/home/you/Projects/operator",
+      "translated": "/home/you/Projects/operator"
     },
     {
       "id": "native.apple.938ee646aac4ce66",
@@ -18810,8 +18810,8 @@
     },
     {
       "id": "native.apple.09f99e863e081f9f",
-      "source": "/Applications/Operator.app/.../openclaw",
-      "translated": "/Applications/Operator.app/.../openclaw"
+      "source": "/Applications/Operator.app/.../operator",
+      "translated": "/Applications/Operator.app/.../operator"
     },
     {
       "id": "native.apple.f588f7dad51aae2e",
@@ -20020,8 +20020,8 @@
     },
     {
       "id": "native.apple.dca75ab0dd73f0a4",
-      "source": "/home/you/Projects/openclaw",
-      "translated": "/home/you/Projects/openclaw"
+      "source": "/home/you/Projects/operator",
+      "translated": "/home/you/Projects/operator"
     },
     {
       "id": "native.apple.6998a7754dea6eb1",
@@ -20030,8 +20030,8 @@
     },
     {
       "id": "native.apple.5a3f4f943c8ee86a",
-      "source": "/Applications/Operator.app/.../openclaw",
-      "translated": "/Applications/Operator.app/.../openclaw"
+      "source": "/Applications/Operator.app/.../operator",
+      "translated": "/Applications/Operator.app/.../operator"
     },
     {
       "id": "native.apple.56e9b0831ec1eded",
@@ -20180,8 +20180,8 @@
     },
     {
       "id": "native.apple.952e85bfb2d4b4f5",
-      "source": "On your gateway host: install/update the `openclaw` package and make sure credentials exist\n(typically `~/.operator/credentials/oauth.json`). Then connect again if needed.",
-      "translated": "Auf deinem Gateway-Host: Installiere/aktualisiere das Paket `openclaw` und stelle sicher, dass Anmeldedaten vorhanden sind\n(üblicherweise `~/.operator/credentials/oauth.json`). Verbinde dich anschließend bei Bedarf erneut."
+      "source": "On your gateway host: install/update the `operator` package and make sure credentials exist\n(typically `~/.operator/credentials/oauth.json`). Then connect again if needed.",
+      "translated": "Auf deinem Gateway-Host: Installiere/aktualisiere das Paket `operator` und stelle sicher, dass Anmeldedaten vorhanden sind\n(üblicherweise `~/.operator/credentials/oauth.json`). Verbinde dich anschließend bei Bedarf erneut."
     },
     {
       "id": "native.apple.4e5ccb411db3e80f",

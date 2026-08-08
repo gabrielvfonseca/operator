@@ -69,10 +69,10 @@ describe("mergeGatewayTailscaleConfig", () => {
   it("preserves explicit serviceName overrides", () => {
     expect(
       mergeGatewayTailscaleConfig(
-        { mode: "serve", serviceName: "svc:old-openclaw", resetOnExit: false },
-        { serviceName: "svc:openclaw" },
+        { mode: "serve", serviceName: "svc:old-operator", resetOnExit: false },
+        { serviceName: "svc:operator" },
       ),
-    ).toEqual({ mode: "serve", serviceName: "svc:openclaw", resetOnExit: false });
+    ).toEqual({ mode: "serve", serviceName: "svc:operator", resetOnExit: false });
   });
 });
 
@@ -383,7 +383,7 @@ describe("ensureGatewayStartupAuth", () => {
     expect(result.auth.mode).toBe("token");
     expect(result.auth.token).toBe("shared-gateway-token-1234567890");
     expect(warn).toHaveBeenCalledWith(expect.stringContaining("Security warning"));
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining("openclaw security audit"));
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("operator security audit"));
   });
 
   it("keeps startup non-breaking when hooks token reuses gateway password auth", async () => {

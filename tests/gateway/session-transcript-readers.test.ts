@@ -354,10 +354,10 @@ describe("session transcript reader facade", () => {
 
     expect(messages).toMatchObject([{ content: "branch prompt" }, { content: "active branch" }]);
     expect(
-      messages.map((message) => (message as { __openclaw?: { id?: string } })["__openclaw"]?.id),
+      messages.map((message) => (message as { __operator?: { id?: string } })["__operator"]?.id),
     ).toEqual(["root", "active"]);
     expect(
-      messages.map((message) => (message as { __openclaw?: { seq?: number } })["__openclaw"]?.seq),
+      messages.map((message) => (message as { __operator?: { seq?: number } })["__operator"]?.seq),
     ).toEqual([2, 4]);
     await expect(readSessionMessageCountAsync(scope)).resolves.toBe(2);
   });
@@ -392,7 +392,7 @@ describe("session transcript reader facade", () => {
     ]);
     expect(
       page.messages.map(
-        (message) => (message as { __openclaw?: { seq?: number } })["__openclaw"]?.seq,
+        (message) => (message as { __operator?: { seq?: number } })["__operator"]?.seq,
       ),
     ).toEqual([3, 4]);
   });

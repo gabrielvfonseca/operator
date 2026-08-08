@@ -392,7 +392,7 @@ export async function runToolSearchGatewayLane(params: {
         "x-operator-session-key": `tool-search-gateway-${params.lane}`,
       },
       body: JSON.stringify({
-        model: "openclaw/qa",
+        model: "operator/qa",
         input: [
           {
             type: "message",

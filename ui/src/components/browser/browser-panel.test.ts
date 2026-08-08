@@ -9,8 +9,8 @@ describe("normalizeBrowserUrlDraft", () => {
   });
   it("prefixes bare hosts with https", () => {
     expect(normalizeBrowserUrlDraft("example.com")).toBe("https://example.com/");
-    expect(normalizeBrowserUrlDraft("  github.com/openclaw/openclaw ")).toBe(
-      "https://github.com/openclaw/openclaw",
+    expect(normalizeBrowserUrlDraft("  github.com/operator/operator ")).toBe(
+      "https://github.com/operator/operator",
     );
   });
 
@@ -32,7 +32,7 @@ describe("normalizeBrowserUrlDraft", () => {
 
   it("restores persisted open state when a mounted tag upgrades lazily", async () => {
     localStorage.setItem(
-      "openclaw.browser.panel.v1",
+      "operator.browser.panel.v1",
       JSON.stringify({ open: true, dock: "right", height: 420, width: 560 }),
     );
     const tagName = `test-lazy-browser-panel-${crypto.randomUUID()}`;
@@ -40,7 +40,7 @@ describe("normalizeBrowserUrlDraft", () => {
     element.available = true;
     document.body.append(element);
 
-    const BrowserPanel = customElements.get("openclaw-browser-panel");
+    const BrowserPanel = customElements.get("operator-browser-panel");
     if (!BrowserPanel) {
       throw new Error("expected browser panel registration");
     }

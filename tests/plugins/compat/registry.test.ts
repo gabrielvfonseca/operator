@@ -100,7 +100,7 @@ describe("plugin compatibility registry", () => {
           replacement,
           docsPath: "/plugins/sdk-migration",
         });
-        expect(record.surfaces).toEqual([expect.stringMatching(/^openclaw\/plugin-sdk\//u)]);
+        expect(record.surfaces).toEqual([expect.stringMatching(/^operator\/plugin-sdk\//u)]);
         expect(record.releaseNote).toMatch(releaseNote);
       }
     },

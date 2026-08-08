@@ -854,7 +854,7 @@ describe("pairing setup code", () => {
       },
       config: {
         gateway: {
-          tailscale: { mode: "serve", serviceName: "svc:openclaw" },
+          tailscale: { mode: "serve", serviceName: "svc:operator" },
           auth: { mode: "password", password: "secret" },
         },
       } satisfies ResolveSetupConfig,
@@ -905,7 +905,7 @@ describe("pairing setup code", () => {
     await expectResolvedSetupFailureCase({
       config: {
         gateway: {
-          tailscale: { mode: "serve", serviceName: "svc:openclaw" },
+          tailscale: { mode: "serve", serviceName: "svc:operator" },
           auth: { mode: "password", password: "secret" },
         },
       } satisfies ResolveSetupConfig,

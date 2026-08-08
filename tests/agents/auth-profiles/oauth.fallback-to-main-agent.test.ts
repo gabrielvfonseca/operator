@@ -8,7 +8,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { resetFileLockStateForTest } from "../../../src/infra/file-lock.js";
-import { closeOperatorAgentDatabasesForTest } from "../../../src/state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../../src/state/operator-agent-db.js";
 import { captureEnv, setTestEnvValue } from "../../../src/test-utils/env.js";
 import { resolveApiKeyForProfile } from "../../../src/agents/auth-profiles/oauth.js";
 import { loadPersistedAuthProfileStore } from "../../../src/agents/auth-profiles/persisted.js";

@@ -99,7 +99,7 @@ describe("Codex app-server user input bridge", () => {
     });
 
     await vi.waitFor(() => expect(params.onBlockReply).toHaveBeenCalledTimes(1));
-    expect(bridge.handleQueuedMessage("repo: openclaw\nscope: Tests")).toBe(true);
+    expect(bridge.handleQueuedMessage("repo: operator\nscope: Tests")).toBe(true);
 
     await expect(response).resolves.toEqual({
       answers: {

@@ -136,7 +136,7 @@ function getTelegramCallbackHandlerForTests() {
 }
 
 async function loadEnvelopeTimestampHelpers() {
-  return await import("openclaw/plugin-sdk/channel-test-helpers");
+  return await import("operator/plugin-sdk/channel-test-helpers");
 }
 
 async function loadInboundContextContract() {

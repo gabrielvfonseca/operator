@@ -191,9 +191,9 @@ const CONTROLLER_SOURCE = String.raw`
 (() => {
   const output = [];
   const pending = new Map();
-  const catalog = Array.isArray(globalThis.__openclawCatalog) ? globalThis.__openclawCatalog : [];
-  const apiFiles = Array.isArray(globalThis.__openclawApiFiles) ? globalThis.__openclawApiFiles : [];
-  const namespaceDescriptors = Array.isArray(globalThis.__openclawNamespaces) ? globalThis.__openclawNamespaces : [];
+  const catalog = Array.isArray(globalThis.__operatorCatalog) ? globalThis.__operatorCatalog : [];
+  const apiFiles = Array.isArray(globalThis.__operatorApiFiles) ? globalThis.__operatorApiFiles : [];
+  const namespaceDescriptors = Array.isArray(globalThis.__operatorNamespaces) ? globalThis.__operatorNamespaces : [];
 
   function safe(value) {
     if (value === undefined) return null;
@@ -217,7 +217,7 @@ const CONTROLLER_SOURCE = String.raw`
   }
 
   function request(method, args) {
-    const id = String(globalThis.__openclawHostRequest(String(method), JSON.stringify(safe(args ?? []))));
+    const id = String(globalThis.__operatorHostRequest(String(method), JSON.stringify(safe(args ?? []))));
     return new Promise((resolve, reject) => {
       pending.set(id, { resolve, reject });
     });
@@ -363,14 +363,14 @@ const CONTROLLER_SOURCE = String.raw`
     text: { value: (value) => output.push({ type: "text", text: asText(value) }), enumerable: true },
     json: { value: (value) => output.push({ type: "json", value: safe(value) }), enumerable: true },
     yield_control: { value: (reason) => request("yield", [reason]), enumerable: true },
-    __openclawSettleBridge: { value: settle },
-    __openclawTakeOutput: { value: () => output.splice(0) },
+    __operatorSettleBridge: { value: settle },
+    __operatorTakeOutput: { value: () => output.splice(0) },
   });
 })();
 `;
 
 function buildUserSource(code: string): string {
-  return `globalThis.__openclawResult = (async () => {\n${code}\n})()`;
+  return `globalThis.__operatorResult = (async () => {\n${code}\n})()`;
 }
 
 function createHostRequestHandler(params: {
@@ -430,22 +430,22 @@ async function createVm(params: {
     },
   });
   vm.hostToHandle(params.catalog).consume((handle) =>
-    vm.global.setProp("__openclawCatalog", handle),
+    vm.global.setProp("__operatorCatalog", handle),
   );
   vm.hostToHandle(params.namespaces).consume((handle) =>
-    vm.global.setProp("__openclawNamespaces", handle),
+    vm.global.setProp("__operatorNamespaces", handle),
   );
   vm.hostToHandle(params.apiFiles).consume((handle) =>
-    vm.global.setProp("__openclawApiFiles", handle),
+    vm.global.setProp("__operatorApiFiles", handle),
   );
   vm.newFunction(
-    "__openclawHostRequest",
+    "__operatorHostRequest",
     createHostRequestHandler({
       vm,
       pendingRequests: params.pendingRequests,
       config: params.config,
     }),
-  ).consume((hostRequest) => vm.global.setProp("__openclawHostRequest", hostRequest));
+  ).consume((hostRequest) => vm.global.setProp("__operatorHostRequest", hostRequest));
   vm.evalCode(CONTROLLER_SOURCE, "operator-code-mode:controller.js").dispose();
   return { vm, didTimeout: () => timedOut || deadlineReached() };
 }
@@ -469,7 +469,7 @@ async function restoreVm(params: {
     },
   });
   vm.registerHostCallback(
-    "__openclawHostRequest",
+    "__operatorHostRequest",
     createHostRequestHandler({
       vm,
       pendingRequests: params.pendingRequests,
@@ -480,7 +480,7 @@ async function restoreVm(params: {
 }
 
 function takeOutput(vm: QuickJS): unknown[] {
-  return vm.global.getProp("__openclawTakeOutput").consume((take) =>
+  return vm.global.getProp("__operatorTakeOutput").consume((take) =>
     vm.callFunction(take, vm.undefined).consume((output) => {
       const dumped = vm.dump(output);
       return Array.isArray(dumped) ? (dumped as unknown[]) : [];
@@ -582,7 +582,7 @@ async function runVmExecution(params: {
     params.prepare();
     params.vm.executePendingJobs();
     output = takeOutput(params.vm);
-    const resultHandle = params.vm.global.getProp("__openclawResult");
+    const resultHandle = params.vm.global.getProp("__operatorResult");
     try {
       if (params.pendingRequests.length > 0) {
         // Pending host work suspends the VM instead of blocking in-worker; the
@@ -654,7 +654,7 @@ async function runResume(input: Extract<CodeModeWorkerInput, { kind: "resume" }>
     pendingRequests,
     config: input.config,
     prepare: () => {
-      vm.global.getProp("__openclawSettleBridge").consume((settle) => {
+      vm.global.getProp("__operatorSettleBridge").consume((settle) => {
         for (const request of input.settledRequests) {
           const id = vm.newString(request.id);
           const payload = vm.newString(JSON.stringify(request.ok ? request.value : request.error));

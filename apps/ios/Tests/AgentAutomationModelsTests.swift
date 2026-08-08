@@ -46,7 +46,7 @@ struct AgentAutomationModelsTests {
                 "cwd": AnyCodable("/tmp"),
             ]))
         var draft = try #require(AgentAutomationDraft(job: job))
-        draft.payload = .command(argvJSON: "[ \"openclaw\", \"status\" ]", cwd: "/tmp")
+        draft.payload = .command(argvJSON: "[ \"operator\", \"status\" ]", cwd: "/tmp")
 
         #expect(throws: AgentAutomationEditError.self) {
             _ = try buildAgentAutomationUpdateParams(job: job, draft: draft)

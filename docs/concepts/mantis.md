@@ -20,7 +20,7 @@ UI chat lanes exist too; WhatsApp and Matrix are unimplemented.
 
 - Operator (`extensions/qa-lab/src/mantis/*`): scenario runtime, `pnpm operator qa mantis <command>` CLI, evidence schema.
 - QA Lab (`extensions/qa-lab/src/live-transports/*`): live transport harness, driver/SUT bots, report/evidence writers.
-- Crabbox (`openclaw/crabbox`): warmed Linux machines, leases, VNC, `crabbox media preview`.
+- Crabbox (`operator/crabbox`): warmed Linux machines, leases, VNC, `crabbox media preview`.
 - GitHub Actions (`.github/workflows/mantis-*.yml`): remote entrypoints, artifact retention.
 - ClawSweeper: parses maintainer PR commands, dispatches workflows, posts the final PR comment.
 
@@ -160,7 +160,7 @@ the VNC screenshot/video back locally. This is the only Mantis shape where the
 SUT gateway and the browser both run inside the same VM.
 
 With `--gateway-setup`, the command creates a persistent disposable Operator
-home at `$HOME/.operator-mantis/slack-openclaw` in the VM, patches Slack
+home at `$HOME/.operator-mantis/slack-operator` in the VM, patches Slack
 Socket Mode config for the target channel, starts
 `operator gateway run --dev --allow-unconfigured --port 38973`, and leaves
 Chrome running in the VNC session; omitting `--gateway-setup` runs the normal

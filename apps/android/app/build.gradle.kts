@@ -35,23 +35,23 @@ val fullGitCommitPattern = Regex("^[a-f0-9]{40}$")
 val buildTimestampFormatter =
   DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneOffset.UTC)
 val explicitOperatorBuildCommit =
-  optionalOperatorBuildProperty("openclawBuildCommit")
+  optionalOperatorBuildProperty("operatorBuildCommit")
     ?.lowercase()
     ?.also { commit ->
       if (!fullGitCommitPattern.matches(commit)) {
-        error("openclawBuildCommit must be a full 40-character hexadecimal Git commit.")
+        error("operatorBuildCommit must be a full 40-character hexadecimal Git commit.")
       }
     }
 
 val explicitOperatorBuildTimestamp =
-  optionalOperatorBuildProperty("openclawBuildTimestamp")
+  optionalOperatorBuildProperty("operatorBuildTimestamp")
     ?.let { timestamp ->
       if (!Regex("^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,3})?Z$").matches(timestamp)) {
-        error("openclawBuildTimestamp must be an ISO-8601 UTC timestamp.")
+        error("operatorBuildTimestamp must be an ISO-8601 UTC timestamp.")
       }
       val instant =
         runCatching { Instant.parse(timestamp) }
-          .getOrElse { error("openclawBuildTimestamp must be an ISO-8601 UTC timestamp.") }
+          .getOrElse { error("operatorBuildTimestamp must be an ISO-8601 UTC timestamp.") }
       buildTimestampFormatter.format(instant)
     }
 
@@ -371,7 +371,7 @@ val validateOperatorReleaseBuildMetadata =
     doLast {
       if (missingAndroidBuildMetadata) {
         error(
-          "Android release builds require -PopenclawBuildCommit and -PopenclawBuildTimestamp. " +
+          "Android release builds require -PoperatorBuildCommit and -PoperatorBuildTimestamp. " +
             "Use the repository Android release helper.",
         )
       }

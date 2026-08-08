@@ -34,8 +34,8 @@ vi.mock("./models.fetch.js", () => ({
   ensureLmstudioModelLoaded: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/provider-auth", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/provider-auth")>();
+vi.mock("operator/plugin-sdk/provider-auth", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/provider-auth")>();
   return {
     ...actual,
     removeProviderAuthProfilesWithLock: (...args: unknown[]) =>
@@ -43,8 +43,8 @@ vi.mock("openclaw/plugin-sdk/provider-auth", async (importOriginal) => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/provider-setup", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/provider-setup")>();
+vi.mock("operator/plugin-sdk/provider-setup", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/provider-setup")>();
   return {
     ...actual,
     configureOpenAICompatibleSelfHostedProviderNonInteractive: (...args: unknown[]) =>
@@ -54,8 +54,8 @@ vi.mock("openclaw/plugin-sdk/provider-setup", async (importOriginal) => {
 
 afterAll(() => {
   vi.doUnmock("./models.fetch.js");
-  vi.doUnmock("openclaw/plugin-sdk/provider-auth");
-  vi.doUnmock("openclaw/plugin-sdk/provider-setup");
+  vi.doUnmock("operator/plugin-sdk/provider-auth");
+  vi.doUnmock("operator/plugin-sdk/provider-setup");
   vi.resetModules();
 });
 

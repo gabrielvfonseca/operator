@@ -12,7 +12,7 @@ import {
 } from "./route-resolution.js";
 
 const loadConversationRuntime = createLazyRuntimeModule(
-  () => import("openclaw/plugin-sdk/conversation-binding-runtime"),
+  () => import("operator/plugin-sdk/conversation-binding-runtime"),
 );
 
 export async function resolveDiscordPreflightRoute(params: {

@@ -438,9 +438,9 @@ describe("Discord native plugin command dispatch", () => {
     runtimeModuleMocks.getSessionEntry.mockReset();
     runtimeModuleMocks.getSessionEntry.mockReturnValue(undefined);
     nativeCommandRuntime.matchPluginCommand =
-      runtimeModuleMocks.matchPluginCommand as typeof import("openclaw/plugin-sdk/plugin-runtime").matchPluginCommand;
+      runtimeModuleMocks.matchPluginCommand as typeof import("operator/plugin-sdk/plugin-runtime").matchPluginCommand;
     nativeCommandRuntime.executePluginCommand =
-      runtimeModuleMocks.executePluginCommand as typeof import("openclaw/plugin-sdk/plugin-runtime").executePluginCommand;
+      runtimeModuleMocks.executePluginCommand as typeof import("operator/plugin-sdk/plugin-runtime").executePluginCommand;
     nativeCommandRuntime.dispatchReplyWithDispatcher =
       runtimeModuleMocks.dispatchReplyWithDispatcher as typeof dispatchReplyWithDispatcher;
     nativeCommandRuntime.resolveDirectStatusReplyForSession =
@@ -453,7 +453,7 @@ describe("Discord native plugin command dispatch", () => {
         accountId: params.accountId,
       });
     nativeCommandRuntime.getSessionEntry =
-      runtimeModuleMocks.getSessionEntry as typeof import("openclaw/plugin-sdk/session-store-runtime").getSessionEntry;
+      runtimeModuleMocks.getSessionEntry as typeof import("operator/plugin-sdk/session-store-runtime").getSessionEntry;
   });
 
   afterEach(() => {

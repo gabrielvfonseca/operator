@@ -22,8 +22,8 @@ verify the plugin's runtime registrations.
 ## Use the Control UI
 
 Open **Plugins** in the Control UI, or use `/settings/plugins` relative to the
-configured Control UI base path. For example, a base path of `/openclaw` uses
-`/openclaw/settings/plugins`. The page has two tabs:
+configured Control UI base path. For example, a base path of `/operator` uses
+`/operator/settings/plugins`. The page has two tabs:
 
 - **Installed** shows the full local inventory grouped by category (channels,
   model providers, memory, tools). Each row opens a detail view; its overflow

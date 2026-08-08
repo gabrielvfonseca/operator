@@ -33,7 +33,7 @@ describe("buildEmbeddedSystemPrompt", () => {
 
   it("forwards provider prompt contributions into the embedded prompt", () => {
     const prompt = buildEmbeddedSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       reasoningTagHint: false,
       runtimeInfo: {
         host: "local",
@@ -66,7 +66,7 @@ describe("buildEmbeddedSystemPrompt", () => {
         },
       },
       agentId: "main",
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       reasoningTagHint: false,
       runtimeInfo: {
         agentId: "main",
@@ -97,7 +97,7 @@ describe("buildEmbeddedSystemPrompt", () => {
         },
       },
       agentId: "main",
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       reasoningTagHint: false,
       runtimeInfo: {
         agentId: "main",
@@ -130,7 +130,7 @@ describe("buildEmbeddedSystemPrompt", () => {
         },
       },
       agentId: "main",
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       reasoningTagHint: false,
       proactiveSubagentOrchestration: true,
       runtimeInfo: {
@@ -161,7 +161,7 @@ describe("buildEmbeddedSystemPrompt", () => {
           },
         },
       },
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       reasoningTagHint: false,
       runtimeInfo: {
         host: "local",
@@ -190,7 +190,7 @@ describe("buildEmbeddedSystemPrompt", () => {
           },
         },
       },
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       reasoningTagHint: false,
       runtimeInfo: {
         host: "local",
@@ -211,7 +211,7 @@ describe("buildEmbeddedSystemPrompt", () => {
 
   it("forwards the subagent prompt surface to embedded prompt rendering", () => {
     const prompt = buildEmbeddedSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       reasoningTagHint: false,
       promptSurface: "subagent",
       runtimeInfo: {
@@ -244,7 +244,7 @@ describe("buildEmbeddedSystemPrompt", () => {
     registerMemoryPromptSection(() => ["## Memory Recall", "Use memory carefully.", ""]);
 
     const prompt = buildEmbeddedSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       reasoningTagHint: false,
       runtimeInfo: {
         host: "local",
@@ -265,7 +265,7 @@ describe("buildEmbeddedSystemPrompt", () => {
 
   it("includes active background process references in the embedded prompt", () => {
     const prompt = buildEmbeddedSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/operator",
       reasoningTagHint: false,
       runtimeInfo: {
         host: "local",

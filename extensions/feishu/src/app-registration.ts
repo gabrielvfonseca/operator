@@ -6,7 +6,7 @@ import { sleep } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
  *
  * Migrated from feishu-plugin-cli's `feishu-auth.ts` and `install-prompts.ts`.
  * Replaces axios with native fetch, removes inquirer/ora/chalk in favor of
- * the openclaw WizardPrompter surface.
+ * the operator WizardPrompter surface.
  */
 import {
   fetchWithSsrFGuard,

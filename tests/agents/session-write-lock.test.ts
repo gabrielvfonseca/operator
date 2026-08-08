@@ -844,7 +844,7 @@ describe("acquireSessionWriteLock", () => {
         config: { session: { writeLock: { staleMs: 30_000 } } },
         nowMs,
         removeStale: false,
-        readOwnerProcessArgs: () => ["node", "/opt/openclaw/operator.mjs", "doctor"],
+        readOwnerProcessArgs: () => ["node", "/opt/operator/operator.mjs", "doctor"],
       });
       expect(configOnly.locks[0]?.stale).toBe(true);
 
@@ -854,7 +854,7 @@ describe("acquireSessionWriteLock", () => {
         env: { OPERATOR_SESSION_WRITE_LOCK_STALE_MS: "60000" },
         nowMs,
         removeStale: false,
-        readOwnerProcessArgs: () => ["node", "/opt/openclaw/operator.mjs", "doctor"],
+        readOwnerProcessArgs: () => ["node", "/opt/operator/operator.mjs", "doctor"],
       });
       expect(envOverride.locks[0]?.stale).toBe(false);
     } finally {
@@ -885,7 +885,7 @@ describe("acquireSessionWriteLock", () => {
         staleMs: 60_000,
         nowMs,
         removeStale: true,
-        readOwnerProcessArgs: () => ["node", "/opt/openclaw/operator.mjs", "agent"],
+        readOwnerProcessArgs: () => ["node", "/opt/operator/operator.mjs", "agent"],
       });
 
       expect(lockCleanupRecords(result.locks)).toEqual([
@@ -952,7 +952,7 @@ describe("acquireSessionWriteLock", () => {
         staleMs: 30_000,
         nowMs,
         removeStale: true,
-        readOwnerProcessArgs: () => ["node", "/opt/openclaw/operator.mjs", "agent"],
+        readOwnerProcessArgs: () => ["node", "/opt/operator/operator.mjs", "agent"],
       });
 
       expect(result.locks).toHaveLength(3);
@@ -1230,31 +1230,31 @@ describe("acquireSessionWriteLock", () => {
     await fs.mkdir(sessionsDir, { recursive: true });
 
     const nowMs = Date.now();
-    const openclawLock = path.join(sessionsDir, "operator-live.jsonl.lock");
+    const operatorLock = path.join(sessionsDir, "operator-live.jsonl.lock");
     const gatewayLock = path.join(sessionsDir, "gateway-live.jsonl.lock");
     const unknownLock = path.join(sessionsDir, "unknown-live.jsonl.lock");
 
     try {
       await fs.writeFile(
-        openclawLock,
+        operatorLock,
         JSON.stringify({
           pid: process.pid,
           createdAt: new Date(nowMs).toISOString(),
         }),
         "utf8",
       );
-      const openclawResult = await cleanStaleLockFiles({
+      const operatorResult = await cleanStaleLockFiles({
         sessionsDir,
         staleMs: 30_000,
         nowMs,
         removeStale: true,
-        readOwnerProcessArgs: () => ["node", "/opt/openclaw/operator.mjs", "agent"],
+        readOwnerProcessArgs: () => ["node", "/opt/operator/operator.mjs", "agent"],
       });
 
-      expect(openclawResult.cleaned).toEqual([]);
-      await expect(fs.access(openclawLock)).resolves.toBeUndefined();
+      expect(operatorResult.cleaned).toEqual([]);
+      await expect(fs.access(operatorLock)).resolves.toBeUndefined();
 
-      await fs.rm(openclawLock, { force: true });
+      await fs.rm(operatorLock, { force: true });
       await fs.writeFile(
         gatewayLock,
         JSON.stringify({

@@ -25,7 +25,7 @@ interface NpmUpdateScriptInput {
   updateTarget: string;
 }
 
-const windowsStalePostSwapImportRegex = String.raw`node_modules\\openclaw\\dist\\[^\\]+-[A-Za-z0-9_-]+\.js`;
+const windowsStalePostSwapImportRegex = String.raw`node_modules\\operator\\dist\\[^\\]+-[A-Za-z0-9_-]+\.js`;
 const macosGuestPath =
   "/opt/homebrew/bin:/opt/homebrew/opt/node/bin:/usr/local/bin:/usr/local/sbin:/opt/homebrew/sbin:/usr/bin:/bin:/usr/sbin:/sbin";
 const macosOperatorCommand = '"$OPERATOR_BIN"';
@@ -123,7 +123,7 @@ for attempt in 1 2; do
   fi
 done
 if [ "$agent_ok" != true ]; then
-  echo "openclaw agent finished without OK response" >&2
+  echo "operator agent finished without OK response" >&2
   exit 1
 fi`;
 }
@@ -193,7 +193,7 @@ for ($attempt = 1; $attempt -le 2; $attempt++) {
   }
   if ($agentExitCode -ne 0) { throw "agent failed with exit code $agentExitCode" }
 }
-if (-not $agentOk) { throw 'openclaw agent finished without OK response' }`;
+if (-not $agentOk) { throw 'operator agent finished without OK response' }`;
 }
 
 export function macosUpdateScript(input: NpmUpdateScriptInput): string {
@@ -206,7 +206,7 @@ resolve_required_command() {
     exit 127
   }
 }
-OPERATOR_BIN="$(resolve_required_command openclaw)"
+OPERATOR_BIN="$(resolve_required_command operator)"
 scrub_future_plugin_entries() {
   python3 - <<'PY'
 import json
@@ -346,8 +346,8 @@ ${windowsUpdateWithBundledPluginsDisabled(input)}
 if ($updateExit -ne 0) {
   $updateText = $updateOutput | Out-String
   $stalePostSwapImport = $updateText -match 'ERR_MODULE_NOT_FOUND' -and $updateText -match ${psSingleQuote(windowsStalePostSwapImportRegex)}
-  if (-not $stalePostSwapImport) { throw "openclaw update failed with exit code $updateExit" }
-  Write-Host "openclaw update returned a stale post-swap module import; continuing to post-update health checks"
+  if (-not $stalePostSwapImport) { throw "operator update failed with exit code $updateExit" }
+  Write-Host "operator update returned a stale post-swap module import; continuing to post-update health checks"
 }
 ${windowsVersionCheck(input.expectedNeedle)}
 ${windowsGatewayReadyScript()}
@@ -381,22 +381,22 @@ fs.writeFileSync(configPath, JSON.stringify(config, null, 2) + "\n");
 JS
 }
 stop_operator_gateway_processes() {
-  OPERATOR_DISABLE_BUNDLED_PLUGINS=1 OPERATOR_ALLOW_ROOT=1 openclaw gateway stop || true
+  OPERATOR_DISABLE_BUNDLED_PLUGINS=1 OPERATOR_ALLOW_ROOT=1 operator gateway stop || true
   pkill -f 'operator.*gateway' >/dev/null 2>&1 || true
 }
 start_operator_gateway() {
-  pkill -f "openclaw gateway run" >/dev/null 2>&1 || true
+  pkill -f "operator gateway run" >/dev/null 2>&1 || true
   rm -f /tmp/operator-parallels-linux-gateway.log
   setsid sh -lc ${shellQuote(
     `exec env OPERATOR_HOME=/root OPERATOR_STATE_DIR=/root/.operator OPERATOR_CONFIG_PATH=/root/.operator/operator.json OPERATOR_DISABLE_BONJOUR=1 OPERATOR_ALLOW_ROOT=1 ${input.auth.apiKeyEnv}=${shellQuote(
       input.auth.apiKeyValue,
-    )} openclaw gateway run --bind loopback --port 18789 --force >/tmp/operator-parallels-linux-gateway.log 2>&1`,
+    )} operator gateway run --bind loopback --port 18789 --force >/tmp/operator-parallels-linux-gateway.log 2>&1`,
   )} >/dev/null 2>&1 < /dev/null &
 }
 wait_for_gateway() {
   deadline=$((SECONDS + 240))
   while [ "$SECONDS" -lt "$deadline" ]; do
-    if openclaw gateway status --deep --require-rpc --timeout 15000; then
+    if operator gateway status --deep --require-rpc --timeout 15000; then
       return
     fi
     sleep 2
@@ -407,14 +407,14 @@ wait_for_gateway() {
 }
 scrub_future_plugin_entries
 stop_operator_gateway_processes
-${posixNpmRegistryEnv(input.npmRegistry)}OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS=1 OPERATOR_DISABLE_BUNDLED_PLUGINS=1 openclaw update --tag ${shellQuote(input.updateTarget)} --yes --json --no-restart
+${posixNpmRegistryEnv(input.npmRegistry)}OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS=1 OPERATOR_DISABLE_BUNDLED_PLUGINS=1 operator update --tag ${shellQuote(input.updateTarget)} --yes --json --no-restart
 ${posixVersionCheck("@gabrielvfonseca/operator", input.expectedNeedle)}
 start_operator_gateway
 wait_for_gateway
-openclaw models set ${shellQuote(input.auth.modelId)}
+operator models set ${shellQuote(input.auth.modelId)}
 ${posixModelProviderConfigCommands("@gabrielvfonseca/operator", input.auth.modelId, "linux")}
-openclaw config set agents.defaults.skipBootstrap true --strict-json
-openclaw config set tools.profile minimal
+operator config set agents.defaults.skipBootstrap true --strict-json
+operator config set tools.profile minimal
 ${posixAgentWorkspaceScript("Parallels npm update smoke test assistant.")}
 ${posixAssertAgentOkScript("@gabrielvfonseca/operator", input, "linux", "parallels-npm-update-linux")}`;
 }
@@ -468,7 +468,7 @@ while ($true) {
   $version = Invoke-Operator --version
   $version
   if ($LASTEXITCODE -eq 0) { break }
-  if ((Get-Date) -ge $versionDeadline) { throw "openclaw --version failed with exit code $LASTEXITCODE" }
+  if ((Get-Date) -ge $versionDeadline) { throw "operator --version failed with exit code $LASTEXITCODE" }
   Start-Sleep -Seconds 2
 }`;
   }
@@ -480,7 +480,7 @@ while ($true) {
   $version
   if ($LASTEXITCODE -eq 0 -and (($version | Out-String) -like ${expectedPattern})) { break }
   if ((Get-Date) -ge $versionDeadline) {
-    if ($LASTEXITCODE -ne 0) { throw "openclaw --version failed with exit code $LASTEXITCODE" }
+    if ($LASTEXITCODE -ne 0) { throw "operator --version failed with exit code $LASTEXITCODE" }
     throw ${mismatch}
   }
   Start-Sleep -Seconds 2

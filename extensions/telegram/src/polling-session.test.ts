@@ -56,7 +56,7 @@ vi.mock("./network-errors.js", () => ({
   isRecoverableTelegramNetworkError: isRecoverableTelegramNetworkErrorMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/delivery-queue-runtime", () => ({
+vi.mock("operator/plugin-sdk/delivery-queue-runtime", () => ({
   drainPendingDeliveries: drainPendingDeliveriesMock,
 }));
 
@@ -64,7 +64,7 @@ vi.mock("./api-logging.js", () => ({
   withTelegramApiErrorLogging: async ({ fn }: { fn: () => Promise<unknown> }) => await fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/runtime-env", () => ({
+vi.mock("operator/plugin-sdk/runtime-env", () => ({
   computeBackoff: computeBackoffMock,
   createSubsystemLogger: vi.fn(() => {
     const logger = {

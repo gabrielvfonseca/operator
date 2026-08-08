@@ -250,7 +250,7 @@ function ingressFinding(
     severity: "error",
     message: params.message,
     source: "policy",
-    path: "openclaw config",
+    path: "operator config",
     ocPath: entry.source,
     target: entry.source,
     requirement: params.requirement,

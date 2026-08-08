@@ -22,7 +22,7 @@ import {
 
 /**
  * Operator is a real agent: same loop, session transcript, and tool pipeline
- * as regular agents — restricted to the single ring-zero `openclaw` tool.
+ * as regular agents — restricted to the single ring-zero `operator` tool.
  * Embedded runtimes enforce that restriction with toolsAllow. CLI harnesses
  * must explicitly support per-run native-tool selection, then receive the tool
  * over a dedicated stdio MCP server that replaces the normal bundle surface.
@@ -30,7 +30,7 @@ import {
  * multi-turn memory. Inference setup must succeed before this runner is entered.
  */
 const AGENT_TURN_TIMEOUT_MS = 120_000;
-const SYSTEM_AGENT_MCP_TOOL_NAME = "mcp__operator__openclaw";
+const SYSTEM_AGENT_MCP_TOOL_NAME = "mcp__operator__operator";
 
 export type SystemAgentTurnDirective =
   import("../agents/tools/system-agent-tool.js").SystemAgentToolDirective;
@@ -220,7 +220,7 @@ function resolveSystemAgentCliToolAvailability(
 }
 
 /**
- * CLI harnesses run the openclaw tool in a stdio MCP subprocess, so the
+ * CLI harnesses run the operator tool in a stdio MCP subprocess, so the
  * in-process proposalRef/directiveRef cannot be shared with the host. Mirror
  * the tool's transitions from the harness tool events instead: a denial
  * registers the exact-operation hash, a mismatch voids it, an executed
@@ -246,8 +246,8 @@ async function mirrorSystemAgentToolStateFromEvents(params: {
       return;
     }
     const name = typeof evt.data.name === "string" ? evt.data.name : "";
-    // CLI harnesses report MCP tools with transport prefixes (mcp__operator__openclaw).
-    if (name !== "@gabrielvfonseca/operator" && !name.endsWith("__openclaw")) {
+    // CLI harnesses report MCP tools with transport prefixes (mcp__operator__operator).
+    if (name !== "@gabrielvfonseca/operator" && !name.endsWith("__operator")) {
       return;
     }
     const args =

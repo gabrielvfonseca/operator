@@ -11,7 +11,7 @@ const RUNTIME_ENTRY_HELPER_RE = /(^|\/)plugin-entry\.runtime\.[cm]?[jt]s$/;
 const SOURCE_MODULE_EXTENSIONS = [".ts", ".mts", ".cts", ".js", ".mjs", ".cjs"] as const;
 const FORBIDDEN_CONTRACT_MODULE_SPECIFIER_PATTERNS = [
   /^vitest$/u,
-  /^openclaw\/plugin-sdk\/testing$/u,
+  /^operator\/plugin-sdk\/testing$/u,
   /(^|\/)test-api(?:\.[cm]?[jt]s)?$/u,
   /(^|\/)__tests__(\/|$)/u,
   /(^|\/)test-support(\/|$)/u,
@@ -126,7 +126,7 @@ function analyzeSourceModule(params: { filePath: string; source: string }): {
     }
     specifiers.add(specifier);
 
-    if (specifier === "openclaw/plugin-sdk/core" && importsDefinePluginEntry(importClause)) {
+    if (specifier === "operator/plugin-sdk/core" && importsDefinePluginEntry(importClause)) {
       importsDefinePluginEntryFromCore = true;
     }
   }
@@ -266,7 +266,7 @@ describe("plugin entry guardrails", () => {
       const packageJsonPath = resolve(plugin.rootDir, "package.json");
       try {
         const pkg = JSON.parse(readFileSync(packageJsonPath, "utf8")) as {
-          openclaw?: { extensions?: unknown };
+          operator?: { extensions?: unknown };
         };
         const extensions = Array.isArray(pkg.operator?.extensions) ? pkg.operator.extensions : [];
         if (

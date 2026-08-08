@@ -16,7 +16,7 @@ import {
   type DiagnosticTraceContext,
 } from "../../../src/infra/diagnostic-trace-context.js";
 import type { EmbeddedRunAttemptResult } from "../../../src/agents/embedded-agent-runner/run/types.js";
-import { createOperatorAgentHarness } from "../../../src/agents/harness/builtin-openclaw.js";
+import { createOperatorAgentHarness } from "../../../src/agents/harness/builtin-operator.js";
 import { runAgentHarnessLifecycleAttempt } from "../../../src/agents/harness/lifecycle.js";
 import type { AgentHarness, AgentHarnessAttemptParams } from "../../../src/agents/harness/types.js";
 

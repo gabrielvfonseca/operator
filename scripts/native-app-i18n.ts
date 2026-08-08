@@ -192,7 +192,7 @@ const GENERATED_FILE_RE = /(?:^|[\\/])NativeStringResources\.kt$/u;
 const BUILD_SETTING_RE = /\$\([A-Za-z0-9_.-]+\)/gu;
 const NATIVE_I18N_LOCALE_SET = new Set<string>(NATIVE_I18N_LOCALES);
 const ANDROID_LANGUAGE_PICKER_PATH =
-  "apps/android/app/src/main/java/ai/openclaw/app/AppLanguage.kt";
+  "apps/android/app/src/main/java/ai/operator/app/AppLanguage.kt";
 const ANDROID_LANGUAGE_PICKER_SOURCES = new Set([
   "Follow Android · $systemLanguageTag",
   "Operator translations · $languageTag",

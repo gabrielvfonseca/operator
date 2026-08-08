@@ -14,7 +14,7 @@
       "SYNOLOGY_NAS_HOST",
       "SYNOLOGY_ALLOWED_USER_IDS",
       "SYNOLOGY_RATE_LIMIT",
-      "operator_BOT_NAME"
+      "OPERATOR_BOT_NAME"
     ]
   },
   "configSchema": {

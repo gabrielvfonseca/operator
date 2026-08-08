@@ -26,10 +26,10 @@ read_when:
   <Step title="Create the Fly app">
     ```bash
     git clone https://github.com/gabrielvfonseca/operator.git
-    cd openclaw
+    cd operator
 
     # pick your own name
-    fly apps create my-openclaw
+    fly apps create my-operator
 
     # 1GB is usually enough
     fly volumes create operator_data --size 1 --region iad
@@ -43,7 +43,7 @@ read_when:
     Edit `fly.toml` to match your app name and requirements. The repo's tracked `fly.toml` is the public template shown below; `deploy/fly.private.toml` is the hardened, no-public-IP variant (see [Private deployment](#private-deployment-hardened)).
 
     ```toml
-    app = "my-openclaw"  # your app name
+    app = "my-operator"  # your app name
     primary_region = "iad"
 
     [build]
@@ -371,17 +371,17 @@ Or convert an existing deployment:
 
 ```bash
 # list current IPs
-fly ips list -a my-openclaw
+fly ips list -a my-operator
 
 # release public IPs
-fly ips release <public-ipv4> -a my-openclaw
-fly ips release <public-ipv6> -a my-openclaw
+fly ips release <public-ipv4> -a my-operator
+fly ips release <public-ipv6> -a my-operator
 
 # switch to the private config so future deploys do not re-allocate public IPs
 fly deploy -c deploy/fly.private.toml
 
 # allocate private-only IPv6
-fly ips allocate-v6 --private -a my-openclaw
+fly ips allocate-v6 --private -a my-operator
 ```
 
 After this, `fly ips list` should show only a `private` type IP:
@@ -396,7 +396,7 @@ v6       fdaa:x:x:x:x::x      private          global
 **Option 1: local proxy (simplest)**
 
 ```bash
-fly proxy 3000:3000 -a my-openclaw
+fly proxy 3000:3000 -a my-operator
 # open http://localhost:3000 in a browser
 ```
 
@@ -411,7 +411,7 @@ fly wireguard create
 **Option 3: SSH only**
 
 ```bash
-fly ssh console -a my-openclaw
+fly ssh console -a my-operator
 ```
 
 ### Webhooks with private deployment

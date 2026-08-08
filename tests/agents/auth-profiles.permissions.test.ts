@@ -32,8 +32,8 @@ const {
   saveAuthProfileStore,
   saveAuthProfileStoreIfPersistenceSnapshotMatches,
 } = await import("./auth-profiles/store.js");
-const { closeOperatorAgentDatabasesForTest } = await import("../state/openclaw-agent-db.js");
-const { closeOperatorStateDatabaseForTest } = await import("../state/openclaw-state-db.js");
+const { closeOperatorAgentDatabasesForTest } = await import("../state/operator-agent-db.js");
+const { closeOperatorStateDatabaseForTest } = await import("../state/operator-state-db.js");
 const tempDirs = useAutoCleanupTempDirTracker(afterEach);
 
 describe("auth-profile database permission repair", () => {

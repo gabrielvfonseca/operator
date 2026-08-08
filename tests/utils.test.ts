@@ -154,7 +154,7 @@ describe("resolveUserPath", () => {
   });
 
   it("expands ~/ to home dir", () => {
-    expect(resolveUserPath("~/openclaw", {}, () => "/Users/thoffman")).toBe(
+    expect(resolveUserPath("~/operator", {}, () => "/Users/thoffman")).toBe(
       path.resolve("/Users/thoffman", "@gabrielvfonseca/operator"),
     );
   });
@@ -165,7 +165,7 @@ describe("resolveUserPath", () => {
 
   it("prefers OPERATOR_HOME for tilde expansion", () => {
     withEnv({ OPERATOR_HOME: "/srv/operator-home", HOME: "/home/other" }, () => {
-      expect(resolveUserPath("~/openclaw")).toBe(
+      expect(resolveUserPath("~/operator")).toBe(
         path.resolve("/srv/operator-home", "@gabrielvfonseca/operator"),
       );
     });
@@ -177,7 +177,7 @@ describe("resolveUserPath", () => {
       OPERATOR_HOME: "/srv/operator-home",
     } as NodeJS.ProcessEnv;
 
-    expect(resolveUserPath("~/openclaw", env)).toBe(
+    expect(resolveUserPath("~/operator", env)).toBe(
       path.resolve("/srv/operator-home", "@gabrielvfonseca/operator"),
     );
   });

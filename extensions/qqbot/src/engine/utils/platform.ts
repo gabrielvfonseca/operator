@@ -2,7 +2,7 @@
  * Cross-platform path and detection helpers for core/ modules.
  *
  * Provides home/data/media directory helpers, platform detection,
- * silk-wasm availability checks — all without importing `openclaw/plugin-sdk`.
+ * silk-wasm availability checks — all without importing `operator/plugin-sdk`.
  * The temp-directory fallback is delegated to the PlatformAdapter.
  */
 
@@ -49,7 +49,7 @@ export function getHomeDir(): string {
  * Mirrors the contract from core (`src/infra/home-dir.ts::resolveEffectiveHomeDir`)
  * so QQ Bot media roots live under the same tree the rest of Operator treats as
  * `~`. The extension cannot import the core helper directly (it is a separate
- * package with `openclaw` as a peer dependency), so this re-implements the
+ * package with `operator` as a peer dependency), so this re-implements the
  * minimal contract:
  *
  * 1. `OPERATOR_HOME` when set (with `~` / `~/...` expanded against the OS home).
@@ -121,7 +121,7 @@ export function getQQBotMediaDir(...subPaths: string[]): string {
  * Return `<operator-home>/.operator/media`, Operator's shared media root.
  *
  * This mirrors the directory that core's `buildMediaLocalRoots` exposes as an
- * allowlisted location (see `openclaw/src/media/local-roots.ts`). Using it as a
+ * allowlisted location (see `operator/src/media/local-roots.ts`). Using it as a
  * QQ Bot payload root lets the plugin trust framework-produced files that live
  * in sibling subdirectories such as `outbound/` (written by
  * `saveMediaBuffer(..., "outbound", ...)`) or `inbound/`, while still keeping
@@ -238,7 +238,7 @@ function resolveQQBotLocalMediaPath(p: string): string {
   }
 
   const osHomeDir = getHomeDir();
-  const openclawHomeDir = resolveOperatorHome();
+  const operatorHomeDir = resolveOperatorHome();
   const mediaRoot = getQQBotMediaPath();
   const dataRoot = getQQBotDataPath();
   // When OPERATOR_HOME differs from HOME we have to consider workspace roots
@@ -247,7 +247,7 @@ function resolveQQBotLocalMediaPath(p: string): string {
   const workspaceRoots = Array.from(
     new Set([
       path.join(osHomeDir, ".operator", "workspace", "qqbot"),
-      path.join(openclawHomeDir, ".operator", "workspace", "qqbot"),
+      path.join(operatorHomeDir, ".operator", "workspace", "qqbot"),
     ]),
   );
   const candidateRoots = [

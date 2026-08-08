@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { PluginInstallRecord } from "../../../src/config/types.plugins.js";
-import { resolveOperatorPackageRootSync } from "../../../src/infra/openclaw-root.js";
+import { resolveOperatorPackageRootSync } from "../../../src/infra/operator-root.js";
 import { runPluginPayloadSmokeCheck } from "../../../src/cli/update-cli/plugin-payload-validation.js";
 
 type BundleFormat = "codex" | "claude" | "cursor";
@@ -412,7 +412,7 @@ describe("runPluginPayloadSmokeCheck", () => {
     expect(result.failures).toEqual([]);
   });
 
-  it("reports a failure when an openclaw peer link is missing", async () => {
+  it("reports a failure when an operator peer link is missing", async () => {
     const dir = path.join(tmpRoot, "codex");
     await writePackage(
       dir,
@@ -443,7 +443,7 @@ describe("runPluginPayloadSmokeCheck", () => {
     ]);
   });
 
-  it("reports a failure when an openclaw peer link is a stale real directory", async () => {
+  it("reports a failure when an operator peer link is a stale real directory", async () => {
     const dir = path.join(tmpRoot, "codex");
     await writePackage(
       dir,
@@ -474,7 +474,7 @@ describe("runPluginPayloadSmokeCheck", () => {
     );
   });
 
-  it("reports a failure when an openclaw peer link points at the wrong package root", async () => {
+  it("reports a failure when an operator peer link points at the wrong package root", async () => {
     const dir = path.join(tmpRoot, "codex");
     await writePackage(
       dir,
@@ -485,7 +485,7 @@ describe("runPluginPayloadSmokeCheck", () => {
       },
       "export default {};\n",
     );
-    const wrongHostRoot = path.join(tmpRoot, "old-openclaw");
+    const wrongHostRoot = path.join(tmpRoot, "old-operator");
     await fs.mkdir(wrongHostRoot, { recursive: true });
     await fs.mkdir(path.join(dir, "node_modules"), { recursive: true });
     await fs.symlink(
@@ -516,7 +516,7 @@ describe("runPluginPayloadSmokeCheck", () => {
     );
   });
 
-  it("accepts an openclaw peer link when it resolves to the host package root", async () => {
+  it("accepts an operator peer link when it resolves to the host package root", async () => {
     const dir = path.join(tmpRoot, "codex");
     await writePackage(
       dir,

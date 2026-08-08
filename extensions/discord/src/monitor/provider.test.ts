@@ -18,7 +18,7 @@ import {
   formatDiscordDeployErrorMessage,
 } from "./provider.deploy-errors.js";
 
-vi.mock("openclaw/plugin-sdk/runtime-env", { spy: true });
+vi.mock("operator/plugin-sdk/runtime-env", { spy: true });
 
 const {
   clientConstructorOptionsMock,
@@ -225,7 +225,7 @@ describe("monitorDiscordProvider", () => {
   };
 
   beforeAll(async () => {
-    vi.doMock("openclaw/plugin-sdk/plugin-runtime", () => ({
+    vi.doMock("operator/plugin-sdk/plugin-runtime", () => ({
       getPluginCommandSpecs: getPluginCommandSpecsMock,
     }));
     vi.doMock("../accounts.js", () => ({

@@ -40,7 +40,7 @@ type CreateGhosttyTerminalMock = Mock<
 >;
 
 const createGhosttyTerminalMock: CreateGhosttyTerminalMock = vi.fn();
-const TERMINAL_PANEL_ELEMENT_NAME = `test-openclaw-terminal-panel-upload-${crypto.randomUUID()}`;
+const TERMINAL_PANEL_ELEMENT_NAME = `test-operator-terminal-panel-upload-${crypto.randomUUID()}`;
 
 class TestTerminalPanel extends OperatorTerminalPanel {
   protected override createTerminal = createGhosttyTerminalMock as unknown as TerminalFactory;
@@ -102,7 +102,7 @@ describe("OperatorTerminalPanel upload lifecycle", () => {
           return terminalOpenResult("session-1") as T;
         }
         if (method === "terminal.upload") {
-          return { path: "/tmp/openclaw upload/scan final.pdf", size: 3 } as T;
+          return { path: "/tmp/operator upload/scan final.pdf", size: 3 } as T;
         }
         return {} as T;
       },
@@ -138,7 +138,7 @@ describe("OperatorTerminalPanel upload lifecycle", () => {
         },
       });
     });
-    expect(controller.terminal.paste).toHaveBeenCalledWith("'/tmp/openclaw upload/scan final.pdf'");
+    expect(controller.terminal.paste).toHaveBeenCalledWith("'/tmp/operator upload/scan final.pdf'");
     expect(controller.terminal.paste).not.toHaveBeenCalledWith(expect.stringContaining("\n"));
   });
 
@@ -158,13 +158,13 @@ describe("OperatorTerminalPanel upload lifecycle", () => {
         if (method === "terminal.upload") {
           const name = (params as { name: string }).name;
           if (name === "scan final.pdf") {
-            return { path: "/tmp/openclaw upload/scan final.pdf", size: 3 } as T;
+            return { path: "/tmp/operator upload/scan final.pdf", size: 3 } as T;
           }
           notesAttempts += 1;
           if (notesAttempts === 1) {
             return (await failedUpload.promise) as T;
           }
-          return { path: "/tmp/openclaw upload/notes.txt", size: 4 } as T;
+          return { path: "/tmp/operator upload/notes.txt", size: 4 } as T;
         }
         return {} as T;
       },
@@ -219,7 +219,7 @@ describe("OperatorTerminalPanel upload lifecycle", () => {
 
     await vi.waitFor(() => {
       expect(controller.terminal.paste).toHaveBeenCalledWith(
-        "'/tmp/openclaw upload/scan final.pdf' '/tmp/openclaw upload/notes.txt'",
+        "'/tmp/operator upload/scan final.pdf' '/tmp/operator upload/notes.txt'",
       );
       expect(panel.renderRoot.querySelector(".tp-upload-card")).toBeNull();
     });
@@ -279,7 +279,7 @@ describe("OperatorTerminalPanel upload lifecycle", () => {
     expect(panel.renderRoot.querySelector(".tp-upload-card")).toBeNull();
     expect(panel.renderRoot.querySelector<HTMLButtonElement>(".tp-upload")?.disabled).toBe(false);
 
-    pendingUpload.resolve({ path: "/tmp/openclaw upload/archive.zip", size: 3 });
+    pendingUpload.resolve({ path: "/tmp/operator upload/archive.zip", size: 3 });
     await Promise.resolve();
     await Promise.resolve();
     expect(controller.terminal.paste).not.toHaveBeenCalled();

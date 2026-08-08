@@ -16,7 +16,7 @@ import type { OperatorConfig } from "../../src/config/config.js";
 import type { SessionEntry } from "../../src/config/sessions.js";
 import { replaceSessionEntry } from "../../src/config/sessions/session-accessor.js";
 import { registerAgentRunContext, resetAgentEventsForTest } from "../../src/infra/agent-events.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { withStateDirEnv } from "../../src/test-helpers/state-dir-env.js";
 import { withEnv } from "../../src/test-utils/env.js";
 import {

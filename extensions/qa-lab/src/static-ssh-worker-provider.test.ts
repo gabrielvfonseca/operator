@@ -21,7 +21,7 @@ describe("QA Lab static-SSH worker provider", () => {
     const provider = createStaticSshWorkerProvider();
     const profile = {
       host: " worker.example.test ",
-      user: " openclaw ",
+      user: " operator ",
       hostKey: ` ${HOST_KEY} `,
       keyRef: KEY_REF,
     };

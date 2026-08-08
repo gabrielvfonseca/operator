@@ -294,8 +294,8 @@ export async function createMatrixQaTransportAdapter(
       });
       const actor = input.senderId === "observer" ? provisioning.observer : provisioning.driver;
       const actorClient = input.senderId === "observer" ? observerClient : driverClient;
-      const hasPortableMention = input.text.includes("@openclaw");
-      const body = input.text.replaceAll("@openclaw", provisioning.sut.userId);
+      const hasPortableMention = input.text.includes("@operator");
+      const body = input.text.replaceAll("@operator", provisioning.sut.userId);
       const mentionUserIds = hasPortableMention ? [provisioning.sut.userId] : undefined;
       const replyToEventId = input.replyToId ? nativeEventIds.get(input.replyToId) : undefined;
       const threadRootEventId = input.threadId ? nativeEventIds.get(input.threadId) : undefined;

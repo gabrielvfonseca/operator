@@ -343,7 +343,7 @@ describe("local media root guard", () => {
     const actualStat = await fs.stat(tinyPngFile);
     const zeroDev = typeof actualLstat.dev === "bigint" ? 0n : 0;
     // Resolve before mocking platform: under `win32` the helper returns the
-    // os.tmpdir() fallback rather than the POSIX `/tmp/openclaw` root that
+    // os.tmpdir() fallback rather than the POSIX `/tmp/operator` root that
     // actually holds `tinyPngFile` on this Linux test runner (#60713).
     const realTmpRoot = resolvePreferredOperatorTmpDir();
 

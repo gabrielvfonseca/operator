@@ -157,17 +157,17 @@ vi.mock("./draft-stream.js", () => ({
   createTelegramDraftStream: createTelegramDraftStreamHoisted,
 }));
 
-vi.mock("openclaw/plugin-sdk/channel-outbound", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/channel-outbound")>();
+vi.mock("operator/plugin-sdk/channel-outbound", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/channel-outbound")>();
   return {
     ...actual,
     deliverInboundReplyWithMessageSendContext: deliverInboundReplyWithMessageSendContextHoisted,
   };
 });
 
-vi.mock("openclaw/plugin-sdk/session-transcript-runtime", async (importOriginal) => {
+vi.mock("operator/plugin-sdk/session-transcript-runtime", async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import("openclaw/plugin-sdk/session-transcript-runtime")>();
+    await importOriginal<typeof import("operator/plugin-sdk/session-transcript-runtime")>();
   return {
     ...actual,
     appendAssistantMirrorMessageByIdentity: appendAssistantMirrorMessageByIdentityHoisted,
@@ -512,7 +512,7 @@ export function createContext(overrides?: Partial<TelegramMessageContext>): Tele
     removeAckAfterReply: false,
   } as unknown as TelegramMessageContext;
   base.turn = {
-    storePath: "/tmp/openclaw/telegram-sessions.json",
+    storePath: "/tmp/operator/telegram-sessions.json",
     recordInboundSession: vi.fn(async () => undefined),
     record: {
       onRecordError: vi.fn(),

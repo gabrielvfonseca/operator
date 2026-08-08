@@ -1,13 +1,13 @@
 // Codex tests cover operator owned tool runtime contract plugin behavior.
-import type { AnyAgentTool } from "operator/plugin-sdk/agent-harness";
-import { wrapToolWithBeforeToolCallHook } from "operator/plugin-sdk/agent-harness-runtime";
+import type { AnyAgentTool } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness";
+import { wrapToolWithBeforeToolCallHook } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   installCodexToolResultMiddleware,
   installOperatorOwnedToolHooks,
   mediaToolResult,
   resetOperatorOwnedToolHooks,
   textToolResult,
-} from "operator/plugin-sdk/agent-runtime-test-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime-test-contracts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createCodexDynamicToolBridge } from "./dynamic-tools.js";
 

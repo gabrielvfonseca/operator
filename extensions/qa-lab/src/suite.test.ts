@@ -1,7 +1,7 @@
 // Qa Lab tests cover suite plugin behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { CRABLINE_SERVER_CHANNELS } from "@openclaw/crabline";
+import { CRABLINE_SERVER_CHANNELS } from "@operator/crabline";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { QA_EVIDENCE_FILENAME, QA_EVIDENCE_SUMMARY_KIND } from "./evidence-summary.js";
 import type { QaLabServerHandle } from "./lab-server.types.js";
@@ -13,7 +13,7 @@ import { createTempDirHarness } from "./temp-dir.test-helper.js";
 const fetchWithSsrFGuardMock = vi.hoisted(() => vi.fn());
 const tempDirs = createTempDirHarness();
 
-vi.mock("openclaw/plugin-sdk/ssrf-runtime", () => ({
+vi.mock("operator/plugin-sdk/ssrf-runtime", () => ({
   fetchWithSsrFGuard: fetchWithSsrFGuardMock,
 }));
 

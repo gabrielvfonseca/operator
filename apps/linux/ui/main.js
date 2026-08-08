@@ -105,9 +105,7 @@ function gatewayHost(gateway) {
 
 function canConnectDirect(gateway) {
   return (
-    gateway.tls ||
-    gateway.directReachable ||
-    gatewayHost(gateway).toLowerCase().endsWith(".ts.net")
+    gateway.tls || gateway.directReachable || gatewayHost(gateway).toLowerCase().endsWith(".ts.net")
   );
 }
 
@@ -336,7 +334,8 @@ const mode = new URLSearchParams(window.location.search).get("mode");
 if (mode === "reconnecting") {
   render({
     activity: "Retrying every few seconds…",
-    description: "The gateway connection dropped. Operator will restore the dashboard automatically.",
+    description:
+      "The gateway connection dropped. Operator will restore the dashboard automatically.",
     eyebrow: "GATEWAY OFFLINE",
     title: "Reconnecting",
   });
@@ -344,7 +343,8 @@ if (mode === "reconnecting") {
   renderAction(
     {
       actionLabel: "Start Gateway",
-      description: "The gateway is stopped. The desktop companion will remain available in the tray.",
+      description:
+        "The gateway is stopped. The desktop companion will remain available in the tray.",
       dot: "idle",
       eyebrow: "GATEWAY STOPPED",
       title: "Operator is standing by",

@@ -487,9 +487,9 @@ describe("resolvePluginDiscoveryProvidersRuntime", () => {
         plugins: [
           {
             ...createManifestPlugin("deepseek"),
-            rootDir: "/tmp/openclaw/dist/extensions/deepseek",
-            manifestPath: "/tmp/openclaw/dist/extensions/deepseek/operator.plugin.json",
-            providerDiscoverySource: "/tmp/openclaw/dist/extensions/deepseek/provider-discovery.js",
+            rootDir: "/tmp/operator/dist/extensions/deepseek",
+            manifestPath: "/tmp/operator/dist/extensions/deepseek/operator.plugin.json",
+            providerDiscoverySource: "/tmp/operator/dist/extensions/deepseek/provider-discovery.js",
           },
         ],
         diagnostics: [],
@@ -500,8 +500,8 @@ describe("resolvePluginDiscoveryProvidersRuntime", () => {
     clearPluginMetadataLifecycleCaches();
 
     expect(mocks.clearNativeRequireJavaScriptModuleCache).toHaveBeenCalledWith(
-      "/tmp/openclaw/dist/extensions/deepseek/provider-discovery.js",
-      { dependencyRoot: "/tmp/openclaw/dist" },
+      "/tmp/operator/dist/extensions/deepseek/provider-discovery.js",
+      { dependencyRoot: "/tmp/operator/dist" },
     );
   });
 

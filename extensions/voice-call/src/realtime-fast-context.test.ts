@@ -6,7 +6,7 @@ const mocks = vi.hoisted(() => ({
   resolveRealtimeVoiceFastContextConsult: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/realtime-voice", () => ({
+vi.mock("operator/plugin-sdk/realtime-voice", () => ({
   resolveRealtimeVoiceFastContextConsult: mocks.resolveRealtimeVoiceFastContextConsult,
 }));
 

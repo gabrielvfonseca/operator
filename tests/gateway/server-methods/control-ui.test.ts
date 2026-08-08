@@ -71,7 +71,7 @@ describe("controlUi.githubPreview", () => {
       'handlers["controlUi.githubPreview"] test invariant',
     )(
       requestOptions(
-        { kind: "issue", number: 1, owner: "openclaw/evil", repo: "@gabrielvfonseca/operator" },
+        { kind: "issue", number: 1, owner: "operator/evil", repo: "@gabrielvfonseca/operator" },
         respond,
       ),
     );
@@ -122,12 +122,12 @@ describe("controlUi.sessionPullRequests", () => {
           repo: "@gabrielvfonseca/operator",
           branch: "claude/browser-tabs-tighter-header",
           title: "fix(macos): tighten the link-browser tab header",
-          url: "https://github.com/openclaw/openclaw/pull/103469",
+          url: "https://github.com/operator/operator/pull/103469",
           state: "open",
           additions: 4,
           deletions: 3,
           checks: { state: "passing", passed: 5, failed: 0, skipped: 1, running: 0 },
-          checksUrl: "https://github.com/openclaw/openclaw/pull/103469/checks",
+          checksUrl: "https://github.com/operator/operator/pull/103469/checks",
         },
       ],
       rateLimited: false,

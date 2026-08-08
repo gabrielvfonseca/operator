@@ -109,7 +109,7 @@ function resetWebAutoReplySessionSockets() {
   getSessionSockets().length = 0;
 }
 
-vi.mock("openclaw/plugin-sdk/agent-runtime", () => ({
+vi.mock("operator/plugin-sdk/agent-runtime", () => ({
   abortEmbeddedAgentRun: vi.fn().mockReturnValue(false),
   appendCronStyleCurrentTimeLine: (text: string) => text,
   isEmbeddedAgentRunActive: vi.fn().mockReturnValue(false),

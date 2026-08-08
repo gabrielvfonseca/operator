@@ -101,7 +101,7 @@ const cliBackendRouteChanges: Array<{
   {
     name: "backend command",
     first: { command: "claude" },
-    second: { command: "/opt/openclaw/bin/claude" },
+    second: { command: "/opt/operator/bin/claude" },
   },
   {
     name: "effective model alias",
@@ -364,7 +364,7 @@ describe("runSystemAgentTurn", () => {
     expect(call.cleanupCliLiveSessionOnRunEnd).toBe(true);
     expect(call.cliToolAvailability).toEqual({
       native: [],
-      mcp: ["mcp__operator__openclaw"],
+      mcp: ["mcp__operator__operator"],
     });
     expect(call.toolsAllow).toBeUndefined();
     expect(requireValue(call.systemAgentTool, "missing CLI Operator tool").proposalRef).toBe(

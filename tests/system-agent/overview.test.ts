@@ -20,7 +20,7 @@ function createOverview(defaultModel?: string): SystemAgentOverview {
     },
     references: {
       docsUrl: "https://docs.operator.ai",
-      sourceUrl: "https://github.com/openclaw/openclaw",
+      sourceUrl: "https://github.com/operator/operator",
     },
     agents: [{ id: "main", isDefault: true, ...(defaultModel ? { model: defaultModel } : {}) }],
     defaultAgentId: "main",
@@ -96,7 +96,7 @@ describe("loadSystemAgentOverview", () => {
     expect(overview.gateway.url).toBe("ws://127.0.0.1:19001");
     expect(overview.gateway.reachable).toBe(false);
     expect(overview.references.docsPath).toMatch(/docs$/);
-    expect(overview.references.sourceUrl).toBe("https://github.com/openclaw/openclaw");
+    expect(overview.references.sourceUrl).toBe("https://github.com/operator/operator");
     expect(formatSystemAgentOverview(overview)).toContain(
       'Next: run "gateway status" or "restart gateway"',
     );
@@ -115,10 +115,10 @@ describe("loadSystemAgentOverview", () => {
 
     const startup = formatSystemAgentStartupMessage(overview);
     expect(formatSystemAgentOverview(overview)).toContain(
-      'Next: run "openclaw onboard" to establish inference',
+      'Next: run "operator onboard" to establish inference',
     );
     expect(startup).toContain("Inference unavailable");
-    expect(startup).toContain("run `openclaw onboard`");
+    expect(startup).toContain("run `operator onboard`");
     expect(startup).toContain("Operator needs working inference");
     expect(startup).not.toContain("local Claude Code/Codex/Gemini login");
     expect(startup).not.toContain("typed commands as last resort");

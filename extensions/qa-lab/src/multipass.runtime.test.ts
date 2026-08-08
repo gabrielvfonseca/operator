@@ -8,8 +8,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const runExecMock = vi.hoisted(() => vi.fn());
 const TEST_ENV_VALUE = "qa-fixture-value";
 
-vi.mock("openclaw/plugin-sdk/process-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/process-runtime")>();
+vi.mock("operator/plugin-sdk/process-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/process-runtime")>();
   return {
     ...actual,
     runExec: runExecMock,
@@ -149,7 +149,7 @@ describe("qa multipass runtime", () => {
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'curl -fsSL --connect-timeout 10 --max-time 120 --retry 2 --retry-delay 2 --retry-max-time 120 "${base_url}/${tarball_name}" -o "${node_tmp_dir}/${tarball_name}"',
     );
-    expect(script).toContain("'pnpm' 'openclaw' 'qa' 'suite' '--transport' 'qa-channel'");
+    expect(script).toContain("'pnpm' 'operator' 'qa' 'suite' '--transport' 'qa-channel'");
     expect(script).toContain("'--provider-mode' 'live-frontier'");
     expect(script).toContain("'--scenario' 'channel-chat-baseline'");
     expect(script).toContain("'--scenario' 'thread-follow-up'");
@@ -191,7 +191,7 @@ describe("qa multipass runtime", () => {
       enabledPluginIds: ["browser", "memory-core", "browser"],
     });
 
-    expect(script).toContain("'--runtime-pair' 'openclaw,codex'");
+    expect(script).toContain("'--runtime-pair' 'operator,codex'");
     expect(script).toContain("'--channel-driver' 'crabline' '--channel' 'telegram'");
     expect(script).toContain("'--enable-plugin' 'browser' '--enable-plugin' 'memory-core'");
   });

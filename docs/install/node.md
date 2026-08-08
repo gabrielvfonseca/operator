@@ -3,7 +3,7 @@ summary: "Install and configure Node.js for Operator - version requirements, ins
 title: "Node.js"
 read_when:
   - "You need to install Node.js before installing Operator"
-  - "You installed Operator but `openclaw` is command not found"
+  - "You installed Operator but `operator` is command not found"
   - "npm install -g fails with permissions or PATH issues"
 ---
 
@@ -80,7 +80,7 @@ fnm use 24
 ```
 
   <Warning>
-  Initialize your version manager in your shell startup file (`~/.zshrc` or `~/.bashrc`). If you skip this, `openclaw` may not be found in new terminal sessions because PATH won't include Node's bin directory.
+  Initialize your version manager in your shell startup file (`~/.zshrc` or `~/.bashrc`). If you skip this, `operator` may not be found in new terminal sessions because PATH won't include Node's bin directory.
   </Warning>
 </Accordion>
 

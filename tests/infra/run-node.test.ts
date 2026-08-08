@@ -59,11 +59,11 @@ const DIST_RUNTIME_EXTENSION_INDEX = "dist-runtime/extensions/demo/index.js";
 const DIST_RUNTIME_EXTENSION_MANIFEST = "dist-runtime/extensions/demo/operator.plugin.json";
 const DIST_RUNTIME_EXTENSION_PACKAGE = "dist-runtime/extensions/demo/package.json";
 const DIST_RUNTIME_EXTENSION_SKILL = "dist-runtime/extensions/demo/skills/SKILL.md";
-const DIST_OPERATOR_ALIAS_PACKAGE = "dist/extensions/node_modules/openclaw/package.json";
+const DIST_OPERATOR_ALIAS_PACKAGE = "dist/extensions/node_modules/operator/package.json";
 const DIST_OPERATOR_ALIAS_PLUGIN_SDK_INDEX =
-  "dist/extensions/node_modules/openclaw/plugin-sdk/index.js";
+  "dist/extensions/node_modules/operator/plugin-sdk/index.js";
 const DIST_OPERATOR_ALIAS_PLUGIN_SDK_STRING_COERCE =
-  "dist/extensions/node_modules/openclaw/plugin-sdk/string-coerce-runtime.js";
+  "dist/extensions/node_modules/operator/plugin-sdk/string-coerce-runtime.js";
 const DIFFS_PACKAGE = "extensions/diffs/package.json";
 const DIFFS_VIEWER_RUNTIME_SOURCE = "extensions/diffs/assets/viewer-runtime.js";
 const DIST_DIFFS_VIEWER_RUNTIME = "dist/extensions/diffs/assets/viewer-runtime.js";
@@ -566,7 +566,7 @@ describe("run-node script", () => {
       expect(exitCode).toBe(0);
       await expect(fs.readFile(outputPath, "utf-8")).resolves.toContain("child stdout\n");
       await expect(fs.readFile(outputPath, "utf-8")).resolves.toContain("child stderr\n");
-      await expect(fs.readFile(outputPath, "utf-8")).resolves.toContain("[openclaw]");
+      await expect(fs.readFile(outputPath, "utf-8")).resolves.toContain("[operator]");
       expect(spawnCalls.at(-1)?.args).toEqual(["operator.mjs", "status"]);
       expect(spawnCalls.at(-1)?.env.OPERATOR_RUN_NODE_OUTPUT_LOG).toBe(outputPath);
       expect(spawnCalls.at(-1)?.stdio).toEqual(["inherit", "pipe", "pipe"]);
@@ -1527,7 +1527,7 @@ describe("run-node script", () => {
     });
   });
 
-  it("forwards wrapper SIGTERM to the active openclaw child and returns 143", async () => {
+  it("forwards wrapper SIGTERM to the active operator child and returns 143", async () => {
     await withTempDir({ prefix: "operator-run-node-" }, async (tmp) => {
       await setupTrackedProject(tmp, {
         files: {
@@ -1600,7 +1600,7 @@ describe("run-node script", () => {
   });
 
   it.runIf(process.platform !== "win32")(
-    "force-cleans the active openclaw child process group after forwarded SIGTERM",
+    "force-cleans the active operator child process group after forwarded SIGTERM",
     async () => {
       await withTempDir({ prefix: "operator-run-node-" }, async (tmp) => {
         await setupTrackedProject(tmp, {

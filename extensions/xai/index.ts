@@ -199,7 +199,7 @@ export default defineSingleProviderPluginEntry({
         const auth = ctx.resolveProviderAuth(PROVIDER_ID);
         try {
           const { resolveApiKeyForProvider } = await import(
-            "openclaw/plugin-sdk/provider-auth-runtime"
+            "operator/plugin-sdk/provider-auth-runtime"
           );
           const runtimeAuth = await resolveApiKeyForProvider({
             provider: PROVIDER_ID,

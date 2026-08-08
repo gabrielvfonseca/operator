@@ -239,10 +239,10 @@ export function enforceSupportedNodeRuntime(
     : "could not read this Operator release's Node requirement.";
   reportError(
     [
-      `[openclaw] error: ${requirement}`,
-      `[openclaw] detected Node ${detectedRuntime?.version ?? "missing"} (exec: ${detectedRuntime?.execPath || "unknown"}).`,
-      "[openclaw] install Node: https://nodejs.org/en/download",
-      "[openclaw] upgrade Node, then retry the Operator update.",
+      `[operator] error: ${requirement}`,
+      `[operator] detected Node ${detectedRuntime?.version ?? "missing"} (exec: ${detectedRuntime?.execPath || "unknown"}).`,
+      "[operator] install Node: https://nodejs.org/en/download",
+      "[operator] upgrade Node, then retry the Operator update.",
     ].join("\n"),
   );
   return false;
@@ -261,7 +261,7 @@ export function completePackageInstallGuard(
     return true;
   } catch (error) {
     reportError(
-      `[openclaw] error: could not complete package preinstall: ${
+      `[operator] error: could not complete package preinstall: ${
         error instanceof Error ? error.message : String(error)
       }`,
     );
@@ -324,9 +324,9 @@ export function createPackageManagerWarningMessage(packageManager) {
   }
 
   return [
-    `[openclaw] warning: detected ${packageManager} for install lifecycle.`,
-    "[openclaw] this repo works best with pnpm; npm-compatible installs are slower and much larger here.",
-    "[openclaw] prefer: corepack pnpm install",
+    `[operator] warning: detected ${packageManager} for install lifecycle.`,
+    "[operator] this repo works best with pnpm; npm-compatible installs are slower and much larger here.",
+    "[operator] prefer: corepack pnpm install",
   ].join("\n");
 }
 

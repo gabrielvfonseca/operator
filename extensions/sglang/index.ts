@@ -16,7 +16,7 @@ import {
 const PROVIDER_ID = "sglang";
 
 async function loadProviderSetup() {
-  return await import("openclaw/plugin-sdk/provider-setup");
+  return await import("operator/plugin-sdk/provider-setup");
 }
 
 export default definePluginEntry({

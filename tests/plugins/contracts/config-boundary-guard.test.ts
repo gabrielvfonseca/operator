@@ -80,16 +80,16 @@ describe("config boundary guard", () => {
       [
         'import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-runtime";',
         'import { requireRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-runtime";',
-        'type Loader = typeof import("openclaw/plugin-sdk/config-runtime").getRuntimeConfig;',
+        'type Loader = typeof import("operator/plugin-sdk/config-runtime").getRuntimeConfig;',
         "export type Config = OperatorConfig;",
         "export const load: Loader = requireRuntimeConfig;",
       ].join("\n"),
     );
 
     expect(collectDeprecatedInternalConfigApiViolations({ repoRoot })).toEqual([
-      "extensions/telegram/src/index.ts:1 use narrow plugin-sdk config subpaths instead of openclaw/plugin-sdk/config-runtime",
-      "extensions/telegram/src/index.ts:2 use narrow plugin-sdk config subpaths instead of openclaw/plugin-sdk/config-runtime",
-      "extensions/telegram/src/index.ts:3 use narrow plugin-sdk config subpaths instead of openclaw/plugin-sdk/config-runtime",
+      "extensions/telegram/src/index.ts:1 use narrow plugin-sdk config subpaths instead of operator/plugin-sdk/config-runtime",
+      "extensions/telegram/src/index.ts:2 use narrow plugin-sdk config subpaths instead of operator/plugin-sdk/config-runtime",
+      "extensions/telegram/src/index.ts:3 use narrow plugin-sdk config subpaths instead of operator/plugin-sdk/config-runtime",
     ]);
   });
 
@@ -98,11 +98,11 @@ describe("config boundary guard", () => {
     writeFixture(
       repoRoot,
       "extensions/telegram/src/index.test.ts",
-      'vi.mock("openclaw/plugin-sdk/config-runtime", () => ({}));',
+      'vi.mock("operator/plugin-sdk/config-runtime", () => ({}));',
     );
 
     expect(collectDeprecatedInternalConfigApiViolations({ repoRoot })).toEqual([
-      "extensions/telegram/src/index.test.ts:1 use narrow plugin-sdk config subpaths instead of openclaw/plugin-sdk/config-runtime",
+      "extensions/telegram/src/index.test.ts:1 use narrow plugin-sdk config subpaths instead of operator/plugin-sdk/config-runtime",
     ]);
   });
 
@@ -114,7 +114,7 @@ describe("config boundary guard", () => {
       [
         'import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";',
         'import { requireRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";',
-        'type Loader = typeof import("openclaw/plugin-sdk/runtime-config-snapshot").getRuntimeConfig;',
+        'type Loader = typeof import("operator/plugin-sdk/runtime-config-snapshot").getRuntimeConfig;',
         'export const load = (cfg: OperatorConfig) => requireRuntimeConfig(cfg, "telegram");',
       ].join("\n"),
     );

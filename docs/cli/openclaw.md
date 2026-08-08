@@ -16,18 +16,18 @@ classic doctor path.
 
 ## When it starts
 
-Running `openclaw` with no subcommand routes based on config state:
+Running `operator` with no subcommand routes based on config state:
 
 - Config missing, or exists with no authored settings (empty, or only `$schema`/`meta` keys): starts guided onboarding with live AI verification.
 - Config exists but fails validation: starts classic onboarding, which reports the issues and directs you to `operator doctor`.
 - Config exists and is valid: opens the normal agent TUI. A reachable
   configured Gateway whose default agent has a model goes directly to that UI
-  without onboarding or Operator. Use `/openclaw` inside the TUI, or run
+  without onboarding or Operator. Use `/operator` inside the TUI, or run
   `operator setup` directly, to reach Operator later.
 
 Running `operator setup` first live-tests the configured default model. A passing turn starts Operator. An interactive failure opens guided inference setup and hands off to Operator after a candidate passes. One-shot, JSON, and other noninteractive requests fail with instructions to run `operator onboard` when inference is unavailable. `operator --help` and `operator --version` keep their normal fast paths.
 
-Noninteractive bare `openclaw` (no TTY) exits with a short message instead of printing root help: it points to non-interactive onboarding on a fresh or invalid install, or to `operator agent --local ...` when config is valid.
+Noninteractive bare `operator` (no TTY) exits with a short message instead of printing root help: it points to non-interactive onboarding on a fresh or invalid install, or to `operator agent --local ...` when config is valid.
 
 `operator onboard --modern` remains a compatibility alias for Operator, but uses the same inference gate: working inference opens the chat, interactive failures start guided inference setup, and noninteractive failures exit with onboarding guidance. `operator onboard --classic` opens the full step-by-step wizard.
 
@@ -49,7 +49,7 @@ Operator uses the same reference discovery as regular agents: in a Git checkout 
 ## Examples
 
 ```bash
-openclaw
+operator
 operator setup
 operator setup --json
 operator setup --message "models"
@@ -102,7 +102,7 @@ Persistent operations require conversational approval (or `--yes` for a direct c
 
 Doctor repairs are unavailable inside Operator because they can rewrite the provider, authentication, or default-agent inference route powering the session. Exit Operator and run `operator doctor --fix` in a terminal. Read-only `doctor` remains available inside Operator.
 
-New agents inherit the live-verified default inference route. The agent ids `openclaw` and `crestodian` are reserved for the system agent and cannot be created as normal agents. The retired id remains blocked so an old config cannot claim it.
+New agents inherit the live-verified default inference route. The agent ids `operator` and `crestodian` are reserved for the system agent and cannot be created as normal agents. The retired id remains blocked so an old config cannot claim it.
 
 `config set` and `config set-ref` cannot change inference-route state,
 including inference-provider credentials, top-level `auth.*`, model catalogs,
@@ -144,7 +144,7 @@ state, prerequisites summary, and docs link.
 Operator never changes provider/auth access from inside its own session: the
 session already depends on that inference route. For model-provider setup or
 repair, `configure model provider` returns exit/onboarding guidance without
-starting a wizard or writing config. Exit Operator and run `openclaw
+starting a wizard or writing config. Exit Operator and run `operator
 onboard`; onboarding stages the credentials and saves only a route that
 completes a real live turn. Start Operator again after onboarding succeeds.
 
@@ -182,12 +182,12 @@ supervision opt-outs remain untouched during inference setup.
 
 ## AI conversation
 
-Interactive Operator's free-form conversation runs through the same agent loop as regular Operator agents, restricted to one ring-zero Operator authority tool, `openclaw`, that wraps the typed operations. Read actions run freely, mutations require your conversational approval for that exact operation (see Operations and approval), and every applied write is audited and re-validated. The agent session persists, so Operator has real multi-turn memory. If the verified inference route later stops working, return to `operator onboard` and repair it before continuing.
+Interactive Operator's free-form conversation runs through the same agent loop as regular Operator agents, restricted to one ring-zero Operator authority tool, `operator`, that wraps the typed operations. Read actions run freely, mutations require your conversational approval for that exact operation (see Operations and approval), and every applied write is audited and re-validated. The agent session persists, so Operator has real multi-turn memory. If the verified inference route later stops working, return to `operator onboard` and repair it before continuing.
 
 The host does not parse natural-language requests into operations. Free-form
 messages — including command-looking text and questions such as "why did my
 gateway stop?" — go to the AI, which can map the request to a typed operation
-through the `openclaw` tool.
+through the `operator` tool.
 
 When a mutation is pending, only unambiguous approval or decline phrases from a
 closed list are resolved without inference. Ambiguous consent goes to a
@@ -204,7 +204,7 @@ Message-channel rescue mode never uses the model-assisted planner. Remote rescue
 
 Embedded runtimes and the Codex app-server harness enforce the ring-zero
 restriction directly: the run carries an Operator tool allow-list with only
-the `openclaw` tool. For Codex, Operator also disables environments, native
+the `operator` tool. For Codex, Operator also disables environments, native
 execution, multi-agent, goal, app/plugin, skill/MCP, web-search, and
 `request_user_input` surfaces for that run. Codex still injects its inert native `update_plan`
 utility; it can update the model's temporary checklist but cannot write files
@@ -213,7 +213,7 @@ so Operator admits only backends whose own tool-selection contract can prove
 the same restriction:
 
 - Selectable backends, including Claude Code, launch with an empty native-tool
-  selection and one MCP tool, `openclaw`. Claude's generated MCP config is
+  selection and one MCP tool, `operator`. Claude's generated MCP config is
   applied with `--strict-mcp-config`, so no other MCP servers are loaded.
 - Backends that declare no native tools receive the same dedicated Operator
   MCP server.
@@ -240,10 +240,10 @@ talk to work agent
 switch to main agent
 ```
 
-`operator tui`, `operator chat`, and `operator terminal` open the normal agent TUI directly; they do not start Operator. After switching into the normal TUI, `/openclaw` returns to Operator, optionally with a follow-up request:
+`operator tui`, `operator chat`, and `operator terminal` open the normal agent TUI directly; they do not start Operator. After switching into the normal TUI, `/operator` returns to Operator, optionally with a follow-up request:
 
 ```text
-/openclaw
+/operator
 /operator restart gateway
 ```
 
@@ -285,7 +285,7 @@ Security contract for remote rescue:
 - Requires an explicit owner identity; no wildcard sender rules, open group policy, unauthenticated webhooks, or anonymous channels.
 - Owner DMs only by default; group/channel rescue needs explicit opt-in.
 - Plugin search and list are read-only. Plugin install is always local-only (blocked in rescue, even when otherwise enabled) because it downloads executable code. Plugin uninstall is refused in both local Operator and rescue; run `operator plugins uninstall <id>` from a terminal.
-- Remote rescue cannot open the local TUI or switch into an interactive agent session; use local `openclaw` for agent handoff.
+- Remote rescue cannot open the local TUI or switch into an interactive agent session; use local `operator` for agent handoff.
 - Persistent writes still require approval, even in rescue mode.
 - Pending approvals are one-use. Any newer rescue command for the same account, channel, and sender revokes the older plan; failed execution also consumes approval, so resend the command to retry.
 - Every applied rescue operation is audited. Message-channel rescue records channel, account, sender, and source-address metadata; config-mutating operations also record config hashes before and after.

@@ -1519,7 +1519,7 @@ describe("handleDiscordMessagingAction", () => {
           token: "token",
           groupPolicy: "allowlist",
           guilds: {
-            "friends-of-openclaw": {
+            "friends-of-operator": {
               channels: {
                 "222": { enabled: true },
               },
@@ -1632,7 +1632,7 @@ describe("handleDiscordMessagingAction", () => {
           token: "token",
           groupPolicy: "allowlist",
           guilds: {
-            "friends-of-openclaw": {
+            "friends-of-operator": {
               channels: {
                 "222": { enabled: true },
               },

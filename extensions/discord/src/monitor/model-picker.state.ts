@@ -119,7 +119,7 @@ export type DiscordModelPickerModelPage = DiscordModelPickerPage<string> & {
 };
 
 const loadModelsProviderRuntime = createLazyRuntimeModule(
-  () => import("openclaw/plugin-sdk/models-provider-runtime"),
+  () => import("operator/plugin-sdk/models-provider-runtime"),
 );
 
 function isValidCommandContext(value: string): value is DiscordModelPickerCommandContext {

@@ -80,11 +80,11 @@ describe("diffs tool", () => {
   it("uses configured viewerBaseUrl when tool input omits baseUrl", async () => {
     const tool = createDiffsTool({
       api: createApi({
-        viewerBaseUrl: "https://example.com/openclaw/",
+        viewerBaseUrl: "https://example.com/operator/",
       }),
       store,
       defaults: DEFAULT_DIFFS_TOOL_DEFAULTS,
-      viewerBaseUrl: "https://example.com/openclaw",
+      viewerBaseUrl: "https://example.com/operator",
     });
 
     const result = await tool.execute?.("tool-viewer-config", {
@@ -95,21 +95,21 @@ describe("diffs tool", () => {
     });
 
     expect(readTextContent(result, 0)).toContain(
-      "https://example.com/openclaw/plugins/diffs/view/",
+      "https://example.com/operator/plugins/diffs/view/",
     );
     expect(String((result.details as Record<string, unknown>).viewerUrl)).toContain(
-      "https://example.com/openclaw/plugins/diffs/view/",
+      "https://example.com/operator/plugins/diffs/view/",
     );
   });
 
   it("prefers per-call baseUrl over configured viewerBaseUrl", async () => {
     const tool = createDiffsTool({
       api: createApi({
-        viewerBaseUrl: "https://example.com/openclaw",
+        viewerBaseUrl: "https://example.com/operator",
       }),
       store,
       defaults: DEFAULT_DIFFS_TOOL_DEFAULTS,
-      viewerBaseUrl: "https://example.com/openclaw",
+      viewerBaseUrl: "https://example.com/operator",
     });
 
     const result = await tool.execute?.("tool-viewer-override", {

@@ -18,7 +18,10 @@ import {
 } from "node:fs";
 import { basename, delimiter, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { resolveAndroidVersion, syncAndroidVersioning } from "../../../scripts/lib/android-version.ts";
+import {
+  resolveAndroidVersion,
+  syncAndroidVersioning,
+} from "../../../scripts/lib/android-version.ts";
 
 type ReleaseArtifact = {
   flavorName: "play" | "third-party";
@@ -118,8 +121,8 @@ export function resolveAndroidBuildMetadata(
 
 export function androidBuildMetadataGradleArgs(metadata: AndroidBuildMetadata): string[] {
   return [
-    `-PopenclawBuildCommit=${metadata.commit}`,
-    `-PopenclawBuildTimestamp=${metadata.timestamp}`,
+    `-PoperatorBuildCommit=${metadata.commit}`,
+    `-PoperatorBuildTimestamp=${metadata.timestamp}`,
   ];
 }
 
@@ -148,7 +151,9 @@ export function verifyAndroidReleaseSource(
     throw new Error("Android release builds require a readable Git checkout");
   }
   if (head !== expectedCommit) {
-    throw new Error(`Android release commit mismatch: metadata ${expectedCommit}, checkout ${head}`);
+    throw new Error(
+      `Android release commit mismatch: metadata ${expectedCommit}, checkout ${head}`,
+    );
   }
   if (status) {
     throw new Error("Android release builds require a clean Git checkout");
@@ -300,9 +305,7 @@ function resolveApkSigner(): string {
     try {
       accessSync(candidate, constants.X_OK);
       return candidate;
-    } catch {
-      continue;
-    }
+    } catch {}
   }
 
   throw new Error("Missing apksigner. Install Android SDK build-tools or put apksigner on PATH.");
@@ -419,7 +422,9 @@ function main() {
   }
 }
 
-const isMain = process.argv[1] ? resolve(process.argv[1]) === fileURLToPath(import.meta.url) : false;
+const isMain = process.argv[1]
+  ? resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+  : false;
 if (isMain) {
   main();
 }

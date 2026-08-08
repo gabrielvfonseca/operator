@@ -25,7 +25,7 @@ agent model: openai/gpt-5.6-sol (thinking=medium, fast=on)
 
 ## File-based logger
 
-- Default rolling log file is under `/tmp/openclaw/` (one file per day): `operator-YYYY-MM-DD.log`, dated by the gateway host's local timezone. If that directory is unsafe or unwritable (wrong owner, world-writable, a symlink), Operator falls back to a user-scoped `os.tmpdir()/operator-<uid>` path instead; on Windows it always uses that OS-tmpdir fallback.
+- Default rolling log file is under `/tmp/operator/` (one file per day): `operator-YYYY-MM-DD.log`, dated by the gateway host's local timezone. If that directory is unsafe or unwritable (wrong owner, world-writable, a symlink), Operator falls back to a user-scoped `os.tmpdir()/operator-<uid>` path instead; on Windows it always uses that OS-tmpdir fallback.
 - Active log files rotate at `logging.maxFileBytes` (default: 100 MB), keeping up to five numbered archives (`.1` through `.5`) and continuing to write a fresh active file.
 - Configure the log file path and level via `~/.operator/operator.json`: `logging.file`, `logging.level`.
 - The file format is one JSON object per line.

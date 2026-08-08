@@ -35,7 +35,7 @@ const overview: SystemAgentOverview = {
   },
   references: {
     docsUrl: "https://docs.operator.ai",
-    sourceUrl: "https://github.com/openclaw/openclaw",
+    sourceUrl: "https://github.com/operator/operator",
   },
 };
 
@@ -148,11 +148,11 @@ describe("runSystemAgent", () => {
 
     expect(runGatewayRestartCalls).toBe(0);
     expect(onReadyCalls).toBe(0);
-    expect(lines.join("\n")).toContain("[openclaw] planner: openai/gpt-5.5");
-    expect(lines.join("\n")).toContain("[openclaw] interpreted: restart gateway");
+    expect(lines.join("\n")).toContain("[operator] planner: openai/gpt-5.5");
+    expect(lines.join("\n")).toContain("[operator] interpreted: restart gateway");
     expect(lines.join("\n")).toContain("Plan: restart the Gateway. Say yes to apply.");
     expect(lines.indexOf("Default model: openai/gpt-5.5")).toBeLessThan(
-      lines.findIndex((line) => line.includes("[openclaw] planner:")),
+      lines.findIndex((line) => line.includes("[operator] planner:")),
     );
   });
 

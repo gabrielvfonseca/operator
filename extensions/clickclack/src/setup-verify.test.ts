@@ -10,7 +10,7 @@ const mocks = vi.hoisted(() => ({
   workspaces: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/gateway-runtime", () => ({
+vi.mock("operator/plugin-sdk/gateway-runtime", () => ({
   callGatewayFromCli: mocks.callGatewayFromCli,
 }));
 
@@ -76,7 +76,7 @@ describe("ClickClack post-write setup verification", () => {
 
     expect(runtime.log).toHaveBeenNthCalledWith(
       1,
-      "Connected as @openclaw — workspace clickclack resolved.",
+      "Connected as @operator — workspace clickclack resolved.",
     );
     expect(runtime.log).toHaveBeenNthCalledWith(
       2,
@@ -151,13 +151,13 @@ describe("ClickClack post-write setup verification", () => {
             code: 1006,
           }),
         ),
-      expected: "Start Operator to connect: openclaw gateway",
+      expected: "Start Operator to connect: operator gateway",
     },
     {
       name: "unavailable",
       arrange: () => mocks.callGatewayFromCli.mockRejectedValue(new Error("probe failed")),
       expected:
-        "If Operator is running it connects automatically; otherwise start it with: openclaw gateway",
+        "If Operator is running it connects automatically; otherwise start it with: operator gateway",
     },
   ])("prints the gateway next step when status is $name", async ({ arrange, expected }) => {
     arrange();

@@ -13,8 +13,8 @@ vi.mock("../logging/subsystem.js", () => ({
   createSubsystemLogger: () => ({ warn: mockWarn }),
 }));
 
-vi.mock("../state/openclaw-state-db.js", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("../state/openclaw-state-db.js")>();
+vi.mock("../state/operator-state-db.js", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../state/operator-state-db.js")>();
   return {
     ...actual,
     openOperatorStateDatabase: (...args: Parameters<typeof actual.openOperatorStateDatabase>) => {
@@ -30,11 +30,11 @@ vi.mock("../state/openclaw-state-db.js", async (importOriginal) => {
   };
 });
 
-import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/operator-state-db.generated.js";
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import { withTempDir } from "../../src/test-helpers/temp-dir.js";
 import { withEnvAsync } from "../../src/test-utils/env.js";
 import {
@@ -312,7 +312,7 @@ describe("restart sentinel", () => {
       status: "ok" as const,
       ts: Date.now(),
       message: "Run restart-gateway.ps1 to apply config changes.",
-      doctorHint: "Run openclaw doctor --non-interactive",
+      doctorHint: "Run operator doctor --non-interactive",
       stats: { mode: "config.patch", requiresRestart: true },
     };
 
@@ -320,7 +320,7 @@ describe("restart sentinel", () => {
       [
         "Gateway restart required (config.patch)",
         "Run restart-gateway.ps1 to apply config changes.",
-        "Run openclaw doctor --non-interactive",
+        "Run operator doctor --non-interactive",
       ].join("\n"),
     );
     expect(summarizeRestartSentinel(payload)).toBe("Gateway restart required (config.patch)");
@@ -354,7 +354,7 @@ describe("restart sentinel", () => {
       status: "error" as const,
       ts: Date.now(),
       message: "Patch failed",
-      doctorHint: "Run openclaw doctor",
+      doctorHint: "Run operator doctor",
       stats: { mode: "patch", reason: "validation failed" },
     };
 
@@ -363,7 +363,7 @@ describe("restart sentinel", () => {
         "Gateway restart config-patch error (patch)",
         "Patch failed",
         "Reason: validation failed",
-        "Run openclaw doctor",
+        "Run operator doctor",
       ].join("\n"),
     );
   });
@@ -584,7 +584,7 @@ describe("control-plane update restart sentinel", () => {
     const result = {
       status: "ok" as const,
       mode: "npm" as const,
-      root: "/tmp/openclaw",
+      root: "/tmp/operator",
       before: { version: "2026.4.23" },
       after: { version: "2026.4.24" },
       steps: [],
@@ -653,7 +653,7 @@ describe("restart sentinel message dedup", () => {
 
   it("formats the non-interactive doctor command as actionability guidance", () => {
     expect(formatDoctorNonInteractiveHint({ PATH: "/usr/bin:/bin" })).toBe(
-      "Recommended follow-up: run openclaw doctor --non-interactive in a terminal or approvals-capable Operator surface.",
+      "Recommended follow-up: run operator doctor --non-interactive in a terminal or approvals-capable Operator surface.",
     );
   });
 
@@ -664,7 +664,7 @@ describe("restart sentinel message dedup", () => {
         PATH: "/usr/bin:/bin",
       }),
     ).toBe(
-      "Recommended follow-up: run openclaw --profile isolated doctor --non-interactive in a terminal or approvals-capable Operator surface.",
+      "Recommended follow-up: run operator --profile isolated doctor --non-interactive in a terminal or approvals-capable Operator surface.",
     );
   });
 });

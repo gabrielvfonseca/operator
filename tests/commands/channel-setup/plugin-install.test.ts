@@ -140,7 +140,7 @@ function mockBundledChatSource() {
         "bundled-chat",
         {
           pluginId: "bundled-chat",
-          localPath: bundledPluginRootAt("/opt/openclaw", "bundled-chat"),
+          localPath: bundledPluginRootAt("/opt/operator", "bundled-chat"),
           npmSpec: bundledChatNpmSpec,
         },
       ],
@@ -542,7 +542,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       "local option",
       {
         value: "local",
-        hint: bundledPluginRootAt("/opt/openclaw", "bundled-chat"),
+        hint: bundledPluginRootAt("/opt/operator", "bundled-chat"),
       },
     );
   });
@@ -628,7 +628,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
           blurb: "Test",
         },
         install: {
-          clawhubSpec: "clawhub:openclaw/clawhub-chat@2026.5.2",
+          clawhubSpec: "clawhub:operator/clawhub-chat@2026.5.2",
           defaultChoice: "clawhub",
         },
       },
@@ -642,7 +642,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
     expect(options).toHaveLength(2);
     expectRecordFields(options[0], "clawhub option", {
       value: "clawhub",
-      label: "Download from ClawHub (clawhub:openclaw/clawhub-chat@2026.5.2)",
+      label: "Download from ClawHub (clawhub:operator/clawhub-chat@2026.5.2)",
     });
     expectRecordFields(options[1], "skip option", {
       value: "skip",

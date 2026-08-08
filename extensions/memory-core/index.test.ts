@@ -1,8 +1,8 @@
 // Memory Core tests cover index plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { OperatorPluginApi, OperatorPluginCommandDefinition } from "openclaw/plugin-sdk/core";
-import type { MemoryPluginRuntime } from "openclaw/plugin-sdk/memory-core-host-runtime-core";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
+import type { OperatorConfig } from "operator/plugin-sdk/config-contracts";
+import type { OperatorPluginApi, OperatorPluginCommandDefinition } from "operator/plugin-sdk/core";
+import type { MemoryPluginRuntime } from "operator/plugin-sdk/memory-core-host-runtime-core";
+import { createTestPluginApi } from "operator/plugin-sdk/plugin-test-api";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { buildMemoryFlushPlan } from "./src/flush-plan.js";
 import { buildPromptSection } from "./src/prompt-section.js";

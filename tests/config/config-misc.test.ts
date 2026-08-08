@@ -1041,7 +1041,7 @@ describe("config identity/materialization regressions", () => {
               theme: "space lobster",
               emoji: "🦞",
             },
-            groupChat: { mentionPatterns: ["@openclaw"] },
+            groupChat: { mentionPatterns: ["@operator"] },
           },
         ],
       },
@@ -1053,7 +1053,7 @@ describe("config identity/materialization regressions", () => {
     expect(res.ok).toBe(true);
     if (res.ok) {
       expect(res.config.messages?.responsePrefix).toBe("✅");
-      expect(res.config.agents?.list?.[0]?.groupChat?.mentionPatterns).toEqual(["@openclaw"]);
+      expect(res.config.agents?.list?.[0]?.groupChat?.mentionPatterns).toEqual(["@operator"]);
     }
   });
 

@@ -7,7 +7,7 @@ import { describe, expect, it } from "vitest";
 
 describe("tmp-operator-dir browser-safe import", () => {
   it("loads when a browser fs shim omits constants", async () => {
-    const resultKey = `__openclawTmpDirBrowserImport_${crypto.randomUUID().replaceAll("-", "_")}`;
+    const resultKey = `__operatorTmpDirBrowserImport_${crypto.randomUUID().replaceAll("-", "_")}`;
     const nodeShimPlugin: Plugin = {
       name: "node-browser-shims",
       setup(pluginBuild) {
@@ -59,7 +59,7 @@ describe("tmp-operator-dir browser-safe import", () => {
 
     try {
       expect((globalThis as Record<string, unknown>)[resultKey]).toEqual({
-        posixTmpDir: "/tmp/openclaw",
+        posixTmpDir: "/tmp/operator",
         resolverType: "function",
       });
     } finally {

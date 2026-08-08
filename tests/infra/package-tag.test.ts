@@ -8,14 +8,14 @@ describe("normalizePackageTagInput", () => {
   it.each([
     { input: undefined, expected: null },
     { input: "   ", expected: null },
-    { input: "openclaw@beta", expected: "beta" },
+    { input: "operator@beta", expected: "beta" },
     { input: "@gabrielvfonseca/plugin@2026.2.24", expected: "2026.2.24" },
-    { input: "openclaw@   ", expected: null },
+    { input: "operator@   ", expected: null },
     { input: "@gabrielvfonseca/operator", expected: null },
     { input: " @gabrielvfonseca/plugin ", expected: null },
     { input: " latest ", expected: "latest" },
     { input: "@other/plugin@beta", expected: "@other/plugin@beta" },
-    { input: "openclawer@beta", expected: "openclawer@beta" },
+    { input: "operatorer@beta", expected: "operatorer@beta" },
   ] satisfies ReadonlyArray<{ input: string | undefined; expected: string | null }>)(
     "normalizes %j",
     ({ input, expected }) => {

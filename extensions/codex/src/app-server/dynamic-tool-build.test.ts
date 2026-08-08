@@ -171,13 +171,13 @@ describe("Codex app-server dynamic tool build", () => {
   it("maps sandbox exec-server cwd through the remote workspace mapping", () => {
     expect(
       resolveCodexAppServerExecutionCwd({
-        effectiveCwd: "/Users/kevinlin/code/openclaw",
+        effectiveCwd: "/Users/kevinlin/code/operator",
         environment: {
           id: "sandbox-1",
-          cwd: "/Users/kevinlin/code/openclaw/sandbox",
+          cwd: "/Users/kevinlin/code/operator/sandbox",
         } as never,
         nativeToolSurfaceEnabled: true,
-        localWorkspaceRoot: "/Users/kevinlin/code/openclaw",
+        localWorkspaceRoot: "/Users/kevinlin/code/operator",
         remoteWorkspaceRoot: "/home/oai/operator-workspaces",
       }),
     ).toBe("/home/oai/operator-workspaces/sandbox");

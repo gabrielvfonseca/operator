@@ -2508,9 +2508,9 @@ describe("initSessionState reset policy", () => {
     const cfg = { session: { store: storePath } } as OperatorConfig;
     const result = await initSessionState({
       ctx: {
-        Body: "@openclaw hello",
-        RawBody: "@openclaw hello",
-        CommandBody: "@openclaw hello",
+        Body: "@operator hello",
+        RawBody: "@operator hello",
+        CommandBody: "@operator hello",
         SessionKey: sessionKey,
         ChatType: "group",
         Provider: "telegram",

@@ -1,15 +1,15 @@
 import SwiftUI
 
-struct operatorDocsScreen: View {
-    private let docsURL = URL(string: "https://docs.openclaw.ai")!
-    private let gatewayURL = URL(string: "https://docs.openclaw.ai/gateway")!
-    private let pairingURL = URL(string: "https://docs.openclaw.ai/channels/pairing")!
-    let headerLeadingAction: operatorSidebarHeaderAction?
+struct OperatorDocsScreen: View {
+    private let docsURL = URL(string: "https://docs.operator.ai")!
+    private let gatewayURL = URL(string: "https://docs.operator.ai/gateway")!
+    private let pairingURL = URL(string: "https://docs.operator.ai/channels/pairing")!
+    let headerLeadingAction: OperatorSidebarHeaderAction?
     let usesNativeNavigationChrome: Bool
     let gatewayAction: (() -> Void)?
 
     init(
-        headerLeadingAction: operatorSidebarHeaderAction? = nil,
+        headerLeadingAction: OperatorSidebarHeaderAction? = nil,
         usesNativeNavigationChrome: Bool = false,
         gatewayAction: (() -> Void)? = nil)
     {
@@ -20,7 +20,7 @@ struct operatorDocsScreen: View {
 
     var body: some View {
         ZStack {
-            operatorProBackground()
+            OperatorProBackground()
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     if !self.usesNativeNavigationChrome {
@@ -29,7 +29,7 @@ struct operatorDocsScreen: View {
                     self.linkCard
                 }
                 .padding(.vertical, 18)
-                .font(operatorType.body)
+                .font(OperatorType.body)
             }
         }
         .navigationTitle("Docs")
@@ -40,7 +40,7 @@ struct operatorDocsScreen: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: gatewayAction) {
                         Image(systemName: "antenna.radiowaves.left.and.right")
-                            .font(operatorType.subheadSemiBold)
+                            .font(OperatorType.subheadSemiBold)
                     }
                     .accessibilityLabel("Gateway settings")
                 }
@@ -49,46 +49,46 @@ struct operatorDocsScreen: View {
     }
 
     private var headerCard: some View {
-        ProCard(radius: operatorProMetric.cardRadius) {
-            operatorAdaptiveHeaderRow(
+        ProCard(radius: OperatorProMetric.cardRadius) {
+            OperatorAdaptiveHeaderRow(
                 title: "Docs",
                 subtitle: "Gateway setup, pairing, channels, and mobile node reference.",
-                titleFont: operatorType.headline,
-                subtitleFont: operatorType.caption)
+                titleFont: OperatorType.headline,
+                subtitleFont: OperatorType.caption)
             {
                 HStack(alignment: .top, spacing: 12) {
                     if let headerLeadingAction {
-                        operatorSidebarHeaderLeadingSlot(action: headerLeadingAction)
+                        OperatorSidebarHeaderLeadingSlot(action: headerLeadingAction)
                     }
-                    ProIconBadge(systemName: "book", color: operatorBrand.accent)
+                    ProIconBadge(systemName: "book", color: OperatorBrand.accent)
                 }
             } accessory: {
                 self.gatewayPill
             }
         }
-        .padding(.horizontal, operatorProMetric.pagePadding)
+        .padding(.horizontal, OperatorProMetric.pagePadding)
     }
 
     @ViewBuilder
     private var gatewayPill: some View {
         if let gatewayAction {
             Button(action: gatewayAction) {
-                operatorGatewayCompactPill()
+                OperatorGatewayCompactPill()
             }
             .buttonBorderShape(.capsule)
-            .operatorGlassButton()
+            .openClawGlassButton()
             .accessibilityHint("Opens Settings / Gateway")
         } else {
-            operatorGatewayCompactPill()
+            OperatorGatewayCompactPill()
         }
     }
 
     private var linkCard: some View {
-        ProCard(padding: 0, radius: operatorProMetric.cardRadius) {
+        ProCard(padding: 0, radius: OperatorProMetric.cardRadius) {
             VStack(spacing: 0) {
                 self.docsLinkRow(
                     title: "Docs Home",
-                    detail: "Browse the current operator reference.",
+                    detail: "Browse the current Operator reference.",
                     icon: "book",
                     url: self.docsURL)
                 Divider().padding(.leading, 58)
@@ -105,24 +105,24 @@ struct operatorDocsScreen: View {
                     url: self.pairingURL)
             }
         }
-        .padding(.horizontal, operatorProMetric.pagePadding)
+        .padding(.horizontal, OperatorProMetric.pagePadding)
     }
 
     private func docsLinkRow(title: String, detail: String, icon: String, url: URL) -> some View {
         Link(destination: url) {
             HStack(spacing: 12) {
-                ProIconBadge(systemName: icon, color: operatorBrand.accent)
+                ProIconBadge(systemName: icon, color: OperatorBrand.accent)
                 VStack(alignment: .leading, spacing: 3) {
                     Text(title)
-                        .font(operatorType.subheadSemiBold)
+                        .font(OperatorType.subheadSemiBold)
                     Text(detail)
-                        .font(operatorType.caption)
+                        .font(OperatorType.caption)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
                 }
                 Spacer(minLength: 8)
                 Image(systemName: "arrow.up.right")
-                    .font(operatorType.captionBold)
+                    .font(OperatorType.captionBold)
                     .foregroundStyle(.secondary)
             }
             .padding(.horizontal, 14)

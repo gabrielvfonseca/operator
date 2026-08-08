@@ -22,7 +22,7 @@ const tempDirs = new Set<string>();
 type ProjectorNotification = Parameters<CodexAppServerEventProjector["handleNotification"]>[0];
 type ProjectedAttemptResult = ReturnType<CodexAppServerEventProjector["buildResult"]>;
 type CodexAppServerToolTelemetry = Parameters<CodexAppServerEventProjector["buildResult"]>[0];
-type MirrorTaggedMessage = { __openclaw?: { mirrorIdentity?: string } };
+type MirrorTaggedMessage = { __operator?: { mirrorIdentity?: string } };
 
 async function createParams(): Promise<EmbeddedRunAttemptParams> {
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-codex-outcome-contract-"));
@@ -90,7 +90,7 @@ function classifyProjectedAttemptResult(result: ProjectedAttemptResult) {
 }
 
 function readMirrorIdentity(message: unknown): string | undefined {
-  const meta = (message as MirrorTaggedMessage | undefined)?.["__openclaw"];
+  const meta = (message as MirrorTaggedMessage | undefined)?.["__operator"];
   return meta?.mirrorIdentity;
 }
 

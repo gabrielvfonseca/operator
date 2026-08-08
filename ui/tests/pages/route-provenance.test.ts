@@ -1,4 +1,4 @@
-import type { RouteLoaderOptions } from "@openclaw/uirouter";
+import type { RouteLoaderOptions } from "@operator/uirouter";
 import { describe, expect, it, vi } from "vitest";
 import type { AgentsRouteData } from "../../src/pages/agents/agents-page.ts";
 import { page as agentsPage } from "../../src/pages/agents/route.ts";

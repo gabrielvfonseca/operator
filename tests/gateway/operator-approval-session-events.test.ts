@@ -6,7 +6,7 @@ import { buildApprovalResolutionRef } from "../../src/infra/approval-resolution-
 import {
   closeOperatorStateDatabaseForTest,
   type OperatorStateDatabaseOptions,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import { ExecApprovalManager } from "../../src/gateway/exec-approval-manager.js";
 import { createOperatorApprovalSessionEventRuntime } from "../../src/gateway/operator-approval-session-events.js";
 import {

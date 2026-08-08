@@ -314,7 +314,7 @@ describe("resolveCommandsSystemPromptBundle", () => {
       vi.mocked(resolveReusableWorkspaceSkillSnapshot).mockReturnValue({
         snapshot: {
           prompt:
-            "<available_skills>~/.npm-global/lib/node_modules/openclaw/skills/gog/SKILL.md</available_skills>",
+            "<available_skills>~/.npm-global/lib/node_modules/operator/skills/gog/SKILL.md</available_skills>",
           skills: [],
           resolvedSkills: [],
         },

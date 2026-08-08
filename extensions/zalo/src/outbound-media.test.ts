@@ -9,7 +9,7 @@ import type { PluginRuntime } from "../runtime-api.js";
 
 const loadWebMediaMock = vi.hoisted(() => vi.fn());
 
-vi.mock("openclaw/plugin-sdk/web-media", () => {
+vi.mock("operator/plugin-sdk/web-media", () => {
   return {
     loadWebMedia: (...args: unknown[]) => loadWebMediaMock(...args),
   };

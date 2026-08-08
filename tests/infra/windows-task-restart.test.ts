@@ -21,7 +21,7 @@ const resolveTaskScriptPathMock = vi.hoisted(() =>
 const resolveWindowsSystemEncodingMock = vi.hoisted(() => vi.fn((): string | null => null));
 
 vi.mock("node:child_process", async () => {
-  const { mockNodeBuiltinModule } = await import("openclaw/plugin-sdk/test-node-mocks");
+  const { mockNodeBuiltinModule } = await import("operator/plugin-sdk/test-node-mocks");
   return mockNodeBuiltinModule(
     () => vi.importActual<typeof import("node:child_process")>("node:child_process"),
     {
@@ -143,7 +143,7 @@ describe("relaunchGatewayScheduledTask", () => {
     expect(script).toContain("timeout /t 1 /nobreak >nul");
     expect(script).toContain("gateway-restart.log");
     expect(script).toContain(
-      'openclaw restart attempt source=windows-task-handoff target="Operator Gateway (work)"',
+      'operator restart attempt source=windows-task-handoff target="Operator Gateway (work)"',
     );
     expect(script).toContain(
       `powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "$task = Get-ScheduledTask -TaskName 'Operator Gateway (work)' -ErrorAction SilentlyContinue; if ($null -ne $task -and $task.State -eq 'Running') { exit 0 }; exit 1" >nul 2>&1`,
@@ -210,7 +210,7 @@ describe("relaunchGatewayScheduledTask", () => {
 
   it("quotes the cmd /c script path when temp paths contain metacharacters", () => {
     const unref = vi.fn();
-    const metacharTmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw&(restart)-"));
+    const metacharTmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator&(restart)-"));
     createdTmpDirs.add(metacharTmpDir);
     resolvePreferredOperatorTmpDirMock.mockReturnValue(metacharTmpDir);
     spawnMock.mockReturnValue({ unref });

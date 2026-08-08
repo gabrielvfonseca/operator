@@ -581,7 +581,7 @@ describe("doctor gateway runtime checks", () => {
       path: "gateway.mode",
       target: "http://127.0.0.1:5829",
       fixHint:
-        "Start the Gateway service or run `openclaw doctor --fix` for service repair prompts.",
+        "Start the Gateway service or run `operator doctor --fix` for service repair prompts.",
     });
   });
 
@@ -627,7 +627,7 @@ describe("doctor gateway runtime checks", () => {
       message: "Gateway service is not installed.",
       path: "gateway.mode",
       target: "operator-gateway",
-      fixHint: "Run `openclaw doctor --fix` or `openclaw gateway install` to install it.",
+      fixHint: "Run `operator doctor --fix` or `operator gateway install` to install it.",
     });
   });
 

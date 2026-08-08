@@ -45,7 +45,7 @@ export const geminiMemoryEmbeddingProviderAdapter: MemoryEmbeddingProviderAdapte
           baseUrl: client.baseUrl,
           model: client.model,
           outputDimensionality: client.outputDimensionality,
-          // x-goog-api-client is generated partner attribution (openclaw/<version>).
+          // x-goog-api-client is generated partner attribution (operator/<version>).
           // Keep it on outbound requests, but exclude it from durable memory identity so
           // Operator version bumps do not pause otherwise-compatible Gemini indexes.
           headers: sanitizeEmbeddingCacheHeaders(client.headers, [

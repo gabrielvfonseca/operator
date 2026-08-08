@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import { closeOperatorStateDatabaseForTest } from "../../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../../src/state/operator-state-db.js";
 import { getRegistryWorktree } from "../../../src/agents/worktrees/registry.js";
 import {
   IDLE_GC_MS,
@@ -110,7 +110,7 @@ describe("ManagedWorktreeService", () => {
     const repeated = await service.create({ repoRoot: repo, name: "remote-task" });
 
     expect(created.baseRef).toBe("origin/main");
-    expect(created.branch).toBe("openclaw/remote-task");
+    expect(created.branch).toBe("operator/remote-task");
     expect(created.path).toContain(path.join("worktrees", created.repoFingerprint, "remote-task"));
     expect(await git(created.path, "branch", "--show-current")).toBe(created.branch);
     expect(repeated).toEqual(created);
@@ -280,7 +280,7 @@ describe("ManagedWorktreeService", () => {
       }),
     ).rejects.toThrow(/git rev-parse --symbolic-full-name --verify failed/);
 
-    expect(await git(repo, "branch", "--list", "openclaw/ambiguous-ref")).toBe("");
+    expect(await git(repo, "branch", "--list", "operator/ambiguous-ref")).toBe("");
     expect(await service.list()).toEqual([]);
   });
 
@@ -295,7 +295,7 @@ describe("ManagedWorktreeService", () => {
       );
 
       expect(await git(repo, "worktree", "list", "--porcelain")).toBe(before);
-      expect(await git(repo, "branch", "--list", `openclaw/${name}`)).toBe("");
+      expect(await git(repo, "branch", "--list", `operator/${name}`)).toBe("");
       expect(await service.list()).toEqual([]);
       await expect(fs.stat(path.join(env.OPERATOR_STATE_DIR!, "worktrees"))).rejects.toMatchObject({
         code: "ENOENT",
@@ -348,7 +348,7 @@ describe("ManagedWorktreeService", () => {
       throw new Error("expected one concurrent create to succeed");
     }
     expect(await git(repo, "worktree", "list", "--porcelain")).toContain(created.path);
-    expect(await git(created.path, "branch", "--show-current")).toBe("openclaw/concurrent");
+    expect(await git(created.path, "branch", "--show-current")).toBe("operator/concurrent");
   });
 
   it("falls back to local HEAD when fetch fails", async () => {
@@ -392,14 +392,14 @@ describe("ManagedWorktreeService", () => {
 
   it("preserves a pre-existing branch when a managed name collides", async () => {
     await addRemote(root, repo);
-    await git(repo, "branch", "openclaw/existing-name", "HEAD");
-    const branchTip = await git(repo, "rev-parse", "openclaw/existing-name");
+    await git(repo, "branch", "operator/existing-name", "HEAD");
+    const branchTip = await git(repo, "rev-parse", "operator/existing-name");
 
     await expect(service.create({ repoRoot: repo, name: "existing-name" })).rejects.toThrow(
       "branch already exists",
     );
 
-    expect(await git(repo, "rev-parse", "openclaw/existing-name")).toBe(branchTip);
+    expect(await git(repo, "rev-parse", "operator/existing-name")).toBe(branchTip);
   });
 
   it("copies only included ignored regular files without following symlinks", async () => {
@@ -495,7 +495,7 @@ describe("ManagedWorktreeService", () => {
       "setup-broke",
     );
     expect(await git(repo, "worktree", "list", "--porcelain")).not.toContain("broken-setup");
-    expect(await git(repo, "branch", "--list", "openclaw/broken-setup")).toBe("");
+    expect(await git(repo, "branch", "--list", "operator/broken-setup")).toBe("");
   });
 
   it("restores tracked and untracked state while reprovisioning ignored files", async () => {
@@ -626,7 +626,7 @@ describe("ManagedWorktreeService", () => {
       name: "idle-dead",
       ownerKind: "workboard",
     });
-    await git(repo, "worktree", "lock", "--reason", "openclaw pid=999999", created.path);
+    await git(repo, "worktree", "lock", "--reason", "operator pid=999999", created.path);
     now += IDLE_GC_MS + 1;
 
     const result = await service.gc();

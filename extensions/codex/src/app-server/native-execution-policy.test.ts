@@ -7,8 +7,8 @@ const sessionStoreMocks = vi.hoisted(() => ({
   getSessionEntry: vi.fn<typeof getSessionEntryType>(),
 }));
 
-vi.mock("openclaw/plugin-sdk/session-store-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/session-store-runtime")>();
+vi.mock("operator/plugin-sdk/session-store-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/session-store-runtime")>();
   return {
     ...actual,
     getSessionEntry: sessionStoreMocks.getSessionEntry,

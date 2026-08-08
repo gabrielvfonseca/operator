@@ -32,11 +32,11 @@ const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, "..");
 const gatewayOutputPath = path.join(
   repoRoot,
-  "apps/android/app/src/main/java/ai/openclaw/app/gateway/GatewayProtocol.kt",
+  "apps/android/app/src/main/java/ai/operator/app/gateway/GatewayProtocol.kt",
 );
 const constantsOutputPath = path.join(
   repoRoot,
-  "apps/android/app/src/main/java/ai/openclaw/app/protocol/OperatorProtocolConstants.kt",
+  "apps/android/app/src/main/java/ai/operator/app/protocol/OperatorProtocolConstants.kt",
 );
 const protocolSchemas = ProtocolSchemas as unknown as Record<string, JsonSchema>;
 

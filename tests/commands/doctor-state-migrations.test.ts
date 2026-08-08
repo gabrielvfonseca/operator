@@ -27,7 +27,7 @@ import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
   OPERATOR_STATE_SCHEMA_VERSION,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import { loadTaskFlowRegistryStateFromSqlite } from "../../src/tasks/task-flow-registry.store.sqlite.js";
 import { loadTaskRegistryStateFromSqlite } from "../../src/tasks/task-registry.store.sqlite.js";
 import {

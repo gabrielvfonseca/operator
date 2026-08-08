@@ -14,7 +14,7 @@ import {
 const scratchDirs: string[] = [];
 
 function makeScratchDir(): string {
-  const dir = mkdtempSync(path.join(tmpdir(), "openclaw-shard-test-"));
+  const dir = mkdtempSync(path.join(tmpdir(), "operator-shard-test-"));
   scratchDirs.push(dir);
   return dir;
 }

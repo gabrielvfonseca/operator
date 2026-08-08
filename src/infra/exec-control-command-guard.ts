@@ -83,11 +83,11 @@ function parseOperatorChannelsLoginShellCommand(raw: string): boolean {
   if (!argv) {
     return false;
   }
-  const openclawArgv = stripOperatorPackageRunner(argv);
+  const operatorArgv = stripOperatorPackageRunner(argv);
   return (
-    normalizeCommandBaseName(openclawArgv[0]) === "@gabrielvfonseca/operator" &&
-    (openclawArgv[1] === "channels" || openclawArgv[1] === "channel") &&
-    openclawArgv[2] === "login"
+    normalizeCommandBaseName(operatorArgv[0]) === "@gabrielvfonseca/operator" &&
+    (operatorArgv[1] === "channels" || operatorArgv[1] === "channel") &&
+    operatorArgv[2] === "login"
   );
 }
 
@@ -135,7 +135,7 @@ export async function rejectUnsafeExecControlShellCommand(command: string): Prom
     throw new Error(
       [
         "exec cannot run interactive Operator channel login commands.",
-        "Run `openclaw channels login` in a terminal on the gateway host, or use the channel-specific login agent tool when available (for WhatsApp: `whatsapp_login`).",
+        "Run `operator channels login` in a terminal on the gateway host, or use the channel-specific login agent tool when available (for WhatsApp: `whatsapp_login`).",
       ].join(" "),
     );
   }

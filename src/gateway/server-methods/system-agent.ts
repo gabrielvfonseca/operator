@@ -35,7 +35,7 @@ import { assertValidParams } from "./validation.js";
 
 /**
  * `operator.chat` lets clients (macOS app onboarding, future UIs) run the
- * same conversational setup as `openclaw setup`. Structured setup owns
+ * same conversational setup as `operator setup`. Structured setup owns
  * the pre-inference phase; a new chat session starts only after a live model
  * turn succeeds.
  *

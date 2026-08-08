@@ -13,8 +13,8 @@ const endpointMockState = vi.hoisted(() => ({
   responses: [] as Response[],
 }));
 
-vi.mock("openclaw/plugin-sdk/provider-web-search", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/provider-web-search")>();
+vi.mock("operator/plugin-sdk/provider-web-search", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/provider-web-search")>();
   const runEndpoint = async (
     params: EndpointCall,
     run: (response: Response) => Promise<unknown>,
@@ -160,7 +160,7 @@ describe("parallel web search provider", () => {
   it("partitions Parallel cache keys by resolved endpoint", () => {
     const base = {
       objective: "Find Operator on GitHub",
-      searchQueries: ["openclaw github"],
+      searchQueries: ["operator github"],
       count: 5,
     };
     expect(
@@ -180,7 +180,7 @@ describe("parallel web search provider", () => {
     const base = {
       endpoint: "https://api.parallel.ai/v1/search",
       objective: "Find Operator on GitHub",
-      searchQueries: ["openclaw github"],
+      searchQueries: ["operator github"],
     };
     expect(testing.buildParallelCacheKey({ ...base, count: 5 })).not.toBe(
       testing.buildParallelCacheKey({ ...base, count: 10 }),
@@ -196,26 +196,26 @@ describe("parallel web search provider", () => {
       testing.buildParallelCacheKey({
         ...base,
         objective: "Find Operator on GitHub",
-        searchQueries: ["openclaw github"],
+        searchQueries: ["operator github"],
       }),
     ).not.toBe(
       testing.buildParallelCacheKey({
         ...base,
         objective: "Find the Operator release notes",
-        searchQueries: ["openclaw github"],
+        searchQueries: ["operator github"],
       }),
     );
     expect(
       testing.buildParallelCacheKey({
         ...base,
         objective: "Find Operator on GitHub",
-        searchQueries: ["openclaw github"],
+        searchQueries: ["operator github"],
       }),
     ).not.toBe(
       testing.buildParallelCacheKey({
         ...base,
         objective: "Find Operator on GitHub",
-        searchQueries: ["openclaw github", "openclaw repository"],
+        searchQueries: ["operator github", "operator repository"],
       }),
     );
   });
@@ -224,7 +224,7 @@ describe("parallel web search provider", () => {
     const base = {
       endpoint: "https://api.parallel.ai/v1/search",
       objective: "Find Operator on GitHub",
-      searchQueries: ["openclaw github"],
+      searchQueries: ["operator github"],
       count: 5,
     };
     expect(testing.buildParallelCacheKey({ ...base, sessionId: "session-a" })).not.toBe(
@@ -239,7 +239,7 @@ describe("parallel web search provider", () => {
     const base = {
       endpoint: "https://api.parallel.ai/v1/search",
       objective: "Find Operator on GitHub",
-      searchQueries: ["openclaw github"],
+      searchQueries: ["operator github"],
       count: 5,
     };
     expect(testing.buildParallelCacheKey({ ...base, clientModel: "claude-opus-4-7" })).not.toBe(
@@ -261,16 +261,16 @@ describe("parallel web search provider", () => {
   it("normalizes search_queries: trim, drop blanks, dedupe, cap length, cap count", () => {
     expect(
       testing.normalizeParallelSearchQueries([
-        "openclaw github",
-        "  openclaw github  ",
+        "operator github",
+        "  operator github  ",
         "",
         " ",
         42,
-        "openclaw releases",
+        "operator releases",
       ]),
-    ).toEqual(["openclaw github", "openclaw releases"]);
+    ).toEqual(["operator github", "operator releases"]);
     expect(testing.normalizeParallelSearchQueries(undefined)).toEqual([]);
-    expect(testing.normalizeParallelSearchQueries("openclaw github")).toEqual([]);
+    expect(testing.normalizeParallelSearchQueries("operator github")).toEqual([]);
     expect(testing.normalizeParallelSearchQueries(["x".repeat(250)])).toEqual(["x".repeat(200)]);
     expect(testing.normalizeParallelSearchQueries([`${"x".repeat(199)}🚀tail`])).toEqual([
       "x".repeat(199),
@@ -388,7 +388,7 @@ describe("parallel web search provider", () => {
   });
 
   it("promotes a generic `query` arg into search_queries when search_queries is absent (no synthesized objective)", async () => {
-    // The operator CLI (`openclaw capability web.search`) always sends the
+    // The operator CLI (`operator capability web.search`) always sends the
     // shared lowest-common-denominator shape `{ query, count, limit }` and
     // doesn't know about provider-specific schemas. The runtime promotes
     // `query` into the lone `search_queries` entry so that CLI keeps working
@@ -473,7 +473,7 @@ describe("parallel web search provider", () => {
     }
     const result = await tool.execute({
       objective: "Find the Operator repository on GitHub",
-      search_queries: ["openclaw github", "openclaw repository"],
+      search_queries: ["operator github", "operator repository"],
     });
 
     expect(endpointMockState.calls).toHaveLength(1);
@@ -482,7 +482,7 @@ describe("parallel web search provider", () => {
     expect(call.timeoutSeconds).toBe(5);
     expect(readMockedBody(call)).toEqual({
       objective: "Find the Operator repository on GitHub",
-      search_queries: ["openclaw github", "openclaw repository"],
+      search_queries: ["operator github", "operator repository"],
       advanced_settings: { max_results: 3 },
     });
     const headers = (call.init.headers ?? {}) as Record<string, string>;
@@ -516,14 +516,14 @@ describe("parallel web search provider", () => {
     }
     const result = await tool.execute({
       objective: "Find the Operator repository on GitHub",
-      search_queries: ["openclaw github"],
+      search_queries: ["operator github"],
       session_id: "session-caller-supplied",
       client_model: "claude-opus-4-7",
     });
     const body = readMockedBody(endpointMockState.calls[0]) as Record<string, unknown>;
     expect(body).toMatchObject({
       objective: "Find the Operator repository on GitHub",
-      search_queries: ["openclaw github"],
+      search_queries: ["operator github"],
       session_id: "session-caller-supplied",
       client_model: "claude-opus-4-7",
     });
@@ -678,7 +678,7 @@ describe("parallel web search provider", () => {
     }
     const firstResult = (await tool.execute({
       objective,
-      search_queries: ["openclaw github"],
+      search_queries: ["operator github"],
     })) as { sessionId?: string };
     expect(firstResult.sessionId).toBe("session-generated-by-parallel");
 
@@ -688,7 +688,7 @@ describe("parallel web search provider", () => {
     // follow-up calls would group unrelated tasks on Parallel's side.
     const secondResult = (await tool.execute({
       objective,
-      search_queries: ["openclaw github"],
+      search_queries: ["operator github"],
     })) as { sessionId?: string };
     expect(endpointMockState.calls).toHaveLength(1);
     expect(secondResult.sessionId).toBeUndefined();
@@ -717,12 +717,12 @@ describe("parallel web search provider", () => {
     }
     await tool.execute({
       objective,
-      search_queries: ["openclaw github"],
+      search_queries: ["operator github"],
       session_id: sessionId,
     });
     const cached = (await tool.execute({
       objective,
-      search_queries: ["openclaw github"],
+      search_queries: ["operator github"],
       session_id: sessionId,
     })) as { sessionId?: string };
     expect(endpointMockState.calls).toHaveLength(1);

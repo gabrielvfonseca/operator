@@ -528,8 +528,8 @@ describe("isRunningToolCard", () => {
     const running = extractToolCards({
       role: "assistant",
       toolCallId: "call-live",
-      __openclawToolStreamLive: true,
-      __openclawToolStreamResultReceived: false,
+      __operatorToolStreamLive: true,
+      __operatorToolStreamResultReceived: false,
       content: [{ type: "toolcall", name: "bash", arguments: { command: "sleep 5" } }],
     });
     expect(running).toHaveLength(1);
@@ -538,8 +538,8 @@ describe("isRunningToolCard", () => {
     const finished = extractToolCards({
       role: "assistant",
       toolCallId: "call-live",
-      __openclawToolStreamLive: true,
-      __openclawToolStreamResultReceived: true,
+      __operatorToolStreamLive: true,
+      __operatorToolStreamResultReceived: true,
       content: [{ type: "toolcall", name: "bash", arguments: { command: "sleep 5" } }],
     });
     expect(finished[0]).toMatchObject({ live: true, completed: true });

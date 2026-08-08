@@ -256,7 +256,7 @@ describe("irc setup", () => {
           enabled: true,
           groupPolicy: "allowlist",
           groups: {
-            "#openclaw": {},
+            "#operator": {},
             "#ops": {},
             "*": {},
           },
@@ -328,11 +328,11 @@ describe("irc setup", () => {
           host: " irc.libera.chat ",
           port: "7000",
           tls: true,
-          nick: " openclaw ",
+          nick: " operator ",
           username: " claw ",
           realname: " Operator Bot ",
           password: " secret ",
-          channels: ["#openclaw"],
+          channels: ["#operator"],
         },
       } as never),
     ).toEqual({
@@ -347,7 +347,7 @@ describe("irc setup", () => {
           username: "claw",
           realname: "Operator Bot",
           password: "secret",
-          channels: ["#openclaw"],
+          channels: ["#operator"],
         },
       },
     });
@@ -372,10 +372,10 @@ describe("irc setup", () => {
           return "Operator Bot";
         }
         if (message.startsWith("Auto-join IRC channels")) {
-          return "#openclaw, #ops";
+          return "#operator, #ops";
         }
         if (message.startsWith("IRC channels allowlist")) {
-          return "#openclaw, #ops";
+          return "#operator, #ops";
         }
         throw new Error(`Unexpected prompt: ${message}`);
       }) as WizardPrompter["text"],
@@ -402,9 +402,9 @@ describe("irc setup", () => {
     expect(result.cfg.channels?.irc?.host).toBe("irc.libera.chat");
     expect(result.cfg.channels?.irc?.nick).toBe("operator-bot");
     expect(result.cfg.channels?.irc?.tls).toBe(true);
-    expect(result.cfg.channels?.irc?.channels).toEqual(["#openclaw", "#ops"]);
+    expect(result.cfg.channels?.irc?.channels).toEqual(["#operator", "#ops"]);
     expect(result.cfg.channels?.irc?.groupPolicy).toBe("allowlist");
-    expect(Object.keys(result.cfg.channels?.irc?.groups ?? {})).toEqual(["#openclaw", "#ops"]);
+    expect(Object.keys(result.cfg.channels?.irc?.groups ?? {})).toEqual(["#operator", "#ops"]);
   });
 
   it("rejects partial IRC setup wizard ports", async () => {

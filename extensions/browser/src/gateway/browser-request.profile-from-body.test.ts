@@ -22,10 +22,10 @@ vi.mock("../core-api.js", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/runtime-config-snapshot", async () => {
+vi.mock("operator/plugin-sdk/runtime-config-snapshot", async () => {
   const actual = await vi.importActual<
-    typeof import("openclaw/plugin-sdk/runtime-config-snapshot")
-  >("openclaw/plugin-sdk/runtime-config-snapshot");
+    typeof import("operator/plugin-sdk/runtime-config-snapshot")
+  >("operator/plugin-sdk/runtime-config-snapshot");
   return {
     ...actual,
     getRuntimeConfig: loadConfigMock,

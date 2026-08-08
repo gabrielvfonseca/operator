@@ -110,7 +110,7 @@ describe("buildAnnotationPrompt", () => {
         if (!fn) {
           throw new Error("missing browser evaluation function");
         }
-        return { result: (0, eval)(`(${fn})`)() };
+        return { result: eval(`(${fn})`)() };
       }),
     };
     try {

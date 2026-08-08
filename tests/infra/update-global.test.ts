@@ -107,21 +107,21 @@ describe("update global helpers", () => {
       resolveGlobalInstallSpec({
         packageName: "@gabrielvfonseca/operator",
         tag: "beta",
-        env: { OPERATOR_UPDATE_PACKAGE_SPEC: "openclaw@next" },
+        env: { OPERATOR_UPDATE_PACKAGE_SPEC: "operator@next" },
       }),
-    ).toBe("openclaw@next");
+    ).toBe("operator@next");
   });
 
   it("maps main and explicit package targets to install specs", () => {
     expect(
       resolveGlobalInstallSpec({ packageName: "@gabrielvfonseca/operator", tag: "main" }),
-    ).toBe("github:openclaw/openclaw#main");
+    ).toBe("github:operator/operator#main");
     expect(
       resolveGlobalInstallSpec({
         packageName: "@gabrielvfonseca/operator",
-        tag: "github:openclaw/openclaw#feature/my-branch",
+        tag: "github:operator/operator#feature/my-branch",
       }),
-    ).toBe("github:openclaw/openclaw#feature/my-branch");
+    ).toBe("github:operator/operator#feature/my-branch");
     expect(
       resolveGlobalInstallSpec({
         packageName: "@gabrielvfonseca/operator",
@@ -134,7 +134,7 @@ describe("update global helpers", () => {
     expect(canResolveRegistryVersionForPackageTarget("latest")).toBe(true);
     expect(canResolveRegistryVersionForPackageTarget("2026.3.22")).toBe(true);
     expect(canResolveRegistryVersionForPackageTarget("main")).toBe(false);
-    expect(canResolveRegistryVersionForPackageTarget("github:openclaw/openclaw#main")).toBe(false);
+    expect(canResolveRegistryVersionForPackageTarget("github:operator/operator#main")).toBe(false);
     expect(canResolveRegistryVersionForPackageTarget("/tmp/operator.tgz")).toBe(false);
   });
 
@@ -151,7 +151,7 @@ describe("update global helpers", () => {
         manager: "npm",
         runCommand,
         timeoutMs: 1000,
-        packageName: "@kevins8/openclaw",
+        packageName: "@kevins8/operator",
       }),
     ).resolves.toMatchObject({
       manager: "npm",
@@ -433,12 +433,12 @@ describe("update global helpers", () => {
       await expect(
         detectGlobalInstallManagerForRoot(runCommand, pkgRoot, 1000),
       ).resolves.toBeNull();
-      expect(globalInstallArgs("npm", "openclaw@latest", pkgRoot)).toEqual([
+      expect(globalInstallArgs("npm", "operator@latest", pkgRoot)).toEqual([
         "npm",
         "i",
         "-g",
-        "--allow-scripts=openclaw",
-        "openclaw@latest",
+        "--allow-scripts=operator",
+        "operator@latest",
         "--no-fund",
         "--no-audit",
         "--loglevel=error",
@@ -595,7 +595,7 @@ describe("update global helpers", () => {
         customGlobalDir,
         "5",
         ".pnpm",
-        "openclaw@file+..+pack+operator-2026.5.6.tgz",
+        "operator@file+..+pack+operator-2026.5.6.tgz",
         "node_modules",
         "@gabrielvfonseca/operator",
       );
@@ -643,27 +643,27 @@ describe("update global helpers", () => {
   });
 
   it("builds npm staged install argv with an explicit prefix", () => {
-    expect(globalInstallArgs("npm", "openclaw@latest", null, "/tmp/stage")).toEqual([
+    expect(globalInstallArgs("npm", "operator@latest", null, "/tmp/stage")).toEqual([
       "npm",
       "i",
       "-g",
-      "--allow-scripts=openclaw",
+      "--allow-scripts=operator",
       "--prefix",
       "/tmp/stage",
-      "openclaw@latest",
+      "operator@latest",
       "--no-fund",
       "--no-audit",
       "--loglevel=error",
       "--min-release-age=0",
     ]);
-    expect(globalInstallFallbackArgs("npm", "openclaw@latest", null, "/tmp/stage")).toEqual([
+    expect(globalInstallFallbackArgs("npm", "operator@latest", null, "/tmp/stage")).toEqual([
       "npm",
       "i",
       "-g",
-      "--allow-scripts=openclaw",
+      "--allow-scripts=operator",
       "--prefix",
       "/tmp/stage",
-      "openclaw@latest",
+      "operator@latest",
       "--omit=optional",
       "--no-fund",
       "--no-audit",
@@ -676,11 +676,11 @@ describe("update global helpers", () => {
     expect(globalInstallArgs("npm", "/tmp/operator-2026.7.2.tgz")).toContain(
       "--allow-scripts=/tmp/operator-2026.7.2.tgz",
     );
-    expect(globalInstallArgs("npm", "openclaw@npm:@vendor/openclaw@1.2.3")).toContain(
-      "--allow-scripts=@vendor/openclaw",
+    expect(globalInstallArgs("npm", "operator@npm:@vendor/operator@1.2.3")).toContain(
+      "--allow-scripts=@vendor/operator",
     );
-    expect(globalInstallArgs("npm", "openclaw@npm:vendor-openclaw@1.2.3")).toContain(
-      "--allow-scripts=vendor-openclaw",
+    expect(globalInstallArgs("npm", "operator@npm:vendor-operator@1.2.3")).toContain(
+      "--allow-scripts=vendor-operator",
     );
     expect(globalInstallArgs("npm", "./operator-candidate")).toContain(
       "--allow-scripts=./operator-candidate",
@@ -700,79 +700,79 @@ describe("update global helpers", () => {
   });
 
   it("builds global install argv for each supported manager", () => {
-    expect(globalInstallArgs("npm", "openclaw@latest")).toEqual([
+    expect(globalInstallArgs("npm", "operator@latest")).toEqual([
       "npm",
       "i",
       "-g",
-      "--allow-scripts=openclaw",
-      "openclaw@latest",
+      "--allow-scripts=operator",
+      "operator@latest",
       "--no-fund",
       "--no-audit",
       "--loglevel=error",
       "--min-release-age=0",
     ]);
-    expect(globalInstallArgs("pnpm", "openclaw@latest")).toEqual([
+    expect(globalInstallArgs("pnpm", "operator@latest")).toEqual([
       "pnpm",
       "add",
       "-g",
-      "--allow-build=openclaw",
-      "openclaw@latest",
+      "--allow-build=operator",
+      "operator@latest",
     ]);
-    expect(globalInstallArgs("pnpm", "github:openclaw/openclaw#release/2026.5.12")).toEqual([
+    expect(globalInstallArgs("pnpm", "github:operator/operator#release/2026.5.12")).toEqual([
       "pnpm",
       "add",
       "-g",
-      "--allow-build=openclaw",
-      "github:openclaw/openclaw#release/2026.5.12",
+      "--allow-build=operator",
+      "github:operator/operator#release/2026.5.12",
     ]);
-    expect(globalInstallArgs("bun", "openclaw@latest")).toEqual([
+    expect(globalInstallArgs("bun", "operator@latest")).toEqual([
       "bun",
       "add",
       "-g",
       "--trust",
-      "openclaw@latest",
+      "operator@latest",
     ]);
     expect(globalInstallArgs("bun", "/tmp/operator-current.tgz")).toEqual([
       "bun",
       "add",
       "-g",
       "--trust",
-      "openclaw@file:/tmp/operator-current.tgz",
+      "operator@file:/tmp/operator-current.tgz",
     ]);
     expect(globalInstallArgs("bun", "https://example.test/operator.tgz")).toEqual([
       "bun",
       "add",
       "-g",
       "--trust",
-      "openclaw@https://example.test/operator.tgz",
+      "operator@https://example.test/operator.tgz",
     ]);
-    expect(globalInstallArgs("bun", "github:openclaw/openclaw#main")).toEqual([
+    expect(globalInstallArgs("bun", "github:operator/operator#main")).toEqual([
       "bun",
       "add",
       "-g",
       "--trust",
-      "openclaw@github:openclaw/openclaw#main",
+      "operator@github:operator/operator#main",
     ]);
-    expect(globalInstallFallbackArgs("npm", "openclaw@latest")).toEqual([
+    expect(globalInstallFallbackArgs("npm", "operator@latest")).toEqual([
       "npm",
       "i",
       "-g",
-      "--allow-scripts=openclaw",
-      "openclaw@latest",
+      "--allow-scripts=operator",
+      "operator@latest",
       "--omit=optional",
       "--no-fund",
       "--no-audit",
       "--loglevel=error",
       "--min-release-age=0",
     ]);
-    expect(globalInstallFallbackArgs("pnpm", "openclaw@latest")).toBeNull();
+    expect(globalInstallFallbackArgs("pnpm", "operator@latest")).toBeNull();
   });
 
   it("resolves npm prefix layouts for normal global roots", () => {
-    expect(resolveNpmGlobalPrefixLayoutFromGlobalRoot("/opt/openclaw/lib/node_modules")).toEqual({
-      prefix: "/opt/openclaw",
-      globalRoot: "/opt/openclaw/lib/node_modules",
-      binDir: "/opt/openclaw/bin",
+    expect(resolveNpmGlobalPrefixLayoutFromGlobalRoot("/opt/operator/lib/node_modules")).toEqual({
+      prefix: "/opt/operator",
+      globalRoot: "/opt/operator/lib/node_modules",
+      binDir: "/opt/operator/bin",
     });
     expect(resolveNpmGlobalPrefixLayoutFromPrefix("/tmp/stage")).toEqual({
       prefix: "/tmp/stage",

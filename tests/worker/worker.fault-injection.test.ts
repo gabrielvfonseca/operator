@@ -54,7 +54,7 @@ import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
   type OperatorStateDatabase,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import { buildWorkerConnectParams, type WorkerLaunchDescriptor } from "../../src/worker/launch-descriptor.js";
 import {
   createWorkerConnection,

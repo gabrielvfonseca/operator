@@ -113,11 +113,11 @@ own the full set; an explicit or persisted plugin selection fails closed.
 
 ## Register a harness
 
-**Import:** `openclaw/plugin-sdk/agent-harness`
+**Import:** `operator/plugin-sdk/agent-harness`
 
 ```typescript
-import type { AgentHarness } from "openclaw/plugin-sdk/agent-harness";
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
+import type { AgentHarness } from "operator/plugin-sdk/agent-harness";
+import { definePluginEntry } from "operator/plugin-sdk/plugin-entry";
 
 const myHarness: AgentHarness = {
   id: "my-harness",
@@ -258,7 +258,7 @@ removed; embedded tool-result transforms must use runtime-neutral middleware.
 
 Native harnesses that own their own protocol projection can use
 `classifyAgentHarnessTerminalOutcome(...)` from
-`openclaw/plugin-sdk/agent-harness-runtime` when a completed turn produced no
+`operator/plugin-sdk/agent-harness-runtime` when a completed turn produced no
 visible assistant text. The helper returns `empty`, `reasoning-only`, or
 `planning-only` so Operator's fallback policy can decide whether to retry on a
 different model. `planning-only` requires the harness's explicit `planText`
@@ -269,7 +269,7 @@ replies such as `NO_REPLY` unclassified.
 ### Agent-end side effects
 
 Native harnesses must call `runAgentEndSideEffects(...)` from
-`openclaw/plugin-sdk/agent-harness-runtime` after they finalize an attempt. It
+`operator/plugin-sdk/agent-harness-runtime` after they finalize an attempt. It
 dispatches the portable `agent_end` hook and Operator's research capture
 without delaying interactive replies. Use `awaitAgentEndSideEffects(...)` for
 local, non-interactive runs where the attempt must not resolve until those
@@ -280,7 +280,7 @@ attempt result.
 ### User input and tool surfaces
 
 Native harnesses that expose a runtime-level user-input request should use the
-user-input helpers from `openclaw/plugin-sdk/agent-harness-runtime` to format
+user-input helpers from `operator/plugin-sdk/agent-harness-runtime` to format
 the prompt, deliver it through Operator's blocking reply path, and normalize
 choice/free-form answers back into the runtime's native response shape. The
 helper keeps channel/TUI presentation consistent while each harness keeps its
@@ -288,7 +288,7 @@ own protocol parsing and pending-request lifecycle.
 
 Native harnesses that need PI-like compact tool routing should use
 `createAgentHarnessToolSurfaceRuntime(...)` from
-`openclaw/plugin-sdk/agent-harness-tool-runtime`. It owns
+`operator/plugin-sdk/agent-harness-tool-runtime`. It owns
 tool-search/code-mode control selection, local-model lean defaults,
 runtime-compatible schema filtering, hidden catalog execution, directory
 hydration, and catalog cleanup. Harnesses still own their SDK-specific tool

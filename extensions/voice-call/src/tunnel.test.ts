@@ -36,7 +36,7 @@ vi.mock("./webhook/tailscale.js", () => ({
   getTailscaleDnsName: mocks.getTailscaleDnsName,
 }));
 
-vi.mock("openclaw/plugin-sdk/process-runtime", () => ({
+vi.mock("operator/plugin-sdk/process-runtime", () => ({
   runCommandWithTimeout: mocks.runCommand,
 }));
 

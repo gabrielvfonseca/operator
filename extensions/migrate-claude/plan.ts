@@ -112,7 +112,7 @@ export async function buildClaudePlan(ctx: MigrationProviderContext): Promise<Mi
     summary: summarizeMigrationItems(items),
     items,
     warnings,
-    nextSteps: memoryOnly ? [] : ["Run openclaw doctor after applying the migration."],
+    nextSteps: memoryOnly ? [] : ["Run operator doctor after applying the migration."],
     metadata: { agentDir: targets.agentDir },
   };
 }

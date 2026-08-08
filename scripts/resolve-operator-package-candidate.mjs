@@ -642,7 +642,7 @@ export const cleanupPackageSourceWorktreeForTest = cleanupPackageSourceWorktree;
 
 async function installPackageSourceDeps(sourceDir) {
   await run(
-    "bun",
+    "pnpm",
     [
       "install",
       "--frozen-lockfile",
@@ -1582,8 +1582,10 @@ async function resolveCandidate(options) {
     version: pkg.version,
   };
 
-  if (pkg.name !== "operator") {
-    throw new Error(`package candidate must be named "operator"; got: ${pkg.name || "<missing>"}`);
+  if (pkg.name !== "@gabrielvfonseca/operator") {
+    throw new Error(
+      `package candidate must be named "@gabrielvfonseca/operator"; got: ${pkg.name || "<missing>"}`,
+    );
   }
   if (!pkg.version) {
     throw new Error("package candidate package.json has no version");

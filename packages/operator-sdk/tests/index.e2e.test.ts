@@ -1,4 +1,4 @@
-// OpenClaw SDK tests cover index behavior.
+// Operator SDK tests cover index behavior.
 import type { AddressInfo } from "node:net";
 import net from "node:net";
 import { afterEach, describe, expect, it } from "vitest";
@@ -7,7 +7,7 @@ import { installGatewayTestHooks, startServer } from "../../../gateway/test-help
 import { emitAgentEvent, registerAgentRunContext } from "../../../infra/agent-events.js";
 import { rawDataToString } from "../../../infra/ws.js";
 import { withTimeout } from "../../../utils/with-timeout.js";
-import { GatewayClientTransport, OpenClaw } from "./index.js";
+import { GatewayClientTransport, Operator } from "./index.js";
 
 type JsonObject = Record<string, unknown>;
 type FakeGatewayRequest = {
@@ -335,7 +335,7 @@ async function createFakeGateway(port = 0): Promise<FakeGateway> {
   };
 }
 
-describe("OpenClaw SDK websocket e2e", () => {
+describe("Operator SDK websocket e2e", () => {
   afterEach(async () => {
     await Promise.all(
       servers.splice(0).map(
@@ -357,7 +357,7 @@ describe("OpenClaw SDK websocket e2e", () => {
       deviceIdentity: null,
       requestTimeoutMs: 2_000,
     });
-    const oc = new OpenClaw({ transport });
+    const oc = new Operator({ transport });
     try {
       const agent = await oc.agents.get("main");
       const run = await agent.run({
@@ -406,7 +406,7 @@ describe("OpenClaw SDK websocket e2e", () => {
       deviceIdentity: null,
       requestTimeoutMs: 2_000,
     });
-    const oc = new OpenClaw({ transport });
+    const oc = new Operator({ transport });
 
     try {
       const agents = expectJsonObject(await oc.agents.list());
@@ -551,7 +551,7 @@ describe("OpenClaw SDK websocket e2e", () => {
   });
 });
 
-describe("OpenClaw SDK real Gateway e2e", () => {
+describe("Operator SDK real Gateway e2e", () => {
   installGatewayTestHooks({ scope: "test" });
 
   it("streams real Gateway agent events", async () => {
@@ -563,7 +563,7 @@ describe("OpenClaw SDK real Gateway e2e", () => {
       deviceIdentity: null,
       requestTimeoutMs: 2_000,
     });
-    const oc = new OpenClaw({ transport });
+    const oc = new Operator({ transport });
     const runId = "sdk-real-gateway-run";
 
     try {
@@ -645,9 +645,9 @@ function expectArrayProperty(value: unknown, property: string): void {
   expect(Array.isArray(record[property])).toBe(true);
 }
 
-liveGatewayDescribe("OpenClaw SDK live Gateway e2e", () => {
+liveGatewayDescribe("Operator SDK live Gateway e2e", () => {
   it("connects to a configured Gateway, streams a real run, and waits for completion", async () => {
-    const oc = new OpenClaw({
+    const oc = new Operator({
       url: liveGatewayUrl,
       token: liveGatewayToken,
       requestTimeoutMs: 20_000,

@@ -2,7 +2,7 @@
 import { listSkillCommandsForAgents as listSkillCommandsForAgentsImpl } from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
 
 type ListSkillCommandsForAgents =
-  typeof import("openclaw/plugin-sdk/command-auth-native").listSkillCommandsForAgents;
+  typeof import("operator/plugin-sdk/command-auth-native").listSkillCommandsForAgents;
 
 export function listSkillCommandsForAgents(
   ...args: Parameters<ListSkillCommandsForAgents>

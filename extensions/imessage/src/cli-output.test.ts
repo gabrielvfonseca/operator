@@ -3,7 +3,7 @@ import { runCommandWithTimeout } from "@gabrielvfonseca/operator/plugin-sdk/proc
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { runIMessageCliJsonCommand } from "./cli-output.js";
 
-vi.mock("openclaw/plugin-sdk/process-runtime", () => ({
+vi.mock("operator/plugin-sdk/process-runtime", () => ({
   runCommandWithTimeout: vi.fn(),
 }));
 

@@ -10,7 +10,7 @@ import {
 import { castAgentMessage, castAgentMessages } from "../../src/agents/test-helpers/agent-message-fixtures.js";
 
 const DEFAULT_MISSING_TOOL_RESULT_TEXT =
-  "[openclaw] missing tool result in session history; inserted synthetic error result for transcript repair.";
+  "[operator] missing tool result in session history; inserted synthetic error result for transcript repair.";
 
 const TOOL_CALL_BLOCK_TYPES = new Set([
   "toolCall",
@@ -440,7 +440,7 @@ describe("repairToolUseResultPairing prefers real result over synthetic error", 
       toolCallId,
       toolName: "read",
       content: [{ type: "text", text }],
-      details: { openclawSyntheticMissingToolResult: true },
+      details: { operatorSyntheticMissingToolResult: true },
       isError: true,
     };
   }

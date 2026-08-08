@@ -179,7 +179,7 @@ vi.mock("../logging/console.js", async (importOriginal) => {
   };
 });
 
-vi.mock("../state/openclaw-state-db.js", () => ({
+vi.mock("../state/operator-state-db.js", () => ({
   closeOperatorStateDatabase: () => mockState.closeOperatorStateDatabase(),
 }));
 
@@ -387,14 +387,14 @@ describe("serveAcpGateway startup", () => {
     {
       name: "default logging",
       opts: {},
-      expected: ["openclaw acp: gateway event chat failed\n"],
+      expected: ["operator acp: gateway event chat failed\n"],
     },
     {
       name: "verbose logging",
       opts: { verbose: true },
       expected: [
-        "openclaw acp: gateway event chat failed\n",
-        "openclaw acp: gateway event chat error: Error: handler boom\n",
+        "operator acp: gateway event chat failed\n",
+        "operator acp: gateway event chat error: Error: handler boom\n",
       ],
     },
   ])("contains rejected gateway event handling with $name", async ({ opts, expected }) => {
@@ -678,8 +678,8 @@ describe("serveAcpGateway startup", () => {
     // Use the real state-db module to open and verify a DatabaseSync handle —
     // this proves the full serveAcpGateway → shutdown → close path, not just
     // the closeOperatorStateDatabase helper in isolation.
-    const actualStateDb = await vi.importActual<typeof import("../state/openclaw-state-db.js")>(
-      "../state/openclaw-state-db.js",
+    const actualStateDb = await vi.importActual<typeof import("../state/operator-state-db.js")>(
+      "../state/operator-state-db.js",
     );
 
     const realDb = actualStateDb.openOperatorStateDatabase();
@@ -775,7 +775,7 @@ describe("serveAcpGateway startup", () => {
       method: "session/new",
       params: {
         protocolVersion: "2025-11-25",
-        cwd: "/tmp/openclaw",
+        cwd: "/tmp/operator",
       },
     };
 

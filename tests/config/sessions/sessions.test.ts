@@ -69,18 +69,18 @@ describe("session path safety", () => {
   });
 
   it("resolves transcript path inside an explicit sessions dir", () => {
-    const sessionsDir = "/tmp/openclaw/agents/main/sessions";
+    const sessionsDir = "/tmp/operator/agents/main/sessions";
     const resolved = resolveSessionTranscriptPathInDir("sess-1", sessionsDir, "topic/a+b");
 
     expect(resolved).toBe(path.resolve(sessionsDir, "sess-1-topic-topic%2Fa%2Bb.jsonl"));
   });
 
   it("falls back to derived path when sessionFile is outside known agent sessions dirs", () => {
-    const sessionsDir = "/tmp/openclaw/agents/main/sessions";
+    const sessionsDir = "/tmp/operator/agents/main/sessions";
 
     const resolved = resolveSessionFilePath(
       "sess-1",
-      { sessionFile: "/tmp/openclaw/agents/work/not-sessions/abc-123.jsonl" },
+      { sessionFile: "/tmp/operator/agents/work/not-sessions/abc-123.jsonl" },
       { sessionsDir },
     );
     expect(resolved).toBe(path.resolve(sessionsDir, "sess-1.jsonl"));
@@ -1040,7 +1040,7 @@ describe("session store writer queue", () => {
       {
         sessionId: previousSessionId,
         updatedAt: 100,
-        sessionFile: `/tmp/openclaw/sessions/${previousSessionId}.jsonl`,
+        sessionFile: `/tmp/operator/sessions/${previousSessionId}.jsonl`,
       },
       {
         sessionId: nextSessionId,
@@ -1048,13 +1048,13 @@ describe("session store writer queue", () => {
       },
     );
 
-    expect(merged.sessionFile).toBe(`/tmp/openclaw/sessions/${nextSessionId}.jsonl`);
+    expect(merged.sessionFile).toBe(`/tmp/operator/sessions/${nextSessionId}.jsonl`);
   });
 
   it("rewrites stale generated sessionFile patches during session rollover", () => {
     const previousSessionId = "11111111-1111-4111-8111-111111111111";
     const nextSessionId = "22222222-2222-4222-8222-222222222222";
-    const previousSessionFile = `/tmp/openclaw/sessions/${previousSessionId}-topic-456.jsonl`;
+    const previousSessionFile = `/tmp/operator/sessions/${previousSessionId}-topic-456.jsonl`;
     const merged = mergeSessionEntry(
       {
         sessionId: previousSessionId,
@@ -1068,7 +1068,7 @@ describe("session store writer queue", () => {
       },
     );
 
-    expect(merged.sessionFile).toBe(`/tmp/openclaw/sessions/${nextSessionId}-topic-456.jsonl`);
+    expect(merged.sessionFile).toBe(`/tmp/operator/sessions/${nextSessionId}-topic-456.jsonl`);
   });
 
   it("preserves custom sessionFile paths when session id changes", () => {
@@ -1076,7 +1076,7 @@ describe("session store writer queue", () => {
       {
         sessionId: "previous-session",
         updatedAt: 100,
-        sessionFile: "/tmp/openclaw/sessions/custom-transcript.jsonl",
+        sessionFile: "/tmp/operator/sessions/custom-transcript.jsonl",
       },
       {
         sessionId: "next-session",
@@ -1084,7 +1084,7 @@ describe("session store writer queue", () => {
       },
     );
 
-    expect(merged.sessionFile).toBe("/tmp/openclaw/sessions/custom-transcript.jsonl");
+    expect(merged.sessionFile).toBe("/tmp/operator/sessions/custom-transcript.jsonl");
   });
 
   it("normalizes orphan modelProvider fields at store write boundary", async () => {

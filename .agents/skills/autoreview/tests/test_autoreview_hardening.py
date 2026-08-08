@@ -808,7 +808,7 @@ class AutoreviewHardeningTests(unittest.TestCase):
             "password_validator.go",
             ".env.example",
             "private/parser.py",
-            ".agents/skills/openclaw-secret-scanning-maintainer/SKILL.md",
+            ".agents/skills/operator-secret-scanning-maintainer/SKILL.md",
             "design-tokens/colors.json",
             "design-tokens.json",
             "design_tokens.json",

@@ -136,7 +136,7 @@ describe("chat page split layout host", () => {
     document.body.append(page);
     await page.updateComplete;
 
-    const panes = page.querySelectorAll<RenderedPane>("openclaw-chat-pane");
+    const panes = page.querySelectorAll<RenderedPane>("operator-chat-pane");
     expect(panes).toHaveLength(1);
     expect(itemAt(panes, 0, "rendered pane").paneId).toBe("p1");
     expect(itemAt(panes, 0, "rendered pane").sessionKey).toBe("main");
@@ -158,14 +158,14 @@ describe("chat page split layout host", () => {
     await page.updateComplete;
 
     const classicPane = itemAt(
-      page.querySelectorAll<RenderedPane>("openclaw-chat-pane"),
+      page.querySelectorAll<RenderedPane>("operator-chat-pane"),
       0,
       "classic pane",
     );
     classicPane.onOpenSplitView?.();
     await page.updateComplete;
 
-    const splitPanes = [...page.querySelectorAll<RenderedPane>("openclaw-chat-pane")];
+    const splitPanes = [...page.querySelectorAll<RenderedPane>("operator-chat-pane")];
     expect(splitPanes).toHaveLength(2);
     expect(splitPanes[0]).toBe(classicPane);
     expect(classicPane.classList.contains("chat-split-view__pane")).toBe(true);
@@ -174,7 +174,7 @@ describe("chat page split layout host", () => {
     await page.updateComplete;
 
     const survivingPane = itemAt(
-      page.querySelectorAll<RenderedPane>("openclaw-chat-pane"),
+      page.querySelectorAll<RenderedPane>("operator-chat-pane"),
       0,
       "surviving pane",
     );
@@ -190,7 +190,7 @@ describe("chat page split layout host", () => {
     document.body.append(page);
     await page.updateComplete;
 
-    const pane = page.querySelector<RenderedPane>("openclaw-chat-pane");
+    const pane = page.querySelector<RenderedPane>("operator-chat-pane");
     expect(pane?.onOpenSplitView).toBeUndefined();
   });
 
@@ -217,7 +217,7 @@ describe("chat page split layout host", () => {
     document.body.append(page);
     await page.updateComplete;
 
-    const pane = page.querySelector<RenderedPane>("openclaw-chat-pane");
+    const pane = page.querySelector<RenderedPane>("operator-chat-pane");
     expect(pane?.sessionKey).toBe("");
     expect(pane?.active).toBe(true);
   });
@@ -229,7 +229,7 @@ describe("chat page split layout host", () => {
     setLayout(page, createSplitLayout("main"));
     await page.updateComplete;
 
-    const panes = [...page.querySelectorAll<RenderedPane>("openclaw-chat-pane")];
+    const panes = [...page.querySelectorAll<RenderedPane>("operator-chat-pane")];
     const dividers = page.querySelectorAll<RenderedDivider>("resizable-divider");
     expect(panes.map((pane) => pane.paneId)).toEqual(["p1", "p2"]);
     expect(panes.map((pane) => pane.active)).toEqual([false, true]);
@@ -253,7 +253,7 @@ describe("chat page split layout host", () => {
     setLayout(page, createSplitLayout("main"));
     await page.updateComplete;
 
-    const panes = [...page.querySelectorAll<RenderedPane>("openclaw-chat-pane")];
+    const panes = [...page.querySelectorAll<RenderedPane>("operator-chat-pane")];
     expect(panes.map((pane) => pane.paneId)).toEqual(["p2"]);
     expect(itemAt(panes, 0, "rendered pane").active).toBe(true);
     expect(itemAt(panes, 0, "rendered pane").showPaneHeader).toBe(true);
@@ -269,7 +269,7 @@ describe("chat page split layout host", () => {
     await page.updateComplete;
 
     const activePane = itemAt(
-      page.querySelectorAll<RenderedPane>("openclaw-chat-pane"),
+      page.querySelectorAll<RenderedPane>("operator-chat-pane"),
       1,
       "active wide pane",
     );
@@ -277,7 +277,7 @@ describe("chat page split layout host", () => {
     await page.updateComplete;
 
     const narrowPane = itemAt(
-      page.querySelectorAll<RenderedPane>("openclaw-chat-pane"),
+      page.querySelectorAll<RenderedPane>("operator-chat-pane"),
       0,
       "active narrow pane",
     );
@@ -287,7 +287,7 @@ describe("chat page split layout host", () => {
     setNarrow(page, false);
     await page.updateComplete;
     expect(
-      itemAt(page.querySelectorAll<RenderedPane>("openclaw-chat-pane"), 1, "active restored pane"),
+      itemAt(page.querySelectorAll<RenderedPane>("operator-chat-pane"), 1, "active restored pane"),
     ).toBe(activePane);
   });
 
@@ -315,7 +315,7 @@ describe("chat page split layout host", () => {
     await page.updateComplete;
 
     const paneTitles = () =>
-      [...page.querySelectorAll<RenderedPane>("openclaw-chat-pane")].map((pane) => pane.paneTitle);
+      [...page.querySelectorAll<RenderedPane>("operator-chat-pane")].map((pane) => pane.paneTitle);
     expect(paneTitles()).toEqual(["Main Session", "Main Session"]);
 
     sessionsState.result = {
@@ -465,7 +465,7 @@ describe("chat page split layout host", () => {
     const navigation = setNavigationContext(page);
     await page.updateComplete;
 
-    const pane = [...page.querySelectorAll<RenderedPane>("openclaw-chat-pane")].find(
+    const pane = [...page.querySelectorAll<RenderedPane>("operator-chat-pane")].find(
       (candidate) => candidate.paneId === "p1",
     );
     const container = page.querySelector<HTMLElement>(".chat-split-view__drop-container");
@@ -508,7 +508,7 @@ describe("chat page split layout host", () => {
     const navigation = setNavigationContext(page);
     await page.updateComplete;
 
-    const pane = [...page.querySelectorAll<RenderedPane>("openclaw-chat-pane")].find(
+    const pane = [...page.querySelectorAll<RenderedPane>("operator-chat-pane")].find(
       (candidate) => candidate.paneId === "p1",
     );
     const container = page.querySelector<HTMLElement>(".chat-split-view__drop-container");
@@ -519,7 +519,7 @@ describe("chat page split layout host", () => {
     const header = document.createElement("div");
     header.className = "chat-pane__header";
     pane!.prepend(header);
-    expect(header.closest("openclaw-chat-pane")).toBe(pane);
+    expect(header.closest("operator-chat-pane")).toBe(pane);
     const paneRect = { left: 100, top: 50, width: 200, height: 100 } as DOMRect;
     const containerRect = { left: 100, top: 50, width: 400, height: 100 } as DOMRect;
     vi.spyOn(pane!, "getBoundingClientRect").mockReturnValue(paneRect);

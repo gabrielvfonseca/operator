@@ -2,13 +2,12 @@
 
 import { PageHeader, LoadingState, ErrorState } from "@/components/page.tsx";
 import { useGatewayRequest } from "@/lib/gateway-client.tsx";
-import { Card, CardContent, CardHeader, CardTitle } from "@operator/design-system";
-
 export default function PluginPage() {
-  const { data, error, loading } = useGatewayRequest<{ id?: string; name?: string; version?: string }>(
-    "plugins.search",
-    { query: "" },
-  );
+  const { data, error, loading } = useGatewayRequest<{
+    id?: string;
+    name?: string;
+    version?: string;
+  }>("plugins.search", { query: "" });
 
   return (
     <div>

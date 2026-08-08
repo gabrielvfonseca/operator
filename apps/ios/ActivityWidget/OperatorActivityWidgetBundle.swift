@@ -2,8 +2,8 @@ import SwiftUI
 import WidgetKit
 
 @main
-struct operatorActivityWidgetBundle: WidgetBundle {
+struct OperatorActivityWidgetBundle: WidgetBundle {
     var body: some Widget {
-        operatorLiveActivity()
+        OperatorLiveActivity()
     }
 }

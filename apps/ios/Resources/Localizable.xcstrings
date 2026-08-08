@@ -127025,138 +127025,138 @@
         }
       }
     },
-    "Request ID: check `openclaw devices list`.": {
+    "Request ID: check `operator devices list`.": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Request ID: check `openclaw devices list`."
+            "value": "Request ID: check `operator devices list`."
           }
         },
         "zh-CN": {
           "stringUnit": {
             "state": "translated",
-            "value": "请求 ID：请查看 `openclaw devices list`。"
+            "value": "请求 ID：请查看 `operator devices list`。"
           }
         },
         "zh-TW": {
           "stringUnit": {
             "state": "translated",
-            "value": "請求 ID：請檢查 `openclaw devices list`。"
+            "value": "請求 ID：請檢查 `operator devices list`。"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "ID da solicitação: consulte `openclaw devices list`."
+            "value": "ID da solicitação: consulte `operator devices list`."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Anfrage-ID: Überprüfe `openclaw devices list`."
+            "value": "Anfrage-ID: Überprüfe `operator devices list`."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "ID de solicitud: consulta `openclaw devices list`."
+            "value": "ID de solicitud: consulta `operator devices list`."
           }
         },
         "ja-JP": {
           "stringUnit": {
             "state": "translated",
-            "value": "リクエストID：`openclaw devices list`で確認してください。"
+            "value": "リクエストID：`operator devices list`で確認してください。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "요청 ID: `openclaw devices list`에서 확인하세요."
+            "value": "요청 ID: `operator devices list`에서 확인하세요."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "ID de requête : consultez `openclaw devices list`."
+            "value": "ID de requête : consultez `operator devices list`."
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "अनुरोध ID: `openclaw devices list` देखें।"
+            "value": "अनुरोध ID: `operator devices list` देखें।"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "معرّف الطلب: تحقّق من `openclaw devices list`."
+            "value": "معرّف الطلب: تحقّق من `operator devices list`."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "ID richiesta: controlla `openclaw devices list`."
+            "value": "ID richiesta: controlla `operator devices list`."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İstek kimliği: `openclaw devices list` komutunu kontrol edin."
+            "value": "İstek kimliği: `operator devices list` komutunu kontrol edin."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "ID запиту: перевірте `openclaw devices list`."
+            "value": "ID запиту: перевірте `operator devices list`."
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "ID permintaan: periksa `openclaw devices list`."
+            "value": "ID permintaan: periksa `operator devices list`."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Identyfikator żądania: sprawdź `openclaw devices list`."
+            "value": "Identyfikator żądania: sprawdź `operator devices list`."
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "รหัสคำขอ: ตรวจสอบ `openclaw devices list`"
+            "value": "รหัสคำขอ: ตรวจสอบ `operator devices list`"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "ID yêu cầu: kiểm tra `openclaw devices list`."
+            "value": "ID yêu cầu: kiểm tra `operator devices list`."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aanvraag-ID: controleer `openclaw devices list`."
+            "value": "Aanvraag-ID: controleer `operator devices list`."
           }
         },
         "fa": {
           "stringUnit": {
             "state": "translated",
-            "value": "شناسه درخواست: `openclaw devices list` را بررسی کنید."
+            "value": "شناسه درخواست: `operator devices list` را بررسی کنید."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "ID запроса: проверьте `openclaw devices list`."
+            "value": "ID запроса: проверьте `operator devices list`."
           }
         },
         "sv": {
           "stringUnit": {
             "state": "translated",
-            "value": "Förfrågnings-ID: kontrollera `openclaw devices list`."
+            "value": "Förfrågnings-ID: kontrollera `operator devices list`."
           }
         }
       }
@@ -133281,138 +133281,138 @@
         }
       }
     },
-    "Run openclaw gateway --port 18789.": {
+    "Run operator gateway --port 18789.": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Run openclaw gateway --port 18789."
+            "value": "Run operator gateway --port 18789."
           }
         },
         "zh-CN": {
           "stringUnit": {
             "state": "translated",
-            "value": "运行 openclaw gateway --port 18789。"
+            "value": "运行 operator gateway --port 18789。"
           }
         },
         "zh-TW": {
           "stringUnit": {
             "state": "translated",
-            "value": "執行 openclaw gateway --port 18789。"
+            "value": "執行 operator gateway --port 18789。"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Execute openclaw gateway --port 18789."
+            "value": "Execute operator gateway --port 18789."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Führen Sie openclaw gateway --port 18789 aus."
+            "value": "Führen Sie operator gateway --port 18789 aus."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ejecuta openclaw gateway --port 18789."
+            "value": "Ejecuta operator gateway --port 18789."
           }
         },
         "ja-JP": {
           "stringUnit": {
             "state": "translated",
-            "value": "openclaw gateway --port 18789を実行します。"
+            "value": "operator gateway --port 18789を実行します。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "openclaw gateway --port 18789를 실행하세요."
+            "value": "operator gateway --port 18789를 실행하세요."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Exécutez openclaw gateway --port 18789."
+            "value": "Exécutez operator gateway --port 18789."
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "openclaw gateway --port 18789 चलाएं।"
+            "value": "operator gateway --port 18789 चलाएं।"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "شغّل openclaw gateway --port 18789."
+            "value": "شغّل operator gateway --port 18789."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esegui openclaw gateway --port 18789."
+            "value": "Esegui operator gateway --port 18789."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "openclaw gateway --port 18789 komutunu çalıştırın."
+            "value": "operator gateway --port 18789 komutunu çalıştırın."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Виконайте openclaw gateway --port 18789."
+            "value": "Виконайте operator gateway --port 18789."
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Jalankan openclaw gateway --port 18789."
+            "value": "Jalankan operator gateway --port 18789."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Uruchom openclaw gateway --port 18789."
+            "value": "Uruchom operator gateway --port 18789."
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "เรียกใช้ openclaw gateway --port 18789."
+            "value": "เรียกใช้ operator gateway --port 18789."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chạy openclaw gateway --port 18789."
+            "value": "Chạy operator gateway --port 18789."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Voer openclaw gateway --port 18789 uit."
+            "value": "Voer operator gateway --port 18789 uit."
           }
         },
         "fa": {
           "stringUnit": {
             "state": "translated",
-            "value": "openclaw gateway --port 18789 را اجرا کنید."
+            "value": "operator gateway --port 18789 را اجرا کنید."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Выполните openclaw gateway --port 18789."
+            "value": "Выполните operator gateway --port 18789."
           }
         },
         "sv": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kör openclaw gateway --port 18789."
+            "value": "Kör operator gateway --port 18789."
           }
         }
       }
@@ -169865,138 +169865,138 @@
         }
       }
     },
-    "Use a secure wss:// or Tailscale Serve Gateway, then scan a full-access setup code from the Control UI or openclaw qr and reconnect to enable settings and upgrades.": {
+    "Use a secure wss:// or Tailscale Serve Gateway, then scan a full-access setup code from the Control UI or operator qr and reconnect to enable settings and upgrades.": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Use a secure wss:// or Tailscale Serve Gateway, then scan a full-access setup code from the Control UI or openclaw qr and reconnect to enable settings and upgrades."
+            "value": "Use a secure wss:// or Tailscale Serve Gateway, then scan a full-access setup code from the Control UI or operator qr and reconnect to enable settings and upgrades."
           }
         },
         "zh-CN": {
           "stringUnit": {
             "state": "translated",
-            "value": "使用安全的 wss:// 或 Tailscale Serve Gateway，然后从 Control UI 或 openclaw qr 扫描完全访问的设置代码并重新连接，以启用设置和升级。"
+            "value": "使用安全的 wss:// 或 Tailscale Serve Gateway，然后从 Control UI 或 operator qr 扫描完全访问的设置代码并重新连接，以启用设置和升级。"
           }
         },
         "zh-TW": {
           "stringUnit": {
             "state": "translated",
-            "value": "使用安全的 wss:// 或 Tailscale Serve Gateway，然後從 Control UI 或 openclaw qr 掃描完整存取設定碼並重新連線，以啟用設定與升級。"
+            "value": "使用安全的 wss:// 或 Tailscale Serve Gateway，然後從 Control UI 或 operator qr 掃描完整存取設定碼並重新連線，以啟用設定與升級。"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Use um Gateway seguro wss:// ou Tailscale Serve, depois escaneie um código de configuração de acesso completo na Control UI ou com openclaw qr e reconecte para ativar configurações e atualizações."
+            "value": "Use um Gateway seguro wss:// ou Tailscale Serve, depois escaneie um código de configuração de acesso completo na Control UI ou com operator qr e reconecte para ativar configurações e atualizações."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verwende ein sicheres wss:// oder Tailscale Serve Gateway, scanne dann einen Setup-Code mit vollem Zugriff aus der Control UI oder von openclaw qr und stelle die Verbindung erneut her, um Einstellungen und Upgrades zu aktivieren."
+            "value": "Verwende ein sicheres wss:// oder Tailscale Serve Gateway, scanne dann einen Setup-Code mit vollem Zugriff aus der Control UI oder von operator qr und stelle die Verbindung erneut her, um Einstellungen und Upgrades zu aktivieren."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Usa un Gateway seguro wss:// o Tailscale Serve, luego escanea un código de configuración de acceso completo desde la Control UI o con openclaw qr y vuelve a conectarte para habilitar los ajustes y las actualizaciones."
+            "value": "Usa un Gateway seguro wss:// o Tailscale Serve, luego escanea un código de configuración de acceso completo desde la Control UI o con operator qr y vuelve a conectarte para habilitar los ajustes y las actualizaciones."
           }
         },
         "ja-JP": {
           "stringUnit": {
             "state": "translated",
-            "value": "セキュアな wss:// または Tailscale Serve Gateway を使用し、Control UI または openclaw qr からフルアクセスのセットアップコードをスキャンして再接続すると、設定とアップグレードが有効になります。"
+            "value": "セキュアな wss:// または Tailscale Serve Gateway を使用し、Control UI または operator qr からフルアクセスのセットアップコードをスキャンして再接続すると、設定とアップグレードが有効になります。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "보안 wss:// 또는 Tailscale Serve Gateway를 사용한 다음, Control UI 또는 openclaw qr에서 전체 접근 설정 코드를 스캔하고 다시 연결하여 설정 및 업그레이드를 활성화하세요."
+            "value": "보안 wss:// 또는 Tailscale Serve Gateway를 사용한 다음, Control UI 또는 operator qr에서 전체 접근 설정 코드를 스캔하고 다시 연결하여 설정 및 업그레이드를 활성화하세요."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Utilisez un Gateway sécurisé wss:// ou Tailscale Serve, puis scannez un code de configuration à accès complet depuis la Control UI ou openclaw qr et reconnectez-vous pour activer les paramètres et les mises à niveau."
+            "value": "Utilisez un Gateway sécurisé wss:// ou Tailscale Serve, puis scannez un code de configuration à accès complet depuis la Control UI ou operator qr et reconnectez-vous pour activer les paramètres et les mises à niveau."
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "एक सुरक्षित wss:// या Tailscale Serve Gateway का उपयोग करें, फिर Control UI या openclaw qr से एक फुल-एक्सेस सेटअप कोड स्कैन करें और सेटिंग्स तथा अपग्रेड सक्षम करने के लिए फिर से कनेक्ट करें।"
+            "value": "एक सुरक्षित wss:// या Tailscale Serve Gateway का उपयोग करें, फिर Control UI या operator qr से एक फुल-एक्सेस सेटअप कोड स्कैन करें और सेटिंग्स तथा अपग्रेड सक्षम करने के लिए फिर से कनेक्ट करें।"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "استخدم Gateway آمنًا عبر wss:// أو Tailscale Serve، ثم امسح رمز إعداد بوصول كامل من Control UI أو openclaw qr وأعد الاتصال لتمكين الإعدادات والترقيات."
+            "value": "استخدم Gateway آمنًا عبر wss:// أو Tailscale Serve، ثم امسح رمز إعداد بوصول كامل من Control UI أو operator qr وأعد الاتصال لتمكين الإعدادات والترقيات."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Usa un Gateway sicuro wss:// o Tailscale Serve, quindi scansiona un codice di configurazione con accesso completo dalla Control UI o da openclaw qr e riconnettiti per abilitare impostazioni e aggiornamenti."
+            "value": "Usa un Gateway sicuro wss:// o Tailscale Serve, quindi scansiona un codice di configurazione con accesso completo dalla Control UI o da operator qr e riconnettiti per abilitare impostazioni e aggiornamenti."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Güvenli bir wss:// veya Tailscale Serve Gateway kullanın, ardından Control UI'dan veya openclaw qr ile tam erişimli bir kurulum kodu tarayın ve ayarları ve yükseltmeleri etkinleştirmek için yeniden bağlanın."
+            "value": "Güvenli bir wss:// veya Tailscale Serve Gateway kullanın, ardından Control UI'dan veya operator qr ile tam erişimli bir kurulum kodu tarayın ve ayarları ve yükseltmeleri etkinleştirmek için yeniden bağlanın."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Використайте захищений wss:// або Tailscale Serve Gateway, потім відскануйте код налаштування з повним доступом із Control UI чи openclaw qr та повторно підключіться, щоб увімкнути налаштування й оновлення."
+            "value": "Використайте захищений wss:// або Tailscale Serve Gateway, потім відскануйте код налаштування з повним доступом із Control UI чи operator qr та повторно підключіться, щоб увімкнути налаштування й оновлення."
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gunakan Gateway wss:// yang aman atau Tailscale Serve, lalu pindai kode penyiapan akses penuh dari Control UI atau openclaw qr dan sambungkan ulang untuk mengaktifkan pengaturan dan peningkatan."
+            "value": "Gunakan Gateway wss:// yang aman atau Tailscale Serve, lalu pindai kode penyiapan akses penuh dari Control UI atau operator qr dan sambungkan ulang untuk mengaktifkan pengaturan dan peningkatan."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Użyj bezpiecznego Gateway wss:// lub Tailscale Serve, następnie zeskanuj kod konfiguracyjny z pełnym dostępem z Control UI lub openclaw qr i połącz się ponownie, aby włączyć ustawienia i aktualizacje."
+            "value": "Użyj bezpiecznego Gateway wss:// lub Tailscale Serve, następnie zeskanuj kod konfiguracyjny z pełnym dostępem z Control UI lub operator qr i połącz się ponownie, aby włączyć ustawienia i aktualizacje."
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "ใช้ Gateway แบบ wss:// ที่ปลอดภัยหรือ Tailscale Serve จากนั้นสแกนรหัสตั้งค่าแบบเข้าถึงเต็มรูปแบบจาก Control UI หรือ openclaw qr แล้วเชื่อมต่อใหม่เพื่อเปิดใช้การตั้งค่าและการอัปเกรด"
+            "value": "ใช้ Gateway แบบ wss:// ที่ปลอดภัยหรือ Tailscale Serve จากนั้นสแกนรหัสตั้งค่าแบบเข้าถึงเต็มรูปแบบจาก Control UI หรือ operator qr แล้วเชื่อมต่อใหม่เพื่อเปิดใช้การตั้งค่าและการอัปเกรด"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sử dụng Gateway wss:// bảo mật hoặc Tailscale Serve, sau đó quét mã thiết lập quyền truy cập đầy đủ từ Control UI hoặc openclaw qr và kết nối lại để bật cài đặt và nâng cấp."
+            "value": "Sử dụng Gateway wss:// bảo mật hoặc Tailscale Serve, sau đó quét mã thiết lập quyền truy cập đầy đủ từ Control UI hoặc operator qr và kết nối lại để bật cài đặt và nâng cấp."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gebruik een beveiligde wss:// of Tailscale Serve Gateway, scan vervolgens een installatiecode met volledige toegang vanuit de Control UI of openclaw qr en maak opnieuw verbinding om instellingen en upgrades in te schakelen."
+            "value": "Gebruik een beveiligde wss:// of Tailscale Serve Gateway, scan vervolgens een installatiecode met volledige toegang vanuit de Control UI of operator qr en maak opnieuw verbinding om instellingen en upgrades in te schakelen."
           }
         },
         "fa": {
           "stringUnit": {
             "state": "translated",
-            "value": "از یک Gateway امن wss:// یا Tailscale Serve استفاده کنید، سپس یک کد راه‌اندازی با دسترسی کامل را از Control UI یا openclaw qr اسکن کرده و دوباره متصل شوید تا تنظیمات و به‌روزرسانی‌ها فعال شوند."
+            "value": "از یک Gateway امن wss:// یا Tailscale Serve استفاده کنید، سپس یک کد راه‌اندازی با دسترسی کامل را از Control UI یا operator qr اسکن کرده و دوباره متصل شوید تا تنظیمات و به‌روزرسانی‌ها فعال شوند."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Используйте защищённый wss:// или Tailscale Serve Gateway, затем отсканируйте код настройки с полным доступом из Control UI или openclaw qr и переподключитесь, чтобы включить настройки и обновления."
+            "value": "Используйте защищённый wss:// или Tailscale Serve Gateway, затем отсканируйте код настройки с полным доступом из Control UI или operator qr и переподключитесь, чтобы включить настройки и обновления."
           }
         },
         "sv": {
           "stringUnit": {
             "state": "translated",
-            "value": "Använd en säker wss:// eller Tailscale Serve Gateway, skanna sedan en konfigurationskod med fullständig åtkomst från Control UI eller openclaw qr och återanslut för att aktivera inställningar och uppgraderingar."
+            "value": "Använd en säker wss:// eller Tailscale Serve Gateway, skanna sedan en konfigurationskod med fullständig åtkomst från Control UI eller operator qr och återanslut för att aktivera inställningar och uppgraderingar."
           }
         }
       }

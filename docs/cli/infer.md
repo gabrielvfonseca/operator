@@ -212,7 +212,7 @@ operator infer audio transcribe --file ./memo.m4a --model openai/whisper-1 --jso
 Speech synthesis and TTS provider/persona state.
 
 ```bash
-operator infer tts convert --text "hello from openclaw" --output ./hello.mp3 --json
+operator infer tts convert --text "hello from operator" --output ./hello.mp3 --json
 operator infer tts convert --text "Your build is complete" --output ./build-complete.mp3 --json
 operator infer tts providers --json
 operator infer tts personas --json

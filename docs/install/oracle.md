@@ -23,7 +23,7 @@ Run a persistent Operator Gateway on Oracle Cloud's **Always Free** ARM tier (up
     1. Log into [Oracle Cloud Console](https://cloud.oracle.com/).
     2. Navigate to **Compute > Instances > Create Instance**.
     3. Configure:
-       - **Name:** `openclaw`
+       - **Name:** `operator`
        - **Image:** Ubuntu 24.04 (aarch64)
        - **Shape:** `VM.Standard.A1.Flex` (Ampere ARM)
        - **OCPUs:** 2 (or up to 4)
@@ -52,7 +52,7 @@ Run a persistent Operator Gateway on Oracle Cloud's **Always Free** ARM tier (up
 
   <Step title="Configure user and hostname">
     ```bash
-    sudo hostnamectl set-hostname openclaw
+    sudo hostnamectl set-hostname operator
     sudo passwd ubuntu
     sudo loginctl enable-linger ubuntu
     ```
@@ -64,10 +64,10 @@ Run a persistent Operator Gateway on Oracle Cloud's **Always Free** ARM tier (up
   <Step title="Install Tailscale">
     ```bash
     curl -fsSL https://tailscale.com/install.sh | sh
-    sudo tailscale up --ssh --hostname=openclaw
+    sudo tailscale up --ssh --hostname=operator
     ```
 
-    From now on, connect via Tailscale: `ssh ubuntu@openclaw`.
+    From now on, connect via Tailscale: `ssh ubuntu@operator`.
 
   </Step>
 
@@ -190,7 +190,7 @@ operator backup create
 If Tailscale Serve is not working, use an SSH tunnel from your local machine:
 
 ```bash
-ssh -L 18789:127.0.0.1:18789 ubuntu@openclaw
+ssh -L 18789:127.0.0.1:18789 ubuntu@operator
 ```
 
 Then open `http://localhost:18789`.

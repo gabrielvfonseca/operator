@@ -110,7 +110,7 @@ const ANTHROPIC_SETUP_TOKEN_NOTE_LINES = [
   "Anthropic setup-token auth is supported in Operator.",
   "Operator prefers Claude CLI reuse when it is available on the host.",
   "Anthropic staff told us this Operator path is allowed again.",
-  `If you want a direct API billing path instead, use ${formatCliCommand("openclaw models auth login --provider anthropic --method api-key --set-default")} or ${formatCliCommand("openclaw models auth login --provider anthropic --method cli --set-default")}.`,
+  `If you want a direct API billing path instead, use ${formatCliCommand("operator models auth login --provider anthropic --method api-key --set-default")} or ${formatCliCommand("operator models auth login --provider anthropic --method cli --set-default")}.`,
 ] as const;
 
 function resolveAnthropicSonnet5Cost(nowMs: number = Date.now()) {
@@ -707,7 +707,7 @@ function buildAnthropicAuthDoctorHint(params: {
     }`,
     `- auth store oauth profiles: ${storeOauthProfiles || "(none)"}`,
     `- suggested profile: ${suggested}`,
-    `Fix: run "${formatCliCommand("openclaw doctor --yes")}"`,
+    `Fix: run "${formatCliCommand("operator doctor --yes")}"`,
   ].join("\n");
 }
 

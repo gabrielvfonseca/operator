@@ -245,8 +245,8 @@ describe("resolveInitialTuiAgentId", () => {
   const cfg: OperatorConfig = {
     agents: {
       list: [
-        { id: "main", workspace: "/tmp/openclaw" },
-        { id: "ops", workspace: "/tmp/openclaw/projects/ops" },
+        { id: "main", workspace: "/tmp/operator" },
+        { id: "ops", workspace: "/tmp/operator/projects/ops" },
       ],
     },
   };
@@ -257,7 +257,7 @@ describe("resolveInitialTuiAgentId", () => {
         cfg,
         fallbackAgentId: "main",
         initialSessionInput: "",
-        cwd: "/tmp/openclaw/projects/ops/src",
+        cwd: "/tmp/operator/projects/ops/src",
       }),
     ).toBe("ops");
   });
@@ -268,7 +268,7 @@ describe("resolveInitialTuiAgentId", () => {
         cfg,
         fallbackAgentId: "main",
         initialSessionInput: "agent:main:incident",
-        cwd: "/tmp/openclaw/projects/ops/src",
+        cwd: "/tmp/operator/projects/ops/src",
       }),
     ).toBe("main");
   });
@@ -302,11 +302,11 @@ describe("resolveGatewayDisconnectState", () => {
     const state = resolveGatewayDisconnectState("gateway closed (1008): pairing required");
     expect(state.connectionStatus).toContain("pairing required");
     expect(state.activityStatus).toBe("device approval needed: preview latest request");
-    expect(state.pairingHint).toContain("openclaw devices approve --latest");
-    expect(state.pairingHint).toContain("openclaw devices approve <requestId>");
+    expect(state.pairingHint).toContain("operator devices approve --latest");
+    expect(state.pairingHint).toContain("operator devices approve <requestId>");
     expect(state.pairingHint).toContain("--token");
     // Must steer users to `devices`, not the unrelated chat-DM `pairing` command.
-    expect(state.pairingHint).not.toContain("openclaw pairing");
+    expect(state.pairingHint).not.toContain("operator pairing");
   });
 
   it("returns the same guidance when the gateway reports a pending scope upgrade", () => {
@@ -314,8 +314,8 @@ describe("resolveGatewayDisconnectState", () => {
       "gateway closed (1008): scope upgrade pending approval",
     );
     expect(state.activityStatus).toBe("device approval needed: preview latest request");
-    expect(state.pairingHint).toContain("openclaw devices approve --latest");
-    expect(state.pairingHint).toContain("openclaw devices approve <requestId>");
+    expect(state.pairingHint).toContain("operator devices approve --latest");
+    expect(state.pairingHint).toContain("operator devices approve <requestId>");
   });
 
   it("falls back to idle for generic disconnect reasons", () => {
@@ -559,7 +559,7 @@ describe("TUI shutdown safety", () => {
     expect(setTimeoutFn).toHaveBeenCalledOnce();
     expect(unref).toHaveBeenCalledOnce();
     callback?.();
-    expect(writeStderr).toHaveBeenCalledWith("openclaw tui forcing process exit after return\n");
+    expect(writeStderr).toHaveBeenCalledWith("operator tui forcing process exit after return\n");
     expect(exit).toHaveBeenCalledWith(0);
   });
 });

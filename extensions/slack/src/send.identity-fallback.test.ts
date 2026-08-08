@@ -3,7 +3,7 @@ import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createSlackSendTestClient } from "./blocks.test-helpers.js";
 
-vi.mock("openclaw/plugin-sdk/runtime-env", () => ({
+vi.mock("operator/plugin-sdk/runtime-env", () => ({
   logVerbose: vi.fn(),
   danger: (message: string) => message,
   shouldLogVerbose: () => false,

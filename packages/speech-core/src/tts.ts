@@ -1,7 +1,7 @@
 // Speech Core module implements tts behavior.
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { resolveChannelTtsVoiceDelivery } from "openclaw/plugin-sdk/channel-targets";
+import { resolveChannelTtsVoiceDelivery } from "operator/plugin-sdk/channel-targets";
 import type {
   OperatorConfig,
   ResolvedTtsPersona,
@@ -9,24 +9,24 @@ import type {
   TtsConfig,
   TtsModelOverrideConfig,
   TtsProvider,
-} from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { redactSensitiveText } from "openclaw/plugin-sdk/logging-core";
-import { transcodeAudioBuffer } from "openclaw/plugin-sdk/media-runtime";
-import { clampTimerTimeoutMs } from "openclaw/plugin-sdk/number-runtime";
+} from "operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "operator/plugin-sdk/error-runtime";
+import { redactSensitiveText } from "operator/plugin-sdk/logging-core";
+import { transcodeAudioBuffer } from "operator/plugin-sdk/media-runtime";
+import { clampTimerTimeoutMs } from "operator/plugin-sdk/number-runtime";
 import {
   markReplyPayloadAsTtsSupplement,
   resolveSendableOutboundReplyParts,
   type ReplyPayload,
-} from "openclaw/plugin-sdk/reply-payload";
+} from "operator/plugin-sdk/reply-payload";
 import {
   getRuntimeConfigSnapshot,
   getRuntimeConfigSourceSnapshot,
   selectApplicableRuntimeConfig,
-} from "openclaw/plugin-sdk/runtime-config-snapshot";
-import { isVerbose, logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { tempWorkspaceSync, resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/sandbox";
-import { privateFileStoreSync } from "openclaw/plugin-sdk/security-runtime";
+} from "operator/plugin-sdk/runtime-config-snapshot";
+import { isVerbose, logVerbose } from "operator/plugin-sdk/runtime-env";
+import { tempWorkspaceSync, resolvePreferredOperatorTmpDir } from "operator/plugin-sdk/sandbox";
+import { privateFileStoreSync } from "operator/plugin-sdk/security-runtime";
 import {
   canonicalizeSpeechProviderId,
   getSpeechProvider,
@@ -46,18 +46,18 @@ import {
   type TtsDirectiveOverrides,
   type TtsDirectiveParseResult,
   type TtsConfigResolutionContext,
-} from "openclaw/plugin-sdk/speech-core";
+} from "operator/plugin-sdk/speech-core";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { stripMarkdown } from "openclaw/plugin-sdk/text-chunking";
+} from "operator/plugin-sdk/string-coerce-runtime";
+import { stripMarkdown } from "operator/plugin-sdk/text-chunking";
 import {
   resolveConfigDir,
   resolveUserPath,
   truncateUtf16Safe,
-} from "openclaw/plugin-sdk/text-utility-runtime";
+} from "operator/plugin-sdk/text-utility-runtime";
 import { withSpeakerSelectionCompat } from "../speaker.js";
 import {
   resolvePrimaryVoiceProviderCandidate,

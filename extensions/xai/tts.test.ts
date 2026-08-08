@@ -179,7 +179,7 @@ describe("xai tts", () => {
       expect(init?.method).toBe("GET");
       const headers = new Headers(init?.headers);
       expect(headers.get("authorization")).toBe("Bearer xai-key");
-      expect(headers.get("user-agent")).toBe("openclaw/2026.7.9");
+      expect(headers.get("user-agent")).toBe("operator/2026.7.9");
       vi.unstubAllEnvs();
     });
 
@@ -550,7 +550,7 @@ describe("xai tts", () => {
       );
     });
 
-    it("sends an openclaw User-Agent on xAI TTS requests", async () => {
+    it("sends an operator User-Agent on xAI TTS requests", async () => {
       vi.stubEnv("OPERATOR_VERSION", "2026.3.22");
       const fetchMock = vi.fn(
         async (_input: RequestInfo | URL, _init?: RequestInit) =>
@@ -573,7 +573,7 @@ describe("xai tts", () => {
 
       const init = fetchMock.mock.calls.at(0)?.[1];
       const headers = new Headers(init?.headers ?? {});
-      expect(headers.get("user-agent")).toBe("openclaw/2026.3.22");
+      expect(headers.get("user-agent")).toBe("operator/2026.3.22");
       expect(headers.get("authorization")).toBe("Bearer ok-key");
       vi.unstubAllEnvs();
     });

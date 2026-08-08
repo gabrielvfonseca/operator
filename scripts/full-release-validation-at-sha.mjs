@@ -265,7 +265,7 @@ function readWorkflowRun(parentRunId, workflowSha) {
     throw new Error("parent run ID must be a positive decimal");
   }
   const workflowRun = JSON.parse(
-    run("gh", ["api", `repos/openclaw/openclaw/actions/runs/${parentRunId}`]),
+    run("gh", ["api", `repos/operator/operator/actions/runs/${parentRunId}`]),
   );
   if (workflowRun.head_sha !== workflowSha) {
     throw new Error(
@@ -302,13 +302,13 @@ function waitForWorkflowRun(parentRunId, workflowSha) {
         return;
       }
       throw new Error(
-        `Full Release Validation concluded ${String(suite.conclusion).toLowerCase()}: https://github.com/openclaw/openclaw/actions/runs/${parentRunId}`,
+        `Full Release Validation concluded ${String(suite.conclusion).toLowerCase()}: https://github.com/operator/operator/actions/runs/${parentRunId}`,
       );
     }
     Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 45_000);
   }
   throw new Error(
-    `Timed out waiting for Full Release Validation: https://github.com/openclaw/openclaw/actions/runs/${parentRunId}`,
+    `Timed out waiting for Full Release Validation: https://github.com/operator/operator/actions/runs/${parentRunId}`,
   );
 }
 
@@ -415,7 +415,7 @@ function main() {
       throw new Error("Could not determine Full Release Validation run id.");
     }
 
-    console.log(`Parent run: https://github.com/openclaw/openclaw/actions/runs/${parentRunId}`);
+    console.log(`Parent run: https://github.com/operator/operator/actions/runs/${parentRunId}`);
     waitForWorkflowRun(parentRunId, workflowSha);
     verifyReleaseEvidence(parentRunId, workflowSha);
   } finally {

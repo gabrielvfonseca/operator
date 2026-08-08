@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Installs a prepared OpenClaw npm tarball in Docker, runs non-interactive
+# Installs a prepared Operator npm tarball in Docker, runs non-interactive
 # onboarding for a channel, and verifies one mocked model turn through Gateway.
 set -euo pipefail
 
@@ -7,7 +7,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
 source "$ROOT_DIR/scripts/lib/docker-e2e-package.sh"
 
-IMAGE_NAME="$(docker_e2e_resolve_image "openclaw-npm-onboard-channel-agent-e2e" OPENCLAW_NPM_ONBOARD_E2E_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "operator-npm-onboard-channel-agent-e2e" OPENCLAW_NPM_ONBOARD_E2E_IMAGE)"
 DOCKER_TARGET="${OPENCLAW_NPM_ONBOARD_DOCKER_TARGET:-bare}"
 HOST_BUILD="${OPENCLAW_NPM_ONBOARD_HOST_BUILD:-1}"
 PACKAGE_TGZ="${OPENCLAW_CURRENT_PACKAGE_TGZ:-}"
@@ -69,38 +69,38 @@ if ! docker_e2e_run_with_harness \
   -i "$IMAGE_NAME" bash -s >"$run_log" 2>&1 <<'EOF'; then
 set -Eeuo pipefail
 
-source scripts/lib/openclaw-e2e-instance.sh
-openclaw_e2e_eval_test_state_from_b64 "${OPENCLAW_TEST_STATE_SCRIPT_B64:?missing OPENCLAW_TEST_STATE_SCRIPT_B64}"
+source scripts/lib/operator-e2e-instance.sh
+operator_e2e_eval_test_state_from_b64 "${OPENCLAW_TEST_STATE_SCRIPT_B64:?missing OPENCLAW_TEST_STATE_SCRIPT_B64}"
 export NPM_CONFIG_PREFIX="$HOME/.npm-global"
 export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
-export OPENAI_API_KEY="sk-openclaw-npm-onboard-e2e"
+export OPENAI_API_KEY="sk-operator-npm-onboard-e2e"
 export OPENCLAW_GATEWAY_TOKEN="npm-onboard-channel-agent-token"
 
 CHANNEL="${OPENCLAW_NPM_ONBOARD_CHANNEL:?missing OPENCLAW_NPM_ONBOARD_CHANNEL}"
 PORT="18789"
 MOCK_PORT="44080"
 SUCCESS_MARKER="OPENCLAW_AGENT_E2E_OK_ASSISTANT"
-scenario_tmp="$(mktemp -d "${TMPDIR:-/tmp}/openclaw-npm-onboard-channel-agent.XXXXXX")"
+scenario_tmp="$(mktemp -d "${TMPDIR:-/tmp}/operator-npm-onboard-channel-agent.XXXXXX")"
 MOCK_REQUEST_LOG="$scenario_tmp/mock-openai-requests.jsonl"
 export SUCCESS_MARKER MOCK_REQUEST_LOG
 mock_pid=""
 
 case "$CHANNEL" in
   telegram)
-    CHANNEL_TOKEN="123456:openclaw-npm-onboard-token"
+    CHANNEL_TOKEN="123456:operator-npm-onboard-token"
     DEP_SENTINEL="grammy"
     CHANNEL_ADD_ARGS=(--token "$CHANNEL_TOKEN")
     CHANNEL_CONFIG_TOKENS=("$CHANNEL_TOKEN")
     ;;
   discord)
-    CHANNEL_TOKEN="openclaw-npm-onboard-discord-token"
+    CHANNEL_TOKEN="operator-npm-onboard-discord-token"
     DEP_SENTINEL="discord-api-types"
     CHANNEL_ADD_ARGS=(--token "$CHANNEL_TOKEN")
     CHANNEL_CONFIG_TOKENS=("$CHANNEL_TOKEN")
     ;;
   slack)
-    SLACK_BOT_TOKEN="xoxb-openclaw-npm-onboard-slack-token"
-    SLACK_APP_TOKEN="xapp-openclaw-npm-onboard-slack-token"
+    SLACK_BOT_TOKEN="xoxb-operator-npm-onboard-slack-token"
+    SLACK_APP_TOKEN="xapp-operator-npm-onboard-slack-token"
     DEP_SENTINEL="@slack/bolt"
     CHANNEL_ADD_ARGS=(--bot-token "$SLACK_BOT_TOKEN" --app-token "$SLACK_APP_TOKEN")
     CHANNEL_CONFIG_TOKENS=("$SLACK_BOT_TOKEN" "$SLACK_APP_TOKEN")
@@ -112,7 +112,7 @@ case "$CHANNEL" in
 esac
 
 cleanup() {
-  openclaw_e2e_stop_process "${mock_pid:-}"
+  operator_e2e_stop_process "${mock_pid:-}"
   rm -rf "$scenario_tmp"
 }
 trap cleanup EXIT
@@ -120,42 +120,42 @@ trap cleanup EXIT
 dump_debug_logs() {
   local status="$1"
   echo "npm onboard/channel/agent scenario failed with exit code $status" >&2
-  openclaw_e2e_dump_logs \
-    /tmp/openclaw-install.log \
-    /tmp/openclaw-onboard.json \
-    /tmp/openclaw-channel-add.log \
-    /tmp/openclaw-channels-status.json \
-    /tmp/openclaw-channels-status.err \
-    /tmp/openclaw-status.txt \
-    /tmp/openclaw-status.err \
-    /tmp/openclaw-doctor.log \
-    /tmp/openclaw-agent.combined \
-    /tmp/openclaw-agent.err \
-    /tmp/openclaw-agent.json \
-    /tmp/openclaw-mock-openai.log \
+  operator_e2e_dump_logs \
+    /tmp/operator-install.log \
+    /tmp/operator-onboard.json \
+    /tmp/operator-channel-add.log \
+    /tmp/operator-channels-status.json \
+    /tmp/operator-channels-status.err \
+    /tmp/operator-status.txt \
+    /tmp/operator-status.err \
+    /tmp/operator-doctor.log \
+    /tmp/operator-agent.combined \
+    /tmp/operator-agent.err \
+    /tmp/operator-agent.json \
+    /tmp/operator-mock-openai.log \
     "$MOCK_REQUEST_LOG" \
-    "$OPENCLAW_HOME/.openclaw/openclaw.json" \
-    "$OPENCLAW_HOME/.openclaw/agents/main/agent/auth-profiles.json"
+    "$OPENCLAW_HOME/.operator/operator.json" \
+    "$OPENCLAW_HOME/.operator/agents/main/agent/auth-profiles.json"
 }
 trap 'status=$?; dump_debug_logs "$status"; exit "$status"' ERR
 
-openclaw_e2e_install_package /tmp/openclaw-install.log
+operator_e2e_install_package /tmp/operator-install.log
 
-command -v openclaw >/dev/null
-openclaw_e2e_enable_openclaw_cli_timeout
-package_root="$(openclaw_e2e_package_root)"
+command -v operator >/dev/null
+operator_e2e_enable_operator_cli_timeout
+package_root="$(operator_e2e_package_root)"
 if [ -d "$package_root/dist/extensions/$CHANNEL" ]; then
   CHANNEL_PACKAGE_MODE="bundled"
 else
   CHANNEL_PACKAGE_MODE="external"
-  echo "$CHANNEL is not packaged with core OpenClaw; expecting channel selection to install it on demand."
+  echo "$CHANNEL is not packaged with core Operator; expecting channel selection to install it on demand."
 fi
 
-mock_pid="$(openclaw_e2e_start_mock_openai "$MOCK_PORT" /tmp/openclaw-mock-openai.log)"
-openclaw_e2e_wait_mock_openai "$MOCK_PORT"
+mock_pid="$(operator_e2e_start_mock_openai "$MOCK_PORT" /tmp/operator-mock-openai.log)"
+operator_e2e_wait_mock_openai "$MOCK_PORT"
 
 echo "Running non-interactive onboarding..."
-openclaw onboard --non-interactive --accept-risk \
+operator onboard --non-interactive --accept-risk \
   --mode local \
   --auth-choice openai-api-key \
   --secret-input-mode ref \
@@ -165,27 +165,27 @@ openclaw onboard --non-interactive --accept-risk \
   --skip-ui \
   --skip-skills \
   --skip-health \
-  --json >/tmp/openclaw-onboard.json
+  --json >/tmp/operator-onboard.json
 
 node scripts/e2e/lib/npm-onboard-channel-agent/assertions.mjs assert-onboard-state "$HOME"
 
-openclaw_e2e_assert_dep_absent "$DEP_SENTINEL" "$HOME/.openclaw"
+operator_e2e_assert_dep_absent "$DEP_SENTINEL" "$HOME/.operator"
 
 echo "Configuring $CHANNEL..."
-openclaw channels add --channel "$CHANNEL" "${CHANNEL_ADD_ARGS[@]}" >/tmp/openclaw-channel-add.log 2>&1
+operator channels add --channel "$CHANNEL" "${CHANNEL_ADD_ARGS[@]}" >/tmp/operator-channel-add.log 2>&1
 node scripts/e2e/lib/npm-onboard-channel-agent/assertions.mjs assert-channel-config "$CHANNEL" "${CHANNEL_CONFIG_TOKENS[@]}"
 
 echo "Checking status surfaces for $CHANNEL..."
-openclaw channels status --json >/tmp/openclaw-channels-status.json 2>/tmp/openclaw-channels-status.err
-openclaw status >/tmp/openclaw-status.txt 2>/tmp/openclaw-status.err
-node scripts/e2e/lib/npm-onboard-channel-agent/assertions.mjs assert-status-surfaces "$CHANNEL" /tmp/openclaw-channels-status.json /tmp/openclaw-status.txt
+operator channels status --json >/tmp/operator-channels-status.json 2>/tmp/operator-channels-status.err
+operator status >/tmp/operator-status.txt 2>/tmp/operator-status.err
+node scripts/e2e/lib/npm-onboard-channel-agent/assertions.mjs assert-status-surfaces "$CHANNEL" /tmp/operator-channels-status.json /tmp/operator-status.txt
 
 echo "Running doctor after channel activation..."
-openclaw doctor --repair --non-interactive >/tmp/openclaw-doctor.log 2>&1
+operator doctor --repair --non-interactive >/tmp/operator-doctor.log 2>&1
 if [ "$CHANNEL_PACKAGE_MODE" = "external" ]; then
-  openclaw_e2e_assert_dep_present "$DEP_SENTINEL" "$HOME/.openclaw"
+  operator_e2e_assert_dep_present "$DEP_SENTINEL" "$HOME/.operator"
 else
-  openclaw_e2e_assert_dep_absent "$DEP_SENTINEL" "$HOME/.openclaw"
+  operator_e2e_assert_dep_absent "$DEP_SENTINEL" "$HOME/.operator"
 fi
 
 node scripts/e2e/lib/npm-onboard-channel-agent/assertions.mjs configure-mock-model "$MOCK_PORT"
@@ -193,12 +193,12 @@ node scripts/e2e/lib/npm-onboard-channel-agent/assertions.mjs assert-mock-model-
 
 echo "Running local agent turn against mocked OpenAI..."
 set +e
-openclaw agent --local \
+operator agent --local \
   --agent main \
   --session-id npm-onboard-channel-agent \
   --message "Return the success marker from the test server." \
   --thinking off \
-  --json >/tmp/openclaw-agent.combined 2>&1
+  --json >/tmp/operator-agent.combined 2>&1
 agent_status=$?
 set -e
 if [ "$agent_status" -ne 0 ]; then

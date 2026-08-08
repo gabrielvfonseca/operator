@@ -135,20 +135,20 @@ describe("minimal npm extended-stable workflow", () => {
 
     const plugins = step(preflight, "Exercise all extended-stable plugin npm packages");
     expect(step(preflight, "Verify release contents").env).toMatchObject({
-      OPERATOR_RELEASE_CHECK_LOCAL_PACKAGE_TARBALL_DIR:
+      OPENCLAW_RELEASE_CHECK_LOCAL_PACKAGE_TARBALL_DIR:
         // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ steps.ai_runtime_tarballs.outputs.dir }}",
     });
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(plugins.if).toBe("${{ inputs.npm_dist_tag == 'extended-stable' }}");
     expect(plugins.env).toMatchObject({
-      OPERATOR_PLUGIN_NPM_PUBLISH_TAG: "extended-stable",
+      OPENCLAW_PLUGIN_NPM_PUBLISH_TAG: "extended-stable",
     });
     expect(plugins.run).toContain("--selection-mode all-publishable");
     expect(plugins.run).toContain("--npm-dist-tag extended-stable");
     expect(plugins.run).toContain("scripts/check-plugin-npm-runtime-builds.mjs");
     expect(plugins.run).toContain("scripts/plugin-npm-publish.sh --pack");
-    expect(plugins.run).toContain("OPERATOR_PLUGIN_NPM_PACK_OUTPUT_DIR");
+    expect(plugins.run).toContain("OPENCLAW_PLUGIN_NPM_PACK_OUTPUT_DIR");
     expect(plugins.run).not.toContain("--publish");
     expect(step(preflight, "Upload extended-stable plugin npm packages")).toBeDefined();
   });

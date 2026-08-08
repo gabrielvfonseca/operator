@@ -8,7 +8,7 @@ import {
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { EMPTY_DISCORD_TEST_CONFIG } from "../test-support/config.js";
 
-vi.mock("openclaw/plugin-sdk/simple-completion-runtime", { spy: true });
+vi.mock("operator/plugin-sdk/simple-completion-runtime", { spy: true });
 
 const completeWithPreparedSimpleCompletionModelMock =
   vi.fn<typeof completeWithPreparedSimpleCompletionModel>();

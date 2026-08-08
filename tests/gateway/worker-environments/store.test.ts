@@ -8,7 +8,7 @@ import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
   type OperatorStateDatabase,
-} from "../../../src/state/openclaw-state-db.js";
+} from "../../../src/state/operator-state-db.js";
 import { hashWorkerCredential } from "../../../src/gateway/worker-environments/credential.js";
 import { createWorkerEnvironmentStore, type WorkerEnvironmentStore } from "../../../src/gateway/worker-environments/store.js";
 

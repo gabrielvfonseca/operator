@@ -46,7 +46,7 @@ function userMessage(text: string): AgentMessage {
   return { role: "user", content: text, timestamp: 0 } as unknown as AgentMessage;
 }
 
-function openclawTranscriptAssistant(model: "delivery-mirror" | "gateway-injected"): AgentMessage {
+function operatorTranscriptAssistant(model: "delivery-mirror" | "gateway-injected"): AgentMessage {
   return {
     role: "assistant",
     content: [{ type: "text", text: "channel mirror" }],
@@ -320,9 +320,9 @@ describe("normalizeAssistantReplayContent", () => {
     // assistant turns, so they must not be sent back to providers.
     const messages = [
       userMessage("hello"),
-      openclawTranscriptAssistant("delivery-mirror"),
+      operatorTranscriptAssistant("delivery-mirror"),
       bedrockAssistant([{ type: "text", text: "real reply" }]),
-      openclawTranscriptAssistant("gateway-injected"),
+      operatorTranscriptAssistant("gateway-injected"),
     ];
     const out = normalizeAssistantReplayContent(messages);
     expect(out).toHaveLength(2);

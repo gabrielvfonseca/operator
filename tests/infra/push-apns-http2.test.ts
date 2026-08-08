@@ -8,7 +8,7 @@ import {
 } from "../../src/infra/net/proxy/active-proxy-state.js";
 
 type ProxyConnectTunnelParams = Parameters<
-  typeof import("@openclaw/proxyline").openProxyConnectTunnel
+  typeof import("@operator/proxyline").openProxyConnectTunnel
 >[0];
 
 const {
@@ -129,7 +129,7 @@ vi.mock("node:tls", () => ({
   connect: tlsConnectSpy,
 }));
 
-vi.mock("@openclaw/proxyline", () => ({
+vi.mock("@operator/proxyline", () => ({
   openProxyConnectTunnel: tunnelSpy,
 }));
 

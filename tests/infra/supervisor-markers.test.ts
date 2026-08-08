@@ -48,7 +48,7 @@ describe("detectRespawnSupervisor", () => {
 
   it("detects Linux Operator gateway service markers only for opt-in callers", () => {
     const gatewayServiceEnv = {
-      OPERATOR_SERVICE_MARKER: " openclaw ",
+      OPERATOR_SERVICE_MARKER: " operator ",
       OPERATOR_SERVICE_KIND: " gateway ",
     };
     expect(detectRespawnSupervisor(gatewayServiceEnv, "linux")).toBeNull();

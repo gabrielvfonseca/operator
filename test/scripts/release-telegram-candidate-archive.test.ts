@@ -29,7 +29,7 @@ afterEach(() => {
 });
 
 function makeTempDir(): string {
-  const directory = mkdtempSync(path.join(tmpdir(), "openclaw-archive-guard-"));
+  const directory = mkdtempSync(path.join(tmpdir(), "operator-archive-guard-"));
   tempDirs.push(directory);
   return directory;
 }

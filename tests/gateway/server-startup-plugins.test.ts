@@ -123,7 +123,7 @@ vi.mock("../config/plugin-auto-enable.js", () => ({
   applyPluginAutoEnable: (params: { config: unknown }) => applyPluginAutoEnable(params),
 }));
 
-vi.mock("../infra/openclaw-root.js", () => ({
+vi.mock("../infra/operator-root.js", () => ({
   resolveOperatorPackageRootSync: (params: unknown) => resolveOperatorPackageRootSync(params),
 }));
 

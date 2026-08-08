@@ -973,18 +973,18 @@ describe("handleControlUiHttpRequest", () => {
       fn: async (tmp) => {
         const { res, end } = makeMockHttpResponse();
         const handled = await handleControlUiHttpRequest(
-          { url: "/openclaw/chat", method: "GET" } as IncomingMessage,
+          { url: "/operator/chat", method: "GET" } as IncomingMessage,
           res,
           {
-            basePath: "/openclaw",
+            basePath: "/operator",
             root: { kind: "resolved", path: tmp },
           },
         );
         expect(handled).toBe(true);
         const body = String(end.mock.calls[0]?.[0] ?? "");
-        expect(body).toContain('data-operator-control-ui-base-path="/openclaw"');
-        expect(body).toContain('href="/openclaw/manifest.webmanifest"');
-        expect(body).toContain('href="/openclaw/favicon.svg"');
+        expect(body).toContain('data-operator-control-ui-base-path="/operator"');
+        expect(body).toContain('href="/operator/manifest.webmanifest"');
+        expect(body).toContain('href="/operator/favicon.svg"');
         expect(body).not.toContain('href="/manifest.webmanifest"');
       },
     });
@@ -1351,10 +1351,10 @@ describe("handleControlUiHttpRequest", () => {
       fn: async (tmp) => {
         const { res, end } = makeMockHttpResponse();
         const handled = await handleControlUiHttpRequest(
-          { url: `/openclaw${CONTROL_UI_BOOTSTRAP_CONFIG_PATH}`, method: "GET" } as IncomingMessage,
+          { url: `/operator${CONTROL_UI_BOOTSTRAP_CONFIG_PATH}`, method: "GET" } as IncomingMessage,
           res,
           {
-            basePath: "/openclaw",
+            basePath: "/operator",
             root: { kind: "resolved", path: tmp },
             config: {
               agents: { defaults: { workspace: tmp } },
@@ -1364,7 +1364,7 @@ describe("handleControlUiHttpRequest", () => {
         );
         expect(handled).toBe(true);
         const parsed = parseBootstrapPayload(end);
-        expect(parsed.basePath).toBe("/openclaw");
+        expect(parsed.basePath).toBe("/operator");
         expect(parsed.assistantName).toBe("Ops");
         expect(parsed.assistantAvatar).toBe("A");
         expect(parsed.assistantAvatarStatus).toBe("none");
@@ -1453,18 +1453,18 @@ describe("handleControlUiHttpRequest", () => {
   });
 
   // Compatibility regression: current main and v2026.6.1 serve and document the
-  // single-underscore `/__openclaw/control-ui-config.json` endpoint under an empty
+  // single-underscore `/__operator/control-ui-config.json` endpoint under an empty
   // base path. #66946 makes the config path base-path-relative; this case proves
   // the old documented endpoint still returns config (no upgrade 404 break).
   // Without the LEGACY_BOOTSTRAP_CONFIG_PATH alias this request 404s, so it is not
   // vacuous.
-  it("still serves bootstrap config at the legacy /__openclaw/control-ui-config.json with no configured basePath (#66946)", async () => {
+  it("still serves bootstrap config at the legacy /__operator/control-ui-config.json with no configured basePath (#66946)", async () => {
     await withControlUiRoot({
       fn: async (tmp) => {
         const { res, end } = makeMockHttpResponse();
         const handled = await handleControlUiHttpRequest(
           {
-            url: "/__openclaw/control-ui-config.json",
+            url: "/__operator/control-ui-config.json",
             method: "GET",
           } as IncomingMessage,
           res,
@@ -1488,26 +1488,26 @@ describe("handleControlUiHttpRequest", () => {
   });
 
   // Compatibility regression for configured-base-path deployments: when a
-  // `gateway.controlUi.basePath` is set (e.g. `/openclaw`), current main and
-  // v2026.6.1 serve the bootstrap config at `${basePath}/__openclaw/control-ui-config.json`
+  // `gateway.controlUi.basePath` is set (e.g. `/operator`), current main and
+  // v2026.6.1 serve the bootstrap config at `${basePath}/__operator/control-ui-config.json`
   // (single underscore). #66946 moves the canonical path to
   // `${basePath}/control-ui-config.json`; this case proves the old configured-base-path
   // endpoint still returns config so older bundles and proxies that still request it
   // do not 404 after upgrade. Without the configured-base-path legacy alias this
   // request 404s, so the assertion is not vacuous.
   // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-  it("still serves bootstrap config at the legacy ${basePath}/__openclaw/control-ui-config.json under a configured basePath (#66946)", async () => {
+  it("still serves bootstrap config at the legacy ${basePath}/__operator/control-ui-config.json under a configured basePath (#66946)", async () => {
     await withControlUiRoot({
       fn: async (tmp) => {
         const { res, end } = makeMockHttpResponse();
         const handled = await handleControlUiHttpRequest(
           {
-            url: "/openclaw/__openclaw/control-ui-config.json",
+            url: "/operator/__operator/control-ui-config.json",
             method: "GET",
           } as IncomingMessage,
           res,
           {
-            basePath: "/openclaw",
+            basePath: "/operator",
             root: { kind: "resolved", path: tmp },
             config: {
               agents: { defaults: { workspace: tmp } },
@@ -1520,17 +1520,17 @@ describe("handleControlUiHttpRequest", () => {
         const parsed = parseBootstrapPayload(end);
         // The configured base path is reported back so the loader resolves
         // base-path-relative URLs against it.
-        expect(parsed.basePath).toBe("/openclaw");
+        expect(parsed.basePath).toBe("/operator");
         expect(parsed.assistantAgentId).toBe("main");
       },
     });
   });
 
-  it("does not serve bootstrap config from the doubled /__operator__/__openclaw path (#66946)", async () => {
+  it("does not serve bootstrap config from the doubled /__operator__/__operator path (#66946)", async () => {
     await withControlUiRoot({
       fn: async (tmp) => {
         const { res, end, handled } = await runControlUiRequest({
-          url: "/__operator__/__openclaw/control-ui-config.json",
+          url: "/__operator__/__operator/control-ui-config.json",
           method: "GET",
           rootPath: tmp,
         });
@@ -2195,8 +2195,8 @@ describe("handleControlUiHttpRequest", () => {
     },
     {
       name: "configured-base-path",
-      basePath: "/openclaw",
-      url: "/openclaw/approve/Approval%3AMobile%2F%E6%9D%B1%E4%BA%AC%20100%25%20%F0%9F%A6%9E",
+      basePath: "/operator",
+      url: "/operator/approve/Approval%3AMobile%2F%E6%9D%B1%E4%BA%AC%20100%25%20%F0%9F%A6%9E",
     },
     {
       name: "asset-like-id",
@@ -2205,8 +2205,8 @@ describe("handleControlUiHttpRequest", () => {
     },
     {
       name: "configured-base-asset-like-id",
-      basePath: "/openclaw",
-      url: "/openclaw/approve/plugin%3Arequest.js",
+      basePath: "/operator",
+      url: "/operator/approve/plugin%3Arequest.js",
     },
   ])("serves $name approval deep links through the SPA fallback", async ({ basePath, url }) => {
     await withControlUiRoot({
@@ -2227,7 +2227,7 @@ describe("handleControlUiHttpRequest", () => {
           } else {
             expect(responseBody(end)).toContain("approval-spa");
             if (basePath) {
-              expect(responseBody(end)).toContain('data-operator-control-ui-base-path="/openclaw"');
+              expect(responseBody(end)).toContain('data-operator-control-ui-base-path="/operator"');
             }
           }
         }
@@ -2243,8 +2243,8 @@ describe("handleControlUiHttpRequest", () => {
     },
     {
       name: "configured-base-path",
-      basePath: "/openclaw",
-      url: "/openclaw/approve/Approval%3AMobile%2F%E6%9D%B1%E4%BA%AC%20100%25%20%F0%9F%A6%9E",
+      basePath: "/operator",
+      url: "/operator/approve/Approval%3AMobile%2F%E6%9D%B1%E4%BA%AC%20100%25%20%F0%9F%A6%9E",
     },
     {
       name: "asset-like-id",
@@ -2407,7 +2407,7 @@ describe("handleControlUiHttpRequest", () => {
         const handled = await handleControlUiHttpRequest(
           { url: "/imessage-webhook", method: "POST" } as IncomingMessage,
           res,
-          { basePath: "/openclaw", root: { kind: "resolved", path: tmp } },
+          { basePath: "/operator", root: { kind: "resolved", path: tmp } },
         );
         expect(handled).toBe(false);
       },
@@ -2461,12 +2461,12 @@ describe("handleControlUiHttpRequest", () => {
   it("falls through POST requests under configured basePath (plugin webhook passthrough)", async () => {
     await withControlUiRoot({
       fn: async (tmp) => {
-        for (const route of ["/openclaw", "/openclaw/", "/openclaw/some-page"]) {
+        for (const route of ["/operator", "/operator/", "/operator/some-page"]) {
           const { handled, end } = await runControlUiRequest({
             url: route,
             method: "POST",
             rootPath: tmp,
-            basePath: "/openclaw",
+            basePath: "/operator",
           });
           expect(handled, `POST to ${route} should pass through to plugin handlers`).toBe(false);
           expect(end, `POST to ${route} should not write a response`).not.toHaveBeenCalled();
@@ -2485,10 +2485,10 @@ describe("handleControlUiHttpRequest", () => {
         const secretPathUrl = secretPath.split(path.sep).join("/");
         const absolutePathUrl = secretPathUrl.startsWith("/") ? secretPathUrl : `/${secretPathUrl}`;
         const { res, end, handled } = await runControlUiRequest({
-          url: `/openclaw/${absolutePathUrl}`,
+          url: `/operator/${absolutePathUrl}`,
           method: "GET",
           rootPath: root,
-          basePath: "/openclaw",
+          basePath: "/operator",
         });
         expectNotFoundResponse({ handled, res, end });
       },
@@ -2514,10 +2514,10 @@ describe("handleControlUiHttpRequest", () => {
         }
 
         const { res, end, handled } = await runControlUiRequest({
-          url: "/openclaw/assets/leak.txt",
+          url: "/operator/assets/leak.txt",
           method: "GET",
           rootPath: root,
-          basePath: "/openclaw",
+          basePath: "/operator",
         });
         expectNotFoundResponse({ handled, res, end });
       },

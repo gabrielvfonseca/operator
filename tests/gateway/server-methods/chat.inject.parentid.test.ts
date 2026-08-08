@@ -10,8 +10,8 @@ import {
   replaceSessionEntry,
 } from "../../../src/config/sessions/session-accessor.js";
 import { onSessionTranscriptUpdate } from "../../../src/sessions/transcript-events.js";
-import { closeOperatorAgentDatabasesForTest } from "../../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../../src/state/openclaw-state-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../../src/state/operator-state-db.js";
 import { appendInjectedAssistantMessageToTranscript } from "../../../src/gateway/server-methods/chat-transcript-inject.js";
 
 type SqliteTranscriptFixture = {

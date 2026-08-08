@@ -9,9 +9,9 @@ const hoisted = vi.hoisted(() => {
   return { listSessionEntries, patchSessionEntry, resolveStorePath };
 });
 
-vi.mock("openclaw/plugin-sdk/session-store-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/session-store-runtime")>(
-    "openclaw/plugin-sdk/session-store-runtime",
+vi.mock("operator/plugin-sdk/session-store-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/session-store-runtime")>(
+    "operator/plugin-sdk/session-store-runtime",
   );
   return {
     ...actual,

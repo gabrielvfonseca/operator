@@ -1384,7 +1384,7 @@ async function compactEmbeddedAgentSessionDirectOnce(
       await resourceLoader.reload();
       // DefaultResourceLoader.reload() rehydrates settings from disk and can drop Operator
       // compaction overrides applied in createPreparedEmbeddedAgentSettingsManager — same
-      // rehydration also restores Operator runtime's auto-compaction (openclaw#75799), so re-apply
+      // rehydration also restores Operator runtime's auto-compaction (operator#75799), so re-apply
       // both guards. effectiveModel.baseUrl matches the surrounding scope so
       // auth-profile-injected baseUrls reach the endpoint-class detector.
       applyAgentCompactionSettingsFromConfig({

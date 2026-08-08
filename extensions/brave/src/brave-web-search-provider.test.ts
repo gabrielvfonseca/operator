@@ -8,7 +8,7 @@ import { createBraveWebSearchProvider } from "./brave-web-search-provider.js";
 
 const loggerInfoMock = vi.hoisted(() => vi.fn());
 
-vi.mock("openclaw/plugin-sdk/runtime-env", () => ({
+vi.mock("operator/plugin-sdk/runtime-env", () => ({
   createSubsystemLogger: () => ({
     info: loggerInfoMock,
     debug: vi.fn(),
@@ -39,7 +39,7 @@ const braveManifest = JSON.parse(
 };
 
 afterAll(() => {
-  vi.doUnmock("openclaw/plugin-sdk/runtime-env");
+  vi.doUnmock("operator/plugin-sdk/runtime-env");
   vi.resetModules();
 });
 
@@ -181,7 +181,7 @@ describe("brave web search provider", () => {
     expect(result).toEqual({
       error: "missing_brave_api_key",
       message:
-        "web_search (brave) needs a Brave Search API key. Run `openclaw configure --section web` to store it, or set BRAVE_API_KEY in the Gateway environment. If you do not want to configure a search API key, use web_fetch for a specific URL or the browser tool for interactive pages.",
+        "web_search (brave) needs a Brave Search API key. Run `operator configure --section web` to store it, or set BRAVE_API_KEY in the Gateway environment. If you do not want to configure a search API key, use web_fetch for a specific URL or the browser tool for interactive pages.",
       docs: "https://docs.operator.ai/tools/web",
     });
   });

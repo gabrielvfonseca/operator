@@ -42,7 +42,7 @@ async function resolveBranch(params: {
   runCommand: RunCommand;
 }): Promise<string | null> {
   vi.doMock("../process/exec.js", () => ({ runCommandWithTimeout: params.runCommand }));
-  vi.doMock("./openclaw-root.js", () => ({
+  vi.doMock("./operator-root.js", () => ({
     resolveOperatorPackageRoot: vi.fn(async () => params.root),
   }));
   const { resolveDevInstallGitBranch } = await import("./dev-install-branch.js");
@@ -52,7 +52,7 @@ async function resolveBranch(params: {
 afterEach(() => {
   vi.resetModules();
   vi.doUnmock("../process/exec.js");
-  vi.doUnmock("./openclaw-root.js");
+  vi.doUnmock("./operator-root.js");
 });
 
 afterAll(async () => {

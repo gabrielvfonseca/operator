@@ -308,9 +308,9 @@ describe("resolveDiffsPluginViewerBaseUrl", () => {
   it("normalizes configured viewer base URLs", () => {
     expect(
       resolveDiffsPluginViewerBaseUrl({
-        viewerBaseUrl: "https://example.com/openclaw/",
+        viewerBaseUrl: "https://example.com/operator/",
       }),
-    ).toBe("https://example.com/openclaw");
+    ).toBe("https://example.com/operator");
   });
 });
 
@@ -319,15 +319,15 @@ describe("diffs plugin schema surfaces", () => {
     const validate = compileManifestConfigSchema();
 
     expect(validate({ viewerBaseUrl: "javascript:alert(1)" }).ok).toBe(false);
-    expect(validate({ viewerBaseUrl: "https://example.com/openclaw?x=1" }).ok).toBe(false);
-    expect(validate({ viewerBaseUrl: "https://example.com/openclaw#frag" }).ok).toBe(false);
-    expect(validate({ viewerBaseUrl: "https://example.com/openclaw/" }).ok).toBe(true);
+    expect(validate({ viewerBaseUrl: "https://example.com/operator?x=1" }).ok).toBe(false);
+    expect(validate({ viewerBaseUrl: "https://example.com/operator#frag" }).ok).toBe(false);
+    expect(validate({ viewerBaseUrl: "https://example.com/operator/" }).ok).toBe(true);
   });
 
   it("preserves defaults and security for direct safeParse callers", () => {
     const parsed = requireRecord(
       diffsPluginConfigSchema.safeParse?.({
-        viewerBaseUrl: "https://example.com/openclaw/",
+        viewerBaseUrl: "https://example.com/operator/",
         defaults: {
           theme: "light",
           ttlSeconds: 21_600,
@@ -340,7 +340,7 @@ describe("diffs plugin schema surfaces", () => {
     );
     expect(parsed.success).toBe(true);
     const data = requireRecord(parsed.data, "parse data");
-    expect(data.viewerBaseUrl).toBe("https://example.com/openclaw");
+    expect(data.viewerBaseUrl).toBe("https://example.com/operator");
     expectFields(data.defaults, {
       fontFamily: "Fira Code",
       fontSize: 15,
@@ -442,20 +442,20 @@ describe("diffs viewer URL helpers", () => {
     expect(
       buildViewerUrl({
         config: {},
-        baseUrl: "https://example.com/openclaw",
+        baseUrl: "https://example.com/operator",
         viewerPath: "/plugins/diffs/view/id/token",
       }),
-    ).toBe("https://example.com/openclaw/plugins/diffs/view/id/token");
+    ).toBe("https://example.com/operator/plugins/diffs/view/id/token");
   });
 
   it("prefers normalized viewerBaseUrl strings too", () => {
     expect(
       buildViewerUrl({
         config: {},
-        baseUrl: "https://example.com/openclaw/",
+        baseUrl: "https://example.com/operator/",
         viewerPath: "/plugins/diffs/view/id/token",
       }),
-    ).toBe("https://example.com/openclaw/plugins/diffs/view/id/token");
+    ).toBe("https://example.com/operator/plugins/diffs/view/id/token");
   });
 
   it("rejects base URLs with query/hash", () => {
@@ -486,7 +486,7 @@ describe("viewer assets", () => {
     const runtime = await getServedViewerAsset(VIEWER_RUNTIME_PATH);
 
     expect(runtime?.contentType).toBe("text/javascript; charset=utf-8");
-    expect(String(runtime?.body)).toContain("openclawDiffsReady");
+    expect(String(runtime?.body)).toContain("operatorDiffsReady");
     expect(String(runtime?.body)).toContain('style.width="24px"');
     expect(String(runtime?.body)).toContain('style.gap="6px"');
   });

@@ -503,8 +503,8 @@ describe("ensureConfigReady", () => {
       "Problem:",
       "  - channels.quietchat: invalid",
       "",
-      `Fix: ${formatCliCommand("openclaw doctor --fix")}`,
-      `Inspect: ${formatCliCommand("openclaw config validate")}`,
+      `Fix: ${formatCliCommand("operator doctor --fix")}`,
+      `Inspect: ${formatCliCommand("operator config validate")}`,
       "Audit, status, health, logs, tasks list/audit, and doctor commands still run with invalid config.",
     ]);
     expect(runtime.exit).toHaveBeenCalledWith(1);
@@ -530,7 +530,7 @@ describe("ensureConfigReady", () => {
     const calls = plainErrorCalls(runtime);
 
     expect(calls).toContain(`Fix: ${pluginPackagingRecoveryHint}`);
-    expect(calls).not.toContain(`Fix: ${formatCliCommand("openclaw doctor --fix")}`);
+    expect(calls).not.toContain(`Fix: ${formatCliCommand("operator doctor --fix")}`);
     expect(runtime.exit).toHaveBeenCalledWith(1);
   });
 

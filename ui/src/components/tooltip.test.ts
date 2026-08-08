@@ -14,7 +14,7 @@ type TooltipProviderElement = HTMLElement & {
 };
 
 function createTooltip(content: string, triggerText = "trigger") {
-  const tooltip = document.createElement("openclaw-tooltip") as TooltipElement;
+  const tooltip = document.createElement("operator-tooltip") as TooltipElement;
   tooltip.content = content;
   const trigger = document.createElement("button");
   trigger.textContent = triggerText;
@@ -23,7 +23,7 @@ function createTooltip(content: string, triggerText = "trigger") {
 }
 
 function createProvider() {
-  return document.createElement("openclaw-tooltip-provider") as TooltipProviderElement;
+  return document.createElement("operator-tooltip-provider") as TooltipProviderElement;
 }
 
 function focusTrigger(trigger: HTMLElement) {
@@ -41,13 +41,13 @@ function webAwesomeTooltip(tooltip: TooltipElement) {
 }
 
 function expectOpenCount(count: number) {
-  const open = [...document.querySelectorAll<TooltipElement>("openclaw-tooltip")].filter(
+  const open = [...document.querySelectorAll<TooltipElement>("operator-tooltip")].filter(
     (tooltip) => webAwesomeTooltip(tooltip)?.open,
   );
   expect(open).toHaveLength(count);
 }
 
-describe("openclaw-tooltip", () => {
+describe("operator-tooltip", () => {
   beforeEach(() => {
     vi.useFakeTimers();
   });

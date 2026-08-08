@@ -19,7 +19,7 @@ import { clearSessionStoreCacheForTest } from "../../../src/config/sessions/stor
 import type { OperatorConfig } from "../../../src/config/types.operator.js";
 import { createUserTurnTranscriptRecorder } from "../../../src/sessions/user-turn-transcript.js";
 import { createTestUserTurnTranscriptTarget } from "../../../src/sessions/user-turn-transcript.test-support.js";
-import { closeOperatorAgentDatabasesForTest } from "../../../src/state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../../src/state/operator-agent-db.js";
 import { registerGeneratedMediaTaskActivity } from "../../../src/tasks/generated-media-task-activity.js";
 import { resetGeneratedMediaTaskActivityForTests } from "../../../src/tasks/task-runtime.test-helpers.js";
 import { captureEnv, setTestEnvValue } from "../../../src/test-utils/env.js";
@@ -412,11 +412,11 @@ describe("CLI attempt execution", () => {
   }
 
   function makeClaudeCliSessionEntry(
-    openclawSessionId: string,
+    operatorSessionId: string,
     cliSessionId: string,
   ): SessionEntry {
     return {
-      sessionId: openclawSessionId,
+      sessionId: operatorSessionId,
       updatedAt: Date.now(),
       cliSessionBindings: {
         "claude-cli": {

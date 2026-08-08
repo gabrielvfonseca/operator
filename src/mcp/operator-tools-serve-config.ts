@@ -19,7 +19,7 @@ export const OPERATOR_TOOLS_MCP_SYSTEM_AGENT_APPROVAL_ARMED_ENV =
 export const OPERATOR_TOOLS_MCP_SYSTEM_AGENT_PROPOSAL_ENV =
   "OPERATOR_TOOLS_MCP_SYSTEM_AGENT_PROPOSAL";
 
-const OPERATOR_TOOLS_MCP_TOOL_IDS = ["cron", "@gabrielvfonseca/operator"] as const;
+const OPERATOR_TOOLS_MCP_TOOL_IDS = ["cron", "operator"] as const;
 export type OperatorToolsMcpToolId = (typeof OPERATOR_TOOLS_MCP_TOOL_IDS)[number];
 
 function isOperatorToolsMcpToolId(value: string): value is OperatorToolsMcpToolId {
@@ -115,7 +115,7 @@ function resolveOperatorToolsServeCommand(): { command: string; args: string[] }
 
 /**
  * Operator CLI-harness runs get exactly one MCP server: this stdio entry
- * serving the ring-zero operator tool. The server keeps the "@gabrielvfonseca/operator" name
+ * serving the ring-zero operator tool. The server keeps the "operator" name
  * so backend tool pre-approvals (e.g. Claude's --allowedTools mcp__operator__*)
  * apply without per-backend argument surgery.
  */
@@ -130,8 +130,7 @@ export function buildSystemAgentToolsMcpServerConfig(
         command: entry.command,
         args: entry.args,
         env: {
-          [OPERATOR_TOOLS_MCP_TOOLS_ENV]:
-            "@gabrielvfonseca/operator" satisfies OperatorToolsMcpToolId,
+          [OPERATOR_TOOLS_MCP_TOOLS_ENV]: "operator" satisfies OperatorToolsMcpToolId,
           [OPERATOR_TOOLS_MCP_SYSTEM_AGENT_SURFACE_ENV]: options.surface,
           // Per-turn approval state travels with the per-run MCP config; the
           // host mirrors proposal transitions back from tool events.

@@ -7,7 +7,7 @@ import {
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createDirListTool } from "./dir-list-tool.js";
 
-vi.mock("openclaw/plugin-sdk/agent-harness-runtime", () => ({
+vi.mock("operator/plugin-sdk/agent-harness-runtime", () => ({
   callGatewayTool: vi.fn(),
   listNodes: vi.fn(),
   resolveNodeIdFromList: vi.fn(),

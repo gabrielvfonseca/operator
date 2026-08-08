@@ -20,12 +20,12 @@ Operational behavior matches [OpenAI Chat Completions](/gateway/openai-http-api)
 - Treat the endpoint as full operator access to the gateway instance.
 - Shared-secret auth modes ignore a narrower bearer-declared `x-operator-scopes` and restore the full default operator scope set: `operator.admin`, `operator.approvals`, `operator.pairing`, `operator.read`, `operator.talk.secrets`, `operator.write`. Chat turns on this endpoint are treated as owner-sender turns.
 - Trusted identity-bearing HTTP modes (trusted-proxy, or `gateway.auth.mode="none"`) honor `x-operator-scopes` when present, otherwise fall back to the operator default scope set. Owner semantics are lost only when the caller explicitly narrows scopes and omits `operator.admin`.
-- Select agents with `model: "@gabrielvfonseca/operator"`, `"openclaw/default"`, `"openclaw/<agentId>"`, or the `x-operator-agent-id` header.
+- Select agents with `model: "@gabrielvfonseca/operator"`, `"operator/default"`, `"operator/<agentId>"`, or the `x-operator-agent-id` header.
 - Use `x-operator-model` to override the selected agent's backend model (requires `operator.admin` on identity-bearing auth paths).
 - Use `x-operator-session-key` for explicit session routing (rejected with `400 invalid_request_error` if it uses a reserved namespace: `subagent:`, `cron:`, `acp:`).
 - Use `x-operator-message-channel` for a non-default synthetic ingress channel context.
 
-For the canonical explanation of agent-target models, `openclaw/default`, embeddings pass-through, and backend model overrides, see [OpenAI Chat Completions](/gateway/openai-http-api#agent-first-model-contract).
+For the canonical explanation of agent-target models, `operator/default`, embeddings pass-through, and backend model overrides, see [OpenAI Chat Completions](/gateway/openai-http-api#agent-first-model-contract).
 
 See [Operator scopes](/gateway/operator-scopes) and [Security](/gateway/security).
 

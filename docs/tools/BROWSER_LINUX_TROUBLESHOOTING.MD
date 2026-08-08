@@ -7,7 +7,7 @@ title: "Browser troubleshooting"
 ## Problem: Failed to start Chrome CDP on port 18800
 
 ```json
-{ "error": "Error: Failed to start Chrome CDP on port 18800 for profile \"openclaw\"." }
+{ "error": "Error: Failed to start Chrome CDP on port 18800 for profile \"operator\"." }
 ```
 
 ### Root cause
@@ -80,7 +80,7 @@ Start Chromium manually:
 ```bash
 chromium-browser --headless --no-sandbox --disable-gpu \
   --remote-debugging-port=18800 \
-  --user-data-dir=$HOME/.operator/browser/openclaw/user-data \
+  --user-data-dir=$HOME/.operator/browser/operator/user-data \
   about:blank &
 ```
 
@@ -93,7 +93,7 @@ Description=Operator Browser (Chrome CDP)
 After=network.target
 
 [Service]
-ExecStart=/snap/bin/chromium --headless --no-sandbox --disable-gpu --remote-debugging-port=18800 --user-data-dir=%h/.operator/browser/openclaw/user-data about:blank
+ExecStart=/snap/bin/chromium --headless --no-sandbox --disable-gpu --remote-debugging-port=18800 --user-data-dir=%h/.operator/browser/operator/user-data about:blank
 Restart=on-failure
 RestartSec=5
 
@@ -155,7 +155,7 @@ Notes:
   limits: ref-driven actions only, one file per upload, no dialog `timeoutMs`
   overrides, no `wait --load networkidle`, and no `responsebody`, PDF export,
   download interception, or batch actions.
-- Local `openclaw`-driver profiles auto-assign `cdpPort`/`cdpUrl`; only set
+- Local `operator`-driver profiles auto-assign `cdpPort`/`cdpUrl`; only set
   those manually for remote CDP.
 - Remote CDP profiles accept `http://`, `https://`, `ws://`, and `wss://`.
   Use HTTP(S) for `/json/version` discovery, or WS(S) when your browser

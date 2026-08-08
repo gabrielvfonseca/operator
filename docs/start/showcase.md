@@ -10,7 +10,7 @@ read_when:
 Community-built Operator projects: PR review loops, mobile apps, home automation, voice systems, devtools, and memory workflows, built chat-native on Telegram, WhatsApp, Discord, and terminals.
 
 <Info>
-**Want to be featured?** Share your project in [#self-promotion on Discord](https://discord.gg/clawd) or [tag @operator on X](https://x.com/openclaw).
+**Want to be featured?** Share your project in [#self-promotion on Discord](https://discord.gg/clawd) or [tag @operator on X](https://x.com/operator).
 </Info>
 
 ## Fresh from Discord
@@ -90,7 +90,7 @@ OpenCode finishes the change, opens a PR, Operator reviews the diff and replies 
 <Card title="Wine Cellar Skill in Minutes" icon="wine-glass" href="https://x.com/i/status/2010916352454791216">
   **@prades_maxime** • `skills` `local` `csv`
 
-Asked "Robby" (@openclaw) for a local wine cellar skill. It requests a sample CSV export and a store path, then builds and tests the skill (962 bottles in the example).
+Asked "Robby" (@operator) for a local wine cellar skill. It requests a sample CSV export and a store path, then builds and tests the skill (962 bottles in the example).
 
   <img src="/assets/showcase/wine-cellar-skill.jpg" alt="Operator building a local wine cellar skill from CSV" />
 </Card>
@@ -433,8 +433,8 @@ Control and automate Home Assistant devices via natural language.
 Native Swift menu bar app showing agent status with quick controls.
 </Card>
 
-<Card title="Nix packaging" icon="snowflake" href="https://github.com/openclaw/nix-openclaw">
-  **@openclaw** • `nix` `packaging` `deployment`
+<Card title="Nix packaging" icon="snowflake" href="https://github.com/operator/nix-operator">
+  **@operator** • `nix` `packaging` `deployment`
 
 Batteries-included nixified Operator configuration for reproducible deployments.
 </Card>
@@ -509,7 +509,7 @@ Open agent-to-agent negotiation: your agent haggles deals, schedules, and servic
 
 <Steps>
   <Step title="Share it">
-    Post in [#self-promotion on Discord](https://discord.gg/clawd) or [tweet @openclaw](https://x.com/openclaw).
+    Post in [#self-promotion on Discord](https://discord.gg/clawd) or [tweet @operator](https://x.com/operator).
   </Step>
   <Step title="Include details">
     Tell us what it does, link to the repo or demo, and share a screenshot if you have one.
@@ -522,5 +522,5 @@ Open agent-to-agent negotiation: your agent haggles deals, schedules, and servic
 ## Related
 
 - [Getting started](/start/getting-started)
-- [Operator](/start/openclaw)
+- [Operator](/start/operator)
 - [Full X showcase on operator.ai](https://operator.ai/showcase/)

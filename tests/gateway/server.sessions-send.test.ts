@@ -24,7 +24,7 @@ import {
   writeSessionStore,
 } from "../../src/gateway/test-helpers.js";
 
-const { createOperatorTools } = await import("../agents/openclaw-tools.js");
+const { createOperatorTools } = await import("../agents/operator-tools.js");
 
 installGatewayTestHooks({ scope: "suite" });
 

@@ -36,7 +36,7 @@ vi.mock("node:child_process", () => ({
   execFileSync: execFileSyncMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/process-runtime", () => ({
+vi.mock("operator/plugin-sdk/process-runtime", () => ({
   runCommandBuffered: spawnCommandMock,
 }));
 
@@ -324,9 +324,9 @@ describeOnWindows("createMxcSandboxBackendHandle (Windows-only MXC backend tests
         SystemRoot: "C:\\Windows",
         SystemDrive: "C:",
         ComSpec: "C:\\Windows\\System32\\cmd.exe",
-        USERPROFILE: "C:\\Users\\openclaw",
-        APPDATA: "C:\\Users\\openclaw\\AppData\\Roaming",
-        LOCALAPPDATA: "C:\\Users\\openclaw\\AppData\\Local",
+        USERPROFILE: "C:\\Users\\operator",
+        APPDATA: "C:\\Users\\operator\\AppData\\Roaming",
+        LOCALAPPDATA: "C:\\Users\\operator\\AppData\\Local",
         ProgramData: "C:\\ProgramData",
         "ProgramFiles(x86)": "C:\\Program Files (x86)",
         NUMBER_OF_PROCESSORS: "8",
@@ -355,9 +355,9 @@ describeOnWindows("createMxcSandboxBackendHandle (Windows-only MXC backend tests
         expect(network.enforcementMode).toBe("capabilities");
         expect(env).toContain("SystemRoot=C:\\Windows");
         expect(env).toContain("SystemDrive=C:");
-        expect(env).toContain("USERPROFILE=C:\\Users\\openclaw");
-        expect(env).toContain("APPDATA=C:\\Users\\openclaw\\AppData\\Roaming");
-        expect(env).toContain("LOCALAPPDATA=C:\\Users\\openclaw\\AppData\\Local");
+        expect(env).toContain("USERPROFILE=C:\\Users\\operator");
+        expect(env).toContain("APPDATA=C:\\Users\\operator\\AppData\\Roaming");
+        expect(env).toContain("LOCALAPPDATA=C:\\Users\\operator\\AppData\\Local");
         expect(env).toContain("ProgramData=C:\\ProgramData");
         expect(env).toContain("ProgramFiles(x86)=C:\\Program Files (x86)");
         expect(env).toContain("NUMBER_OF_PROCESSORS=8");
@@ -1260,7 +1260,7 @@ describeOnWindows("createMxcSandboxBackendHandle (Windows-only MXC backend tests
       {
         SystemRoot: "C:\\Windows",
         SystemDrive: "C:",
-        USERPROFILE: "C:\\Users\\openclaw",
+        USERPROFILE: "C:\\Users\\operator",
         OPERATOR_MXC_SECRET_TEST: "do-not-leak",
       },
       async () => {
@@ -1313,7 +1313,7 @@ describeOnWindows("createMxcSandboxBackendHandle (Windows-only MXC backend tests
         expect(commandLine).toContain('"C:\\workspace\\%%USERPROFILE%%\\file.txt" "0"');
         expect(env).toContain("SystemRoot=C:\\Windows");
         expect(env).toContain("SystemDrive=C:");
-        expect(env).toContain("USERPROFILE=C:\\Users\\openclaw");
+        expect(env).toContain("USERPROFILE=C:\\Users\\operator");
         expect(env.some((entry) => entry.startsWith("OPERATOR_MXC_SECRET_TEST="))).toBe(false);
         expect(launcherEnv?.SystemRoot).toBe("C:\\Windows");
         expect(launcherEnv?.OPERATOR_MXC_SECRET_TEST).toBeUndefined();

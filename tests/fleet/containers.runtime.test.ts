@@ -158,7 +158,7 @@ describe("fleet container runtime", () => {
           State: { Status: "running", Running: true },
           Config: {
             Env: ["OPERATOR_GATEWAY_TOKEN=test-auth-token", "FEATURE=a=b"],
-            Image: "ghcr.io/openclaw/operator:latest",
+            Image: "ghcr.io/operator/operator:latest",
             Labels: { "operator.fleet.tenant": "acme" },
             User: "1000:1000",
           },

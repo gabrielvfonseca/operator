@@ -20,7 +20,7 @@ each entry shape: `defineToolPlugin`, `definePluginEntry`,
 
 ## Package entries
 
-Installed plugins point `package.json` `openclaw` fields at both source and
+Installed plugins point `package.json` `operator` fields at both source and
 built entries:
 
 ```json
@@ -53,7 +53,7 @@ built entries:
 
 ## `defineToolPlugin`
 
-**Import:** `openclaw/plugin-sdk/tool-plugin`
+**Import:** `operator/plugin-sdk/tool-plugin`
 
 For plugins that only add agent tools. Keeps the source small, infers config
 and tool-parameter types from TypeBox schemas, wraps plain return values in
@@ -63,7 +63,7 @@ the Operator tool-result format, and exposes static metadata that
 
 ```typescript
 import { Type } from "typebox";
-import { defineToolPlugin } from "openclaw/plugin-sdk/tool-plugin";
+import { defineToolPlugin } from "operator/plugin-sdk/tool-plugin";
 
 export default defineToolPlugin({
   id: "stock-quotes",
@@ -91,7 +91,7 @@ export default defineToolPlugin({
 - `execute` returns a plain string or JSON-serializable value; the helper
   wraps it as a text tool result with `details` set to the original
   (unstringified) return value.
-- For custom tool results, `openclaw/plugin-sdk/tool-results` exports
+- For custom tool results, `operator/plugin-sdk/tool-results` exports
   `textResult` and `jsonResult`.
 - Tool names are static, so `operator plugins build` derives
   `contracts.tools` from the declared tools without hand-duplicated names.
@@ -101,13 +101,13 @@ export default defineToolPlugin({
 
 ## `definePluginEntry`
 
-**Import:** `openclaw/plugin-sdk/plugin-entry`
+**Import:** `operator/plugin-sdk/plugin-entry`
 
 For provider plugins, advanced tool plugins, hook plugins, and anything that
 is **not** a messaging channel.
 
 ```typescript
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
+import { definePluginEntry } from "operator/plugin-sdk/plugin-entry";
 
 export default definePluginEntry({
   id: "my-plugin",
@@ -134,7 +134,7 @@ export default definePluginEntry({
 
 - `id` must match your `operator.plugin.json` manifest.
 - External session catalogs use
-  `openclaw/plugin-sdk/session-catalog` and
+  `operator/plugin-sdk/session-catalog` and
   `api.registerSessionCatalog({ id, label, list, read, continueSession?, archive? })`.
   Core owns the `sessions.catalog.*` Gateway methods; providers return host,
   session, and normalized transcript projections without registering RPCs.
@@ -153,14 +153,14 @@ export default definePluginEntry({
 
 ## `defineChannelPluginEntry`
 
-**Import:** `openclaw/plugin-sdk/channel-core`
+**Import:** `operator/plugin-sdk/channel-core`
 
 Wraps `definePluginEntry` with channel-specific wiring: it automatically
 calls `api.registerChannel({ plugin })`, exposes an optional root-help CLI
 metadata seam, and gates `registerFull` on registration mode.
 
 ```typescript
-import { defineChannelPluginEntry } from "openclaw/plugin-sdk/channel-core";
+import { defineChannelPluginEntry } from "operator/plugin-sdk/channel-core";
 
 export default defineChannelPluginEntry({
   id: "my-channel",
@@ -236,13 +236,13 @@ CLI registration:
 
 ## `defineSetupPluginEntry`
 
-**Import:** `openclaw/plugin-sdk/channel-core`
+**Import:** `operator/plugin-sdk/channel-core`
 
 For the lightweight `setup-entry.ts` file. Returns just `{ plugin }` with no
 runtime or CLI wiring.
 
 ```typescript
-import { defineSetupPluginEntry } from "openclaw/plugin-sdk/channel-core";
+import { defineSetupPluginEntry } from "operator/plugin-sdk/channel-core";
 
 export default defineSetupPluginEntry(myChannelPlugin);
 ```
@@ -255,21 +255,21 @@ Pair `defineSetupPluginEntry(...)` with the narrow setup helper families:
 
 | Import                              | Use for                                                                                                                                                                            |
 | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `openclaw/plugin-sdk/setup-runtime` | Runtime-safe setup helpers: `createSetupTranslator`, import-safe setup patch adapters, lookup-note output, `promptResolvedAllowFrom`, `splitSetupEntries`, delegated setup proxies |
-| `openclaw/plugin-sdk/channel-setup` | Optional-install setup surfaces                                                                                                                                                    |
-| `openclaw/plugin-sdk/setup-tools`   | Setup/install CLI, archive, and docs helpers                                                                                                                                       |
+| `operator/plugin-sdk/setup-runtime` | Runtime-safe setup helpers: `createSetupTranslator`, import-safe setup patch adapters, lookup-note output, `promptResolvedAllowFrom`, `splitSetupEntries`, delegated setup proxies |
+| `operator/plugin-sdk/channel-setup` | Optional-install setup surfaces                                                                                                                                                    |
+| `operator/plugin-sdk/setup-tools`   | Setup/install CLI, archive, and docs helpers                                                                                                                                       |
 
 Keep heavy SDKs, CLI registration, and long-lived runtime services in the
 full entry.
 
 Bundled workspace channels that split setup and runtime surfaces can use
 `defineBundledChannelSetupEntry(...)` from
-`openclaw/plugin-sdk/channel-entry-contract` instead. It lets the setup
+`operator/plugin-sdk/channel-entry-contract` instead. It lets the setup
 entry keep setup-safe plugin/secrets exports while still exposing a runtime
 setter:
 
 ```typescript
-import { defineBundledChannelSetupEntry } from "openclaw/plugin-sdk/channel-entry-contract";
+import { defineBundledChannelSetupEntry } from "operator/plugin-sdk/channel-entry-contract";
 
 export default defineBundledChannelSetupEntry({
   importMetaUrl: import.meta.url,

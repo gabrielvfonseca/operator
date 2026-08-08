@@ -62,7 +62,7 @@ const mocks = vi.hoisted(() => ({
   loadInstalledPluginIndexInstallRecords: vi.fn(),
   loadPluginMetadataSnapshot: vi.fn(),
   getOfficialExternalPluginCatalogManifest: vi.fn(
-    (entry: { openclaw?: unknown }) => entry.operator,
+    (entry: { operator?: unknown }) => entry.operator,
   ),
   resolveOfficialExternalPluginId: vi.fn((entry: { id?: string }) => entry.id),
   resolveOfficialExternalPluginInstall: vi.fn(
@@ -295,7 +295,7 @@ describe("repairMissingConfiguredPluginInstalls", () => {
           }
           const candidate = entry as {
             id?: string;
-            openclaw?: {
+            operator?: {
               plugin?: { id?: string };
               contracts?: Record<string, unknown>;
             };
@@ -332,7 +332,7 @@ describe("repairMissingConfiguredPluginInstalls", () => {
           }
           const candidate = entry as {
             id?: string;
-            openclaw?: {
+            operator?: {
               plugin?: { id?: string };
               providers?: Array<{ id?: string; aliases?: string[] }>;
             };
@@ -432,7 +432,7 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       checkId: "core/doctor/configured-plugin-installs",
       severity: "warning",
       target: "matrix",
-      fixHint: "Run `openclaw doctor --fix` to install @gabrielvfonseca/plugin-matrix@1.2.3.",
+      fixHint: "Run `operator doctor --fix` to install @gabrielvfonseca/plugin-matrix@1.2.3.",
     });
     expect(
       configuredPluginInstallIssueToRepairEffect(expectDefined(issue, "issue test invariant")),
@@ -711,7 +711,7 @@ describe("repairMissingConfiguredPluginInstalls", () => {
     });
 
     expect(result.warnings[0]).toContain(
-      "openclaw plugins install clawhub:@gabrielvfonseca/plugin-matrix@stable --acknowledge-clawhub-risk",
+      "operator plugins install clawhub:@gabrielvfonseca/plugin-matrix@stable --acknowledge-clawhub-risk",
     );
   });
 
@@ -801,10 +801,10 @@ describe("repairMissingConfiguredPluginInstalls", () => {
 
     const warning = result.warnings[0] ?? "";
     expect(warning).toContain(
-      "openclaw plugins install 'clawhub:@gabrielvfonseca/plugin-matrix\\n@stable;$(touch /tmp/pwned)' --acknowledge-clawhub-risk",
+      "operator plugins install 'clawhub:@gabrielvfonseca/plugin-matrix\\n@stable;$(touch /tmp/pwned)' --acknowledge-clawhub-risk",
     );
     expect(warning).not.toContain(
-      "openclaw plugins install clawhub:@gabrielvfonseca/plugin-matrix\\n@stable;$(touch /tmp/pwned) --acknowledge-clawhub-risk",
+      "operator plugins install clawhub:@gabrielvfonseca/plugin-matrix\\n@stable;$(touch /tmp/pwned) --acknowledge-clawhub-risk",
     );
     expect(warning).not.toContain("\u001b");
     expect(warning).not.toContain("plugin-matrix\n");
@@ -1654,11 +1654,11 @@ describe("repairMissingConfiguredPluginInstalls", () => {
     expect(mocks.writePersistedInstalledPluginIndexInstallRecords).not.toHaveBeenCalled();
     expect(result).toEqual({
       changes: [
-        'Skipped package-manager repair for configured plugin "discord" during package update; rerun "openclaw doctor --fix" after the update completes.',
+        'Skipped package-manager repair for configured plugin "discord" during package update; rerun "operator doctor --fix" after the update completes.',
       ],
       warnings: [],
       deferredRepairDetails: [
-        'Skipped package-manager repair for configured plugin "discord" during package update; rerun "openclaw doctor --fix" after the update completes.',
+        'Skipped package-manager repair for configured plugin "discord" during package update; rerun "operator doctor --fix" after the update completes.',
       ],
       records,
     });
@@ -1666,7 +1666,7 @@ describe("repairMissingConfiguredPluginInstalls", () => {
 
   it("updates an existing npm target when stale baseline records miss an installed package", async () => {
     const npmRoot = makeTempDir();
-    const packageDir = path.join(npmRoot, "node_modules", "@openclaw", "discord");
+    const packageDir = path.join(npmRoot, "node_modules", "@operator", "discord");
     fs.mkdirSync(packageDir, { recursive: true });
     mocks.resolveDefaultPluginNpmDir.mockReturnValue(npmRoot);
     mocks.listChannelPluginCatalogEntries.mockReturnValue([
@@ -1728,7 +1728,7 @@ describe("repairMissingConfiguredPluginInstalls", () => {
 
   it("retries npm repair as an update when the install target appears stale", async () => {
     const npmRoot = makeTempDir();
-    const packageDir = path.join(npmRoot, "node_modules", "@openclaw", "discord");
+    const packageDir = path.join(npmRoot, "node_modules", "@operator", "discord");
     mocks.resolveDefaultPluginNpmDir.mockReturnValue(npmRoot);
     mocks.listChannelPluginCatalogEntries.mockReturnValue([
       {
@@ -1792,7 +1792,7 @@ describe("repairMissingConfiguredPluginInstalls", () => {
 
   it("prefers an existing npm payload over ClawHub during post-core repair", async () => {
     const npmRoot = makeTempDir();
-    const packageDir = path.join(npmRoot, "node_modules", "@openclaw", "matrix");
+    const packageDir = path.join(npmRoot, "node_modules", "@operator", "matrix");
     fs.mkdirSync(packageDir, { recursive: true });
     fs.writeFileSync(
       path.join(packageDir, "package.json"),
@@ -2029,11 +2029,11 @@ describe("repairMissingConfiguredPluginInstalls", () => {
     expect(mocks.writePersistedInstalledPluginIndexInstallRecords).not.toHaveBeenCalled();
     expect(result).toEqual({
       changes: [
-        'Skipped package-manager repair for configured plugin "discord" during package update; rerun "openclaw doctor --fix" after the update completes.',
+        'Skipped package-manager repair for configured plugin "discord" during package update; rerun "operator doctor --fix" after the update completes.',
       ],
       warnings: [],
       deferredRepairDetails: [
-        'Skipped package-manager repair for configured plugin "discord" during package update; rerun "openclaw doctor --fix" after the update completes.',
+        'Skipped package-manager repair for configured plugin "discord" during package update; rerun "operator doctor --fix" after the update completes.',
       ],
       records,
     });
@@ -2354,7 +2354,7 @@ describe("repairMissingConfiguredPluginInstalls", () => {
                   transport: "stdio-proxy",
                   command: "codex",
                   args: ["app-server", "--listen", "stdio://"],
-                  cwd: "/tmp/openclaw",
+                  cwd: "/tmp/operator",
                 },
               ],
               allowRawTranscripts: true,
@@ -2380,7 +2380,7 @@ describe("repairMissingConfiguredPluginInstalls", () => {
               transport: "stdio-proxy",
               command: "codex",
               args: ["app-server", "--listen", "stdio://"],
-              cwd: "/tmp/openclaw",
+              cwd: "/tmp/operator",
             },
           ],
           allowRawTranscripts: true,
@@ -3358,7 +3358,7 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     };
     const repairWarning =
-      'Could not repair openclaw peer link for "demo" at /tmp/operator-plugins/demo: permission denied';
+      'Could not repair operator peer link for "demo" at /tmp/operator-plugins/demo: permission denied';
     mocks.loadInstalledPluginIndexInstallRecords.mockResolvedValue(records);
     mocks.updateNpmInstalledPlugins.mockImplementationOnce(
       async (params: {
@@ -3511,7 +3511,7 @@ describe("repairMissingConfiguredPluginInstalls", () => {
     });
 
     expect(result.warnings[0]).toContain(
-      "openclaw plugins install clawhub:@gabrielvfonseca/plugin-demo@1.0.0 --acknowledge-clawhub-risk",
+      "operator plugins install clawhub:@gabrielvfonseca/plugin-demo@1.0.0 --acknowledge-clawhub-risk",
     );
   });
 
@@ -3553,7 +3553,7 @@ describe("repairMissingConfiguredPluginInstalls", () => {
     });
 
     expect(result.warnings[0]).toContain(
-      "openclaw plugins install clawhub:@gabrielvfonseca/plugin-demo --acknowledge-clawhub-risk",
+      "operator plugins install clawhub:@gabrielvfonseca/plugin-demo --acknowledge-clawhub-risk",
     );
   });
 
@@ -4448,15 +4448,15 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
     mocks.resolveOfficialExternalPluginId.mockImplementation(
-      (entry: { id?: string; openclaw?: { plugin?: { id?: string } } }) =>
+      (entry: { id?: string; operator?: { plugin?: { id?: string } } }) =>
         entry.operator?.plugin?.id ?? entry.id,
     );
     mocks.resolveOfficialExternalPluginInstall.mockImplementation(
-      (entry: { install?: unknown; openclaw?: { install?: unknown } }) =>
+      (entry: { install?: unknown; operator?: { install?: unknown } }) =>
         entry.operator?.install ?? entry.install ?? null,
     );
     mocks.resolveOfficialExternalPluginLabel.mockImplementation(
-      (entry: { label?: string; openclaw?: { plugin?: { label?: string } } }) =>
+      (entry: { label?: string; operator?: { plugin?: { label?: string } } }) =>
         entry.operator?.plugin?.label ?? entry.label ?? "plugin",
     );
     mocks.installPluginFromNpmSpec.mockResolvedValueOnce({
@@ -4873,15 +4873,15 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
     mocks.resolveOfficialExternalPluginId.mockImplementation(
-      (entry: { id?: string; openclaw?: { plugin?: { id?: string } } }) =>
+      (entry: { id?: string; operator?: { plugin?: { id?: string } } }) =>
         entry.operator?.plugin?.id ?? entry.id,
     );
     mocks.resolveOfficialExternalPluginInstall.mockImplementation(
-      (entry: { install?: unknown; openclaw?: { install?: unknown } }) =>
+      (entry: { install?: unknown; operator?: { install?: unknown } }) =>
         entry.operator?.install ?? entry.install ?? null,
     );
     mocks.resolveOfficialExternalPluginLabel.mockImplementation(
-      (entry: { label?: string; openclaw?: { plugin?: { label?: string } } }) =>
+      (entry: { label?: string; operator?: { plugin?: { label?: string } } }) =>
         entry.operator?.plugin?.label ?? entry.label ?? "plugin",
     );
     mocks.installPluginFromNpmSpec.mockResolvedValueOnce({
@@ -5081,15 +5081,15 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
     mocks.resolveOfficialExternalPluginId.mockImplementation(
-      (entry: { id?: string; openclaw?: { plugin?: { id?: string } } }) =>
+      (entry: { id?: string; operator?: { plugin?: { id?: string } } }) =>
         entry.operator?.plugin?.id ?? entry.id,
     );
     mocks.resolveOfficialExternalPluginInstall.mockImplementation(
-      (entry: { install?: unknown; openclaw?: { install?: unknown } }) =>
+      (entry: { install?: unknown; operator?: { install?: unknown } }) =>
         entry.operator?.install ?? entry.install ?? null,
     );
     mocks.resolveOfficialExternalPluginLabel.mockImplementation(
-      (entry: { label?: string; openclaw?: { plugin?: { label?: string } } }) =>
+      (entry: { label?: string; operator?: { plugin?: { label?: string } } }) =>
         entry.operator?.plugin?.label ?? entry.label ?? "plugin",
     );
 

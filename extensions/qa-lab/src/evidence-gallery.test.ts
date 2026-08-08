@@ -380,7 +380,7 @@ describe("evidence gallery", () => {
           coverageIds: ["cli.entrypoint"],
           runner: {
             availability: "local",
-            command: "pnpm openclaw qa suite --scenario ux-matrix-evidence-dashboard",
+            command: "pnpm operator qa suite --scenario ux-matrix-evidence-dashboard",
             lane: "cli-status",
             workflow: ".github/workflows/ux-matrix-qa.yml#ux-matrix-local",
           },
@@ -549,7 +549,7 @@ describe("evidence gallery", () => {
         coverageIds: ["cli.entrypoint"],
         runner: {
           availability: "local",
-          command: "pnpm openclaw qa suite --scenario ux-matrix-evidence-dashboard",
+          command: "pnpm operator qa suite --scenario ux-matrix-evidence-dashboard",
           lane: "cli-status",
           workflow: ".github/workflows/ux-matrix-qa.yml#ux-matrix-local",
         },

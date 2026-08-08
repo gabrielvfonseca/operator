@@ -54,7 +54,7 @@ type OpenAIRealtimeBrowserResponseReader = (
 ) => Promise<string>;
 
 type OpenAIWebRtcSmokeGlobal = typeof globalThis & {
-  openclawReadBoundedRealtimeResponseText?: OpenAIRealtimeBrowserResponseReader;
+  operatorReadBoundedRealtimeResponseText?: OpenAIRealtimeBrowserResponseReader;
 };
 
 class CliArgumentError extends Error {

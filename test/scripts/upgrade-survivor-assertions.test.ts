@@ -18,7 +18,7 @@ function writeMigratedSessionState(stateDir: string): void {
   mkdirSync(agentSessionsDir, { recursive: true });
   mkdirSync(agentDbDir, { recursive: true });
 
-  const db = new DatabaseSync(join(agentDbDir, "openclaw-agent.sqlite"));
+  const db = new DatabaseSync(join(agentDbDir, "operator-agent.sqlite"));
   try {
     db.exec(`
       CREATE TABLE sessions (
@@ -103,7 +103,7 @@ function writeMigratedSessionState(stateDir: string): void {
 }
 
 function assertConfiguredPluginState(params: { installPath?: string } = {}): void {
-  const root = mkdtempSync(join(tmpdir(), "openclaw-upgrade-survivor-"));
+  const root = mkdtempSync(join(tmpdir(), "operator-upgrade-survivor-"));
   try {
     const stateDir = join(root, "state");
     const workspace = join(root, "workspace");
@@ -163,12 +163,12 @@ describe("upgrade survivor assertions", () => {
     ) as string[];
 
     expect(scenarios).toContain("base");
-    expect(scenarios).toContain("acpx-openclaw-tools-bridge");
+    expect(scenarios).toContain("acpx-operator-tools-bridge");
     expect(new Set(scenarios).size).toBe(scenarios.length);
   });
 
-  it("accepts the ACPX OpenClaw tools bridge scenario during seed", () => {
-    const root = mkdtempSync(join(tmpdir(), "openclaw-upgrade-survivor-acpx-"));
+  it("accepts the ACPX Operator tools bridge scenario during seed", () => {
+    const root = mkdtempSync(join(tmpdir(), "operator-upgrade-survivor-acpx-"));
     try {
       const stateDir = join(root, "state");
       const workspace = join(root, "workspace");
@@ -180,7 +180,7 @@ describe("upgrade survivor assertions", () => {
           ...process.env,
           OPENCLAW_STATE_DIR: stateDir,
           OPENCLAW_TEST_WORKSPACE_DIR: workspace,
-          OPENCLAW_UPGRADE_SURVIVOR_SCENARIO: "acpx-openclaw-tools-bridge",
+          OPENCLAW_UPGRADE_SURVIVOR_SCENARIO: "acpx-operator-tools-bridge",
         },
         stdio: "pipe",
       });
@@ -189,10 +189,10 @@ describe("upgrade survivor assertions", () => {
     }
   });
 
-  it("asserts the ACPX OpenClaw tools bridge config survived", () => {
-    const root = mkdtempSync(join(tmpdir(), "openclaw-upgrade-survivor-acpx-config-"));
+  it("asserts the ACPX Operator tools bridge config survived", () => {
+    const root = mkdtempSync(join(tmpdir(), "operator-upgrade-survivor-acpx-config-"));
     try {
-      const configPath = join(root, "openclaw.json");
+      const configPath = join(root, "operator.json");
       const coveragePath = join(root, "coverage.json");
       writeJson(configPath, {
         plugins: {
@@ -208,7 +208,7 @@ describe("upgrade survivor assertions", () => {
         },
       });
       writeJson(coveragePath, {
-        acceptedIntents: ["acpx-openclaw-tools-bridge"],
+        acceptedIntents: ["acpx-operator-tools-bridge"],
         skippedIntents: [],
       });
 
@@ -217,7 +217,7 @@ describe("upgrade survivor assertions", () => {
           ...process.env,
           OPENCLAW_CONFIG_PATH: configPath,
           OPENCLAW_UPGRADE_SURVIVOR_CONFIG_COVERAGE_JSON: coveragePath,
-          OPENCLAW_UPGRADE_SURVIVOR_SCENARIO: "acpx-openclaw-tools-bridge",
+          OPENCLAW_UPGRADE_SURVIVOR_SCENARIO: "acpx-operator-tools-bridge",
         },
         stdio: "pipe",
       });
@@ -231,7 +231,7 @@ describe("upgrade survivor assertions", () => {
   });
 
   it("rejects ClawHub npm-pack installs outside the managed extensions root", () => {
-    const root = mkdtempSync(join(tmpdir(), "openclaw-upgrade-survivor-outside-"));
+    const root = mkdtempSync(join(tmpdir(), "operator-upgrade-survivor-outside-"));
     try {
       expect(() =>
         assertConfiguredPluginState({ installPath: join(root, "outside-matrix") }),

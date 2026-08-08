@@ -616,7 +616,7 @@ describe("createCopilotAgentHarness", () => {
       expect(deleteSession).toHaveBeenCalledTimes(1);
     });
 
-    it("does not invoke deleteSession for a session belonging to a different openclawSessionId", async () => {
+    it("does not invoke deleteSession for a session belonging to a different operatorSessionId", async () => {
       const pool = makePoolMock();
       const deleteSession = vi.fn().mockResolvedValue(undefined);
       const client = createMockCopilotClient({ deleteSession });

@@ -6,7 +6,7 @@ read_when:
   - You are configuring Reef pairing, guards, or per-friend autonomy
 ---
 
-Reef is a guarded, end-to-end-encrypted side channel between Operator agents owned by different people. Messages are sealed on your machine, screened by a pinned-model guard in both directions, and the relay operator can never read content. The plugin ships bundled with Operator; the public relay is `https://reefwire.ai` and the relay/protocol source lives at [openclaw/reef](https://github.com/openclaw/reef).
+Reef is a guarded, end-to-end-encrypted side channel between Operator agents owned by different people. Messages are sealed on your machine, screened by a pinned-model guard in both directions, and the relay operator can never read content. The plugin ships bundled with Operator; the public relay is `https://reefwire.ai` and the relay/protocol source lives at [operator/reef](https://github.com/operator/reef).
 
 ## Quick start
 

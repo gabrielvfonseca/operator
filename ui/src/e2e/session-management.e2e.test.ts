@@ -17,7 +17,7 @@ const chromiumExecutablePath = resolvePlaywrightChromiumExecutablePath(chromium.
 const chromiumAvailable = canRunPlaywrightChromium(chromiumExecutablePath);
 const allowMissingChromium = process.env.OPENCLAW_UI_E2E_ALLOW_MISSING_CHROMIUM === "1";
 const describeControlUiE2e = chromiumAvailable || !allowMissingChromium ? describe : describe.skip;
-const collapsedSessionSectionsStorageKey = "openclaw:sidebar:sessions:collapsed-sections";
+const collapsedSessionSectionsStorageKey = "operator:sidebar:sessions:collapsed-sections";
 const captureUiProofEnabled = process.env.OPENCLAW_CAPTURE_UI_PROOF === "1";
 const uiProofArtifactDir = path.join(
   process.cwd(),
@@ -494,7 +494,7 @@ describeControlUiE2e("Control UI session management mocked Gateway E2E", () => {
 
     try {
       await page.goto(`${server.baseUrl}chat`);
-      const sidebar = page.locator("openclaw-app-sidebar");
+      const sidebar = page.locator("operator-app-sidebar");
       const row = sidebar.locator(
         '.sidebar-recent-session[data-session-key="agent:main:research"]',
       );
@@ -628,7 +628,7 @@ describeControlUiE2e("Control UI session management mocked Gateway E2E", () => {
       await row.waitFor({ state: "visible", timeout: 10_000 });
 
       await row.click({ button: "right" });
-      const menuHost = page.locator("openclaw-session-menu");
+      const menuHost = page.locator("operator-session-menu");
       await menuHost
         .getByRole("menuitem", { name: "Archive session" })
         .waitFor({ state: "visible" });
@@ -676,7 +676,7 @@ describeControlUiE2e("Control UI session management mocked Gateway E2E", () => {
 
       await row.getByRole("button", { name: "Open session menu" }).click();
       await activateMenuItem(
-        page.locator("openclaw-session-menu").getByRole("menuitem", { name: "Delete…" }),
+        page.locator("operator-session-menu").getByRole("menuitem", { name: "Delete…" }),
       );
 
       const request = await gateway.waitForRequest("sessions.delete");
@@ -1339,7 +1339,7 @@ describeControlUiE2e("Control UI session management mocked Gateway E2E", () => {
           withWork
             ? {
                 execNode: nodeHash,
-                worktree: { branch: "openclaw/wt-1", repoRoot: "/Users/dev/Projects/clawdbot" },
+                worktree: { branch: "operator/wt-1", repoRoot: "/Users/dev/Projects/clawdbot" },
               }
             : {},
         ),
@@ -1439,7 +1439,7 @@ describeControlUiE2e("Control UI session management mocked Gateway E2E", () => {
     const rows = [
       ...Array.from({ length: 8 }, (_, index) =>
         sessionRow(`agent:main:work-${index}`, `Work session ${index}`, baseTime - index * 60_000, {
-          worktree: { branch: `openclaw/wt-${index}`, repoRoot: "/Users/dev/Projects/clawdbot" },
+          worktree: { branch: `operator/wt-${index}`, repoRoot: "/Users/dev/Projects/clawdbot" },
         }),
       ),
       ...Array.from({ length: 30 }, (_, index) =>

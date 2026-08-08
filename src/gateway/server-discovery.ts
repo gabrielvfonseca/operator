@@ -19,7 +19,7 @@ export function formatBonjourInstanceName(displayName: string) {
   if (!trimmed) {
     return "Operator";
   }
-  if (/openclaw/i.test(trimmed)) {
+  if (/operator/i.test(trimmed)) {
     return trimmed;
   }
   return `${trimmed} (Operator)`;

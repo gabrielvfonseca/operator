@@ -29,9 +29,9 @@ type CronStoreWrite = {
   jobs: Array<{ id: string; delivery: { channel: string; to: string } }>;
 };
 
-vi.mock("openclaw/plugin-sdk/config-mutation", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/config-mutation")>(
-    "openclaw/plugin-sdk/config-mutation",
+vi.mock("operator/plugin-sdk/config-mutation", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/config-mutation")>(
+    "operator/plugin-sdk/config-mutation",
   );
   return {
     ...actual,
@@ -41,9 +41,9 @@ vi.mock("openclaw/plugin-sdk/config-mutation", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/cron-store-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/cron-store-runtime")>(
-    "openclaw/plugin-sdk/cron-store-runtime",
+vi.mock("operator/plugin-sdk/cron-store-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/cron-store-runtime")>(
+    "operator/plugin-sdk/cron-store-runtime",
   );
   return {
     ...actual,

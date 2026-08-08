@@ -492,12 +492,12 @@ function primeBlockedPluginConfigMutation(
   const configPath = path.join(process.cwd(), "operator.json5");
   const externalPluginsPath = path.join(
     path.parse(process.cwd()).root,
-    "external-openclaw",
+    "external-operator",
     "plugins.json5",
   );
   const externalHooksPath = path.join(
     path.parse(process.cwd()).root,
-    "external-openclaw",
+    "external-operator",
     "hooks.json5",
   );
   const config = params.config ?? ({} as OperatorConfig);
@@ -602,7 +602,7 @@ function primeBlockedHookConfigMutation(config = {} as OperatorConfig): void {
   const configPath = path.join(process.cwd(), "operator.json5");
   const externalHooksPath = path.join(
     path.parse(process.cwd()).root,
-    "external-openclaw",
+    "external-operator",
     "hooks.json5",
   );
   const parsed = { hooks: { $include: externalHooksPath } };
@@ -1198,7 +1198,7 @@ describe("plugins cli install", () => {
     ).rejects.toThrow("__exit__:1");
 
     expect(runtimeErrors.at(-1)).toContain("--link is not supported with --marketplace.");
-    expect(runtimeErrors.at(-1)).toContain("openclaw plugins install --link <path> --force");
+    expect(runtimeErrors.at(-1)).toContain("operator plugins install --link <path> --force");
     expect(installPluginFromMarketplace).not.toHaveBeenCalled();
   });
 
@@ -1261,7 +1261,7 @@ describe("plugins cli install", () => {
     ).rejects.toThrow("__exit__:1");
 
     expect(runtimeErrors.at(-1)).toContain(
-      "Config invalid; run `openclaw doctor --fix` before installing plugins.",
+      "Config invalid; run `operator doctor --fix` before installing plugins.",
     );
     expect(installPluginFromMarketplace).not.toHaveBeenCalled();
     expect(installPluginFromNpmSpec).not.toHaveBeenCalled();
@@ -2505,7 +2505,7 @@ describe("plugins cli install", () => {
     ).rejects.toThrow("__exit__:1");
 
     expect(installPluginFromGitSpec).not.toHaveBeenCalled();
-    expect(runtimeErrors.at(-1)).toContain("openclaw plugins install git:<repo>@<ref> --force");
+    expect(runtimeErrors.at(-1)).toContain("operator plugins install git:<repo>@<ref> --force");
   });
 
   it("passes dangerous force unsafe install to marketplace installs", async () => {
@@ -2698,7 +2698,7 @@ describe("plugins cli install", () => {
     installPluginFromNpmSpec.mockResolvedValue({
       ok: false,
       error:
-        "plugin already exists: /home/openclaw/.operator/extensions/lossless-claw (delete it first)",
+        "plugin already exists: /home/operator/.operator/extensions/lossless-claw (delete it first)",
     });
     installHooksFromNpmSpec.mockResolvedValue({
       ok: false,
@@ -2710,7 +2710,7 @@ describe("plugins cli install", () => {
     ).rejects.toThrow("__exit__:1");
 
     expect(runtimeErrors.at(-1)).toContain(
-      "Use `openclaw plugins update <id-or-npm-spec>` to upgrade the tracked plugin, or rerun install with `--force` to replace it.",
+      "Use `operator plugins update <id-or-npm-spec>` to upgrade the tracked plugin, or rerun install with `--force` to replace it.",
     );
     expect(runtimeErrors.at(-1)).not.toContain("Also not a valid hook pack");
   });
@@ -3061,7 +3061,7 @@ describe("plugins cli install", () => {
     parseClawHubPluginSpec.mockReturnValue({ name: "demo" });
     installPluginFromClawHub.mockResolvedValue({
       ok: false,
-      error: 'Use "openclaw skills install demo" instead.',
+      error: 'Use "operator skills install demo" instead.',
       code: "skill_package",
     });
 
@@ -3070,7 +3070,7 @@ describe("plugins cli install", () => {
     );
 
     expect(installPluginFromNpmSpec).not.toHaveBeenCalled();
-    expect(runtimeErrors.at(-1)).toContain('Use "openclaw skills install demo" instead.');
+    expect(runtimeErrors.at(-1)).toContain('Use "operator skills install demo" instead.');
   });
 
   it("falls back to installing hook packs from npm specs", async () => {

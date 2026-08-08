@@ -1084,7 +1084,7 @@ describe("mention helpers", () => {
   it("builds regexes and skips invalid or unsafe patterns", () => {
     const regexes = buildMentionRegexes({
       messages: {
-        groupChat: { mentionPatterns: ["\\bopenclaw\\b", "(invalid", "(a+)+$"] },
+        groupChat: { mentionPatterns: ["\\boperator\\b", "(invalid", "(a+)+$"] },
       },
     });
     expect(regexes).toHaveLength(1);
@@ -1097,7 +1097,7 @@ describe("mention helpers", () => {
 
   it("matches patterns case-insensitively", () => {
     const regexes = buildMentionRegexes({
-      messages: { groupChat: { mentionPatterns: ["\\bopenclaw\\b"] } },
+      messages: { groupChat: { mentionPatterns: ["\\boperator\\b"] } },
     });
     expect(matchesMentionPatterns("OPERATOR: hi", regexes)).toBe(true);
   });
@@ -1107,7 +1107,7 @@ describe("mention helpers", () => {
       messages: { groupChat: { mentionPatterns: [".*"] } },
     });
     const specificRegexes = buildMentionRegexes({
-      messages: { groupChat: { mentionPatterns: ["\\bopenclaw\\b"] } },
+      messages: { groupChat: { mentionPatterns: ["\\boperator\\b"] } },
     });
 
     expect(matchesMentionPatterns("", catchAllRegexes)).toBe(true);
@@ -1139,7 +1139,7 @@ describe("mention helpers", () => {
     const cfg = {
       messages: {
         groupChat: {
-          mentionPatterns: ["\\bopenclaw\\b"],
+          mentionPatterns: ["\\boperator\\b"],
         },
       },
       channels: {
@@ -1169,7 +1169,7 @@ describe("mention helpers", () => {
     const regexes = buildMentionRegexes({
       messages: {
         groupChat: {
-          mentionPatterns: ["\\bopenclaw\\b"],
+          mentionPatterns: ["\\boperator\\b"],
         },
       },
     });
@@ -1181,7 +1181,7 @@ describe("mention helpers", () => {
     const cfg = {
       messages: {
         groupChat: {
-          mentionPatterns: ["\\bopenclaw\\b"],
+          mentionPatterns: ["\\boperator\\b"],
         },
       },
       channels: {
@@ -1211,9 +1211,9 @@ describe("mention helpers", () => {
   });
 
   it("strips safe mention patterns and ignores unsafe ones", () => {
-    const stripped = stripMentions(`openclaw ${"a".repeat(28)}!`, {} as MsgContext, {
+    const stripped = stripMentions(`operator ${"a".repeat(28)}!`, {} as MsgContext, {
       messages: {
-        groupChat: { mentionPatterns: ["\\bopenclaw\\b", "(a+)+$"] },
+        groupChat: { mentionPatterns: ["\\boperator\\b", "(a+)+$"] },
       },
     });
     expect(stripped).toBe(`${"a".repeat(28)}!`);

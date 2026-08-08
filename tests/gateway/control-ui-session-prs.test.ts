@@ -44,7 +44,7 @@ function pullListItem(overrides: Record<string, unknown> = {}): Record<string, u
   return {
     number: 103469,
     title: "fix(macos): tighten the link-browser tab header",
-    html_url: "https://github.com/openclaw/openclaw/pull/103469",
+    html_url: "https://github.com/operator/operator/pull/103469",
     state: "open",
     draft: false,
     merged_at: null,
@@ -69,16 +69,16 @@ let cacheEvictionEpoch = 0;
 describe("parseGitHubRemoteUrl", () => {
   it("parses https, scp-like, and ssh remotes", () => {
     const expected = { owner: "@gabrielvfonseca/operator", repo: "@gabrielvfonseca/operator" };
-    expect(parseGitHubRemoteUrl("https://github.com/openclaw/operator.git")).toEqual(expected);
-    expect(parseGitHubRemoteUrl("https://github.com/openclaw/openclaw")).toEqual(expected);
-    expect(parseGitHubRemoteUrl("git@github.com:openclaw/operator.git")).toEqual(expected);
-    expect(parseGitHubRemoteUrl("ssh://git@github.com/openclaw/operator.git")).toEqual(expected);
+    expect(parseGitHubRemoteUrl("https://github.com/operator/operator.git")).toEqual(expected);
+    expect(parseGitHubRemoteUrl("https://github.com/operator/operator")).toEqual(expected);
+    expect(parseGitHubRemoteUrl("git@github.com:operator/operator.git")).toEqual(expected);
+    expect(parseGitHubRemoteUrl("ssh://git@github.com/operator/operator.git")).toEqual(expected);
   });
 
   it("rejects non-GitHub and malformed remotes", () => {
-    expect(parseGitHubRemoteUrl("https://gitlab.com/openclaw/operator.git")).toBeNull();
-    expect(parseGitHubRemoteUrl("git@github.com:openclaw")).toBeNull();
-    expect(parseGitHubRemoteUrl("https://github.com/openclaw/openclaw/extra")).toBeNull();
+    expect(parseGitHubRemoteUrl("https://gitlab.com/operator/operator.git")).toBeNull();
+    expect(parseGitHubRemoteUrl("git@github.com:operator")).toBeNull();
+    expect(parseGitHubRemoteUrl("https://github.com/operator/operator/extra")).toBeNull();
     expect(parseGitHubRemoteUrl("/local/path/repo.git")).toBeNull();
   });
 });
@@ -165,12 +165,12 @@ describe("loadControlUiSessionPullRequests", () => {
           repo: "@gabrielvfonseca/operator",
           branch: context.branch,
           title: "fix(macos): tighten the link-browser tab header",
-          url: "https://github.com/openclaw/openclaw/pull/103469",
+          url: "https://github.com/operator/operator/pull/103469",
           state: "open",
           additions: 4,
           deletions: 3,
           checks: { state: "passing", passed: 1, failed: 0, skipped: 1, running: 0 },
-          checksUrl: "https://github.com/openclaw/openclaw/pull/103469/checks",
+          checksUrl: "https://github.com/operator/operator/pull/103469/checks",
         },
       ],
       branch: {
@@ -178,7 +178,7 @@ describe("loadControlUiSessionPullRequests", () => {
         repo: "@gabrielvfonseca/operator",
         branch: context.branch,
         createUrl:
-          "https://github.com/openclaw/openclaw/pull/new/claude/browser-tabs-tighter-header",
+          "https://github.com/operator/operator/pull/new/claude/browser-tabs-tighter-header",
       },
       rateLimited: false,
     });
@@ -204,7 +204,7 @@ describe("loadControlUiSessionPullRequests", () => {
         repo: "@gabrielvfonseca/operator",
         branch: context.branch,
         title: "fix(macos): tighten the link-browser tab header",
-        url: "https://github.com/openclaw/openclaw/pull/103469",
+        url: "https://github.com/operator/operator/pull/103469",
         state: "merged",
       },
     ]);
@@ -268,11 +268,11 @@ describe("loadControlUiSessionPullRequests", () => {
   it("falls back to the fork parent repo when the origin repo has no PRs", async () => {
     const fetchImpl = routedFetch([
       {
-        match: "/repos/fork-owner/openclaw/pulls?head=",
+        match: "/repos/fork-owner/operator/pulls?head=",
         response: () => githubJson([]),
       },
       {
-        match: "/repos/fork-owner/openclaw",
+        match: "/repos/fork-owner/operator",
         response: () =>
           githubJson({
             fork: true,
@@ -283,7 +283,7 @@ describe("loadControlUiSessionPullRequests", () => {
           }),
       },
       {
-        match: "/repos/openclaw/openclaw/pulls?head=",
+        match: "/repos/operator/operator/pulls?head=",
         response: () => githubJson([pullListItem({ merged_at: "2026-07-09T10:00:00Z" })]),
       },
     ]);
@@ -397,7 +397,7 @@ describe("loadControlUiSessionPullRequests", () => {
         repo: "@gabrielvfonseca/operator",
         branch: context.branch,
         createUrl:
-          "https://github.com/openclaw/openclaw/pull/new/claude/browser-tabs-tighter-header",
+          "https://github.com/operator/operator/pull/new/claude/browser-tabs-tighter-header",
       },
       rateLimited: true,
     });
@@ -432,7 +432,7 @@ describe("loadControlUiSessionPullRequests", () => {
         repo: "@gabrielvfonseca/operator",
         branch: context.branch,
         title: "fix(macos): tighten the link-browser tab header",
-        url: "https://github.com/openclaw/openclaw/pull/103469",
+        url: "https://github.com/operator/operator/pull/103469",
         state: "open",
       },
     ]);
@@ -454,7 +454,7 @@ describe("loadControlUiSessionPullRequests", () => {
     const fetchImpl = routedFetch([
       { match: "/pulls?head=", response: () => githubJson([]) },
       // Empty PR lists trigger the fork-parent probe; answer "not a fork".
-      { match: "/repos/openclaw/openclaw", response: () => githubJson({ fork: false }) },
+      { match: "/repos/operator/operator", response: () => githubJson({ fork: false }) },
     ]);
     const result = await loadControlUiSessionPullRequests(
       { sessionKey: "agent:main:main" },
@@ -464,7 +464,7 @@ describe("loadControlUiSessionPullRequests", () => {
       },
     );
     expect(result.branch?.createUrl).toBe(
-      "https://github.com/openclaw/openclaw/pull/new/claude/fix%20%231",
+      "https://github.com/operator/operator/pull/new/claude/fix%20%231",
     );
   });
 });
@@ -507,7 +507,7 @@ describe("session branch diff stats", () => {
 
     const fetchImpl = routedFetch([
       { match: "/pulls?head=", response: () => githubJson([]) },
-      { match: "/repos/openclaw/openclaw", response: () => githubJson({ fork: false }) },
+      { match: "/repos/operator/operator", response: () => githubJson({ fork: false }) },
     ]);
     const result = await loadControlUiSessionPullRequests(
       { sessionKey: "agent:main:main" },
@@ -528,7 +528,7 @@ describe("session branch diff stats", () => {
       branch: "feature",
       additions: 4,
       deletions: 1,
-      createUrl: "https://github.com/openclaw/openclaw/pull/new/feature",
+      createUrl: "https://github.com/operator/operator/pull/new/feature",
     });
   });
 
@@ -552,7 +552,7 @@ describe("session branch diff stats", () => {
 
     const fetchImpl = routedFetch([
       { match: "/pulls?head=", response: () => githubJson([]) },
-      { match: "/repos/openclaw/openclaw", response: () => githubJson({ fork: false }) },
+      { match: "/repos/operator/operator", response: () => githubJson({ fork: false }) },
     ]);
     const result = await loadControlUiSessionPullRequests(
       { sessionKey: "agent:main:main" },
@@ -582,7 +582,7 @@ describe("session branch diff stats", () => {
 
     const fetchImpl = routedFetch([
       { match: "/pulls?head=", response: () => githubJson([]) },
-      { match: "/repos/openclaw/openclaw", response: () => githubJson({ fork: false }) },
+      { match: "/repos/operator/operator", response: () => githubJson({ fork: false }) },
     ]);
     const result = await loadControlUiSessionPullRequests(
       { sessionKey: "agent:main:main" },
@@ -614,7 +614,7 @@ describe("session branch diff stats", () => {
 
     const fetchImpl = routedFetch([
       { match: "/pulls?head=", response: () => githubJson([]) },
-      { match: "/repos/openclaw/openclaw", response: () => githubJson({ fork: false }) },
+      { match: "/repos/operator/operator", response: () => githubJson({ fork: false }) },
     ]);
     const result = await loadControlUiSessionPullRequests(
       { sessionKey: "agent:main:main" },
@@ -652,7 +652,7 @@ describe("session branch diff stats", () => {
 
     const fetchImpl = routedFetch([
       { match: "/pulls?head=", response: () => githubJson([]) },
-      { match: "/repos/openclaw/openclaw", response: () => githubJson({ fork: false }) },
+      { match: "/repos/operator/operator", response: () => githubJson({ fork: false }) },
     ]);
     const result = await loadControlUiSessionPullRequests(
       { sessionKey: "agent:main:main" },
@@ -688,7 +688,7 @@ describe("session branch diff stats", () => {
 
     const fetchImpl = routedFetch([
       { match: "/pulls?head=", response: () => githubJson([]) },
-      { match: "/repos/openclaw/openclaw", response: () => githubJson({ fork: false }) },
+      { match: "/repos/operator/operator", response: () => githubJson({ fork: false }) },
     ]);
     const result = await loadControlUiSessionPullRequests(
       { sessionKey: "agent:main:main" },

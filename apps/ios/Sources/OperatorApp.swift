@@ -1,6 +1,6 @@
 import BackgroundTasks
 import Foundation
-import operatorKit
+import OperatorKit
 import os
 import SwiftUI
 import UIKit
@@ -17,14 +17,14 @@ private struct PendingWatchPromptAction {
 private typealias PendingExecApprovalPrompt = ExecApprovalNotificationPrompt
 
 @MainActor
-enum operatorAppModelRegistry {
+enum OperatorAppModelRegistry {
     static var appModel: NodeAppModel?
 }
 
 @MainActor
-final class operatorAppDelegate: NSObject, UIApplicationDelegate, @preconcurrency UNUserNotificationCenterDelegate {
-    private let logger = Logger(subsystem: "ai.openclawfoundation.app", category: "Push")
-    private let backgroundWakeLogger = Logger(subsystem: "ai.openclawfoundation.app", category: "BackgroundWake")
+final class OperatorAppDelegate: NSObject, UIApplicationDelegate, @preconcurrency UNUserNotificationCenterDelegate {
+    private let logger = Logger(subsystem: "ai.operatorfoundation.app", category: "Push")
+    private let backgroundWakeLogger = Logger(subsystem: "ai.operatorfoundation.app", category: "BackgroundWake")
     private static var wakeRefreshTaskIdentifier: String {
         "\(appBundleIdentifier).bgrefresh"
     }
@@ -33,7 +33,7 @@ final class operatorAppDelegate: NSObject, UIApplicationDelegate, @preconcurrenc
         guard let bundleId = Bundle.main.bundleIdentifier?.trimmingCharacters(in: .whitespacesAndNewlines),
               !bundleId.isEmpty
         else {
-            return "ai.openclawfoundation.app"
+            return "ai.operatorfoundation.app"
         }
 
         return bundleId
@@ -110,7 +110,7 @@ final class operatorAppDelegate: NSObject, UIApplicationDelegate, @preconcurrenc
     }
 
     private func resolvedAppModel() -> NodeAppModel? {
-        self.appModel ?? operatorAppModelRegistry.appModel
+        self.appModel ?? OperatorAppModelRegistry.appModel
     }
 
     #if DEBUG
@@ -129,7 +129,7 @@ final class operatorAppDelegate: NSObject, UIApplicationDelegate, @preconcurrenc
     {
         GatewayDiagnostics.log("app delegate: didFinishLaunching")
         if self.appModel == nil {
-            self.appModel = operatorAppModelRegistry.appModel
+            self.appModel = OperatorAppModelRegistry.appModel
         }
         self.registerBackgroundWakeRefreshTask()
         let notificationCenter = UNUserNotificationCenter.current()
@@ -170,7 +170,7 @@ final class operatorAppDelegate: NSObject, UIApplicationDelegate, @preconcurrenc
 
     private func registerForRemoteNotificationsIfEnrollmentReady(_ application: UIApplication) async {
         guard NotificationServingPreference.isEnabled() else { return }
-        guard !PushBuildConfig.current.usesoperatorHostedRelay
+        guard !PushBuildConfig.current.usesOperatorHostedRelay
             || PushEnrollmentConsent.disclosureAccepted
         else { return }
         guard await Self.isNotificationAuthorizationAllowed() else { return }
@@ -461,7 +461,7 @@ enum WatchPromptNotificationBridge {
     @MainActor
     static func scheduleMirroredWatchPromptNotificationIfNeeded(
         invokeID: String,
-        params: operatorWatchNotifyParams,
+        params: OperatorWatchNotifyParams,
         gatewayStableID: String?,
         sendResult: WatchNotificationSendResult) async
     {
@@ -472,11 +472,11 @@ enum WatchPromptNotificationBridge {
         guard !title.isEmpty || !body.isEmpty else { return }
         guard await self.isNotificationAuthorizationAllowed() else { return }
 
-        let normalizedActions = (params.actions ?? []).compactMap { action -> operatorWatchAction? in
+        let normalizedActions = (params.actions ?? []).compactMap { action -> OperatorWatchAction? in
             let id = action.id.trimmingCharacters(in: .whitespacesAndNewlines)
             let label = action.label.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !id.isEmpty, !label.isEmpty else { return nil }
-            return operatorWatchAction(id: id, label: label, style: action.style)
+            return OperatorWatchAction(id: id, label: label, style: action.style)
         }
         let displayedActions = Array(normalizedActions.prefix(4))
 
@@ -520,7 +520,7 @@ enum WatchPromptNotificationBridge {
         }
 
         let content = UNMutableNotificationContent()
-        content.title = title.isEmpty ? "operator" : title
+        content.title = title.isEmpty ? "Operator" : title
         content.body = body
         content.sound = .default
         content.userInfo = userInfo
@@ -553,7 +553,7 @@ enum WatchPromptNotificationBridge {
         "\(self.actionLabelKeyPrefix)\(index)"
     }
 
-    private static func categoryActions(_ actions: [operatorWatchAction]) -> [UNNotificationAction] {
+    private static func categoryActions(_ actions: [OperatorWatchAction]) -> [UNNotificationAction] {
         actions.enumerated().map { index, action in
             let identifier: String = switch index {
             case 0:
@@ -667,17 +667,17 @@ extension NodeAppModel {
 }
 
 @main
-struct operatorApp: App {
+struct OperatorApp: App {
     @State private var appearanceModel: AppAppearanceModel
     @State private var appModel: NodeAppModel
     @State private var gatewayController: GatewayConnectionController
-    @UIApplicationDelegateAdaptor(operatorAppDelegate.self) private var appDelegate
+    @UIApplicationDelegateAdaptor(OperatorAppDelegate.self) private var appDelegate
     @Environment(\.scenePhase) private var scenePhase
 
     init() {
         Self.installUncaughtExceptionLogger()
         GatewaySettingsStore.bootstrapPersistence()
-        operatorType.installUIKitAppearance()
+        OperatorType.installUIKitAppearance()
         let appModel = NodeAppModel(audioAdmissionInitiallyAllowed: false)
         #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("--operator-reset-onboarding") {
@@ -697,7 +697,7 @@ struct operatorApp: App {
             }
         }
         #endif
-        operatorAppModelRegistry.appModel = appModel
+        OperatorAppModelRegistry.appModel = appModel
         _appearanceModel = State(initialValue: AppAppearanceModel())
         _appModel = State(initialValue: appModel)
         _gatewayController = State(
@@ -710,8 +710,8 @@ struct operatorApp: App {
     var body: some Scene {
         WindowGroup {
             RootTabs()
-                .tint(operatorBrand.accent)
-                .font(operatorType.body)
+                .tint(OperatorBrand.accent)
+                .font(OperatorType.body)
                 .environment(self.appearanceModel)
                 .preferredColorScheme(self.appearanceModel.preference.colorScheme)
                 .environment(self.appModel)
@@ -727,7 +727,7 @@ struct operatorApp: App {
                 .onReceive(
                     NotificationCenter.default.publisher(for: UIContentSizeCategory.didChangeNotification),
                     perform: { _ in
-                        operatorType.refreshUIKitAppearance(in: Self.connectedWindows())
+                        OperatorType.refreshUIKitAppearance(in: Self.connectedWindows())
                     })
                 .onOpenURL { url in
                     // SwiftUI owns normal scene delivery; the delegate also queues URLs
@@ -762,7 +762,7 @@ struct operatorApp: App {
     @MainActor
     private func applyWindowTint() {
         for window in Self.connectedWindows() {
-            window.tintColor = operatorBrand.uiAccent
+            window.tintColor = OperatorBrand.uiAccent
         }
     }
 
@@ -774,9 +774,9 @@ struct operatorApp: App {
     }
 }
 
-extension operatorApp {
+extension OperatorApp {
     private static func installUncaughtExceptionLogger() {
-        NSLog("operator: installing uncaught exception handler")
+        NSLog("Operator: installing uncaught exception handler")
         NSSetUncaughtExceptionHandler { exception in
             // Useful when the app hits NSExceptions from SwiftUI/WebKit internals; these do not
             // produce a normal Swift error backtrace.

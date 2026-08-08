@@ -21,7 +21,7 @@ bundled, official external, and source-only plugins, see
 
 ## Requirements
 
-- an Operator checkout or installation with the `openclaw` CLI available
+- an Operator checkout or installation with the `operator` CLI available
 - network access to the selected source (ClawHub, npm, or a git host)
 - any plugin-specific credentials, config keys, or OS tools named by that
   plugin's setup docs

@@ -1,4 +1,4 @@
-// Appends the read-only diagnosis section for `openclaw status --all`.
+// Appends the read-only diagnosis section for `operator status --all`.
 // Every line that can include logs, config, or connection details is redacted before display.
 
 import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";

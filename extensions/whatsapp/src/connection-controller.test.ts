@@ -36,7 +36,7 @@ const runtimeContextMocks = vi.hoisted(() => ({
   register: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/channel-runtime-context", () => {
+vi.mock("operator/plugin-sdk/channel-runtime-context", () => {
   return {
     getChannelRuntimeContext: vi.fn(),
     registerChannelRuntimeContext: runtimeContextMocks.register,

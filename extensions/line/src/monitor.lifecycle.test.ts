@@ -72,14 +72,14 @@ vi.mock("./bot.js", () => ({
   createLineBot: createLineBotMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/reply-runtime", () => ({
+vi.mock("operator/plugin-sdk/reply-runtime", () => ({
   chunkMarkdownText: vi.fn(),
   dispatchReplyWithBufferedBlockDispatcher: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/runtime-env", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/runtime-env")>(
-    "openclaw/plugin-sdk/runtime-env",
+vi.mock("operator/plugin-sdk/runtime-env", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/runtime-env")>(
+    "operator/plugin-sdk/runtime-env",
   );
   return {
     ...actual,
@@ -89,9 +89,9 @@ vi.mock("openclaw/plugin-sdk/runtime-env", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/webhook-ingress", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/webhook-ingress")>(
-    "openclaw/plugin-sdk/webhook-ingress",
+vi.mock("operator/plugin-sdk/webhook-ingress", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/webhook-ingress")>(
+    "operator/plugin-sdk/webhook-ingress",
   );
   return {
     ...actual,
@@ -145,9 +145,9 @@ describe("monitorLineProvider lifecycle", () => {
 
   afterAll(() => {
     vi.doUnmock("./bot.js");
-    vi.doUnmock("openclaw/plugin-sdk/reply-runtime");
-    vi.doUnmock("openclaw/plugin-sdk/runtime-env");
-    vi.doUnmock("openclaw/plugin-sdk/webhook-ingress");
+    vi.doUnmock("operator/plugin-sdk/reply-runtime");
+    vi.doUnmock("operator/plugin-sdk/runtime-env");
+    vi.doUnmock("operator/plugin-sdk/webhook-ingress");
     vi.doUnmock("./webhook-node.js");
     vi.doUnmock("./auto-reply-delivery.js");
     vi.doUnmock("./markdown-to-line.js");

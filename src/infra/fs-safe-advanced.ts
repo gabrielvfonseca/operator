@@ -7,4 +7,4 @@ export {
   assertNoSymlinkParentsSync,
   sameFileIdentity,
   sanitizeUntrustedFileName,
-} from "@openclaw/fs-safe/advanced";
+} from "@operator/fs-safe/advanced";

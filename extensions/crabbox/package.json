@@ -5,9 +5,9 @@
   "description": "Operator cloud worker provider backed by the Crabbox CLI",
   "type": "module",
   "devDependencies": {
-    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*"
   },
-  "@gabrielvfonseca/openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ]

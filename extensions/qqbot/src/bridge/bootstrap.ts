@@ -41,7 +41,7 @@ import type { FetchMediaOptions, FetchMediaResult } from "../engine/adapter/type
 import { getBridgeLogger } from "./logger.js";
 
 const loadReadRemoteMediaBuffer = createLazyRuntimeNamedExport(
-  () => import("openclaw/plugin-sdk/media-runtime"),
+  () => import("operator/plugin-sdk/media-runtime"),
   "readRemoteMediaBuffer",
 );
 
@@ -104,9 +104,9 @@ function createBuiltinAdapter(): PlatformAdapter {
 
     async resolveApproval(params): Promise<ApprovalResolveResult> {
       try {
-        const { getRuntimeConfig } = await import("openclaw/plugin-sdk/runtime-config-snapshot");
+        const { getRuntimeConfig } = await import("operator/plugin-sdk/runtime-config-snapshot");
         const { resolveApprovalOverGateway } = await import(
-          "openclaw/plugin-sdk/approval-gateway-runtime"
+          "operator/plugin-sdk/approval-gateway-runtime"
         );
         const cfg = getRuntimeConfig();
         return await resolveApprovalOverGateway({

@@ -1,4 +1,4 @@
-// Implements guided and non-interactive `openclaw channels add` account setup.
+// Implements guided and non-interactive `operator channels add` account setup.
 import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../../agents/agent-scope.js";
 import { getBundledChannelSetupPlugin } from "../../channels/plugins/bundled.js";
@@ -246,7 +246,7 @@ async function channelsAddCommandImpl(
 
   if (!channel) {
     const hint = catalogEntry
-      ? `Plugin ${catalogEntry.meta.label} could not be loaded after install. Run openclaw doctor --fix, then retry openclaw channels add.`
+      ? `Plugin ${catalogEntry.meta.label} could not be loaded after install. Run operator doctor --fix, then retry operator channels add.`
       : formatUnknownChannelMessage({ channel: rawChannel });
     runtime.error(hint);
     runtime.exit(1);
@@ -259,7 +259,7 @@ async function channelsAddCommandImpl(
       `${formatUnsupportedChannelActionMessage({
         channel,
         action: "non-interactive add",
-      })} Run ${formatCliCommand("openclaw channels add")} with no flags for guided setup.`,
+      })} Run ${formatCliCommand("operator channels add")} with no flags for guided setup.`,
     );
     runtime.exit(1);
     return;

@@ -60,7 +60,7 @@ it("identifies harnesses that expose Operator tools", () => {
   expect(agentHarnessExposesOperatorTools("custom")).toBe(false);
 });
 
-vi.mock("./builtin-openclaw.js", () => ({
+vi.mock("./builtin-operator.js", () => ({
   createOperatorAgentHarness: (): AgentHarness => ({
     id: "@gabrielvfonseca/operator",
     label: "Operator embedded agent",

@@ -106,7 +106,7 @@ The macOS companion app exposes a checkbox:
 
 ### CLI helper (node invoke)
 
-Use the main `openclaw` CLI to invoke camera commands on the macOS node.
+Use the main `operator` CLI to invoke camera commands on the macOS node.
 
 ```bash
 operator nodes camera list --node <id>                     # list camera ids

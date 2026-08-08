@@ -21,8 +21,8 @@ type UpdateInstallSurface = Awaited<
 const resolveUpdateInstallSurfaceMock = vi.fn<() => Promise<UpdateInstallSurface>>(async () => ({
   kind: "git",
   mode: "git",
-  root: "/tmp/openclaw",
-  packageRoot: "/tmp/openclaw",
+  root: "/tmp/operator",
+  packageRoot: "/tmp/operator",
 }));
 const getLatestUpdateRestartSentinelMock = vi.fn<() => RestartSentinelPayload | null>(() => null);
 const refreshLatestUpdateRestartSentinelMock = vi.fn<() => Promise<RestartSentinelPayload | null>>(
@@ -37,7 +37,7 @@ const readConfigFileSnapshotMock = vi.fn<() => Promise<ConfigFileSnapshot>>();
 const startManagedServiceUpdateHandoffMock = vi.fn(async () => ({
   status: "started" as const,
   pid: 12345,
-  command: "openclaw update --yes --timeout 1800",
+  command: "operator update --yes --timeout 1800",
   logPath: "/tmp/operator-update-run-handoff/handoff.log",
 }));
 
@@ -88,13 +88,13 @@ vi.mock("../../config/sessions.js", () => ({
   },
 }));
 
-vi.mock("../../infra/openclaw-root.js", async () => {
-  const actual = await vi.importActual<typeof import("../../infra/openclaw-root.js")>(
-    "../../infra/openclaw-root.js",
+vi.mock("../../infra/operator-root.js", async () => {
+  const actual = await vi.importActual<typeof import("../../infra/operator-root.js")>(
+    "../../infra/operator-root.js",
   );
   return {
     ...actual,
-    resolveOperatorPackageRoot: async () => "/tmp/openclaw",
+    resolveOperatorPackageRoot: async () => "/tmp/operator",
   };
 });
 
@@ -231,8 +231,8 @@ beforeEach(() => {
   resolveUpdateInstallSurfaceMock.mockResolvedValue({
     kind: "git",
     mode: "git",
-    root: "/tmp/openclaw",
-    packageRoot: "/tmp/openclaw",
+    root: "/tmp/operator",
+    packageRoot: "/tmp/operator",
   });
   getLatestUpdateRestartSentinelMock.mockClear();
   refreshLatestUpdateRestartSentinelMock.mockClear();
@@ -465,7 +465,7 @@ describe("update.run restart scheduling", () => {
     expect(startManagedServiceUpdateHandoffMock).toHaveBeenCalledTimes(1);
     expect(startManagedServiceUpdateHandoffMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        root: "/tmp/openclaw",
+        root: "/tmp/operator",
         restartDrainTimeoutMs: 60_000,
         restartDelayMs: 2000,
         handoffId: expect.any(String),
@@ -496,7 +496,7 @@ describe("update.run restart scheduling", () => {
     ).toEqual({
       status: "started",
       pid: 12345,
-      command: "openclaw update --yes --timeout 1800",
+      command: "operator update --yes --timeout 1800",
     });
     expect(payload?.sentinel?.persisted).toBe(true);
     const sentinel = readCapturedPayload();
@@ -608,7 +608,7 @@ describe("update.run restart scheduling", () => {
     expect(startManagedServiceUpdateHandoffMock).toHaveBeenCalledTimes(1);
     expect(startManagedServiceUpdateHandoffMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        root: "/tmp/openclaw",
+        root: "/tmp/operator",
       }),
     );
   });
@@ -624,7 +624,7 @@ describe("update.run restart scheduling", () => {
     expect(startManagedServiceUpdateHandoffMock).toHaveBeenCalledTimes(1);
     expect(startManagedServiceUpdateHandoffMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        root: "/tmp/openclaw",
+        root: "/tmp/operator",
         handoffId: expect.any(String),
         supervisor: "launchd",
         meta: expect.objectContaining({
@@ -640,14 +640,14 @@ describe("update.run restart scheduling", () => {
     expect(payload?.handoff).toEqual({
       status: "started",
       pid: 12345,
-      command: "openclaw update --yes --timeout 1800",
+      command: "operator update --yes --timeout 1800",
     });
     expect(readCapturedPayload().status).toBe("skipped");
   });
 
   it("hands Windows fallback gateways to the CLI path before doctor activation", async () => {
     detectRespawnSupervisorMock.mockReturnValueOnce("schtasks");
-    mockGitInstallSurface("C:\\openclaw");
+    mockGitInstallSurface("C:\\operator");
 
     const payload = await withProcessEnv(
       {
@@ -758,7 +758,7 @@ describe("update.run restart scheduling", () => {
     expect(startManagedServiceUpdateHandoffMock).toHaveBeenCalledTimes(1);
     expect(startManagedServiceUpdateHandoffMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        root: "/tmp/openclaw",
+        root: "/tmp/operator",
         supervisor: "systemd",
       }),
     );
@@ -806,10 +806,10 @@ describe("update.run restart scheduling", () => {
     expect(payload?.result?.reason).toBe("managed-service-handoff-unavailable");
     expect(payload?.handoff).toEqual({
       status: "unavailable",
-      command: "openclaw update --yes --timeout 1800",
+      command: "operator update --yes --timeout 1800",
       message:
         "Operator updates cannot safely run inside the live gateway process without a managed-service handoff.\n" +
-        "Run `openclaw update --yes --timeout 1800` from a shell outside the gateway service, or restart/update from the host UI.",
+        "Run `operator update --yes --timeout 1800` from a shell outside the gateway service, or restart/update from the host UI.",
     });
   });
 

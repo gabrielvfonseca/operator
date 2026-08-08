@@ -17,9 +17,9 @@ const { loggerWarnMock } = vi.hoisted(() => ({
   loggerWarnMock: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/runtime-env", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/runtime-env")>(
-    "openclaw/plugin-sdk/runtime-env",
+vi.mock("operator/plugin-sdk/runtime-env", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/runtime-env")>(
+    "operator/plugin-sdk/runtime-env",
   );
   return {
     ...actual,
@@ -34,12 +34,12 @@ vi.mock("openclaw/plugin-sdk/runtime-env", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/agent-runtime", () => ({
+vi.mock("operator/plugin-sdk/agent-runtime", () => ({
   loadModelCatalog: loadModelCatalogMock,
   resolveHumanDelayConfig: () => undefined,
 }));
 
-let listNativeCommandSpecs: typeof import("openclaw/plugin-sdk/command-auth-native").listNativeCommandSpecs;
+let listNativeCommandSpecs: typeof import("operator/plugin-sdk/command-auth-native").listNativeCommandSpecs;
 let createDiscordNativeCommand: typeof import("./native-command.js").createDiscordNativeCommand;
 let buildDiscordCommandOptions: typeof import("./native-command.options.js").buildDiscordCommandOptions;
 let resolveDiscordNativeAutocompleteAuthorized: typeof import("./native-command-auth.js").resolveDiscordNativeAutocompleteAuthorized;
@@ -222,7 +222,7 @@ async function resolveAutocompleteAuthorized(params: {
 
 describe("createDiscordNativeCommand option wiring", () => {
   beforeAll(async () => {
-    ({ listNativeCommandSpecs } = await import("openclaw/plugin-sdk/command-auth-native"));
+    ({ listNativeCommandSpecs } = await import("operator/plugin-sdk/command-auth-native"));
     ({ createDiscordNativeCommand } = await import("./native-command.js"));
     ({ buildDiscordCommandOptions } = await import("./native-command.options.js"));
     ({ resolveDiscordNativeAutocompleteAuthorized } = await import("./native-command-auth.js"));
@@ -336,8 +336,8 @@ describe("createDiscordNativeCommand option wiring", () => {
     expect(codexRespond).toHaveBeenCalledWith([{ name: "max", value: "max" }]);
 
     agentRuntime = "@gabrielvfonseca/operator";
-    const openclawRespond = await runAutocomplete(autocomplete, params);
-    expect(openclawRespond).toHaveBeenCalledWith([
+    const operatorRespond = await runAutocomplete(autocomplete, params);
+    expect(operatorRespond).toHaveBeenCalledWith([
       { name: "max", value: "max" },
       { name: "ultra", value: "ultra" },
     ]);

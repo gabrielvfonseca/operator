@@ -2,7 +2,7 @@
  * Proves `startManagedGatewayConfigReloader` forwards the underlying watcher's
  * live `hotReloadStatus()` accessor on its returned handle instead of only
  * `stop`. Before this test, the returned handle dropped the accessor, so
- * `openclaw health` had no live signal to surface even though the watcher
+ * `operator health` had no live signal to surface even though the watcher
  * itself already tracked "active"/"disabled" correctly.
  */
 import { describe, expect, it, vi } from "vitest";

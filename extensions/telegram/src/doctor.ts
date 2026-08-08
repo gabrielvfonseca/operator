@@ -389,7 +389,7 @@ async function maybeRepairTelegramAllowFromUsernames(cfg: OperatorConfig): Promi
   }
 
   const { getChannelsCommandSecretTargetIds, resolveCommandSecretRefsViaGateway } = await import(
-    "openclaw/plugin-sdk/runtime"
+    "operator/plugin-sdk/runtime"
   );
 
   const { resolvedConfig } = await resolveCommandSecretRefsViaGateway({

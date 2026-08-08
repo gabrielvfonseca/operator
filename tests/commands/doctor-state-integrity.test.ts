@@ -10,7 +10,7 @@ import {
   resolveSessionTranscriptsDirForAgent,
 } from "../../src/config/sessions/paths.js";
 import type { SessionEntry } from "../../src/config/sessions/types.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { captureEnv, deleteTestEnvValue, setTestEnvValue } from "../../src/test-utils/env.js";
 import {
   clearTuiLastSessionPointers,
@@ -147,7 +147,7 @@ describe("structured state integrity findings", () => {
       checkId: "core/doctor/state-integrity",
       severity: "error",
       path: path.join(tempHome, ".operator"),
-      fixHint: "Run `openclaw doctor --fix` to create the state directory.",
+      fixHint: "Run `operator doctor --fix` to create the state directory.",
     });
     expect(stateIntegrityIssueToRepairEffect(issue)).toEqual({
       kind: "state",
@@ -417,7 +417,7 @@ describe("doctor state integrity oauth dir checks", () => {
     const text = stateIntegrityText();
     expect(text).toContain("automatic restart recovery tombstoned");
     expect(text).toContain("agent:main:subagent:wedged-child");
-    expect(text).toContain("openclaw tasks maintenance --apply");
+    expect(text).toContain("operator tasks maintenance --apply");
     expect(hasRepairPromptMessage(confirmRuntimeRepair, "Clear stale aborted recovery flags")).toBe(
       true,
     );
@@ -639,15 +639,15 @@ describe("doctor state integrity oauth dir checks", () => {
     });
     const text = await runStateIntegrityText(cfg);
     expect(text).toContain("recent sessions are missing transcripts");
-    expect(text).toMatch(/openclaw sessions --store ".*sessions\.json"/);
+    expect(text).toMatch(/operator sessions --store ".*sessions\.json"/);
     expect(text).toMatch(
-      /openclaw sessions cleanup --store ".*sessions\.json" --dry-run --fix-missing/,
+      /operator sessions cleanup --store ".*sessions\.json" --dry-run --fix-missing/,
     );
     expect(text).not.toMatch(
-      /openclaw sessions cleanup --store ".*sessions\.json" --dry-run(?! --fix-missing)/,
+      /operator sessions cleanup --store ".*sessions\.json" --dry-run(?! --fix-missing)/,
     );
     expect(text).toMatch(
-      /openclaw sessions cleanup --store ".*sessions\.json" --enforce --fix-missing/,
+      /operator sessions cleanup --store ".*sessions\.json" --enforce --fix-missing/,
     );
     expect(text).not.toContain("--active");
     expect(text).not.toContain(" ls ");

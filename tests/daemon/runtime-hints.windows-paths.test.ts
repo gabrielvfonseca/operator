@@ -7,9 +7,9 @@ const resolveGatewayLogPathsMock = vi.fn(() => ({
   stderrPath: "C:\\tmp\\operator-state\\logs\\gateway.err.log",
 }));
 const resolveGatewaySupervisorLogPathsMock = vi.fn(() => ({
-  logDir: "C:\\Users\\test\\Library\\Logs\\openclaw",
-  stdoutPath: "C:\\Users\\test\\Library\\Logs\\openclaw\\gateway.log",
-  stderrPath: "C:\\Users\\test\\Library\\Logs\\openclaw\\gateway.err.log",
+  logDir: "C:\\Users\\test\\Library\\Logs\\operator",
+  stdoutPath: "C:\\Users\\test\\Library\\Logs\\operator\\gateway.log",
+  stderrPath: "C:\\Users\\test\\Library\\Logs\\operator\\gateway.err.log",
 }));
 const resolveGatewayRestartLogPathMock = vi.fn(
   () => "C:\\tmp\\operator-state\\logs\\gateway-restart.log",
@@ -36,7 +36,7 @@ describe("buildPlatformRuntimeLogHints", () => {
         windowsTaskName: "Operator Gateway",
       }),
     ).toEqual([
-      "Launchd stdout (if installed): /Users/test/Library/Logs/openclaw/gateway.log",
+      "Launchd stdout (if installed): /Users/test/Library/Logs/operator/gateway.log",
       "Launchd stderr (if installed): suppressed",
       "Restart attempts: /tmp/operator-state/logs/gateway-restart.log",
     ]);

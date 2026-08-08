@@ -7,8 +7,8 @@ const { authenticateMock, sleepWithAbortMock } = vi.hoisted(() => ({
   sleepWithAbortMock: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/runtime-env", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/runtime-env")>();
+vi.mock("operator/plugin-sdk/runtime-env", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/runtime-env")>();
   return {
     ...actual,
     sleepWithAbort: sleepWithAbortMock,

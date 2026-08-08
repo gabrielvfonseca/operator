@@ -29,11 +29,11 @@ import type { OperatorConfig } from "../config/types.operator.js";
 import { logVerbose } from "../globals.js";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-sync.js";
 import { redactToolPayloadText } from "../logging/redact.js";
-import type { DB as OperatorAgentKyselyDatabase } from "../state/openclaw-agent-db.generated.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../state/operator-agent-db.generated.js";
 import {
   openOperatorAgentDatabase,
   runOperatorAgentWriteTransaction,
-} from "../state/openclaw-agent-db.js";
+} from "../state/operator-agent-db.js";
 
 const TOOL_TITLE_CACHE_SCOPE = "tool-call-titles";
 const TOOL_TITLES_MAX_ITEMS = 24;

@@ -41,7 +41,7 @@ services:
     volumes:
       - "${OPERATOR_CONFIG_DIR:-${HOME:-/tmp}/.operator}:/home/node/.operator"
       - "${OPERATOR_WORKSPACE_DIR:-${HOME:-/tmp}/.operator/workspace}:/home/node/.operator/workspace"
-      - "${OPERATOR_AUTH_PROFILE_SECRET_DIR:-${HOME:-/tmp}/.operator-auth-profile-secrets}:/home/node/.config/openclaw"
+      - "${OPERATOR_AUTH_PROFILE_SECRET_DIR:-${HOME:-/tmp}/.operator-auth-profile-secrets}:/home/node/.config/operator"
       ## Uncomment the lines below to enable sandbox isolation
       ## (agents.defaults.sandbox). Requires Docker CLI in the image
       ## (build with --build-arg OPERATOR_INSTALL_DOCKER_CLI=1) or use
@@ -120,7 +120,7 @@ services:
     volumes:
       - "${OPERATOR_CONFIG_DIR:-${HOME:-/tmp}/.operator}:/home/node/.operator"
       - "${OPERATOR_WORKSPACE_DIR:-${HOME:-/tmp}/.operator/workspace}:/home/node/.operator/workspace"
-      - "${OPERATOR_AUTH_PROFILE_SECRET_DIR:-${HOME:-/tmp}/.operator-auth-profile-secrets}:/home/node/.config/openclaw"
+      - "${OPERATOR_AUTH_PROFILE_SECRET_DIR:-${HOME:-/tmp}/.operator-auth-profile-secrets}:/home/node/.config/operator"
     stdin_open: true
     tty: true
     init: true

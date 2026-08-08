@@ -115,7 +115,7 @@ export function createQaChannelGatewayConfig(params: {
     messages: {
       visibleReplies: "automatic",
       groupChat: {
-        mentionPatterns: ["\\b@?openclaw\\b"],
+        mentionPatterns: ["\\b@?operator\\b"],
         visibleReplies: "automatic",
       },
     },
@@ -141,7 +141,7 @@ async function handleQaChannelAction(params: {
   cfg: OperatorConfig;
   accountId?: string | null;
 }) {
-  const { qaChannelPlugin } = await import("openclaw/plugin-sdk/qa-channel");
+  const { qaChannelPlugin } = await import("operator/plugin-sdk/qa-channel");
   return await qaChannelPlugin.actions?.handleAction?.({
     channel: QA_CHANNEL_ID,
     action: params.action,

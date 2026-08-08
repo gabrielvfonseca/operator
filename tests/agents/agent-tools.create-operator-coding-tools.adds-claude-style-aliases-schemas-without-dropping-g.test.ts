@@ -6,7 +6,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { AgentTool, AgentToolResult } from "operator/plugin-sdk/agent-core";
+import type { AgentTool, AgentToolResult } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import { Type } from "typebox";
 import { describe, expect, it, vi } from "vitest";
 import * as windowsEncoding from "../../src/infra/windows-encoding.js";

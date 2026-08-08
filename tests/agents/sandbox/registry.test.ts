@@ -37,7 +37,7 @@ vi.mock("./constants.js", () => ({
   SANDBOX_BROWSERS_DIR,
 }));
 
-import { closeOperatorStateDatabaseForTest } from "../../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../../src/state/operator-state-db.js";
 import { deleteTestEnvValue, setTestEnvValue } from "../../../src/test-utils/env.js";
 import { hashTextSha256 } from "../../../src/agents/sandbox/hash.js";
 import {

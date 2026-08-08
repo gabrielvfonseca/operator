@@ -56,7 +56,7 @@ command with `OPERATOR_PLUGIN_LIFECYCLE_TRACE=1`. The trace writes phase timings
 to stderr and keeps JSON output parseable. See [Debugging](/help/debugging#plugin-lifecycle-trace).
 
 <Note>
-In Nix mode (`OPERATOR_NIX_MODE=1`), `operator.json` is immutable. `install`, `update`, `uninstall`, `enable`, and `disable` all refuse to run. Edit the Nix source for this install instead (`programs.operator.config` or `instances.<name>.config` for nix-openclaw), then rebuild. See the agent-first [Quick Start](https://github.com/openclaw/nix-openclaw#quick-start).
+In Nix mode (`OPERATOR_NIX_MODE=1`), `operator.json` is immutable. `install`, `update`, `uninstall`, `enable`, and `disable` all refuse to run. Edit the Nix source for this install instead (`programs.operator.config` or `instances.<name>.config` for nix-operator), then rebuild. See the agent-first [Quick Start](https://github.com/operator/nix-operator#quick-start).
 </Note>
 
 <Note>
@@ -64,7 +64,7 @@ Bundled plugins ship with Operator. Some are enabled by default (for example bun
 
 Native Operator plugins ship `operator.plugin.json` with an inline JSON Schema (`configSchema`, even if empty). Compatible bundles use their own bundle manifests instead.
 
-`plugins list` shows `Format: openclaw` or `Format: bundle`. Verbose list/info output also shows the bundle subtype (`codex`, `claude`, or `cursor`) plus detected bundle capabilities.
+`plugins list` shows `Format: operator` or `Format: bundle`. Verbose list/info output also shows the bundle subtype (`codex`, `claude`, or `cursor`) plus detected bundle capabilities.
 </Note>
 
 ## Author
@@ -169,7 +169,7 @@ summary, and an install hint such as `operator plugins install clawhub:<package>
 ClawHub is the primary distribution and discovery surface for most plugins. Npm
 remains a supported fallback and direct-install path. Operator-owned
 `@gabrielvfonseca/*` plugin packages are published on npm again; see the current list
-on [npmjs.com/org/openclaw](https://www.npmjs.com/org/openclaw) or the
+on [npmjs.com/org/operator](https://www.npmjs.com/org/operator) or the
 [plugin inventory](/plugins/plugin-inventory). Stable installs use `latest`.
 Beta-channel installs and updates prefer the npm `beta` dist-tag when available,
 falling back to `latest`. On the extended-stable channel, official npm plugins
@@ -482,7 +482,7 @@ operator plugins inspect --all
 
 Inspect shows identity, load status, source, manifest capabilities, policy flags, diagnostics, install metadata, bundle capabilities, and any detected MCP or LSP server support without importing plugin runtime by default. JSON output includes the plugin manifest contracts, such as `contracts.agentToolResultMiddleware` and `contracts.trustedToolPolicies`, so operators can audit trusted-surface declarations before enabling or restarting a plugin. Add `--runtime` to load the plugin module and include registered hooks, tools, commands, services, gateway methods, and HTTP routes. Runtime inspection reports missing plugin dependencies directly; installs and repairs stay in `operator plugins install`, `operator plugins update`, and `operator doctor --fix`.
 
-Plugin-owned CLI commands are usually installed as root `openclaw` command groups, but plugins may also register nested commands under a core parent such as `operator nodes`. After `inspect --runtime` shows a command under `cliCommands`, run it at the listed path; for example a plugin that registers `demo-git` can be verified with `operator demo-git ping`.
+Plugin-owned CLI commands are usually installed as root `operator` command groups, but plugins may also register nested commands under a core parent such as `operator nodes`. After `inspect --runtime` shows a command under `cliCommands`, run it at the listed path; for example a plugin that registers `demo-git` can be verified with `operator demo-git ping`.
 
 Each plugin is classified by what it actually registers at runtime:
 
@@ -523,7 +523,7 @@ The local plugin registry is Operator's persisted cold read model for installed 
 
 Use `plugins registry` to inspect whether the persisted registry is present, current, or stale. Use `--refresh` to rebuild it from the persisted plugin index, config policy, and manifest/package metadata. This is a repair path, not a runtime activation path.
 
-`operator doctor --fix` also repairs registry-adjacent managed npm drift: if an orphaned or recovered `@gabrielvfonseca/*` package under a managed plugin npm project or the legacy flat managed npm root shadows a bundled plugin, doctor removes that stale package and rebuilds the registry so startup validates against the bundled manifest. Doctor also relinks the host `openclaw` package into managed npm plugins that declare `peerDependencies.operator`, so package-local runtime imports such as `openclaw/plugin-sdk/*` resolve after updates or npm repairs.
+`operator doctor --fix` also repairs registry-adjacent managed npm drift: if an orphaned or recovered `@gabrielvfonseca/*` package under a managed plugin npm project or the legacy flat managed npm root shadows a bundled plugin, doctor removes that stale package and rebuilds the registry so startup validates against the bundled manifest. Doctor also relinks the host `operator` package into managed npm plugins that declare `peerDependencies.operator`, so package-local runtime imports such as `operator/plugin-sdk/*` resolve after updates or npm repairs.
 
 <Warning>
 `OPERATOR_DISABLE_PERSISTED_PLUGIN_REGISTRY=1` is a deprecated break-glass compatibility switch for registry read failures. Prefer `plugins registry --refresh` or `operator doctor --fix`; the env fallback is only for emergency startup recovery while the migration rolls out.

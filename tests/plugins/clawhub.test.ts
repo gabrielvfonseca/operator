@@ -364,7 +364,7 @@ describe("installPluginFromClawHub", () => {
     installPluginFromArchiveMock.mockResolvedValue({
       ok: true,
       pluginId: "demo",
-      targetDir: "/tmp/openclaw/plugins/demo",
+      targetDir: "/tmp/operator/plugins/demo",
       version: "2026.3.22",
     });
   });
@@ -410,7 +410,7 @@ describe("installPluginFromClawHub", () => {
     installPluginFromArchiveMock.mockResolvedValueOnce({
       ok: true,
       pluginId: "demo-runtime",
-      targetDir: "/tmp/openclaw/plugins/demo-runtime",
+      targetDir: "/tmp/operator/plugins/demo-runtime",
       version: "2026.3.22",
     });
 
@@ -1145,7 +1145,7 @@ describe("installPluginFromClawHub", () => {
         updatedAt: 0,
         verification: {
           tier: "source-linked",
-          sourceRepo: "openclaw/openclaw",
+          sourceRepo: "operator/operator",
         },
       },
     });
@@ -3184,7 +3184,7 @@ describe("installPluginFromClawHub", () => {
         ok: false,
         code: CLAWHUB_INSTALL_ERROR_CODE.SKILL_PACKAGE,
         error:
-          '"calendar" is a skill. Use "openclaw skills install @gabrielvfonseca/calendar" instead.',
+          '"calendar" is a skill. Use "operator skills install @gabrielvfonseca/calendar" instead.',
       },
     },
     {
@@ -3215,7 +3215,7 @@ describe("installPluginFromClawHub", () => {
         ok: false,
         code: CLAWHUB_INSTALL_ERROR_CODE.SKILL_PACKAGE,
         error:
-          '"calendar" is a skill. Use "openclaw skills install @gabrielvfonseca/calendar" instead.',
+          '"calendar" is a skill. Use "operator skills install @gabrielvfonseca/calendar" instead.',
       },
     },
     {

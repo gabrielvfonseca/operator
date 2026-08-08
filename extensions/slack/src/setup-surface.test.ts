@@ -145,7 +145,7 @@ describe("slackSetupWizard.prepare", () => {
         },
         slash_commands: [
           {
-            command: "/openclaw",
+            command: "/operator",
             description: "Send a message to Operator",
             should_escape: false,
           },

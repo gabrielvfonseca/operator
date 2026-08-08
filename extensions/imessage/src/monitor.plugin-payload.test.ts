@@ -10,12 +10,12 @@ const waitForTransportReadyMock = vi.hoisted(() =>
 const createIMessageRpcClientMock = vi.hoisted(() => vi.fn<typeof createIMessageRpcClient>());
 const shouldDebounceTextInboundMock = vi.hoisted(() => vi.fn(() => false));
 
-vi.mock("openclaw/plugin-sdk/transport-ready-runtime", () => ({
+vi.mock("operator/plugin-sdk/transport-ready-runtime", () => ({
   waitForTransportReady: waitForTransportReadyMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/channel-inbound", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/channel-inbound")>();
+vi.mock("operator/plugin-sdk/channel-inbound", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/channel-inbound")>();
   return {
     ...actual,
     createChannelInboundDebouncer: vi.fn(
@@ -63,7 +63,7 @@ describe("iMessage plugin payload attachments", () => {
               attachments: [
                 {
                   original_path:
-                    "/Users/openclaw/Library/Messages/Attachments/AA/BB/link.pluginPayloadAttachment",
+                    "/Users/operator/Library/Messages/Attachments/AA/BB/link.pluginPayloadAttachment",
                   mime_type: null,
                   missing: false,
                   transfer_name: "link.pluginPayloadAttachment",

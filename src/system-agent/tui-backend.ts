@@ -114,7 +114,7 @@ function splitModelRef(ref: string | undefined): { provider?: string; model?: st
 }
 
 class SystemAgentTuiBackend implements TuiBackend {
-  readonly connection = { url: "openclaw local" };
+  readonly connection = { url: "operator local" };
 
   onEvent?: (evt: TuiEvent) => void;
   onConnected?: () => void;
@@ -383,7 +383,7 @@ async function runSetupHandoff(
 ): Promise<void> {
   if (handoff.target !== "channels") {
     runtime.error(
-      "Setup cannot replace the inference route powering Operator. Exit and run `openclaw onboard`, then start Operator again.",
+      "Setup cannot replace the inference route powering Operator. Exit and run `operator onboard`, then start Operator again.",
     );
     return;
   }
@@ -459,7 +459,7 @@ export async function runSystemAgentTui(
         historyLimit: 200,
         backend,
         config: {},
-        title: "openclaw setup",
+        title: "operator setup",
         ...(initialMessage ? { message: initialMessage } : {}),
       });
     } finally {
@@ -472,7 +472,7 @@ export async function runSystemAgentTui(
     }
     if (handoff.kind === "model-setup") {
       runtime.error(
-        "Operator cannot replace its active inference route. Run `openclaw onboard` outside this session, then start Operator again.",
+        "Operator cannot replace its active inference route. Run `operator onboard` outside this session, then start Operator again.",
       );
       return;
     }

@@ -3,7 +3,7 @@ import { cleanupTempDirs, makeTempDir } from "../../test/helpers/temp-dir.js";
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
-} from "../../src/state/openclaw-state-db.js";
+} from "../../src/state/operator-state-db.js";
 import { listAuditEvents } from "../../src/audit/audit-event-store.js";
 import type { AuditEventInput } from "../../src/audit/audit-event-types.js";
 import { createAuditEventWriter } from "../../src/audit/audit-event-writer.js";

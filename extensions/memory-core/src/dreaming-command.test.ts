@@ -1,7 +1,7 @@
 // Memory Core tests cover dreaming command plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { PluginCommandContext } from "openclaw/plugin-sdk/core";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "operator/plugin-sdk/config-contracts";
+import type { PluginCommandContext } from "operator/plugin-sdk/core";
+import type { OperatorPluginApi } from "operator/plugin-sdk/plugin-entry";
 import { describe, expect, it, vi } from "vitest";
 import { handleDreamingCommand } from "./dreaming-command.js";
 
@@ -30,7 +30,7 @@ function createHarness(initialConfig: OperatorConfig = {}) {
         mutate(draft);
         runtimeConfig = draft;
         return {
-          path: "/tmp/openclaw.json",
+          path: "/tmp/operator.json",
           previousHash: null,
           persistedHash: null,
           snapshot: {},

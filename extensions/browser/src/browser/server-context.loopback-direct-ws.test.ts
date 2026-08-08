@@ -59,7 +59,7 @@ describe("browser server-context loopback direct WebSocket profiles", () => {
       color: "#FF4500",
     };
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const openclaw = ctx.forProfile("@gabrielvfonseca/operator");
+    const operator = ctx.forProfile("@gabrielvfonseca/operator");
 
     const opened = await operator.openTab("about:blank");
     expect(opened.targetId).toBe("CREATED");
@@ -104,7 +104,7 @@ describe("browser server-context loopback direct WebSocket profiles", () => {
       color: "#FF4500",
     };
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const openclaw = ctx.forProfile("@gabrielvfonseca/operator");
+    const operator = ctx.forProfile("@gabrielvfonseca/operator");
 
     await operator.focusTab("T1");
     await operator.closeTab("T1");
@@ -152,7 +152,7 @@ describe("browser server-context loopback direct WebSocket profiles", () => {
       color: "#FF4500",
     };
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const openclaw = ctx.forProfile("@gabrielvfonseca/operator");
+    const operator = ctx.forProfile("@gabrielvfonseca/operator");
 
     const tabs = await operator.listTabs();
     expect(tabs.map((tab) => tab.targetId)).toEqual(["T2"]);
@@ -177,7 +177,7 @@ describe("browser server-context loopback direct WebSocket profiles", () => {
       color: "#FF4500",
     };
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const openclaw = ctx.forProfile("@gabrielvfonseca/operator");
+    const operator = ctx.forProfile("@gabrielvfonseca/operator");
 
     await expect(operator.listTabs()).rejects.toBeInstanceOf(BrowserCdpEndpointBlockedError);
     await expect(operator.focusTab("T1")).rejects.toBeInstanceOf(BrowserCdpEndpointBlockedError);

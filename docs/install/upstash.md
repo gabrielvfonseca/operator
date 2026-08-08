@@ -42,7 +42,7 @@ The keepalive options reduce idle tunnel drops during onboarding.
 Inside the Box:
 
 ```bash
-sudo npm install -g openclaw
+sudo npm install -g operator
 ```
 
 ## Run onboarding

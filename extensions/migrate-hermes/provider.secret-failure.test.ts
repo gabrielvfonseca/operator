@@ -12,8 +12,8 @@ const mocks = vi.hoisted(() => ({
   updateAuthProfileStoreWithLock: vi.fn(async () => null),
 }));
 
-vi.mock("openclaw/plugin-sdk/provider-auth", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("openclaw/plugin-sdk/provider-auth")>()),
+vi.mock("operator/plugin-sdk/provider-auth", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("operator/plugin-sdk/provider-auth")>()),
   updateAuthProfileStoreWithLock: mocks.updateAuthProfileStoreWithLock,
 }));
 

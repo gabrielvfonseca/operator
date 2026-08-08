@@ -25,13 +25,13 @@ describe("isGatewayArgv", () => {
 
   it("matches known entrypoints across slash and case variants", () => {
     expect(isGatewayArgv(["NODE", "C:\\Operator\\DIST\\ENTRY.JS", "gateway"])).toBe(true);
-    expect(isGatewayArgv(["bun", "/srv/openclaw/scripts/run-node.mjs", "gateway"])).toBe(true);
-    expect(isGatewayArgv(["node", "/srv/openclaw/operator.mjs", "gateway"])).toBe(true);
-    expect(isGatewayArgv(["tsx", "/srv/openclaw/src/entry.ts", "gateway"])).toBe(true);
-    expect(isGatewayArgv(["tsx", "/srv/openclaw/src/index.ts", "gateway"])).toBe(true);
+    expect(isGatewayArgv(["bun", "/srv/operator/scripts/run-node.mjs", "gateway"])).toBe(true);
+    expect(isGatewayArgv(["node", "/srv/operator/operator.mjs", "gateway"])).toBe(true);
+    expect(isGatewayArgv(["tsx", "/srv/operator/src/entry.ts", "gateway"])).toBe(true);
+    expect(isGatewayArgv(["tsx", "/srv/operator/src/index.ts", "gateway"])).toBe(true);
   });
 
-  it("matches the openclaw executable but gates the gateway binary behind the opt-in flag", () => {
+  it("matches the operator executable but gates the gateway binary behind the opt-in flag", () => {
     expect(isGatewayArgv(["C:\\bin\\operator.cmd", "gateway"])).toBe(true);
     expect(isGatewayArgv(["/usr/local/bin/operator-gateway", "gateway"])).toBe(false);
     expect(isGatewayArgv(["operator-gateway"])).toBe(false);
@@ -49,14 +49,14 @@ describe("isGatewayArgv", () => {
   });
 
   it("rejects unknown gateway argv even when the token is present", () => {
-    expect(isGatewayArgv(["node", "/srv/openclaw/custom.js", "gateway"])).toBe(false);
+    expect(isGatewayArgv(["node", "/srv/operator/custom.js", "gateway"])).toBe(false);
     expect(isGatewayArgv(["python", "gateway", "script.py"])).toBe(false);
   });
 });
 
 describe("isOperatorCommandArgv", () => {
   it("matches doctor across source, built, and installed entrypoints", () => {
-    expect(isOperatorCommandArgv(["node", "/srv/openclaw/operator.mjs", "doctor"], "doctor")).toBe(
+    expect(isOperatorCommandArgv(["node", "/srv/operator/operator.mjs", "doctor"], "doctor")).toBe(
       true,
     );
     expect(

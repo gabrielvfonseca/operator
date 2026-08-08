@@ -54,12 +54,12 @@ function resolveNpmPackTarballFilename(value: unknown): string {
 
 export function resolveOperatorRegistryVersion(specOrAlias: string): string {
   const rawValue = specOrAlias.trim();
-  const value = rawValue.startsWith("openclaw@") ? rawValue.slice("openclaw@".length) : rawValue;
+  const value = rawValue.startsWith("operator@") ? rawValue.slice("operator@".length) : rawValue;
   if (!value) {
     return "";
   }
   if (value === "latest" || value === "beta" || /^\d/.test(value)) {
-    return npmViewVersion(`openclaw@${value}`);
+    return npmViewVersion(`operator@${value}`);
   }
   const betaMatch = /^beta(\d+)$/u.exec(value);
   if (betaMatch) {
@@ -73,7 +73,7 @@ export function resolveOperatorRegistryVersion(specOrAlias: string): string {
       .toSorted((a, b) => a.localeCompare(b, undefined, { numeric: true }))
       .at(-1);
     if (!match) {
-      die(`no openclaw registry version found for alias ${value}`);
+      die(`no operator registry version found for alias ${value}`);
     }
     return match;
   }

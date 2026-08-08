@@ -9,7 +9,7 @@ import type { AddressInfo } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import type { DebugProxySettings } from "../../src/proxy-capture/env.js";
 import { startDebugProxyServer } from "../../src/proxy-capture/proxy-server.js";
 import { closeDebugProxyCaptureStore, getDebugProxyCaptureStore } from "../../src/proxy-capture/store.sqlite.js";

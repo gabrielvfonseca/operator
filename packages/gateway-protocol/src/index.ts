@@ -1698,7 +1698,7 @@ export type SessionsPatchResult = {
 
 type GatewayAgentRuntime = {
   id: string;
-  fallback?: "openclaw" | "none";
+  fallback?: "operator" | "none";
   source:
     | "env"
     | "agent"

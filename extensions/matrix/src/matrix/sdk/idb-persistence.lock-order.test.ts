@@ -15,9 +15,9 @@ const { withFileLockMock } = vi.hoisted(() => ({
   ),
 }));
 
-vi.mock("openclaw/plugin-sdk/file-lock", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/file-lock")>(
-    "openclaw/plugin-sdk/file-lock",
+vi.mock("operator/plugin-sdk/file-lock", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/file-lock")>(
+    "operator/plugin-sdk/file-lock",
   );
   return {
     ...actual,

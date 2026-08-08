@@ -47,7 +47,7 @@ import {
 } from "../../config/types.secrets.js";
 import { type SecretRefResolveCache, resolveSecretRefString } from "../../secrets/resolve.js";
 import { createLazyImportLoader } from "../../shared/lazy-promise.js";
-import { disposeOperatorAgentDatabaseByPath } from "../../state/openclaw-agent-db.js";
+import { disposeOperatorAgentDatabaseByPath } from "../../state/operator-agent-db.js";
 import { redactSecrets } from "../status-all/format.js";
 import { buildProbeCandidateMap, selectProbeModel } from "./list.probe.models.js";
 import { formatMs } from "./shared.js";

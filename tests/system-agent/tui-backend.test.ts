@@ -33,7 +33,7 @@ const overview: SystemAgentOverview = {
   },
   references: {
     docsUrl: "https://docs.operator.ai",
-    sourceUrl: "https://github.com/openclaw/openclaw",
+    sourceUrl: "https://github.com/operator/operator",
   },
 };
 
@@ -145,9 +145,9 @@ describe("runSystemAgentTui", () => {
     expect(options.session).toBe("agent:operator:main");
     expect(options.historyLimit).toBe(200);
     expect(options.config).toEqual({});
-    expect(options.title).toBe("openclaw setup");
+    expect(options.title).toBe("operator setup");
     if (!options.backend || typeof options.backend !== "object") {
-      throw new Error("expected openclaw TUI backend");
+      throw new Error("expected operator TUI backend");
     }
   });
 

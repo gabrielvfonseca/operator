@@ -165,7 +165,7 @@ selection) exposes the real 3-tier memory system to the agent:
 The prior SQLite/Markdown memory layer (`MEMORY.md`, `memory/*.md`,
 `DREAMS.md`) and the `memory-wiki` knowledge-vault plugin have been removed.
 Legacy Markdown memory can be migrated into semantic memory with
-`/memory migrate` (or `openclaw memory migrate`).
+`/memory migrate` (or `operator memory migrate`).
 
 ## Memory search
 

@@ -505,7 +505,7 @@ describe("hasCompletedBootstrapTurn", () => {
 
   it("returns false for SQLite transcript markers", async () => {
     expect(
-      await hasCompletedBootstrapTurn("sqlite:main:session-1:/tmp/openclaw/sessions.json"),
+      await hasCompletedBootstrapTurn("sqlite:main:session-1:/tmp/operator/sessions.json"),
     ).toBe(false);
   });
 

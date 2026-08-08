@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { createSuiteTempRootTracker } from "../../src/test-helpers/temp-dir.js";
 import { cellAuthSecretDir, cellOwnerId } from "../../src/fleet/cell-profile.js";
 import type { FleetContainerInspectResult, FleetContainerRuntime } from "../../src/fleet/containers.runtime.js";
@@ -215,7 +215,7 @@ describe("fleet service filesystem and removal", () => {
     reserveFleetCell(env, {
       tenantId: "escape",
       createdAtMs: 1000,
-      image: "ghcr.io/openclaw/operator:latest",
+      image: "ghcr.io/operator/operator:latest",
       runtime: "docker",
       containerName: "operator-cell-escape",
       dataDir: outside,

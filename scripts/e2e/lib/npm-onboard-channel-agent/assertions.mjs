@@ -40,7 +40,7 @@ function stripAnsi(text) {
 }
 
 const statusSectionTitles = new Set([
-  "openclaw status",
+  "operator status",
   "overview",
   "plugin compatibility",
   "model selection",

@@ -9,7 +9,7 @@ import { collectWorkspaceSkillSymlinkEscapeFindings } from "../../../src/skills/
 const isWindows = process.platform === "win32";
 
 describe("security audit workspace skill path escape findings", () => {
-  const tempCases = new AsyncTempCaseFactory("openclaw-security-audit-workspace-");
+  const tempCases = new AsyncTempCaseFactory("operator-security-audit-workspace-");
 
   function requireFinding(
     findings: Awaited<ReturnType<typeof collectWorkspaceSkillSymlinkEscapeFindings>>,

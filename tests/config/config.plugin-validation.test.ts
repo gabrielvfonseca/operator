@@ -1002,7 +1002,7 @@ describe("config plugin validation", () => {
         expect.objectContaining({
           path: "plugins.allow",
           message:
-            "plugin not installed: codex — install the official external plugin with: openclaw plugins install @gabrielvfonseca/codex",
+            "plugin not installed: codex — install the official external plugin with: operator plugins install @gabrielvfonseca/codex",
         }),
       );
     });
@@ -1172,7 +1172,7 @@ describe("config plugin validation", () => {
 
     expect(res.ok).toBe(true);
     const message =
-      "plugin not installed: brave — install the official external plugin with: openclaw plugins install @gabrielvfonseca/brave-plugin";
+      "plugin not installed: brave — install the official external plugin with: operator plugins install @gabrielvfonseca/brave-plugin";
     expectPathMessage(res.warnings, "plugins.entries.brave", message);
     expect((res.warnings ?? []).filter((warning) => warning.message === message)).toHaveLength(1);
     expect(
@@ -1206,9 +1206,9 @@ describe("config plugin validation", () => {
 
     expect(res.ok).toBe(true);
     const slotMessage =
-      "plugin not installed: memory-lancedb — gateway will run without persistent memory until installed; install the official external plugin with: openclaw plugins install @gabrielvfonseca/memory-lancedb";
+      "plugin not installed: memory-lancedb — gateway will run without persistent memory until installed; install the official external plugin with: operator plugins install @gabrielvfonseca/memory-lancedb";
     const entryMessage =
-      "plugin not installed: memory-lancedb — install the official external plugin with: openclaw plugins install @gabrielvfonseca/memory-lancedb";
+      "plugin not installed: memory-lancedb — install the official external plugin with: operator plugins install @gabrielvfonseca/memory-lancedb";
     expectPathMessage(res.warnings, "plugins.slots.memory", slotMessage);
     expectPathMessage(res.warnings, "plugins.entries.memory-lancedb", entryMessage);
   });
@@ -1236,7 +1236,7 @@ describe("config plugin validation", () => {
 
     expect(res.ok).toBe(true);
     const message =
-      "plugin not installed: memory-lancedb — install the official external plugin with: openclaw plugins install @gabrielvfonseca/memory-lancedb";
+      "plugin not installed: memory-lancedb — install the official external plugin with: operator plugins install @gabrielvfonseca/memory-lancedb";
     expectPathMessage(res.warnings, "plugins.entries.memory-lancedb", message);
     expect((res.warnings ?? []).filter((warning) => warning.message === message)).toHaveLength(1);
     expect(
@@ -1268,7 +1268,7 @@ describe("config plugin validation", () => {
 
     expect(res.ok).toBe(true);
     const message =
-      "plugin not installed: yuanbao — install the official external plugin with: openclaw plugins install operator-plugin-yuanbao@2.15.0";
+      "plugin not installed: yuanbao — install the official external plugin with: operator plugins install operator-plugin-yuanbao@2.15.0";
     expectPathMessage(res.warnings, "plugins.entries.yuanbao", message);
     expect((res.warnings ?? []).filter((warning) => warning.message === message)).toHaveLength(1);
   });
@@ -1301,7 +1301,7 @@ describe("config plugin validation", () => {
     expectPathMessage(
       res.warnings,
       "plugins.entries.brave",
-      "plugin not installed: brave — install the official external plugin with: openclaw plugins install @gabrielvfonseca/brave-plugin",
+      "plugin not installed: brave — install the official external plugin with: operator plugins install @gabrielvfonseca/brave-plugin",
     );
   });
 
@@ -1595,7 +1595,7 @@ describe("config plugin validation", () => {
     expect(res.warnings).toContainEqual({
       path: "channels.missing-chat",
       message:
-        "unknown channel id: missing-chat (stale channel plugin config ignored; run openclaw doctor --fix to remove stale config, or install the plugin)",
+        "unknown channel id: missing-chat (stale channel plugin config ignored; run operator doctor --fix to remove stale config, or install the plugin)",
     });
     expect(res.warnings).toContainEqual({
       path: "plugins.allow",
@@ -1660,7 +1660,7 @@ describe("config plugin validation", () => {
       {
         path: "plugins.allow",
         message:
-          "plugin not installed: discord — install the official external plugin with: openclaw plugins install @gabrielvfonseca/discord",
+          "plugin not installed: discord — install the official external plugin with: operator plugins install @gabrielvfonseca/discord",
       },
     ]);
   });
@@ -1704,7 +1704,7 @@ describe("config plugin validation", () => {
       expect(res.warnings).toContainEqual({
         path: "channels.missing-sms",
         message:
-          "unknown channel id: missing-sms (stale channel plugin config ignored; run openclaw doctor --fix to remove stale config, or install the plugin)",
+          "unknown channel id: missing-sms (stale channel plugin config ignored; run operator doctor --fix to remove stale config, or install the plugin)",
       });
     } finally {
       await writePersistedInstalledPluginIndex(
@@ -1789,7 +1789,7 @@ describe("config plugin validation", () => {
     const res = validateRemovedPluginConfig(removedId);
     expect(res.ok).toBe(true);
     const message =
-      "plugin removed: skill-workshop (stale plugin config ignored; Skill Workshop is built into Operator skills now. Use skills.workshop settings and openclaw skills workshop commands, then remove this plugins config entry)";
+      "plugin removed: skill-workshop (stale plugin config ignored; Skill Workshop is built into Operator skills now. Use skills.workshop settings and operator skills workshop commands, then remove this plugins config entry)";
     expectPathMessage(res.warnings, `plugins.entries.${removedId}`, message);
     expectPathMessage(res.warnings, "plugins.allow", message);
     expectPathMessage(res.warnings, "plugins.deny", message);

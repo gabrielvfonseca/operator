@@ -28,7 +28,7 @@ You want this:
 ```mermaid
 flowchart TB
     A["<b>Your Phone (personal)<br></b><br>Your WhatsApp<br>+1-555-YOU"] -- message --> B["<b>Second Phone (assistant)<br></b><br>Assistant WA<br>+1-555-ASSIST"]
-    B -- linked via QR --> C["<b>Your Mac (openclaw)<br></b><br>AI agent"]
+    B -- linked via QR --> C["<b>Your Mac (operator)<br></b><br>AI agent"]
 ```
 
 If you link your personal WhatsApp to Operator, every message to you becomes "agent input". That's rarely what you want.
@@ -132,7 +132,7 @@ Example:
         id: "main",
         default: true,
         groupChat: {
-          mentionPatterns: ["@openclaw", "@gabrielvfonseca/operator"],
+          mentionPatterns: ["@operator", "@gabrielvfonseca/operator"],
         },
       },
     ],
@@ -224,7 +224,7 @@ operator status --deep   # probe channels (WhatsApp Web + Telegram + Discord + S
 operator health --json   # gateway health snapshot over the WS connection
 ```
 
-Logs live under `/tmp/openclaw/` (default: `operator-YYYY-MM-DD.log`).
+Logs live under `/tmp/operator/` (default: `operator-YYYY-MM-DD.log`).
 
 ## Next steps
 

@@ -127,7 +127,7 @@ export function collectWhatsappResponsivenessHealthFindings(params: {
       target: pids,
       requirement: "local-tui-event-loop-pressure",
       fixHint: `Close local TUI sessions (${pids}), or run ${formatCliCommand(
-        "openclaw doctor --fix",
+        "operator doctor --fix",
       )}.`,
     },
   ];
@@ -232,7 +232,7 @@ export async function noteWhatsappResponsivenessHealth(params: {
       }
     } else {
       warnings.push(
-        `Fix: close those TUI sessions, or run ${formatCliCommand("openclaw doctor --fix")}.`,
+        `Fix: close those TUI sessions, or run ${formatCliCommand("operator doctor --fix")}.`,
       );
     }
   }

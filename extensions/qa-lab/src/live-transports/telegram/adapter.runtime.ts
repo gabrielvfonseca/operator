@@ -166,7 +166,7 @@ export async function createTelegramQaTransportAdapter(
       logicalConversationId = input.conversation.id;
       logicalConversationKind = input.conversation.kind;
       const text = sutIdentity.username
-        ? input.text.replaceAll("@openclaw", `@${sutIdentity.username}`)
+        ? input.text.replaceAll("@operator", `@${sutIdentity.username}`)
         : input.text;
       const nativeReplyToId = input.replyToId ? nativeMessageIds.get(input.replyToId) : undefined;
       const sent = await callTelegramApi<{ message_id: number }>(

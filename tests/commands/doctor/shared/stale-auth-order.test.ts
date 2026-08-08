@@ -22,8 +22,8 @@ import type { OperatorConfig } from "../../../../src/config/types.operator.js";
 import {
   closeOperatorAgentDatabasesForTest,
   openOperatorAgentDatabase,
-} from "../../../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../../../src/state/openclaw-state-db.js";
+} from "../../../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../../../src/state/operator-state-db.js";
 import {
   collectStaleConfiguredAuthOrderWarnings,
   maybeRepairStaleConfiguredAuthOrders,
@@ -159,7 +159,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
       expect(
         collectStaleConfiguredAuthOrderWarnings({
           cfg,
-          doctorFixCommand: "openclaw doctor --fix",
+          doctorFixCommand: "operator doctor --fix",
         }),
       ).toEqual([]);
     },
@@ -180,7 +180,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
     expect(
       collectStaleConfiguredAuthOrderWarnings({
         cfg,
-        doctorFixCommand: "openclaw doctor --fix",
+        doctorFixCommand: "operator doctor --fix",
       }),
     ).toEqual([]);
   });
@@ -757,7 +757,7 @@ describe("repairStaleConfiguredAuthOrders", () => {
       expect(
         collectStaleConfiguredAuthOrderWarnings({
           cfg,
-          doctorFixCommand: "openclaw doctor --fix",
+          doctorFixCommand: "operator doctor --fix",
           env: { OPERATOR_STATE_DIR: stateDir },
         }).join("\n"),
       ).toContain("SQLite auth profile store is unreadable");

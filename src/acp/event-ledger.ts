@@ -11,7 +11,7 @@ import {
   openOperatorStateDatabase,
   type OperatorStateDatabaseOptions,
   runOperatorStateWriteTransaction,
-} from "../state/openclaw-state-db.js";
+} from "../state/operator-state-db.js";
 import { isRecord } from "../utils.js";
 
 const LEDGER_VERSION = 1;

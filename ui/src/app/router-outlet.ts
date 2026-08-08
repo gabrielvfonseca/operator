@@ -1,4 +1,4 @@
-import type { Router } from "@openclaw/uirouter";
+import type { Router } from "@operator/uirouter";
 import { html, nothing } from "lit";
 import type { ReactiveController, ReactiveControllerHost } from "lit";
 import { property } from "lit/decorators.js";
@@ -40,7 +40,7 @@ function measureRoutedRender<T>(routeId: string, render: () => T): T {
   const result = render();
   const durationMs = Math.round((globalThis.performance?.now() ?? startedAt) - startedAt);
   if (durationMs >= 16) {
-    console.debug("[openclaw] routed render", { routeId, durationMs });
+    console.debug("[operator] routed render", { routeId, durationMs });
   }
   return result;
 }

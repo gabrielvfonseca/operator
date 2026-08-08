@@ -23,7 +23,7 @@ vi.mock("./cli-auth-seam.js", async (importActual) => {
 const { buildAnthropicCliMigrationResult } = await import("./cli-migration.js");
 const { resolveKnownAnthropicModelRef } = await import("./claude-model-refs.js");
 const { createTestWizardPrompter, registerSingleProviderPlugin } = await import(
-  "openclaw/plugin-sdk/plugin-test-runtime"
+  "operator/plugin-sdk/plugin-test-runtime"
 );
 const { default: anthropicPlugin } = await import("./index.js");
 
@@ -98,8 +98,8 @@ function createProviderAuthContext(
     config,
     opts: {},
     env: {},
-    agentDir: "/tmp/openclaw/agents/main",
-    workspaceDir: "/tmp/openclaw/workspace",
+    agentDir: "/tmp/operator/agents/main",
+    workspaceDir: "/tmp/operator/workspace",
     prompter: createTestWizardPrompter(),
     runtime: {
       log: vi.fn(),
@@ -128,8 +128,8 @@ function createProviderAuthMethodNonInteractiveContext(
       error: vi.fn(),
       exit: vi.fn(),
     },
-    agentDir: "/tmp/openclaw/agents/main",
-    workspaceDir: "/tmp/openclaw/workspace",
+    agentDir: "/tmp/operator/agents/main",
+    workspaceDir: "/tmp/operator/workspace",
     resolveApiKey: vi.fn(async () => null),
     toApiKeyCredential: vi.fn(() => null),
   };

@@ -1,7 +1,7 @@
-import operatorChatUI
+import OperatorChatUI
 import SwiftUI
 
-enum operatorProMetric {
+enum OperatorProMetric {
     static let pagePadding: CGFloat = 16
     static let cardRadius: CGFloat = 16
     static let controlRadius: CGFloat = 12
@@ -9,7 +9,7 @@ enum operatorProMetric {
     static let bottomScrollInset: CGFloat = 96
 }
 
-enum operatorSpacing {
+enum OperatorSpacing {
     static let space1: CGFloat = 4
     static let space2: CGFloat = 8
     static let space3: CGFloat = 12
@@ -17,13 +17,13 @@ enum operatorSpacing {
     static let space6: CGFloat = 24
 }
 
-enum operatorRadius {
+enum OperatorRadius {
     static let xs: CGFloat = 8
     static let sm: CGFloat = 10
     static let md: CGFloat = 12
 }
 
-enum operatorTextValue: ExpressibleByStringLiteral {
+enum OperatorTextValue: ExpressibleByStringLiteral {
     case localized(LocalizedStringKey)
     case verbatim(String)
 
@@ -45,7 +45,7 @@ enum operatorTextValue: ExpressibleByStringLiteral {
     }
 }
 
-struct operatorProBackground: View {
+struct OperatorProBackground: View {
     var body: some View {
         Color(uiColor: .systemGroupedBackground)
             .ignoresSafeArea()
@@ -53,15 +53,15 @@ struct operatorProBackground: View {
 }
 
 struct ProSectionHeader: View {
-    let title: operatorTextValue
-    var actionTitle: operatorTextValue?
+    let title: OperatorTextValue
+    var actionTitle: OperatorTextValue?
     var action: (() -> Void)?
     var uppercase = true
 
     var body: some View {
         HStack {
             self.title.text
-                .font(operatorType.footnoteMedium)
+                .font(OperatorType.footnoteMedium)
                 .foregroundStyle(.secondary)
                 .textCase(self.uppercase ? .uppercase : nil)
             Spacer()
@@ -69,17 +69,17 @@ struct ProSectionHeader: View {
                 if let action {
                     Button(action: action) {
                         actionTitle.text
-                            .font(operatorType.footnoteMedium)
+                            .font(OperatorType.footnoteMedium)
                     }
-                    .foregroundStyle(operatorBrand.accent)
+                    .foregroundStyle(OperatorBrand.accent)
                 } else {
                     actionTitle.text
-                        .font(operatorType.footnoteMedium)
+                        .font(OperatorType.footnoteMedium)
                         .foregroundStyle(.secondary)
                 }
             }
         }
-        .padding(.horizontal, operatorProMetric.pagePadding)
+        .padding(.horizontal, OperatorProMetric.pagePadding)
     }
 }
 
@@ -87,7 +87,7 @@ struct ProCard<Content: View>: View {
     var tint: Color?
     var isProminent: Bool = false
     var padding: CGFloat = 12
-    var radius: CGFloat = operatorProMetric.cardRadius
+    var radius: CGFloat = OperatorProMetric.cardRadius
     @ViewBuilder var content: Content
 
     var body: some View {
@@ -148,7 +148,7 @@ private struct ProInsetSurfaceModifier: ViewModifier {
     }
 }
 
-private struct operatorGlassButtonModifier: ViewModifier {
+private struct OperatorGlassButtonModifier: ViewModifier {
     let prominent: Bool
     let tint: Color?
 
@@ -156,30 +156,30 @@ private struct operatorGlassButtonModifier: ViewModifier {
         if #available(iOS 26.0, *) {
             if self.prominent {
                 content
-                    .font(operatorType.subheadSemiBold)
+                    .font(OperatorType.subheadSemiBold)
                     .buttonStyle(.glassProminent)
-                    .tint(self.tint ?? operatorBrand.accent)
+                    .tint(self.tint ?? OperatorBrand.accent)
             } else {
                 content
-                    .font(operatorType.subheadSemiBold)
+                    .font(OperatorType.subheadSemiBold)
                     .buttonStyle(.glass)
                     .tint(self.tint)
             }
         } else if self.prominent {
             content
-                .font(operatorType.subheadSemiBold)
+                .font(OperatorType.subheadSemiBold)
                 .buttonStyle(.borderedProminent)
-                .tint(self.tint ?? operatorBrand.accent)
+                .tint(self.tint ?? OperatorBrand.accent)
         } else {
             content
-                .font(operatorType.subheadSemiBold)
+                .font(OperatorType.subheadSemiBold)
                 .buttonStyle(.bordered)
                 .tint(self.tint)
         }
     }
 }
 
-private struct operatorTabBarBehaviorModifier: ViewModifier {
+private struct OperatorTabBarBehaviorModifier: ViewModifier {
     func body(content: Content) -> some View {
         if #available(iOS 26.0, *) {
             content.tabBarMinimizeBehavior(.onScrollDown)
@@ -189,7 +189,7 @@ private struct operatorTabBarBehaviorModifier: ViewModifier {
     }
 }
 
-private struct operatorGlassSurfaceModifier: ViewModifier {
+private struct OperatorGlassSurfaceModifier: ViewModifier {
     let radius: CGFloat
 
     func body(content: Content) -> some View {
@@ -206,7 +206,7 @@ private struct operatorGlassSurfaceModifier: ViewModifier {
 extension View {
     func proPanelSurface(
         tint: Color? = nil,
-        radius: CGFloat = operatorProMetric.cardRadius,
+        radius: CGFloat = OperatorProMetric.cardRadius,
         isProminent: Bool = false) -> some View
     {
         modifier(ProPanelSurfaceModifier(
@@ -219,16 +219,16 @@ extension View {
         modifier(ProInsetSurfaceModifier(tint: tint, radius: radius))
     }
 
-    func operatorGlassButton(prominent: Bool = false, tint: Color? = nil) -> some View {
-        modifier(operatorGlassButtonModifier(prominent: prominent, tint: tint))
+    func openClawGlassButton(prominent: Bool = false, tint: Color? = nil) -> some View {
+        modifier(OperatorGlassButtonModifier(prominent: prominent, tint: tint))
     }
 
-    func operatorTabBarBehavior() -> some View {
-        modifier(operatorTabBarBehaviorModifier())
+    func openClawTabBarBehavior() -> some View {
+        modifier(OperatorTabBarBehaviorModifier())
     }
 
-    func operatorGlassSurface(radius: CGFloat = operatorProMetric.controlRadius) -> some View {
-        modifier(operatorGlassSurfaceModifier(radius: radius))
+    func openClawGlassSurface(radius: CGFloat = OperatorProMetric.controlRadius) -> some View {
+        modifier(OperatorGlassSurfaceModifier(radius: radius))
     }
 }
 
@@ -261,25 +261,25 @@ struct ProIconBadge: View {
 
     var body: some View {
         Image(systemName: self.systemName)
-            .font(operatorType.captionSemiBold)
+            .font(OperatorType.captionSemiBold)
             .foregroundStyle(self.color)
             .frame(width: 30, height: 30)
             .background {
-                RoundedRectangle(cornerRadius: operatorRadius.xs, style: .continuous)
+                RoundedRectangle(cornerRadius: OperatorRadius.xs, style: .continuous)
                     .fill(self.color.opacity(0.12))
             }
     }
 }
 
-struct operatorSidebarHeaderAction {
+struct OperatorSidebarHeaderAction {
     let systemName: String
-    let accessibilityLabel: operatorTextValue
+    let accessibilityLabel: OperatorTextValue
     let accessibilityIdentifier: String?
     let action: () -> Void
 
     init(
         systemName: String,
-        accessibilityLabel: operatorTextValue,
+        accessibilityLabel: OperatorTextValue,
         accessibilityIdentifier: String? = nil,
         action: @escaping () -> Void)
     {
@@ -290,24 +290,24 @@ struct operatorSidebarHeaderAction {
     }
 }
 
-struct operatorSidebarRevealButton: View {
-    let headerAction: operatorSidebarHeaderAction
+struct OperatorSidebarRevealButton: View {
+    let headerAction: OperatorSidebarHeaderAction
 
-    init(action: operatorSidebarHeaderAction) {
+    init(action: OperatorSidebarHeaderAction) {
         self.headerAction = action
     }
 
     var body: some View {
         let button = Button(action: headerAction.action) {
             Image(systemName: self.headerAction.systemName)
-                .font(operatorType.subheadSemiBold)
+                .font(OperatorType.subheadSemiBold)
                 .frame(
-                    width: operatorProMetric.compactControlSize,
-                    height: operatorProMetric.compactControlSize)
+                    width: OperatorProMetric.compactControlSize,
+                    height: OperatorProMetric.compactControlSize)
                 .contentShape(Rectangle())
         }
         .buttonBorderShape(.circle)
-        .operatorGlassButton(tint: operatorBrand.accent)
+        .openClawGlassButton(tint: OperatorBrand.accent)
         .accessibilityLabel(self.headerAction.accessibilityLabel.text)
 
         if let accessibilityIdentifier = headerAction.accessibilityIdentifier {
@@ -318,16 +318,16 @@ struct operatorSidebarRevealButton: View {
     }
 }
 
-struct operatorSidebarHeaderLeadingSlot: View {
-    let action: operatorSidebarHeaderAction
+struct OperatorSidebarHeaderLeadingSlot: View {
+    let action: OperatorSidebarHeaderAction
 
     var body: some View {
-        operatorSidebarRevealButton(action: self.action)
+        OperatorSidebarRevealButton(action: self.action)
             .frame(width: 44, height: 44, alignment: .center)
     }
 }
 
-struct operatorGlassControlGroup<Content: View>: View {
+struct OperatorGlassControlGroup<Content: View>: View {
     @ViewBuilder let content: Content
 
     var body: some View {
@@ -341,21 +341,21 @@ struct operatorGlassControlGroup<Content: View>: View {
     }
 }
 
-enum operatorNoticeDetail {
+enum OperatorNoticeDetail {
     case accent(String)
     case requestID(String)
 }
 
-struct operatorNoticeBanner: View {
+struct OperatorNoticeBanner: View {
     let icon: String
-    let title: operatorTextValue
-    let message: operatorTextValue
-    let ownerLabel: operatorTextValue
+    let title: OperatorTextValue
+    let message: OperatorTextValue
+    let ownerLabel: OperatorTextValue
     let tint: Color
-    var detail: operatorNoticeDetail?
-    var primaryActionTitle: operatorTextValue?
+    var detail: OperatorNoticeDetail?
+    var primaryActionTitle: OperatorTextValue?
     var onPrimaryAction: (() -> Void)?
-    var secondaryActionTitle: operatorTextValue?
+    var secondaryActionTitle: OperatorTextValue?
     var onSecondaryAction: (() -> Void)?
 
     var body: some View {
@@ -367,16 +367,16 @@ struct operatorNoticeBanner: View {
                     VStack(alignment: .leading, spacing: 6) {
                         HStack(alignment: .firstTextBaseline, spacing: 8) {
                             self.title.text
-                                .font(operatorType.subheadSemiBold)
+                                .font(OperatorType.subheadSemiBold)
                                 .multilineTextAlignment(.leading)
                             Spacer(minLength: 0)
                             self.ownerLabel.text
-                                .font(operatorType.captionSemiBold)
+                                .font(OperatorType.captionSemiBold)
                                 .foregroundStyle(.secondary)
                         }
 
                         self.message.text
-                            .font(operatorType.footnote)
+                            .font(OperatorType.footnote)
                             .foregroundStyle(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
 
@@ -385,24 +385,24 @@ struct operatorNoticeBanner: View {
                 }
 
                 if self.onPrimaryAction != nil || self.onSecondaryAction != nil {
-                    operatorGlassControlGroup {
+                    OperatorGlassControlGroup {
                         HStack(spacing: 10) {
                             if let primaryActionTitle, let onPrimaryAction {
                                 Button(action: onPrimaryAction) {
                                     primaryActionTitle.text
-                                        .font(operatorType.captionSemiBold)
+                                        .font(OperatorType.captionSemiBold)
                                 }
-                                .font(operatorType.captionSemiBold)
-                                .operatorGlassButton(prominent: true)
+                                .font(OperatorType.captionSemiBold)
+                                .openClawGlassButton(prominent: true)
                                 .controlSize(.small)
                             }
                             if let secondaryActionTitle, let onSecondaryAction {
                                 Button(action: onSecondaryAction) {
                                     secondaryActionTitle.text
-                                        .font(operatorType.captionSemiBold)
+                                        .font(OperatorType.captionSemiBold)
                                 }
-                                .font(operatorType.captionSemiBold)
-                                .operatorGlassButton()
+                                .font(OperatorType.captionSemiBold)
+                                .openClawGlassButton()
                                 .controlSize(.small)
                             }
                         }
@@ -418,14 +418,14 @@ struct operatorNoticeBanner: View {
             switch detail {
             case let .accent(value):
                 Text(value)
-                    .font(operatorType.captionMedium)
+                    .font(OperatorType.captionMedium)
                     .foregroundStyle(self.tint)
                     .fixedSize(horizontal: false, vertical: true)
             case let .requestID(value):
                 Text(verbatim: String(
                     format: String(localized: "Request ID: %@"),
                     value))
-                    .font(operatorType.monoSmallMedium)
+                    .font(OperatorType.monoSmallMedium)
                     .foregroundStyle(.secondary)
                     .textSelection(.enabled)
             }
@@ -433,20 +433,20 @@ struct operatorNoticeBanner: View {
     }
 }
 
-struct operatorAdaptiveHeaderRow<Leading: View, Accessory: View>: View {
-    let title: operatorTextValue
-    let subtitle: operatorTextValue?
-    var titleFont: Font = operatorType.title3SemiBold
-    var subtitleFont: Font = operatorType.subhead
+struct OperatorAdaptiveHeaderRow<Leading: View, Accessory: View>: View {
+    let title: OperatorTextValue
+    let subtitle: OperatorTextValue?
+    var titleFont: Font = OperatorType.title3SemiBold
+    var subtitleFont: Font = OperatorType.subhead
     var subtitleLineLimit: Int? = 2
     @ViewBuilder let leading: Leading
     @ViewBuilder let accessory: Accessory
 
     init(
-        title: operatorTextValue,
-        subtitle: operatorTextValue? = nil,
-        titleFont: Font = operatorType.title3SemiBold,
-        subtitleFont: Font = operatorType.subhead,
+        title: OperatorTextValue,
+        subtitle: OperatorTextValue? = nil,
+        titleFont: Font = OperatorType.title3SemiBold,
+        subtitleFont: Font = OperatorType.subhead,
         subtitleLineLimit: Int? = 2,
         @ViewBuilder leading: () -> Leading,
         @ViewBuilder accessory: () -> Accessory)
@@ -521,12 +521,12 @@ struct operatorAdaptiveHeaderRow<Leading: View, Accessory: View>: View {
 /// Shared switch indicator replacing the 3 duplicated capsule toggles.
 /// Native Toggle only hits the switch edge on iOS 26; this full-width button approach
 /// gives the whole row a tap target.
-struct operatorToggleIndicator: View {
+struct OperatorToggleIndicator: View {
     let isOn: Bool
 
     var body: some View {
         Capsule()
-            .fill(self.isOn ? operatorBrand.accent : Color.secondary.opacity(0.35))
+            .fill(self.isOn ? OperatorBrand.accent : Color.secondary.opacity(0.35))
             .frame(width: 52, height: 32)
             .overlay(alignment: self.isOn ? .trailing : .leading) {
                 Circle()
@@ -538,7 +538,7 @@ struct operatorToggleIndicator: View {
     }
 }
 
-enum operatorStatusTone {
+enum OperatorStatusTone {
     case ok
     case warn
     case danger
@@ -549,33 +549,33 @@ enum operatorStatusTone {
 
     var color: Color {
         switch self {
-        case .ok: operatorBrand.ok
-        case .warn: operatorBrand.warn
-        case .danger: operatorBrand.danger
-        case .info: operatorBrand.info
-        case .accent: operatorBrand.accent
-        case .teal: operatorBrand.teal
-        case .muted: operatorBrand.textSecondary
+        case .ok: OperatorBrand.ok
+        case .warn: OperatorBrand.warn
+        case .danger: OperatorBrand.danger
+        case .info: OperatorBrand.info
+        case .accent: OperatorBrand.accent
+        case .teal: OperatorBrand.teal
+        case .muted: OperatorBrand.textSecondary
         }
     }
 }
 
-struct operatorStatusBadge: View {
+struct OperatorStatusBadge: View {
     @Environment(\.colorScheme) private var colorScheme
-    let label: operatorTextValue
-    let tone: operatorStatusTone
+    let label: OperatorTextValue
+    let tone: OperatorStatusTone
 
     var body: some View {
-        HStack(spacing: operatorSpacing.space1 + 2) {
+        HStack(spacing: OperatorSpacing.space1 + 2) {
             Circle()
                 .fill(self.tone.color)
                 .frame(width: 7, height: 7)
                 .shadow(color: self.tone.color.opacity(0.55), radius: 3)
             self.label.text
-                .font(operatorType.caption2SemiBold)
+                .font(OperatorType.caption2SemiBold)
                 .foregroundStyle(self.tone.color)
         }
-        .padding(.horizontal, operatorSpacing.space2)
+        .padding(.horizontal, OperatorSpacing.space2)
         .padding(.vertical, 5)
         .background {
             Capsule()
@@ -601,7 +601,7 @@ struct ProValuePill: View {
 
     var body: some View {
         Text(self.value)
-            .font(operatorType.footnoteSemiBold)
+            .font(OperatorType.footnoteSemiBold)
             .foregroundStyle(self.color)
             .lineLimit(1)
             .padding(.horizontal, 8)
@@ -613,23 +613,23 @@ struct ProValuePill: View {
     }
 }
 
-struct operatorProMark: View {
+struct OperatorProMark: View {
     var size: CGFloat = 42
     var shadowRadius: CGFloat = 10
     /// Opt-in tap Easter eggs; leave off when the mark sits inside a control.
     var interactive = false
 
     var body: some View {
-        operatorMascotView(interactive: self.interactive)
+        OperatorMascotView(interactive: self.interactive)
             .frame(width: self.size, height: self.size)
-            .shadow(color: operatorBrand.accent.opacity(0.18), radius: self.shadowRadius, y: self.shadowRadius / 3)
-            .accessibilityLabel("operator")
+            .shadow(color: OperatorBrand.accent.opacity(0.18), radius: self.shadowRadius, y: self.shadowRadius / 3)
+            .accessibilityLabel("Operator")
     }
 }
 
 struct ProProgressBar: View {
     let progress: Double
-    var color: Color = operatorBrand.accentHot
+    var color: Color = OperatorBrand.accentHot
 
     var body: some View {
         GeometryReader { proxy in
@@ -646,11 +646,11 @@ struct ProProgressBar: View {
     }
 }
 
-struct operatorGatewayCompactPill: View {
+struct OperatorGatewayCompactPill: View {
     @Environment(NodeAppModel.self) private var appModel
 
     var body: some View {
-        operatorStatusBadge(label: .verbatim(self.title), tone: self.tone)
+        OperatorStatusBadge(label: .verbatim(self.title), tone: self.tone)
             .accessibilityLabel(
                 String(
                     format: String(localized: "Gateway %@"),
@@ -670,7 +670,7 @@ struct operatorGatewayCompactPill: View {
         }
     }
 
-    private var tone: operatorStatusTone {
+    private var tone: OperatorStatusTone {
         switch GatewayStatusBuilder.build(appModel: self.appModel) {
         case .connected:
             .ok
@@ -686,7 +686,7 @@ struct operatorGatewayCompactPill: View {
 
 struct ProMetricTile: View {
     @Environment(\.colorScheme) private var colorScheme
-    let title: operatorTextValue
+    let title: OperatorTextValue
     let value: String
     let icon: String
     let color: Color
@@ -695,7 +695,7 @@ struct ProMetricTile: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Image(systemName: self.icon)
-                    .font(operatorType.captionSemiBold)
+                    .font(OperatorType.captionSemiBold)
                     .foregroundStyle(self.color)
                     .frame(width: 24, height: 24)
                     .background(self.color.opacity(self.colorScheme == .dark ? 0.18 : 0.10), in: Circle())
@@ -704,25 +704,25 @@ struct ProMetricTile: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(self.value)
-                    .font(operatorType.headlineBold)
+                    .font(OperatorType.headlineBold)
                     .lineLimit(1)
                     .minimumScaleFactor(0.72)
                 self.title.text
-                    .font(operatorType.caption2Medium)
+                    .font(OperatorType.caption2Medium)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
             }
         }
         .padding(11)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .proInsetSurface(tint: self.color, radius: operatorProMetric.controlRadius)
+        .proInsetSurface(tint: self.color, radius: OperatorProMetric.controlRadius)
     }
 }
 
 struct ProMetric: Identifiable {
     let id = UUID()
     let icon: String
-    let title: operatorTextValue
+    let title: OperatorTextValue
     let value: String
     let color: Color
 }
@@ -744,7 +744,7 @@ struct ProMetricGrid: View {
                     color: metric.color)
             }
         }
-        .padding(.horizontal, operatorProMetric.pagePadding)
+        .padding(.horizontal, OperatorProMetric.pagePadding)
     }
 
     private var columnCount: Int {
@@ -754,9 +754,9 @@ struct ProMetricGrid: View {
 }
 
 struct ProPanelHeader: View {
-    let title: operatorTextValue
+    let title: OperatorTextValue
     var value: String?
-    var actionTitle: operatorTextValue?
+    var actionTitle: OperatorTextValue?
     var actionIcon: String?
     var actionAccessibilityLabel: String?
     var isActionDisabled = false
@@ -765,10 +765,10 @@ struct ProPanelHeader: View {
     var body: some View {
         HStack(spacing: 8) {
             self.title.text
-                .font(operatorType.subheadSemiBold)
+                .font(OperatorType.subheadSemiBold)
             if let value {
                 Text(value)
-                    .font(operatorType.caption2Bold)
+                    .font(OperatorType.caption2Bold)
                     .foregroundStyle(.secondary)
             }
             Spacer(minLength: 8)
@@ -794,7 +794,7 @@ struct ProPanelHeader: View {
             } else if let actionTitle {
                 Button(action: action) {
                     actionTitle.text
-                        .font(operatorType.captionSemiBold)
+                        .font(OperatorType.captionSemiBold)
                 }
                 .disabled(self.isActionDisabled)
             }
@@ -804,11 +804,11 @@ struct ProPanelHeader: View {
 
 struct ProStatusRow: View {
     let icon: String
-    let title: operatorTextValue
-    let detail: operatorTextValue
+    let title: OperatorTextValue
+    let detail: OperatorTextValue
     let value: String?
     let color: Color
-    var actionTitle: operatorTextValue?
+    var actionTitle: OperatorTextValue?
     var action: (() -> Void)?
 
     var body: some View {
@@ -816,10 +816,10 @@ struct ProStatusRow: View {
             ProIconBadge(systemName: self.icon, color: self.color)
             VStack(alignment: .leading, spacing: 4) {
                 self.title.text
-                    .font(operatorType.subheadSemiBold)
+                    .font(OperatorType.subheadSemiBold)
                     .lineLimit(1)
                 self.detail.text
-                    .font(operatorType.caption)
+                    .font(OperatorType.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
             }
@@ -831,7 +831,7 @@ struct ProStatusRow: View {
                 if let actionTitle, let action {
                     Button(action: action) {
                         actionTitle.text
-                            .font(operatorType.captionSemiBold)
+                            .font(OperatorType.captionSemiBold)
                     }
                     .buttonStyle(.bordered)
                     .controlSize(.mini)

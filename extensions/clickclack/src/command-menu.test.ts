@@ -5,7 +5,7 @@ const mocks = vi.hoisted(() => ({
   listNativeCommandSpecsForConfig: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/native-command-registry", () => ({
+vi.mock("operator/plugin-sdk/native-command-registry", () => ({
   listNativeCommandSpecsForConfig: mocks.listNativeCommandSpecsForConfig,
 }));
 

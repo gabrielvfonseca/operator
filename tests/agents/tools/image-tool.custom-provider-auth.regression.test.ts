@@ -8,7 +8,7 @@ import type { OperatorConfig } from "../../../src/config/config.js";
 import type { ModelDefinitionConfig } from "../../../src/config/types.models.js";
 import type { ImageDescriptionRequest } from "../../../src/plugin-sdk/media-understanding.js";
 import { getApiKeyForModel, hasUsableCustomProviderApiKey } from "../../../src/agents/model-auth.js";
-import { resolveImageToolFactoryAvailable } from "../../../src/agents/openclaw-tools.media-factory-plan.js";
+import { resolveImageToolFactoryAvailable } from "../../../src/agents/operator-tools.media-factory-plan.js";
 import { createImageTool } from "../../../src/agents/tools/image-tool.js";
 import { resolveImageModelConfigForTool, testing } from "../../../src/agents/tools/image-tool.test-support.js";
 import { hasProviderAuthForTool } from "../../../src/agents/tools/model-config.helpers.js";

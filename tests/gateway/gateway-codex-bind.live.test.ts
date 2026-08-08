@@ -313,10 +313,10 @@ async function writePluginBindingApproval(params: {
   channel: string;
   accountId: string;
 }): Promise<void> {
-  const openclawDir = path.join(params.homeDir, ".operator");
-  await fs.mkdir(openclawDir, { recursive: true });
+  const operatorDir = path.join(params.homeDir, ".operator");
+  await fs.mkdir(operatorDir, { recursive: true });
   await fs.writeFile(
-    path.join(openclawDir, "plugin-binding-approvals.json"),
+    path.join(operatorDir, "plugin-binding-approvals.json"),
     `${JSON.stringify(
       {
         version: 1,

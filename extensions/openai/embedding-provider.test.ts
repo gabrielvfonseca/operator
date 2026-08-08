@@ -13,7 +13,7 @@ const mocks = vi.hoisted(() => ({
   resolveRemoteEmbeddingClient: vi.fn(async () => ({ ...DEFAULT_MOCK_CLIENT })),
 }));
 
-vi.mock("openclaw/plugin-sdk/memory-core-host-engine-embeddings", () => ({
+vi.mock("operator/plugin-sdk/memory-core-host-engine-embeddings", () => ({
   fetchRemoteEmbeddingVectors: mocks.fetchRemoteEmbeddingVectors,
   resolveRemoteEmbeddingClient: mocks.resolveRemoteEmbeddingClient,
 }));

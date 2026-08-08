@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# One-time host setup for rootless OpenClaw in Podman. Uses the current
+# One-time host setup for rootless Operator in Podman. Uses the current
 # non-root user throughout, builds or pulls the image into that user's Podman
-# store, writes config under ~/.openclaw by default, and uses the repo-local
-# launch script at ./scripts/run-openclaw-podman.sh.
+# store, writes config under ~/.operator by default, and uses the repo-local
+# launch script at ./scripts/run-operator-podman.sh.
 #
 # Usage: ./scripts/podman/setup.sh [--quadlet|--container]
 #   --quadlet   Install a Podman Quadlet as the current user's systemd service
@@ -10,23 +10,23 @@
 #   Or set OPENCLAW_PODMAN_QUADLET=1 (or 0) to choose without a flag.
 #
 # After this, start the gateway manually:
-#   ./scripts/run-openclaw-podman.sh launch
-#   ./scripts/run-openclaw-podman.sh launch setup
+#   ./scripts/run-operator-podman.sh launch
+#   ./scripts/run-operator-podman.sh launch setup
 # Or, if you used --quadlet:
-#   systemctl --user start openclaw.service
+#   systemctl --user start operator.service
 set -euo pipefail
 
 REPO_PATH="${OPENCLAW_REPO_PATH:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 source "$REPO_PATH/scripts/lib/build-metadata.sh"
 source "$REPO_PATH/scripts/lib/host-timeout.sh"
-RUN_SCRIPT_SRC="$REPO_PATH/scripts/run-openclaw-podman.sh"
-QUADLET_TEMPLATE="$REPO_PATH/scripts/podman/openclaw.container.in"
+RUN_SCRIPT_SRC="$REPO_PATH/scripts/run-operator-podman.sh"
+QUADLET_TEMPLATE="$REPO_PATH/scripts/podman/operator.container.in"
 OPENCLAW_USER="$(id -un)"
 OPENCLAW_HOME="${HOME:-}"
 OPENCLAW_CONFIG_DIR="${OPENCLAW_CONFIG_DIR:-}"
 OPENCLAW_WORKSPACE_DIR="${OPENCLAW_WORKSPACE_DIR:-}"
-OPENCLAW_IMAGE="${OPENCLAW_PODMAN_IMAGE:-${OPENCLAW_IMAGE:-openclaw:local}}"
-OPENCLAW_CONTAINER_NAME="${OPENCLAW_PODMAN_CONTAINER:-openclaw}"
+OPENCLAW_IMAGE="${OPENCLAW_PODMAN_IMAGE:-${OPENCLAW_IMAGE:-operator:local}}"
+OPENCLAW_CONTAINER_NAME="${OPENCLAW_PODMAN_CONTAINER:-operator}"
 PLATFORM_NAME="$(uname -s 2>/dev/null || echo unknown)"
 HOST_GATEWAY_PORT="${OPENCLAW_PODMAN_GATEWAY_HOST_PORT:-${OPENCLAW_GATEWAY_PORT:-18789}}"
 QUADLET_GATEWAY_PORT="18789"
@@ -49,11 +49,11 @@ fail() {
 
 run_podman_pull() {
   local image="$1"
-  openclaw_host_timeout_cmd "$PODMAN_PULL_TIMEOUT" podman pull "$image"
+  operator_host_timeout_cmd "$PODMAN_PULL_TIMEOUT" podman pull "$image"
 }
 
 run_podman_build() {
-  openclaw_host_timeout_cmd "$PODMAN_BUILD_TIMEOUT" podman build "$@"
+  operator_host_timeout_cmd "$PODMAN_BUILD_TIMEOUT" podman build "$@"
 }
 
 validate_single_line_value() {
@@ -337,7 +337,7 @@ if is_root; then
   echo "Run scripts/podman/setup.sh as your normal user so Podman stays rootless." >&2
   exit 1
 fi
-if [[ "$OPENCLAW_IMAGE" == "openclaw:local" ]] && [[ ! -f "$REPO_PATH/Dockerfile" ]]; then
+if [[ "$OPENCLAW_IMAGE" == "operator:local" ]] && [[ ! -f "$REPO_PATH/Dockerfile" ]]; then
   echo "Dockerfile not found at $REPO_PATH. Set OPENCLAW_REPO_PATH to the repo root." >&2
   exit 1
 fi
@@ -354,7 +354,7 @@ if [[ -z "$OPENCLAW_HOME" ]]; then
   exit 1
 fi
 if [[ -z "$OPENCLAW_CONFIG_DIR" ]]; then
-  OPENCLAW_CONFIG_DIR="$OPENCLAW_HOME/.openclaw"
+  OPENCLAW_CONFIG_DIR="$OPENCLAW_HOME/.operator"
 fi
 if [[ -z "$OPENCLAW_WORKSPACE_DIR" ]]; then
   OPENCLAW_WORKSPACE_DIR="$OPENCLAW_CONFIG_DIR/workspace"
@@ -374,8 +374,8 @@ ensure_private_existing_dir_owned_by_user "workspace directory" "$OPENCLAW_WORKS
 OPENCLAW_IMAGE_APT_PACKAGES="${OPENCLAW_IMAGE_APT_PACKAGES-${OPENCLAW_DOCKER_APT_PACKAGES:-}}"
 OPENCLAW_IMAGE_PIP_PACKAGES="${OPENCLAW_IMAGE_PIP_PACKAGES:-}"
 BUILD_ARGS=()
-BUILD_GIT_COMMIT="$(openclaw_resolve_git_commit "$REPO_PATH")"
-BUILD_TIMESTAMP="$(openclaw_resolve_build_timestamp)"
+BUILD_GIT_COMMIT="$(operator_resolve_git_commit "$REPO_PATH")"
+BUILD_TIMESTAMP="$(operator_resolve_build_timestamp)"
 BUILD_ARGS+=(--build-arg "OPENCLAW_BUILD_TIMESTAMP=${BUILD_TIMESTAMP}")
 if [[ "$BUILD_GIT_COMMIT" =~ ^[0-9a-fA-F]{40}$ ]]; then
   BUILD_ARGS+=(--build-arg "GIT_COMMIT=${BUILD_GIT_COMMIT}")
@@ -393,7 +393,7 @@ if [[ -n "${OPENCLAW_INSTALL_BROWSER:-}" ]]; then
   BUILD_ARGS+=(--build-arg "OPENCLAW_INSTALL_BROWSER=${OPENCLAW_INSTALL_BROWSER}")
 fi
 
-if [[ "$OPENCLAW_IMAGE" == "openclaw:local" ]]; then
+if [[ "$OPENCLAW_IMAGE" == "operator:local" ]]; then
   echo "Building image $OPENCLAW_IMAGE ..."
   run_podman_build -t "$OPENCLAW_IMAGE" -f "$REPO_PATH/Dockerfile" "${BUILD_ARGS[@]+"${BUILD_ARGS[@]}"}" "$REPO_PATH"
 else
@@ -419,7 +419,7 @@ fi
 upsert_env_var "$ENV_FILE" "OPENCLAW_PODMAN_CONTAINER" "$OPENCLAW_CONTAINER_NAME"
 upsert_env_var "$ENV_FILE" "OPENCLAW_PODMAN_IMAGE" "$OPENCLAW_IMAGE"
 
-CONFIG_JSON="$OPENCLAW_CONFIG_DIR/openclaw.json"
+CONFIG_JSON="$OPENCLAW_CONFIG_DIR/operator.json"
 if [[ ! -f "$CONFIG_JSON" ]]; then
   (
     umask 077
@@ -443,7 +443,7 @@ seed_local_control_ui_origins "$CONFIG_JSON" "$SEED_GATEWAY_PORT"
 
 if [[ "$INSTALL_QUADLET" == true ]]; then
   QUADLET_DIR="$OPENCLAW_HOME/.config/containers/systemd"
-  QUADLET_DST="$QUADLET_DIR/openclaw.container"
+  QUADLET_DST="$QUADLET_DIR/operator.container"
   echo "Installing Quadlet to $QUADLET_DST ..."
   mkdir -p "$QUADLET_DIR"
   ensure_safe_existing_dir "quadlet directory" "$QUADLET_DIR"
@@ -462,11 +462,11 @@ if [[ "$INSTALL_QUADLET" == true ]]; then
 
   if command -v systemctl >/dev/null 2>&1; then
     echo "Reloading and starting user service..."
-    if systemctl --user daemon-reload && systemctl --user start openclaw.service; then
+    if systemctl --user daemon-reload && systemctl --user start operator.service; then
       echo "Quadlet installed and service started."
     else
       echo "Quadlet installed, but automatic start failed." >&2
-      echo "Try: systemctl --user daemon-reload && systemctl --user start openclaw.service" >&2
+      echo "Try: systemctl --user daemon-reload && systemctl --user start operator.service" >&2
       if command -v loginctl >/dev/null 2>&1; then
         echo "For boot persistence on headless hosts, you may also need: sudo loginctl enable-linger $(whoami)" >&2
       fi
@@ -480,6 +480,6 @@ fi
 
 echo
 echo "Next:"
-echo "  ./scripts/run-openclaw-podman.sh launch"
-echo "  ./scripts/run-openclaw-podman.sh launch setup"
-echo "  openclaw --container $OPENCLAW_CONTAINER_NAME dashboard --no-open"
+echo "  ./scripts/run-operator-podman.sh launch"
+echo "  ./scripts/run-operator-podman.sh launch setup"
+echo "  operator --container $OPENCLAW_CONTAINER_NAME dashboard --no-open"

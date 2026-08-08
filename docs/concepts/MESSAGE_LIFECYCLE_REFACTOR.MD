@@ -10,7 +10,7 @@ title: "Message lifecycle refactor"
 <Note>
 This page originated as a forward-looking design proposal. The core of that
 design has since shipped in `src/channels/message/*` and the public
-`openclaw/plugin-sdk/channel-outbound` / `channel-inbound` subpaths. For the
+`operator/plugin-sdk/channel-outbound` / `channel-inbound` subpaths. For the
 current API, use [Channel outbound API](/plugins/sdk-channel-outbound) and
 [Channel inbound API](/plugins/sdk-channel-inbound). This page tracks what
 shipped, where the implementation diverged from the original sketch, and what
@@ -64,8 +64,8 @@ The internal domain lives in `src/channels/message/*`:
 | `inbound-reply-dispatch.ts` | `dispatchChannelInboundReply` and legacy-named wrappers                                                            |
 | `reply-pipeline.ts`         | `createChannelReplyPipeline`, reply-prefix and typing-callback helpers                                             |
 
-Public surface: `openclaw/plugin-sdk/channel-outbound` (send/receipt/durable/live/reply-pipeline
-helpers) and `openclaw/plugin-sdk/channel-inbound` (inbound context, `runChannelInboundEvent`,
+Public surface: `operator/plugin-sdk/channel-outbound` (send/receipt/durable/live/reply-pipeline
+helpers) and `operator/plugin-sdk/channel-inbound` (inbound context, `runChannelInboundEvent`,
 `dispatchChannelInboundReply`). See those pages for adapter examples, current
 type names, and migration notes — they are the source of truth for the API
 shape, not the sketches below.

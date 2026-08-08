@@ -113,14 +113,14 @@ describe("executable path helpers", () => {
     }
 
     expect(
-      resolveExecutablePath(String.raw`:\Users\demo\AI\system\openclaw\git.exe`, {
-        cwd: String.raw`C:\Users\demo\AI\system\openclaw`,
+      resolveExecutablePath(String.raw`:\Users\demo\AI\system\operator\git.exe`, {
+        cwd: String.raw`C:\Users\demo\AI\system\operator`,
       }),
     ).toBeUndefined();
     expect(
       // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
-      resolveExecutablePath(String.raw`:/Users/demo/AI/system/openclaw/git.exe`, {
-        cwd: String.raw`C:\Users\demo\AI\system\openclaw`,
+      resolveExecutablePath(String.raw`:/Users/demo/AI/system/operator/git.exe`, {
+        cwd: String.raw`C:\Users\demo\AI\system\operator`,
       }),
     ).toBeUndefined();
   });

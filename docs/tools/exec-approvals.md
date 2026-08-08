@@ -31,7 +31,7 @@ prompting even if session or config defaults request `ask: "on-miss"`.
 
 Exec approvals are enforced locally on the execution host:
 
-- **Gateway host** -> `openclaw` process on the gateway machine.
+- **Gateway host** -> `operator` process on the gateway machine.
 - **Node host** -> node runner (macOS companion app or headless node host).
 
 ### Trust model

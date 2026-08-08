@@ -558,7 +558,7 @@ describeControlUiE2e("Control UI chat composer redesign", () => {
       methodResponses: {
         "chat.startup": {
           agentsList: {
-            agents: [{ id: "main", name: "OpenClaw" }],
+            agents: [{ id: "main", name: "Operator" }],
             defaultId: "main",
             mainKey: "main",
             scope: "agent",
@@ -722,7 +722,7 @@ describeControlUiE2e("Control UI chat composer redesign", () => {
         .poll(() => composer.locator('[data-chat-model-option="openai/work-model"]').count())
         .toBe(1);
 
-      await page.locator("openclaw-chat-pane").evaluate((pane) => {
+      await page.locator("operator-chat-pane").evaluate((pane) => {
         (pane as HTMLElement & { sessionKey: string }).sessionKey = "agent:other:main";
       });
 
@@ -781,7 +781,7 @@ describeControlUiE2e("Control UI chat composer redesign", () => {
     try {
       await page.goto(`${server.baseUrl}chat?session=agent%3Amain%3Amain`);
       await gateway.waitForRequest("chat.startup");
-      await page.locator("openclaw-chat-pane").evaluate((pane) => {
+      await page.locator("operator-chat-pane").evaluate((pane) => {
         (pane as HTMLElement & { sessionKey: string }).sessionKey = "agent:work:main";
       });
       await expect
@@ -819,7 +819,7 @@ describeControlUiE2e("Control UI chat composer redesign", () => {
         .poll(async () => (await gateway.getRequests("agents.list")).length)
         .toBeGreaterThan(agentsRequestsBeforeStartup);
       await page.waitForFunction(() => {
-        const pane = document.querySelector("openclaw-chat-pane") as
+        const pane = document.querySelector("operator-chat-pane") as
           | (HTMLElement & {
               state?: { agentsList?: { defaultId?: string; agents?: Array<{ id?: string }> } };
             })

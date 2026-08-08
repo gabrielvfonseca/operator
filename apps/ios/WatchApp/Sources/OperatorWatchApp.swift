@@ -1,4 +1,4 @@
-import operatorKit
+import OperatorKit
 import SwiftUI
 import UserNotifications
 
@@ -18,15 +18,15 @@ enum WatchScreenshotMode {
     private static let defaultsKey = "operator.watch.screenshotMode"
     static let approvals = ProcessInfo.processInfo.arguments.contains(
         "--operator-watch-approval-screenshot-mode")
-        || ProcessInfo.processInfo.environment["operator_WATCH_APPROVAL_SCREENSHOT_MODE"] == "1"
+        || ProcessInfo.processInfo.environment["OPERATOR_WATCH_APPROVAL_SCREENSHOT_MODE"] == "1"
     static let enabled = ProcessInfo.processInfo.arguments.contains("--operator-watch-screenshot-mode")
-        || ProcessInfo.processInfo.environment["operator_WATCH_SCREENSHOT_MODE"] == "1"
+        || ProcessInfo.processInfo.environment["OPERATOR_WATCH_SCREENSHOT_MODE"] == "1"
         || UserDefaults.standard.bool(forKey: WatchScreenshotMode.defaultsKey)
         || WatchScreenshotMode.approvals
 }
 
 @main
-struct operatorWatchApp: App {
+struct OperatorWatchApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @State private var inboxStore = WatchInboxStore(
         requestNotificationAuthorization: !WatchScreenshotMode.enabled)
@@ -265,14 +265,14 @@ extension WatchInboxStore {
             transport: "screenshot")
         self.consume(
             appSnapshot: WatchAppSnapshotMessage(
-                gatewayStatus: operatorWatchAppStatus(code: .gatewayConnected),
+                gatewayStatus: OperatorWatchAppStatus(code: .gatewayConnected),
                 gatewayConnected: true,
                 agentName: "Molty",
                 agentAvatarURL: nil,
                 agentAvatarText: "M",
                 sessionKey: "watch-screenshot-session",
                 gatewayStableID: "watch-screenshot-gateway",
-                talkStatus: operatorWatchAppStatus(code: .talkReady),
+                talkStatus: OperatorWatchAppStatus(code: .talkReady),
                 talkEnabled: true,
                 talkListening: false,
                 talkSpeaking: false,

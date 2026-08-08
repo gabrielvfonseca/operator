@@ -197,10 +197,10 @@ describe("buildCliArgs", () => {
         baseArgs: ["exec", "--json"],
         modelId: "gpt-5.4",
         systemPrompt: "Stable prefix",
-        systemPromptFilePath: "/tmp/openclaw/system-prompt.md",
+        systemPromptFilePath: "/tmp/operator/system-prompt.md",
         useResume: false,
       }),
-    ).toEqual(["exec", "--json", "-c", 'model_instructions_file="/tmp/openclaw/system-prompt.md"']);
+    ).toEqual(["exec", "--json", "-c", 'model_instructions_file="/tmp/operator/system-prompt.md"']);
   });
 
   it("passes Claude system prompts through its file flag", () => {
@@ -213,10 +213,10 @@ describe("buildCliArgs", () => {
         baseArgs: ["-p"],
         modelId: "claude-sonnet-4-6",
         systemPrompt: "Stable prefix",
-        systemPromptFilePath: "/tmp/openclaw/system-prompt.md",
+        systemPromptFilePath: "/tmp/operator/system-prompt.md",
         useResume: false,
       }),
-    ).toEqual(["-p", "--append-system-prompt-file", "/tmp/openclaw/system-prompt.md"]);
+    ).toEqual(["-p", "--append-system-prompt-file", "/tmp/operator/system-prompt.md"]);
   });
 
   it("replaces prompt placeholders before falling back to a trailing positional prompt", () => {

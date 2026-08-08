@@ -7,12 +7,12 @@ import os from "node:os";
 import path from "node:path";
 import { PassThrough } from "node:stream";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../../../src/state/operator-state-db.generated.js";
 import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
-} from "../../src/state/openclaw-state-db.js";
-import { resolveOperatorStateSqlitePath } from "../../src/state/openclaw-state-db.paths.js";
+} from "../../src/state/operator-state-db.js";
+import { resolveOperatorStateSqlitePath } from "../../src/state/operator-state-db.paths.js";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
@@ -174,7 +174,7 @@ async function runHelperWithExistingSentinel(params: {
     restartDelayMs: 500,
     parentPid: process.pid,
     execPath: "/usr/local/bin/node",
-    argv1: "/opt/openclaw/operator.mjs",
+    argv1: "/opt/operator/operator.mjs",
     ...(params.handoffId ? { handoffId: params.handoffId } : {}),
     env: {},
     meta: {
@@ -286,7 +286,7 @@ async function runHelperWithCommand(params: {
     restartDelayMs: 0,
     parentPid: process.pid,
     execPath: "/usr/local/bin/node",
-    argv1: "/opt/openclaw/operator.mjs",
+    argv1: "/opt/operator/operator.mjs",
     env: {},
     meta: { sessionKey: "agent:test:webchat:dm:user-123" },
   });
@@ -383,11 +383,11 @@ describe("managed service update handoff", () => {
     );
 
     const resultPromise = startManagedServiceUpdateHandoff({
-      root: "/tmp/openclaw",
+      root: "/tmp/operator",
       restartDrainTimeoutMs: 300_000,
       parentPid: 12345,
       execPath: "/usr/local/bin/node",
-      argv1: "/opt/openclaw/operator.mjs",
+      argv1: "/opt/operator/operator.mjs",
       meta: {},
     });
     await vi.waitFor(() => expect(spawnMock).toHaveBeenCalledTimes(1));
@@ -418,11 +418,11 @@ describe("managed service update handoff", () => {
     );
 
     const resultPromise = startManagedServiceUpdateHandoff({
-      root: "/tmp/openclaw",
+      root: "/tmp/operator",
       restartDrainTimeoutMs: 300_000,
       parentPid: 12345,
       execPath: "/definitely/missing/operator-node",
-      argv1: "/opt/openclaw/operator.mjs",
+      argv1: "/opt/operator/operator.mjs",
       meta: { sessionKey: "agent:test:webchat:dm:user-123" },
     });
     await vi.waitFor(() => expect(spawnMock).toHaveBeenCalledTimes(1));
@@ -451,11 +451,11 @@ describe("managed service update handoff", () => {
     );
 
     const resultPromise = startManagedServiceUpdateHandoff({
-      root: "/tmp/openclaw",
+      root: "/tmp/operator",
       restartDrainTimeoutMs: 300_000,
       parentPid: 12345,
       execPath: "/usr/local/bin/node",
-      argv1: "/opt/openclaw/operator.mjs",
+      argv1: "/opt/operator/operator.mjs",
       supervisor: "systemd",
       env: { PATH: binDir, OPERATOR_SYSTEMD_UNIT: "operator-gateway.service" },
       meta: {},
@@ -486,11 +486,11 @@ describe("managed service update handoff", () => {
     );
 
     const resultPromise = startManagedServiceUpdateHandoff({
-      root: "/tmp/openclaw",
+      root: "/tmp/operator",
       restartDrainTimeoutMs: undefined,
       parentPid: 12345,
       execPath: "/usr/local/bin/node",
-      argv1: "/opt/openclaw/operator.mjs",
+      argv1: "/opt/operator/operator.mjs",
       meta: {},
     });
     const rejection = resultPromise.catch((err: unknown) => err);
@@ -526,13 +526,13 @@ describe("managed service update handoff", () => {
     ) as NodeJS.ProcessEnv;
 
     const result = await startManagedServiceUpdateHandoff({
-      root: "/tmp/openclaw",
+      root: "/tmp/operator",
       timeoutMs: 1_800_000,
       restartDrainTimeoutMs: 300_000,
       restartDelayMs: 500,
       parentPid: 12345,
       execPath: "/usr/local/bin/node",
-      argv1: "/opt/openclaw/operator.mjs",
+      argv1: "/opt/operator/operator.mjs",
       env: {
         ...supervisorEnv,
         ...serviceIdentityEnv,
@@ -578,13 +578,13 @@ describe("managed service update handoff", () => {
     await fs.writeFile(systemdRunPath, "#!/bin/sh\nexit 0\n", { mode: 0o755 });
 
     const result = await startManagedServiceUpdateHandoff({
-      root: "/tmp/openclaw",
+      root: "/tmp/operator",
       timeoutMs: 1_800_000,
       restartDrainTimeoutMs: 300_000,
       restartDelayMs: 500,
       parentPid: 12345,
       execPath: "/usr/local/bin/node",
-      argv1: "/opt/openclaw/operator.mjs",
+      argv1: "/opt/operator/operator.mjs",
       handoffId: "handoff-123",
       channel: "beta",
       supervisor: "systemd",
@@ -632,7 +632,7 @@ describe("managed service update handoff", () => {
     });
     expect(helperParams.commandArgv).toEqual([
       "/usr/local/bin/node",
-      "/opt/openclaw/operator.mjs",
+      "/opt/operator/operator.mjs",
       "update",
       "--yes",
       "--json",
@@ -655,12 +655,12 @@ describe("managed service update handoff", () => {
     );
 
     const result = await startManagedServiceUpdateHandoff({
-      root: "/tmp/openclaw",
+      root: "/tmp/operator",
       restartDrainTimeoutMs: 300_000,
       channel: "extended-stable",
       parentPid: 12345,
       execPath: "/usr/local/bin/node",
-      argv1: "/opt/openclaw/operator.mjs",
+      argv1: "/opt/operator/operator.mjs",
       meta: {},
     });
 
@@ -676,7 +676,7 @@ describe("managed service update handoff", () => {
     };
     expect(helperParams.commandArgv).toEqual([
       "/usr/local/bin/node",
-      "/opt/openclaw/operator.mjs",
+      "/opt/operator/operator.mjs",
       "update",
       "--yes",
       "--json",
@@ -761,13 +761,13 @@ describe("managed service update handoff", () => {
 
     for (const testCase of cases) {
       const result = await startManagedServiceUpdateHandoff({
-        root: "/tmp/openclaw",
+        root: "/tmp/operator",
         timeoutMs: 1_800_000,
         restartDrainTimeoutMs: 300_000,
         restartDelayMs: 500,
         parentPid: 12345,
         execPath: "/usr/local/bin/node",
-        argv1: "/opt/openclaw/operator.mjs",
+        argv1: "/opt/operator/operator.mjs",
         supervisor: testCase.supervisor,
         env: testCase.env,
         meta: { sessionKey: "agent:test:webchat:dm:user-123" },
@@ -946,7 +946,7 @@ describe("managed service update handoff", () => {
       restartDelayMs: 2_000,
       parentPid: process.pid,
       execPath: "/usr/local/bin/node",
-      argv1: "/opt/openclaw/operator.mjs",
+      argv1: "/opt/operator/operator.mjs",
       env: {},
       meta: { sessionKey: "agent:test:webchat:dm:user-123" },
     });
@@ -975,7 +975,7 @@ describe("managed service update handoff", () => {
       restartDelayMs: 0,
       parentPid: process.pid,
       execPath: "/usr/local/bin/node",
-      argv1: "/opt/openclaw/operator.mjs",
+      argv1: "/opt/operator/operator.mjs",
       env: {},
       meta: { sessionKey: "agent:test:webchat:dm:user-123" },
     });

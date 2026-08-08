@@ -156,7 +156,7 @@ Enabled by default. Requirements for it to fire:
 - The gateway process user (or `sshVerify.user`) can SSH to the node host
   non-interactively (keys/agent; Tailscale SSH works too), and the host key is
   already trusted.
-- `openclaw` resolves on the remote `PATH` for non-interactive `sh -lc`.
+- `operator` resolves on the remote `PATH` for non-interactive `sh -lc`.
 - The connecting IP is a direct (non-proxied, non-loopback) private, ULA,
   link-local, or CGNAT address, or matches `sshVerify.cidrs` when set.
 - Same eligibility floor as trusted-CIDR approval: fresh scopeless node

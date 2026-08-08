@@ -788,7 +788,7 @@ describe("clawhub helpers", () => {
       },
     });
     expect(new URL(requestedUrl).pathname).toBe(
-      "/api/v1/packages/%40openclaw%2Fdiagnostics-otel/versions/2026.3.22/artifact",
+      "/api/v1/packages/%40operator%2Fdiagnostics-otel/versions/2026.3.22/artifact",
     );
   });
 
@@ -844,7 +844,7 @@ describe("clawhub helpers", () => {
       },
     });
     expect(new URL(requestedUrl).pathname).toBe(
-      "/api/v1/packages/%40openclaw%2Fdiagnostics-otel/versions/2026.3.22/security",
+      "/api/v1/packages/%40operator%2Fdiagnostics-otel/versions/2026.3.22/security",
     );
   });
 

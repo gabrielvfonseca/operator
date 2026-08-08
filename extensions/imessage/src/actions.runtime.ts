@@ -327,7 +327,7 @@ export const imessageActionsRuntime = {
     // — this runtime intentionally does not accept a raw filesystem path,
     // because that would let an attacker-controlled path bypass the
     // resolver and let imsg send any host-readable file. Requires an imsg
-    // build that accepts `send-rich --file` (openclaw/imsg#114); callers
+    // build that accepts `send-rich --file` (operator/imsg#114); callers
     // must feature-detect via the cached private-api status first.
     attachment?: { kind: "buffer"; buffer: Uint8Array; filename: string };
     options: IMessageBridgeActionOptions;

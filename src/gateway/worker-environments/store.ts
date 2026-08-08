@@ -18,12 +18,12 @@ import type {
   DB as StateDatabase,
   WorkerEnvironmentCredentials,
   WorkerEnvironments,
-} from "../../state/openclaw-state-db.generated.js";
+} from "../../state/operator-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
   type OperatorStateDatabase,
-} from "../../state/openclaw-state-db.js";
+} from "../../state/operator-state-db.js";
 import type { WorkerCredentialRecord } from "./credential.js";
 import {
   canTransitionWorkerEnvironment,

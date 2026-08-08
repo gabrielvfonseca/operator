@@ -65,7 +65,7 @@ import {
 } from "./send.js";
 
 const RENDERED_FEISHU_CARD = Symbol("operator.renderedFeishuCard");
-const FEISHU_PRESENTATION_FALLBACK_MARKER = "__openclawPresentationFallback";
+const FEISHU_PRESENTATION_FALLBACK_MARKER = "__operatorPresentationFallback";
 const FEISHU_TEXT_CHUNK_LIMIT = 4000;
 
 function normalizePossibleLocalImagePath(text: string | undefined): string | null {

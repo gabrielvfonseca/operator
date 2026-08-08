@@ -7,7 +7,7 @@ import {
   closeOperatorStateDatabaseForTest,
   openOperatorStateDatabase,
   type OperatorStateDatabase,
-} from "../../../src/state/openclaw-state-db.js";
+} from "../../../src/state/operator-state-db.js";
 import type { MintedWorkerCredential } from "../../../src/gateway/worker-environments/credential.js";
 import type {
   WorkerDispatchEnvironmentService,

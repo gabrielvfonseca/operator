@@ -33,9 +33,9 @@ export function installDebugProxyTestResetHooks() {
   let priorProxyEnv = originalProxyEnv;
 
   afterEach(async () => {
-    const { closeDebugProxyCaptureStore } = await import("openclaw/plugin-sdk/proxy-capture");
+    const { closeDebugProxyCaptureStore } = await import("operator/plugin-sdk/proxy-capture");
     const { closeOperatorStateDatabaseForTest } = await import(
-      "openclaw/plugin-sdk/sqlite-runtime-testing"
+      "operator/plugin-sdk/sqlite-runtime-testing"
     );
     closeDebugProxyCaptureStore();
     closeOperatorStateDatabaseForTest();

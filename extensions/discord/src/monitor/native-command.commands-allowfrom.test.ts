@@ -9,7 +9,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { defineThrowingDiscordChannelGetter } from "../test-support/partial-channel.js";
 import { createDiscordNativeCommand } from "./native-command.js";
 
-vi.mock("openclaw/plugin-sdk/plugin-runtime", { spy: true });
+vi.mock("operator/plugin-sdk/plugin-runtime", { spy: true });
 import { nativeCommandRuntime } from "./native-command.runtime.js";
 import {
   createMockCommandInteraction,

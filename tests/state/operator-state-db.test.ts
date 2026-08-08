@@ -215,7 +215,7 @@ function createLegacyAuditStateDatabase(stateDir: string): string {
 }
 
 function createCanonicalAuditStateDatabase(stateDir: string): string {
-  const database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: stateDir } });
+  const database = openOperatorStateDatabase({ env: { OPENCLAW_STATE_DIR: stateDir } });
   const databasePath = database.path;
   closeOperatorStateDatabaseForTest();
   return databasePath;
@@ -345,12 +345,12 @@ function runHotRollbackJournalRecoveryProbe(params: { moduleUrl: string; rootDir
       import fs from "node:fs";
       import { DatabaseSync } from "node:sqlite";
 
-      const database = new DatabaseSync(process.env.OPERATOR_HOT_JOURNAL_DATABASE_PATH);
+      const database = new DatabaseSync(process.env.OPENCLAW_HOT_JOURNAL_DATABASE_PATH);
       database.exec("PRAGMA journal_mode = DELETE; PRAGMA synchronous = FULL; BEGIN IMMEDIATE;");
       database
         .prepare("UPDATE hot_journal_probe SET value = ? WHERE id = 1")
         .run("uncommitted");
-      fs.writeFileSync(process.env.OPERATOR_HOT_JOURNAL_READY_PATH, "ready");
+      fs.writeFileSync(process.env.OPENCLAW_HOT_JOURNAL_READY_PATH, "ready");
       setInterval(() => {}, 1_000);
     \`;
     const writer = spawn(
@@ -359,8 +359,8 @@ function runHotRollbackJournalRecoveryProbe(params: { moduleUrl: string; rootDir
       {
         env: {
           ...process.env,
-          OPERATOR_HOT_JOURNAL_DATABASE_PATH: databasePath,
-          OPERATOR_HOT_JOURNAL_READY_PATH: readyPath,
+          OPENCLAW_HOT_JOURNAL_DATABASE_PATH: databasePath,
+          OPENCLAW_HOT_JOURNAL_READY_PATH: readyPath,
         },
         stdio: ["ignore", "ignore", "pipe"],
       },
@@ -431,7 +431,7 @@ function runHotRollbackJournalRecoveryProbe(params: { moduleUrl: string; rootDir
 }
 
 function expectNoncanonicalAuditSchemaRejected(stateDir: string, databasePath: string): void {
-  const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+  const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
   expect(detectOperatorStateDatabaseSchemaMigrations(options)).toEqual([
     { kind: "audit-events-v2", path: databasePath },
   ]);
@@ -451,10 +451,10 @@ function runConcurrentSchemaProbe(params: {
     import fs from "node:fs";
     import { DatabaseSync } from "node:sqlite";
 
-    const pageBarrierDir = process.env.OPERATOR_SCHEMA_TEST_PAGE_BARRIER_DIR;
+    const pageBarrierDir = process.env.OPENCLAW_SCHEMA_TEST_PAGE_BARRIER_DIR;
     if (pageBarrierDir) {
-      const pageReadyPath = process.env.OPERATOR_SCHEMA_TEST_PAGE_READY_PATH;
-      const workerCount = Number(process.env.OPERATOR_SCHEMA_TEST_WORKER_COUNT);
+      const pageReadyPath = process.env.OPENCLAW_SCHEMA_TEST_PAGE_READY_PATH;
+      const workerCount = Number(process.env.OPENCLAW_SCHEMA_TEST_WORKER_COUNT);
       const originalPrepare = DatabaseSync.prototype.prepare;
       const sleepBuffer = new Int32Array(new SharedArrayBuffer(4));
       DatabaseSync.prototype.prepare = function (sql) {
@@ -494,10 +494,10 @@ function runConcurrentSchemaProbe(params: {
     const {
       closeOperatorStateDatabaseForTest,
       openOperatorStateDatabase,
-    } = await import(process.env.OPERATOR_SCHEMA_TEST_MODULE_URL);
-    const databasePath = process.env.OPERATOR_SCHEMA_TEST_DATABASE_PATH;
-    const readyPath = process.env.OPERATOR_SCHEMA_TEST_READY_PATH;
-    const startPath = process.env.OPERATOR_SCHEMA_TEST_START_PATH;
+    } = await import(process.env.OPENCLAW_SCHEMA_TEST_MODULE_URL);
+    const databasePath = process.env.OPENCLAW_SCHEMA_TEST_DATABASE_PATH;
+    const readyPath = process.env.OPENCLAW_SCHEMA_TEST_READY_PATH;
+    const startPath = process.env.OPENCLAW_SCHEMA_TEST_START_PATH;
     fs.writeFileSync(readyPath, "ready");
     const deadline = Date.now() + 15_000;
     while (!fs.existsSync(startPath)) {
@@ -617,15 +617,15 @@ function runConcurrentSchemaProbe(params: {
           {
             env: {
               ...process.env,
-              OPERATOR_SCHEMA_TEST_DATABASE_PATH: databasePath,
-              OPERATOR_SCHEMA_TEST_MODULE_URL: moduleUrl,
-              OPERATOR_SCHEMA_TEST_READY_PATH: readyPath,
-              OPERATOR_SCHEMA_TEST_START_PATH: startPath,
+              OPENCLAW_SCHEMA_TEST_DATABASE_PATH: databasePath,
+              OPENCLAW_SCHEMA_TEST_MODULE_URL: moduleUrl,
+              OPENCLAW_SCHEMA_TEST_READY_PATH: readyPath,
+              OPENCLAW_SCHEMA_TEST_START_PATH: startPath,
               ...(mode === "fresh"
                 ? {
-                    OPERATOR_SCHEMA_TEST_PAGE_BARRIER_DIR: barrierDir,
-                    OPERATOR_SCHEMA_TEST_PAGE_READY_PATH: pageReadyPath,
-                    OPERATOR_SCHEMA_TEST_WORKER_COUNT: String(workerCount),
+                    OPENCLAW_SCHEMA_TEST_PAGE_BARRIER_DIR: barrierDir,
+                    OPENCLAW_SCHEMA_TEST_PAGE_READY_PATH: pageReadyPath,
+                    OPENCLAW_SCHEMA_TEST_WORKER_COUNT: String(workerCount),
                   }
                 : {}),
             },
@@ -712,7 +712,7 @@ describe("operator state database", () => {
   it("creates the shared state schema from the committed SQL shape", () => {
     const stateDir = createTempStateDir();
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
 
     expect(collectSqliteSchemaShape(database.db)).toEqual(
@@ -739,7 +739,7 @@ describe("operator state database", () => {
 
   it("doctor migrates version 2 tables to STRICT without losing rows", () => {
     const stateDir = createTempStateDir();
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
     const opened = openOperatorStateDatabase(options);
     const databasePath = opened.path;
     opened.db
@@ -795,7 +795,7 @@ describe("operator state database", () => {
 
   it("rejects a placement turn claim tuple without an owner", () => {
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: createTempStateDir() },
+      env: { OPENCLAW_STATE_DIR: createTempStateDir() },
     });
 
     expect(() =>
@@ -934,7 +934,7 @@ describe("operator state database", () => {
 
   it.each(validPlacementShapes)("allows a valid $name", (input) => {
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: createTempStateDir() },
+      env: { OPENCLAW_STATE_DIR: createTempStateDir() },
     });
 
     expect(() => insertPlacementConstraintProbe(database.db, input)).not.toThrow();
@@ -1075,7 +1075,7 @@ describe("operator state database", () => {
 
   it.each(invalidPlacementShapes)("rejects a placement with $name", (input) => {
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: createTempStateDir() },
+      env: { OPENCLAW_STATE_DIR: createTempStateDir() },
     });
 
     expect(() => insertPlacementConstraintProbe(database.db, input)).toThrow();
@@ -1120,7 +1120,7 @@ describe("operator state database", () => {
 
   it.each(invalidPlacementClaimOwners)("rejects a placement with $name", (input) => {
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: createTempStateDir() },
+      env: { OPENCLAW_STATE_DIR: createTempStateDir() },
     });
 
     expect(() =>
@@ -1143,7 +1143,7 @@ describe("operator state database", () => {
 
   it("allows an exact worker claim while placement drains", () => {
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: createTempStateDir() },
+      env: { OPENCLAW_STATE_DIR: createTempStateDir() },
     });
 
     expect(() =>
@@ -1164,7 +1164,7 @@ describe("operator state database", () => {
 
   it("repairs a same-name shared-state uniqueness index", () => {
     const stateDir = createTempStateDir();
-    const env = { OPERATOR_STATE_DIR: stateDir };
+    const env = { OPENCLAW_STATE_DIR: stateDir };
     const created = openOperatorStateDatabase({ env });
     const databasePath = created.path;
     closeOperatorStateDatabaseForTest();
@@ -1199,7 +1199,7 @@ describe("operator state database", () => {
   it("migrates the released audit ledger to message-compatible attribution exactly once", () => {
     const stateDir = createTempStateDir();
     const databasePath = createLegacyAuditStateDatabase(stateDir);
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
 
     expect(detectOperatorStateDatabaseSchemaMigrations(options)).toEqual([
       { kind: "audit-events-v2", path: databasePath },
@@ -1345,7 +1345,7 @@ describe("operator state database", () => {
   it("preserves an empty audit ledger's sequence high-water mark", () => {
     const stateDir = createTempStateDir();
     const databasePath = createLegacyAuditStateDatabase(stateDir);
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
     const { DatabaseSync } = requireNodeSqlite();
     const legacy = new DatabaseSync(databasePath);
     legacy.exec(
@@ -1388,7 +1388,7 @@ describe("operator state database", () => {
   it("refuses an audit sequence high-water mark outside the supported cursor range", () => {
     const stateDir = createTempStateDir();
     const databasePath = createLegacyAuditStateDatabase(stateDir);
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
     const { DatabaseSync } = requireNodeSqlite();
     const legacy = new DatabaseSync(databasePath);
     legacy.exec("UPDATE sqlite_sequence SET seq = 9007199254740992 WHERE name = 'audit_events';");
@@ -1419,7 +1419,7 @@ describe("operator state database", () => {
   it("lets normal open create an audit ledger for a pre-v2 database", () => {
     const stateDir = createTempStateDir();
     const databasePath = createLegacyAuditStateDatabase(stateDir);
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
     const { DatabaseSync } = requireNodeSqlite();
     const legacy = new DatabaseSync(databasePath);
     legacy.exec("DROP TABLE audit_events");
@@ -1443,7 +1443,7 @@ describe("operator state database", () => {
   it("refuses to rebuild a noncanonical audit table with unknown data columns", () => {
     const stateDir = createTempStateDir();
     const databasePath = createLegacyAuditStateDatabase(stateDir);
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
     const { DatabaseSync } = requireNodeSqlite();
     const customized = new DatabaseSync(databasePath);
     customized.exec("ALTER TABLE audit_events ADD COLUMN operator_note TEXT;");
@@ -1604,7 +1604,7 @@ describe("operator state database", () => {
 
   it("creates the bounded skill curator tables", () => {
     const stateDir = createTempStateDir();
-    const database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: stateDir } });
+    const database = openOperatorStateDatabase({ env: { OPENCLAW_STATE_DIR: stateDir } });
     const kysely = getNodeSqliteKysely<StateDbTestDatabase>(database.db);
 
     executeSqliteQuerySync(
@@ -1711,7 +1711,7 @@ describe("operator state database", () => {
   it("rejects stale secondary indexes before writable initialization", () => {
     const stateDir = createTempStateDir();
     const databasePath = createCanonicalAuditStateDatabase(stateDir);
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
     createUnsafeIndexDrift(databasePath);
     const { DatabaseSync } = requireNodeSqlite();
     const before = new DatabaseSync(databasePath, { readOnly: true });
@@ -1775,7 +1775,7 @@ describe("operator state database", () => {
   it("rejects foreign-key violations before writable initialization", () => {
     const stateDir = createTempStateDir();
     const databasePath = createCanonicalAuditStateDatabase(stateDir);
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
     const { DatabaseSync } = requireNodeSqlite();
     const corrupted = new DatabaseSync(databasePath);
     try {
@@ -1859,7 +1859,7 @@ describe("operator state database", () => {
   it("adds gateway boot lifecycle startup markers to existing state databases", () => {
     const stateDir = createTempStateDir();
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const databasePath = database.path;
     closeOperatorStateDatabaseForTest();
@@ -1870,7 +1870,7 @@ describe("operator state database", () => {
     legacyDb.close();
 
     const reopened = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const columns = reopened.db
       .prepare("PRAGMA table_info(gateway_boot_lifecycle)")
@@ -1882,7 +1882,7 @@ describe("operator state database", () => {
   it("adds worker bootstrap lifecycle columns to existing state databases", () => {
     const stateDir = createTempStateDir();
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const databasePath = database.path;
     closeOperatorStateDatabaseForTest();
@@ -1901,7 +1901,7 @@ describe("operator state database", () => {
     legacyDb.close();
 
     const reopened = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const columns = reopened.db.prepare("PRAGMA table_info(worker_environments)").all() as Array<{
       name?: string;
@@ -1928,7 +1928,7 @@ describe("operator state database", () => {
   it("adds worker transcript commit tables to existing state databases", () => {
     const stateDir = createTempStateDir();
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const databasePath = database.path;
     closeOperatorStateDatabaseForTest();
@@ -1942,7 +1942,7 @@ describe("operator state database", () => {
     legacyDb.close();
 
     const reopened = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const tables = reopened.db
       .prepare(
@@ -1962,7 +1962,7 @@ describe("operator state database", () => {
 
   it("backfills durable approval transport references in databases created by PR 1", () => {
     const stateDir = createTempStateDir();
-    const database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: stateDir } });
+    const database = openOperatorStateDatabase({ env: { OPENCLAW_STATE_DIR: stateDir } });
     const databasePath = database.path;
     const approvalId = "approval/from-pr1";
     const expectedRef = buildApprovalResolutionRef({ approvalId, approvalKind: "exec" });
@@ -2007,7 +2007,7 @@ describe("operator state database", () => {
     `);
     legacyDb.close();
 
-    const reopened = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: stateDir } });
+    const reopened = openOperatorStateDatabase({ env: { OPENCLAW_STATE_DIR: stateDir } });
     expect(
       reopened.db
         .prepare("SELECT resolution_ref FROM operator_approvals WHERE approval_id = ?")
@@ -2024,7 +2024,7 @@ describe("operator state database", () => {
 
   it("migrates operator approvals to accept system-agent records", () => {
     const stateDir = createTempStateDir();
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
     const database = openOperatorStateDatabase(options);
     const databasePath = database.path;
     closeOperatorStateDatabaseForTest();
@@ -2061,7 +2061,7 @@ describe("operator state database", () => {
 
   it("adds managed-image typed columns before creating canonical indexes", () => {
     const stateDir = createTempStateDir();
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
     const databasePath = openOperatorStateDatabase(options).path;
     closeOperatorStateDatabaseForTest();
 
@@ -2103,7 +2103,7 @@ describe("operator state database", () => {
 
   it("adds relay origins to existing APNs registration tables", () => {
     const stateDir = createTempStateDir();
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
     const databasePath = openOperatorStateDatabase(options).path;
     closeOperatorStateDatabaseForTest();
 
@@ -2183,7 +2183,7 @@ describe("operator state database", () => {
   it("migrates requester and executor attribution for existing cross-agent tasks", () => {
     const stateDir = createTempStateDir();
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const databasePath = database.path;
     closeOperatorStateDatabaseForTest();
@@ -2260,7 +2260,7 @@ describe("operator state database", () => {
     legacyDb.close();
 
     const reopened = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const columns = reopened.db.prepare("PRAGMA table_info(task_runs)").all() as Array<{
       name?: string;
@@ -2329,7 +2329,7 @@ describe("operator state database", () => {
     closeOperatorStateDatabaseForTest();
 
     const currentReopened = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     expect(
       currentReopened.db
@@ -2350,7 +2350,7 @@ describe("operator state database", () => {
       { layout: "state-only", prefix: "operator-state-task-delivery-status-" },
       async ({ stateDir }) => {
         const database = openOperatorStateDatabase({
-          env: { OPERATOR_STATE_DIR: stateDir },
+          env: { OPENCLAW_STATE_DIR: stateDir },
         });
         const insert = database.db.prepare(
           `INSERT INTO task_runs (
@@ -2379,7 +2379,7 @@ describe("operator state database", () => {
         closeOperatorStateDatabaseForTest();
 
         const readStatuses = () =>
-          openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: stateDir } })
+          openOperatorStateDatabase({ env: { OPENCLAW_STATE_DIR: stateDir } })
             .db.prepare("SELECT task_id, delivery_status FROM task_runs ORDER BY task_id")
             .all();
         const expectedStatuses = [
@@ -2410,7 +2410,7 @@ describe("operator state database", () => {
   it("adds hosted catalog snapshot trust columns to existing state databases", () => {
     const stateDir = createTempStateDir();
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const databasePath = database.path;
     closeOperatorStateDatabaseForTest();
@@ -2427,7 +2427,7 @@ describe("operator state database", () => {
     legacyDb.close();
 
     const reopened = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const columns = reopened.db
       .prepare("PRAGMA table_info(official_external_plugin_catalog_snapshots)")
@@ -2448,7 +2448,7 @@ describe("operator state database", () => {
   it("adds task detail storage to an existing state database", () => {
     const stateDir = createTempStateDir();
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const databasePath = database.path;
     closeOperatorStateDatabaseForTest();
@@ -2459,7 +2459,7 @@ describe("operator state database", () => {
     legacyDb.close();
 
     const reopened = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const columns = reopened.db.prepare("PRAGMA table_info(task_runs)").all() as Array<{
       name?: string;
@@ -2470,7 +2470,7 @@ describe("operator state database", () => {
   it("rolls back the requester attribution column when its backfill fails", () => {
     const stateDir = createTempStateDir();
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const databasePath = database.path;
     closeOperatorStateDatabaseForTest();
@@ -2522,7 +2522,7 @@ describe("operator state database", () => {
 
     expect(() =>
       openOperatorStateDatabase({
-        env: { OPERATOR_STATE_DIR: stateDir },
+        env: { OPENCLAW_STATE_DIR: stateDir },
       }),
     ).toThrow(/blocked task attribution repair/);
 
@@ -2537,7 +2537,7 @@ describe("operator state database", () => {
     interruptedDb.close();
 
     const reopened = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     expect(
       reopened.db
@@ -2615,7 +2615,7 @@ describe("operator state database", () => {
     db.close();
 
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
 
     expect(() =>
@@ -2696,7 +2696,7 @@ describe("operator state database", () => {
     db.close();
 
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
 
     expect(
@@ -2770,7 +2770,7 @@ describe("operator state database", () => {
     db.close();
 
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
 
     expect(() =>
@@ -2806,7 +2806,7 @@ describe("operator state database", () => {
   it("configures durable SQLite connection pragmas", () => {
     const stateDir = createTempStateDir();
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
 
     expect(readSqliteNumberPragma(database.db, "busy_timeout")).toBe(
@@ -2828,7 +2828,7 @@ describe("operator state database", () => {
     const statfs = vi.spyOn(fs, "statfsSync").mockReturnValue(statfsFixture(0x6969));
 
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
 
     const journalMode = database.db.prepare("PRAGMA journal_mode").get() as
@@ -2841,7 +2841,7 @@ describe("operator state database", () => {
   it("records durable schema metadata", () => {
     const stateDir = createTempStateDir();
     const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const stateDb = getNodeSqliteKysely<StateDbTestDatabase>(database.db);
 
@@ -2864,7 +2864,7 @@ describe("operator state database", () => {
 
     expect(() =>
       openOperatorStateDatabase({
-        env: { OPERATOR_STATE_DIR: stateDir },
+        env: { OPENCLAW_STATE_DIR: stateDir },
       }),
     ).toThrow(
       `Operator state database ${databasePath} uses newer schema version ${OPERATOR_STATE_SCHEMA_VERSION + 1}; this Operator build supports ${OPERATOR_STATE_SCHEMA_VERSION}. Upgrade Operator before opening this database. Do not downgrade Operator or modify the database. To run this older build, use a separate state directory or restore a compatible backup.`,
@@ -2975,7 +2975,7 @@ describe("operator state database", () => {
 
   it("uses savepoints for nested write transaction rollback", () => {
     const stateDir = createTempStateDir();
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
 
     runOperatorStateWriteTransaction((database) => {
       const stateDb = getNodeSqliteKysely<StateDbTestDatabase>(database.db);
@@ -3021,7 +3021,7 @@ describe("operator state database", () => {
 
   it("rejects Promise-returning write transactions", () => {
     const stateDir = createTempStateDir();
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
 
     expect(() =>
       runOperatorStateWriteTransaction(async () => {

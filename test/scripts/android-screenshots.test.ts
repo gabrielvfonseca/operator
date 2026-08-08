@@ -21,7 +21,7 @@ describe("android screenshots script", () => {
     );
     expect(result.stdout).toContain(".artifacts/android-screenshots/latest");
     expect(result.stdout).toContain("Android screenshot size: 1440x2560");
-    expect(result.stdout).toContain("Screenshot AVD: OpenClaw_Screenshots_API36");
+    expect(result.stdout).toContain("Screenshot AVD: Operator_Screenshots_API36");
     expect(result.stdout).toContain("Screenshot device profile: pixel_2");
     expect(result.stdout).toContain("Scenes: home chat voice settings gateway");
     expect(result.stdout).not.toContain("connect chat voice screen settings");
@@ -41,10 +41,10 @@ describe("android screenshots script", () => {
   it("waits for content unique to the settings and gateway screens", () => {
     const script = readFileSync(SCRIPT, "utf8");
 
-    expect(script).toContain("settings) printf '%s\\n' \"OpenClaw mobile\"");
+    expect(script).toContain("settings) printf '%s\\n' \"Operator mobile\"");
     expect(script).not.toContain("settings) printf '%s\\n' \"Settings\"");
     expect(script).toContain(
-      "gateway) printf '%s\\n' \"Connection between this phone and OpenClaw.\"",
+      "gateway) printf '%s\\n' \"Connection between this phone and Operator.\"",
     );
     expect(script).not.toContain("gateway) printf '%s\\n' \"Add Gateway\"");
   });
@@ -62,7 +62,7 @@ describe("android screenshots script", () => {
   it("provisions a retained no-cutout screenshot emulator by default", () => {
     const script = readFileSync(SCRIPT, "utf8");
 
-    expect(script).toContain('DEFAULT_SCREENSHOT_AVD="OpenClaw_Screenshots_API36"');
+    expect(script).toContain('DEFAULT_SCREENSHOT_AVD="Operator_Screenshots_API36"');
     expect(script).toContain('DEFAULT_SCREENSHOT_DEVICE_PROFILE="pixel_2"');
     expect(script).toContain('ensure_screenshot_avd "$avd"');
     expect(script).toContain('--device "$SCREENSHOT_DEVICE_PROFILE"');

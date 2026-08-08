@@ -83,7 +83,7 @@ operator acp client
 # Point the spawned bridge at a remote Gateway
 operator acp client --server-args --url wss://gateway-host:18789 --token-file ~/.operator/gateway.token
 
-# Override the server command (default: openclaw)
+# Override the server command (default: operator)
 operator acp client --server "node" --server-args operator.mjs acp --url ws://127.0.0.1:19001
 ```
 
@@ -174,12 +174,12 @@ If you want ACPX-backed sessions to see Operator plugin tools or selected built-
 
 ## Use from `acpx` (Codex, Claude, other ACP clients)
 
-If you want a coding agent such as Codex or Claude Code to talk to your Operator bot over ACP, use `acpx` with its built-in `openclaw` target.
+If you want a coding agent such as Codex or Claude Code to talk to your Operator bot over ACP, use `acpx` with its built-in `operator` target.
 
 Typical flow:
 
 1. Run the Gateway and make sure the ACP bridge can reach it.
-2. Point `acpx openclaw` at `operator acp`.
+2. Point `acpx operator` at `operator acp`.
 3. Target the Operator session key you want the coding agent to use.
 
 Examples:
@@ -194,7 +194,7 @@ acpx operator -s codex-bridge --cwd /path/to/repo \
   "Ask my Operator work agent for recent context relevant to this repo."
 ```
 
-If you want `acpx openclaw` to target a specific Gateway and session key every time, override the `openclaw` agent command in `~/.acpx/config.json`:
+If you want `acpx operator` to target a specific Gateway and session key every time, override the `operator` agent command in `~/.acpx/config.json`:
 
 ```json
 {
@@ -304,7 +304,7 @@ Security note:
 ### `acp client` options
 
 - `--cwd <dir>`: working directory for the ACP session.
-- `--server <command>`: ACP server command (default: `openclaw`).
+- `--server <command>`: ACP server command (default: `operator`).
 - `--server-args <args...>`: extra arguments passed to the ACP server.
 - `--server-verbose`: enable verbose logging on the ACP server.
 - `--verbose, -v`: verbose client logging.

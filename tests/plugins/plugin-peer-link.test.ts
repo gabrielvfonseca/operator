@@ -20,7 +20,7 @@ function makeTempDir() {
 }
 
 describe("plugin peer links", () => {
-  it("relinks openclaw peers in the managed npm root", async () => {
+  it("relinks operator peers in the managed npm root", async () => {
     const npmRoot = makeTempDir();
     const packageDir = path.join(npmRoot, "node_modules", "peer-plugin");
     fs.mkdirSync(packageDir, { recursive: true });
@@ -52,7 +52,7 @@ describe("plugin peer links", () => {
     expect(messages.join("\n")).toContain('Linked peerDependency "@gabrielvfonseca/operator"');
   });
 
-  it("audits missing managed npm openclaw peer links without relinking", async () => {
+  it("audits missing managed npm operator peer links without relinking", async () => {
     const npmRoot = makeTempDir();
     const packageDir = path.join(npmRoot, "node_modules", "peer-plugin");
     fs.mkdirSync(packageDir, { recursive: true });
@@ -79,7 +79,7 @@ describe("plugin peer links", () => {
   });
 
   it.runIf(process.platform !== "win32")(
-    "does not follow a package-local node_modules symlink while linking openclaw peers",
+    "does not follow a package-local node_modules symlink while linking operator peers",
     async () => {
       const root = makeTempDir();
       const packageDir = path.join(root, "peer-plugin");
@@ -105,7 +105,7 @@ describe("plugin peer links", () => {
     },
   );
 
-  it("replaces an existing real openclaw package directory", async () => {
+  it("replaces an existing real operator package directory", async () => {
     const root = makeTempDir();
     const packageDir = path.join(root, "peer-plugin");
     const existingOperatorDir = path.join(packageDir, "node_modules", "@gabrielvfonseca/operator");
@@ -140,7 +140,7 @@ describe("plugin peer links", () => {
     fs.mkdirSync(existingOperatorDir, { recursive: true });
     fs.writeFileSync(
       path.join(existingOperatorDir, "package.json"),
-      '{"name":"not-openclaw"}',
+      '{"name":"not-operator"}',
       "utf8",
     );
 

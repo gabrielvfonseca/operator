@@ -11,11 +11,11 @@ import {
   readStringValue,
 } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
-  startOpenClawCrablineAdapter,
-  type OpenClawCrablineChannelDriverSelection,
-  type OpenClawCrablineInbound,
-  type StartedOpenClawCrablineAdapter,
-} from "@openclaw/crabline";
+  startOperatorCrablineAdapter,
+  type OperatorCrablineChannelDriverSelection,
+  type OperatorCrablineInbound,
+  type StartedOperatorCrablineAdapter,
+} from "@operator/crabline";
 import { createQaBusState, type QaBusState } from "./bus-state.js";
 import {
   createCrablineProviderDelivery,
@@ -191,8 +191,8 @@ async function waitForCrablineReady(params: {
 }
 
 async function postCrablineInbound(params: {
-  adapter: StartedOpenClawCrablineAdapter;
-  providerInbound: OpenClawCrablineInbound;
+  adapter: StartedOperatorCrablineAdapter;
+  providerInbound: OperatorCrablineInbound;
 }) {
   const { response, release } = await fetchWithSsrFGuard({
     url: params.adapter.manifest.endpoints.adminInboundUrl,
@@ -235,7 +235,7 @@ async function postCrablineInbound(params: {
 }
 
 function createCrablineState(params: {
-  adapter: StartedOpenClawCrablineAdapter;
+  adapter: StartedOperatorCrablineAdapter;
   state: QaBusState;
 }): QaCrablineTransportState {
   const baseState = params.state;
@@ -328,8 +328,8 @@ function createCrablineState(params: {
 }
 
 class QaCrablineTransport extends QaStateBackedTransportAdapter {
-  readonly #adapter: StartedOpenClawCrablineAdapter;
-  readonly #selection: OpenClawCrablineChannelDriverSelection;
+  readonly #adapter: StartedOperatorCrablineAdapter;
+  readonly #selection: OperatorCrablineChannelDriverSelection;
   readonly #transportPolicy?: QaTransportPolicy;
   readonly #state: QaCrablineTransportState;
   readonly sendNativeCommand?: (input: QaTransportNativeCommandInput) => Promise<void>;
@@ -339,9 +339,9 @@ class QaCrablineTransport extends QaStateBackedTransportAdapter {
   }>;
 
   constructor(params: {
-    adapter: StartedOpenClawCrablineAdapter;
+    adapter: StartedOperatorCrablineAdapter;
     transportPolicy?: QaTransportPolicy;
-    selection: OpenClawCrablineChannelDriverSelection;
+    selection: OperatorCrablineChannelDriverSelection;
     state: QaCrablineTransportState;
   }) {
     super({
@@ -447,7 +447,7 @@ class QaCrablineTransport extends QaStateBackedTransportAdapter {
 export async function createQaCrablineTransportAdapter(params: {
   outputDir: string;
   transportPolicy?: QaTransportPolicy;
-  selection: OpenClawCrablineChannelDriverSelection;
+  selection: OperatorCrablineChannelDriverSelection;
   state?: QaBusState;
 }) {
   const requiresTelegramPolicy =
@@ -466,10 +466,10 @@ export async function createQaCrablineTransportAdapter(params: {
   );
   await fs.mkdir(path.dirname(recorderPath), { recursive: true });
   let observeEvent = (_event: unknown) => {};
-  const adapter = await startOpenClawCrablineAdapter({
+  const adapter = await startOperatorCrablineAdapter({
     channel: params.selection.channel,
     onEvent: (event) => observeEvent(event),
-    openclawConfig: {},
+    operatorConfig: {},
     recorderPath,
   });
 

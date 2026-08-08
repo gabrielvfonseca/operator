@@ -268,7 +268,7 @@ Unknown frame types are preserved as raw payloads for forward compatibility.
 
 Generated JSON Schema is a build artifact, not committed to the repo. The published raw file is typically available at:
 
-- [https://raw.githubusercontent.com/openclaw/openclaw/main/dist/protocol.schema.json](https://raw.githubusercontent.com/openclaw/openclaw/main/dist/protocol.schema.json)
+- [https://raw.githubusercontent.com/operator/operator/main/dist/protocol.schema.json](https://raw.githubusercontent.com/operator/operator/main/dist/protocol.schema.json)
 
 ## When you change schemas
 

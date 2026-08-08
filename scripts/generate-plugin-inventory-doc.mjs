@@ -616,7 +616,7 @@ pnpm plugins:inventory:gen
 
 ## Definitions
 
-- **Core npm package:** built into the \`openclaw\` npm package and available without a separate plugin install.
+- **Core npm package:** built into the \`operator\` npm package and available without a separate plugin install.
 - **Official external package:** Operator-maintained plugin omitted from the core npm package, kept in this official inventory, and installed on demand through ClawHub and/or npm.
 - **Source checkout only:** repo-local plugin omitted from published npm artifacts and not advertised as an installable package.
 
@@ -633,9 +633,9 @@ Official external packages need one install, then a Gateway restart.
 For example, Discord is an official external package:
 
 \`\`\`bash
-openclaw plugins install @gabrielvfonseca/discord
-openclaw gateway restart
-openclaw plugins inspect discord --runtime --json
+operator plugins install @gabrielvfonseca/discord
+operator gateway restart
+operator plugins inspect discord --runtime --json
 \`\`\`
 
 During the launch cutover, ordinary bare package specs still install from npm.

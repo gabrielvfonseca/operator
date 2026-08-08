@@ -16,7 +16,7 @@ import {
   collectInstalledPackageErrors,
   fetchRegistryJson,
   normalizeInstalledBinaryVersion,
-  operatorNpmPostpublishVerifyUsage,
+  openClawNpmPostpublishVerifyUsage,
   parseOperatorNpmPostpublishVerifyArgs,
   resolveInstalledBinaryCommandInvocation,
   resolveInstalledBinaryPath,
@@ -41,7 +41,7 @@ describe("parseOperatorNpmPostpublishVerifyArgs", () => {
 
   it("rejects missing, option-like, and extra arguments before verification", () => {
     expect(() => parseOperatorNpmPostpublishVerifyArgs([])).toThrow(
-      operatorNpmPostpublishVerifyUsage(),
+      openClawNpmPostpublishVerifyUsage(),
     );
     expect(() => parseOperatorNpmPostpublishVerifyArgs(["--tag"])).toThrow(
       "Unknown operator npm postpublish verifier option: --tag",

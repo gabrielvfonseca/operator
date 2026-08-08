@@ -3473,7 +3473,7 @@ describe("createFollowupRunner progress forwarding", () => {
         replyKind: "tool",
         payload: expect.objectContaining({
           text: "💨Fast: auto-off(6s>=5s)",
-          channelData: { openclawProgressKind: "fast-mode-auto" },
+          channelData: { operatorProgressKind: "fast-mode-auto" },
         }),
       }),
     );

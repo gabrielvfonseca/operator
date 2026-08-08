@@ -1,10 +1,10 @@
 // Packed Plugin Sdk Type Smoke script supports Operator repository automation.
 type PublicPluginSdkModules = [
-  typeof import("openclaw/plugin-sdk"),
-  typeof import("openclaw/plugin-sdk/channel-entry-contract"),
-  typeof import("openclaw/plugin-sdk/config-contracts"),
-  typeof import("openclaw/plugin-sdk/provider-entry"),
-  typeof import("openclaw/plugin-sdk/runtime-env"),
+  typeof import("operator/plugin-sdk"),
+  typeof import("operator/plugin-sdk/channel-entry-contract"),
+  typeof import("operator/plugin-sdk/config-contracts"),
+  typeof import("operator/plugin-sdk/provider-entry"),
+  typeof import("operator/plugin-sdk/runtime-env"),
 ];
 
 const resolvedModules = null as unknown as PublicPluginSdkModules;

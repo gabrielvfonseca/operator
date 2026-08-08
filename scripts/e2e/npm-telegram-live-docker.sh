@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# Installs an OpenClaw package candidate in Docker, performs Telegram
+# Installs an Operator package candidate in Docker, performs Telegram
 # onboarding/doctor recovery, then runs the Telegram QA live harness.
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
 
-IMAGE_NAME="$(docker_e2e_resolve_image "openclaw-npm-telegram-live-e2e" OPENCLAW_NPM_TELEGRAM_LIVE_E2E_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "operator-npm-telegram-live-e2e" OPENCLAW_NPM_TELEGRAM_LIVE_E2E_IMAGE)"
 DOCKER_TARGET="${OPENCLAW_NPM_TELEGRAM_DOCKER_TARGET:-build}"
-PACKAGE_SPEC="${OPENCLAW_NPM_TELEGRAM_PACKAGE_SPEC:-openclaw@beta}"
+PACKAGE_SPEC="${OPENCLAW_NPM_TELEGRAM_PACKAGE_SPEC:-operator@beta}"
 PACKAGE_TGZ="${OPENCLAW_NPM_TELEGRAM_PACKAGE_TGZ:-${OPENCLAW_CURRENT_PACKAGE_TGZ:-}}"
 PACKAGE_DIR="${OPENCLAW_NPM_TELEGRAM_PACKAGE_DIR:-}"
 PACKAGE_LABEL="${OPENCLAW_NPM_TELEGRAM_PACKAGE_LABEL:-}"
@@ -47,12 +47,12 @@ resolve_credential_role() {
   fi
 }
 
-validate_openclaw_package_spec() {
+validate_operator_package_spec() {
   local spec="$1"
-  if [[ "$spec" =~ ^openclaw@(alpha|beta|latest|[0-9]{4}\.[1-9][0-9]*\.[1-9][0-9]*(-[1-9][0-9]*|-(alpha|beta)\.[1-9][0-9]*)?)$ ]]; then
+  if [[ "$spec" =~ ^operator@(alpha|beta|latest|[0-9]{4}\.[1-9][0-9]*\.[1-9][0-9]*(-[1-9][0-9]*|-(alpha|beta)\.[1-9][0-9]*)?)$ ]]; then
     return 0
   fi
-  echo "OPENCLAW_NPM_TELEGRAM_PACKAGE_SPEC must be openclaw@alpha, openclaw@beta, openclaw@latest, or an exact OpenClaw release version; got: $spec" >&2
+  echo "OPENCLAW_NPM_TELEGRAM_PACKAGE_SPEC must be operator@alpha, operator@beta, operator@latest, or an exact Operator release version; got: $spec" >&2
   exit 1
 }
 
@@ -124,18 +124,18 @@ if [ -n "$resolved_package_dir" ]; then
       exit 1
       ;;
   esac
-  package_install_source="openclaw@$(read_package_version "$resolved_package_tgz")"
+  package_install_source="operator@$(read_package_version "$resolved_package_tgz")"
   package_source_kind="prepared-package-set"
   package_mount_args=(-v "$resolved_package_dir:/package-under-test:ro")
   registry_helper_mount_args=(
-    -v "$ROOT_DIR/scripts/e2e/lib/plugins/npm-registry-server.mjs:/tmp/openclaw-npm-registry-server.mjs:ro"
+    -v "$ROOT_DIR/scripts/e2e/lib/plugins/npm-registry-server.mjs:/tmp/operator-npm-registry-server.mjs:ro"
   )
 elif [ -n "$resolved_package_tgz" ]; then
   package_install_source="/package-under-test/$(basename "$resolved_package_tgz")"
   package_source_kind="packed-tarball"
   package_mount_args=(-v "$resolved_package_tgz:$package_install_source:ro")
 else
-  validate_openclaw_package_spec "$PACKAGE_SPEC"
+  validate_operator_package_spec "$PACKAGE_SPEC"
 fi
 if [ -z "$PACKAGE_LABEL" ]; then
   if [ -n "$resolved_package_tgz" ]; then
@@ -211,7 +211,7 @@ docker_e2e_build_or_reuse "$IMAGE_NAME" npm-telegram-live "$ROOT_DIR/scripts/e2e
 
 mkdir -p "$ROOT_DIR/.artifacts/qa-e2e"
 mkdir -p "$OUTPUT_DIR_HOST"
-run_log="$(mktemp "${TMPDIR:-/tmp}/openclaw-npm-telegram-live.XXXXXX")"
+run_log="$(mktemp "${TMPDIR:-/tmp}/operator-npm-telegram-live.XXXXXX")"
 npm_prefix_host="$(mktemp -d "$ROOT_DIR/.artifacts/qa-e2e/npm-telegram-live-prefix.XXXXXX")"
 trap 'rm -f "$run_log"; rm -rf "$npm_prefix_host"' EXIT
 
@@ -304,7 +304,7 @@ run_logged docker_e2e_docker_run_cmd run --rm \
   -i "$IMAGE_NAME" bash -s <<'EOF'
 set -euo pipefail
 
-export HOME="$(mktemp -d "/tmp/openclaw-npm-telegram-install.XXXXXX")"
+export HOME="$(mktemp -d "/tmp/operator-npm-telegram-install.XXXXXX")"
 export NPM_CONFIG_PREFIX="/npm-global"
 export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
 
@@ -355,7 +355,7 @@ process.stdin.on("end", () => {
   registry_port_file="$(mktemp)"
   registry_log="$(mktemp)"
   OPENCLAW_NPM_REGISTRY_UPSTREAM=https://registry.npmjs.org \
-    node /tmp/openclaw-npm-registry-server.mjs \
+    node /tmp/operator-npm-registry-server.mjs \
     "$registry_port_file" \
     "${registry_args[@]}" >"$registry_log" 2>&1 &
   registry_pid=$!
@@ -406,8 +406,8 @@ run_npm_install() {
 }
 run_npm_install
 
-command -v openclaw
-openclaw --version
+command -v operator
+operator --version
 EOF
 
 # Mount only QA harness source; the SUT itself, including bundled plugin runtime,
@@ -421,9 +421,9 @@ run_logged docker_e2e_run_with_harness \
   -v "$npm_prefix_host:/npm-global" \
   -i "$IMAGE_NAME" bash -s <<'EOF'
 set -euo pipefail
-source scripts/lib/openclaw-e2e-instance.sh
+source scripts/lib/operator-e2e-instance.sh
 
-export HOME="$(mktemp -d "/tmp/openclaw-npm-telegram-runtime.XXXXXX")"
+export HOME="$(mktemp -d "/tmp/operator-npm-telegram-runtime.XXXXXX")"
 export NPM_CONFIG_PREFIX="/npm-global"
 export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
 export OPENCLAW_NPM_TELEGRAM_REPO_ROOT="/app"
@@ -432,39 +432,39 @@ dump_hotpath_logs() {
   local status="$1"
   echo "installed-package onboarding recovery hot path failed with exit code $status" >&2
   for file in \
-    /tmp/openclaw-npm-telegram-onboard.json \
-    /tmp/openclaw-npm-telegram-channel-add.log \
-    /tmp/openclaw-npm-telegram-doctor-fix.log \
-    /tmp/openclaw-npm-telegram-doctor-check.log; do
+    /tmp/operator-npm-telegram-onboard.json \
+    /tmp/operator-npm-telegram-channel-add.log \
+    /tmp/operator-npm-telegram-doctor-fix.log \
+    /tmp/operator-npm-telegram-doctor-check.log; do
     if [ -f "$file" ]; then
       echo "--- $file ---" >&2
-      openclaw_e2e_print_log "$file" >&2
+      operator_e2e_print_log "$file" >&2
     fi
   done
 }
 trap 'status=$?; dump_hotpath_logs "$status"; exit "$status"' ERR
 
-command -v openclaw
-openclaw_e2e_run_command openclaw --version
+command -v operator
+operator_e2e_run_command operator --version
 mkdir -p /app/node_modules
-openclaw_package_dir="/npm-global/lib/node_modules/openclaw"
-# The mounted QA harness imports openclaw/plugin-sdk and package dependencies;
+operator_package_dir="/npm-global/lib/node_modules/operator"
+# The mounted QA harness imports operator/plugin-sdk and package dependencies;
 # point those imports at the installed package without copying source plugins into the test image.
-rm -rf /app/node_modules/openclaw
-ln -sfnT "$openclaw_package_dir" /app/node_modules/openclaw
+rm -rf /app/node_modules/operator
+ln -sfnT "$operator_package_dir" /app/node_modules/operator
 rm -rf /app/dist
-ln -sfnT "$openclaw_package_dir/dist" /app/dist
-cp "$openclaw_package_dir/package.json" /app/package.json
+ln -sfnT "$operator_package_dir/dist" /app/dist
+cp "$operator_package_dir/package.json" /app/package.json
 node scripts/e2e/lib/npm-telegram-live/prepare-package.mjs \
   /app/package.json \
-  /app/node_modules/openclaw/package.json
-for deps_dir in "$openclaw_package_dir/node_modules" /npm-global/lib/node_modules; do
+  /app/node_modules/operator/package.json
+for deps_dir in "$operator_package_dir/node_modules" /npm-global/lib/node_modules; do
   [ -d "$deps_dir" ] || continue
   for dependency_dir in "$deps_dir"/*; do
     [ -e "$dependency_dir" ] || continue
     dependency_name="$(basename "$dependency_dir")"
     case "$dependency_name" in
-      .bin | openclaw)
+      .bin | operator)
         continue
         ;;
       @*)
@@ -487,7 +487,7 @@ done
 
 link_installed_package_dependency() {
   local name="$1"
-  local source="/npm-global/lib/node_modules/openclaw/node_modules/$name"
+  local source="/npm-global/lib/node_modules/operator/node_modules/$name"
   local target="/app/node_modules/$name"
   if [ ! -e "$source" ]; then
     echo "Installed package dependency is missing: $name" >&2
@@ -508,8 +508,8 @@ done
 
 if [ "${OPENCLAW_NPM_TELEGRAM_SKIP_HOTPATH:-0}" != "1" ]; then
   echo "Running installed-package onboarding recovery hot path..."
-  hotpath_openai_api_key="${OPENAI_API_KEY:-sk-openclaw-npm-telegram-hotpath}"
-  OPENAI_API_KEY="$hotpath_openai_api_key" openclaw_e2e_run_command openclaw onboard \
+  hotpath_openai_api_key="${OPENAI_API_KEY:-sk-operator-npm-telegram-hotpath}"
+  OPENAI_API_KEY="$hotpath_openai_api_key" operator_e2e_run_command operator onboard \
     --non-interactive --accept-risk \
     --mode local \
     --auth-choice openai-api-key \
@@ -520,14 +520,14 @@ if [ "${OPENCLAW_NPM_TELEGRAM_SKIP_HOTPATH:-0}" != "1" ]; then
     --skip-ui \
     --skip-skills \
     --skip-health \
-    --json >/tmp/openclaw-npm-telegram-onboard.json </dev/null
+    --json >/tmp/operator-npm-telegram-onboard.json </dev/null
 
-  openclaw_e2e_run_command openclaw channels add --channel telegram --token "123456:openclaw-npm-telegram-hotpath" >/tmp/openclaw-npm-telegram-channel-add.log 2>&1 </dev/null
-  openclaw_e2e_run_command openclaw doctor --fix --non-interactive >/tmp/openclaw-npm-telegram-doctor-fix.log 2>&1 </dev/null
-  openclaw_e2e_run_command openclaw doctor --non-interactive >/tmp/openclaw-npm-telegram-doctor-check.log 2>&1 </dev/null
+  operator_e2e_run_command operator channels add --channel telegram --token "123456:operator-npm-telegram-hotpath" >/tmp/operator-npm-telegram-channel-add.log 2>&1 </dev/null
+  operator_e2e_run_command operator doctor --fix --non-interactive >/tmp/operator-npm-telegram-doctor-fix.log 2>&1 </dev/null
+  operator_e2e_run_command operator doctor --non-interactive >/tmp/operator-npm-telegram-doctor-check.log 2>&1 </dev/null
 fi
 
-export OPENCLAW_NPM_TELEGRAM_SUT_COMMAND="$(command -v openclaw)"
+export OPENCLAW_NPM_TELEGRAM_SUT_COMMAND="$(command -v operator)"
 trap - ERR
 tsx scripts/e2e/npm-telegram-live-runner.ts
 EOF

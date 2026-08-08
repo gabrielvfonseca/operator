@@ -173,7 +173,7 @@ describe("lmstudio plugin", () => {
     expect(
       provider?.augmentModelCatalog?.({
         config,
-        agentDir: "/tmp/openclaw",
+        agentDir: "/tmp/operator",
         env: {},
         entries: [],
       }),

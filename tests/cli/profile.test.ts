@@ -389,97 +389,97 @@ describe("formatCliCommand", () => {
   it.each([
     {
       name: "no profile is set",
-      cmd: "openclaw doctor --fix",
+      cmd: "operator doctor --fix",
       env: {},
-      expected: "openclaw doctor --fix",
+      expected: "operator doctor --fix",
     },
     {
       name: "profile is default",
-      cmd: "openclaw doctor --fix",
+      cmd: "operator doctor --fix",
       env: { OPERATOR_PROFILE: "default" },
-      expected: "openclaw doctor --fix",
+      expected: "operator doctor --fix",
     },
     {
       name: "profile is Default (case-insensitive)",
-      cmd: "openclaw doctor --fix",
+      cmd: "operator doctor --fix",
       env: { OPERATOR_PROFILE: "Default" },
-      expected: "openclaw doctor --fix",
+      expected: "operator doctor --fix",
     },
     {
       name: "profile is invalid",
-      cmd: "openclaw doctor --fix",
+      cmd: "operator doctor --fix",
       env: { OPERATOR_PROFILE: "bad profile" },
-      expected: "openclaw doctor --fix",
+      expected: "operator doctor --fix",
     },
     {
       name: "--profile is already present",
-      cmd: "openclaw --profile work doctor --fix",
+      cmd: "operator --profile work doctor --fix",
       env: { OPERATOR_PROFILE: "work" },
-      expected: "openclaw --profile work doctor --fix",
+      expected: "operator --profile work doctor --fix",
     },
     {
       name: "--dev is already present",
-      cmd: "openclaw --dev doctor",
+      cmd: "operator --dev doctor",
       env: { OPERATOR_PROFILE: "dev" },
-      expected: "openclaw --dev doctor",
+      expected: "operator --dev doctor",
     },
   ])("returns command unchanged when $name", ({ cmd, env, expected }) => {
     expect(formatCliCommand(cmd, env)).toBe(expected);
   });
 
   it("inserts --profile flag when profile is set", () => {
-    expect(formatCliCommand("openclaw doctor --fix", { OPERATOR_PROFILE: "work" })).toBe(
-      "openclaw --profile work doctor --fix",
+    expect(formatCliCommand("operator doctor --fix", { OPERATOR_PROFILE: "work" })).toBe(
+      "operator --profile work doctor --fix",
     );
   });
 
   it("trims whitespace from profile", () => {
-    expect(formatCliCommand("openclaw doctor --fix", { OPERATOR_PROFILE: "  jbopenclaw  " })).toBe(
-      "openclaw --profile jbopenclaw doctor --fix",
+    expect(formatCliCommand("operator doctor --fix", { OPERATOR_PROFILE: "  jboperator  " })).toBe(
+      "operator --profile jboperator doctor --fix",
     );
   });
 
-  it("handles command with no args after openclaw", () => {
+  it("handles command with no args after operator", () => {
     expect(formatCliCommand("@gabrielvfonseca/operator", { OPERATOR_PROFILE: "test" })).toBe(
-      "openclaw --profile test",
+      "operator --profile test",
     );
   });
 
   it("handles pnpm wrapper", () => {
-    expect(formatCliCommand("pnpm openclaw doctor", { OPERATOR_PROFILE: "work" })).toBe(
-      "pnpm openclaw --profile work doctor",
+    expect(formatCliCommand("pnpm operator doctor", { OPERATOR_PROFILE: "work" })).toBe(
+      "pnpm operator --profile work doctor",
     );
   });
 
   it("inserts --container when a container hint is set", () => {
     expect(
-      formatCliCommand("openclaw gateway status --deep", { OPERATOR_CONTAINER_HINT: "demo" }),
-    ).toBe("openclaw --container demo gateway status --deep");
+      formatCliCommand("operator gateway status --deep", { OPERATOR_CONTAINER_HINT: "demo" }),
+    ).toBe("operator --container demo gateway status --deep");
   });
 
   it("ignores unsafe container hints", () => {
     expect(
-      formatCliCommand("openclaw gateway status --deep", {
+      formatCliCommand("operator gateway status --deep", {
         OPERATOR_CONTAINER_HINT: "demo; rm -rf /",
       }),
-    ).toBe("openclaw gateway status --deep");
+    ).toBe("operator gateway status --deep");
   });
 
   it("preserves both --container and --profile hints", () => {
     expect(
-      formatCliCommand("openclaw doctor", {
+      formatCliCommand("operator doctor", {
         OPERATOR_CONTAINER_HINT: "demo",
         OPERATOR_PROFILE: "work",
       }),
-    ).toBe("openclaw --container demo doctor");
+    ).toBe("operator --container demo doctor");
   });
 
   it("does not prepend --container for update commands", () => {
-    expect(formatCliCommand("openclaw update", { OPERATOR_CONTAINER_HINT: "demo" })).toBe(
-      "openclaw update",
+    expect(formatCliCommand("operator update", { OPERATOR_CONTAINER_HINT: "demo" })).toBe(
+      "operator update",
     );
     expect(
-      formatCliCommand("pnpm openclaw update --channel beta", { OPERATOR_CONTAINER_HINT: "demo" }),
-    ).toBe("pnpm openclaw update --channel beta");
+      formatCliCommand("pnpm operator update --channel beta", { OPERATOR_CONTAINER_HINT: "demo" }),
+    ).toBe("pnpm operator update --channel beta");
   });
 });

@@ -8,9 +8,9 @@ import {
   closeOperatorStateDatabase,
   openOperatorStateDatabase,
   OPERATOR_STATE_SCHEMA_VERSION,
-} from "../../src/state/openclaw-state-db.js";
-import { resolveOperatorStateSqlitePath } from "../../src/state/openclaw-state-db.paths.js";
-import { OPERATOR_STATE_SCHEMA_SQL } from "../../src/state/openclaw-state-schema.generated.js";
+} from "../../src/state/operator-state-db.js";
+import { resolveOperatorStateSqlitePath } from "../../src/state/operator-state-db.paths.js";
+import { OPERATOR_STATE_SCHEMA_SQL } from "../../src/state/operator-state-schema.generated.js";
 import { runDoctorStateSqliteCompact } from "../../src/commands/doctor-state-sqlite-compact.js";
 
 const tempDirs = useAutoCleanupTempDirTracker((cleanup) => {

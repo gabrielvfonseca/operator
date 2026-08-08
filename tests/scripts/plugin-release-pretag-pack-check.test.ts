@@ -53,7 +53,7 @@ function createDualPublishPluginRepo() {
         pluginApi: ">=2026.4.10",
       },
       build: {
-        openclawVersion: "2026.4.10",
+        operatorVersion: "2026.4.10",
       },
       install: {
         npmSpec: "@gabrielvfonseca/demo-plugin",

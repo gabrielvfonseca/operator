@@ -10,7 +10,7 @@ import {
   OPERATOR_DELIVERY_MIRROR_MODEL,
   OPERATOR_TRANSCRIPT_ARTIFACT_API,
   OPERATOR_TRANSCRIPT_ARTIFACT_PROVIDER,
-} from "../../../src/shared/transcript-only-openclaw-assistant.js";
+} from "../../../src/shared/transcript-only-operator-assistant.js";
 import { deleteTestEnvValue, setTestEnvValue } from "../../../src/test-utils/env.js";
 import { resolveSessionTranscriptPathInDir } from "../../../src/config/sessions/paths.js";
 import {
@@ -1212,7 +1212,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
   });
 
   it("scans past trailing non-assistant entries (e.g. operator.cache-ttl) to find the latest assistant text", async () => {
-    // Regression for openclaw/openclaw#83427: the cache-ttl custom entry was
+    // Regression for operator/operator#83427: the cache-ttl custom entry was
     // emitted after the canonical assistant turn, and the tail reader returned
     // undefined on the first non-assistant line, so the gap-fill check in
     // persistTextTurnTranscript wrote a duplicate `api: "cli"` assistant

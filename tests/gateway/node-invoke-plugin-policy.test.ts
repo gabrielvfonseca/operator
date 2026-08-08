@@ -19,7 +19,7 @@ import {
   setActivePluginRegistry,
 } from "../../src/plugins/runtime.js";
 import type { OperatorPluginNodeInvokePolicyContext } from "../../src/plugins/types.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { ExecApprovalManager } from "../../src/gateway/exec-approval-manager.js";
 import { applyPluginNodeInvokePolicy } from "../../src/gateway/node-invoke-plugin-policy.js";
 import type { NodeSession } from "../../src/gateway/node-registry.js";

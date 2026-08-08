@@ -321,7 +321,7 @@ export async function importCodexThreadHistoryToTranscript(params: {
 
 function attachCodexMirrorOrigin(message: AgentMessage): AgentMessage {
   const record = message as unknown as Record<string, unknown>;
-  const existing = record["__openclaw"];
+  const existing = record["__operator"];
   const baseMeta =
     existing && typeof existing === "object" && !Array.isArray(existing)
       ? (existing as Record<string, unknown>)

@@ -7,9 +7,9 @@ import {
   setGoogleOAuthSettingsFs,
 } from "./google-oauth.test-support.js";
 
-vi.mock("openclaw/plugin-sdk/runtime-env", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/runtime-env")>(
-    "openclaw/plugin-sdk/runtime-env",
+vi.mock("operator/plugin-sdk/runtime-env", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/runtime-env")>(
+    "operator/plugin-sdk/runtime-env",
   );
   return {
     ...actual,
@@ -17,9 +17,9 @@ vi.mock("openclaw/plugin-sdk/runtime-env", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/ssrf-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/ssrf-runtime")>(
-    "openclaw/plugin-sdk/ssrf-runtime",
+vi.mock("operator/plugin-sdk/ssrf-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/ssrf-runtime")>(
+    "operator/plugin-sdk/ssrf-runtime",
   );
   return {
     ...actual,
@@ -40,8 +40,8 @@ vi.mock("openclaw/plugin-sdk/ssrf-runtime", async () => {
 });
 
 afterAll(() => {
-  vi.doUnmock("openclaw/plugin-sdk/runtime-env");
-  vi.doUnmock("openclaw/plugin-sdk/ssrf-runtime");
+  vi.doUnmock("operator/plugin-sdk/runtime-env");
+  vi.doUnmock("operator/plugin-sdk/ssrf-runtime");
   vi.resetModules();
 });
 

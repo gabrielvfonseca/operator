@@ -23,8 +23,6 @@
         "@mistralai/mistralai": "2.4.0",
         "@modelcontextprotocol/sdk": "1.29.0",
         "@mozilla/readability": "0.6.0",
-        "@openclaw/fs-safe": "0.4.1",
-        "@openclaw/proxyline": "0.3.3",
         "@silvia-odwyer/photon-node": "0.3.4",
         "chalk": "5.6.2",
         "chokidar": "5.0.0",
@@ -431,31 +429,6 @@
       "license": "Apache-2.0",
       "engines": {
         "node": ">=14.0.0"
-      }
-    },
-    "node_modules/@openclaw/fs-safe": {
-      "version": "0.4.1",
-      "resolved": "https://registry.npmjs.org/@openclaw/fs-safe/-/fs-safe-0.4.1.tgz",
-      "integrity": "sha512-hQi+BxO10KdRFlYUot1syC+hTaUnGeQNdqX5kwkKJig8CFq1tKsYJLPm+zkiiGsSKOprPAquQl/txejEhpKPgg==",
-      "license": "MIT",
-      "engines": {
-        "node": ">=22"
-      },
-      "optionalDependencies": {
-        "jszip": "^3.10.1",
-        "tar": "7.5.19"
-      }
-    },
-    "node_modules/@openclaw/proxyline": {
-      "version": "0.3.3",
-      "resolved": "https://registry.npmjs.org/@openclaw/proxyline/-/proxyline-0.3.3.tgz",
-      "integrity": "sha512-sftHnW69NHQqLjCxBTvQ8f/eQl+peZ5pHCBQtuTWBbeuYRHZ0/GXVTmw/O/YKsShMbqPWhJB0UYtPPdvCUSS8w==",
-      "license": "MIT",
-      "engines": {
-        "node": ">=22.19.0"
-      },
-      "peerDependencies": {
-        "undici": ">=8.3.0 <9"
       }
     },
     "node_modules/@opentelemetry/semantic-conventions": {

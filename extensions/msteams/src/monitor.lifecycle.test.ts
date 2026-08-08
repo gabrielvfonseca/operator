@@ -849,7 +849,7 @@ describe("monitorMSTeamsProvider lifecycle", () => {
         name: "adaptiveCard/action",
         from: { id: "29:user", aadObjectId: "aad-user" },
         conversation: { id: "19:channel@thread.tacv2", conversationType: "channel" },
-        value: { action: { data: { openclawPollId: "poll-1", choices: "0" } } },
+        value: { action: { data: { operatorPollId: "poll-1", choices: "0" } } },
       },
     });
 
@@ -909,7 +909,7 @@ describe("monitorMSTeamsProvider lifecycle", () => {
         name: "adaptiveCard/action",
         from: { id: "29:user", aadObjectId: "aad-user" },
         conversation: { id: "19:other@thread.tacv2", conversationType: "channel" },
-        value: { action: { data: { openclawPollId: "poll-1", choices: "0" } } },
+        value: { action: { data: { operatorPollId: "poll-1", choices: "0" } } },
       },
     });
 

@@ -3785,7 +3785,7 @@ describe("package artifact reuse", () => {
     const clawHubWorkflow = readFileSync(".github/workflows/plugin-clawhub-release.yml", "utf8");
     const clawHubNewWorkflow = readFileSync(".github/workflows/plugin-clawhub-new.yml", "utf8");
     const pluginNpmWorkflow = readFileSync(PLUGIN_NPM_RELEASE_WORKFLOW, "utf8");
-    const openclawNpmWorkflow = readFileSync(".github/workflows/operator-npm-release.yml", "utf8");
+    const operatorNpmWorkflow = readFileSync(".github/workflows/operator-npm-release.yml", "utf8");
     const fastPretagScript = readFileSync("scripts/release-fast-pretag-check.sh", "utf8");
     const pluginPretagPackScript = readFileSync(
       "scripts/plugin-release-pretag-pack-check.ts",
@@ -4067,7 +4067,7 @@ describe("package artifact reuse", () => {
       releaseWorkflow.match(/assets already promoted and verified; skipping dispatch/g),
     ).toHaveLength(2);
     expect(releaseWorkflow).toContain("registry tarball");
-    expect(releaseWorkflow).toContain("openclawNpmTarball");
+    expect(releaseWorkflow).toContain("operatorNpmTarball");
     // The release proof must cite the verified evidence tarball; the only
     // direct registry tarball query is the resume identity check.
     expect(
@@ -4160,7 +4160,7 @@ describe("package artifact reuse", () => {
     expect(clawHubReleasePlanScript).toContain("--skip-clawhub");
     expect(pluginNpmWorkflow).toContain("Validate release publish approval run");
     expect(clawHubWorkflow).toContain("Validate release publish approval run");
-    expect(openclawNpmWorkflow).toContain("Validate release publish approval run");
+    expect(operatorNpmWorkflow).toContain("Validate release publish approval run");
     const pluginNpmPublishJob = workflowJob(PLUGIN_NPM_RELEASE_WORKFLOW, "publish_plugins_npm");
     const npmPackageVersionStep = workflowStep(
       pluginNpmPublishJob,
@@ -4176,16 +4176,16 @@ describe("package artifact reuse", () => {
     );
     expect(pluginNpmWorkflow).toContain("Direct Plugin NPM Release dispatch");
     expect(clawHubWorkflow).toContain("Direct Plugin ClawHub Release dispatch");
-    expect(openclawNpmWorkflow).toContain("Direct Operator npm publish");
+    expect(operatorNpmWorkflow).toContain("Direct Operator npm publish");
     expect(pluginNpmWorkflow).toContain('GITHUB_ACTOR}" != "github-actions[bot]"');
     expect(clawHubWorkflow).toContain('GITHUB_ACTOR}" != "github-actions[bot]"');
-    expect(openclawNpmWorkflow).toContain('GITHUB_ACTOR}" != "github-actions[bot]"');
+    expect(operatorNpmWorkflow).toContain('GITHUB_ACTOR}" != "github-actions[bot]"');
     expect(pluginNpmWorkflow).toContain("Direct Plugin NPM Release recovery");
     expect(clawHubWorkflow).toContain("Direct Plugin ClawHub Release recovery");
-    expect(openclawNpmWorkflow).toContain("Direct Operator npm recovery");
+    expect(operatorNpmWorkflow).toContain("Direct Operator npm recovery");
     expect(pluginNpmWorkflow).toContain("validate-release-publish-approval.mjs");
     expect(clawHubWorkflow).toContain("validate-release-publish-approval.mjs");
-    expect(openclawNpmWorkflow).toContain("validate-release-publish-approval.mjs");
+    expect(operatorNpmWorkflow).toContain("validate-release-publish-approval.mjs");
     expect(approvalScript).toContain("must still be in_progress");
     expect(approvalScript).toContain("completed with success/failure");
     expect(pluginNpmWorkflow).toContain("environment: npm-release");
@@ -4267,7 +4267,7 @@ describe("package artifact reuse", () => {
     expect(clawHubNewWorkflow).not.toContain("packages/clawhub/src/cli.ts");
     expect(clawHubNewWorkflow).toContain("Verify exact ClawHub registry artifact bytes");
     expect(clawHubNewWorkflow).toContain("verify-clawhub-published-artifact.mjs");
-    expect(openclawNpmWorkflow).toContain("environment: npm-release");
+    expect(operatorNpmWorkflow).toContain("environment: npm-release");
     expect(releaseWorkflow).toContain("default: from-validation");
     expect(releaseWorkflow).toContain('--release-publish-branch "${PARENT_WORKFLOW_BRANCH}"');
     expect(releaseWorkflow).toContain('--release-publish-run-attempt "${GITHUB_RUN_ATTEMPT}"');

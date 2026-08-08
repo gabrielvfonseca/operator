@@ -252,7 +252,7 @@ describe("nextcloud-talk inbound behavior", () => {
         roomToken: "room-group",
         roomName: "Ops",
         isGroupChat: true,
-        text: "/openclaw reload",
+        text: "/operator reload",
       }),
       account: createAccount({
         config: {

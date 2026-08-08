@@ -102,7 +102,7 @@ describe("detectChangedScope", () => {
   it("routes only native i18n-owned paths to the native inventory job", () => {
     for (const changedPath of [
       "apps/.i18n/native-source.json",
-      "apps/android/app/src/main/java/ai/openclaw/app/MainActivity.kt",
+      "apps/android/app/src/main/java/ai/operator/app/MainActivity.kt",
       "apps/ios/Sources/RootTabs.swift",
       "apps/macos/Sources/Operator/Settings.swift",
       "apps/shared/OperatorKit/Sources/OperatorKit/Client.swift",

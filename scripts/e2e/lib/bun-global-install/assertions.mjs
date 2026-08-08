@@ -224,7 +224,7 @@ if (mode === "assert-release-versions") {
     rootAiVersion !== aiVersion
   ) {
     throw new Error(
-      `candidate version mismatch: openclaw=${String(rootVersion)}, dependency=${String(rootAiVersion)}, @gabrielvfonseca/ai=${String(aiVersion)}`,
+      `candidate version mismatch: operator=${String(rootVersion)}, dependency=${String(rootAiVersion)}, @gabrielvfonseca/ai=${String(aiVersion)}`,
     );
   }
   process.stdout.write(aiVersion);

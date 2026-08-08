@@ -1,5 +1,5 @@
 // Memory Core provider tests cover plugin runtime integration.
-import type { OperatorConfig } from "openclaw/plugin-sdk/memory-core-host-runtime-core";
+import type { OperatorConfig } from "operator/plugin-sdk/memory-core-host-runtime-core";
 import { describe, expect, it, vi } from "vitest";
 
 const managerDebug = {

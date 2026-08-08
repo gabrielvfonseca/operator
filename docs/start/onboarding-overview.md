@@ -71,8 +71,8 @@ run `operator onboard` to change the model provider or its authentication.
 
 Use `operator onboard --classic` for detailed model/auth, channel, skill,
 remote Gateway, or import setup. Adding `--install-daemon` also selects the
-classic flow and installs the background service in one step. Use `openclaw
-openclaw` for conversational non-inference setup and repair. `openclaw
+classic flow and installs the background service in one step. Use `operator
+operator` for conversational non-inference setup and repair. `operator
 onboard --modern` is a compatibility alias that uses the same live-inference
 gate.
 

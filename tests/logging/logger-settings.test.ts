@@ -63,7 +63,7 @@ describe("getResolvedLoggerSettings", () => {
     expect(settings.file).toContain(path.join(".artifacts", "test-logs"));
     expect(path.basename(settings.file)).toMatch(/^operator-vitest-\d+-\d{4}-\d{2}-\d{2}\.log$/);
     expect(settings.file).not.toBe(
-      `/tmp/openclaw/operator-${new Date().toISOString().slice(0, 10)}.log`,
+      `/tmp/operator/operator-${new Date().toISOString().slice(0, 10)}.log`,
     );
   });
 });

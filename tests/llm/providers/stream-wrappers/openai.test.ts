@@ -753,7 +753,7 @@ describe("createOpenAIAttributionHeadersWrapper", () => {
 
     expect(codexCalls).toBe(1);
     expect(capturedHeaders?.originator).toBe("@gabrielvfonseca/operator");
-    expect(capturedHeaders?.["User-Agent"]).toMatch(/^openclaw\//);
+    expect(capturedHeaders?.["User-Agent"]).toMatch(/^operator\//);
   });
 
   it("keeps existing wrapped Codex streams so runtime OAuth injection is preserved", () => {
@@ -797,6 +797,6 @@ describe("createOpenAIAttributionHeadersWrapper", () => {
     expect(codexCalls).toBe(0);
     expect(capturedOptions?.apiKey).toBe("oauth-bearer-token");
     expect(capturedOptions?.headers?.originator).toBe("@gabrielvfonseca/operator");
-    expect(capturedOptions?.headers?.["User-Agent"]).toMatch(/^openclaw\//);
+    expect(capturedOptions?.headers?.["User-Agent"]).toMatch(/^operator\//);
   });
 });

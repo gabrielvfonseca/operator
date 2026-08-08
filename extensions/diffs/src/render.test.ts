@@ -90,8 +90,8 @@ describe("renderDiffDocument", () => {
     const loaderSrc = html.match(/<script type="module" src="([^"]+)"><\/script>/)?.[1];
     expect(loaderSrc).toBe("../../assets/viewer.js");
     expect(
-      new URL(loaderSrc ?? "", "https://example.com/openclaw/plugins/diffs/view/id/token").pathname,
-    ).toBe("/openclaw/plugins/diffs/assets/viewer.js");
+      new URL(loaderSrc ?? "", "https://example.com/operator/plugins/diffs/view/id/token").pathname,
+    ).toBe("/operator/plugins/diffs/assets/viewer.js");
   });
 
   it("downgrades invalid language hints to plain text", async () => {

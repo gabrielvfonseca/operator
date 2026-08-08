@@ -44,9 +44,9 @@ let refreshRuntimeAuthOnFirstPromptError = false;
 let clearRuntimeConfigSnapshot: typeof import("../config/config.js").clearRuntimeConfigSnapshot;
 let setRuntimeConfigSnapshot: typeof import("../config/config.js").setRuntimeConfigSnapshot;
 
-vi.mock("openclaw/plugin-sdk/llm", async () => {
+vi.mock("operator/plugin-sdk/llm", async () => {
   const actual =
-    await vi.importActual<typeof import("openclaw/plugin-sdk/llm")>("openclaw/plugin-sdk/llm");
+    await vi.importActual<typeof import("operator/plugin-sdk/llm")>("operator/plugin-sdk/llm");
 
   const buildAssistantMessage = (model: { api: string; provider: string; id: string }) => ({
     role: "assistant" as const,
@@ -169,7 +169,7 @@ const installRunEmbeddedMocks = () => {
 };
 
 let runEmbeddedAgent: typeof import("./embedded-agent-runner/run.js").runEmbeddedAgent;
-let SessionManager: typeof import("openclaw/plugin-sdk/agent-sessions").SessionManager;
+let SessionManager: typeof import("operator/plugin-sdk/agent-sessions").SessionManager;
 let e2eWorkspace: EmbeddedAgentRunnerTestWorkspace | undefined;
 let agentDir: string;
 let workspaceDir: string;
@@ -183,7 +183,7 @@ beforeAll(async () => {
   ({ clearRuntimeConfigSnapshot, setRuntimeConfigSnapshot } = await import("../config/config.js"));
   ({ runEmbeddedAgent } = await import("./embedded-agent-runner/run.js"));
   const { SessionManager: LoadedSessionManager } = await import(
-    "openclaw/plugin-sdk/agent-sessions"
+    "operator/plugin-sdk/agent-sessions"
   );
   SessionManager = LoadedSessionManager;
   e2eWorkspace = await createEmbeddedAgentRunnerTestWorkspace("operator-embedded-agent-");
@@ -599,7 +599,7 @@ describe("runEmbeddedAgent", () => {
     );
 
     await runEmbeddedAgent({
-      sessionId: "codex-first-openclaw",
+      sessionId: "codex-first-operator",
       sessionFile,
       workspaceDir,
       config: cfg,
@@ -608,7 +608,7 @@ describe("runEmbeddedAgent", () => {
       model: "mock-1",
       timeoutMs: 5_000,
       agentDir,
-      runId: nextRunId("codex-first-openclaw"),
+      runId: nextRunId("codex-first-operator"),
       enqueue: immediateEnqueue,
     });
 

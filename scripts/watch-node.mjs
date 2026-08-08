@@ -136,7 +136,7 @@ const writeWatchLock = (lockPath, payload) => {
 };
 
 const logWatcher = (message, deps) => {
-  deps.process.stderr?.write?.(`[openclaw] ${message}\n`);
+  deps.process.stderr?.write?.(`[operator] ${message}\n`);
 };
 
 const isInvalidPackageConfigError = (err) => err?.code === "ERR_INVALID_PACKAGE_CONFIG";
@@ -152,18 +152,18 @@ const printFriendlyWatchStartupError = (err) => {
 
   console.error("");
   console.error(
-    "[openclaw] gateway:watch could not start because a dependency package config looks corrupted.",
+    "[operator] gateway:watch could not start because a dependency package config looks corrupted.",
   );
   if (packageConfigPath) {
-    console.error(`[openclaw] Invalid package config: ${packageConfigPath}`);
+    console.error(`[operator] Invalid package config: ${packageConfigPath}`);
   }
-  console.error("[openclaw] This usually means a file in node_modules is empty or truncated.");
-  console.error("[openclaw] Recommended recovery:");
-  console.error("[openclaw]   rm -rf node_modules");
-  console.error("[openclaw]   pnpm store prune");
-  console.error("[openclaw]   pnpm install");
+  console.error("[operator] This usually means a file in node_modules is empty or truncated.");
+  console.error("[operator] Recommended recovery:");
+  console.error("[operator]   rm -rf node_modules");
+  console.error("[operator]   pnpm store prune");
+  console.error("[operator]   pnpm install");
   console.error("");
-  console.error("[openclaw] Original error:");
+  console.error("[operator] Original error:");
   console.error(err);
 };
 
@@ -479,7 +479,7 @@ export async function runWatchMain(params = {}) {
     const runAutoDoctorAndRestart = () => {
       autoDoctorAttempted = true;
       logWatcher(
-        "Gateway exited early; running `openclaw doctor --fix --non-interactive` once.",
+        "Gateway exited early; running `operator doctor --fix --non-interactive` once.",
         deps,
       );
       watchProcess = deps.spawn(deps.process.execPath, buildDoctorRunnerArgs(), {

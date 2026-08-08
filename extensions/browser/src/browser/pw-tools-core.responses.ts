@@ -72,7 +72,7 @@ export async function responseBodyViaPlaywright(opts: {
       cleanup();
       reject(
         new Error(
-          `Response not found for url pattern "${pattern}". Run 'openclaw browser requests' to inspect recent network activity.`,
+          `Response not found for url pattern "${pattern}". Run 'operator browser requests' to inspect recent network activity.`,
         ),
       );
     }, timeout);

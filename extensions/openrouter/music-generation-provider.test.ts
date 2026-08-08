@@ -25,12 +25,12 @@ const {
   })),
 }));
 
-vi.mock("openclaw/plugin-sdk/provider-auth-runtime", () => ({
+vi.mock("operator/plugin-sdk/provider-auth-runtime", () => ({
   resolveApiKeyForProvider: resolveApiKeyForProviderMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/provider-http", async (importOriginal) => {
-  const original = await importOriginal<typeof import("openclaw/plugin-sdk/provider-http")>();
+vi.mock("operator/plugin-sdk/provider-http", async (importOriginal) => {
+  const original = await importOriginal<typeof import("operator/plugin-sdk/provider-http")>();
   return {
     ...original,
     assertOkOrThrowHttpError: assertOkOrThrowHttpErrorMock,

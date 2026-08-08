@@ -122,7 +122,7 @@ Avoid these policy shapes unless you also maintain the matching upgrade rule:
 - Treating the policy command as optional: when `security.installPolicy` is
   enabled, a missing, slow, unreadable, or permission-blocked policy
   executable fails closed.
-- Approving versions without checking the request's `openclawVersion` against
+- Approving versions without checking the request's `operatorVersion` against
   plugin candidate metadata.
 
 Prefer rules that allow trusted `@gabrielvfonseca/*` updates compatible with the
@@ -423,7 +423,7 @@ flowchart TD
     Good output:
 
     - Browser status shows `running: true` and a chosen browser/profile.
-    - `openclaw` profile starts, or `user` profile sees local Chrome tabs.
+    - `operator` profile starts, or `user` profile sees local Chrome tabs.
 
     Log signatures:
 

@@ -25,12 +25,12 @@ import {
   getNodeSqliteKysely,
 } from "../../infra/kysely-sync.js";
 import { parseAgentSessionKey } from "../../routing/session-key.js";
-import type { DB as OperatorStateKyselyDatabase } from "../../state/openclaw-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../../state/operator-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   type OperatorStateDatabaseOptions,
   runOperatorStateWriteTransaction,
-} from "../../state/openclaw-state-db.js";
+} from "../../state/operator-state-db.js";
 
 /** ACP metadata joined with its legacy session-store row and config context. */
 export type AcpSessionStoreEntry = {

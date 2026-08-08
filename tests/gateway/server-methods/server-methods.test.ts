@@ -1691,7 +1691,7 @@ describe("projectRecentChatDisplayMessages", () => {
     expect(
       result.map((message) => ({
         text: (message.content as Array<{ text?: string }> | undefined)?.[0]?.text,
-        metadata: message["__openclaw"],
+        metadata: message["__operator"],
       })),
     ).toEqual([
       {
@@ -1776,7 +1776,7 @@ describe("projectRecentChatDisplayMessages", () => {
             },
           },
         ],
-        openclawTtsSupplement: { textSha256 },
+        operatorTtsSupplement: { textSha256 },
         timestamp: 2,
       },
     ]);
@@ -1807,7 +1807,7 @@ describe("projectRecentChatDisplayMessages", () => {
             },
           },
         ],
-        openclawTtsSupplement: { textSha256 },
+        operatorTtsSupplement: { textSha256 },
         timestamp: 2,
       },
     ]);
@@ -2155,13 +2155,13 @@ describe("projectRecentChatDisplayMessages", () => {
     const mediaOnly = {
       role: "user",
       content: "",
-      MediaPath: "/tmp/openclaw/user-upload.png",
+      MediaPath: "/tmp/operator/user-upload.png",
       timestamp: 1,
     };
     const multiMediaOnly = {
       role: "user",
       content: "",
-      MediaPaths: ["/tmp/openclaw/first.png", "/tmp/openclaw/second.jpg"],
+      MediaPaths: ["/tmp/operator/first.png", "/tmp/operator/second.jpg"],
       timestamp: 2,
     };
     const result = projectRecentChatDisplayMessages([
@@ -2208,7 +2208,7 @@ describe("projectRecentChatDisplayMessages", () => {
             },
           },
         ],
-        openclawTtsSupplement: { textSha256, spokenText },
+        operatorTtsSupplement: { textSha256, spokenText },
         timestamp: 4,
       },
     ]);
@@ -2268,7 +2268,7 @@ describe("projectRecentChatDisplayMessages", () => {
             },
           },
         ],
-        openclawTtsSupplement: { textSha256 },
+        operatorTtsSupplement: { textSha256 },
         timestamp: 2,
       },
     ]);
@@ -2319,7 +2319,7 @@ describe("projectRecentChatDisplayMessages", () => {
               },
             },
           ],
-          openclawTtsSupplement: { textSha256 },
+          operatorTtsSupplement: { textSha256 },
           timestamp: 2,
         },
       ],
@@ -2376,7 +2376,7 @@ describe("projectRecentChatDisplayMessages", () => {
             },
           },
         ],
-        openclawTtsSupplement: ttsSupplement,
+        operatorTtsSupplement: ttsSupplement,
         timestamp: 3,
       },
     ]);
@@ -2406,7 +2406,7 @@ describe("projectRecentChatDisplayMessages", () => {
             },
           },
         ],
-        openclawTtsSupplement: ttsSupplement,
+        operatorTtsSupplement: ttsSupplement,
         timestamp: 3,
       },
     ]);
@@ -2452,7 +2452,7 @@ describe("dropPreSessionStartAnnouncePairs (#85648)", () => {
       },
     ];
     const out = dropPreSessionStartAnnouncePairs(messages, cutoff);
-    expect(out.map((m) => asOptionalRecord(asOptionalRecord(m)?.["__openclaw"])?.["seq"])).toEqual([
+    expect(out.map((m) => asOptionalRecord(asOptionalRecord(m)?.["__operator"])?.["seq"])).toEqual([
       1, 2, 5,
     ]);
   });
@@ -2569,7 +2569,7 @@ describe("dropPreSessionStartAnnouncePairs (#85648)", () => {
       },
     ];
     const out = dropPreSessionStartAnnouncePairs(messages, cutoff);
-    expect(out.map((m) => asOptionalRecord(asOptionalRecord(m)?.["__openclaw"])?.["seq"])).toEqual([
+    expect(out.map((m) => asOptionalRecord(asOptionalRecord(m)?.["__operator"])?.["seq"])).toEqual([
       1,
     ]);
   });

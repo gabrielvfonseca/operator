@@ -318,7 +318,7 @@ export function extraGatewayServiceToHealthFinding(service: ExtraGatewayService)
     target: service.label,
     fixHint:
       service.legacy === true
-        ? "Run openclaw doctor --fix to remove legacy gateway services."
+        ? "Run operator doctor --fix to remove legacy gateway services."
         : "Run a single gateway per machine unless this extra gateway is intentional.",
   };
 }
@@ -500,7 +500,7 @@ export async function maybeRepairGatewayServiceConfig(
   const sourceCheckoutWarning = serviceLayout?.entrypointSourceCheckout
     ? [
         `Gateway service entrypoint resolves to a source checkout: ${serviceLayout.packageRootReal ?? serviceLayout.packageRoot ?? serviceLayout.entrypointReal ?? serviceLayout.entrypoint}.`,
-        "Run `openclaw doctor --fix` from the intended package install, or reinstall the gateway service with `openclaw gateway install --force`.",
+        "Run `operator doctor --fix` from the intended package install, or reinstall the gateway service with `operator gateway install --force`.",
       ].join("\n")
     : null;
 
@@ -646,7 +646,7 @@ export async function maybeRepairGatewayServiceConfig(
 
   if (serviceRewriteBlocked) {
     note(
-      "Gateway service is running; leaving supervisor metadata unchanged. Stop the service first or use `openclaw gateway install --force` when you want to replace the active launcher.",
+      "Gateway service is running; leaving supervisor metadata unchanged. Stop the service first or use `operator gateway install --force` when you want to replace the active launcher.",
       "Gateway service config",
     );
     return cfg;
@@ -667,7 +667,7 @@ export async function maybeRepairGatewayServiceConfig(
     })
   ) {
     note(
-      "Update-mode doctor detected gateway service drift but left the live systemd unit unchanged. Review the service file and run `openclaw gateway install --force` when you want Operator to replace operator-owned systemd directives.",
+      "Update-mode doctor detected gateway service drift but left the live systemd unit unchanged. Review the service file and run `operator gateway install --force` when you want Operator to replace operator-owned systemd directives.",
       "Gateway service config",
     );
     return cfg;
@@ -694,7 +694,7 @@ export async function maybeRepairGatewayServiceConfig(
   if (!repair) {
     if (!emittedSourceCheckoutWarning) {
       note(
-        "Run `openclaw gateway install --force` when you want to replace the gateway service definition.",
+        "Run `operator gateway install --force` when you want to replace the gateway service definition.",
         "Gateway service config",
       );
     }

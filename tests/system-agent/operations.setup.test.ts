@@ -151,7 +151,7 @@ vi.mock("./overview.js", () => ({
     },
     references: {
       docsUrl: "https://docs.operator.ai",
-      sourceUrl: "https://github.com/openclaw/openclaw",
+      sourceUrl: "https://github.com/operator/operator",
     },
   })),
 }));
@@ -219,7 +219,7 @@ describe("parseSystemAgentOperation", () => {
     );
     expect(result.applied).toBe(true);
 
-    expect(lines.join("\n")).toContain("[openclaw] done: operator.setup");
+    expect(lines.join("\n")).toContain("[operator] done: operator.setup");
     expect(applySetup).toHaveBeenCalledWith(
       {
         workspace: "/tmp/work",
@@ -267,7 +267,7 @@ describe("parseSystemAgentOperation", () => {
     ).rejects.toThrow("requires working inference first");
 
     expect(applySetup).not.toHaveBeenCalled();
-    expect(lines.join("\n")).not.toContain("[openclaw] running: operator.setup");
+    expect(lines.join("\n")).not.toContain("[operator] running: operator.setup");
     await expect(fs.access(path.join(tempDir, "audit", "system-agent.jsonl"))).rejects.toThrow();
   });
 
@@ -294,7 +294,7 @@ describe("parseSystemAgentOperation", () => {
     ).rejects.toThrow("failed a live check");
 
     expect(applySetup).not.toHaveBeenCalled();
-    expect(lines.join("\n")).not.toContain("[openclaw] running: operator.setup");
+    expect(lines.join("\n")).not.toContain("[operator] running: operator.setup");
     await expect(fs.access(path.join(tempDir, "audit", "system-agent.jsonl"))).rejects.toThrow();
   });
 
@@ -387,7 +387,7 @@ describe("parseSystemAgentOperation", () => {
           },
         },
       ),
-    ).rejects.toThrow("Exit Operator and run `openclaw onboard`");
+    ).rejects.toThrow("Exit Operator and run `operator onboard`");
 
     expect(applySetup).not.toHaveBeenCalled();
   });
@@ -710,7 +710,7 @@ describe("parseSystemAgentOperation", () => {
       ).rejects.toThrow("inference route changed during verification");
 
       expect(mockConfig.mutateConfigFile).toHaveBeenCalledOnce();
-      expect(lines.join("\n")).not.toContain("[openclaw] done: config.setDefaultModel");
+      expect(lines.join("\n")).not.toContain("[operator] done: config.setDefaultModel");
       await expect(fs.access(path.join(tempDir, "audit", "system-agent.jsonl"))).rejects.toThrow();
     },
   );
@@ -742,7 +742,7 @@ describe("parseSystemAgentOperation", () => {
 
     expect(mockConfig.currentConfig()).toEqual(originalConfig);
     expect(mockConfig.mutateConfigFile).not.toHaveBeenCalled();
-    expect(lines.join("\n")).not.toContain("[openclaw] done: config.setDefaultModel");
+    expect(lines.join("\n")).not.toContain("[operator] done: config.setDefaultModel");
     await expect(fs.access(path.join(tempDir, "audit", "system-agent.jsonl"))).rejects.toThrow();
   });
 
@@ -769,7 +769,7 @@ describe("parseSystemAgentOperation", () => {
 
     expect(verifyInferenceConfig).toHaveBeenCalledTimes(2);
     expect(mockConfig.currentConfig()).toEqual(originalConfig);
-    expect(lines.join("\n")).not.toContain("[openclaw] done: config.setDefaultModel");
+    expect(lines.join("\n")).not.toContain("[operator] done: config.setDefaultModel");
     await expect(fs.access(path.join(tempDir, "audit", "system-agent.jsonl"))).rejects.toThrow();
   });
 
@@ -798,7 +798,7 @@ describe("parseSystemAgentOperation", () => {
     expect(verifyInferenceConfig).toHaveBeenCalledOnce();
     expect(mockConfig.mutateConfigFile).not.toHaveBeenCalled();
     expect(mockConfig.currentConfig()).toEqual(originalConfig);
-    expect(lines.join("\n")).not.toContain("[openclaw] done: config.setDefaultModel");
+    expect(lines.join("\n")).not.toContain("[operator] done: config.setDefaultModel");
     await expect(fs.access(path.join(tempDir, "audit", "system-agent.jsonl"))).rejects.toThrow();
   });
 
@@ -825,7 +825,7 @@ describe("parseSystemAgentOperation", () => {
 
     expect(verifyInferenceConfig).toHaveBeenCalledTimes(2);
     expect(mockConfig.currentConfig()).toEqual(originalConfig);
-    expect(lines.join("\n")).not.toContain("[openclaw] done: config.setDefaultModel");
+    expect(lines.join("\n")).not.toContain("[operator] done: config.setDefaultModel");
     await expect(fs.access(path.join(tempDir, "audit", "system-agent.jsonl"))).rejects.toThrow();
   });
 
@@ -864,7 +864,7 @@ describe("parseSystemAgentOperation", () => {
     expect(verifyInferenceConfig).toHaveBeenCalledOnce();
     expect(beforePersistentApply).toHaveBeenCalledOnce();
     expect(mockConfig.currentConfig()).toEqual(originalConfig);
-    expect(lines.join("\n")).not.toContain("[openclaw] done: config.setDefaultModel");
+    expect(lines.join("\n")).not.toContain("[operator] done: config.setDefaultModel");
     await expect(fs.access(path.join(tempDir, "audit", "system-agent.jsonl"))).rejects.toThrow();
   });
 
@@ -907,7 +907,7 @@ describe("parseSystemAgentOperation", () => {
     expect(verifyInferenceConfig).toHaveBeenCalledTimes(2);
     expect(beforePersistentApply).toHaveBeenCalledTimes(2);
     expect(mockConfig.currentConfig()).toEqual(originalConfig);
-    expect(lines.join("\n")).not.toContain("[openclaw] done: config.setDefaultModel");
+    expect(lines.join("\n")).not.toContain("[operator] done: config.setDefaultModel");
     await expect(fs.access(path.join(tempDir, "audit", "system-agent.jsonl"))).rejects.toThrow();
   });
 
@@ -970,8 +970,8 @@ describe("parseSystemAgentOperation", () => {
     expect(isPersistentSystemAgentOperation({ kind: "doctor-fix" })).toBe(false);
     expect(runDoctor).not.toHaveBeenCalled();
     expect(lines.join("\n")).toContain("Exit Operator");
-    expect(lines.join("\n")).toContain("openclaw doctor --fix");
-    expect(lines.join("\n")).not.toContain("[openclaw] running: doctor.fix");
+    expect(lines.join("\n")).toContain("operator doctor --fix");
+    expect(lines.join("\n")).not.toContain("[operator] running: doctor.fix");
     await expect(fs.access(path.join(tempDir, "audit", "system-agent.jsonl"))).rejects.toThrow();
   });
 
@@ -1002,7 +1002,7 @@ describe("parseSystemAgentOperation", () => {
       nextInput: "restart gateway",
     });
     expect(lines.join("\n")).toContain(
-      "[openclaw] returned from agent with request: restart gateway",
+      "[operator] returned from agent with request: restart gateway",
     );
   });
 
@@ -1021,6 +1021,6 @@ describe("parseSystemAgentOperation", () => {
       returnToShell: true,
     });
     expect((result as { nextInput?: string }).nextInput).toBeUndefined();
-    expect(lines.join("\n")).toContain("[openclaw] returned from agent");
+    expect(lines.join("\n")).toContain("[operator] returned from agent");
   });
 });

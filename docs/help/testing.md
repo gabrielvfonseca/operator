@@ -86,7 +86,7 @@ When debugging real providers/models (requires real creds):
   `live_openai_candidate=true` for a real `openai/gpt-5.6-luna` agent turn or
   `deep_profile=true` for Kova CPU/heap/trace artifacts. Daily scheduled runs
   publish mock-provider, deep-profile, and GPT-5.6 Luna lane reports to
-  `openclaw/clawgrit-reports` from a separate artifact-consuming publisher job;
+  `operator/clawgrit-reports` from a separate artifact-consuming publisher job;
   missing or invalid publisher authentication fails scheduled and
   `profile=release` runs. Manual non-release dispatches keep the GitHub artifacts
   and treat report publication as advisory. The mock-provider report also
@@ -178,9 +178,9 @@ avoid normal provider-plugin startup. These live transport gateways
 disable memory search; memory behavior stays covered by the QA parity suites.
 
 Full release live media shards use
-`ghcr.io/openclaw/operator-live-media-runner:ubuntu-24.04`, which already has
+`ghcr.io/operator/operator-live-media-runner:ubuntu-24.04`, which already has
 `ffmpeg` and `ffprobe`. Docker live model/backend shards use the shared
-`ghcr.io/openclaw/operator-live-test:<sha>` image built once per selected
+`ghcr.io/operator/operator-live-test:<sha>` image built once per selected
 commit, then pull it with `OPERATOR_SKIP_DOCKER_BUILD=1` instead of rebuilding
 inside every shard.
 
@@ -264,10 +264,10 @@ inside every shard.
     the live Telegram QA lane with that installed package as the SUT
     Gateway.
   - The wrapper mounts only the `qa-lab` harness source from the checkout;
-    the installed package owns `dist`, `openclaw/plugin-sdk`, and bundled
+    the installed package owns `dist`, `operator/plugin-sdk`, and bundled
     plugin runtime, so the lane does not mix current checkout plugins into
     the package under test.
-  - Defaults to `OPERATOR_NPM_TELEGRAM_PACKAGE_SPEC=openclaw@beta`; set
+  - Defaults to `OPERATOR_NPM_TELEGRAM_PACKAGE_SPEC=operator@beta`; set
     `OPERATOR_NPM_TELEGRAM_PACKAGE_TGZ=/path/to/operator-current.tgz` or
     `OPERATOR_CURRENT_PACKAGE_TGZ` to test a resolved local tarball instead
     of installing from the registry.
@@ -309,7 +309,7 @@ inside every shard.
 ```bash
 gh workflow run package-acceptance.yml --ref main \
   -f source=npm \
-  -f package_spec=openclaw@beta \
+  -f package_spec=operator@beta \
   -f suite_profile=product \
   -f telegram_mode=mock-openai
 ```
@@ -319,7 +319,7 @@ gh workflow run package-acceptance.yml --ref main \
 ```bash
 gh workflow run package-acceptance.yml --ref main \
   -f source=url \
-  -f package_url=https://registry.npmjs.org/openclaw/-/operator-VERSION.tgz \
+  -f package_url=https://registry.npmjs.org/operator/-/operator-VERSION.tgz \
   -f package_sha256=<sha256> \
   -f suite_profile=package
 ```
@@ -330,7 +330,7 @@ gh workflow run package-acceptance.yml --ref main \
 gh workflow run package-acceptance.yml --ref main \
   -f source=trusted-url \
   -f trusted_source_id=enterprise-artifactory \
-  -f package_url=https://packages.example.internal:8443/artifactory/openclaw/operator-VERSION.tgz \
+  -f package_url=https://packages.example.internal:8443/artifactory/operator/operator-VERSION.tgz \
   -f package_sha256=<sha256> \
   -f suite_profile=package
 ```
@@ -888,12 +888,12 @@ without mutating the host auth store:
 - Release user journey smoke: `pnpm test:docker:release-user-journey` installs the packed Operator tarball globally in a clean Docker home, runs onboarding, configures a mocked OpenAI provider, runs an agent turn, installs/uninstalls external plugins, configures ClickClack against a local fixture, verifies outbound/inbound messaging, restarts Gateway, and runs doctor.
 - Release typed onboarding smoke: `pnpm test:docker:release-typed-onboarding` installs the packed tarball, drives `operator onboard` through a real TTY, configures OpenAI as an env-ref provider, verifies no raw key persistence, and runs a mocked agent turn.
 - Release media/memory smoke: `pnpm test:docker:release-media-memory` installs the packed tarball, verifies image understanding from a PNG attachment, OpenAI-compatible image generation output, memory search recall, and recall survival across Gateway restart.
-- Release upgrade user journey smoke: `pnpm test:docker:release-upgrade-user-journey` installs the newest published baseline older than the candidate tarball by default, configures provider/plugin/ClickClack state on the published package, upgrades to the candidate tarball, then reruns the core agent/plugin/channel journey. If no older published baseline exists, it reuses the candidate version. Override the baseline with `OPERATOR_RELEASE_UPGRADE_BASELINE_SPEC=openclaw@<version>`.
+- Release upgrade user journey smoke: `pnpm test:docker:release-upgrade-user-journey` installs the newest published baseline older than the candidate tarball by default, configures provider/plugin/ClickClack state on the published package, upgrades to the candidate tarball, then reruns the core agent/plugin/channel journey. If no older published baseline exists, it reuses the candidate version. Override the baseline with `OPERATOR_RELEASE_UPGRADE_BASELINE_SPEC=operator@<version>`.
 - Release plugin marketplace smoke: `pnpm test:docker:release-plugin-marketplace` installs from a local fixture marketplace, updates the installed plugin, uninstalls it, and verifies the plugin CLI disappears with install metadata pruned.
 - Skill install smoke: `pnpm test:docker:skill-install` installs the packed Operator tarball globally in Docker, disables uploaded archive installs in config, resolves the current live ClawHub skill slug from search, installs it with `operator skills install`, and verifies the installed skill plus `.clawhub` origin/lock metadata.
 - Update channel switch smoke: `pnpm test:docker:update-channel-switch` installs the packed Operator tarball globally in Docker, switches from package `stable` to git `dev`, verifies the persisted channel and plugin post-update work, then switches back to package `stable` and checks update status.
 - Upgrade survivor smoke: `pnpm test:docker:upgrade-survivor` installs the packed Operator tarball over a dirty old-user fixture with agents, channel config, plugin allowlists, stale plugin dependency state, and existing workspace/session files. It runs package update plus non-interactive doctor without live provider or channel keys, then starts a loopback Gateway and checks config/state preservation plus startup/status budgets.
-- Published upgrade survivor smoke: `pnpm test:docker:published-upgrade-survivor` installs `openclaw@latest` by default, seeds realistic existing-user files, configures that baseline with a baked command recipe, validates the resulting config, updates that published install to the candidate tarball, runs non-interactive doctor, writes `.artifacts/upgrade-survivor/summary.json`, then starts a loopback Gateway and checks configured intents, state preservation, startup, `/healthz`, `/readyz`, and RPC status budgets. Override one baseline with `OPERATOR_UPGRADE_SURVIVOR_BASELINE_SPEC`, ask the aggregate scheduler to expand exact local baselines with `OPERATOR_UPGRADE_SURVIVOR_BASELINE_SPECS` such as `openclaw@2026.5.2 openclaw@2026.4.23 openclaw@2026.4.15`, and expand issue-shaped fixtures with `OPERATOR_UPGRADE_SURVIVOR_SCENARIOS` such as `reported-issues`; the reported-issues set includes `configured-plugin-installs` for automatic external Operator plugin install repair. Package Acceptance exposes those as `published_upgrade_survivor_baseline`, `published_upgrade_survivor_baselines`, and `published_upgrade_survivor_scenarios`, resolves meta baseline tokens such as `last-stable-4` or `all-since-2026.4.23`, and Full Release Validation expands the release-soak package gate to `last-stable-4 2026.4.23 2026.5.2 2026.4.15` plus `reported-issues`.
+- Published upgrade survivor smoke: `pnpm test:docker:published-upgrade-survivor` installs `operator@latest` by default, seeds realistic existing-user files, configures that baseline with a baked command recipe, validates the resulting config, updates that published install to the candidate tarball, runs non-interactive doctor, writes `.artifacts/upgrade-survivor/summary.json`, then starts a loopback Gateway and checks configured intents, state preservation, startup, `/healthz`, `/readyz`, and RPC status budgets. Override one baseline with `OPERATOR_UPGRADE_SURVIVOR_BASELINE_SPEC`, ask the aggregate scheduler to expand exact local baselines with `OPERATOR_UPGRADE_SURVIVOR_BASELINE_SPECS` such as `operator@2026.5.2 operator@2026.4.23 operator@2026.4.15`, and expand issue-shaped fixtures with `OPERATOR_UPGRADE_SURVIVOR_SCENARIOS` such as `reported-issues`; the reported-issues set includes `configured-plugin-installs` for automatic external Operator plugin install repair. Package Acceptance exposes those as `published_upgrade_survivor_baseline`, `published_upgrade_survivor_baselines`, and `published_upgrade_survivor_scenarios`, resolves meta baseline tokens such as `last-stable-4` or `all-since-2026.4.23`, and Full Release Validation expands the release-soak package gate to `last-stable-4 2026.4.23 2026.5.2 2026.4.15` plus `reported-issues`.
 - Session runtime context smoke: `pnpm test:docker:session-runtime-context` verifies hidden runtime context transcript persistence plus doctor repair of affected duplicated prompt-rewrite branches.
 - Bun global install smoke: `bash scripts/e2e/bun-global-install-smoke.sh` packs the current tree, installs it with `bun install -g` in an isolated home, and verifies `operator infer image providers --json` returns bundled image providers instead of hanging. Reuse a prebuilt tarball with `OPERATOR_BUN_GLOBAL_SMOKE_PACKAGE_TGZ=/path/to/operator-*.tgz`, skip the host build with `OPERATOR_BUN_GLOBAL_SMOKE_HOST_BUILD=0`, or copy `dist/` from a built Docker image with `OPERATOR_BUN_GLOBAL_SMOKE_DIST_IMAGE=operator-dockerfile-smoke:local`.
 - Installer Docker smoke: `bash scripts/test-install-sh-docker.sh` shares one npm cache across its root, update, and direct-npm containers. Update smoke defaults to npm `latest` as the stable baseline before upgrading to the candidate tarball. Override with `OPERATOR_INSTALL_SMOKE_UPDATE_BASELINE=2026.4.22` locally, or with the Install Smoke workflow's `update_baseline_version` input on GitHub. Non-root installer checks keep an isolated npm cache so root-owned cache entries do not mask user-local install behavior. Set `OPERATOR_INSTALL_SMOKE_NPM_CACHE_DIR=/path/to/cache` to reuse the root/update/direct-npm cache across local reruns.
@@ -937,7 +937,7 @@ live coverage from that Docker lane.
 `test:docker:openwebui` is a higher-level compatibility smoke: it starts an
 Operator gateway container with the OpenAI-compatible HTTP endpoints enabled,
 starts a pinned Open WebUI container against that gateway, signs in through
-Open WebUI, verifies `/api/models` exposes `openclaw/default`, then sends a
+Open WebUI, verifies `/api/models` exposes `operator/default`, then sends a
 real chat request through Open WebUI's `/api/chat/completions` proxy. Set
 `OPENWEBUI_SMOKE_MODE=models` for release-path CI checks that should stop
 after Open WebUI sign-in and model discovery, without waiting on a live model
@@ -946,7 +946,7 @@ pull the Open WebUI image and Open WebUI may need to finish its own
 cold-start setup. This lane expects a usable live model key, provided through
 the process environment, staged auth profiles, or an explicit
 `OPERATOR_PROFILE_FILE`. Successful runs print a small JSON payload like
-`{ "ok": true, "model": "openclaw/default", ... }`.
+`{ "ok": true, "model": "operator/default", ... }`.
 
 `test:docker:mcp-channels` is intentionally deterministic and does not need a
 real Telegram, Discord, or iMessage account. It boots a seeded Gateway
@@ -981,7 +981,7 @@ Useful env vars:
 - `OPERATOR_WORKSPACE_DIR=...` (default: `~/.operator/workspace`) mounted to `/home/node/.operator/workspace`
 - `OPERATOR_PROFILE_FILE=...` mounted and sourced before running tests
 - `OPERATOR_DOCKER_PROFILE_ENV_ONLY=1` to verify only env vars sourced from `OPERATOR_PROFILE_FILE`, using temporary config/workspace dirs and no external CLI auth mounts
-- `OPERATOR_DOCKER_CLI_TOOLS_DIR=...` (default: `~/.cache/openclaw/docker-cli-tools`, unless the run already uses a CI/managed bind dir) mounted to `/home/node/.npm-global` for cached CLI installs inside Docker
+- `OPERATOR_DOCKER_CLI_TOOLS_DIR=...` (default: `~/.cache/operator/docker-cli-tools`, unless the run already uses a CI/managed bind dir) mounted to `/home/node/.npm-global` for cached CLI installs inside Docker
 - External CLI auth dirs/files under `$HOME` are mounted read-only under `/host-auth...`, then copied into `/home/node/...` before tests start
   - Default dirs (used when the run is not narrowed to specific providers): `.factory`, `.gemini`, `.minimax`
   - Default files: `~/.codex/auth.json`, `~/.codex/config.toml`, `.claude.json`, `~/.claude/.credentials.json`, `~/.claude/settings.json`, `~/.claude/settings.local.json`

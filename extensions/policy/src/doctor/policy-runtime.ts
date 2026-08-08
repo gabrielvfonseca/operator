@@ -261,7 +261,7 @@ export function channelIdsFromFindings(findings: readonly HealthFinding[]): read
     ...new Set(
       findings
         .filter((finding) => finding.checkId === CHECK_IDS.policyDeniedChannelProvider)
-        .map((finding) => finding.ocPath?.match(/^oc:\/\/openclaw\.config\/channels\/(.+)$/)?.[1])
+        .map((finding) => finding.ocPath?.match(/^oc:\/\/operator\.config\/channels\/(.+)$/)?.[1])
         .filter((id): id is string => id !== undefined && id !== ""),
     ),
   ];

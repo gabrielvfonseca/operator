@@ -7,8 +7,8 @@ import { replaceSessionEntry } from "../../src/config/sessions/session-accessor.
 import { formatSqliteSessionFileMarker } from "../../src/config/sessions/sqlite-marker.js";
 import type { SessionEntry } from "../../src/config/sessions/types.js";
 import type { RuntimeEnv } from "../../src/runtime.js";
-import { closeOperatorAgentDatabasesForTest } from "../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import {
   resolveTrajectoryPointerFilePath,
   TRAJECTORY_RUNTIME_FILE_MAX_BYTES,

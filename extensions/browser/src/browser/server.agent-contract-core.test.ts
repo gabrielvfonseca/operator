@@ -370,7 +370,7 @@ describe("browser control server", () => {
           {
             url: "https://example.com/report.pdf",
             suggestedFilename: "report.pdf",
-            path: "/tmp/openclaw/downloads/report.pdf",
+            path: "/tmp/operator/downloads/report.pdf",
           },
         ],
       });
@@ -388,7 +388,7 @@ describe("browser control server", () => {
         {
           url: "https://example.com/report.pdf",
           suggestedFilename: "report.pdf",
-          path: "/tmp/openclaw/downloads/report.pdf",
+          path: "/tmp/operator/downloads/report.pdf",
         },
       ]);
     },
@@ -939,7 +939,7 @@ describe("profile CRUD endpoints", () => {
     const deleteMissingBody = (await deleteMissing.json()) as { error: string };
     expect(deleteMissingBody.error).toContain("not found");
 
-    const deleteDefault = await realFetch(`${base}/profiles/openclaw`, {
+    const deleteDefault = await realFetch(`${base}/profiles/operator`, {
       method: "DELETE",
     });
     expect(deleteDefault.status).toBe(400);

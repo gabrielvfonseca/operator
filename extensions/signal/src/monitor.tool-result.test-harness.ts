@@ -96,19 +96,19 @@ export function createMockSignalDaemonHandle(
 
 // Use importActual so shared-worker mocks from earlier test files do not leak
 // into this harness's partial overrides.
-vi.mock("openclaw/plugin-sdk/runtime-config-snapshot", async () => {
+vi.mock("operator/plugin-sdk/runtime-config-snapshot", async () => {
   const actual = await vi.importActual<
-    typeof import("openclaw/plugin-sdk/runtime-config-snapshot")
-  >("openclaw/plugin-sdk/runtime-config-snapshot");
+    typeof import("operator/plugin-sdk/runtime-config-snapshot")
+  >("operator/plugin-sdk/runtime-config-snapshot");
   return {
     ...actual,
     getRuntimeConfig: () => config,
   };
 });
 
-vi.mock("openclaw/plugin-sdk/session-store-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/session-store-runtime")>(
-    "openclaw/plugin-sdk/session-store-runtime",
+vi.mock("operator/plugin-sdk/session-store-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/session-store-runtime")>(
+    "operator/plugin-sdk/session-store-runtime",
   );
   return {
     ...actual,
@@ -119,9 +119,9 @@ vi.mock("openclaw/plugin-sdk/session-store-runtime", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/reply-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/reply-runtime")>(
-    "openclaw/plugin-sdk/reply-runtime",
+vi.mock("operator/plugin-sdk/reply-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/reply-runtime")>(
+    "operator/plugin-sdk/reply-runtime",
   );
   return {
     ...actual,
@@ -192,9 +192,9 @@ vi.mock("./send.js", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/conversation-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/conversation-runtime")>(
-    "openclaw/plugin-sdk/conversation-runtime",
+vi.mock("operator/plugin-sdk/conversation-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/conversation-runtime")>(
+    "operator/plugin-sdk/conversation-runtime",
   );
   return {
     ...actual,
@@ -203,9 +203,9 @@ vi.mock("openclaw/plugin-sdk/conversation-runtime", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/security-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/security-runtime")>(
-    "openclaw/plugin-sdk/security-runtime",
+vi.mock("operator/plugin-sdk/security-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/security-runtime")>(
+    "operator/plugin-sdk/security-runtime",
   );
   return {
     ...actual,
@@ -233,9 +233,9 @@ vi.mock("./daemon.js", async (importOriginal) => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/system-event-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/system-event-runtime")>(
-    "openclaw/plugin-sdk/system-event-runtime",
+vi.mock("operator/plugin-sdk/system-event-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/system-event-runtime")>(
+    "operator/plugin-sdk/system-event-runtime",
   );
   return {
     ...actual,
@@ -246,15 +246,15 @@ vi.mock("openclaw/plugin-sdk/system-event-runtime", async () => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/transport-ready-runtime", () => ({
+vi.mock("operator/plugin-sdk/transport-ready-runtime", () => ({
   waitForTransportReady: (...args: unknown[]) => waitForTransportReadyMock(...args),
 }));
 
 export function installSignalToolResultTestHooks() {
   beforeEach(async () => {
     const [{ resetInboundDedupe }, { resetSystemEventsForTest }] = await Promise.all([
-      import("openclaw/plugin-sdk/reply-runtime"),
-      import("openclaw/plugin-sdk/system-event-runtime"),
+      import("operator/plugin-sdk/reply-runtime"),
+      import("operator/plugin-sdk/system-event-runtime"),
     ]);
     resetInboundDedupe();
     config = {

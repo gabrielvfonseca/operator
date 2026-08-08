@@ -25,7 +25,7 @@ import {
 } from "@github/copilot-sdk";
 
 type CreateOperatorCodingTools =
-  typeof import("openclaw/plugin-sdk/agent-harness")["createOperatorCodingTools"];
+  typeof import("operator/plugin-sdk/agent-harness")["createOperatorCodingTools"];
 type OperatorCodingToolsOptions = NonNullable<Parameters<CreateOperatorCodingTools>[0]>;
 type AgentHarnessToolSurfaceRuntime = ReturnType<typeof createAgentHarnessToolSurfaceRuntime>;
 type CatalogExecuteParams = Parameters<
@@ -51,7 +51,7 @@ interface CopilotSessionHolder {
  * authoritative `createOperatorCodingTools({...})` call shape).
  *
  * Declared as `Partial<EmbeddedRunAttemptParams>` (imported from the
- * `openclaw/plugin-sdk/agent-harness-runtime` boundary, *not* from
+ * `operator/plugin-sdk/agent-harness-runtime` boundary, *not* from
  * `attempt.ts` in this extension) to avoid an `attempt.ts` ↔
  * `tool-bridge.ts` import cycle while keeping the field shapes
  * authoritative. Production callers pass the live attempt params; test
@@ -191,7 +191,7 @@ export async function createCopilotToolBridge(
 
   const createOperatorCodingTools =
     input.createOperatorCodingTools ??
-    (await import("openclaw/plugin-sdk/agent-harness")).createOperatorCodingTools;
+    (await import("operator/plugin-sdk/agent-harness")).createOperatorCodingTools;
 
   const toolSurfaceRuntime = createAgentHarnessToolSurfaceRuntime({
     abortSignal: input.abortSignal,

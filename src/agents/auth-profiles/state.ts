@@ -8,7 +8,7 @@ import { asFiniteNumber } from "@gabrielvfonseca/normalization-core/number-coerc
 import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { normalizeTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
-import type { OperatorAgentDatabase } from "../../state/openclaw-agent-db.js";
+import type { OperatorAgentDatabase } from "../../state/operator-agent-db.js";
 import { AUTH_STORE_VERSION } from "./constants.js";
 import { readPersistedAuthProfileStateRaw } from "./sqlite.js";
 import type {

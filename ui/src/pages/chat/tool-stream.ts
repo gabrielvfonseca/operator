@@ -274,9 +274,9 @@ function buildToolStreamMessage(entry: ToolStreamEntry): Record<string, unknown>
     // and completion comes from the result event — partial `update` output
     // must not end the running state. Transcript messages never carry these,
     // so historical output-less calls (aborted runs) stay inert.
-    __openclawToolStreamLive: true,
-    __openclawToolStreamResultReceived: entry.resultReceived === true,
-    __openclawToolStreamReceivedAt: entry.receivedAt,
+    __operatorToolStreamLive: true,
+    __operatorToolStreamResultReceived: entry.resultReceived === true,
+    __operatorToolStreamReceivedAt: entry.receivedAt,
   };
 }
 

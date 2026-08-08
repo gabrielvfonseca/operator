@@ -306,7 +306,7 @@ const entrySet = new Set(normalized);
 const errors = [];
 const warnings = [];
 const REQUIRED_TARBALL_ENTRIES = ["dist/control-ui/index.html", ...WORKSPACE_TEMPLATE_PACK_PATHS];
-const PACKAGE_INSTALL_GUARD_RELATIVE_PATH = "dist/operator.install-guard";
+const PACKAGE_INSTALL_GUARD_RELATIVE_PATH = "dist/operator-install-guard";
 const REQUIRED_TARBALL_ENTRY_PREFIXES = ["dist/control-ui/assets/"];
 const LEGACY_PACKAGE_ACCEPTANCE_COMPAT_MAX = { year: 2026, month: 4, day: 25 };
 const LEGACY_LOCAL_BUILD_METADATA_COMPAT_MAX = { year: 2026, month: 4, day: 26 };
@@ -467,7 +467,7 @@ if (!entrySet.has("npm-shrinkwrap.json")) {
   try {
     const shrinkwrap = JSON.parse(readTarEntry("npm-shrinkwrap.json"));
     const rootPackage = shrinkwrap.packages?.[""];
-    if (shrinkwrap.name !== "operator") {
+    if (shrinkwrap.name !== "@gabrielvfonseca/operator") {
       errors.push("npm-shrinkwrap.json root name must be operator");
     }
     if (shrinkwrap.version !== packageVersion) {
@@ -475,7 +475,7 @@ if (!entrySet.has("npm-shrinkwrap.json")) {
         `npm-shrinkwrap.json version ${shrinkwrap.version ?? "<missing>"} does not match package.json version ${packageVersion || "<missing>"}`,
       );
     }
-    if (rootPackage?.name !== "operator") {
+    if (rootPackage?.name !== "@gabrielvfonseca/operator") {
       errors.push("npm-shrinkwrap.json packages root must name operator");
     }
     if (rootPackage?.version !== packageVersion) {

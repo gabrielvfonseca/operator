@@ -5,7 +5,7 @@ import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { normalizeOptionalString as normalizeTrimmedString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveStateDir } from "../config/paths.js";
 import { resolveHomeRelativePath } from "../infra/home-dir.js";
-import { resolveOperatorPackageRootSync } from "../infra/openclaw-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
 import { parseJsonWithJson5Fallback } from "../utils/parse-json-compat.js";
 import { resolveBundledPluginsDir } from "./bundled-dir.js";
 import { readPersistedInstalledPluginIndexSync } from "./installed-plugin-index-store.js";

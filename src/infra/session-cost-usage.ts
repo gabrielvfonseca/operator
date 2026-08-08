@@ -41,7 +41,7 @@ import type { OperatorConfig } from "../config/types.operator.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 import { stripEnvelope, stripMessageIdHints } from "../shared/chat-envelope.js";
-import { resolveOperatorAgentSqlitePath } from "../state/openclaw-agent-db.js";
+import { resolveOperatorAgentSqlitePath } from "../state/operator-agent-db.js";
 import { runTasksWithConcurrency } from "../utils/run-with-concurrency.js";
 import { countToolResults, extractToolCallNames } from "../utils/transcript-tools.js";
 import {

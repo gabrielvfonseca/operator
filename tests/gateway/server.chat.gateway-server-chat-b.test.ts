@@ -150,7 +150,7 @@ function readOperatorSeq(message: unknown): number | undefined {
   if (!message || typeof message !== "object" || Array.isArray(message)) {
     return undefined;
   }
-  const metadata = (message as Record<string, unknown>)["__openclaw"];
+  const metadata = (message as Record<string, unknown>)["__operator"];
   if (!metadata || typeof metadata !== "object" || Array.isArray(metadata)) {
     return undefined;
   }
@@ -4496,7 +4496,7 @@ describe("gateway server chat", () => {
           },
         });
         const history = await rpcReq<{
-          messages?: Array<{ __openclaw?: { id?: string } }>;
+          messages?: Array<{ __operator?: { id?: string } }>;
           hasMore?: boolean;
           nextOffset?: number;
           totalMessages?: number;
@@ -4522,7 +4522,7 @@ describe("gateway server chat", () => {
         expect(history.payload?.nextOffset).toBeUndefined();
         expect(history.payload?.totalMessages).toBe(107);
         expect(history.payload?.completeSnapshot).toBe(true);
-        expect(new Set(messages.map((message) => message["__openclaw"]?.id)).size).toBe(107);
+        expect(new Set(messages.map((message) => message["__operator"]?.id)).size).toBe(107);
       } finally {
         homeEnvSnapshot.restore();
       }
@@ -4586,7 +4586,7 @@ describe("gateway server chat", () => {
         );
 
         const history = await rpcReq<{
-          messages?: Array<{ __openclaw?: { id?: string; seq?: number } }>;
+          messages?: Array<{ __operator?: { id?: string; seq?: number } }>;
           hasMore?: boolean;
           nextOffset?: number;
           totalMessages?: number;
@@ -4599,7 +4599,7 @@ describe("gateway server chat", () => {
         expect(history.payload?.completeSnapshot).toBe(true);
         const deliveredIdentities = new Set(
           (history.payload?.messages ?? []).map((message) => {
-            const metadata = expectDefined(message["__openclaw"], "history metadata");
+            const metadata = expectDefined(message["__operator"], "history metadata");
             return metadata.seq !== undefined
               ? `seq:${metadata.seq}`
               : `id:${expectDefined(metadata.id, "history id")}`;
@@ -4654,7 +4654,7 @@ describe("gateway server chat", () => {
         );
 
         const firstPage = await rpcReq<{
-          messages?: Array<{ __openclaw?: { seq?: number } }>;
+          messages?: Array<{ __operator?: { seq?: number } }>;
           hasMore?: boolean;
           nextOffset?: number;
           totalMessages?: number;
@@ -4666,7 +4666,7 @@ describe("gateway server chat", () => {
         expect(firstPage.payload?.totalMessages).toBe(5);
 
         const secondPage = await rpcReq<{
-          messages?: Array<{ __openclaw?: { seq?: number } }>;
+          messages?: Array<{ __operator?: { seq?: number } }>;
           hasMore?: boolean;
           nextOffset?: number;
         }>(ws, "chat.history", {
@@ -4963,7 +4963,7 @@ describe("gateway server chat", () => {
       ]);
 
       const page = await rpcReq<{
-        messages?: Array<{ __openclaw?: { seq?: number } }>;
+        messages?: Array<{ __operator?: { seq?: number } }>;
         nextOffset?: number;
         hasMore?: boolean;
       }>(ws, "chat.history", {
@@ -5016,7 +5016,7 @@ describe("gateway server chat", () => {
       const page = await rpcReq<{
         messages?: Array<{
           content?: Array<{ text?: string }>;
-          __openclaw?: { turnBoundary?: boolean };
+          __operator?: { turnBoundary?: boolean };
         }>;
       }>(ws, "chat.history", {
         sessionKey: "main",
@@ -5027,7 +5027,7 @@ describe("gateway server chat", () => {
       expect(page.ok).toBe(true);
       expect(page.payload?.messages).toHaveLength(1);
       expect(page.payload?.messages?.[0]?.content?.[0]?.text).toBe("heartbeat run output");
-      expect(page.payload?.messages?.[0]?.["__openclaw"]?.turnBoundary).toBe(true);
+      expect(page.payload?.messages?.[0]?.["__operator"]?.turnBoundary).toBe(true);
     });
   });
 
@@ -6088,7 +6088,7 @@ describe("gateway server chat", () => {
       ]);
 
       const firstPage = await rpcReq<{
-        messages?: Array<{ __openclaw?: { seq?: number } }>;
+        messages?: Array<{ __operator?: { seq?: number } }>;
         nextOffset?: number;
         hasMore?: boolean;
         totalMessages?: number;
@@ -6105,7 +6105,7 @@ describe("gateway server chat", () => {
       expect(firstPage.payload?.totalMessages).toBe(5);
 
       const secondPage = await rpcReq<{
-        messages?: Array<{ __openclaw?: { seq?: number } }>;
+        messages?: Array<{ __operator?: { seq?: number } }>;
         hasMore?: boolean;
         nextOffset?: number;
       }>(ws, "chat.history", {
@@ -6139,7 +6139,7 @@ describe("gateway server chat", () => {
       );
 
       type HistoryPage = {
-        messages?: Array<{ __openclaw?: { seq?: number } }>;
+        messages?: Array<{ __operator?: { seq?: number } }>;
         nextOffset?: number;
         hasMore?: boolean;
         totalMessages?: number;
@@ -6206,7 +6206,7 @@ describe("gateway server chat", () => {
       }
 
       const history = await rpcReq<{
-        messages?: Array<{ __openclaw?: { seq?: number } }>;
+        messages?: Array<{ __operator?: { seq?: number } }>;
         hasMore?: boolean;
         nextOffset?: number;
         offset?: number;
@@ -6345,7 +6345,7 @@ describe("gateway server chat", () => {
       );
 
       const firstPage = await rpcReq<{
-        messages?: Array<{ __openclaw?: { seq?: number } }>;
+        messages?: Array<{ __operator?: { seq?: number } }>;
         nextOffset?: number;
         hasMore?: boolean;
         totalMessages?: number;
@@ -6411,7 +6411,7 @@ describe("gateway server chat", () => {
         ]);
 
         type HistoryPage = {
-          messages?: Array<{ __openclaw?: { seq?: number } }>;
+          messages?: Array<{ __operator?: { seq?: number } }>;
           nextOffset?: number;
           hasMore?: boolean;
         };

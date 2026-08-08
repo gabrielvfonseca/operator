@@ -22,13 +22,13 @@ function makeTempDir(prefix: string): string {
 }
 
 function makeLockRepoDir(): string {
-  const dir = makeTempDir("openclaw-pr-gates-lock-");
+  const dir = makeTempDir("operator-pr-gates-lock-");
   mkdirSync(join(dir, ".git"), { recursive: true });
   return dir;
 }
 
 function heavyCheckLockDir(repoDir: string): string {
-  return join(repoDir, ".git", "openclaw-local-checks", "heavy-check.lock");
+  return join(repoDir, ".git", "operator-local-checks", "heavy-check.lock");
 }
 
 function sanitizedEnv(overrides: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
@@ -89,7 +89,7 @@ function spawnGateLockHolder(repoDir: string, statusFile: string, env: NodeJS.Pr
 }
 
 function makeRetryRepo(): { repoDir: string; stubBin: string; headSha: string } {
-  const dir = makeTempDir("openclaw-pr-gates-retry-");
+  const dir = makeTempDir("operator-pr-gates-retry-");
   const repoDir = join(dir, "repo");
   mkdirSync(repoDir);
   for (const args of [
@@ -129,7 +129,7 @@ function makeRetryRepo(): { repoDir: string; stubBin: string; headSha: string } 
 }
 
 function makeSyncRepo(options: { needsRebase: boolean }): string {
-  const repoDir = join(makeTempDir("openclaw-pr-sync-"), "repo");
+  const repoDir = join(makeTempDir("operator-pr-sync-"), "repo");
   mkdirSync(repoDir);
 
   const git = (...args: string[]) => {
@@ -332,7 +332,7 @@ describe("prepare gate changed-file plan", () => {
 
 describe("remote testbox gate delegation", () => {
   it("runs the full pnpm test through the worktree crabbox wrapper", () => {
-    const dir = makeTempDir("openclaw-pr-gates-remote-");
+    const dir = makeTempDir("operator-pr-gates-remote-");
     const stubBin = join(dir, "bin");
     mkdirSync(stubBin);
     writeFileSync(
@@ -364,7 +364,7 @@ describe("remote testbox gate delegation", () => {
     expect(argLine).toBe(
       "scripts/crabbox-wrapper.mjs run " +
         "--provider blacksmith-testbox " +
-        "--blacksmith-org openclaw " +
+        "--blacksmith-org operator " +
         "--blacksmith-workflow .github/workflows/ci-check-testbox.yml " +
         "--blacksmith-job check " +
         "--blacksmith-ref main " +
@@ -375,18 +375,18 @@ describe("remote testbox gate delegation", () => {
   });
 
   it("extracts the last successful blacksmith-testbox timing stamp", () => {
-    const dir = makeTempDir("openclaw-pr-gates-stamp-");
+    const dir = makeTempDir("operator-pr-gates-stamp-");
     const log = join(dir, "gates-test.log");
     writeFileSync(
       log,
       [
         "provider=blacksmith-testbox id=tbx_first sync=delegated auth=blacksmith",
-        "GitHub Actions run: https://github.com/openclaw/openclaw/actions/runs/1234",
+        "GitHub Actions run: https://github.com/operator/operator/actions/runs/1234",
         '{"not":"a stamp"}',
         "not json at all",
         '{"provider":"blacksmith-testbox","leaseId":"tbx_first","exitCode":1,"runStatus":"failed"}',
         '{"provider":"blacksmith-testbox","leaseId":"tbx_final","exitCode":0,"runStatus":"passed"}',
-        "GitHub Actions run: https://github.com/openclaw/openclaw/actions/runs/9999",
+        "GitHub Actions run: https://github.com/operator/operator/actions/runs/9999",
         "GitHub Actions run: https://github.com/example/other/actions/runs/8888",
         "",
       ].join("\n"),
@@ -397,12 +397,12 @@ describe("remote testbox gate delegation", () => {
     );
     expect(result.status).toBe(0);
     expect(result.stdout.trim()).toBe(
-      "tbx_final\thttps://github.com/openclaw/openclaw/actions/runs/1234",
+      "tbx_final\thttps://github.com/operator/operator/actions/runs/1234",
     );
   });
 
   it("fails when the gate log has no successful stamp", () => {
-    const dir = makeTempDir("openclaw-pr-gates-stamp-");
+    const dir = makeTempDir("operator-pr-gates-stamp-");
     const log = join(dir, "gates-test.log");
     writeFileSync(
       log,
@@ -661,7 +661,7 @@ describe("prepare gate stamp transitions", () => {
     }).stdout.trim();
     const result = runGatesBash(
       [
-        `gh() { if [ "$1" = pr ]; then printf '${currentHead}\\n'; else printf 'openclaw/openclaw\\n'; fi; }`,
+        `gh() { if [ "$1" = pr ]; then printf '${currentHead}\\n'; else printf 'operator/operator\\n'; fi; }`,
         "run_quiet_logged() { printf 'ARG:%s\\n' \"$@\"; }",
         `run_hosted_prepare_gates 100606 ${currentHead} false`,
       ].join("\n"),
@@ -868,11 +868,11 @@ describe("gates.sh gate lock plumbing", () => {
         "acquire_pr_gates_lock",
         // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'echo "held=${OPENCLAW_TEST_HEAVY_CHECK_LOCK_HELD:-unset},${OPENCLAW_TSGO_HEAVY_CHECK_LOCK_HELD:-unset},${OPENCLAW_OXLINT_SKIP_LOCK:-unset}"',
-        "jq -r .tool .git/openclaw-local-checks/heavy-check.lock/owner.json",
+        "jq -r .tool .git/operator-local-checks/heavy-check.lock/owner.json",
         "release_pr_gates_lock",
         // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'echo "released=${OPENCLAW_TEST_HEAVY_CHECK_LOCK_HELD:-unset}"',
-        '[ -d .git/openclaw-local-checks/heavy-check.lock ] && echo "lock=held" || echo "lock=free"',
+        '[ -d .git/operator-local-checks/heavy-check.lock ] && echo "lock=held" || echo "lock=free"',
       ].join("\n"),
       { cwd: repoDir },
     );
@@ -889,7 +889,7 @@ describe("gates.sh gate lock plumbing", () => {
     const result = runGatesBash(
       [
         "acquire_pr_gates_lock",
-        '[ -d .git/openclaw-local-checks/heavy-check.lock ] && echo "lock=held" || echo "lock=free"',
+        '[ -d .git/operator-local-checks/heavy-check.lock ] && echo "lock=held" || echo "lock=free"',
         // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'echo "helper_pid=${PR_GATES_LOCK_PID:-none}"',
       ].join("\n"),

@@ -42,7 +42,7 @@ vi.mock("../../skills/discovery/chat-commands.runtime.js", () => ({
   listSkillCommandsForWorkspace: (...args: unknown[]) => listSkillCommandsForWorkspaceMock(...args),
 }));
 
-vi.mock("../../agents/openclaw-tools.runtime.js", () => ({
+vi.mock("../../agents/operator-tools.runtime.js", () => ({
   createOperatorTools: (...args: unknown[]) => createOperatorToolsMock(...args),
 }));
 

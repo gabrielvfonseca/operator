@@ -6,7 +6,7 @@ import { loadSessionEntry, replaceSessionEntry } from "../../src/config/sessions
 import type { SessionEntry } from "../../src/config/sessions/types.js";
 import { saveCronStore } from "../../src/cron/store.js";
 import type { RuntimeEnv } from "../../src/runtime.js";
-import { closeOperatorAgentDatabasesForTest } from "../../src/state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../src/state/operator-agent-db.js";
 import { createManagedTaskFlow as createManagedTaskFlowOrNull } from "../../src/tasks/task-flow-registry.js";
 import type { TaskFlowRecord } from "../../src/tasks/task-flow-registry.types.js";
 import {

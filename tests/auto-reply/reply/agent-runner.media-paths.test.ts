@@ -615,7 +615,7 @@ describe("runReplyAgent media path normalization", () => {
   }
 
   it("reuses the provided media context inside runAgentTurnWithFallback", async () => {
-    // Regression test for openclaw/openclaw#68056.
+    // Regression test for operator/operator#68056.
     // runAgentTurnWithFallback must use the caller-provided context so block
     // replies and final replies can share one media cache.
     runEmbeddedAgentMock.mockResolvedValue({

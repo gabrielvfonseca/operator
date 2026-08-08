@@ -93,7 +93,7 @@ function createRoundTripProbe(
       senderId: "qa-rtt-driver",
       senderName: "QA RTT Driver",
     },
-    textPrefix: "@openclaw Telegram RTT check. Reply exactly: ",
+    textPrefix: "@operator Telegram RTT check. Reply exactly: ",
     chainReplies: true,
   };
 }
@@ -121,12 +121,12 @@ async function resolveTrustedOperatorCommand(
   const commandName = path.basename(rawCommand);
   if (commandName !== "@gabrielvfonseca/operator" && commandName !== "operator.cmd") {
     throw new Error(
-      `OPERATOR_NPM_TELEGRAM_SUT_COMMAND must point to openclaw; got: ${commandName}`,
+      `OPERATOR_NPM_TELEGRAM_SUT_COMMAND must point to operator; got: ${commandName}`,
     );
   }
   const npmPrefix = env.NPM_CONFIG_PREFIX?.trim();
   if (!npmPrefix) {
-    throw new Error("Missing NPM_CONFIG_PREFIX for installed openclaw command validation.");
+    throw new Error("Missing NPM_CONFIG_PREFIX for installed operator command validation.");
   }
   const [realCommand, realPrefix] = await Promise.all([
     fs.realpath(rawCommand),

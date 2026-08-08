@@ -36,7 +36,7 @@ import { DEFAULT_AGENT_ID, normalizeAgentId } from "../../../routing/session-key
 import {
   inspectOperatorAgentDatabaseOwner,
   listOperatorRegisteredAgentDatabases,
-} from "../../../state/openclaw-agent-db.js";
+} from "../../../state/operator-agent-db.js";
 import { isRecord, resolveUserPath } from "../../../utils.js";
 
 type StaleConfiguredAuthOrder = {

@@ -123,7 +123,7 @@ export function resolveEffectiveCompactionMode(cfg?: OperatorConfig): AgentCompa
  * Detect providers whose shared model runtime `isContextOverflow` Case 2 (silent overflow)
  * fires on a successful turn and triggers Operator runtime's `_runAutoCompaction` from
  * inside `Session.prompt()`, collapsing `agent.state.messages` before the
- * provider call (openclaw#75799).
+ * provider call (operator#75799).
  *
  * True on any of: `zai-native` endpoint class, normalized provider id `zai`,
  * a `z-ai/` / `openrouter/z-ai/` model-id namespace prefix, or a bare `glm-`
@@ -167,7 +167,7 @@ export function isSilentOverflowProneModel(model: {
  * fire from inside `Session.prompt()` and reassign `agent.state.messages`
  * before the provider call) when Operator or a plugin owns compaction:
  * `contextEngineInfo.ownsCompaction === true`, effective safeguard compaction,
- * or an active model that is silent-overflow-prone (openclaw#75799).
+ * or an active model that is silent-overflow-prone (operator#75799).
  * Default-mode runs against ordinary providers keep Operator runtime's auto-compaction as
  * the existing baseline.
  */

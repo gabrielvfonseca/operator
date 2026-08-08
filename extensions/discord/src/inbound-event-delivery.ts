@@ -13,7 +13,7 @@ type ActiveEvent = {
   markInboundEventDelivered: () => void;
 };
 
-const DISCORD_INBOUND_EVENT_DELIVERY_KEY = "__openclawInboundEventDelivery";
+const DISCORD_INBOUND_EVENT_DELIVERY_KEY = "__operatorInboundEventDelivery";
 const registry = new Map<string, ActiveEvent>();
 
 function normalizeDiscordDeliveryTarget(value: string): string {

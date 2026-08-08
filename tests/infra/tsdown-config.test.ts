@@ -116,7 +116,7 @@ describe("tsdown config", () => {
       "plugins/runtime/index",
       "plugins/synthetic-auth.runtime",
       "web-fetch/runtime",
-      "mcp/openclaw-tools-serve",
+      "mcp/operator-tools-serve",
       "mcp/plugin-tools-serve",
       "plugin-sdk/compat",
       "plugin-sdk/index",
@@ -274,10 +274,10 @@ describe("tsdown config", () => {
       throw new Error("expected unified graph alwaysBundle predicate");
     }
 
-    expect(alwaysBundle("@openclaw/fs-safe")).toBe(true);
-    expect(alwaysBundle("@openclaw/fs-safe/path")).toBe(true);
-    expect(alwaysBundle("openclaw/plugin-sdk/ssrf-runtime-internal")).toBe(true);
-    expect(alwaysBundle("openclaw/plugin-sdk/ssrf-runtime")).toBe(false);
+    expect(alwaysBundle("@operator/fs-safe")).toBe(true);
+    expect(alwaysBundle("@operator/fs-safe/path")).toBe(true);
+    expect(alwaysBundle("operator/plugin-sdk/ssrf-runtime-internal")).toBe(true);
+    expect(alwaysBundle("operator/plugin-sdk/ssrf-runtime")).toBe(false);
     expect(alwaysBundle("zod")).toBe(true);
     expect(alwaysBundle("zod/v4/core")).toBe(true);
     expect(alwaysBundle("not-a-runtime-dependency")).toBe(false);

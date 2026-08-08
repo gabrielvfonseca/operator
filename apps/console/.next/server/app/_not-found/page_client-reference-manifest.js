@@ -1,1 +1,13 @@
-globalThis.__RSC_MANIFEST=(globalThis.__RSC_MANIFEST||{});globalThis.__RSC_MANIFEST["/_not-found/page"]={"moduleLoading":{"prefix":"/control-ui/_next/","crossOrigin":null},"ssrModuleMapping":{},"edgeSSRModuleMapping":{},"clientModules":{},"entryCSSFiles":{"/Users/cristianeveneza/Desktop/operator/apps/console/src/":[],"/Users/cristianeveneza/Desktop/operator/apps/console/src/app/_not-found/page":[]},"rscModuleMapping":{},"edgeRscModuleMapping":{}}
+globalThis.__RSC_MANIFEST = globalThis.__RSC_MANIFEST || {};
+globalThis.__RSC_MANIFEST["/_not-found/page"] = {
+  moduleLoading: { prefix: "/control-ui/_next/", crossOrigin: null },
+  ssrModuleMapping: {},
+  edgeSSRModuleMapping: {},
+  clientModules: {},
+  entryCSSFiles: {
+    "/Users/cristianeveneza/Desktop/operator/apps/console/src/": [],
+    "/Users/cristianeveneza/Desktop/operator/apps/console/src/app/_not-found/page": [],
+  },
+  rscModuleMapping: {},
+  edgeRscModuleMapping: {},
+};

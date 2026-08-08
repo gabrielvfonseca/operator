@@ -41,14 +41,14 @@ impl OperatorCli {
             return Ok(cli);
         }
 
-        let managed = home.join("bin/openclaw");
+        let managed = home.join("bin/operator");
         if managed.is_file() {
             let cli = Self::new(managed, home);
             cli.verify()?;
             return Ok(cli);
         }
 
-        let cli = Self::new(PathBuf::from("openclaw"), home);
+        let cli = Self::new(PathBuf::from("operator"), home);
         match cli.verify() {
             Ok(()) => Ok(cli),
             Err(_) => Err(CliError::Missing),

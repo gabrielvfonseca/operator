@@ -389,7 +389,7 @@ function groupMessages(items: ChatItem[]): Array<ChatItem | MessageGroup> {
     const timestamp = normalized.timestamp || Date.now();
     const shouldSplitBySender = role.toLowerCase() === "user" || role.toLowerCase() === "assistant";
     const startsProjectedTurn =
-      asRecord(asRecord(item.message)?.["__openclaw"])?.turnBoundary === true;
+      asRecord(asRecord(item.message)?.["__operator"])?.turnBoundary === true;
 
     if (
       !currentGroup ||
@@ -768,7 +768,7 @@ function assistantGroupIsForwardedBoundary(group: MessageGroup): boolean {
 }
 
 function groupStartsProjectedTurnBoundary(group: MessageGroup): boolean {
-  return asRecord(asRecord(group.messages[0]?.message)?.["__openclaw"])?.turnBoundary === true;
+  return asRecord(asRecord(group.messages[0]?.message)?.["__operator"])?.turnBoundary === true;
 }
 
 function annotateToolTurnOutcome(
@@ -806,7 +806,7 @@ function annotateToolTurnOutcome(
 }
 
 function isPendingSendMessage(message: unknown): boolean {
-  return asRecord(asRecord(message)?.["__openclaw"])?.kind === "pending-send";
+  return asRecord(asRecord(message)?.["__operator"])?.kind === "pending-send";
 }
 
 function sourceMessageId(message: unknown): string | null {
@@ -814,9 +814,9 @@ function sourceMessageId(message: unknown): string | null {
   if (!record) {
     return null;
   }
-  const openclawId = asRecord(record["__openclaw"])?.id;
-  if (typeof openclawId === "string" && openclawId.trim()) {
-    return openclawId.trim();
+  const operatorId = asRecord(record["__operator"])?.id;
+  if (typeof operatorId === "string" && operatorId.trim()) {
+    return operatorId.trim();
   }
   const messageId = typeof record.messageId === "string" ? record.messageId.trim() : "";
   if (messageId) {
@@ -835,7 +835,7 @@ function transcriptMessageSourceKey(message: unknown): string | null {
   if (id) {
     return `id:${id}`;
   }
-  const seq = asRecord(record["__openclaw"])?.seq;
+  const seq = asRecord(record["__operator"])?.seq;
   const normalizedSeq =
     typeof seq === "number" && Number.isSafeInteger(seq) && seq > 0 ? seq : null;
   return normalizedSeq == null ? null : `seq:${normalizedSeq}`;
@@ -1197,7 +1197,7 @@ function buildChatItems(props: BuildChatItemsProps): Array<ChatItem | MessageGro
       continue;
     }
     const raw = asRecord(msg) ?? {};
-    const marker = raw["__openclaw"] as Record<string, unknown> | undefined;
+    const marker = raw["__operator"] as Record<string, unknown> | undefined;
     if (marker && marker.kind === "compaction") {
       items.push(buildCompactionDividerItem(marker, normalized.timestamp ?? Date.now(), i));
       continue;
@@ -1421,8 +1421,8 @@ function buildChatItems(props: BuildChatItemsProps): Array<ChatItem | MessageGro
     tools.some((message) => {
       const record = asRecord(message);
       return (
-        record?.["__openclawToolStreamLive"] === true &&
-        record["__openclawToolStreamResultReceived"] !== true
+        record?.["__operatorToolStreamLive"] === true &&
+        record["__operatorToolStreamResultReceived"] !== true
       );
     });
   // The initial-load skeleton owns the empty thread; a background reload with

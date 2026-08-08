@@ -284,7 +284,7 @@ describe("plugin authoring commands", () => {
         packageManifest: { operator: { extensions: ["./src/index.ts"] } },
       }),
     ).toEqual([
-      "operator.plugin.json generated metadata is stale. Run openclaw plugins build.",
+      "operator.plugin.json generated metadata is stale. Run operator plugins build.",
       "operator.plugin.json contracts.tools is missing: demo_echo",
       "operator.plugin.json contracts.tools has no matching defineToolPlugin tool: other_tool",
     ]);
@@ -405,8 +405,8 @@ describe("plugin authoring commands", () => {
         vitest: "^3.2.0",
       },
       scripts: {
-        "plugin:build": "npm run build && openclaw plugins build --entry ./dist/index.js",
-        "plugin:validate": "npm run build && openclaw plugins validate --entry ./dist/index.js",
+        "plugin:build": "npm run build && operator plugins build --entry ./dist/index.js",
+        "plugin:validate": "npm run build && operator plugins validate --entry ./dist/index.js",
         test: "vitest run --config ./vitest.config.ts",
       },
       operator: {
@@ -531,7 +531,7 @@ describe("plugin authoring commands", () => {
     expect(workflow).not.toContain("secrets: inherit");
     expect(workflow).toContain("workflow_dispatch:");
     expect(workflow).toContain(
-      "openclaw/clawhub/.github/workflows/package-publish.yml@9d49df109d4ad3dc8a6ecf05d26b39f46d294721",
+      "operator/clawhub/.github/workflows/package-publish.yml@9d49df109d4ad3dc8a6ecf05d26b39f46d294721",
     );
   });
 });

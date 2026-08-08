@@ -95,7 +95,7 @@ async function openManagedTabWithRunningProfile(params: {
   const state = makeState("@gabrielvfonseca/operator");
   seedRunningProfileState(state);
   const ctx = createTestBrowserRouteContext({ getState: () => state });
-  const openclaw = ctx.forProfile("@gabrielvfonseca/operator");
+  const operator = ctx.forProfile("@gabrielvfonseca/operator");
   return await operator.openTab(params.url ?? "http://127.0.0.1:3009");
 }
 
@@ -127,7 +127,7 @@ describe("browser server-context tab selection state", () => {
     global.fetch = withBrowserFetchPreconnect(fetchMock);
     const state = makeState("@gabrielvfonseca/operator");
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const openclaw = ctx.forProfile("@gabrielvfonseca/operator");
+    const operator = ctx.forProfile("@gabrielvfonseca/operator");
 
     const opened = await operator.openTab("http://127.0.0.1:8080");
     expect(opened.targetId).toBe("CREATED");
@@ -172,7 +172,7 @@ describe("browser server-context tab selection state", () => {
     const state = makeState("@gabrielvfonseca/operator");
     state.resolved.ssrfPolicy = {};
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const openclaw = ctx.forProfile("@gabrielvfonseca/operator");
+    const operator = ctx.forProfile("@gabrielvfonseca/operator");
 
     const selected = await operator.ensureTabAvailable();
     expect(selected.targetId).toBe("CREATED");
@@ -230,7 +230,7 @@ describe("browser server-context tab selection state", () => {
     global.fetch = withBrowserFetchPreconnect(fetchMock);
     const state = makeState("@gabrielvfonseca/operator");
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const openclaw = ctx.forProfile("@gabrielvfonseca/operator");
+    const operator = ctx.forProfile("@gabrielvfonseca/operator");
 
     const selected = await operator.ensureTabAvailable();
     expect(selected.targetId).toBe("REAL");
@@ -294,7 +294,7 @@ describe("browser server-context tab selection state", () => {
     const state = makeState("@gabrielvfonseca/operator");
     seedRunningProfileState(state);
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const openclaw = ctx.forProfile("@gabrielvfonseca/operator");
+    const operator = ctx.forProfile("@gabrielvfonseca/operator");
 
     const opened = await operator.openTab("http://127.0.0.1:3009");
     expect(opened.targetId).toBe("NEW");
@@ -314,7 +314,7 @@ describe("browser server-context tab selection state", () => {
     const state = makeState("@gabrielvfonseca/operator");
     state.resolved.attachOnly = true;
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const openclaw = ctx.forProfile("@gabrielvfonseca/operator");
+    const operator = ctx.forProfile("@gabrielvfonseca/operator");
 
     const opened = await operator.openTab("http://127.0.0.1:3009");
     expect(opened.targetId).toBe("NEW");
@@ -357,7 +357,7 @@ describe("browser server-context tab selection state", () => {
     global.fetch = withBrowserFetchPreconnect(fetchMock);
     const state = makeState("@gabrielvfonseca/operator");
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const openclaw = ctx.forProfile("@gabrielvfonseca/operator");
+    const operator = ctx.forProfile("@gabrielvfonseca/operator");
 
     await expect(operator.openTab("file:///etc/passwd")).rejects.toBeInstanceOf(
       InvalidBrowserNavigationUrlError,
@@ -379,7 +379,7 @@ describe("browser server-context tab selection state", () => {
     const state = makeState("@gabrielvfonseca/operator");
     state.resolved.ssrfPolicy = {};
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const openclaw = ctx.forProfile("@gabrielvfonseca/operator");
+    const operator = ctx.forProfile("@gabrielvfonseca/operator");
 
     const opened = await operator.openTab("https://example.com");
     expect(opened.targetId).toBe("NEW");
@@ -428,7 +428,7 @@ describe("browser server-context tab selection state", () => {
     global.fetch = withBrowserFetchPreconnect(fetchMock);
     const state = makeState("@gabrielvfonseca/operator");
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const openclaw = ctx.forProfile("@gabrielvfonseca/operator");
+    const operator = ctx.forProfile("@gabrielvfonseca/operator");
 
     expect(await operator.listTabs()).toEqual([
       expect.objectContaining({
@@ -504,7 +504,7 @@ describe("browser server-context tab selection state", () => {
     global.fetch = withBrowserFetchPreconnect(fetchMock);
     const state = makeState("@gabrielvfonseca/operator");
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const openclaw = ctx.forProfile("@gabrielvfonseca/operator");
+    const operator = ctx.forProfile("@gabrielvfonseca/operator");
 
     expect((await operator.listTabs()).map((tab) => tab.tabId)).toEqual(["t1", "t2"]);
     expect(await operator.listTabs()).toEqual([
@@ -539,7 +539,7 @@ describe("browser server-context tab selection state", () => {
     global.fetch = withBrowserFetchPreconnect(fetchMock);
     const state = makeState("@gabrielvfonseca/operator");
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const openclaw = ctx.forProfile("@gabrielvfonseca/operator");
+    const operator = ctx.forProfile("@gabrielvfonseca/operator");
 
     await expect(operator.labelTab("OLD_RAW", "checkout")).resolves.toEqual(
       expect.objectContaining({
@@ -591,7 +591,7 @@ describe("browser server-context tab selection state", () => {
     global.fetch = withBrowserFetchPreconnect(fetchMock);
     const state = makeState("@gabrielvfonseca/operator");
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const openclaw = ctx.forProfile("@gabrielvfonseca/operator");
+    const operator = ctx.forProfile("@gabrielvfonseca/operator");
 
     expect((await operator.listTabs()).map((tab) => [tab.targetId, tab.tabId])).toEqual([
       ["OLD_LEFT", "t1"],
@@ -656,7 +656,7 @@ describe("browser server-context tab selection state", () => {
     global.fetch = withBrowserFetchPreconnect(fetchMock);
     const state = makeState("@gabrielvfonseca/operator");
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const openclaw = ctx.forProfile("@gabrielvfonseca/operator");
+    const operator = ctx.forProfile("@gabrielvfonseca/operator");
 
     await operator.labelTab("DOCS_RAW", "docs");
     await expect(operator.ensureTabAvailable("t1")).resolves.toEqual(

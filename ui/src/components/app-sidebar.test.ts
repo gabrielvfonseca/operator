@@ -265,7 +265,7 @@ async function mountSidebar(
   const context = createContext(gateway, sessions, agentsList);
   const provider = createApplicationContextProvider(context);
   const sidebar = document.createElement(
-    "openclaw-app-sidebar",
+    "operator-app-sidebar",
   ) as unknown as SidebarLifecycleState;
   sidebar.variant = variant;
   provider.append(sidebar);
@@ -298,8 +298,8 @@ describe("AppSidebar update card wiring", () => {
 
     const footer = sidebar.querySelector(".sidebar-shell__footer");
     // Attention chips (when present) stack above the update card.
-    expect(footer?.firstElementChild?.localName).toBe("openclaw-sidebar-attention");
-    const card = footer?.querySelector("openclaw-sidebar-update-card");
+    expect(footer?.firstElementChild?.localName).toBe("operator-sidebar-attention");
+    const card = footer?.querySelector("operator-sidebar-update-card");
     expect(card).not.toBeNull();
     card?.querySelector<HTMLButtonElement>(".sidebar-update-card__action")?.click();
     expect(onUpdate).toHaveBeenCalledOnce();
@@ -492,8 +492,8 @@ describe("AppSidebar agent chip", () => {
     const menu = sidebar.querySelector(".sidebar-agent-menu");
     expect(menu).not.toBeNull();
     expect(menu?.querySelector(".sidebar-pair-mobile")).not.toBeNull();
-    expect(menu?.querySelector("openclaw-sidebar-build-chip")).not.toBeNull();
-    expect(menu?.querySelector("openclaw-theme-mode-toggle")).not.toBeNull();
+    expect(menu?.querySelector("operator-sidebar-build-chip")).not.toBeNull();
+    expect(menu?.querySelector("operator-theme-mode-toggle")).not.toBeNull();
     // External help links stay folded into Web Awesome's keyboard-navigable submenu.
     const helpRow = [...(menu?.querySelectorAll<HTMLElement>("wa-dropdown-item") ?? [])].find(
       (row) => row.textContent?.includes("Help"),
@@ -508,15 +508,15 @@ describe("AppSidebar agent chip", () => {
       ...(menu?.querySelectorAll('wa-dropdown-item[slot="submenu"] a[href]') ?? []),
     ].map((link) => link.getAttribute("href"));
     expect(linkHrefs).toEqual([
-      "https://docs.openclaw.ai",
-      "https://docs.openclaw.ai/help",
+      "https://docs.operator.ai",
+      "https://docs.operator.ai/help",
       "https://discord.gg/clawd",
-      "https://docs.openclaw.ai/releases",
+      "https://docs.operator.ai/releases",
     ]);
     const openExternal = vi.spyOn(window, "open").mockReturnValue(null);
     menu?.querySelector<HTMLElement>('wa-dropdown-item[slot="submenu"]')?.click();
     expect(openExternal).toHaveBeenCalledWith(
-      "https://docs.openclaw.ai/",
+      "https://docs.operator.ai/",
       "_blank",
       "noopener,noreferrer",
     );
@@ -926,7 +926,7 @@ describe("AppSidebar session catalog pagination", () => {
     expect(section?.textContent).not.toContain("Offline Node");
   });
 
-  it("shows a catalog-owned OpenClaw session only in its catalog section", async () => {
+  it("shows a catalog-owned Operator session only in its catalog section", async () => {
     const gateway = createGateway({} as GatewayBrowserClient);
     const backingSessionKey = "agent:main:claude-bound";
     const { sidebar } = await mountSidebar(
@@ -996,7 +996,7 @@ describe("AppSidebar session catalog pagination", () => {
     expect(linkedRow?.querySelector('[data-session-menu="true"]')).not.toBeNull();
     linkedRow?.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true }));
     await sidebar.updateComplete;
-    const linkedMenu = sidebar.querySelector<TestSessionMenu>("openclaw-session-menu");
+    const linkedMenu = sidebar.querySelector<TestSessionMenu>("operator-session-menu");
     await linkedMenu?.updateComplete;
     expect(linkedMenu?.querySelector('[data-shortcut="a"]')).not.toBeNull();
     expect(linkedMenu?.querySelector('[data-shortcut="d"]')).not.toBeNull();
@@ -1953,7 +1953,7 @@ describe("AppSidebar lobster outcome wiring", () => {
       });
       await sidebar.updateComplete;
 
-      const pet = sidebar.querySelector<LobsterPetElement>("openclaw-lobster-pet");
+      const pet = sidebar.querySelector<LobsterPetElement>("operator-lobster-pet");
       expect(pet?.runOutcome).toBe(expectedOutcome);
     },
   );
@@ -1963,7 +1963,7 @@ describe("AppSidebar logo stand-in wiring", () => {
   it("swaps the brand mark while the pet's logo visit is in, leaving, then out", async () => {
     const gateway = createGateway({} as GatewayBrowserClient);
     const { sidebar } = await mountSidebar(gateway, createSessions("main", ["agent:main:main"]));
-    const pet = sidebar.querySelector("openclaw-lobster-pet");
+    const pet = sidebar.querySelector("operator-lobster-pet");
     if (!pet) {
       throw new Error("Expected sidebar lobster pet");
     }
@@ -2022,7 +2022,7 @@ describe("AppSidebar session source lifecycle", () => {
     menuButton.click();
     await sidebar.updateComplete;
 
-    const menu = sidebar.querySelector<TestSessionMenu>("openclaw-session-menu");
+    const menu = sidebar.querySelector<TestSessionMenu>("operator-session-menu");
     if (!menu) {
       throw new Error("Expected sidebar session menu");
     }
@@ -2212,7 +2212,7 @@ describe("AppSidebar session mutation feedback", () => {
     }
     button.click();
     await sidebar.updateComplete;
-    const menu = sidebar.querySelector<TestSessionMenu>("openclaw-session-menu");
+    const menu = sidebar.querySelector<TestSessionMenu>("operator-session-menu");
     if (!menu) {
       throw new Error("expected session menu");
     }
@@ -2312,7 +2312,7 @@ describe("AppSidebar session mutation feedback", () => {
       const row = sidebar.querySelector('[data-session-key="agent:main:b"]');
       row?.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true }));
       await sidebar.updateComplete;
-      const menu = sidebar.querySelector<TestSessionMenu>("openclaw-session-menu");
+      const menu = sidebar.querySelector<TestSessionMenu>("operator-session-menu");
       await menu?.updateComplete;
       menu?.querySelector<HTMLButtonElement>('[data-shortcut="d"]')?.click();
 
@@ -2354,7 +2354,7 @@ describe("AppSidebar session mutation feedback", () => {
     const row = sidebar.querySelector('[data-session-key="agent:main:b"]');
     row?.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true }));
     await sidebar.updateComplete;
-    const menu = sidebar.querySelector<TestSessionMenu>("openclaw-session-menu");
+    const menu = sidebar.querySelector<TestSessionMenu>("operator-session-menu");
     await menu?.updateComplete;
     menu?.querySelector<HTMLButtonElement>('[data-shortcut="a"]')?.click();
     await vi.waitFor(() => expect(harness.patch).toHaveBeenCalledOnce());
@@ -2381,14 +2381,14 @@ describe("AppSidebar session mutation feedback", () => {
 
     row?.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true }));
     await sidebar.updateComplete;
-    let menu = sidebar.querySelector<TestSessionMenu>("openclaw-session-menu");
+    let menu = sidebar.querySelector<TestSessionMenu>("operator-session-menu");
     await menu?.updateComplete;
     menu?.querySelector<HTMLButtonElement>('[data-shortcut="a"]')?.click();
     await vi.waitFor(() => expect(harness.patch).toHaveBeenCalledOnce());
 
     row?.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true }));
     await sidebar.updateComplete;
-    menu = sidebar.querySelector<TestSessionMenu>("openclaw-session-menu");
+    menu = sidebar.querySelector<TestSessionMenu>("operator-session-menu");
     await menu?.updateComplete;
     menu?.querySelector<HTMLButtonElement>('[data-shortcut="u"]')?.click();
     await vi.waitFor(() => expect(harness.patch).toHaveBeenCalledTimes(3));
@@ -2490,7 +2490,7 @@ describe("AppSidebar multi-select", () => {
   }
 
   async function sessionMenu(sidebar: SidebarLifecycleState): Promise<TestSessionMenu> {
-    const menu = sidebar.querySelector<TestSessionMenu>("openclaw-session-menu");
+    const menu = sidebar.querySelector<TestSessionMenu>("operator-session-menu");
     if (!menu) {
       throw new Error("expected session menu");
     }
@@ -2623,7 +2623,7 @@ describe("AppSidebar transient menus", () => {
 
     const menu = sidebar.querySelector(".sidebar-session-sort-menu");
     expect(menu).not.toBeNull();
-    expect(menu?.closest("openclaw-menu-surface")).not.toBeNull();
+    expect(menu?.closest("operator-menu-surface")).not.toBeNull();
   });
 
   it("ignores a stale sort-menu hide after opening its replacement", async () => {
@@ -2958,7 +2958,7 @@ describe("AppSidebar catalog session rows", () => {
         }),
       );
       await sidebar.updateComplete;
-      const menu = sidebar.querySelector("openclaw-catalog-session-menu") as HTMLElement & {
+      const menu = sidebar.querySelector("operator-catalog-session-menu") as HTMLElement & {
         updateComplete: Promise<boolean>;
       };
       await menu.updateComplete;
@@ -3058,7 +3058,7 @@ describe("AppSidebar catalog session rows", () => {
   });
 });
 describe("AppSidebar group mutation collapsed state", () => {
-  const COLLAPSED_STORAGE_KEY = "openclaw:sidebar:sessions:collapsed-sections";
+  const COLLAPSED_STORAGE_KEY = "operator:sidebar:sessions:collapsed-sections";
 
   async function mountCollapsedGroup(options: {
     groupsRename?: () => Promise<SessionGroupMutationResult>;

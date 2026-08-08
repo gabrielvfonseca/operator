@@ -124,7 +124,7 @@ function createContext(gateway: TestGateway, scopeId: string | null = "main"): A
 }
 
 function createPage(context: ApplicationContext, options: { render?: boolean } = {}): CronTestPage {
-  const page = document.createElement("openclaw-cron-page") as CronTestPage;
+  const page = document.createElement("operator-cron-page") as CronTestPage;
   page.context = context;
   if (!options.render) {
     page.render = () => nothing;
@@ -301,13 +301,13 @@ describe("CronPage editor state sync", () => {
 
 describe("CronPage lifecycle", () => {
   it("registers idempotently after a module reset with the shared custom element registry", async () => {
-    const registered = customElements.get("openclaw-cron-page");
+    const registered = customElements.get("operator-cron-page");
     expect(registered).toBeDefined();
 
     vi.resetModules();
     await expect(import("./cron-page.ts")).resolves.toBeDefined();
 
-    expect(customElements.get("openclaw-cron-page")).toBe(registered);
+    expect(customElements.get("operator-cron-page")).toBe(registered);
   });
 
   it("replaces all mutable page state on each connection epoch", async () => {

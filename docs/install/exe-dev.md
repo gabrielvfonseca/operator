@@ -17,7 +17,7 @@ This guide assumes exe.dev's default **exeuntu** image. Map packages accordingly
 
 ## Beginner quick path
 
-1. Open [https://exe.new/openclaw](https://exe.new/openclaw)
+1. Open [https://exe.new/operator](https://exe.new/operator)
 2. Fill in your auth key/token as needed
 3. Click "Agent" next to your VM and wait for Shelley to finish provisioning
 4. Open `https://<vm-name>.exe.xyz/` and authenticate with the configured shared secret (token auth by default; password auth also works if you switch `gateway.auth.mode`)

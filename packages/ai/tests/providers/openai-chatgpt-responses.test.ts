@@ -181,7 +181,7 @@ describe("streamOpenAICodexResponses transport", () => {
       })
       .result();
 
-    expect(userAgent).toBe(`openclaw (${platform()} ${release()}; ${arch()})`);
+    expect(userAgent).toBe(`operator (${platform()} ${release()}; ${arch()})`);
   });
 
   it("zstd-compresses SSE bodies without overriding an existing encoding", async () => {

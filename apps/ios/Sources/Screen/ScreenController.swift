@@ -140,7 +140,7 @@ final class ScreenController {
         let js = """
         (() => {
           try {
-            const api = globalThis.__openclaw;
+            const api = globalThis.__operator;
             if (!api || typeof api.renderHome !== 'function') return;
             api.renderHome(\(payload));
           } catch (_) {}

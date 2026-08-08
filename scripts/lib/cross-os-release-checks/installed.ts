@@ -56,13 +56,13 @@ export async function resolveInstallerTargetVersion(params: {
   if (resolvedVersion) {
     return resolvedVersion;
   }
-  const latestResult = await runCommand(npmCommand(), ["view", "openclaw@latest", "version"], {
+  const latestResult = await runCommand(npmCommand(), ["view", "operator@latest", "version"], {
     logPath: join(params.logsDir, `${params.suiteName}-latest-version.log`),
     timeoutMs: 2 * 60 * 1000,
   });
   const latestVersion = latestResult.stdout.trim();
   if (!latestVersion) {
-    throw new Error("npm view openclaw@latest version did not return a version.");
+    throw new Error("npm view operator@latest version did not return a version.");
   }
   return latestVersion;
 }
@@ -210,7 +210,7 @@ if ($null -ne $npmCommand) {
   }
 }
 if ([string]::IsNullOrWhiteSpace($commandPath)) {
-  $cmd = Get-Command openclaw -ErrorAction Stop
+  $cmd = Get-Command operator -ErrorAction Stop
   $commandPath = $cmd.Source
 }
 if ($commandPath -match '(?i)\\.ps1$') {
@@ -290,7 +290,7 @@ export async function verifyFreshShellCommand(params: {
       parseMarkerLine(result.stdout, "__OPERATOR_PATH__=") ?? "",
     );
     if (!cliPath) {
-      throw new Error("Failed to resolve installed openclaw path from fresh Windows shell.");
+      throw new Error("Failed to resolve installed operator path from fresh Windows shell.");
     }
     return {
       cliPath,
@@ -301,9 +301,9 @@ export async function verifyFreshShellCommand(params: {
   const script = [
     "set -euo pipefail",
     'if [ -f "$HOME/.bashrc" ]; then . "$HOME/.bashrc"; fi',
-    "command -v openclaw >/dev/null 2>&1",
-    'printf "__OPERATOR_PATH__=%s\\n" "$(command -v openclaw)"',
-    "openclaw --version",
+    "command -v operator >/dev/null 2>&1",
+    'printf "__OPERATOR_PATH__=%s\\n" "$(command -v operator)"',
+    "operator --version",
   ].join("\n");
   const result = await runPosixShellScript(script, {
     cwd: params.lane.homeDir,
@@ -314,7 +314,7 @@ export async function verifyFreshShellCommand(params: {
   const cliPath = parseMarkerLine(result.stdout, "__OPERATOR_PATH__=");
   const versionOutput = `${result.stdout}\n${result.stderr}`.trim();
   if (!cliPath) {
-    throw new Error("Failed to resolve installed openclaw path from fresh POSIX shell.");
+    throw new Error("Failed to resolve installed operator path from fresh POSIX shell.");
   }
   if (params.expectedNeedle && !versionOutput.includes(params.expectedNeedle)) {
     throw new Error(
@@ -375,7 +375,7 @@ export async function ensureDevUpdateGitInstall(params: {
     env: params.env,
     logPath: join(params.logsDir, "dev-update-status.log"),
   });
-  // The dev-update lane must prove that `openclaw update --channel dev` landed on
+  // The dev-update lane must prove that `operator update --channel dev` landed on
   // the expected git checkout. Falling back to a manual repair here would hide
   // updater regressions and turn the suite into a false green.
   verifyDevUpdateStatus(updateStatus.stdout, { ref: params.requestedRef });

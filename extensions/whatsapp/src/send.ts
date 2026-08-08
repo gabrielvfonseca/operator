@@ -103,7 +103,7 @@ function requireOutboundActiveWebListener(params: { cfg: OperatorConfig; account
   const listener = getWhatsAppConnectionController(resolvedAccountId)?.getActiveListener() ?? null;
   if (!listener) {
     const cause = new Error(
-      `No active WhatsApp Web listener (account: ${resolvedAccountId}). Start the gateway, then link WhatsApp with: ${formatCliCommand(`openclaw channels login --channel whatsapp --account ${resolvedAccountId}`)}.`,
+      `No active WhatsApp Web listener (account: ${resolvedAccountId}). Start the gateway, then link WhatsApp with: ${formatCliCommand(`operator channels login --channel whatsapp --account ${resolvedAccountId}`)}.`,
     );
     throw new PlatformMessageNotDispatchedError(cause.message, { cause });
   }

@@ -181,7 +181,7 @@ export function createMSTeamsReplyDispatcher(params: {
 
   // Resolve block-streaming preference from the canonical nested config
   // (`streaming.mode = "block"` or `streaming.block.enabled = true`); legacy
-  // flat `blockStreaming` is migrated by `openclaw doctor --fix`.
+  // flat `blockStreaming` is migrated by `operator doctor --fix`.
   const teamsStreamMode = resolveChannelPreviewStreamMode(msteamsCfg, "partial");
   const blockStreamingResolved =
     teamsStreamMode === "block" ? true : resolveChannelStreamingBlockEnabled(msteamsCfg);
@@ -542,7 +542,7 @@ export function createMSTeamsReplyDispatcher(params: {
           }
         : {}),
       ...progressCallbacks,
-      // When progress mode is active, suppress openclaw's default block-style
+      // When progress mode is active, suppress operator's default block-style
       // tool-progress messages so they don't duplicate alongside the
       // streaming card's progress lines.
       ...(shouldSuppressDefaultToolProgressMessages

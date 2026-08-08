@@ -7,7 +7,7 @@ type PackageJson = {
   version?: string;
   devDependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;
-  openclaw?: {
+  operator?: {
     install?: {
       minHostVersion?: string;
     };

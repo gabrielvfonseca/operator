@@ -269,7 +269,7 @@ describe("shouldSkipPackedTarballValidation", () => {
   it("accepts truthy values for metadata-only validation", () => {
     expect(
       shouldSkipPackedTarballValidation({
-        OPERATOR_NPM_RELEASE_SKIP_PACK_CHECK: "1",
+        OPENCLAW_NPM_RELEASE_SKIP_PACK_CHECK: "1",
       }),
     ).toBe(true);
   });
@@ -277,7 +277,7 @@ describe("shouldSkipPackedTarballValidation", () => {
   it("treats false-like values as disabled", () => {
     expect(
       shouldSkipPackedTarballValidation({
-        OPERATOR_NPM_RELEASE_SKIP_PACK_CHECK: "false",
+        OPENCLAW_NPM_RELEASE_SKIP_PACK_CHECK: "false",
       }),
     ).toBe(false);
   });
@@ -407,7 +407,7 @@ describe("resolveNpmCommandInvocation", () => {
           join(dir, "fake-npm.js"),
           [
             "const fs = require('node:fs');",
-            "fs.writeFileSync(process.env.OPERATOR_FAKE_NPM_OUT, JSON.stringify(process.argv.slice(2)));",
+            "fs.writeFileSync(process.env.OPENCLAW_FAKE_NPM_OUT, JSON.stringify(process.argv.slice(2)));",
           ].join("\n"),
         );
         writeFileSync(
@@ -425,7 +425,7 @@ describe("resolveNpmCommandInvocation", () => {
           cwd: dir,
           env: {
             ...process.env,
-            OPERATOR_FAKE_NPM_OUT: outputPath,
+            OPENCLAW_FAKE_NPM_OUT: outputPath,
             PATH: `${dir}${delimiter}${process.env.PATH ?? ""}`,
           },
           windowsVerbatimArguments: invocation.windowsVerbatimArguments,
@@ -482,20 +482,20 @@ describe("resolveNpmReleaseCheckCommandTimeoutMs", () => {
   it("parses only positive integer environment timeouts", () => {
     expect(resolveNpmReleaseCheckCommandTimeoutMs({})).toBe(10 * 60 * 1000);
     expect(
-      resolveNpmReleaseCheckCommandTimeoutMs({ OPERATOR_NPM_RELEASE_CHECK_COMMAND_TIMEOUT_MS: "" }),
+      resolveNpmReleaseCheckCommandTimeoutMs({ OPENCLAW_NPM_RELEASE_CHECK_COMMAND_TIMEOUT_MS: "" }),
     ).toBe(10 * 60 * 1000);
     expect(
       resolveNpmReleaseCheckCommandTimeoutMs({
-        OPERATOR_NPM_RELEASE_CHECK_COMMAND_TIMEOUT_MS: "1234",
+        OPENCLAW_NPM_RELEASE_CHECK_COMMAND_TIMEOUT_MS: "1234",
       }),
     ).toBe(1234);
 
     for (const raw of ["nope", "10m", "1e3", "0", "-1", "9007199254740992"]) {
       expect(() =>
         resolveNpmReleaseCheckCommandTimeoutMs({
-          OPERATOR_NPM_RELEASE_CHECK_COMMAND_TIMEOUT_MS: raw,
+          OPENCLAW_NPM_RELEASE_CHECK_COMMAND_TIMEOUT_MS: raw,
         }),
-      ).toThrow(`invalid OPERATOR_NPM_RELEASE_CHECK_COMMAND_TIMEOUT_MS: ${raw}`);
+      ).toThrow(`invalid OPENCLAW_NPM_RELEASE_CHECK_COMMAND_TIMEOUT_MS: ${raw}`);
     }
   });
 });
@@ -512,7 +512,7 @@ describe("parseNpmPackJsonOutput", () => {
       'npm warn Unknown project config "node-linker".',
       "",
       "> operator@2026.3.23 prepack",
-      "> bun build && bun ui:build",
+      "> pnpm build && pnpm ui:build",
       "",
       "[copy-hook-metadata] Copied 4 hook metadata files.",
       '[{"filename":"operator.tgz","files":[{"path":"dist/control-ui/index.html"}]}]',
@@ -852,10 +852,10 @@ describe("collectReleasePackageMetadataErrors", () => {
         license: "MIT",
         repository: { url: "git+https://github.com/operator/operator.git" },
         bin: { operator: "operator.mjs" },
-        dependencies: { "@openclaw/fs-safe": "link:..@openclaw/fs-safe" },
+        dependencies: { "@operator/fs-safe": "link:../fs-safe" },
       }),
     ).toContain(
-      'package.json dependencies["@openclaw/fs-safe"] must use a published semver range before npm release; found "link:..@openclaw/fs-safe".',
+      'package.json dependencies["@operator/fs-safe"] must use a published semver range before npm release; found "link:../fs-safe".',
     );
   });
 

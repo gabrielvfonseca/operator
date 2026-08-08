@@ -57,7 +57,7 @@ const BROWSER_FIXTURE_ENTRY = `module.exports = {
 
 /** Create a temporary bundled browser plugin fixture and cleanup callback. */
 export function createBundledBrowserPluginFixture(): { rootDir: string; cleanup: () => void } {
-  const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-browser-bundled-"));
+  const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-browser-bundled-"));
   const pluginDir = path.join(rootDir, "browser");
   fs.mkdirSync(pluginDir, { recursive: true });
   fs.writeFileSync(

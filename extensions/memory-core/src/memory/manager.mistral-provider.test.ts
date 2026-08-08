@@ -2,7 +2,7 @@
 import type {
   OperatorConfig,
   ResolvedMemorySearchConfig,
-} from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
+} from "operator/plugin-sdk/memory-core-host-engine-foundation";
 import { describe, expect, it, vi } from "vitest";
 import {
   applyMemoryFallbackProviderState,

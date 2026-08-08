@@ -42,16 +42,16 @@ describe("scripts/check-deprecated-api-usage", () => {
     const specifiers = new Set(buildDeprecatedPluginSdkModuleSpecifiers());
 
     for (const subpath of deprecatedPublicPluginSdkSubpaths) {
-      expect(specifiers.has(`openclaw/plugin-sdk/${subpath}`), subpath).toBe(true);
+      expect(specifiers.has(`operator/plugin-sdk/${subpath}`), subpath).toBe(true);
     }
   });
 
   it("keeps root and private compatibility aliases explicit", () => {
     expect(buildDeprecatedPluginSdkModuleSpecifiers()).toEqual(
       expect.arrayContaining([
-        "openclaw/plugin-sdk",
-        "openclaw/plugin-sdk/agent-dir-compat",
-        "openclaw/plugin-sdk/test-utils",
+        "operator/plugin-sdk",
+        "operator/plugin-sdk/agent-dir-compat",
+        "operator/plugin-sdk/test-utils",
       ]),
     );
   });
@@ -96,7 +96,7 @@ describe("scripts/check-deprecated-api-usage", () => {
   it("flags internal facade imports across static, relative, scoped, and dynamic forms", () => {
     const result = runFacadeImportRule({
       "src/channels/probe.ts": [
-        'import { createChannelReplyPipeline } from "openclaw/plugin-sdk/channel-reply-pipeline";',
+        'import { createChannelReplyPipeline } from "operator/plugin-sdk/channel-reply-pipeline";',
         'export { runInboundReplyTurn } from "./message/inbound-reply-dispatch.js";',
         'const facade = await import ("../plugin-sdk/channel-message.js", { with: {} });',
         'import { formatInboundEnvelope } from "@gabrielvfonseca/operator/plugin-sdk/channel-envelope";',
@@ -106,7 +106,7 @@ describe("scripts/check-deprecated-api-usage", () => {
 
     expect(result.status).toBe(1);
     expect(result.stderr).toContain(
-      "src/channels/probe.ts:1: openclaw/plugin-sdk/channel-reply-pipeline",
+      "src/channels/probe.ts:1: operator/plugin-sdk/channel-reply-pipeline",
     );
     expect(result.stderr).toContain("src/channels/probe.ts:2: ./message/inbound-reply-dispatch.js");
     expect(result.stderr).toContain("src/channels/probe.ts:3: ../plugin-sdk/channel-message.js");
@@ -124,7 +124,7 @@ describe("scripts/check-deprecated-api-usage", () => {
       "src/plugin-sdk/channel-inbound.ts":
         'export { runChannelInboundEvent } from "../channels/message/inbound-reply-dispatch.js";',
       "src/plugin-sdk/channel-message.test.ts":
-        'const mod = await import("openclaw/plugin-sdk/channel-message");',
+        'const mod = await import("operator/plugin-sdk/channel-message");',
     });
 
     expect(result.stderr).toBe("");

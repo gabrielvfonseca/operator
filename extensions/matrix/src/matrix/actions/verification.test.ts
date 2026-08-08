@@ -17,9 +17,9 @@ vi.mock("../../runtime.js", () => ({
   }),
 }));
 
-vi.mock("openclaw/plugin-sdk/plugin-config-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/plugin-config-runtime")>(
-    "openclaw/plugin-sdk/plugin-config-runtime",
+vi.mock("operator/plugin-sdk/plugin-config-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/plugin-config-runtime")>(
+    "operator/plugin-sdk/plugin-config-runtime",
   );
   return {
     ...actual,

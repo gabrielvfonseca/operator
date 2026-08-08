@@ -7,7 +7,7 @@ import "./chat-sidebar.ts";
 // needs a real DOM, so this suite only runs in the checks-ui Chromium project.
 // Importing vitest/browser statically would throw during jsdom collection.
 const browserMode = "__vitest_browser__" in globalThis;
-let userEvent: (typeof import("vitest/browser"))["userEvent"];
+let userEvent: typeof import("vitest/browser")["userEvent"];
 
 type FileSidebarContent = {
   kind: "file";

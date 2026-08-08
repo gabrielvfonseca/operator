@@ -720,7 +720,7 @@ describe("mcp cli", () => {
 
       await expect(runMcpCommand(["mcp", "probe", "docs"])).rejects.toThrow("__exit__:1");
       expect(lastErrorLine()).toBe(
-        `MCP server "docs" is disabled in ${configPath}. Run openclaw mcp configure docs --enable before probing it.`,
+        `MCP server "docs" is disabled in ${configPath}. Run operator mcp configure docs --enable before probing it.`,
       );
     });
   });
@@ -733,7 +733,7 @@ describe("mcp cli", () => {
 
       await expect(runMcpCommand(["mcp", "unset", "missing"])).rejects.toThrow("__exit__:1");
       expect(lastErrorLine()).toBe(
-        `No MCP server named "missing" in ${configPath}. Run openclaw mcp list to see configured servers.`,
+        `No MCP server named "missing" in ${configPath}. Run operator mcp list to see configured servers.`,
       );
     });
   });

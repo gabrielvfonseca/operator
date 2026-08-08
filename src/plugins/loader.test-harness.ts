@@ -901,10 +901,10 @@ module.exports = {
 
 export function createEnvResolvedPluginFixture(pluginId: string) {
   useNoBundledPlugins();
-  const openclawHome = makeTempDir();
+  const operatorHome = makeTempDir();
   const ignoredHome = makeTempDir();
   const stateDir = makeTempDir();
-  const pluginDir = path.join(openclawHome, "plugins", pluginId);
+  const pluginDir = path.join(operatorHome, "plugins", pluginId);
   mkdirSafe(pluginDir);
   const plugin = writePlugin({
     id: pluginId,
@@ -914,7 +914,7 @@ export function createEnvResolvedPluginFixture(pluginId: string) {
   });
   const env = {
     ...process.env,
-    OPERATOR_HOME: openclawHome,
+    OPERATOR_HOME: operatorHome,
     HOME: ignoredHome,
     OPERATOR_STATE_DIR: stateDir,
     OPERATOR_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",

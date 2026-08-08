@@ -26,7 +26,7 @@ const pendingApprovalConfig = {
 beforeEach(async () => {
   testState = await createOperatorTestState({
     layout: "state-only",
-    prefix: "openclaw-skill-workshop-policy-",
+    prefix: "operator-skill-workshop-policy-",
   });
 });
 
@@ -38,7 +38,7 @@ afterEach(async () => {
 
 describe("resolveSkillWorkshopToolApproval", () => {
   it("describes the target proposal and bounds the approval wait", async () => {
-    const workspaceDir = await tempDirs.make("openclaw-skill-workshop-policy-workspace-");
+    const workspaceDir = await tempDirs.make("operator-skill-workshop-policy-workspace-");
     const description = "d".repeat(160);
     const proposal = await proposeCreateSkill({
       workspaceDir,
@@ -86,7 +86,7 @@ describe("resolveSkillWorkshopToolApproval", () => {
   });
 
   it("bounds approval metadata without splitting UTF-16 surrogates", async () => {
-    const workspaceDir = await tempDirs.make("openclaw-skill-workshop-policy-long-name-");
+    const workspaceDir = await tempDirs.make("operator-skill-workshop-policy-long-name-");
     const description = "d".repeat(160);
     const content = "# Long name\n";
     const proposalIdLength = 60 + 1 + 8 + 1 + 10;
@@ -134,7 +134,7 @@ describe("resolveSkillWorkshopToolApproval", () => {
   });
 
   it("renders proposal-controlled fields without approval-line injection", async () => {
-    const workspaceDir = await tempDirs.make("openclaw-skill-workshop-policy-controls-");
+    const workspaceDir = await tempDirs.make("operator-skill-workshop-policy-controls-");
     const proposal = await proposeCreateSkill({
       workspaceDir,
       name: "Line\nBreak\u202eSpoof",
@@ -163,7 +163,7 @@ describe("resolveSkillWorkshopToolApproval", () => {
   });
 
   it("falls back to the action description when the proposal cannot be resolved", async () => {
-    const workspaceDir = await tempDirs.make("openclaw-skill-workshop-policy-missing-");
+    const workspaceDir = await tempDirs.make("operator-skill-workshop-policy-missing-");
 
     const result = await resolveSkillWorkshopToolApproval({
       toolName: "skill_workshop",

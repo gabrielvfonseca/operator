@@ -289,7 +289,7 @@ function resolveOperatorRunner() {
       }
     }
   }
-  return { pnpm: true, baseArgs: ["@gabrielvfonseca/operator"], label: "pnpm openclaw" };
+  return { pnpm: true, baseArgs: ["@gabrielvfonseca/operator"], label: "pnpm operator" };
 }
 
 function makeEnv(name) {
@@ -698,7 +698,7 @@ function readPersistedProfile() {
 
 async function loadSecretRuntime() {
   const requireFromRepo = createRequire(path.join(REPO_ROOT, "package.json"));
-  const resolved = requireFromRepo.resolve("openclaw/plugin-sdk/secret-ref-runtime");
+  const resolved = requireFromRepo.resolve("operator/plugin-sdk/secret-ref-runtime");
   return await import(pathToFileURL(resolved).href);
 }
 

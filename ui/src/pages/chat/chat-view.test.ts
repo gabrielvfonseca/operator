@@ -997,7 +997,7 @@ describe("chat code-block copy", () => {
     vi.stubGlobal("navigator", { clipboard: { writeText } });
     const container = renderChatView();
     const thread = requireElement(container, ".chat-thread", "chat thread");
-    const payload = 'openclaw:block-art-code:"literal"';
+    const payload = 'operator:block-art-code:"literal"';
     const button = document.createElement("button");
     button.type = "button";
     button.className = "code-block-copy";
@@ -2287,7 +2287,7 @@ describe("chat voice controls", () => {
   it.each([
     ["connecting", "Connecting voice input..."],
     ["listening", "Listening..."],
-    ["thinking", "Asking OpenClaw..."],
+    ["thinking", "Asking Operator..."],
   ] as const)("renders %s voice activity without visible status copy", (status, label) => {
     const inputLevel = new RealtimeTalkLevelSignal();
     inputLevel.set(0.64);
@@ -2385,7 +2385,7 @@ describe("chat voice controls", () => {
     );
     const tooltip = talkButton.parentElement as (HTMLElement & { content?: string }) | null;
     expect(talkButton.getAttribute("title")).toBeNull();
-    expect(tooltip?.localName).toBe("openclaw-tooltip");
+    expect(tooltip?.localName).toBe("operator-tooltip");
     expect(tooltip?.content).toBe(startTalkLabel);
     expect(talkButton.textContent?.trim()).toBe(startTalkLabel);
     requireElement(
@@ -3323,7 +3323,7 @@ describe("chat attachment picker", () => {
     chat.dispatchEvent(createDragEvent("dragleave"));
     expect(chat.hasAttribute("data-attachment-drop-active")).toBe(false);
 
-    chat.dispatchEvent(createDragEvent("dragenter", ["application/x-openclaw-session"]));
+    chat.dispatchEvent(createDragEvent("dragenter", ["application/x-operator-session"]));
     expect(chat.hasAttribute("data-attachment-drop-active")).toBe(false);
   });
 
@@ -4168,7 +4168,7 @@ describe("chat model controls", () => {
       renderChatModelControls({
         ...createChatModelControlsProps(state),
         modelSelectionLocked: true,
-        modelSelectionRuntimeId: "openclaw",
+        modelSelectionRuntimeId: "operator",
       }),
       container,
     );

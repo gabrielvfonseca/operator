@@ -159,7 +159,7 @@ function consumeNotificationLine(line) {
   const [lockRef, ownerOid, extra] = line.split("\t");
   if (
     extra !== undefined ||
-    !/^refs\/openclaw\/pr-operation-locks\/[1-9][0-9]*$/u.test(lockRef ?? "") ||
+    !/^refs\/operator\/pr-operation-locks\/[1-9][0-9]*$/u.test(lockRef ?? "") ||
     !/^(?:[0-9a-f]{40}|[0-9a-f]{64})$/u.test(ownerOid ?? "")
   ) {
     notificationFailure ??= new Error("scripts/pr emitted malformed operation-lock metadata");

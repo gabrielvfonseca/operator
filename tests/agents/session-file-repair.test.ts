@@ -7,7 +7,7 @@ import os from "node:os";
 import path from "node:path";
 import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { OPERATOR_TRANSCRIPT_ARTIFACT_API } from "../../src/shared/transcript-only-openclaw-assistant.js";
+import { OPERATOR_TRANSCRIPT_ARTIFACT_API } from "../../src/shared/transcript-only-operator-assistant.js";
 import { repairSessionFileIfNeeded } from "../../src/agents/session-file-repair.js";
 
 const BLANK_USER_FALLBACK_TEXT = "(continue)";
@@ -80,7 +80,7 @@ afterEach(async () => {
 describe("repairSessionFileIfNeeded", () => {
   it("skips SQLite transcript markers instead of treating them as file paths", async () => {
     const result = await repairSessionFileIfNeeded({
-      sessionFile: "sqlite:main:session-1:/tmp/openclaw/sessions.json",
+      sessionFile: "sqlite:main:session-1:/tmp/operator/sessions.json",
     });
 
     expect(result).toEqual({

@@ -44,8 +44,8 @@ describeControlUiE2e("Control UI About mocked Gateway E2E", () => {
         configurable: true,
         value: {
           writeText: async (text: string) => {
-            (globalThis as typeof globalThis & { __openclawCopiedCommit?: string })[
-              "__openclawCopiedCommit"
+            (globalThis as typeof globalThis & { __operatorCopiedCommit?: string })[
+              "__operatorCopiedCommit"
             ] = text;
           },
         },
@@ -83,7 +83,7 @@ describeControlUiE2e("Control UI About mocked Gateway E2E", () => {
         .toContain("separate from this Control UI build");
 
       const hero = page.locator(".about-hero");
-      await expect.poll(() => hero.locator(".about-hero__name").textContent()).toBe("OpenClaw");
+      await expect.poll(() => hero.locator(".about-hero__name").textContent()).toBe("Operator");
       await expect
         .poll(() => hero.locator(".about-hero__version").textContent())
         .toBe("v2026.7.10");
@@ -91,7 +91,7 @@ describeControlUiE2e("Control UI About mocked Gateway E2E", () => {
       const githubLink = hero.getByRole("link", { name: "GitHub", exact: true });
       await expect
         .poll(() => githubLink.getAttribute("href"))
-        .toBe("https://github.com/openclaw/openclaw");
+        .toBe("https://github.com/operator/operator");
       await expect.poll(() => githubLink.getAttribute("target")).toBe("_blank");
       await expect.poll(() => githubLink.getAttribute("rel")).toContain("noopener");
       const discordLink = hero.getByRole("link", { name: "Discord", exact: true });
@@ -113,8 +113,8 @@ describeControlUiE2e("Control UI About mocked Gateway E2E", () => {
         .poll(() =>
           page.evaluate(
             () =>
-              (globalThis as typeof globalThis & { __openclawCopiedCommit?: string })[
-                "__openclawCopiedCommit"
+              (globalThis as typeof globalThis & { __operatorCopiedCommit?: string })[
+                "__operatorCopiedCommit"
               ],
           ),
         )

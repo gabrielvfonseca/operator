@@ -14,7 +14,6 @@ import { isEmbeddedMode } from "../infra/embedded-mode.js";
 import { getActiveSecretsRuntimeConfigSnapshot } from "../secrets/runtime-state.js";
 import { getActiveRuntimeWebToolsMetadata } from "../secrets/runtime-web-tools-state.js";
 import { isCronRunSessionKey } from "../sessions/session-key-utils.js";
-import type { SkillWorkshopRunOptions } from "../skills/workshop/types.js";
 import { resolveTranscriptsConfig } from "../transcripts/config.js";
 import { normalizeDeliveryContext } from "../utils/delivery-context.js";
 import type { GatewayMessageChannel } from "../utils/message-channel.js";
@@ -69,7 +68,6 @@ import { createSessionsSendTool } from "./tools/sessions-send-tool.js";
 import { createSessionsSpawnTool } from "./tools/sessions-spawn-tool.js";
 import { createSessionsTool } from "./tools/sessions-tool.js";
 import { createSessionsYieldTool } from "./tools/sessions-yield-tool.js";
-import { createConfiguredSkillWorkshopTool } from "./tools/skill-workshop-tool-factory.js";
 import { createSubagentsTool } from "./tools/subagents-tool.js";
 import { createTaskSuggestionTools } from "./tools/task-suggestion-tools.js";
 import { createTranscriptsTool } from "./tools/transcripts-tool.js";
@@ -78,6 +76,9 @@ import { createUpdatePlanTool } from "./tools/update-plan-tool.js";
 import { createVideoGenerateTool } from "./tools/video-generate-tool.js";
 import { createWebFetchTool, createWebSearchTool } from "./tools/web-tools.js";
 import { resolveWorkspaceRoot } from "./workspace-dir.js";
+import { buildMemoryTools } from "../memory/tools.js";
+import { createMemoryOrchestrator } from "../memory/orchestrator.js";
+import { DEFAULT_MEMORY_SUBSYSTEM_CONFIG } from "../memory/config.js";
 /**
  * Drops tools whose requiredClientCaps the originating gateway client did not
  * declare. Capability availability is a hard fact, not policy: every tool
@@ -156,8 +157,6 @@ export function createOperatorTools(
     modelProvider?: string;
     /** Active model id for provider/model-specific tool gating. */
     modelId?: string;
-    /** Internal review-run restrictions and proposal provenance. */
-    skillWorkshop?: SkillWorkshopRunOptions;
     /** If true, nodes action="invoke" can call media-returning commands directly. */
     allowMediaInvokeCommands?: boolean;
     /** Explicit agent ID override for cron/hook sessions. */
@@ -528,19 +527,6 @@ export function createOperatorTools(
       sessionAgentId,
       config: resolvedConfig,
     }),
-    ...(options?.sandboxed
-      ? []
-      : [
-          createConfiguredSkillWorkshopTool({
-            workspaceDir,
-            config: resolvedConfig,
-            agentId: sessionAgentId,
-            sessionKey: options?.runSessionKey ?? options?.agentSessionKey,
-            runId: options?.runId,
-            messageId: options?.currentMessageId,
-            run: options?.skillWorkshop,
-          }),
-        ]),
     ...(includeUpdatePlanTool ? [createUpdatePlanTool()] : []),
     createSessionsListTool({
       agentSessionKey: options?.agentSessionKey,
@@ -605,6 +591,11 @@ export function createOperatorTools(
       agentSessionKey: options?.agentSessionKey,
       config: resolvedConfig,
     }),
+    ...buildMemoryTools(
+      createMemoryOrchestrator(DEFAULT_MEMORY_SUBSYSTEM_CONFIG),
+      sessionAgentId,
+      options?.sessionId ?? options?.runSessionKey,
+    ),
     createSessionStatusTool({
       agentSessionKey: options?.agentSessionKey,
       runSessionKey: options?.runSessionKey,

@@ -146,7 +146,7 @@ function createInitializationContext(): ApplicationContext {
 }
 
 function createTestChatPane(params: { client: GatewayBrowserClient; sessions: SessionCapability }) {
-  const pane = document.createElement("openclaw-chat-pane") as unknown as TestChatPane;
+  const pane = document.createElement("operator-chat-pane") as unknown as TestChatPane;
   Object.defineProperty(pane, "isConnected", {
     configurable: true,
     value: true,
@@ -192,13 +192,13 @@ function nativeHistoryMessage(seq: number, text = `message ${seq}`) {
   return {
     role: seq % 2 === 0 ? "assistant" : "user",
     content: [{ type: "text", text }],
-    __openclaw: { seq },
+    __operator: { seq },
   };
 }
 
 describe("chat pane initialization", () => {
   it("sets the pane route before attaching outbox projection", () => {
-    const pane = document.createElement("openclaw-chat-pane") as unknown as TestChatPane;
+    const pane = document.createElement("operator-chat-pane") as unknown as TestChatPane;
     const targetSessionKey = "agent:main:pane-b";
     const sharedMessages = new Map();
     pane.sessionKey = targetSessionKey;
@@ -223,7 +223,7 @@ describe("chat pane initialization", () => {
   });
 
   it("hydrates a new split pane from the shared session snapshot before startup", () => {
-    const pane = document.createElement("openclaw-chat-pane") as unknown as TestChatPane;
+    const pane = document.createElement("operator-chat-pane") as unknown as TestChatPane;
     const targetSessionKey = "agent:main:pane-b";
     const messages = [nativeHistoryMessage(1, "retained split history")];
     const sharedMessages: ChatMessageCache = new Map();
@@ -330,7 +330,7 @@ describe("chat pane keyboard shortcuts", () => {
     const canvasContent: SidebarContent = {
       kind: "canvas",
       docId: "canvas-1",
-      entryUrl: "/__openclaw__/canvas/canvas-1/index.html",
+      entryUrl: "/__operator__/canvas/canvas-1/index.html",
     };
     pane.active = true;
     state.connected = false;
@@ -461,11 +461,11 @@ describe("chat pane catalog session lifecycle", () => {
     const listener = (event: Event) => {
       detail = (event as CustomEvent).detail;
     };
-    window.addEventListener("openclaw:terminal-toggle", listener);
+    window.addEventListener("operator:terminal-toggle", listener);
     try {
       (container.querySelector('[aria-label="Open in terminal"]') as HTMLElement).click();
     } finally {
-      window.removeEventListener("openclaw:terminal-toggle", listener);
+      window.removeEventListener("operator:terminal-toggle", listener);
     }
     expect(detail).toEqual({ open: true, catalog: key });
   });

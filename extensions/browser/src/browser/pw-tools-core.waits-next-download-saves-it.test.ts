@@ -11,7 +11,7 @@ import {
 } from "./pw-tools-core.test-harness.js";
 
 const tmpDirMocks = vi.hoisted(() => ({
-  resolvePreferredOperatorTmpDir: vi.fn(() => "/tmp/openclaw"),
+  resolvePreferredOperatorTmpDir: vi.fn(() => "/tmp/operator"),
 }));
 const chromeMocks = vi.hoisted(() => ({
   getChromeWebSocketUrl: vi.fn(async () => "ws://127.0.0.1/devtools/browser/mock"),
@@ -62,7 +62,7 @@ describe("pw-tools-core", () => {
     for (const fn of Object.values(clientFetchMocks)) {
       fn.mockClear();
     }
-    tmpDirMocks.resolvePreferredOperatorTmpDir.mockReturnValue("/tmp/openclaw");
+    tmpDirMocks.resolvePreferredOperatorTmpDir.mockReturnValue("/tmp/operator");
   });
 
   async function withTempDir<T>(run: (tempDir: string) => Promise<T>): Promise<T> {

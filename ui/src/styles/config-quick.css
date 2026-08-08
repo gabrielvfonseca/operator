@@ -7,11 +7,11 @@
  * escape hatches (identity blocks, gateway-host stats grid).
  */
 
-.content:has(openclaw-logs-page) {
+.content:has(operator-logs-page) {
   overflow: hidden;
 }
 
-.content:has(openclaw-logs-page) > openclaw-router-outlet {
+.content:has(operator-logs-page) > operator-router-outlet {
   display: flex;
   flex-direction: column;
   margin-top: 0;
@@ -20,11 +20,11 @@
   width: 100%;
 }
 
-openclaw-logs-page {
+operator-logs-page {
   display: contents;
 }
 
-.content:has(openclaw-logs-page) .content-header {
+.content:has(operator-logs-page) .content-header {
   flex: 0 0 auto;
 }
 

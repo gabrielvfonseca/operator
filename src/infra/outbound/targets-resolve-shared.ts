@@ -30,7 +30,7 @@ type ResolveOutboundTargetParams = {
 
 function buildWebChatDeliveryError(): Error {
   return new Error(
-    `Delivering to WebChat is not supported via \`${formatCliCommand("openclaw agent")}\`; use WhatsApp/Telegram or run with --deliver=false.`,
+    `Delivering to WebChat is not supported via \`${formatCliCommand("operator agent")}\`; use WhatsApp/Telegram or run with --deliver=false.`,
   );
 }
 

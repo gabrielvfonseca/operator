@@ -37,10 +37,10 @@ const makeConfig = (overrides: Record<string, unknown>) =>
     },
     session: { store: sessionStorePath },
     ...overrides,
-  }) as unknown as import("openclaw/plugin-sdk/config-contracts").OperatorConfig;
+  }) as unknown as import("operator/plugin-sdk/config-contracts").OperatorConfig;
 
 async function runGroupGating(params: {
-  cfg: import("openclaw/plugin-sdk/config-contracts").OperatorConfig;
+  cfg: import("operator/plugin-sdk/config-contracts").OperatorConfig;
   msg: AdmittedWebInboundMessage;
   agentId?: string;
   selfChatMode?: boolean;
@@ -203,7 +203,7 @@ function makeOwnerGroupConfig() {
 
 function makeInboundCfg(messagePrefix = "") {
   return {
-    agents: { defaults: { workspace: "/tmp/openclaw" } },
+    agents: { defaults: { workspace: "/tmp/operator" } },
     channels: { whatsapp: { messagePrefix } },
   } as never;
 }
@@ -572,14 +572,14 @@ describe("applyGroupGating", () => {
           groups: { "*": { requireMention: true } },
         },
       },
-      messages: { groupChat: { mentionPatterns: ["@openclaw"] } },
+      messages: { groupChat: { mentionPatterns: ["@operator"] } },
     });
 
     const { result, groupHistories } = await runGroupGating({
       cfg,
       msg: createGroupMessage({
         id: "g-other-mention",
-        body: "@openclaw please check this",
+        body: "@operator please check this",
         mentionedJids: ["15550000000@s.whatsapp.net"],
         selfE164: "+15551234567",
         selfJid: "15551234567@s.whatsapp.net",
@@ -701,7 +701,7 @@ describe("applyGroupGating", () => {
           groups: { "*": { requireMention: false } },
         },
       },
-      messages: { groupChat: { mentionPatterns: ["@openclaw"] } },
+      messages: { groupChat: { mentionPatterns: ["@operator"] } },
     });
 
     const { result } = await runGroupGating({

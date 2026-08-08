@@ -189,7 +189,7 @@ export const QA_WHATSAPP_AGENT_MESSAGE_ACTION_UPLOAD_PROMPT_RE =
 export const QA_WHATSAPP_PENDING_HISTORY_TRIGGER_MARKER_RE =
   /\bWHATSAPP_QA_PENDING_HISTORY_TRIGGER_([A-Z0-9]+)\b/u;
 export const QA_WHATSAPP_BROADCAST_PROMPT_RE =
-  /\bopenclawqa broadcast fanout check\s+([A-Z0-9_]+)\b/i;
+  /\boperatorqa broadcast fanout check\s+([A-Z0-9_]+)\b/i;
 export const QA_WHATSAPP_RUNTIME_AGENT_RE = /\bRuntime:\s*[^\n]*\bagent=([A-Za-z0-9_-]+)/i;
 export const QA_WHATSAPP_ACTIVATION_ALWAYS_MARKER_RE =
   /\bWHATSAPP_QA_ACTIVATION_ALWAYS_([A-Z0-9]+)\b/u;
@@ -244,7 +244,7 @@ export const QA_RESTART_RECOVERY_PROMPT_RE = /previous turn was interrupted by a
 const QA_AUDIO_TRANSCRIPTION_TEXT =
   "Reply with only this exact marker: WHATSAPP_QA_AUDIO_TRANSCRIPT_OK";
 const QA_GROUP_AUDIO_TRANSCRIPTION_TEXT =
-  "openclawqa reply with only this exact marker after group audio preflight: WHATSAPP_QA_GROUP_AUDIO_TRANSCRIPT_OK";
+  "operatorqa reply with only this exact marker after group audio preflight: WHATSAPP_QA_GROUP_AUDIO_TRANSCRIPT_OK";
 const QA_GROUP_AUDIO_TRIGGER_SENTINEL = "OPERATOR_QA_GROUP_AUDIO_TRIGGER";
 export const QA_MCP_CODE_MODE_API_FILE_PROMPT_RE = /mcp code mode api file qa check/i;
 

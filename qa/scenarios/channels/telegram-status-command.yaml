@@ -7,7 +7,7 @@ scenario:
   coverage:
     primary: [channels.native-commands]
   regressionRefs:
-    - openclaw/openclaw#74698
+    - operator/operator#74698
   objective: Verify Telegram status returns model, session, and activation details.
   successCriteria:
     - The status command succeeds in the Telegram group path.
@@ -42,7 +42,7 @@ flow:
             senderId: qa-command-operator
             senderName: QA Command Operator
             text:
-              expr: "transport.id === 'telegram' ? '/status@openclaw' : '/status'"
+              expr: "transport.id === 'telegram' ? '/status@operator' : '/status'"
         - waitForOutbound:
             conversation: { id: telegram-command-room, kind: channel }
             sinceIndex: { ref: startIndex }

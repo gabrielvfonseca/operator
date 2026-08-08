@@ -99,7 +99,7 @@ describe("plugins search command", () => {
     });
     expect(mocks.logs.join("\n")).toContain("operator-calendar");
     expect(mocks.logs.join("\n")).toContain(
-      "Install: openclaw plugins install clawhub:operator-calendar",
+      "Install: operator plugins install clawhub:operator-calendar",
     );
   });
 

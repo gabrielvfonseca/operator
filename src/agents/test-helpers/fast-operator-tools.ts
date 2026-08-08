@@ -29,7 +29,7 @@ const coreTools = [
   stubActionTool("message", ["send", "reply"]),
   stubTool("heartbeat_respond"),
   stubActionTool("gateway", ["config.get", "config.schema.lookup"]),
-  stubTool("operator"),
+  stubTool("@gabrielvfonseca/operator"),
   stubActionTool("agents_list", ["list", "show"]),
   stubActionTool("sessions_list", ["list", "show"]),
   stubActionTool("sessions_history", ["read", "tail"]),

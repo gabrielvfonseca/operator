@@ -45,7 +45,7 @@ function buildEntry(name: string): SkillEntry {
       description: `${name} test skill`,
       filePath,
       baseDir: skillDir,
-      source: "openclaw-workspace",
+      source: "operator-workspace",
     }),
     frontmatter: {},
   };

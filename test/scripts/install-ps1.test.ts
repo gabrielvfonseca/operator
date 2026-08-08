@@ -351,7 +351,7 @@ describe("install.ps1 failure handling", () => {
           "try {",
           ...ENTRYPOINT_LINES.map((line) => `  ${line}`),
           "} catch {",
-          "  if ($_.Exception.Message -ne 'OpenClaw installation failed with exit code 1.') { throw }",
+          "  if ($_.Exception.Message -ne 'Operator installation failed with exit code 1.') { throw }",
           "  $caught = $true",
           "}",
           "if (-not $caught) { throw 'Install failure did not reach the caller' }",
@@ -366,15 +366,15 @@ describe("install.ps1 failure handling", () => {
           "function Write-Banner { }",
           "function Ensure-ExecutionPolicy { return $true }",
           "function Check-Node { return $true }",
-          "function Check-ExistingOpenClaw { return $false }",
+          "function Check-ExistingOperator { return $false }",
           "function Get-NpmCommandPath { return $null }",
-          "function Install-OpenClawFromGit {",
+          "function Install-OperatorFromGit {",
           "  Write-Output 'pnpm stdout before failure'",
           "  return $false",
           "}",
-          "function Ensure-OpenClawOnPath { throw 'should not continue after failed git install' }",
+          "function Ensure-OperatorOnPath { throw 'should not continue after failed git install' }",
           "$InstallMethod = 'git'",
-          "$GitDir = 'C:\\\\openclaw-test'",
+          "$GitDir = 'C:\\\\operator-test'",
           "$NoOnboard = $true",
           "$result = Main",
           'if ($result -ne $false) { throw "Main returned $result" }',
@@ -390,12 +390,12 @@ describe("install.ps1 failure handling", () => {
           "function Write-Banner { }",
           "function Ensure-ExecutionPolicy { return $true }",
           "function Check-Node { return $true }",
-          "function Check-ExistingOpenClaw { return $false }",
+          "function Check-ExistingOperator { return $false }",
           "function Add-ToPath { param([string]$Path) }",
-          "function Install-OpenClaw { Write-Output 'npm stdout'; return $true }",
-          "function Ensure-OpenClawOnPath { return $true }",
+          "function Install-Operator { Write-Output 'npm stdout'; return $true }",
+          "function Ensure-OperatorOnPath { return $true }",
           "function Refresh-GatewayServiceIfLoaded { }",
-          "function Invoke-OpenClawCommand { return 'OpenClaw test-version' }",
+          "function Invoke-OperatorCommand { return 'Operator test-version' }",
           "$NoOnboard = $true",
           "$result = Main",
           "if ($result -is [array]) { throw 'Main returned an array' }",
@@ -411,22 +411,22 @@ describe("install.ps1 failure handling", () => {
           "function Write-Banner { }",
           "function Ensure-ExecutionPolicy { return $true }",
           "function Check-Node { return $true }",
-          "function Check-ExistingOpenClaw { return $false }",
+          "function Check-ExistingOperator { return $false }",
           "function Add-ToPath { param([string]$Path) }",
-          "function Install-OpenClaw {",
+          "function Install-Operator {",
           "  Write-Output 'native chatter'",
           "  return $true",
           "}",
-          "function Ensure-OpenClawOnPath { return $true }",
+          "function Ensure-OperatorOnPath { return $true }",
           "function Refresh-GatewayServiceIfLoaded { }",
-          "function Invoke-OpenClawCommand { return 'OpenClaw test-version' }",
+          "function Invoke-OperatorCommand { return 'Operator test-version' }",
           "$NoOnboard = $true",
           ...ENTRYPOINT_LINES,
           "",
         ].join("\n"),
       },
     ];
-    const tempDir = harness.createTempDir("openclaw-install-ps1-batch-");
+    const tempDir = harness.createTempDir("operator-install-ps1-batch-");
     const fixtures = cases.map((testCase, index) => {
       const scriptPath = join(tempDir, `case-${index}.ps1`);
       writeFileSync(scriptPath, testCase.source);
@@ -477,7 +477,7 @@ describe("install.ps1 failure handling", () => {
     const booleanSuccessBody = extractFunctionBody(source, "Test-BooleanSuccessResult");
     expect(completeInstallBody).toMatch(/\$PSCommandPath/);
     expect(completeInstallBody).toMatch(/\bexit \$script:InstallExitCode\b/);
-    expect(completeInstallBody).toMatch(/\bthrow "OpenClaw installation failed with exit code/);
+    expect(completeInstallBody).toMatch(/\bthrow "Operator installation failed with exit code/);
     expect(booleanSuccessBody).toContain("$Results.Count -gt 0");
     expect(source).toContain("$installSucceeded = Test-BooleanSuccessResult -Results $mainResults");
   });
@@ -526,7 +526,7 @@ describe("install.ps1 failure handling", () => {
   });
 
   it("runs npm install through the resolved command with quiet CI defaults", () => {
-    const npmInstallBody = extractFunctionBody(source, "Install-OpenClaw");
+    const npmInstallBody = extractFunctionBody(source, "Install-Operator");
     expect(npmInstallBody).toContain("$npmOutput = Invoke-NpmCommand -Arguments");
     expect(npmInstallBody).toContain('$env:NPM_CONFIG_LOGLEVEL = "error"');
     expect(npmInstallBody).toContain('$env:NPM_CONFIG_UPDATE_NOTIFIER = "false"');
@@ -555,8 +555,8 @@ describe("install.ps1 failure handling", () => {
 
   it("does not force npm or pnpm lifecycle scripts through cmd.exe", () => {
     const ensurePnpmBody = extractFunctionBody(source, "Ensure-Pnpm");
-    const npmInstallBody = extractFunctionBody(source, "Install-OpenClaw");
-    const gitInstallBody = extractFunctionBody(source, "Install-OpenClawFromGit");
+    const npmInstallBody = extractFunctionBody(source, "Install-Operator");
+    const gitInstallBody = extractFunctionBody(source, "Install-OperatorFromGit");
 
     expect(ensurePnpmBody).not.toContain("NPM_CONFIG_SCRIPT_SHELL");
     expect(npmInstallBody).not.toContain("NPM_CONFIG_SCRIPT_SHELL");
@@ -567,7 +567,7 @@ describe("install.ps1 failure handling", () => {
     const commandSafeBody = extractFunctionBody(source, "Invoke-CommandFromWindowsSafeDirectory");
     const npmCommandBody = extractFunctionBody(source, "Invoke-NpmCommand");
     const corepackCommandBody = extractFunctionBody(source, "Invoke-CorepackCommand");
-    const openClawPathBody = extractFunctionBody(source, "Ensure-OpenClawOnPath");
+    const openClawPathBody = extractFunctionBody(source, "Ensure-OperatorOnPath");
     const ensurePnpmBody = extractFunctionBody(source, "Ensure-Pnpm");
     const mainBody = extractFunctionBody(source, "Main");
 
@@ -582,19 +582,19 @@ describe("install.ps1 failure handling", () => {
       'Invoke-CorepackCommand -Arguments @("prepare", $pnpmSpec, "--activate")',
     );
     expect(ensurePnpmBody).toContain('Invoke-NpmCommand -Arguments @("install", "-g", $pnpmSpec)');
-    expect(mainBody).toContain('Invoke-NpmCommand -Arguments @("uninstall", "-g", "openclaw")');
+    expect(mainBody).toContain('Invoke-NpmCommand -Arguments @("uninstall", "-g", "operator")');
     expect(mainBody).toContain(
       'Invoke-NpmCommand -Arguments @("list", "-g", "--depth", "0", "--json")',
     );
   });
 
-  it("rejects OpenClaw GitHub source targets for npm installs", () => {
-    const npmInstallBody = extractFunctionBody(source, "Install-OpenClaw");
-    const sourceTargetBody = extractFunctionBody(source, "Test-OpenClawSourcePackageInstallSpec");
+  it("rejects Operator GitHub source targets for npm installs", () => {
+    const npmInstallBody = extractFunctionBody(source, "Install-Operator");
+    const sourceTargetBody = extractFunctionBody(source, "Test-OperatorSourcePackageInstallSpec");
     expect(sourceTargetBody).toContain('$normalizedTag -eq "main"');
-    expect(sourceTargetBody).toContain("^github:openclaw/openclaw");
-    expect(npmInstallBody).toContain("Test-OpenClawSourcePackageInstallSpec -RequestedTag $Tag");
-    expect(npmInstallBody).toContain("npm installs do not support OpenClaw GitHub source targets");
+    expect(sourceTargetBody).toContain("^github:operator/operator");
+    expect(npmInstallBody).toContain("Test-OperatorSourcePackageInstallSpec -RequestedTag $Tag");
+    expect(npmInstallBody).toContain("npm installs do not support Operator GitHub source targets");
     expect(npmInstallBody).toContain("-InstallMethod git -Tag main");
   });
 
@@ -605,7 +605,7 @@ describe("install.ps1 failure handling", () => {
   });
 
   it("preserves the min-release-age probe status before raw npmrc detection", () => {
-    const npmInstallBody = extractFunctionBody(source, "Install-OpenClaw");
+    const npmInstallBody = extractFunctionBody(source, "Install-Operator");
     const probeStatusCapture = npmInstallBody.indexOf("$minReleaseAgeStatus = $LASTEXITCODE");
     const rawKeyProbe = npmInstallBody.indexOf("Test-NpmConfigRawKey -Key");
     expect(probeStatusCapture).toBeGreaterThan(-1);
@@ -623,7 +623,7 @@ describe("install.ps1 failure handling", () => {
   });
 
   it("preserves caller-relative local tarball install specs before safe-cwd npm calls", () => {
-    const resolveSpecBody = extractFunctionBody(source, "Resolve-NpmOpenClawInstallSpec");
+    const resolveSpecBody = extractFunctionBody(source, "Resolve-NpmOperatorInstallSpec");
     const localSpecBody = extractFunctionBody(source, "Resolve-LocalNpmPackageInstallSpec");
     const localPathBody = extractFunctionBody(source, "Resolve-LocalNpmPackagePath");
 
@@ -645,14 +645,14 @@ describe("install.ps1 failure handling", () => {
     const portableNodeRootBody = extractFunctionBody(source, "Get-PortableNodeRoot");
     const portableNodePathBody = extractFunctionBody(source, "Ensure-PortableNodeOnUserPath");
     const userPathBody = extractFunctionBody(source, "Add-ToUserPath");
-    const depsRootBody = extractFunctionBody(source, "Get-OpenClawDepsRoot");
+    const depsRootBody = extractFunctionBody(source, "Get-OperatorDepsRoot");
     const resolveNodeBody = extractFunctionBody(source, "Resolve-PortableNodeDownload");
     const expandNodeBody = extractFunctionBody(source, "Expand-PortableNodeArchive");
 
     expect(installNodeBody).toContain("Install-PortableNode");
     expect(installNodeBody).toContain("Portable Node.js bootstrap failed");
     expect(installNodeBody).toContain("Error: Could not install Node.js automatically.");
-    expect(depsRootBody).toContain("OpenClaw\\deps");
+    expect(depsRootBody).toContain("Operator\\deps");
     expect(portableNodeRootBody).toContain("portable-node");
     expect(portableNodeBody).toContain("Ensure-PortableNodeOnUserPath");
     expect(portableNodeBody).toContain(
@@ -689,7 +689,7 @@ describe("install.ps1 failure handling", () => {
     const usePortableGitBody = extractFunctionBody(source, "Use-PortableGitIfPresent");
     const ensureGitBody = extractFunctionBody(source, "Ensure-Git");
 
-    expect(portableGitRootBody).toContain("Get-OpenClawDepsRoot");
+    expect(portableGitRootBody).toContain("Get-OperatorDepsRoot");
     expect(portableGitPathEntriesBody).toContain("mingw64\\bin");
     expect(portableGitPathEntriesBody).toContain("usr\\bin");
     expect(portableGitPathEntriesBody).toContain("Split-Path -Parent $gitExe");
@@ -720,7 +720,7 @@ describe("install.ps1 failure handling", () => {
     const pnpmVersionBody = extractFunctionBody(source, "Get-RepoPnpmVersion");
     const pnpmVersionMatchBody = extractFunctionBody(source, "Test-PnpmCommandMatchesVersion");
     const ensurePnpmBody = extractFunctionBody(source, "Ensure-Pnpm");
-    const gitInstallBody = extractFunctionBody(source, "Install-OpenClawFromGit");
+    const gitInstallBody = extractFunctionBody(source, "Install-OperatorFromGit");
     const nodeOptionsBody = extractFunctionBody(source, "Resolve-NodeOptionsWithMinOldSpace");
     const mainBody = extractFunctionBody(source, "Main");
 
@@ -752,9 +752,9 @@ describe("install.ps1 failure handling", () => {
     expect(gitInstallBody.indexOf("git -C $RepoDir pull --rebase")).toBeLessThan(
       gitInstallBody.indexOf("Ensure-Pnpm -RepoDir $RepoDir"),
     );
-    expect(mainBody).toContain("$gitInstallResults = @(Install-OpenClawFromGit");
+    expect(mainBody).toContain("$gitInstallResults = @(Install-OperatorFromGit");
     expect(mainBody).toContain("Test-BooleanSuccessResult -Results $gitInstallResults");
-    expect(mainBody).toContain("$npmInstallResults = @(Install-OpenClaw)");
+    expect(mainBody).toContain("$npmInstallResults = @(Install-Operator)");
     expect(mainBody).toContain("Test-BooleanSuccessResult -Results $npmInstallResults");
     expect(gitInstallBody).toContain("Push-Location -LiteralPath $RepoDir");
     expect(gitInstallBody).toContain("$sourceInstallArgs = @(");
@@ -803,21 +803,21 @@ describe("install.ps1 failure handling", () => {
     expect(gitInstallBody).toContain('Write-Host "[!] pnpm build failed for the Git checkout"');
     expect(gitInstallBody).toContain('$entryPath = Join-Path $RepoDir "dist\\\\entry.js"');
     expect(gitInstallBody).toContain("Test-Path $entryPath");
-    expect(gitInstallBody).toContain('Write-Host "[!] OpenClaw build did not produce $entryPath"');
+    expect(gitInstallBody).toContain('Write-Host "[!] Operator build did not produce $entryPath"');
     expect(gitInstallBody).toContain('node ""$entryPath"" %*');
     expect(gitInstallBody).not.toContain("& $pnpmCommand -C $RepoDir install");
     expect(gitInstallBody).not.toContain('node ""$RepoDir\\\\dist\\\\entry.js"" %*');
   });
 
   it("cleans legacy git submodules only from the selected git checkout", () => {
-    const gitInstallBody = extractFunctionBody(source, "Install-OpenClawFromGit");
+    const gitInstallBody = extractFunctionBody(source, "Install-OperatorFromGit");
     const mainBody = extractFunctionBody(source, "Main");
     expect(gitInstallBody).toContain("Remove-LegacySubmodule -RepoDir $RepoDir");
     expect(mainBody).not.toContain("Remove-LegacySubmodule");
   });
 
   it("launches interactive onboarding outside Main's captured output", () => {
-    const interactiveCommandBody = extractFunctionBody(source, "Invoke-InteractiveOpenClawCommand");
+    const interactiveCommandBody = extractFunctionBody(source, "Invoke-InteractiveOperatorCommand");
     const mainBody = extractFunctionBody(source, "Main");
     expect(interactiveCommandBody).toContain("Start-Process");
     expect(interactiveCommandBody).toContain("-NoNewWindow");
@@ -826,13 +826,13 @@ describe("install.ps1 failure handling", () => {
     expect(interactiveCommandBody).toContain("$process.ExitCode -ne 0");
     expect(interactiveCommandBody).toContain("failed with exit code");
     expect(mainBody).toContain('Write-Host "Starting setup..." -ForegroundColor Cyan');
-    expect(mainBody).toContain("Invoke-InteractiveOpenClawCommand onboard");
+    expect(mainBody).toContain("Invoke-InteractiveOperatorCommand onboard");
   });
 
   runConcurrentIfPowerShell(
     "fails install when interactive onboarding exits non-zero",
     async () => {
-      const tempDir = mkdtempSync(join(tmpdir(), "openclaw-install-ps1-"));
+      const tempDir = mkdtempSync(join(tmpdir(), "operator-install-ps1-"));
       const scriptPath = join(tempDir, "install.ps1");
       try {
         const scriptWithoutEntryPoint = source.replace(ENTRYPOINT_RE, "");
@@ -844,12 +844,12 @@ describe("install.ps1 failure handling", () => {
             "function Write-Banner { }",
             "function Ensure-ExecutionPolicy { return $true }",
             "function Check-Node { return $true }",
-            "function Check-ExistingOpenClaw { return $false }",
+            "function Check-ExistingOperator { return $false }",
             "function Get-NpmCommandPath { return 'npm.cmd' }",
-            "function Install-OpenClaw { return $true }",
-            "function Ensure-OpenClawOnPath { return $true }",
+            "function Install-Operator { return $true }",
+            "function Ensure-OperatorOnPath { return $true }",
             "function Add-ToUserPath { param([string]$Path) }",
-            "function Get-OpenClawCommandPath { return 'cmd.exe' }",
+            "function Get-OperatorCommandPath { return 'cmd.exe' }",
             "function Start-Process {",
             "  param([string]$FilePath, [string[]]$ArgumentList, [switch]$NoNewWindow, [switch]$Wait, [switch]$PassThru)",
             "  [pscustomobject]@{ ExitCode = 17 }",
@@ -874,7 +874,7 @@ describe("install.ps1 failure handling", () => {
 
         expect(result.status).toBe(1);
         expect(`${result.stdout}\n${result.stderr}`).toContain(
-          "openclaw onboard failed with exit code 17",
+          "operator onboard failed with exit code 17",
         );
       } finally {
         rmSync(tempDir, { force: true, recursive: true });
@@ -883,7 +883,7 @@ describe("install.ps1 failure handling", () => {
   );
 
   runConcurrentIfPowerShell("exits non-zero when run as a script file", async () => {
-    const tempDir = mkdtempSync(join(tmpdir(), "openclaw-install-ps1-"));
+    const tempDir = mkdtempSync(join(tmpdir(), "operator-install-ps1-"));
     const scriptPath = join(tempDir, "install.ps1");
     try {
       writeFileSync(scriptPath, createFailingNodeFixture(source));

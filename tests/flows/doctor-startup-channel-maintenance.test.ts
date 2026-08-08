@@ -45,7 +45,7 @@ describe("doctor startup channel maintenance", () => {
     await expect(
       collectChannelPreviewWarningHealthFindings({
         cfg,
-        doctorFixCommand: "openclaw doctor --fix --dry-run",
+        doctorFixCommand: "operator doctor --fix --dry-run",
         env: { OPERATOR_TEST: "1" },
         allowExec: true,
       }),
@@ -57,7 +57,7 @@ describe("doctor startup channel maintenance", () => {
         path: "channels.matrix",
         requirement: "Configured channels should not emit doctor preview warnings.",
         fixHint:
-          "Run `openclaw doctor --fix --dry-run` if the channel warning recommends repair, or update the affected channel config manually.",
+          "Run `operator doctor --fix --dry-run` if the channel warning recommends repair, or update the affected channel config manually.",
       },
     ]);
     expect(mocks.resolveDoctorChannelPreviewConfig).toHaveBeenCalledWith({
@@ -67,7 +67,7 @@ describe("doctor startup channel maintenance", () => {
     });
     expect(mocks.collectChannelDoctorPreviewWarnings).toHaveBeenCalledWith({
       cfg,
-      doctorFixCommand: "openclaw doctor --fix --dry-run",
+      doctorFixCommand: "operator doctor --fix --dry-run",
       env: { OPERATOR_TEST: "1" },
     });
   });

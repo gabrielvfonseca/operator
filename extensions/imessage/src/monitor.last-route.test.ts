@@ -86,12 +86,12 @@ const createChannelInboundDebouncerMock = vi.hoisted(() =>
   })),
 );
 
-vi.mock("openclaw/plugin-sdk/transport-ready-runtime", () => ({
+vi.mock("operator/plugin-sdk/transport-ready-runtime", () => ({
   waitForTransportReady: waitForTransportReadyMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/conversation-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/conversation-runtime")>();
+vi.mock("operator/plugin-sdk/conversation-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/conversation-runtime")>();
   return {
     ...actual,
     readChannelAllowFromStore: readChannelAllowFromStoreMock,
@@ -100,8 +100,8 @@ vi.mock("openclaw/plugin-sdk/conversation-runtime", async (importOriginal) => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/channel-inbound", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/channel-inbound")>();
+vi.mock("operator/plugin-sdk/channel-inbound", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/channel-inbound")>();
   return {
     ...actual,
     createChannelInboundDebouncer: createChannelInboundDebouncerMock,
@@ -109,8 +109,8 @@ vi.mock("openclaw/plugin-sdk/channel-inbound", async (importOriginal) => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/reply-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/reply-runtime")>();
+vi.mock("operator/plugin-sdk/reply-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/reply-runtime")>();
   return {
     ...actual,
     dispatchInboundMessage: dispatchInboundMessageMock,
@@ -1656,7 +1656,7 @@ describe("iMessage monitor last-route updates", () => {
               chat_id: 0,
               sender: "+15550001111",
               is_from_me: false,
-              text: "@openclaw check this https://example.com",
+              text: "@operator check this https://example.com",
               is_group: false,
               chat_guid: "",
               chat_identifier: "",
@@ -1688,7 +1688,7 @@ describe("iMessage monitor last-route updates", () => {
           },
         },
         messages: {
-          groupChat: { mentionPatterns: ["@openclaw"] },
+          groupChat: { mentionPatterns: ["@operator"] },
           inbound: { debounceMs: 0 },
         },
         session: { mainKey: "main" },

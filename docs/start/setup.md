@@ -139,7 +139,7 @@ operator health
   - Model auth profiles: `~/.operator/agents/<agentId>/agent/auth-profiles.json`
   - Sessions and transcripts: `~/.operator/agents/<agentId>/agent/operator-agent.sqlite`
   - Legacy/archive session artifacts: `~/.operator/agents/<agentId>/sessions/`
-  - Logs: `/tmp/openclaw/`
+  - Logs: `/tmp/operator/`
 
 ## Credential storage map
 
@@ -159,7 +159,7 @@ Use this when debugging auth or deciding what to back up:
 
 ## Updating (without wrecking your setup)
 
-- Keep `~/.operator/workspace` and `~/.operator/` as "your stuff"; don't put personal prompts/config into the `openclaw` repo.
+- Keep `~/.operator/workspace` and `~/.operator/` as "your stuff"; don't put personal prompts/config into the `operator` repo.
 - Updating source: `git pull` + `pnpm install` + keep using `pnpm gateway:watch`.
 
 ## Linux (systemd user service)
@@ -180,5 +180,5 @@ user service (no lingering needed). See [Gateway runbook](/gateway) for the syst
 - [Gateway runbook](/gateway) (flags, supervision, ports)
 - [Gateway configuration](/gateway/configuration) (config schema + examples)
 - [Discord](/channels/discord) and [Telegram](/channels/telegram) (reply tags + replyToMode settings)
-- [Operator assistant setup](/start/openclaw)
+- [Operator assistant setup](/start/operator)
 - [macOS app](/platforms/macos) (gateway lifecycle)

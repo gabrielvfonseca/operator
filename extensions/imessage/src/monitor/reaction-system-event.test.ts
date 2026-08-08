@@ -4,7 +4,7 @@ import { enqueueSystemEvent } from "@gabrielvfonseca/operator/plugin-sdk/system-
 import { describe, expect, it, vi } from "vitest";
 import { enqueueIMessageReactionSystemEvent } from "./reaction-system-event.js";
 
-vi.mock("openclaw/plugin-sdk/system-event-runtime", () => ({
+vi.mock("operator/plugin-sdk/system-event-runtime", () => ({
   enqueueSystemEvent: vi.fn(() => true),
 }));
 

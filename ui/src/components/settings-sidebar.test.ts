@@ -242,7 +242,7 @@ describe("settings sidebar search", () => {
     );
 
     const card = container.querySelector<HTMLElement & { updateComplete: Promise<boolean> }>(
-      "openclaw-sidebar-update-card",
+      "operator-sidebar-update-card",
     );
     await card?.updateComplete;
     expect(card?.nextElementSibling?.classList.contains("settings-sidebar__footer")).toBe(true);

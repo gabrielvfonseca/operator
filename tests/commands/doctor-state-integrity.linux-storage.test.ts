@@ -78,11 +78,11 @@ describe("detectLinuxSdBackedStateDir", () => {
     const result = detectLinuxSdBackedStateDir("/tmp/operator-state", {
       platform: "linux",
       mountInfo,
-      resolveRealPath: () => "/mnt/slow/openclaw/.operator",
+      resolveRealPath: () => "/mnt/slow/operator/.operator",
     });
 
     expect(result).toEqual({
-      path: "/mnt/slow/openclaw/.operator",
+      path: "/mnt/slow/operator/.operator",
       mountPoint: "/mnt/slow",
       fsType: "ext4",
       source: "/dev/mmcblk1p1",

@@ -3,10 +3,10 @@ import {
   parseAgentSessionKey,
   type MemoryCitationsMode,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/memory-core-host-runtime-core";
-import type { MemorySearchResult } from "openclaw/plugin-sdk/memory-core-host-runtime-files";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "operator/plugin-sdk/memory-core-host-runtime-core";
+import type { MemorySearchResult } from "operator/plugin-sdk/memory-core-host-runtime-files";
+import { normalizeLowercaseStringOrEmpty } from "operator/plugin-sdk/string-coerce-runtime";
+import { truncateUtf16Safe } from "operator/plugin-sdk/text-utility-runtime";
 
 export function resolveMemoryCitationsMode(cfg: OperatorConfig): MemoryCitationsMode {
   const mode = cfg.memory?.citations;

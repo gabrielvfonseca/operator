@@ -2351,7 +2351,7 @@ export const it: TranslationMap = {
       onboardingTitle: "No workspaces yet",
       onboardingSubtitle:
         "Ask your agent to build a workspace, or create one from the command line.",
-      onboardingCommand: "openclaw workspaces tabs create --title Main",
+      onboardingCommand: "operator workspaces tabs create --title Main",
       tabTitle: "This workspace is empty",
       tabSubtitle: "Ask your agent to add a widget, or add one yourself.",
       noVisibleTabs: "Every workspace tab is hidden. Restore one from the hidden menu.",
@@ -3289,9 +3289,9 @@ export const it: TranslationMap = {
         summary:
           "Il Gateway è raggiungibile, ma richiede un token o una password corrispondente prima che questo browser possa connettersi.",
         stepPaste:
-          "Incolla il token da openclaw dashboard --no-open oppure inserisci la password configurata.",
+          "Incolla il token da operator dashboard --no-open oppure inserisci la password configurata.",
         stepGenerate:
-          "Se non è configurato alcun token, esegui openclaw doctor --generate-gateway-token sull’host Gateway.",
+          "Se non è configurato alcun token, esegui operator doctor --generate-gateway-token sull’host Gateway.",
         stepConnect: "Fai clic di nuovo su Connect dopo aver aggiornato la credenziale.",
       },
       authFailed: {
@@ -3299,7 +3299,7 @@ export const it: TranslationMap = {
         summary:
           "La credenziale fornita è stata rifiutata. La causa più comune è un token obsoleto o copiato da un altro URL Gateway.",
         stepDashboard:
-          "Esegui openclaw dashboard --no-open e apri il nuovo URL oppure incolla il suo token.",
+          "Esegui operator dashboard --no-open e apri il nuovo URL oppure incolla il suo token.",
         stepReplace:
           "Sostituisci i valori token/password obsoleti; non riutilizzare un token da un altro URL Gateway.",
         stepMode:
@@ -3324,8 +3324,8 @@ export const it: TranslationMap = {
           "Questo browser richiede un’approvazione una tantum dall’host Gateway prima di poter usare Control UI.",
         upgradeSummary:
           "Questo browser è già noto, ma l’accesso richiesto è cambiato e richiede una nuova approvazione.",
-        stepList: "Esegui openclaw devices list sull’host Gateway.",
-        stepApproveId: "Approva questa richiesta: openclaw devices approve {requestId}.",
+        stepList: "Esegui operator devices list sull’host Gateway.",
+        stepApproveId: "Approva questa richiesta: operator devices approve {requestId}.",
         stepApprove: "Approva la richiesta browser/dispositivo in sospeso da quell’elenco.",
         stepReconnect: "Riconnettiti al termine dell’approvazione.",
       },
@@ -3353,7 +3353,7 @@ export const it: TranslationMap = {
         summary:
           "La Control UI servita e il Gateway in esecuzione non concordano sul protocollo di connessione supportato.",
         stepDashboard:
-          "Riapri il dashboard servito con openclaw dashboard in modo che UI e Gateway provengano dalla stessa installazione.",
+          "Riapri il dashboard servito con operator dashboard in modo che UI e Gateway provengano dalla stessa installazione.",
         stepDevUi:
           "Se usi pnpm ui:dev, ricompila o riavvia la UI di sviluppo contro il checkout corrente.",
         stepRestart:
@@ -3364,11 +3364,11 @@ export const it: TranslationMap = {
         summary:
           "Il browser non è riuscito a completare la connessione al Gateway. Controlla destinazione e trasporto prima di riprovare le credenziali.",
         stepGateway:
-          "Conferma che il Gateway sia in esecuzione con openclaw status o openclaw gateway run.",
+          "Conferma che il Gateway sia in esecuzione con operator status o operator gateway run.",
         stepUrl:
           "Controlla l’URL WebSocket e usa wss:// quando il Gateway è dietro HTTPS/Tailscale Serve.",
         stepDashboard:
-          "Riapri il dashboard con openclaw dashboard --no-open per ricopiare l’URL corrente e i dettagli auth.",
+          "Riapri il dashboard con operator dashboard --no-open per ricopiare l’URL corrente e i dettagli auth.",
       },
     },
   },

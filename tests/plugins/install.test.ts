@@ -10,7 +10,7 @@ import {
   type DiagnosticSecurityEvent,
 } from "../../src/infra/diagnostic-events.js";
 import { safePathSegmentHashed } from "../../src/infra/install-safe-path.js";
-import { resolveOperatorPackageRootSync } from "../../src/infra/openclaw-root.js";
+import { resolveOperatorPackageRootSync } from "../../src/infra/operator-root.js";
 import { runCommandWithTimeout } from "../../src/process/exec.js";
 import { initializeGlobalHookRunner, resetGlobalHookRunner } from "../../src/plugins/hook-runner-global.js";
 import { createMockPluginRegistry } from "../../src/plugins/hooks.test-helpers.js";
@@ -48,7 +48,7 @@ vi.mock("../process/exec.js", () => ({
   runCommandWithTimeout: vi.fn(),
 }));
 
-vi.mock("../infra/openclaw-root.js", () => ({
+vi.mock("../infra/operator-root.js", () => ({
   resolveOperatorPackageRootSync: vi.fn(),
 }));
 
@@ -563,7 +563,7 @@ function setupManifestInstallFixture(params: { manifestId: string; packageName?:
 function setPluginMinHostVersion(pluginDir: string, minHostVersion: string) {
   const packageJsonPath = path.join(pluginDir, "package.json");
   const manifest = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8")) as {
-    openclaw?: { install?: Record<string, unknown> };
+    operator?: { install?: Record<string, unknown> };
   };
   manifest.operator = {
     ...manifest.operator,
@@ -578,7 +578,7 @@ function setPluginMinHostVersion(pluginDir: string, minHostVersion: string) {
 function setPluginPackageCompatibility(pluginDir: string, pluginApiRange: unknown) {
   const packageJsonPath = path.join(pluginDir, "package.json");
   const manifest = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8")) as {
-    openclaw?: { compat?: Record<string, unknown> };
+    operator?: { compat?: Record<string, unknown> };
   };
   manifest.operator = {
     ...manifest.operator,
@@ -840,7 +840,7 @@ beforeAll(async () => {
   fs.writeFileSync(
     path.join(manifestInstallTemplateDir, "package.json"),
     JSON.stringify({
-      name: "@gabrielvfonseca/cognee-openclaw",
+      name: "@gabrielvfonseca/cognee-operator",
       version: "0.0.1",
       operator: { extensions: ["./dist/index.js"] },
     }),
@@ -3759,7 +3759,7 @@ describe("installPluginFromDir", () => {
     const { pluginDir, extensionsDir } = setupInstallPluginFromDirFixture();
     const packageJsonPath = path.join(pluginDir, "package.json");
     const manifest = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8")) as {
-      openclaw?: Record<string, unknown>;
+      operator?: Record<string, unknown>;
     };
     manifest.operator = {
       ...manifest.operator,
@@ -3851,7 +3851,7 @@ describe("installPluginFromDir", () => {
     expect(
       infoMessages.some((msg) =>
         msg.includes(
-          'Plugin manifest id "memory-cognee" differs from npm package name "@gabrielvfonseca/cognee-openclaw"',
+          'Plugin manifest id "memory-cognee" differs from npm package name "@gabrielvfonseca/cognee-operator"',
         ),
       ),
     ).toBe(true);
@@ -4021,7 +4021,7 @@ describe("linkOperatorPeerDependencies (via installPluginFromDir)", () => {
     fs.writeFileSync(path.join(pluginDir, "index.js"), "export {};\n", "utf-8");
   }
 
-  it("creates a node_modules/openclaw symlink when peerDependencies declares openclaw", async () => {
+  it("creates a node_modules/operator symlink when peerDependencies declares operator", async () => {
     const { pluginDir, extensionsDir } = setupPluginInstallDirs();
     const fakeHostRoot = suiteTempRootTracker.makeTempDir();
     const run = vi.mocked(runCommandWithTimeout);
@@ -4043,7 +4043,7 @@ describe("linkOperatorPeerDependencies (via installPluginFromDir)", () => {
     expect(run).not.toHaveBeenCalled();
   });
 
-  it("keeps the openclaw peer symlink when a local plugin already has dependencies", async () => {
+  it("keeps the operator peer symlink when a local plugin already has dependencies", async () => {
     const { pluginDir, extensionsDir } = setupPluginInstallDirs();
     const fakeHostRoot = suiteTempRootTracker.makeTempDir();
     resolveRootMock.mockReturnValue(fakeHostRoot);
@@ -4070,7 +4070,7 @@ describe("linkOperatorPeerDependencies (via installPluginFromDir)", () => {
     expect(vi.mocked(runCommandWithTimeout)).not.toHaveBeenCalled();
   });
 
-  it("replaces a copied local openclaw package with the host peer symlink", async () => {
+  it("replaces a copied local operator package with the host peer symlink", async () => {
     const { pluginDir, extensionsDir } = setupPluginInstallDirs();
     const fakeHostRoot = suiteTempRootTracker.makeTempDir();
     resolveRootMock.mockReturnValue(fakeHostRoot);
@@ -4153,9 +4153,9 @@ describe("linkOperatorPeerDependencies (via installPluginFromDir)", () => {
 
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      expect(result.error).toContain("plugin-local node_modules/openclaw link");
+      expect(result.error).toContain("plugin-local node_modules/operator link");
     }
-    expectWarningIncludes(warnings, "Could not locate openclaw package root");
+    expectWarningIncludes(warnings, "Could not locate operator package root");
   });
 });
 /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

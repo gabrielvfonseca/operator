@@ -1,11 +1,11 @@
 // Embedding abstraction for semantic memory. Delegates to the configured
 // provider adapter so semantic storage/search use real vectors.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import type { OperatorConfig } from "operator/plugin-sdk/config-contracts";
+import { createLazyRuntimeModule } from "operator/plugin-sdk/lazy-runtime";
 import type { MemoryTieredPluginConfig } from "./config.js";
 
 const loadMemoryEmbeddingProviderModule = createLazyRuntimeModule(
-  () => import("openclaw/plugin-sdk/memory-core-host-engine-embeddings"),
+  () => import("operator/plugin-sdk/memory-core-host-engine-embeddings"),
 );
 
 export type Embedder = {

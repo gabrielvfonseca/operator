@@ -1863,7 +1863,7 @@ describe("runCronIsolatedAgentTurn delivery instruction", () => {
   });
 
   it("does not instruct the agent to summarize when delivery is requested", async () => {
-    // Regression for https://github.com/openclaw/openclaw/issues/58535:
+    // Regression for https://github.com/operator/operator/issues/58535:
     // "summary" caused LLMs to condense structured output and drop fields
     // non-deterministically on every run.
     mockRunCronFallbackPassthrough();
@@ -1882,7 +1882,7 @@ describe("runCronIsolatedAgentTurn delivery instruction", () => {
   });
 
   it("keeps a successful isolated turn at status ok when post-run delivery fails", async () => {
-    // Regression for https://github.com/openclaw/openclaw/issues/94058:
+    // Regression for https://github.com/operator/operator/issues/94058:
     // a successful isolated session followed by a delivery-dispatch failure
     // must not collapse the execution status into `error`. Delivery failure is
     // recorded separately so the outer scheduled run keeps `status=ok` while

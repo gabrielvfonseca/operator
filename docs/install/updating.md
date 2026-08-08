@@ -45,7 +45,7 @@ verifies the selected exact package, and installs that exact version. Missing
 or inconsistent registry data fails closed; it never falls back to `latest`.
 If the selected version is older than the installed version, the normal
 downgrade confirmation still applies. The CLI persists the channel after a
-successful core update; a direct `npm install -g openclaw@extended-stable`
+successful core update; a direct `npm install -g operator@extended-stable`
 does not update `update.channel`.
 After the core swap, eligible official npm plugins with bare/default or
 `latest` intent converge to that exact core version. Exact pins and explicit
@@ -57,7 +57,7 @@ Operator cannot safely distinguish an old automatic pin from a user pin; run
 to opt that plugin back into exact-core tracking.
 
 `--channel dev` gives a persistent moving GitHub `main` checkout. For a one-off
-package update, `--tag main` maps to the `github:openclaw/openclaw#main` package
+package update, `--tag main` maps to the `github:operator/operator#main` package
 spec and installs it directly through the target package manager (npm/pnpm/bun).
 
 For managed plugins, a missing beta release is a warning, not a failure: the
@@ -94,7 +94,7 @@ converting it. If the gateway is already installed, `operator update` refreshes
 the service metadata and restarts it unless you pass `--no-restart`.
 
 For package installs with a managed Gateway service, `operator update` targets
-the package root used by that service. If the shell `openclaw` command comes
+the package root used by that service. If the shell `operator` command comes
 from a different install, the updater prints both roots and the managed
 service's Node path, and checks that Node version against the target release's
 `engines.node` requirement before replacing the package.
@@ -125,7 +125,7 @@ curl -fsSL https://operator.ai/install.sh | bash -s -- --install-method npm --ve
 ## Alternative: manual npm, pnpm, or bun
 
 ```bash
-npm i -g openclaw@latest
+npm i -g operator@latest
 ```
 
 Prefer `operator update` for supervised installs: it can coordinate the package
@@ -143,7 +143,7 @@ root-owned global prefix on your host:
 
 ```bash
 operator gateway stop
-sudo /usr/bin/npm i -g openclaw@latest
+sudo /usr/bin/npm i -g operator@latest
 operator gateway install --force
 operator gateway restart
 ```
@@ -176,7 +176,7 @@ for the child npm process. That policy exists for general protection, but an
 explicit Operator update means "install the selected release now."
 
 ```bash
-pnpm add -g openclaw@latest
+pnpm add -g operator@latest
 ```
 
 If pnpm 11 installed Operator 2026.7.1, run that manual command once. That
@@ -194,7 +194,7 @@ comma-separated group manually so its sibling packages and build policy stay
 intact.
 
 ```bash
-bun add -g openclaw@latest
+bun add -g operator@latest
 ```
 
 ### Advanced npm install topics
@@ -203,14 +203,14 @@ bun add -g openclaw@latest
   <Accordion title="Read-only package tree">
     Operator treats packaged global installs as read-only at runtime, even when the global package directory is writable by the current user. Plugin package installs live in Operator-owned npm/git roots under the user config directory, and Gateway startup does not mutate the Operator package tree.
 
-    Some Linux npm setups install global packages under root-owned directories such as `/usr/lib/node_modules/openclaw`. Operator supports that layout because plugin install/update commands write outside that global package directory.
+    Some Linux npm setups install global packages under root-owned directories such as `/usr/lib/node_modules/operator`. Operator supports that layout because plugin install/update commands write outside that global package directory.
 
   </Accordion>
   <Accordion title="Hardened systemd units">
     Give Operator write access to its config/state roots so explicit plugin installs, plugin updates, and doctor cleanup can persist their changes:
 
     ```ini
-    ReadWritePaths=/var/lib/operator /home/openclaw/.operator /tmp
+    ReadWritePaths=/var/lib/operator /home/operator/.operator /tmp
     ```
 
   </Accordion>
@@ -324,7 +324,7 @@ create a full state recovery point. Before a significant update, create one
 explicitly:
 
 ```bash
-mkdir -p ~/Backups/openclaw
+mkdir -p ~/Backups/operator
 operator backup create --output ~/Backups/operator --verify
 ```
 
@@ -367,7 +367,7 @@ scope that own the current Gateway:
 
 ```bash
 operator gateway stop
-npm i -g openclaw@<known-good-version>
+npm i -g operator@<known-good-version>
 operator gateway install --force
 operator gateway restart
 ```

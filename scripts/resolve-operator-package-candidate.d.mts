@@ -14,7 +14,7 @@ export function parseArgs(argv: unknown): {
   trustedSourcePolicy: string;
   help?: true;
 };
-export function validateoperatorPackageSpec(spec: unknown): void;
+export function validateOperatorPackageSpec(spec: unknown): void;
 export function resolveNpmPackageCandidatePackRunner(
   packageSpec: string,
   outputDir: string,
@@ -72,7 +72,7 @@ export function downloadUrl(
 export function readPackageBuildSourceSha(tarball: unknown): Promise<unknown>;
 export function main(argv?: string[]): Promise<void>;
 export const ARTIFACT_TARBALL_SCAN_MAX_ENTRIES: 10000;
-export const operator_PACKAGE_SPEC_RE: RegExp;
+export const OPENCLAW_PACKAGE_SPEC_RE: RegExp;
 export function runCommandForTest(
   command: unknown,
   args: unknown,
@@ -97,7 +97,7 @@ export function moveNewestPackedTarballForTest(
   packOutput: unknown,
   outputName: unknown,
 ): Promise<string>;
-export function cleanPackedoperatorTarballsForTest(outputDir: unknown): Promise<void>;
+export function cleanPackedOperatorTarballsForTest(outputDir: unknown): Promise<void>;
 declare function run(
   command: unknown,
   args: unknown,

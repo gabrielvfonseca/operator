@@ -225,8 +225,8 @@ describe("config io paths", () => {
       expect(logger.warn).toHaveBeenCalledWith(
         [
           `Your Operator config was written by version 9999.1.1, but this command is running ${VERSION}.`,
-          "Check: `openclaw --version`, `which openclaw`, and `openclaw gateway status --deep`.",
-          "If unexpected, update PATH so `openclaw` points to the version you want, or reinstall the Gateway service from that same Operator install.",
+          "Check: `operator --version`, `which operator`, and `operator gateway status --deep`.",
+          "If unexpected, update PATH so `operator` points to the version you want, or reinstall the Gateway service from that same Operator install.",
         ].join("\n"),
       );
     });

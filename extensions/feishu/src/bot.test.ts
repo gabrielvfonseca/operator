@@ -369,9 +369,9 @@ vi.mock("./dynamic-agent.js", () => ({
   maybeCreateDynamicAgent: mockMaybeCreateDynamicAgent,
 }));
 
-vi.mock("openclaw/plugin-sdk/conversation-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/conversation-runtime")>(
-    "openclaw/plugin-sdk/conversation-runtime",
+vi.mock("operator/plugin-sdk/conversation-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/conversation-runtime")>(
+    "operator/plugin-sdk/conversation-runtime",
   );
   return {
     ...actual,
@@ -417,7 +417,7 @@ afterAll(() => {
   vi.doUnmock("./media.js");
   vi.doUnmock("./audio-preflight.runtime.js");
   vi.doUnmock("./client.js");
-  vi.doUnmock("openclaw/plugin-sdk/conversation-runtime");
+  vi.doUnmock("operator/plugin-sdk/conversation-runtime");
   vi.resetModules();
 });
 

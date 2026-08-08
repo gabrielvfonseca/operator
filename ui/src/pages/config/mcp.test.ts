@@ -50,7 +50,7 @@ describe("renderMcp", () => {
     expect(container.querySelector(".mcp-server-list")?.textContent).toContain("docs");
     expect(container.querySelector(".mcp-server-list")?.textContent).toContain("local");
     expect(container.querySelector(".mcp-server-list")?.textContent).toContain(
-      "openclaw mcp login docs",
+      "operator mcp login docs",
     );
 
     expect(
@@ -101,7 +101,7 @@ describe("renderMcp", () => {
     );
 
     const text = container.querySelector(".mcp-server-list")?.textContent ?? "";
-    expect(text).toContain("openclaw mcp probe 'docs; echo unsafe'");
+    expect(text).toContain("operator mcp probe 'docs; echo unsafe'");
   });
 
   it("redacts sensitive URL values in server summaries", () => {

@@ -26,7 +26,7 @@ struct GatewayErrorsTests {
             userMessageOverride: "Approve the requested permissions on the gateway, then reconnect.",
             actionLabel: "Approve on gateway",
             actionCommand: "operator devices approve req-123",
-            docsURLString: "https://docs.openclaw.ai/gateway/pairing",
+            docsURLString: "https://docs.operator.ai/gateway/pairing",
             retryableOverride: false,
             pauseReconnectOverride: true,
             clientMinProtocol: 4,
@@ -39,7 +39,7 @@ struct GatewayErrorsTests {
         #expect(error.ownerRaw == "gateway")
         #expect(error.titleOverride == "Additional permissions required")
         #expect(error.actionCommand == "operator devices approve req-123")
-        #expect(error.docsURLString == "https://docs.openclaw.ai/gateway/pairing")
+        #expect(error.docsURLString == "https://docs.operator.ai/gateway/pairing")
         #expect(error.pauseReconnectOverride == true)
         #expect(error.clientMinProtocol == 4)
         #expect(error.clientMaxProtocol == 4)

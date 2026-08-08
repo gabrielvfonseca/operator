@@ -85,7 +85,7 @@ export type CopilotSessionConfig = Pick<
   | "workingDirectory"
 >;
 // NOTE(plugin-sdk-widening): AttemptParamsLike can be removed once
-// openclaw/plugin-sdk/agent-harness-runtime declares auth, messages,
+// operator/plugin-sdk/agent-harness-runtime declares auth, messages,
 // onAssistantDelta, and initialReplayState.sdkSessionId fields. Tracked by
 // project operator-copilot-harness; reviewer-attempt-bridge note.
 
@@ -162,7 +162,7 @@ interface CopilotAttemptDeps {
   isHostScopedToolActive?: (toolName: string) => boolean;
   /**
    * Optional override for sandbox-context resolution. The default delegates to
-   * `openclaw/plugin-sdk/agent-harness-runtime#resolveSandboxContext`, which is
+   * `operator/plugin-sdk/agent-harness-runtime#resolveSandboxContext`, which is
    * the same path PI uses. Tests inject a stub here to avoid the real
    * resolver's side effects (container provisioning, registry writes).
    */
@@ -170,7 +170,7 @@ interface CopilotAttemptDeps {
   /**
    * Called once with the SDK session id and pooled client immediately
    * after the SDK session is created (or resumed) successfully. The
-   * harness uses this to track the openclawSessionId -> sdkSessionId
+   * harness uses this to track the operatorSessionId -> sdkSessionId
    * mapping needed for `reset(params)` (see harness.ts). Exceptions
    * thrown from this callback are swallowed so they cannot break the
    * attempt.
@@ -1623,8 +1623,8 @@ function readTailUserText(messages: AgentMessage[]): string | undefined {
 // widening the module's public surface for what is otherwise a pure
 // guard. See attempt.ts dual-write tagging block.
 function hasMirrorIdentity(message: AgentMessage): boolean {
-  const record = message as unknown as { __openclaw?: unknown };
-  const meta = record["__openclaw"];
+  const record = message as unknown as { __operator?: unknown };
+  const meta = record["__operator"];
   if (!meta || typeof meta !== "object" || Array.isArray(meta)) {
     return false;
   }

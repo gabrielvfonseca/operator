@@ -459,7 +459,7 @@ case "$install" in
       exit 2
     fi
     OPERATOR_DISABLE_PLUGIN_REGISTRY_MIGRATION=1 npm install --global --prefix "$npm_prefix" --ignore-scripts --omit=dev --no-audit --no-fund "$package_archive"
-    package_dir=$npm_prefix/lib/node_modules/openclaw
+    package_dir=$npm_prefix/lib/node_modules/operator
     if [ ! -f "$package_dir/operator.mjs" ]; then
       printf '%s\n' 'npm did not install the Operator package root' >&2
       exit 2
@@ -539,9 +539,9 @@ function normalizeHandshake(artifact: WorkerInstallationArtifact): WorkerAdmissi
   if (artifact.install === "npm") {
     if (
       !isExactSemverVersion(operatorVersion) ||
-      artifact.packageSpec !== `openclaw@${operatorVersion}`
+      artifact.packageSpec !== `operator@${operatorVersion}`
     ) {
-      throw new Error(`Worker npm install must use exact package openclaw@${operatorVersion}`);
+      throw new Error(`Worker npm install must use exact package operator@${operatorVersion}`);
     }
     if (!NPM_INTEGRITY_PATTERN.test(artifact.packageIntegrity)) {
       throw new Error("Worker npm install requires a pinned SHA-512 package integrity");

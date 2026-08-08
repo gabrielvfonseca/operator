@@ -66,7 +66,7 @@ Collected observations from people who spend too much time watching their sideba
 - At least one recorded visitor was not a lobster. It maintains that it is.
 - People who have used the same browser for a long time report their lobster arrives sooner, stays longer, and waves at them. People who shoo a lot describe a certain distance.
 - After a Gateway upgrade, pay attention to what the first visitor is carrying.
-- The lobster in the sidebar has a cousin in the terminal. It shows up in the `openclaw` banner on days of its own choosing, and no one has successfully predicted which.
+- The lobster in the sidebar has a cousin in the terminal. It shows up in the `operator` banner on days of its own choosing, and no one has successfully predicted which.
 - On the days the cousin appears, sidebar lobsters have been seen dressed nautically. The two refuse to explain the connection.
 - During very long runs, the lobster stops playing and settles in to wait with you. Solidarity.
 - When something crosses the ledge, the resident stops what it is doing and watches. You would too.

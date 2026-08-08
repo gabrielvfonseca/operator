@@ -48,12 +48,12 @@ import { filterToolsForVisionInputs } from "./vision-tools.js";
 import { resolveCodexWebSearchPlan, type CodexNativeWebSearchSupport } from "./web-search.js";
 
 type OperatorCodingToolsOptions = NonNullable<
-  Parameters<typeof import("openclaw/plugin-sdk/agent-harness")["createOperatorCodingTools"]>[0]
+  Parameters<typeof import("operator/plugin-sdk/agent-harness")["createOperatorCodingTools"]>[0]
 >;
 
 /** Factory seam for constructing Operator runtime tools without eagerly loading agent-harness. */
 type OperatorCodingToolsFactory =
-  typeof import("openclaw/plugin-sdk/agent-harness")["createOperatorCodingTools"];
+  typeof import("operator/plugin-sdk/agent-harness")["createOperatorCodingTools"];
 type OperatorDynamicTool = ReturnType<OperatorCodingToolsFactory>[number];
 type OperatorSandboxContext = Awaited<ReturnType<typeof resolveSandboxContext>>;
 type CodexDynamicToolBuildEvent = Parameters<
@@ -72,13 +72,13 @@ function preserveRingZeroSystemAgentTool<T extends { name: string; catalogMode?:
   allTools: T[],
   filteredTools: T[],
 ): T[] {
-  const openclaw = allTools.find(
+  const operator = allTools.find(
     (tool) => tool.name === "@gabrielvfonseca/operator" && tool.catalogMode === "direct-only",
   );
-  if (!openclaw) {
+  if (!operator) {
     return filteredTools;
   }
-  return [openclaw, ...filteredTools.filter((tool) => tool.name !== "@gabrielvfonseca/operator")];
+  return [operator, ...filteredTools.filter((tool) => tool.name !== "@gabrielvfonseca/operator")];
 }
 /** Runtime inputs needed to derive the exact Codex dynamic tool surface for a turn. */
 type DynamicToolBuildParams = {
@@ -229,7 +229,7 @@ export async function buildDynamicTools(input: DynamicToolBuildParams) {
   const {
     createOperatorCodingTools: defaultCreateOperatorCodingTools,
     resolveWebSearchToolPolicy,
-  } = await import("openclaw/plugin-sdk/agent-harness");
+  } = await import("operator/plugin-sdk/agent-harness");
   const createOperatorCodingTools =
     dynamicToolBuildState.openClawCodingToolsFactory ?? defaultCreateOperatorCodingTools;
   toolBuildStages.mark("load-agent-harness-tools");

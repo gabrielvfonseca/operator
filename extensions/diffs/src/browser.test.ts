@@ -304,7 +304,7 @@ describe("diffs plugin registration", () => {
         entries: {
           diffs: {
             config: {
-              viewerBaseUrl: "https://startup.example.com/openclaw",
+              viewerBaseUrl: "https://startup.example.com/operator",
               defaults: {
                 mode: "view",
                 theme: "light",
@@ -332,7 +332,7 @@ describe("diffs plugin registration", () => {
         },
       },
       pluginConfig: {
-        viewerBaseUrl: "https://startup.example.com/openclaw",
+        viewerBaseUrl: "https://startup.example.com/operator",
         defaults: {
           mode: "view",
           theme: "light",

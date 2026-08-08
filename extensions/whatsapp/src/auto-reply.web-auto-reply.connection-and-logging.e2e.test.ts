@@ -51,7 +51,7 @@ const deliveryQueueMocks = vi.hoisted(() => ({
   drainPendingDeliveries: vi.fn(async (_opts: unknown) => undefined),
 }));
 
-vi.mock("openclaw/plugin-sdk/delivery-queue-runtime", () => ({
+vi.mock("operator/plugin-sdk/delivery-queue-runtime", () => ({
   drainPendingDeliveries: deliveryQueueMocks.drainPendingDeliveries,
 }));
 
@@ -477,7 +477,7 @@ describe("web auto-reply connection", () => {
     expect(sleep).not.toHaveBeenCalled();
     expectErrorContaining(runtime.error, "status 440");
     expectErrorContaining(runtime.error, "session conflict");
-    expectErrorContaining(runtime.error, "openclaw channels logout --channel whatsapp");
+    expectErrorContaining(runtime.error, "operator channels logout --channel whatsapp");
     expectErrorContaining(runtime.error, "Stopping web monitoring");
   });
 
@@ -1155,13 +1155,13 @@ describe("web auto-reply connection", () => {
         const secondPattern = escapeRegExp(secondTimestamp);
         expect(firstArgs.Body).toMatch(
           new RegExp(
-            `\\[WhatsApp \\+1 (\\+\\d+[smhd] )?${firstPattern}\\] \\+1: \\[openclaw\\] first`,
+            `[operator][WhatsApp \\+1 (\\+\\d+[smhd] )?${firstPattern}\\] \\+1: \\[operator\\] first`,
           ),
         );
         expect(firstArgs.Body).not.toContain("second");
         expect(secondArgs.Body).toMatch(
           new RegExp(
-            `\\[WhatsApp \\+1 (\\+\\d+[smhd] )?${secondPattern}\\] \\+1: \\[openclaw\\] second`,
+            `[operator][WhatsApp \\+1 (\\+\\d+[smhd] )?${secondPattern}\\] \\+1: \\[operator\\] second`,
           ),
         );
         expect(secondArgs.Body).not.toContain("first");

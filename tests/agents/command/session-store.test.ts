@@ -11,7 +11,7 @@ import {
   loadSessionEntry,
   replaceSessionEntry,
 } from "../../../src/config/sessions/session-accessor.js";
-import { closeOperatorAgentDatabasesForTest } from "../../../src/state/openclaw-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../../src/state/operator-agent-db.js";
 import type { EmbeddedAgentRunResult } from "../../../src/agents/embedded-agent.js";
 import {
   clearCliSessionInStore,

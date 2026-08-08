@@ -443,7 +443,7 @@ describe("buildTailscaleHttpsUrl", () => {
       buildTailscaleHttpsUrl({
         tailscaleMode: "serve",
         tailscaleDns: "node.tailnet.ts.net",
-        serviceName: "svc:openclaw",
+        serviceName: "svc:operator",
         controlUiBasePath: "/control",
       }),
     ).toBe("https://operator.tailnet.ts.net/control");
@@ -454,7 +454,7 @@ describe("buildTailscaleHttpsUrl", () => {
       buildTailscaleHttpsUrl({
         tailscaleMode: "serve",
         tailscaleDns: "100.64.0.8",
-        serviceName: "svc:openclaw",
+        serviceName: "svc:operator",
       }),
     ).toBeNull();
   });

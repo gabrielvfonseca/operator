@@ -505,7 +505,9 @@ async function main() {
   if (command === "capture-selector") {
     const previous = capturePriorExtendedStableSelector({
       query: () =>
-        spawnSync("npm", ["view", "operator", "dist-tags", "--json"], { encoding: "utf8" }),
+        spawnSync("npm", ["view", "@gabrielvfonseca/operator", "dist-tags", "--json"], {
+          encoding: "utf8",
+        }),
     });
     appendOutput({ previous });
     return;

@@ -22,7 +22,7 @@ describe("resolveSandboxScript", () => {
 
   const scriptRel = path.join("scripts", "sandbox-setup.sh");
 
-  // Create a repo checkout that the shared resolver will recognize: it keys off an openclaw
+  // Create a repo checkout that the shared resolver will recognize: it keys off an operator
   // package.json marker, then resolveSandboxScript looks for scripts/ under that root.
   function mkRepo(prefix: string): string {
     const repo = mkTmp(prefix);
@@ -81,7 +81,7 @@ describe("resolveSandboxScript", () => {
     const repo = mkRepo("ocsbx-missing-argv1-");
 
     const result = resolveSandboxScript(scriptRel, {
-      argv1: "/nonexistent-ocsbx/bin/openclaw",
+      argv1: "/nonexistent-ocsbx/bin/operator",
       cwd: repo,
     });
 
@@ -90,7 +90,7 @@ describe("resolveSandboxScript", () => {
   });
 
   it("keeps searching cwd when the launcher resolves to a package root without the script", () => {
-    // Installed/published openclaw package root: it carries the package.json marker but not
+    // Installed/published operator package root: it carries the package.json marker but not
     // scripts/sandbox-setup.sh, because the npm files allowlist drops scripts/. It resolves from
     // argv1 before cwd, so stopping at the first root would miss the source checkout below.
     const installed = mkTmp("ocsbx-installed-");

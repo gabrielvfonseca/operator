@@ -25,8 +25,8 @@ export type ExternalCodePluginValidationResult = {
 
 /** Required package.json field paths for external code plugin packages. */
 export const EXTERNAL_CODE_PLUGIN_REQUIRED_FIELD_PATHS = [
-  "openclaw.compat.pluginApi",
-  "openclaw.build.operatorVersion",
+  "operator.compat.pluginApi",
+  "operator.build.operatorVersion",
 ] as const;
 
 /** Narrow unknown values to plain records. */
@@ -46,11 +46,11 @@ function normalizeOptionalString(value: unknown): string | undefined {
 /** Read Operator package.json blocks without trusting caller input shape. */
 function readOperatorBlock(packageJson: unknown) {
   const root = isRecord(packageJson) ? packageJson : undefined;
-  const openclaw = isRecord(root?.openclaw) ? root.openclaw : undefined;
-  const compat = isRecord(openclaw?.compat) ? openclaw.compat : undefined;
-  const build = isRecord(openclaw?.build) ? openclaw.build : undefined;
-  const install = isRecord(openclaw?.install) ? openclaw.install : undefined;
-  return { root, openclaw, compat, build, install };
+  const operator = isRecord(root?.operator) ? root.operator : undefined;
+  const compat = isRecord(operator?.compat) ? operator.compat : undefined;
+  const build = isRecord(operator?.build) ? operator.build : undefined;
+  const install = isRecord(operator?.install) ? operator.install : undefined;
+  return { root, operator, compat, build, install };
 }
 
 /** Normalize compatibility metadata from an external plugin package.json. */
@@ -90,10 +90,10 @@ export function listMissingExternalCodePluginFieldPaths(packageJson: unknown): s
   const { compat, build } = readOperatorBlock(packageJson);
   const missing: string[] = [];
   if (!normalizeOptionalString(compat?.pluginApi)) {
-    missing.push("openclaw.compat.pluginApi");
+    missing.push("operator.compat.pluginApi");
   }
   if (!normalizeOptionalString(build?.operatorVersion)) {
-    missing.push("openclaw.build.operatorVersion");
+    missing.push("operator.build.operatorVersion");
   }
   return missing;
 }

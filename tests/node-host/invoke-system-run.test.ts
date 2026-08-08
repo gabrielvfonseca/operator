@@ -1036,16 +1036,16 @@ describe("handleSystemRunInvoke mac app exec host routing", () => {
         label: "semicolon chain simple command",
         command:
           process.platform === "win32"
-            ? ["cmd.exe", "/d", "/s", "/c", "openclaw status; id"]
-            : ["/bin/sh", "-lc", "openclaw status; id"],
+            ? ["cmd.exe", "/d", "/s", "/c", "operator status; id"]
+            : ["/bin/sh", "-lc", "operator status; id"],
         approvalRequired: true,
       },
       {
         label: "semicolon chain path read",
         command:
           process.platform === "win32"
-            ? ["cmd.exe", "/d", "/s", "/c", "openclaw status; cat /etc/passwd"]
-            : ["/bin/sh", "-lc", "openclaw status; cat /etc/passwd"],
+            ? ["cmd.exe", "/d", "/s", "/c", "operator status; cat /etc/passwd"]
+            : ["/bin/sh", "-lc", "operator status; cat /etc/passwd"],
         approvalRequired: true,
       },
       {

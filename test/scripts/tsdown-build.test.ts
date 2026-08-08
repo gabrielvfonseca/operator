@@ -24,7 +24,7 @@ import { createScriptTestHarness } from "./test-helpers.js";
 const { createTempDir } = createScriptTestHarness();
 const NO_MEMORY_LIMIT = {
   cgroupMemoryLimitPaths: [],
-  procMeminfoPath: "/openclaw-test-missing-proc-meminfo",
+  procMeminfoPath: "/operator-test-missing-proc-meminfo",
 };
 
 function expectedTaskkillPath(): string {
@@ -152,7 +152,7 @@ describe("resolveTsdownBuildInvocation", () => {
   });
 
   it("routes Windows tsdown builds through the pnpm runner instead of shell=true", () => {
-    const rootDir = createTempDir("openclaw-pnpm-runner-");
+    const rootDir = createTempDir("operator-pnpm-runner-");
     const npmExecPath = path.join(rootDir, "pnpm.cjs");
     fs.writeFileSync(npmExecPath, "console.log('pnpm');\n");
 
@@ -394,7 +394,7 @@ describe("resolveTsdownBuildInvocation", () => {
   });
 
   it("prunes stale hashed root chunk files but keeps stable aliases and nested assets", async () => {
-    const rootDir = createTempDir("openclaw-tsdown-build-");
+    const rootDir = createTempDir("operator-tsdown-build-");
     const distDir = path.join(rootDir, "dist");
     const distRuntimeDir = path.join(rootDir, "dist-runtime");
     await fsPromises.mkdir(path.join(distDir, "control-ui"), { recursive: true });
@@ -430,7 +430,7 @@ describe("resolveTsdownBuildInvocation", () => {
   });
 
   it("cleans tsdown output roots before using tsdown --no-clean", async () => {
-    const rootDir = createTempDir("openclaw-tsdown-clean-");
+    const rootDir = createTempDir("operator-tsdown-clean-");
     const distFile = path.join(rootDir, "dist", "stale.js");
     const pluginGeneratedFile = path.join(rootDir, "dist", "extensions", "telegram", "index.js");
     const distRuntimeFile = path.join(rootDir, "dist-runtime", "stale.js");
@@ -475,7 +475,7 @@ describe("resolveTsdownBuildInvocation", () => {
   });
 
   it("removes CLI startup metadata during default tsdown clean", async () => {
-    const rootDir = createTempDir("openclaw-tsdown-clean-metadata-default-");
+    const rootDir = createTempDir("operator-tsdown-clean-metadata-default-");
     const metadataFile = path.join(rootDir, "dist", "cli-startup-metadata.json");
     await fsPromises.mkdir(path.dirname(metadataFile), { recursive: true });
     await fsPromises.writeFile(metadataFile, '{"generatedBy":"test"}\n');
@@ -486,7 +486,7 @@ describe("resolveTsdownBuildInvocation", () => {
   });
 
   it("preserves CLI startup metadata across opted-in build-all tsdown clean", async () => {
-    const rootDir = createTempDir("openclaw-tsdown-clean-metadata-");
+    const rootDir = createTempDir("operator-tsdown-clean-metadata-");
     const metadataFile = path.join(rootDir, "dist", "cli-startup-metadata.json");
     const staleFile = path.join(rootDir, "dist", "stale.js");
     const nestedStaleFile = path.join(rootDir, "dist", "nested", "stale.js");
@@ -508,7 +508,7 @@ describe("resolveTsdownBuildInvocation", () => {
   });
 
   it("preserves existing package declarations when tsdown DTS output is skipped", async () => {
-    const rootDir = createTempDir("openclaw-tsdown-clean-skip-dts-");
+    const rootDir = createTempDir("operator-tsdown-clean-skip-dts-");
     const declarationFile = path.join(
       rootDir,
       "packages",
@@ -563,7 +563,7 @@ describe("resolveTsdownBuildInvocation", () => {
   });
 
   it("prunes untracked generated declaration files that shadow source entries", async () => {
-    const rootDir = createTempDir("openclaw-tsdown-source-dts-");
+    const rootDir = createTempDir("operator-tsdown-source-dts-");
     const signalDir = path.join(rootDir, "extensions", "signal");
     const signalSrcDir = path.join(signalDir, "src");
     await fsPromises.mkdir(signalSrcDir, { recursive: true });
@@ -615,7 +615,7 @@ describe("createTsdownOutputScanner", () => {
     scanner.append("[UNRESOLVED_IMPORT] extensions/telegram/src/index.ts\n");
     scanner.append("[UNRESOLVED_IMPORT] node_modules/example/index.js\n");
     scanner.append(
-      "[UNRESOLVED_IMPORT] ../../../../tmp/openclaw-pnpm-node-modules/baileys/lib/Utils/messages-media.js\n",
+      "[UNRESOLVED_IMPORT] ../../../../tmp/operator-pnpm-node-modules/baileys/lib/Utils/messages-media.js\n",
     );
 
     expect(scanner.finish().fatalUnresolvedImport).toBeNull();
@@ -794,7 +794,7 @@ describe("runTsdownBuildInvocation", () => {
   it.skipIf(process.platform === "win32")(
     "kills timed-out tsdown process groups when the wrapper exits first",
     async () => {
-      const rootDir = createTempDir("openclaw-tsdown-timeout-");
+      const rootDir = createTempDir("operator-tsdown-timeout-");
       const childPidPath = path.join(rootDir, "child.pid");
       const timeoutMs = 250;
       let childPid: number | undefined;
@@ -849,7 +849,7 @@ describe("runTsdownBuildInvocation", () => {
   it.skipIf(process.platform === "win32")(
     "preserves timeout grace when descendant processes exit cleanly",
     async () => {
-      const rootDir = createTempDir("openclaw-tsdown-timeout-clean-");
+      const rootDir = createTempDir("operator-tsdown-timeout-clean-");
       const readyPath = path.join(rootDir, "child.ready");
       const cleanupPath = path.join(rootDir, "child.cleanup");
       const childPidPath = path.join(rootDir, "child.pid");
@@ -916,7 +916,7 @@ describe("runTsdownBuildInvocation", () => {
   it.skipIf(process.platform === "win32")(
     "cleans process-group descendants before forwarding parent SIGTERM",
     async () => {
-      const rootDir = createTempDir("openclaw-tsdown-parent-signal-");
+      const rootDir = createTempDir("operator-tsdown-parent-signal-");
       const childPidPath = path.join(rootDir, "child.pid");
       const readyPath = path.join(rootDir, "child.ready");
       const scriptUrl = pathToFileURL(path.resolve("scripts/tsdown-build.mjs")).href;

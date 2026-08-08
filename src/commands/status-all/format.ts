@@ -474,7 +474,7 @@ export function buildStatusGatewaySurfaceValues(params: {
   };
 }
 
-/** Builds the stable gateway object used by `openclaw status --json`. */
+/** Builds the stable gateway object used by `operator status --json`. */
 export function buildGatewayStatusJsonPayload(params: {
   gatewayMode: "local" | "remote";
   gatewayConnection: {

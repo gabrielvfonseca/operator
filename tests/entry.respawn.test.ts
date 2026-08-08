@@ -133,7 +133,7 @@ describe("buildCliRespawnPlan", () => {
     const plan = buildCliRespawnPlan({
       argv: [
         "node",
-        "C:\\Users\\alice\\AppData\\Roaming\\npm\\node_modules\\openclaw\\operator.mjs",
+        "C:\\Users\\alice\\AppData\\Roaming\\npm\\node_modules\\operator\\operator.mjs",
         "dashboard",
       ],
       env: {},
@@ -145,7 +145,7 @@ describe("buildCliRespawnPlan", () => {
     const respawnPlan = expectCliRespawnPlan(plan);
     expect(respawnPlan.argv).toEqual([
       "--stack-size=8192",
-      "C:\\Users\\alice\\AppData\\Roaming\\npm\\node_modules\\openclaw\\operator.mjs",
+      "C:\\Users\\alice\\AppData\\Roaming\\npm\\node_modules\\operator\\operator.mjs",
       "dashboard",
     ]);
     expect(respawnPlan.env.NODE_EXTRA_CA_CERTS).toBeUndefined();
@@ -156,7 +156,7 @@ describe("buildCliRespawnPlan", () => {
 
   it("normalizes duplicated Windows node.exe argv before respawning", () => {
     const scriptPath =
-      "C:\\Users\\alice\\AppData\\Roaming\\npm\\node_modules\\openclaw\\operator.mjs";
+      "C:\\Users\\alice\\AppData\\Roaming\\npm\\node_modules\\operator\\operator.mjs";
     const plan = buildCliRespawnPlan({
       argv: [
         "C:\\Program Files\\nodejs\\node.exe",
@@ -181,7 +181,7 @@ describe("buildCliRespawnPlan", () => {
       buildCliRespawnPlan({
         argv: [
           "node",
-          "C:\\Users\\alice\\AppData\\Roaming\\npm\\node_modules\\openclaw\\operator.mjs",
+          "C:\\Users\\alice\\AppData\\Roaming\\npm\\node_modules\\operator\\operator.mjs",
           "dashboard",
         ],
         env: {},
@@ -197,7 +197,7 @@ describe("buildCliRespawnPlan", () => {
       buildCliRespawnPlan({
         argv: [
           "node",
-          "C:\\Users\\alice\\AppData\\Roaming\\npm\\node_modules\\openclaw\\operator.mjs",
+          "C:\\Users\\alice\\AppData\\Roaming\\npm\\node_modules\\operator\\operator.mjs",
           "dashboard",
         ],
         env: {},
@@ -210,7 +210,7 @@ describe("buildCliRespawnPlan", () => {
 
   it("respawns Volta shims through node so the shim is not called directly", () => {
     const plan = buildCliRespawnPlan({
-      argv: ["/home/alice/.volta/bin/volta-shim", "/usr/local/bin/openclaw", "status"],
+      argv: ["/home/alice/.volta/bin/volta-shim", "/usr/local/bin/operator", "status"],
       env: { PATH: "/home/alice/.volta/bin:/usr/bin:/bin" },
       execArgv: [],
       execPath: "/home/alice/.volta/bin/volta-shim",
@@ -222,7 +222,7 @@ describe("buildCliRespawnPlan", () => {
     expect(respawnPlan.command).toBe("node");
     expect(respawnPlan.argv).toEqual([
       EXPERIMENTAL_WARNING_FLAG,
-      "/usr/local/bin/openclaw",
+      "/usr/local/bin/operator",
       "status",
     ]);
     expect(respawnPlan.detachForProcessTree).toBe(true);
@@ -240,7 +240,7 @@ describe("runCliRespawnPlan", () => {
     runCliRespawnPlan(
       {
         command: "/usr/bin/node",
-        argv: ["/repo/openclaw/dist/entry.js", "status"],
+        argv: ["/repo/operator/dist/entry.js", "status"],
         env: { OPERATOR_NODE_OPTIONS_READY: "1" },
         detachForProcessTree: true,
       },
@@ -254,7 +254,7 @@ describe("runCliRespawnPlan", () => {
 
     expect(spawn).toHaveBeenCalledWith(
       "/usr/bin/node",
-      ["/repo/openclaw/dist/entry.js", "status"],
+      ["/repo/operator/dist/entry.js", "status"],
       {
         stdio: "inherit",
         env: { OPERATOR_NODE_OPTIONS_READY: "1" },
@@ -287,7 +287,7 @@ describe("runCliRespawnPlan", () => {
       runCliRespawnPlan(
         {
           command: "/usr/bin/node",
-          argv: ["/repo/openclaw/dist/entry.js", "tui"],
+          argv: ["/repo/operator/dist/entry.js", "tui"],
           env: {},
           detachForProcessTree: false,
         },

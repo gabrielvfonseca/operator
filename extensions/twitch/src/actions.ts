@@ -117,7 +117,7 @@ export const twitchMessageActions: ChannelMessageActionAdapter = {
    * const result = await twitchMessageActions.handleAction!({
    *   action: "send",
    *   params: { message: "Hello Twitch!", to: "#mychannel" },
-   *   cfg: openclawConfig,
+   *   cfg: operatorConfig,
    *   accountId: "default",
    * });
    */

@@ -422,7 +422,7 @@ unrelated thread not owned by another Operator Chat require
 `allowWriteControls`. Neither option bypasses a locked binding.
 
 Operator does not rewrite `HOME` for normal local app-server launches.
-Codex-run subprocesses such as `openclaw`, `gh`, `git`, cloud CLIs, and shell
+Codex-run subprocesses such as `operator`, `gh`, `git`, cloud CLIs, and shell
 commands see the normal process home and can find user-home config and
 tokens. Codex may also discover `$HOME/.agents/skills` and
 `$HOME/.agents/plugins/marketplace.json`; that `.agents` discovery is
@@ -468,7 +468,7 @@ and `HOME` stays inherited so subprocesses can use normal user-home state.
 ## Dynamic tools
 
 Codex dynamic tools default to `searchable` loading, exposed under the
-`openclaw` namespace with `deferLoading: true`. Operator normally does not
+`operator` namespace with `deferLoading: true`. Operator normally does not
 expose dynamic tools that duplicate Codex-native workspace operations or
 Codex's own tool-search surface:
 

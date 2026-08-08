@@ -68,7 +68,7 @@ describe("install security scan official bypass", () => {
   it("bypasses plugin install friction for bundled Operator sources", async () => {
     const result = await scanBundleInstallSourceRuntime({
       logger: {},
-      pluginId: "openclaw/kitchen-sink",
+      pluginId: "operator/kitchen-sink",
       sourceDir: "/tmp/operator-bundled-plugin",
       source: {
         kind: "bundled",

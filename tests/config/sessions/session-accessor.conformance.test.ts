@@ -8,12 +8,12 @@ import {
 } from "../../../src/agents/auth-profiles/sqlite.js";
 import { executeSqliteQueryTakeFirstSync, getNodeSqliteKysely } from "../../../src/infra/kysely-sync.js";
 import { onSessionTranscriptUpdate } from "../../../src/sessions/transcript-events.js";
-import type { DB as OperatorAgentKyselyDatabase } from "../../../../src/state/openclaw-agent-db.generated.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../../../../src/state/operator-agent-db.generated.js";
 import {
   closeOperatorAgentDatabasesForTest,
   openOperatorAgentDatabase,
-} from "../../../src/state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../../../src/state/openclaw-state-db.js";
+} from "../../../src/state/operator-agent-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../../src/state/operator-state-db.js";
 import { appendSqliteTrajectoryRuntimeEvents } from "../../../src/trajectory/runtime-store.sqlite.js";
 import { readSessionArchiveContentSync } from "../../../src/config/sessions/archive-compression.js";
 import {

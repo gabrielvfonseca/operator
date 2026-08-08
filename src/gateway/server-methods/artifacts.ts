@@ -279,18 +279,18 @@ function artifactId(parts: {
 }
 
 function resolveMessageSeq(message: Record<string, unknown>, fallback: number): number {
-  const meta = asOptionalRecord(message["__openclaw"]);
+  const meta = asOptionalRecord(message["__operator"]);
   const seq = meta?.seq;
   return typeof seq === "number" && Number.isInteger(seq) && seq > 0 ? seq : fallback;
 }
 
 function resolveMessageRunId(message: Record<string, unknown>): string | undefined {
-  const meta = asOptionalRecord(message["__openclaw"]);
+  const meta = asOptionalRecord(message["__operator"]);
   return asNonEmptyString(meta?.runId) ?? asNonEmptyString(message.runId);
 }
 
 function resolveMessageTaskId(message: Record<string, unknown>): string | undefined {
-  const meta = asOptionalRecord(message["__openclaw"]);
+  const meta = asOptionalRecord(message["__operator"]);
   return (
     asNonEmptyString(meta?.messageTaskId) ??
     asNonEmptyString(meta?.taskId) ??

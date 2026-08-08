@@ -57,16 +57,16 @@ describe("scripts/ios-release-signing.mjs", () => {
 
     expect(output).toContain("OPENCLAW_CODE_SIGN_STYLE = Manual");
     expect(output).toContain("OPENCLAW_CODE_SIGN_IDENTITY = Apple Distribution");
-    expect(output).toContain("OPENCLAW_APP_GROUP_ID = group.ai.openclawfoundation.app.shared");
-    expect(output).toContain("OPENCLAW_APP_PROFILE = OpenClaw App Store ai.openclawfoundation.app");
+    expect(output).toContain("OPENCLAW_APP_GROUP_ID = group.ai.operatorfoundation.app.shared");
+    expect(output).toContain("OPENCLAW_APP_PROFILE = Operator App Store ai.operatorfoundation.app");
     expect(output).toContain(
-      "OPENCLAW_SHARE_PROFILE = OpenClaw App Store ai.openclawfoundation.app.share",
+      "OPENCLAW_SHARE_PROFILE = Operator App Store ai.operatorfoundation.app.share",
     );
     expect(output).toContain(
-      "OPENCLAW_ACTIVITY_WIDGET_PROFILE = OpenClaw App Store ai.openclawfoundation.app.activitywidget",
+      "OPENCLAW_ACTIVITY_WIDGET_PROFILE = Operator App Store ai.operatorfoundation.app.activitywidget",
     );
     expect(output).toContain(
-      "OPENCLAW_WATCH_APP_PROFILE = OpenClaw App Store ai.openclawfoundation.app.watchkitapp",
+      "OPENCLAW_WATCH_APP_PROFILE = Operator App Store ai.operatorfoundation.app.watchkitapp",
     );
     expect(output).not.toContain("OPENCLAW_WATCH_EXTENSION_PROFILE");
   });
@@ -75,13 +75,13 @@ describe("scripts/ios-release-signing.mjs", () => {
     const output = runSigning("plan");
 
     expect(output).toContain("Team ID: FWJYW4S8P8");
-    expect(output).toContain("Signing repo: git@github.com:openclaw/apps-signing.git");
+    expect(output).toContain("Signing repo: git@github.com:operator/apps-signing.git");
     expect(output).toContain("Signing branch: main");
     expect(output).toContain("Signing setup and sync: Fastlane match");
-    expect(output).not.toContain("OpenClawWatchExtension");
+    expect(output).not.toContain("OperatorWatchExtension");
     expect(output).toContain(
       "capabilities: PUSH_NOTIFICATIONS, APP_GROUPS, APP_ATTEST, HEALTH_KIT",
     );
-    expect(output).toContain("app groups: group.ai.openclawfoundation.app.shared");
+    expect(output).toContain("app groups: group.ai.operatorfoundation.app.shared");
   });
 });

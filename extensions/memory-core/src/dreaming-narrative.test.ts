@@ -5,17 +5,17 @@ import path from "node:path";
 import {
   RequestScopedSubagentRuntimeError,
   SUBAGENT_RUNTIME_REQUEST_SCOPE_ERROR_CODE,
-} from "openclaw/plugin-sdk/error-runtime";
-import { resolveGlobalMap } from "openclaw/plugin-sdk/global-singleton";
-import { resolveStateDir } from "openclaw/plugin-sdk/memory-core-host-runtime-core";
-import * as runtimeConfigSnapshotModule from "openclaw/plugin-sdk/runtime-config-snapshot";
+} from "operator/plugin-sdk/error-runtime";
+import { resolveGlobalMap } from "operator/plugin-sdk/global-singleton";
+import { resolveStateDir } from "operator/plugin-sdk/memory-core-host-runtime-core";
+import * as runtimeConfigSnapshotModule from "operator/plugin-sdk/runtime-config-snapshot";
 import {
   listSessionEntries,
   loadTranscriptEventsSync,
   upsertSessionEntry,
   type SessionEntry,
-} from "openclaw/plugin-sdk/session-store-runtime";
-import { appendSqliteSessionTranscriptEventForTest } from "openclaw/plugin-sdk/sqlite-runtime-testing";
+} from "operator/plugin-sdk/session-store-runtime";
+import { appendSqliteSessionTranscriptEventForTest } from "operator/plugin-sdk/sqlite-runtime-testing";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   dedupeDreamDiaryEntries,
@@ -27,12 +27,12 @@ import {
 } from "./dreaming-narrative.js";
 import { createMemoryCoreTestHarness } from "./test-helpers.js";
 
-vi.mock("openclaw/plugin-sdk/memory-core-host-runtime-core", { spy: true });
+vi.mock("operator/plugin-sdk/memory-core-host-runtime-core", { spy: true });
 
 const { createTempWorkspace } = createMemoryCoreTestHarness();
-const DREAMS_FILE_LOCKS_KEY = Symbol.for("openclaw.memoryCore.dreamingNarrative.fileLocks");
+const DREAMS_FILE_LOCKS_KEY = Symbol.for("operator.memoryCore.dreamingNarrative.fileLocks");
 const NARRATIVE_SESSION_LOCKS_KEY = Symbol.for(
-  "openclaw.memoryCore.dreamingNarrative.sessionLocks",
+  "operator.memoryCore.dreamingNarrative.sessionLocks",
 );
 const EXPECTS_POSIX_PRIVATE_FILE_MODE = process.platform !== "win32";
 const originalNarrativeStateDir = process.env.OPERATOR_STATE_DIR;
@@ -158,8 +158,8 @@ describe("dream diary file behavior", () => {
     expect(written.written).toBe(1);
 
     const existing = await fs.readFile(written.dreamsPath, "utf8");
-    const startMarker = "<!-- openclaw:dreaming:diary:start -->";
-    const endMarker = "<!-- openclaw:dreaming:diary:end -->";
+    const startMarker = "<!-- operator:dreaming:diary:start -->";
+    const endMarker = "<!-- operator:dreaming:diary:end -->";
     const block = existing.slice(
       existing.indexOf(startMarker) + startMarker.length,
       existing.indexOf(endMarker),
@@ -221,14 +221,14 @@ describe("dream diary file behavior", () => {
       [
         "# Dream Diary",
         "",
-        "<!-- openclaw:dreaming:diary:start -->",
+        "<!-- operator:dreaming:diary:start -->",
         "---",
         "",
         "*April 5, 2026*",
         "",
         "Symlink target diary text must not enter the prompt.",
         "",
-        "<!-- openclaw:dreaming:diary:end -->",
+        "<!-- operator:dreaming:diary:end -->",
         "",
       ].join("\n"),
       "utf8",
@@ -299,7 +299,7 @@ describe("dream diary file behavior", () => {
       [
         "# Dream Diary",
         "",
-        "<!-- openclaw:dreaming:diary:start -->",
+        "<!-- operator:dreaming:diary:start -->",
         "---",
         "",
         "*April 11, 2026, 8:00 AM*",
@@ -320,7 +320,7 @@ describe("dream diary file behavior", () => {
         "",
         "The server room smelled like rain.",
         "",
-        "<!-- openclaw:dreaming:diary:end -->",
+        "<!-- operator:dreaming:diary:end -->",
         "",
       ].join("\n"),
       "utf8",
@@ -344,7 +344,7 @@ describe("dream diary file behavior", () => {
       [
         "# Dream Diary",
         "",
-        "<!-- openclaw:dreaming:diary:start -->",
+        "<!-- operator:dreaming:diary:start -->",
         "---",
         "",
         "*April 11, 2026, 8:00 AM*",
@@ -357,7 +357,7 @@ describe("dream diary file behavior", () => {
         "",
         "The server room smelled like rain.",
         "",
-        "<!-- openclaw:dreaming:diary:end -->",
+        "<!-- operator:dreaming:diary:end -->",
         "",
       ].join("\n"),
       "utf8",
@@ -407,7 +407,7 @@ describe("generateAndAppendDreamNarrative", () => {
   }
 
   it("generates narrative and writes diary entry", async () => {
-    const workspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
+    const workspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
     const subagent = createMockSubagent("The repository whispered of forgotten endpoints.");
     const logger = createMockLogger();
     const nowMs = Date.parse("2026-04-05T03:00:00Z");
@@ -446,7 +446,7 @@ describe("generateAndAppendDreamNarrative", () => {
   it("waits for persisted assistant text before falling back", async () => {
     vi.useFakeTimers();
     try {
-      const workspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
+      const workspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
       const subagent = createMockSubagent("");
       subagent.getSessionMessages
         .mockResolvedValueOnce({
@@ -497,7 +497,7 @@ describe("generateAndAppendDreamNarrative", () => {
   it("falls back after settled assistant text never appears", async () => {
     vi.useFakeTimers();
     try {
-      const workspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
+      const workspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
       const subagent = createMockSubagent("");
       const logger = createMockLogger();
 
@@ -526,7 +526,7 @@ describe("generateAndAppendDreamNarrative", () => {
   });
 
   it("retries with the session default when the configured model cannot start", async () => {
-    const workspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
+    const workspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
     const subagent = createMockSubagent("The default model carried the diary home.");
     subagent.run.mockRejectedValueOnce(new Error("model unavailable"));
     const logger = createMockLogger();
@@ -573,7 +573,7 @@ describe("generateAndAppendDreamNarrative", () => {
   });
 
   it("retries with the session default when the configured model run ends unavailable", async () => {
-    const workspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
+    const workspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
     const subagent = createMockSubagent("The default model carried the diary home.");
     subagent.run
       .mockResolvedValueOnce({ runId: "run-configured" })
@@ -622,7 +622,7 @@ describe("generateAndAppendDreamNarrative", () => {
   });
 
   it("does not hide configured model authorization failures by retrying", async () => {
-    const workspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
+    const workspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
     const subagent = createMockSubagent("");
     subagent.run.mockRejectedValue(
       new Error("provider/model override is not authorized for this plugin subagent run."),
@@ -647,7 +647,7 @@ describe("generateAndAppendDreamNarrative", () => {
   });
 
   it("skips narrative when no snippets are available", async () => {
-    const workspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
+    const workspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
     const subagent = createMockSubagent("Should not appear.");
     const logger = createMockLogger();
 
@@ -667,7 +667,7 @@ describe("generateAndAppendDreamNarrative", () => {
   });
 
   it("writes a fallback diary entry when the subagent times out", async () => {
-    const workspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
+    const workspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
     const subagent = createMockSubagent("");
     subagent.waitForRun.mockResolvedValue({ status: "timeout" });
     const logger = createMockLogger();
@@ -690,7 +690,7 @@ describe("generateAndAppendDreamNarrative", () => {
   });
 
   it("does not leak sensitive raw staging fragments into the diary on fallback", async () => {
-    const workspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
+    const workspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
     const subagent = createMockSubagent("");
     subagent.waitForRun.mockResolvedValue({ status: "timeout" });
     const logger = createMockLogger();
@@ -720,7 +720,7 @@ describe("generateAndAppendDreamNarrative", () => {
   });
 
   it("skips extra settle waits after timeout and still attempts cleanup", async () => {
-    const workspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
+    const workspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
     const subagent = createMockSubagent("");
     subagent.waitForRun.mockResolvedValueOnce({ status: "timeout" });
     subagent.deleteSession.mockRejectedValue(new Error("still active"));
@@ -739,7 +739,7 @@ describe("generateAndAppendDreamNarrative", () => {
   });
 
   it("handles subagent error gracefully", async () => {
-    const workspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
+    const workspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
     const subagent = createMockSubagent("");
     subagent.run.mockRejectedValue(
       new Error("connection failed", {
@@ -761,7 +761,7 @@ describe("generateAndAppendDreamNarrative", () => {
   });
 
   it("falls back to a local narrative when subagent runtime is request-scoped", async () => {
-    const workspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
+    const workspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
     const subagent = createMockSubagent("");
     subagent.deleteSession.mockRejectedValueOnce(new RequestScopedSubagentRuntimeError());
     subagent.run.mockRejectedValue(new RequestScopedSubagentRuntimeError());
@@ -789,7 +789,7 @@ describe("generateAndAppendDreamNarrative", () => {
   });
 
   it("falls back when the request-scoped runtime error is detected by stable code", async () => {
-    const workspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
+    const workspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
     const subagent = createMockSubagent("");
     const crossBoundaryError = new Error("different wrapper text");
     crossBoundaryError.name = "RequestScopedSubagentRuntimeError";
@@ -818,7 +818,7 @@ describe("generateAndAppendDreamNarrative", () => {
   });
 
   it("does not fall back for non-Error objects that only spoof the stable code", async () => {
-    const workspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
+    const workspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
     const subagent = createMockSubagent("");
     subagent.run.mockRejectedValue({
       code: SUBAGENT_RUNTIME_REQUEST_SCOPE_ERROR_CODE,
@@ -839,7 +839,7 @@ describe("generateAndAppendDreamNarrative", () => {
   });
 
   it("cleans up session even on failure", async () => {
-    const workspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
+    const workspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
     const subagent = createMockSubagent("");
     subagent.getSessionMessages.mockRejectedValue(new Error("fetch failed"));
     const logger = createMockLogger();
@@ -855,8 +855,8 @@ describe("generateAndAppendDreamNarrative", () => {
   });
 
   it("scrubs stale dreaming entries and orphan transcripts after cleanup", async () => {
-    const workspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
-    const stateDir = await createTempWorkspace("openclaw-dreaming-state-");
+    const workspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
+    const stateDir = await createTempWorkspace("operator-dreaming-state-");
     const sessionsDir = path.join(stateDir, "agents", "main", "sessions");
     await fs.mkdir(sessionsDir, { recursive: true });
     const storePath = path.join(sessionsDir, "sessions.json");
@@ -938,8 +938,8 @@ describe("generateAndAppendDreamNarrative", () => {
   });
 
   it("reclaims an aged dreaming row whose transcript still exists (failed deleteSession)", async () => {
-    const workspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
-    const stateDir = await createTempWorkspace("openclaw-dreaming-state-");
+    const workspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
+    const stateDir = await createTempWorkspace("operator-dreaming-state-");
     const sessionsDir = path.join(stateDir, "agents", "main", "sessions");
     await fs.mkdir(sessionsDir, { recursive: true });
     const storePath = path.join(sessionsDir, "sessions.json");
@@ -1024,8 +1024,8 @@ describe("generateAndAppendDreamNarrative", () => {
   });
 
   it("isolates narrative sessions across workspaces even at the same timestamp", async () => {
-    const firstWorkspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
-    const secondWorkspaceDir = await createTempWorkspace("openclaw-dreaming-narrative-");
+    const firstWorkspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
+    const secondWorkspaceDir = await createTempWorkspace("operator-dreaming-narrative-");
     const subagent = createMockSubagent("A quiet memory took shape.");
     const logger = createMockLogger();
     const nowMs = Date.parse("2026-04-05T03:00:00Z");
@@ -1103,7 +1103,7 @@ describe("runDetachedDreamNarrative", () => {
   it("caps the number of in-flight detached narratives at 3", async () => {
     const { subagent, runDeferreds } = createBlockingSubagent();
     const workspaceDirs = await Promise.all(
-      Array.from({ length: 5 }, () => createTempWorkspace("openclaw-dreaming-detach-")),
+      Array.from({ length: 5 }, () => createTempWorkspace("operator-dreaming-detach-")),
     );
     const logger = createMockLogger();
 
@@ -1163,7 +1163,7 @@ describe("runDetachedDreamNarrative", () => {
       getSessionMessages: vi.fn().mockResolvedValue({ messages: [] }),
       deleteSession: vi.fn().mockResolvedValue(undefined),
     };
-    const workspaceDir = await createTempWorkspace("openclaw-dreaming-detach-");
+    const workspaceDir = await createTempWorkspace("operator-dreaming-detach-");
     const logger = createMockLogger();
 
     for (let i = 0; i < 5; i += 1) {
@@ -1214,7 +1214,7 @@ describe("runDetachedDreamNarrative", () => {
       deleteSession: vi.fn().mockResolvedValue(undefined),
     };
     const logger = createMockLogger();
-    const workspaceDir = await createTempWorkspace("openclaw-dreaming-detach-");
+    const workspaceDir = await createTempWorkspace("operator-dreaming-detach-");
     const unhandled = vi.fn();
     process.on("unhandledRejection", unhandled);
 

@@ -46,7 +46,7 @@ export {
 
 export const OPERATOR_MODEL_ID = "@gabrielvfonseca/operator";
 /** Default OpenAI-compatible model alias that targets the default Operator agent. */
-export const OPERATOR_DEFAULT_MODEL_ID = "openclaw/default";
+export const OPERATOR_DEFAULT_MODEL_ID = "operator/default";
 
 class UnknownGatewayAgentError extends Error {
   constructor(readonly agentId: string) {
@@ -107,7 +107,7 @@ export function resolveAgentIdFromModel(
   }
 
   const m =
-    raw.match(/^openclaw[:/](?<agentId>[a-z0-9][a-z0-9_-]{0,63})$/i) ??
+    raw.match(/^operator[:/](?<agentId>[a-z0-9][a-z0-9_-]{0,63})$/i) ??
     raw.match(/^agent:(?<agentId>[a-z0-9][a-z0-9_-]{0,63})$/i);
   const agentId = m?.groups?.agentId;
   if (!agentId) {
@@ -125,7 +125,7 @@ export async function resolveOpenAiCompatModelOverride(params: {
   const requestModel = params.model?.trim();
   if (requestModel && !resolveAgentIdFromModel(requestModel)) {
     return {
-      errorMessage: "Invalid `model`. Use `openclaw` or `openclaw/<agentId>`.",
+      errorMessage: "Invalid `model`. Use `operator` or `operator/<agentId>`.",
     };
   }
 

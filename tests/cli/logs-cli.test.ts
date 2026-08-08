@@ -696,7 +696,7 @@ describe("logs cli", () => {
       const secondJournalArgs = execFileUtf8Tail.mock.calls[1]?.[1] as string[];
       expect(secondJournalArgs).not.toContain("--after-cursor=s=abc");
       const output = stdoutWrites.join("");
-      expect(output.match(/Log file: \/tmp\/openclaw\.log/g)).toHaveLength(2);
+      expect(output.match(/Log file: \/tmp\/operator\.log/g)).toHaveLength(2);
       expect(output).toContain(
         "Log source: journalctl --user --boot --user-unit=operator-gateway.service _PID=2557",
       );

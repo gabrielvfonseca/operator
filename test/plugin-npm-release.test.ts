@@ -1,7 +1,7 @@
 // Plugin npm release tests validate plugin npm release artifacts.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { bundledPluginFile, bundledPluginRoot } from "openclaw/plugin-sdk/test-fixtures";
+import { bundledPluginFile, bundledPluginRoot } from "operator/plugin-sdk/test-fixtures";
 import { afterEach, describe, expect, it } from "vitest";
 import { collectClawHubPublishablePluginPackages } from "../scripts/lib/plugin-clawhub-release.ts";
 import {
@@ -171,7 +171,7 @@ describe("collectPublishablePluginPackageErrors", () => {
             type: "git",
             url: OPENCLAW_PLUGIN_NPM_REPOSITORY_URL,
           },
-          openclaw: {
+          operator: {
             extensions: ["./index.ts"],
             ...externalPluginContract("2026.3.15"),
             install: {
@@ -196,7 +196,7 @@ describe("collectPublishablePluginPackageErrors", () => {
           name: "broken",
           version: "latest",
           private: true,
-          openclaw: {
+          operator: {
             extensions: [""],
             ...externalPluginContract("2026.3.15"),
             install: {
@@ -214,8 +214,8 @@ describe("collectPublishablePluginPackageErrors", () => {
       'package.json type must be "module" so built .js runtime entries load as ESM.',
       `package.json repository.url must be "${OPENCLAW_PLUGIN_NPM_REPOSITORY_URL}" so npm provenance can validate GitHub trusted publishing; found "<missing>".`,
       'package.json version must match YYYY.M.PATCH, YYYY.M.PATCH-N, YYYY.M.PATCH-alpha.N, or YYYY.M.PATCH-beta.N; found "latest".',
-      "openclaw.extensions must contain only non-empty strings.",
-      "openclaw.install.npmSpec must be a non-empty string for publishable plugins.",
+      "operator.extensions must contain only non-empty strings.",
+      "operator.install.npmSpec must be a non-empty string for publishable plugins.",
     ]);
   });
 
@@ -229,7 +229,7 @@ describe("collectPublishablePluginPackageErrors", () => {
           name: "@operator/twitch",
           version: "2026.5.1-beta.1",
           type: "module",
-          openclaw: {
+          operator: {
             extensions: ["./index.ts"],
             ...externalPluginContract("2026.5.1-beta.1"),
             install: {
@@ -260,7 +260,7 @@ describe("collectPublishablePluginPackageErrors", () => {
             type: "git",
             url: OPENCLAW_PLUGIN_NPM_REPOSITORY_URL,
           },
-          openclaw: {
+          operator: {
             extensions: ["./index.ts"],
             ...externalPluginContract("2026.5.1-beta.1"),
             release: {
@@ -269,7 +269,7 @@ describe("collectPublishablePluginPackageErrors", () => {
           },
         },
       }),
-    ).toEqual(["openclaw.install.npmSpec must be a non-empty string for publishable plugins."]);
+    ).toEqual(["operator.install.npmSpec must be a non-empty string for publishable plugins."]);
   });
 
   it("requires the external plugin package compatibility contract for npm publish", () => {
@@ -286,7 +286,7 @@ describe("collectPublishablePluginPackageErrors", () => {
             type: "git",
             url: OPENCLAW_PLUGIN_NPM_REPOSITORY_URL,
           },
-          openclaw: {
+          operator: {
             extensions: ["./index.ts"],
             install: {
               npmSpec: "@operator/voice-call",
@@ -298,8 +298,8 @@ describe("collectPublishablePluginPackageErrors", () => {
         },
       }),
     ).toEqual([
-      "openclaw.compat.pluginApi is required for external code plugin packages.",
-      "openclaw.build.operatorVersion is required for external code plugin packages.",
+      "operator.compat.pluginApi is required for external code plugin packages.",
+      "operator.build.operatorVersion is required for external code plugin packages.",
     ]);
   });
 
@@ -317,7 +317,7 @@ describe("collectPublishablePluginPackageErrors", () => {
             type: "git",
             url: OPENCLAW_PLUGIN_NPM_REPOSITORY_URL,
           },
-          openclaw: {
+          operator: {
             extensions: ["./index.ts"],
             ...externalPluginContract("2026.3.15"),
             install: {
@@ -349,7 +349,7 @@ describe("collectPublishablePluginPackageErrors", () => {
           dependencies: {
             "@openai/codex": "0.142.5",
           },
-          openclaw: {
+          operator: {
             extensions: ["./index.ts"],
             ...externalPluginContract("2026.6.11"),
             install: {
@@ -363,8 +363,8 @@ describe("collectPublishablePluginPackageErrors", () => {
         },
       }),
     ).toEqual([
-      'openclaw.release.requireLatestDependencies must not contain duplicate package names; found "@openai/codex".',
-      'openclaw.release.requireLatestDependencies must reference package.json dependencies or optionalDependencies; "missing" is not a runtime dependency.',
+      'operator.release.requireLatestDependencies must not contain duplicate package names; found "@openai/codex".',
+      'operator.release.requireLatestDependencies must reference package.json dependencies or optionalDependencies; "missing" is not a runtime dependency.',
     ]);
   });
 });
@@ -466,13 +466,13 @@ describe("collectPublishablePluginPackages", () => {
       const packageJson = JSON.parse(
         readFileSync(join(plugin.packageDir, "package.json"), "utf8"),
       ) as {
-        openclaw?: {
+        operator?: {
           build?: {
             bundledDist?: unknown;
           };
         };
       };
-      if (packageJson.openclaw?.build?.bundledDist === true) {
+      if (packageJson.operator?.build?.bundledDist === true) {
         corePackageRuntimePluginIds.add(plugin.extensionId);
       }
     }
@@ -488,7 +488,7 @@ describe("collectPublishablePluginPackages", () => {
   });
 
   it("collects publishable npm plugins from extension package manifests", () => {
-    const repoDir = makeTempRepoRoot(tempDirs, "openclaw-plugin-npm-release-");
+    const repoDir = makeTempRepoRoot(tempDirs, "operator-plugin-npm-release-");
     mkdirSync(join(repoDir, "extensions", "demo-plugin"), { recursive: true });
     writePluginReadme(repoDir, "demo-plugin");
     writeJsonFile(join(repoDir, "extensions", "demo-plugin", "package.json"), {
@@ -499,7 +499,7 @@ describe("collectPublishablePluginPackages", () => {
         type: "git",
         url: OPENCLAW_PLUGIN_NPM_REPOSITORY_URL,
       },
-      openclaw: {
+      operator: {
         extensions: ["./index.ts"],
         ...externalPluginContract("2026.4.10"),
         install: {
@@ -525,7 +525,7 @@ describe("collectPublishablePluginPackages", () => {
   });
 
   it("uses extended-stable for every publishable plugin at the exact root version", () => {
-    const repoDir = makeTempRepoRoot(tempDirs, "openclaw-plugin-npm-release-");
+    const repoDir = makeTempRepoRoot(tempDirs, "operator-plugin-npm-release-");
     writeJsonFile(join(repoDir, "package.json"), { version: "2026.7.33" });
     writePluginReadme(repoDir, "demo-plugin");
     writeJsonFile(join(repoDir, "extensions", "demo-plugin", "package.json"), {
@@ -533,7 +533,7 @@ describe("collectPublishablePluginPackages", () => {
       version: "2026.7.33",
       type: "module",
       repository: { type: "git", url: OPENCLAW_PLUGIN_NPM_REPOSITORY_URL },
-      openclaw: {
+      operator: {
         extensions: ["./index.ts"],
         ...externalPluginContract("2026.7.33"),
         install: { npmSpec: "@operator/demo-plugin" },
@@ -547,7 +547,7 @@ describe("collectPublishablePluginPackages", () => {
   });
 
   it("rejects extended-stable plugins whose version differs from core", () => {
-    const repoDir = makeTempRepoRoot(tempDirs, "openclaw-plugin-npm-release-");
+    const repoDir = makeTempRepoRoot(tempDirs, "operator-plugin-npm-release-");
     writeJsonFile(join(repoDir, "package.json"), { version: "2026.7.34" });
     writePluginReadme(repoDir, "demo-plugin");
     writeJsonFile(join(repoDir, "extensions", "demo-plugin", "package.json"), {
@@ -555,7 +555,7 @@ describe("collectPublishablePluginPackages", () => {
       version: "2026.7.33",
       type: "module",
       repository: { type: "git", url: OPENCLAW_PLUGIN_NPM_REPOSITORY_URL },
-      openclaw: {
+      operator: {
         extensions: ["./index.ts"],
         ...externalPluginContract("2026.7.33"),
         install: { npmSpec: "@operator/demo-plugin" },
@@ -569,7 +569,7 @@ describe("collectPublishablePluginPackages", () => {
   });
 
   it("collects exact release dependencies that must match npm latest", () => {
-    const repoDir = makeTempRepoRoot(tempDirs, "openclaw-plugin-npm-release-");
+    const repoDir = makeTempRepoRoot(tempDirs, "operator-plugin-npm-release-");
     mkdirSync(join(repoDir, "extensions", "demo-plugin"), { recursive: true });
     writePluginReadme(repoDir, "demo-plugin");
     writeJsonFile(join(repoDir, "extensions", "demo-plugin", "package.json"), {
@@ -583,7 +583,7 @@ describe("collectPublishablePluginPackages", () => {
       dependencies: {
         "demo-runtime": "1.2.3",
       },
-      openclaw: {
+      operator: {
         extensions: ["./index.ts"],
         ...externalPluginContract("2026.4.10"),
         install: {
@@ -616,7 +616,7 @@ describe("collectPublishablePluginPackages", () => {
   });
 
   it("does not validate unselected publishable plugin manifests", () => {
-    const repoDir = makeTempRepoRoot(tempDirs, "openclaw-plugin-npm-release-");
+    const repoDir = makeTempRepoRoot(tempDirs, "operator-plugin-npm-release-");
     mkdirSync(join(repoDir, "extensions", "demo-plugin"), { recursive: true });
     writePluginReadme(repoDir, "demo-plugin");
     writeJsonFile(join(repoDir, "extensions", "demo-plugin", "package.json"), {
@@ -627,7 +627,7 @@ describe("collectPublishablePluginPackages", () => {
         type: "git",
         url: OPENCLAW_PLUGIN_NPM_REPOSITORY_URL,
       },
-      openclaw: {
+      operator: {
         extensions: ["./index.ts"],
         ...externalPluginContract("2026.4.10-beta.1"),
         install: {
@@ -643,7 +643,7 @@ describe("collectPublishablePluginPackages", () => {
       name: "@operator/private-plugin",
       version: "2026.4.10-beta.1",
       private: true,
-      openclaw: {
+      operator: {
         extensions: ["./index.ts"],
         ...externalPluginContract("2026.4.10-beta.1"),
         install: {
@@ -673,13 +673,13 @@ describe("collectPublishablePluginPackages", () => {
   });
 
   it("treats an explicit empty extension filter as no candidates", () => {
-    const repoDir = makeTempRepoRoot(tempDirs, "openclaw-plugin-npm-release-");
+    const repoDir = makeTempRepoRoot(tempDirs, "operator-plugin-npm-release-");
     mkdirSync(join(repoDir, "extensions", "private-plugin"), { recursive: true });
     writeJsonFile(join(repoDir, "extensions", "private-plugin", "package.json"), {
       name: "@operator/private-plugin",
       version: "2026.4.10-beta.1",
       private: true,
-      openclaw: {
+      operator: {
         extensions: ["./index.ts"],
         ...externalPluginContract("2026.4.10-beta.1"),
         release: {
@@ -696,7 +696,7 @@ describe("collectPublishablePluginPackages", () => {
   });
 
   it("publishes alpha plugin packages to the alpha dist-tag", () => {
-    const repoDir = makeTempRepoRoot(tempDirs, "openclaw-plugin-npm-release-");
+    const repoDir = makeTempRepoRoot(tempDirs, "operator-plugin-npm-release-");
     mkdirSync(join(repoDir, "extensions", "demo-plugin"), { recursive: true });
     writePluginReadme(repoDir, "demo-plugin");
     writeJsonFile(join(repoDir, "extensions", "demo-plugin", "package.json"), {
@@ -707,7 +707,7 @@ describe("collectPublishablePluginPackages", () => {
         type: "git",
         url: OPENCLAW_PLUGIN_NPM_REPOSITORY_URL,
       },
-      openclaw: {
+      operator: {
         extensions: ["./index.ts"],
         ...externalPluginContract("2026.4.10-alpha.1"),
         install: {

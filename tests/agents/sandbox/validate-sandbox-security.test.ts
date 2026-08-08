@@ -225,20 +225,20 @@ describe("validateBindMounts", () => {
   });
 
   it("allows drive-absolute Windows bind sources", () => {
-    expect(validateBindMounts(["D:/data/openclaw/src:/src:ro"])).toBeUndefined();
-    expect(validateBindMounts(["D:\\data\\openclaw\\output:/output:rw"])).toBeUndefined();
+    expect(validateBindMounts(["D:/data/operator/src:/src:ro"])).toBeUndefined();
+    expect(validateBindMounts(["D:\\data\\operator\\output:/output:rw"])).toBeUndefined();
   });
 
   it("compares Windows allowed roots case-insensitively", () => {
     expect(
       validateBindMounts(["d:/DATA/Operator/src:/src:ro"], {
-        allowedSourceRoots: ["D:/data/openclaw"],
+        allowedSourceRoots: ["D:/data/operator"],
       }),
     ).toBeUndefined();
 
     expect(() =>
       validateBindMounts(["D:/other/project:/src:ro"], {
-        allowedSourceRoots: ["d:/data/openclaw"],
+        allowedSourceRoots: ["d:/data/operator"],
       }),
     ).toThrow(/outside allowed roots/);
   });

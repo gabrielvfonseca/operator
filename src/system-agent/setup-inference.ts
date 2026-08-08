@@ -287,7 +287,7 @@ export type ActivateSetupInferenceDeps = {
   clearLoadInstalledPluginIndexInstallRecordsCache?: typeof import("../plugins/installed-plugin-index-records.js").clearLoadInstalledPluginIndexInstallRecordsCache;
   clearPluginMetadataLifecycleCaches?: typeof import("../plugins/plugin-metadata-lifecycle.js").clearPluginMetadataLifecycleCaches;
   invalidatePluginRuntimeDiscoveryAfterConfigMutation?: typeof import("../plugins/registry-refresh.js").invalidatePluginRuntimeDiscoveryAfterConfigMutation;
-  disposeOperatorAgentDatabaseByPath?: typeof import("../state/openclaw-agent-db.js").disposeOperatorAgentDatabaseByPath;
+  disposeOperatorAgentDatabaseByPath?: typeof import("../state/operator-agent-db.js").disposeOperatorAgentDatabaseByPath;
   createTempDir?: () => Promise<string>;
   removeTempDir?: (dir: string) => Promise<void>;
   timeoutMs?: number;
@@ -2018,7 +2018,7 @@ async function activateSetupInferenceUnredacted(
             };
           }
           throw new SetupInferenceActivationIndeterminateError(
-            "Inference activation could not confirm whether its verified credential was saved or rolled back. No config commit was attempted; run openclaw doctor --fix before retrying.",
+            "Inference activation could not confirm whether its verified credential was saved or rolled back. No config commit was attempted; run operator doctor --fix before retrying.",
           );
         }
         if (persistedManualAuth.status === "not-persisted") {
@@ -2124,7 +2124,7 @@ async function activateSetupInferenceUnredacted(
             const rolledBack = await rollbackManualAuthProfiles(manualAuthReceipt, deps);
             if (!rolledBack) {
               throw new SetupInferenceActivationIndeterminateError(
-                "Inference activation stopped before its config commit, but could not confirm removal of its staged credential. Run openclaw doctor --fix before retrying.",
+                "Inference activation stopped before its config commit, but could not confirm removal of its staged credential. Run operator doctor --fix before retrying.",
               );
             }
           }
@@ -2156,13 +2156,13 @@ async function activateSetupInferenceUnredacted(
               configReferencesManualAuthProfiles(reconciledRuntime, manualAuthReceipt)
             ) {
               throw new SetupInferenceActivationIndeterminateError(
-                "Inference activation could not confirm its config commit state. The verified credential was retained because the current config may reference it. Run openclaw doctor --fix before retrying.",
+                "Inference activation could not confirm its config commit state. The verified credential was retained because the current config may reference it. Run operator doctor --fix before retrying.",
               );
             }
             const rolledBack = await rollbackManualAuthProfiles(manualAuthReceipt, deps);
             if (!rolledBack) {
               throw new SetupInferenceActivationIndeterminateError(
-                "Inference activation failed and its staged credential could not be rolled back. Run openclaw doctor --fix before retrying.",
+                "Inference activation failed and its staged credential could not be rolled back. Run operator doctor --fix before retrying.",
               );
             }
           }
@@ -2300,7 +2300,7 @@ export async function verifySetupInference(
     return {
       ok: false,
       status: "unavailable",
-      error: "No Operator config exists. Run `openclaw onboard` first.",
+      error: "No Operator config exists. Run `operator onboard` first.",
     };
   }
   if (!snapshot.valid) {
@@ -2464,7 +2464,7 @@ export async function verifySetupInferenceConfig(params: {
     return {
       ok: false,
       status: "unavailable",
-      error: "No agent model is configured. Run `openclaw onboard` first.",
+      error: "No agent model is configured. Run `operator onboard` first.",
     };
   }
   const tempDir = await (
@@ -2601,7 +2601,7 @@ async function cleanupSetupInferenceTempDir(params: {
   try {
     const disposeDatabase =
       params.deps.disposeOperatorAgentDatabaseByPath ??
-      (await import("../state/openclaw-agent-db.js")).disposeOperatorAgentDatabaseByPath;
+      (await import("../state/operator-agent-db.js")).disposeOperatorAgentDatabaseByPath;
     disposeDatabase(path.join(params.tempDir, "agent", "operator-agent.sqlite"));
   } catch {
     // Windows cannot remove an open SQLite file. Keep cleanup nonfatal, but

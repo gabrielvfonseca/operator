@@ -136,7 +136,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
     expect(script).toContain("OPENCLAW_KITCHEN_SINK_PLUGIN_MAX_MEMORY_MIB");
     expect(script).toContain(
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-      "npm-to-clawhub|clawhub:@operator/kitchen-sink@latest|openclaw-kitchen-sink-fixture|clawhub|success|basic||${KITCHEN_SINK_NPM_SPEC}",
+      "npm-to-clawhub|clawhub:@operator/kitchen-sink@latest|operator-kitchen-sink-fixture|clawhub|success|basic||${KITCHEN_SINK_NPM_SPEC}",
     );
     expect(script).toContain("scripts/e2e/lib/kitchen-sink-plugin/sweep.sh");
     expect(sweepScript).toContain('plugins install "$KITCHEN_SINK_SPEC" --force');
@@ -173,7 +173,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
     );
     expect(assertionsScript).toContain("!INVALID_PROBE_DIAGNOSTIC_SURFACE_MODES.has(surfaceMode)");
     expect(readFileSync("scripts/e2e/lib/clawhub-fixture-server.cjs", "utf8")).toContain(
-      'from "openclaw/plugin-sdk/plugin-entry"',
+      'from "operator/plugin-sdk/plugin-entry"',
     );
     expect(readFileSync("scripts/e2e/lib/clawhub-fixture-server.cjs", "utf8")).toContain(
       "X-ClawHub-Artifact-Sha256",
@@ -200,7 +200,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
       timeoutMs: 1_500_000,
       weight: 3,
     });
-    expect(script).toContain("OPENCLAW_ENTRY=/app/openclaw.mjs");
+    expect(script).toContain("OPENCLAW_ENTRY=/app/operator.mjs");
     expect(script).toContain("OPENCLAW_KITCHEN_SINK_COMMAND_MAX_RSS_MIB");
     expect(script).toContain("docker_e2e_sample_stats_until_exit");
     expect(script).toContain("scripts/e2e/lib/docker-stats/assert-resource-ceiling.mjs");
@@ -211,7 +211,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
     expect(walkScript).toContain("tts.providers");
     expect(walkScript).toContain("plugins.uiDescriptors");
     expect(walkScript).toContain("loadCallGatewayModule(options.runner)");
-    expect(walkScript).toContain("usesBuiltOpenClawEntry(runner)");
+    expect(walkScript).toContain("usesBuiltOperatorEntry(runner)");
     expect(walkScript).toContain('"gateway"');
     expect(walkScript).toContain('"call"');
     expect(walkScript).not.toContain("src/gateway/call.ts");
@@ -241,9 +241,9 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
     expect(sweepScript).toContain("run_plugins_clawhub_scenario");
     expect(clawhubScript).toContain('plugins install "$CLAWHUB_PLUGIN_SPEC"');
     expect(assertionsScript).toContain("assertClawHubExternalInstallContract");
-    expect(assertionsScript).toContain('node_modules", "openclaw');
+    expect(assertionsScript).toContain('node_modules", "operator');
     expect(fixtureServer).toContain('"is-number": "7.0.0"');
-    expect(fixtureServer).toContain('openclaw: ">=2026.4.11"');
+    expect(fixtureServer).toContain('operator: ">=2026.4.11"');
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(fixtureServer).toContain("/versions/${fixture.version}/artifact");
   });
@@ -606,7 +606,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
         packages: "read",
         "pull-requests": "read",
       },
-      uses: "./.github/workflows/openclaw-live-and-e2e-checks-reusable.yml",
+      uses: "./.github/workflows/operator-live-and-e2e-checks-reusable.yml",
       with: {
         // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         docker_lanes: "${{ needs.preflight.outputs.plugin_prerelease_docker_lanes }}",
@@ -639,14 +639,14 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
 
   it("keeps release-check reruns independent while cancelling superseded umbrella runs", () => {
     const releaseChecksWorkflow = parse(
-      readFileSync(".github/workflows/openclaw-release-checks.yml", "utf8"),
+      readFileSync(".github/workflows/operator-release-checks.yml", "utf8"),
     );
     const fullReleaseWorkflow = readFullReleaseValidationWorkflow();
 
     expect(releaseChecksWorkflow.concurrency).toEqual({
       group:
         // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-        "openclaw-release-checks-${{ inputs.expected_sha || inputs.ref }}-${{ inputs.rerun_group }}",
+        "operator-release-checks-${{ inputs.expected_sha || inputs.ref }}-${{ inputs.rerun_group }}",
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "cancel-in-progress": "${{ startsWith(github.ref, 'refs/heads/tideclaw/alpha/') }}",
     });
@@ -721,7 +721,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
   });
 
   it("allows Unreleased notes only for current-tree release checks", () => {
-    const workflow = parse(readFileSync(".github/workflows/openclaw-release-checks.yml", "utf8"));
+    const workflow = parse(readFileSync(".github/workflows/operator-release-checks.yml", "utf8"));
     const fullReleaseWorkflow = readFullReleaseValidationWorkflow();
     const resolveTarget = workflow.jobs.resolve_target;
     const captureInputs = resolveTarget.steps.find(
@@ -770,7 +770,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
 
   it("keeps runtime tool coverage blocking in release checks", () => {
     const releaseChecksSource = readFileSync(
-      ".github/workflows/openclaw-release-checks.yml",
+      ".github/workflows/operator-release-checks.yml",
       "utf8",
     );
     const releaseChecksWorkflow = parse(releaseChecksSource);
@@ -785,7 +785,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
       expect.arrayContaining([
         expect.objectContaining({
           name: "Enforce standard runtime tool coverage",
-          run: expect.stringContaining("pnpm openclaw qa coverage"),
+          run: expect.stringContaining("pnpm operator qa coverage"),
         }),
       ]),
     );

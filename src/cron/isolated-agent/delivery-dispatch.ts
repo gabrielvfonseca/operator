@@ -1236,7 +1236,7 @@ export async function dispatchCronDelivery(
           // Keep all attempts out of the write-ahead delivery queue so a
           // late-successful first send cannot leave behind a failed queue
           // entry that replays on the next restart.
-          // See: https://github.com/openclaw/openclaw/issues/40545
+          // See: https://github.com/operator/operator/issues/40545
           skipQueue: true,
         });
         // No durable id is still ambiguous: the adapter was already invoked.

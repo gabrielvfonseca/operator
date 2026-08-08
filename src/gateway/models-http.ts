@@ -64,9 +64,9 @@ function loadAgentModelIds(): string[] {
   const cfg = getRuntimeConfig();
   const defaultAgentId = resolveDefaultAgentId(cfg);
   const ids = new Set<string>([OPERATOR_MODEL_ID, OPERATOR_DEFAULT_MODEL_ID]);
-  ids.add(`openclaw/${defaultAgentId}`);
+  ids.add(`operator/${defaultAgentId}`);
   for (const agentId of listAgentIds(cfg)) {
-    ids.add(`openclaw/${agentId}`);
+    ids.add(`operator/${agentId}`);
   }
   return Array.from(ids);
 }

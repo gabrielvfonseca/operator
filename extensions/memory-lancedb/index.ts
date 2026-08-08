@@ -9,29 +9,29 @@
 import { Buffer } from "node:buffer";
 import { randomUUID } from "node:crypto";
 import type * as LanceDB from "@lancedb/lancedb";
-import type { AgentToolResult } from "openclaw/plugin-sdk/agent-core";
+import type { AgentToolResult } from "operator/plugin-sdk/agent-core";
 import {
   optionalFiniteNumberSchema,
   optionalPositiveIntegerSchema,
-} from "openclaw/plugin-sdk/channel-actions";
-import { BUNDLED_CHAT_CHANNEL_ENVELOPE_PREFIXES } from "openclaw/plugin-sdk/chat-channel-ids";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import type { MemoryEmbeddingProvider } from "openclaw/plugin-sdk/memory-core-host-engine-embeddings";
-import { MESSAGE_TOOL_DELIVERY_HINTS } from "openclaw/plugin-sdk/message-tool-delivery-hints";
+} from "operator/plugin-sdk/channel-actions";
+import { BUNDLED_CHAT_CHANNEL_ENVELOPE_PREFIXES } from "operator/plugin-sdk/chat-channel-ids";
+import type { OperatorConfig } from "operator/plugin-sdk/config-contracts";
+import { expectDefined } from "operator/plugin-sdk/expect-runtime";
+import { createLazyRuntimeModule } from "operator/plugin-sdk/lazy-runtime";
+import type { MemoryEmbeddingProvider } from "operator/plugin-sdk/memory-core-host-engine-embeddings";
+import { MESSAGE_TOOL_DELIVERY_HINTS } from "operator/plugin-sdk/message-tool-delivery-hints";
 import {
   parseStrictPositiveInteger,
   resolveTimerTimeoutMs,
-} from "openclaw/plugin-sdk/number-runtime";
-import { readFiniteNumberParam, readPositiveIntegerParam } from "openclaw/plugin-sdk/param-readers";
-import { resolveLivePluginConfigObject } from "openclaw/plugin-sdk/plugin-config-runtime";
-import { ensureGlobalUndiciEnvProxyDispatcher } from "openclaw/plugin-sdk/runtime-env";
+} from "operator/plugin-sdk/number-runtime";
+import { readFiniteNumberParam, readPositiveIntegerParam } from "operator/plugin-sdk/param-readers";
+import { resolveLivePluginConfigObject } from "operator/plugin-sdk/plugin-config-runtime";
+import { ensureGlobalUndiciEnvProxyDispatcher } from "operator/plugin-sdk/runtime-env";
 import {
   asOptionalRecord as asRecord,
   normalizeLowercaseStringOrEmpty,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "operator/plugin-sdk/string-coerce-runtime";
+import { truncateUtf16Safe } from "operator/plugin-sdk/text-utility-runtime";
 import { Type } from "typebox";
 import { definePluginEntry, type OperatorPluginApi } from "./api.js";
 import {
@@ -82,10 +82,10 @@ type OpenAiEmbeddingClient = {
 };
 const loadOpenAiModule = createLazyRuntimeModule(() => import("openai"));
 const loadMemoryEmbeddingProviderModule = createLazyRuntimeModule(
-  () => import("openclaw/plugin-sdk/memory-core-host-engine-embeddings"),
+  () => import("operator/plugin-sdk/memory-core-host-engine-embeddings"),
 );
 const loadMemoryHostCoreModule = createLazyRuntimeModule(
-  () => import("openclaw/plugin-sdk/memory-host-core"),
+  () => import("operator/plugin-sdk/memory-host-core"),
 );
 
 function extractUserTextContent(message: unknown): string[] {

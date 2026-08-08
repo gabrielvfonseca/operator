@@ -226,7 +226,7 @@ export function describeChannelPluginCatalogEntriesContract() {
               $schema: "./manifest.schema.json",
               schemaVersion: 1,
               description:
-                "Extension manifest. Declares plugin packages that Operator can discover during onboarding and install on demand via `openclaw plugins install`.",
+                "Extension manifest. Declares plugin packages that Operator can discover during onboarding and install on demand via `operator plugins install`.",
               entries: [
                 {
                   name: "@wecom/wecom-operator-plugin",
@@ -340,7 +340,7 @@ export function describeChannelPluginCatalogEntriesContract() {
               $schema: "./manifest.schema.json",
               schemaVersion: 1,
               description:
-                "Extension manifest. Declares plugin packages that Operator can discover during onboarding and install on demand via `openclaw plugins install`.",
+                "Extension manifest. Declares plugin packages that Operator can discover during onboarding and install on demand via `operator plugins install`.",
               entries: [
                 {
                   source: "external",
@@ -358,7 +358,7 @@ export function describeChannelPluginCatalogEntriesContract() {
                       order: 47,
                     },
                     install: {
-                      clawhubSpec: "clawhub:openclaw/clawhub-chat@2026.5.2",
+                      clawhubSpec: "clawhub:operator/clawhub-chat@2026.5.2",
                       defaultChoice: "clawhub",
                       minHostVersion: ">=2026.5.1",
                     },
@@ -381,15 +381,15 @@ export function describeChannelPluginCatalogEntriesContract() {
                 blurb: "ClawHub-backed chat channel.",
               },
               install: {
-                clawhubSpec: "clawhub:openclaw/clawhub-chat@2026.5.2",
+                clawhubSpec: "clawhub:operator/clawhub-chat@2026.5.2",
                 defaultChoice: "clawhub",
                 minHostVersion: ">=2026.5.1",
               },
               installSource: {
                 defaultChoice: "clawhub",
                 clawhub: {
-                  spec: "clawhub:openclaw/clawhub-chat@2026.5.2",
-                  packageName: "openclaw/clawhub-chat",
+                  spec: "clawhub:operator/clawhub-chat@2026.5.2",
+                  packageName: "operator/clawhub-chat",
                   version: "2026.5.2",
                   exactVersion: true,
                 },
@@ -412,7 +412,7 @@ export function describeChannelPluginCatalogEntriesContract() {
               $schema: "./manifest.schema.json",
               schemaVersion: 1,
               description:
-                "Extension manifest. Declares plugin packages that Operator can discover during onboarding and install on demand via `openclaw plugins install`.",
+                "Extension manifest. Declares plugin packages that Operator can discover during onboarding and install on demand via `operator plugins install`.",
               entries: [
                 {
                   name: "operator-plugin-yuanbao",

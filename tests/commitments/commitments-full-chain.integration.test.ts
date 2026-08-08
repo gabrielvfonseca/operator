@@ -7,7 +7,7 @@ import {
   seedSessionStore,
   withTempHeartbeatSandbox,
 } from "../../src/infra/heartbeat-runner.test-utils.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { withEnvAsync } from "../../src/test-utils/env.js";
 import { enqueueCommitmentExtraction } from "../../src/commitments/runtime.js";
 import {

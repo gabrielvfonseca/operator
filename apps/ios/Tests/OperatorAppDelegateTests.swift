@@ -1,16 +1,16 @@
 import Foundation
-import operatorKit
+import OperatorKit
 import Testing
 import UIKit
-@testable import operator
+@testable import Operator
 
-@Suite(.serialized) struct operatorAppDelegateTests {
+@Suite(.serialized) struct OperatorAppDelegateTests {
     @Test @MainActor func `resolves registry model before view task assigns delegate model`() {
         let registryModel = NodeAppModel()
-        operatorAppModelRegistry.appModel = registryModel
-        defer { operatorAppModelRegistry.appModel = nil }
+        OperatorAppModelRegistry.appModel = registryModel
+        defer { OperatorAppModelRegistry.appModel = nil }
 
-        let delegate = operatorAppDelegate()
+        let delegate = OperatorAppDelegate()
 
         #expect(delegate._test_resolvedAppModel() === registryModel)
     }
@@ -18,27 +18,27 @@ import UIKit
     @Test @MainActor func `prefers explicit delegate model over registry fallback`() {
         let registryModel = NodeAppModel()
         let explicitModel = NodeAppModel()
-        operatorAppModelRegistry.appModel = registryModel
-        defer { operatorAppModelRegistry.appModel = nil }
+        OperatorAppModelRegistry.appModel = registryModel
+        defer { OperatorAppModelRegistry.appModel = nil }
 
-        let delegate = operatorAppDelegate()
+        let delegate = OperatorAppDelegate()
         delegate.appModel = explicitModel
 
         #expect(delegate._test_resolvedAppModel() === explicitModel)
     }
 
     @Test @MainActor func `derives background refresh task identifier from app bundle identifier`() {
-        let delegate = operatorAppDelegate()
-        let bundleIdentifier = Bundle.main.bundleIdentifier ?? "ai.openclawfoundation.app.tests"
+        let delegate = OperatorAppDelegate()
+        let bundleIdentifier = Bundle.main.bundleIdentifier ?? "ai.operatorfoundation.app.tests"
 
         #expect(delegate._test_wakeRefreshTaskIdentifier() == "\(bundleIdentifier).bgrefresh")
     }
 
     @Test @MainActor func `stages a gateway URL when the model is ready`() async throws {
-        operatorAppModelRegistry.appModel = nil
-        defer { operatorAppModelRegistry.appModel = nil }
+        OperatorAppModelRegistry.appModel = nil
+        defer { OperatorAppModelRegistry.appModel = nil }
         let model = NodeAppModel()
-        let delegate = operatorAppDelegate()
+        let delegate = OperatorAppDelegate()
         delegate.appModel = model
         let url = try #require(URL(
             string: "operator://gateway?host=gateway.example.com&port=443&tls=1&token=tok"))
@@ -53,9 +53,9 @@ import UIKit
     }
 
     @Test @MainActor func `replays a gateway URL received before the model is ready`() async throws {
-        operatorAppModelRegistry.appModel = nil
-        defer { operatorAppModelRegistry.appModel = nil }
-        let delegate = operatorAppDelegate()
+        OperatorAppModelRegistry.appModel = nil
+        defer { OperatorAppModelRegistry.appModel = nil }
+        let delegate = OperatorAppDelegate()
         let url = try #require(URL(
             string: "operator://gateway?host=gateway.example.com&port=443&tls=1&token=tok"))
 
@@ -70,7 +70,7 @@ import UIKit
     }
 
     @Test @MainActor func `rejects an invalid URL`() throws {
-        let delegate = operatorAppDelegate()
+        let delegate = OperatorAppDelegate()
         let url = try #require(URL(string: "https://example.com/gateway"))
 
         #expect(!delegate.application(UIApplication.shared, open: url))

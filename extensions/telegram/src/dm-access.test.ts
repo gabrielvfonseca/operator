@@ -12,7 +12,7 @@ const createPairingPrefixStripperMock = vi.hoisted(
     normalize(value.replace(prefix, "")),
 );
 
-vi.mock("openclaw/plugin-sdk/channel-pairing", () => ({
+vi.mock("operator/plugin-sdk/channel-pairing", () => ({
   createChannelPairingChallengeIssuer: createChannelPairingChallengeIssuerMock,
   createPairingPrefixStripper: createPairingPrefixStripperMock,
   createLoggedPairingApprovalNotifier: () => undefined,
@@ -20,7 +20,7 @@ vi.mock("openclaw/plugin-sdk/channel-pairing", () => ({
   createChannelPairingController: () => ({}),
 }));
 
-vi.mock("openclaw/plugin-sdk/conversation-runtime", () => ({
+vi.mock("operator/plugin-sdk/conversation-runtime", () => ({
   upsertChannelPairingRequest: upsertChannelPairingRequestMock,
   createStaticReplyToModeResolver: (mode: string) => () => mode,
   createTopLevelChannelReplyToModeResolver: () => () => "off",

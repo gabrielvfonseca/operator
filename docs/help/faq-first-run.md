@@ -78,7 +78,7 @@ and troubleshooting see the main [FAQ](/help/faq).
 
     ```bash
     git clone https://github.com/gabrielvfonseca/operator.git
-    cd openclaw
+    cd operator
     pnpm install
     pnpm build
     pnpm ui:build
@@ -312,7 +312,7 @@ and troubleshooting see the main [FAQ](/help/faq).
 
     ```bash
     git clone https://github.com/gabrielvfonseca/operator.git
-    cd openclaw
+    cd operator
     pnpm install
     pnpm build
     ```

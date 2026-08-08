@@ -19,7 +19,7 @@ function expectedTaskkillPath(): string {
 }
 
 function makeTempDir(): string {
-  return tempDirs.make("openclaw-plugin-lifecycle-probe-");
+  return tempDirs.make("operator-plugin-lifecycle-probe-");
 }
 
 function isProcessRunning(pid: number): boolean {
@@ -100,7 +100,7 @@ describe("plugin lifecycle matrix probe", () => {
 
   it("rejects unreadable config during uninstall proof", async () => {
     const dir = makeTempDir();
-    const configFile = path.join(dir, ".openclaw", "openclaw.json");
+    const configFile = path.join(dir, ".operator", "operator.json");
     mkdirSync(path.dirname(configFile), { recursive: true });
     writeFileSync(configFile, "{ malformed\n", "utf8");
 

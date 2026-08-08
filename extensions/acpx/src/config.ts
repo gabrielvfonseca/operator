@@ -19,8 +19,8 @@ import type {
 } from "./config-schema.js";
 export type { ResolvedAcpxPluginConfig } from "./config-schema.js";
 
-const ACPX_PLUGIN_TOOLS_MCP_SERVER_NAME = "openclaw-plugin-tools";
-const ACPX_OPERATOR_TOOLS_MCP_SERVER_NAME = "openclaw-tools";
+const ACPX_PLUGIN_TOOLS_MCP_SERVER_NAME = "operator-plugin-tools";
+const ACPX_OPERATOR_TOOLS_MCP_SERVER_NAME = "operator-tools";
 const requireFromHere = createRequire(import.meta.url);
 
 function isAcpxPluginRoot(dir: string): boolean {
@@ -171,14 +171,14 @@ function resolvePluginToolsMcpServerConfig(moduleUrl: string = import.meta.url):
 function resolveOperatorToolsMcpServerConfig(moduleUrl: string = import.meta.url): McpServerConfig {
   const pluginRoot = resolveAcpxPluginRoot(moduleUrl);
   const openClawRoot = resolveOperatorRoot(pluginRoot);
-  const distEntry = path.join(openClawRoot, "dist", "mcp", "openclaw-tools-serve.js");
+  const distEntry = path.join(openClawRoot, "dist", "mcp", "operator-tools-serve.js");
   if (fs.existsSync(distEntry)) {
     return {
       command: process.execPath,
       args: [distEntry],
     };
   }
-  const sourceEntry = path.join(openClawRoot, "src", "mcp", "openclaw-tools-serve.ts");
+  const sourceEntry = path.join(openClawRoot, "src", "mcp", "operator-tools-serve.ts");
   return {
     command: process.execPath,
     args: ["--import", resolveTsxImportSpecifier(), sourceEntry],

@@ -232,7 +232,7 @@ Default Docker image: `operator-sandbox:bookworm-slim`
 
 The `scripts/sandbox-setup.sh`, `scripts/sandbox-common-setup.sh`, and `scripts/sandbox-browser-setup.sh` helper scripts are only available when running from a [source checkout](https://github.com/gabrielvfonseca/operator). They are not included in the npm package.
 
-If you installed Operator via `npm install -g openclaw`, use the inline `docker build` commands shown below instead.
+If you installed Operator via `npm install -g operator`, use the inline `docker build` commands shown below instead.
 </Note>
 
 <Steps>

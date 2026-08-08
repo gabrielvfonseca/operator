@@ -99,7 +99,7 @@ function listBuiltPluginLoaderModuleCandidateUrls(importerUrl: string): URL[] {
     return [];
   }
   // Bundled read-only chunks live under dist/ with hashed names. Source-relative
-  // ../../plugins candidates would escape the installed openclaw package there.
+  // ../../plugins candidates would escape the installed operator package there.
   const distRoot = importerPath.slice(0, distMarkerIndex + distMarker.length - 1);
   return BUILT_PLUGIN_LOADER_MODULE_CANDIDATES.map((candidate) =>
     pathToFileURL(path.join(distRoot, candidate)),

@@ -276,7 +276,7 @@ async function runQaCli(
     const timeout = setTimeout(() => {
       signalQaCliProcessTree(child, "SIGKILL");
       reject(
-        new QaSuiteInfraError("qa_cli_timeout", `qa cli timed out: openclaw ${args.join(" ")}`),
+        new QaSuiteInfraError("qa_cli_timeout", `qa cli timed out: operator ${args.join(" ")}`),
       );
     }, timeoutMs);
     child.stdout.on("data", (chunk) => appendQaChildOutput(stdout, chunk));

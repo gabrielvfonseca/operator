@@ -3,8 +3,8 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import type { MemorySearchResult } from "openclaw/plugin-sdk/memory-core-host-runtime-files";
-import * as sessionTranscriptHit from "openclaw/plugin-sdk/session-transcript-hit";
+import type { MemorySearchResult } from "operator/plugin-sdk/memory-core-host-runtime-files";
+import * as sessionTranscriptHit from "operator/plugin-sdk/session-transcript-hit";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   attachQmdSessionArtifactHit,
@@ -31,9 +31,9 @@ const crossAgentStore: Record<string, TestSessionEntry> = {
 let combinedSessionStore: Record<string, TestSessionEntry> = crossAgentStore;
 const tempRoots: string[] = [];
 
-vi.mock("openclaw/plugin-sdk/session-transcript-hit", async (importOriginal) => {
+vi.mock("operator/plugin-sdk/session-transcript-hit", async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import("openclaw/plugin-sdk/session-transcript-hit")>();
+    await importOriginal<typeof import("operator/plugin-sdk/session-transcript-hit")>();
   return {
     ...actual,
     loadCombinedSessionStoreForGateway: vi.fn(() => ({
@@ -63,7 +63,7 @@ describe("filterMemorySearchHitsBySessionVisibility", () => {
     searchPath: string;
     sessionId: string;
   }): Promise<string> {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-qmd-session-artifact-"));
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-qmd-session-artifact-"));
     tempRoots.push(root);
     const indexPath = path.join(root, "index.sqlite");
     replaceQmdSessionArtifactMappings({
@@ -99,12 +99,12 @@ describe("filterMemorySearchHitsBySessionVisibility", () => {
   }
 
   it("migrates legacy QMD artifact mappings to STRICT without losing rows", async () => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-qmd-session-artifact-"));
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-qmd-session-artifact-"));
     tempRoots.push(root);
     const indexPath = path.join(root, "index.sqlite");
     const legacy = new DatabaseSync(indexPath);
     legacy.exec(`
-      CREATE TABLE openclaw_qmd_session_artifacts (
+      CREATE TABLE operator_qmd_session_artifacts (
         collection TEXT NOT NULL,
         artifact_path TEXT NOT NULL,
         search_path TEXT NOT NULL,
@@ -115,7 +115,7 @@ describe("filterMemorySearchHitsBySessionVisibility", () => {
         updated_at INTEGER NOT NULL,
         PRIMARY KEY (collection, artifact_path)
       );
-      INSERT INTO openclaw_qmd_session_artifacts (
+      INSERT INTO operator_qmd_session_artifacts (
         collection, artifact_path, search_path, docid, memory_key, agent_id, session_id, updated_at
       ) VALUES ('legacy', 'old.md', 'qmd/legacy/old.md', NULL, 'old-key', 'main', 'old', 1);
     `);
@@ -142,7 +142,7 @@ describe("filterMemorySearchHitsBySessionVisibility", () => {
       expect(
         migrated
           .prepare(
-            "SELECT strict FROM pragma_table_list WHERE name = 'openclaw_qmd_session_artifacts'",
+            "SELECT strict FROM pragma_table_list WHERE name = 'operator_qmd_session_artifacts'",
           )
           .get(),
       ).toEqual({ strict: 1 });
@@ -150,7 +150,7 @@ describe("filterMemorySearchHitsBySessionVisibility", () => {
         migrated
           .prepare(
             `SELECT collection, artifact_path, archived
-             FROM openclaw_qmd_session_artifacts
+             FROM operator_qmd_session_artifacts
              ORDER BY collection`,
           )
           .all(),
@@ -161,7 +161,7 @@ describe("filterMemorySearchHitsBySessionVisibility", () => {
       expect(() =>
         migrated
           .prepare(
-            "UPDATE openclaw_qmd_session_artifacts SET archived = ? WHERE collection = 'legacy'",
+            "UPDATE operator_qmd_session_artifacts SET archived = ? WHERE collection = 'legacy'",
           )
           .run("not-an-integer"),
       ).toThrow();

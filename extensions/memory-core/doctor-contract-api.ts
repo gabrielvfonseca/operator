@@ -4,7 +4,7 @@ import fsSync from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
-import { resolveUserPath } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
+import { resolveUserPath } from "operator/plugin-sdk/memory-core-host-engine-foundation";
 import {
   ensureMemoryIndexSchema,
   loadSqliteVecExtension,
@@ -15,18 +15,18 @@ import {
   MEMORY_INDEX_SOURCES_TABLE,
   MEMORY_INDEX_VECTOR_TABLE,
   requireNodeSqlite,
-} from "openclaw/plugin-sdk/memory-core-host-engine-storage";
-import { resolveMemoryDreamingWorkspaces } from "openclaw/plugin-sdk/memory-core-host-status";
-import { normalizeAgentId } from "openclaw/plugin-sdk/routing";
+} from "operator/plugin-sdk/memory-core-host-engine-storage";
+import { resolveMemoryDreamingWorkspaces } from "operator/plugin-sdk/memory-core-host-status";
+import { normalizeAgentId } from "operator/plugin-sdk/routing";
 import {
   archiveLegacyStateSource,
   legacyStateFileExists,
   type PluginDoctorStateMigration,
-} from "openclaw/plugin-sdk/runtime-doctor";
+} from "operator/plugin-sdk/runtime-doctor";
 import {
   ensureOperatorAgentDatabaseSchema,
   resolveOperatorAgentSqlitePath,
-} from "openclaw/plugin-sdk/sqlite-runtime";
+} from "operator/plugin-sdk/sqlite-runtime";
 import {
   DAILY_INGESTION_STATE_RELATIVE_PATH,
   SESSION_INGESTION_STATE_RELATIVE_PATH,

@@ -14,7 +14,7 @@ import {
 } from "../../../../src/cron/store.js";
 import { cronStoreKey } from "../../../../src/cron/store/key.js";
 import { readCronTaskRunHistoryPage } from "../../../../src/cron/task-run-history.js";
-import { runOperatorStateWriteTransaction } from "../../../../src/state/openclaw-state-db.js";
+import { runOperatorStateWriteTransaction } from "../../../../src/state/operator-state-db.js";
 import { withRestoredMocks } from "../../../../src/test-utils/vitest-spies.js";
 import {
   collectLegacyCronStoreHealthFindings,
@@ -503,7 +503,7 @@ describe("maybeRepairLegacyCronStore", () => {
       expectNoteContaining("1 cron job is still marked in-flight", "Cron");
       expectNoteContaining("shows it as `running`", "Cron");
       expectNoteContaining("marks such runs interrupted the next time it starts", "Cron");
-      expectNoteContaining("openclaw cron show <id>", "Cron");
+      expectNoteContaining("operator cron show <id>", "Cron");
 
       // Observer-only: no repair prompt and the running marker is left untouched.
       expect(prompter.confirm).not.toHaveBeenCalled();
@@ -565,7 +565,7 @@ describe("maybeRepairLegacyCronStore", () => {
       expectNoteContaining("re-fires it on error backoff", "Cron");
       expectNoteContaining("resets on the next successful run", "Cron");
       expectNoteContaining("interrupted by a gateway restart", "Cron");
-      expectNoteContaining("openclaw cron show <id>", "Cron");
+      expectNoteContaining("operator cron show <id>", "Cron");
 
       // Observer-only: no repair prompt and the failure counters stay untouched.
       expect(prompter.confirm).not.toHaveBeenCalled();
@@ -1457,7 +1457,7 @@ describe("maybeRepairLegacyCronStore", () => {
     expectNoteContaining("Shell prompt job 1", "Cron");
     expectNoteContaining("Shell prompt job 2", "Cron");
     expectNoteContaining("Shell prompt job 3", "Cron");
-    expectNoNoteContaining("openclaw doctor --fix", "Cron");
+    expectNoNoteContaining("operator doctor --fix", "Cron");
     expectNoNoteContaining("jobs.json", "Cron");
     expect(prompter.confirm).not.toHaveBeenCalled();
 
@@ -1499,7 +1499,7 @@ describe("maybeRepairLegacyCronStore", () => {
         message: [
           "Command to run:",
           "- command: python3 scripts/check_mail.py",
-          "- workdir: /home/openclaw/.razor/clawd",
+          "- workdir: /home/operator/.razor/clawd",
         ].join("\n"),
         toolsAllow: ["read", "message"],
       },
@@ -1523,7 +1523,7 @@ describe("maybeRepairLegacyCronStore", () => {
     expectNoteContaining("Recreate the job as a command cron job", "Cron");
     expectNoNoteContaining("informational only", "Cron");
     expectNoNoteContaining("keep running as-is", "Cron");
-    expectNoNoteContaining("openclaw doctor --fix", "Cron");
+    expectNoNoteContaining("operator doctor --fix", "Cron");
     expect(prompter.confirm).not.toHaveBeenCalled();
 
     const job = requirePersistedJob(await readPersistedJobs(storePath), 0);

@@ -328,12 +328,12 @@ describe("push APNs send semantics", () => {
       alert: { title: "Wake", body: "Ping" },
       sound: "default",
     });
-    const openclawPayload = requireRecord(payload.operator, "operator payload");
-    expectRecordFields(openclawPayload, {
+    const operatorPayload = requireRecord(payload.operator, "operator payload");
+    expectRecordFields(operatorPayload, {
       kind: "push.test",
       nodeId: "ios-node-alert",
     });
-    expect(typeof openclawPayload.ts).toBe("number");
+    expect(typeof operatorPayload.ts).toBe("number");
     expect(result.ok).toBe(true);
     expect(result.status).toBe(200);
     expect(result.transport).toBe("direct");
@@ -470,13 +470,13 @@ describe("push APNs send semantics", () => {
     expect(payload.aps).toEqual({
       "content-available": 1,
     });
-    const openclawPayload = requireRecord(payload.operator, "operator payload");
-    expectRecordFields(openclawPayload, {
+    const operatorPayload = requireRecord(payload.operator, "operator payload");
+    expectRecordFields(operatorPayload, {
       kind: "node.wake",
       reason: "node.invoke",
       nodeId: "ios-node-wake",
     });
-    expect(typeof openclawPayload.ts).toBe("number");
+    expect(typeof operatorPayload.ts).toBe("number");
     const aps = requireRecord(payload.aps, "APNs aps payload");
     expect(aps.alert).toBeUndefined();
     expect(aps.sound).toBeUndefined();
@@ -518,14 +518,14 @@ describe("push APNs send semantics", () => {
       category: "operator.exec-approval",
       "content-available": 1,
     });
-    const openclawPayload = requireRecord(payload.operator, "operator payload");
-    expectRecordFields(openclawPayload, {
+    const operatorPayload = requireRecord(payload.operator, "operator payload");
+    expectRecordFields(operatorPayload, {
       kind: "exec.approval.requested",
       approvalId: "approval-123",
       gatewayDeviceId: "gateway-device-123",
     });
-    expect(typeof openclawPayload.ts).toBe("number");
-    expectNoProperties(openclawPayload, [
+    expect(typeof operatorPayload.ts).toBe("number");
+    expectNoProperties(operatorPayload, [
       "host",
       "nodeId",
       "agentId",
@@ -564,13 +564,13 @@ describe("push APNs send semantics", () => {
     expect(payload.aps).toEqual({
       "content-available": 1,
     });
-    const openclawPayload = requireRecord(payload.operator, "operator payload");
-    expectRecordFields(openclawPayload, {
+    const operatorPayload = requireRecord(payload.operator, "operator payload");
+    expectRecordFields(operatorPayload, {
       kind: "exec.approval.resolved",
       approvalId: "approval-123",
       gatewayDeviceId: "gateway-device-123",
     });
-    expect(typeof openclawPayload.ts).toBe("number");
+    expect(typeof operatorPayload.ts).toBe("number");
     expect(result.ok).toBe(true);
     expect(result.transport).toBe("direct");
   });
@@ -608,14 +608,14 @@ describe("push APNs send semantics", () => {
       category: "operator.plugin-approval",
       "content-available": 1,
     });
-    const openclawPayload = requireRecord(payload.operator, "operator payload");
-    expectRecordFields(openclawPayload, {
+    const operatorPayload = requireRecord(payload.operator, "operator payload");
+    expectRecordFields(operatorPayload, {
       kind: "plugin.approval.requested",
       approvalId: "plugin:approval-123",
       gatewayDeviceId: "gateway-device-123",
     });
-    expect(typeof openclawPayload.ts).toBe("number");
-    expectNoProperties(openclawPayload, [
+    expect(typeof operatorPayload.ts).toBe("number");
+    expectNoProperties(operatorPayload, [
       "title",
       "description",
       "toolName",
@@ -664,13 +664,13 @@ describe("push APNs send semantics", () => {
 
     const payload = requirePayload(requireSendRequest(send));
     expect(payload.aps).toEqual({ "content-available": 1 });
-    const openclawPayload = requireRecord(payload.operator, "operator payload");
-    expectRecordFields(openclawPayload, {
+    const operatorPayload = requireRecord(payload.operator, "operator payload");
+    expectRecordFields(operatorPayload, {
       kind: "plugin.approval.resolved",
       approvalId: "plugin:approval-123",
       gatewayDeviceId: "gateway-device-123",
     });
-    expect(typeof openclawPayload.ts).toBe("number");
+    expect(typeof operatorPayload.ts).toBe("number");
   });
 
   it("parses direct send failures and clamps sub-second timeouts", async () => {
@@ -862,13 +862,13 @@ describe("push APNs send semantics", () => {
     });
     const payload = requirePayload(sent);
     expect(payload.aps).toEqual({ "content-available": 1 });
-    const openclawPayload = requireRecord(payload.operator, "operator payload");
-    expectRecordFields(openclawPayload, {
+    const operatorPayload = requireRecord(payload.operator, "operator payload");
+    expectRecordFields(operatorPayload, {
       kind: "node.wake",
       reason: "queue.retry",
       nodeId: "ios-node-relay-wake",
     });
-    expect(typeof openclawPayload.ts).toBe("number");
+    expect(typeof operatorPayload.ts).toBe("number");
     expectRecordFields(requireRecord(result, "APNs result"), {
       ok: false,
       status: 429,
@@ -910,14 +910,14 @@ describe("push APNs send semantics", () => {
       category: "operator.exec-approval",
       "content-available": 1,
     });
-    const openclawPayload = requireRecord(payload.operator, "operator payload");
-    expectRecordFields(openclawPayload, {
+    const operatorPayload = requireRecord(payload.operator, "operator payload");
+    expectRecordFields(operatorPayload, {
       kind: "exec.approval.requested",
       approvalId: "approval-relay-1",
       gatewayDeviceId: "gateway-device-relay",
     });
-    expect(typeof openclawPayload.ts).toBe("number");
-    expectNoProperties(openclawPayload, [
+    expect(typeof operatorPayload.ts).toBe("number");
+    expectNoProperties(operatorPayload, [
       "commandText",
       "host",
       "nodeId",

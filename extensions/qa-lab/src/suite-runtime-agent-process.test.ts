@@ -172,7 +172,7 @@ describe("qa suite runtime agent process helpers", () => {
         { timeoutMs: 1 },
       );
       const timeoutAssertion = expect(pending).rejects.toThrow(
-        "qa cli timed out: openclaw qa suite",
+        "qa cli timed out: operator qa suite",
       );
 
       await waitForSpawnCount(1);
@@ -211,7 +211,7 @@ describe("qa suite runtime agent process helpers", () => {
         { timeoutMs: 1 },
       );
       const timeoutAssertion = expect(pending).rejects.toThrow(
-        "qa cli timed out: openclaw qa suite",
+        "qa cli timed out: operator qa suite",
       );
 
       await waitForSpawnCount(1);

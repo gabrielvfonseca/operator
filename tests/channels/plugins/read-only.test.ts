@@ -125,8 +125,8 @@ vi.mock("../../plugins/plugin-module-loader-cache.js", async (importOriginal) =>
         return [];
       }
       const packageJson = readJson(packagePath);
-      const openclaw = isRecord(packageJson) ? packageJson.operator : undefined;
-      const setupEntry = isRecord(openclaw) ? operator.setupEntry : undefined;
+      const operator = isRecord(packageJson) ? packageJson.operator : undefined;
+      const setupEntry = isRecord(operator) ? operator.setupEntry : undefined;
       if (typeof setupEntry !== "string") {
         return [];
       }

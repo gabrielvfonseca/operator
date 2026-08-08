@@ -121,8 +121,8 @@ When no `plugins.slots.contextEngine` is set (or it's set to `"legacy"`), this e
 A plugin can register a context engine using the plugin API:
 
 ```ts
-import { buildMemorySystemPromptAddition } from "openclaw/plugin-sdk/core";
-import { resolveSessionAgentId } from "openclaw/plugin-sdk/memory-host-core";
+import { buildMemorySystemPromptAddition } from "operator/plugin-sdk/core";
+import { resolveSessionAgentId } from "operator/plugin-sdk/memory-host-core";
 
 export default function register(api) {
   api.registerContextEngine("my-engine", (ctx) => ({
@@ -331,7 +331,7 @@ That means there are two valid plugin patterns:
     Implement your own compaction algorithm and set `ownsCompaction: true`.
   </Tab>
   <Tab title="Delegating mode">
-    Set `ownsCompaction: false` and have `compact()` call `delegateCompactionToRuntime(...)` from `openclaw/plugin-sdk/core` to use Operator's built-in compaction behavior.
+    Set `ownsCompaction: false` and have `compact()` call `delegateCompactionToRuntime(...)` from `operator/plugin-sdk/core` to use Operator's built-in compaction behavior.
   </Tab>
 </Tabs>
 
@@ -366,7 +366,7 @@ The slot is exclusive at run time - only one registered context engine is resolv
     Compaction is one responsibility of the context engine. The legacy engine delegates to Operator's built-in summarization. Plugin engines can implement any compaction strategy (DAG summaries, vector retrieval, etc.).
   </Accordion>
   <Accordion title="Memory plugins">
-    Memory plugins (`plugins.slots.memory`) are separate from context engines. Memory plugins provide search/retrieval; context engines control what the model sees. They can work together - a context engine might use memory plugin data during assembly. Plugin engines that want the active memory prompt path should prefer `buildMemorySystemPromptAddition(...)` from `openclaw/plugin-sdk/core`, which converts the active memory prompt sections into a ready-to-prepend `systemPromptAddition`. If an engine needs lower-level control, it can still pull raw lines from `openclaw/plugin-sdk/memory-host-core` via `buildActiveMemoryPromptSection(...)`.
+    Memory plugins (`plugins.slots.memory`) are separate from context engines. Memory plugins provide search/retrieval; context engines control what the model sees. They can work together - a context engine might use memory plugin data during assembly. Plugin engines that want the active memory prompt path should prefer `buildMemorySystemPromptAddition(...)` from `operator/plugin-sdk/core`, which converts the active memory prompt sections into a ready-to-prepend `systemPromptAddition`. If an engine needs lower-level control, it can still pull raw lines from `operator/plugin-sdk/memory-host-core` via `buildActiveMemoryPromptSection(...)`.
   </Accordion>
   <Accordion title="Session pruning">
     Trimming old tool results in-memory still runs regardless of which context engine is active.

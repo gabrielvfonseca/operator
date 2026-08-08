@@ -3,13 +3,13 @@ import { createServer, type IncomingMessage, type ServerResponse } from "node:ht
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../src/config/types.openclaw.js";
+import type { OperatorConfig } from "../src/config/types.operator.js";
 import { createDeferred } from "../src/test-utils/deferred.js";
 import { GatewayChatClient } from "../src/tui/gateway-chat.js";
 import {
-  createOpenClawTestInstance,
-  type OpenClawTestInstance,
-} from "./helpers/openclaw-test-instance.js";
+  createOperatorTestInstance,
+  type OperatorTestInstance,
+} from "./helpers/operator-test-instance.js";
 
 type MockModelRequest = {
   body: Record<string, unknown>;
@@ -25,7 +25,7 @@ type MockModelServer = {
 const TEST_TIMEOUT_MS = 150_000;
 const WAIT_OPTS = { timeout: 30_000, interval: 20 } as const;
 
-const instances: OpenClawTestInstance[] = [];
+const instances: OperatorTestInstance[] = [];
 const cleanupDirs: string[] = [];
 const modelServers: MockModelServer[] = [];
 
@@ -148,7 +148,7 @@ async function startMockModelServer(): Promise<MockModelServer> {
 
 async function writeTurnTracerPlugin(pluginDir: string, tracePath: string): Promise<void> {
   await writeFile(
-    path.join(pluginDir, "openclaw.plugin.json"),
+    path.join(pluginDir, "operator.plugin.json"),
     JSON.stringify({
       id: "queued-rotation-tracer",
       name: "Queued Rotation Tracer",
@@ -190,7 +190,7 @@ describe("Gateway queued session rotation", () => {
   it(
     "runs a replacement turn after /new cancels an active turn",
     async () => {
-      const fixtureDir = await mkdtemp(path.join(tmpdir(), "openclaw-queued-rotation-"));
+      const fixtureDir = await mkdtemp(path.join(tmpdir(), "operator-queued-rotation-"));
       cleanupDirs.push(fixtureDir);
       const pluginDir = path.join(fixtureDir, "plugin");
       const tracePath = path.join(fixtureDir, "turns.ndjson");
@@ -212,7 +212,7 @@ describe("Gateway queued session rotation", () => {
           defaults: {
             workspace: path.join(fixtureDir, "workspace"),
             model: { primary: modelRef },
-            models: { [modelRef]: { agentRuntime: { id: "openclaw" } } },
+            models: { [modelRef]: { agentRuntime: { id: "operator" } } },
             skills: [],
             skipBootstrap: true,
           },
@@ -244,7 +244,7 @@ describe("Gateway queued session rotation", () => {
         },
         messages: { queue: { mode: "followup", debounceMs: 0 } },
       } satisfies OperatorConfig;
-      const instance = await createOpenClawTestInstance({
+      const instance = await createOperatorTestInstance({
         name: "queued-session-rotation",
         gatewayToken: "secret-token",
         config,

@@ -2077,8 +2077,8 @@ private data class AboutLink(
 
 private val aboutLinks =
   listOf(
-    AboutLink("Website", "openclaw.ai", "https://openclaw.ai"),
-    AboutLink("Docs", "docs.openclaw.ai", "https://docs.openclaw.ai"),
+    AboutLink("Website", "operator.ai", "https://operator.ai"),
+    AboutLink("Docs", "docs.operator.ai", "https://docs.operator.ai"),
     AboutLink("GitHub", "github.com/operator/operator", "https://github.com/operator/operator"),
     AboutLink("Discord", "discord.gg/clawd", "https://discord.gg/clawd"),
   )

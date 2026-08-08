@@ -196,7 +196,7 @@ describe("resolveClaudeCliExecutionArgs", () => {
         ],
         toolAvailability: {
           native: [],
-          mcp: ["mcp__operator__openclaw"],
+          mcp: ["mcp__operator__operator"],
         },
       }),
     ).toEqual([
@@ -217,7 +217,7 @@ describe("resolveClaudeCliExecutionArgs", () => {
       "--tools",
       "",
       "--allowedTools",
-      "mcp__operator__openclaw",
+      "mcp__operator__operator",
     ]);
   });
 

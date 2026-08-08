@@ -5,7 +5,7 @@ import {
 } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 
 export type DiscordListenerLogger = ReturnType<
-  typeof import("openclaw/plugin-sdk/runtime-env").createSubsystemLogger
+  typeof import("operator/plugin-sdk/runtime-env").createSubsystemLogger
 >;
 
 const DISCORD_SLOW_LISTENER_THRESHOLD_MS = 30_000;

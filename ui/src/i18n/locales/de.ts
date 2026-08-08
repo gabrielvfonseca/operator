@@ -2353,7 +2353,7 @@ export const de: TranslationMap = {
       onboardingTitle: "No workspaces yet",
       onboardingSubtitle:
         "Ask your agent to build a workspace, or create one from the command line.",
-      onboardingCommand: "openclaw workspaces tabs create --title Main",
+      onboardingCommand: "operator workspaces tabs create --title Main",
       tabTitle: "This workspace is empty",
       tabSubtitle: "Ask your agent to add a widget, or add one yourself.",
       noVisibleTabs: "Every workspace tab is hidden. Restore one from the hidden menu.",
@@ -3292,9 +3292,9 @@ export const de: TranslationMap = {
         summary:
           "Das Gateway ist erreichbar, benötigt aber ein passendes Token oder Passwort, bevor dieser Browser eine Verbindung herstellen kann.",
         stepPaste:
-          "Füge das Token aus openclaw dashboard --no-open ein oder gib das konfigurierte Passwort ein.",
+          "Füge das Token aus operator dashboard --no-open ein oder gib das konfigurierte Passwort ein.",
         stepGenerate:
-          "Wenn kein Token konfiguriert ist, führe openclaw doctor --generate-gateway-token auf dem Gateway-Host aus.",
+          "Wenn kein Token konfiguriert ist, führe operator doctor --generate-gateway-token auf dem Gateway-Host aus.",
         stepConnect: "Klicke nach dem Aktualisieren der Zugangsdaten erneut auf Connect.",
       },
       authFailed: {
@@ -3302,7 +3302,7 @@ export const de: TranslationMap = {
         summary:
           "Die angegebenen Zugangsdaten wurden abgelehnt. Häufigste Ursache ist ein veraltetes Token oder ein Token von einer anderen Gateway-URL.",
         stepDashboard:
-          "Führe openclaw dashboard --no-open aus und öffne die frische URL oder füge ihr Token ein.",
+          "Führe operator dashboard --no-open aus und öffne die frische URL oder füge ihr Token ein.",
         stepReplace:
           "Ersetze veraltete Token-/Passwortwerte; verwende kein Token von einer anderen Gateway-URL erneut.",
         stepMode:
@@ -3326,8 +3326,8 @@ export const de: TranslationMap = {
           "Dieser Browser benötigt eine einmalige Freigabe vom Gateway-Host, bevor er die Control UI verwenden kann.",
         upgradeSummary:
           "Dieser Browser ist bereits bekannt, aber der angeforderte Zugriff hat sich geändert und benötigt eine neue Freigabe.",
-        stepList: "Führe openclaw devices list auf dem Gateway-Host aus.",
-        stepApproveId: "Genehmige diese Anfrage: openclaw devices approve {requestId}.",
+        stepList: "Führe operator devices list auf dem Gateway-Host aus.",
+        stepApproveId: "Genehmige diese Anfrage: operator devices approve {requestId}.",
         stepApprove: "Genehmige die ausstehende Browser-/Geräteanfrage aus dieser Liste.",
         stepReconnect: "Verbinde dich erneut, nachdem die Freigabe abgeschlossen ist.",
       },
@@ -3356,7 +3356,7 @@ export const de: TranslationMap = {
         summary:
           "Die bereitgestellte Control UI und das laufende Gateway stimmen beim unterstützten Verbindungsprotokoll nicht überein.",
         stepDashboard:
-          "Öffne das bereitgestellte Dashboard mit openclaw dashboard erneut, damit UI und Gateway aus derselben Installation stammen.",
+          "Öffne das bereitgestellte Dashboard mit operator dashboard erneut, damit UI und Gateway aus derselben Installation stammen.",
         stepDevUi:
           "Wenn du pnpm ui:dev verwendest, baue oder starte die Dev-UI gegen den aktuellen Checkout neu.",
         stepRestart:
@@ -3367,11 +3367,11 @@ export const de: TranslationMap = {
         summary:
           "Der Browser konnte die Gateway-Verbindung nicht abschließen. Prüfe Ziel und Transport, bevor du Zugangsdaten erneut versuchst.",
         stepGateway:
-          "Bestätige mit openclaw status oder openclaw gateway run, dass das Gateway läuft.",
+          "Bestätige mit operator status oder operator gateway run, dass das Gateway läuft.",
         stepUrl:
           "Prüfe die WebSocket-URL und verwende wss://, wenn das Gateway hinter HTTPS/Tailscale Serve liegt.",
         stepDashboard:
-          "Öffne das Dashboard mit openclaw dashboard --no-open erneut, um die aktuelle URL und Auth-Details zu kopieren.",
+          "Öffne das Dashboard mit operator dashboard --no-open erneut, um die aktuelle URL und Auth-Details zu kopieren.",
       },
     },
   },

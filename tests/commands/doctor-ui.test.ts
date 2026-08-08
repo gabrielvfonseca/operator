@@ -15,8 +15,8 @@ type UiProtocolFreshnessIssue = Awaited<ReturnType<typeof detectUiProtocolFreshn
 function issue(overrides: Partial<UiProtocolFreshnessIssue> = {}): UiProtocolFreshnessIssue {
   return {
     kind: "missing-assets",
-    root: "/repo/openclaw",
-    uiIndexPath: "/repo/openclaw/dist/control-ui/index.html",
+    root: "/repo/operator",
+    uiIndexPath: "/repo/operator/dist/control-ui/index.html",
     canBuild: true,
     ...overrides,
   } as UiProtocolFreshnessIssue;
@@ -54,15 +54,15 @@ describe("UI protocol freshness health mapping", () => {
       expect.objectContaining({
         checkId: "core/doctor/ui-protocol-freshness",
         severity: "warning",
-        path: "/repo/openclaw/dist/control-ui/index.html",
-        fixHint: expect.stringContaining("openclaw doctor --fix"),
+        path: "/repo/operator/dist/control-ui/index.html",
+        fixHint: expect.stringContaining("operator doctor --fix"),
       }),
     );
     expect(uiProtocolFreshnessIssueToRepairEffects(current)).toEqual([
       {
         kind: "process",
         action: "would-build-control-ui",
-        target: "/repo/openclaw",
+        target: "/repo/operator",
         dryRunSafe: false,
       },
     ]);
@@ -76,12 +76,12 @@ describe("UI protocol freshness health mapping", () => {
     const finding = uiProtocolFreshnessIssueToHealthFinding(current);
 
     expect(finding.message).toContain("abc123 schema change");
-    expect(finding.fixHint).toContain("openclaw doctor --fix --force");
+    expect(finding.fixHint).toContain("operator doctor --fix --force");
     expect(uiProtocolFreshnessIssueToRepairEffects(current)).toEqual([
       {
         kind: "process",
         action: "would-rebuild-control-ui",
-        target: "/repo/openclaw",
+        target: "/repo/operator",
         dryRunSafe: false,
       },
     ]);

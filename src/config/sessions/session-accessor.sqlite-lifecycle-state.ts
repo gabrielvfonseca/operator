@@ -3,7 +3,7 @@ import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
 } from "../../infra/kysely-sync.js";
-import type { OperatorAgentDatabase } from "../../state/openclaw-agent-db.js";
+import type { OperatorAgentDatabase } from "../../state/operator-agent-db.js";
 import type {
   MaterializedSqliteSessionStateDeletePlan,
   SqliteSessionStateDeletePlan,

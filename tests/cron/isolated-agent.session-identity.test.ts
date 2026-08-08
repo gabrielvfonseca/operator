@@ -260,7 +260,7 @@ describe("runCronIsolatedAgentTurn session identity", () => {
       await runCronTurn(home, {
         jobPayload: {
           kind: "agentTurn",
-          message: "cd /srv/openclaw && ./scripts/nightly-report.sh",
+          message: "cd /srv/operator && ./scripts/nightly-report.sh",
         },
       });
 

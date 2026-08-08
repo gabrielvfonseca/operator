@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import webPush from "web-push";
-import { closeOperatorStateDatabase } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabase } from "../../src/state/operator-state-db.js";
 import { captureEnv, setTestEnvValue } from "../../src/test-utils/env.js";
 import {
   createWebPushVapidKeyPair,
@@ -75,17 +75,17 @@ describe("resolveVapidKeys", () => {
     await fs.mkdir(pushDir, { recursive: true });
     await fs.writeFile(legacyPath, "{}", "utf8");
 
-    await expect(resolveVapidKeys(tmpDir)).rejects.toThrow("openclaw doctor --fix");
+    await expect(resolveVapidKeys(tmpDir)).rejects.toThrow("operator doctor --fix");
     expect(readPersistedVapidKeyPair(tmpDir)).toBeNull();
     expect(vi.mocked(webPush.generateVAPIDKeys)).not.toHaveBeenCalled();
 
     await fs.rename(legacyPath, `${legacyPath}.doctor-importing`);
-    await expect(resolveVapidKeys(tmpDir)).rejects.toThrow("openclaw doctor --fix");
+    await expect(resolveVapidKeys(tmpDir)).rejects.toThrow("operator doctor --fix");
     expect(vi.mocked(webPush.generateVAPIDKeys)).not.toHaveBeenCalled();
 
     await fs.rm(`${legacyPath}.doctor-importing`);
     await fs.symlink(path.join(tmpDir, "missing-vapid-keys.json"), legacyPath);
-    await expect(resolveVapidKeys(tmpDir)).rejects.toThrow("openclaw doctor --fix");
+    await expect(resolveVapidKeys(tmpDir)).rejects.toThrow("operator doctor --fix");
     expect(vi.mocked(webPush.generateVAPIDKeys)).not.toHaveBeenCalled();
   });
 
@@ -227,7 +227,7 @@ describe("subscription CRUD", () => {
 
     expect(listWebPushSubscriptions(tmpDir)).toEqual([]);
     await expect(broadcastWebPush({ title: "Blocked" }, tmpDir)).rejects.toThrow(
-      "openclaw doctor --fix",
+      "operator doctor --fix",
     );
     expect(vi.mocked(webPush.sendNotification)).not.toHaveBeenCalled();
   });
@@ -240,7 +240,7 @@ describe("subscription CRUD", () => {
     await fs.writeFile(claimPath, "{}", "utf8");
 
     await expect(clearWebPushSubscriptionByEndpoint(endpoint, tmpDir)).rejects.toThrow(
-      "openclaw doctor --fix",
+      "operator doctor --fix",
     );
     await expect(
       registerWebPushSubscription({
@@ -248,7 +248,7 @@ describe("subscription CRUD", () => {
         keys,
         baseDir: tmpDir,
       }),
-    ).rejects.toThrow("openclaw doctor --fix");
+    ).rejects.toThrow("operator doctor --fix");
     expect(listWebPushSubscriptions(tmpDir)).toEqual([existing]);
   });
 });

@@ -319,7 +319,7 @@ export function buildBuiltinChatCommands(
     defineChatCommand({
       key: "@gabrielvfonseca/operator",
       description: "Run the Operator setup and repair helper.",
-      textAlias: "/openclaw",
+      textAlias: "/operator",
       acceptsArgs: true,
       scope: "text",
       category: "management",

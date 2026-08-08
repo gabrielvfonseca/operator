@@ -1,4 +1,4 @@
-import { createRouter, definePage, type Router } from "@openclaw/uirouter";
+import { createRouter, definePage, type Router } from "@operator/uirouter";
 import { html, type LitElement } from "lit";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import "./router-outlet.ts";

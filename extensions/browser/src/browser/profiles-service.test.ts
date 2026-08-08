@@ -94,7 +94,7 @@ vi.mock("./pw-ai-module.js", () => ({
 }));
 
 vi.mock("./chrome.js", () => ({
-  resolveOperatorUserDataDir: vi.fn(() => "/tmp/operator-test/openclaw/user-data"),
+  resolveOperatorUserDataDir: vi.fn(() => "/tmp/operator-test/operator/user-data"),
   stopOperatorChrome: lifecycleMocks.stopOperatorChrome,
 }));
 
@@ -163,7 +163,7 @@ describe("BrowserProfilesService", () => {
     lifecycleMocks.stopOperatorChrome.mockReset().mockResolvedValue(undefined);
     vi.mocked(resolveOperatorUserDataDir)
       .mockReset()
-      .mockReturnValue("/tmp/operator-test/openclaw/user-data");
+      .mockReturnValue("/tmp/operator-test/operator/user-data");
     vi.mocked(movePathToTrash)
       .mockReset()
       .mockImplementation(async (targetPath) => targetPath);
@@ -791,7 +791,7 @@ describe("BrowserProfilesService", () => {
     expect(movePathToTrash).not.toHaveBeenCalled();
   });
 
-  it("deletes attach-only openclaw profiles without touching local browser data", async () => {
+  it("deletes attach-only operator profiles without touching local browser data", async () => {
     const resolved = resolveBrowserConfig({
       profiles: {
         work: {

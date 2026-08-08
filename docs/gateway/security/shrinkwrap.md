@@ -32,7 +32,7 @@ Operator is a gateway, plugin host, model router, and agent runtime, so a defaul
 
 ## Generating and checking
 
-The root `openclaw` npm package, Operator-owned npm plugin packages (for example `@gabrielvfonseca/discord`), and publishable workspace packages such as [`@gabrielvfonseca/ai`](/reference/operator-ai) include `npm-shrinkwrap.json` when they publish. Workspace dependencies are omitted from the root shrinkwrap because they publish beside the root package; each publishable workspace package pins its own transitive tree instead. Suitable plugin packages can also publish with explicit `bundledDependencies`, carrying their runtime dependency files in the plugin tarball instead of relying only on install-time resolution.
+The root `operator` npm package, Operator-owned npm plugin packages (for example `@gabrielvfonseca/discord`), and publishable workspace packages such as [`@gabrielvfonseca/ai`](/reference/operator-ai) include `npm-shrinkwrap.json` when they publish. Workspace dependencies are omitted from the root shrinkwrap because they publish beside the root package; each publishable workspace package pins its own transitive tree instead. Suitable plugin packages can also publish with explicit `bundledDependencies`, carrying their runtime dependency files in the plugin tarball instead of relying only on install-time resolution.
 
 ```bash
 # All shrinkwrap-managed packages (root + publishable plugins)
@@ -64,7 +64,7 @@ Operator package validators require shrinkwrap in new root package tarballs and 
 Root package:
 
 ```bash
-npm pack openclaw@<version> --json --pack-destination /tmp/operator-pack
+npm pack operator@<version> --json --pack-destination /tmp/operator-pack
 tar -tf /tmp/operator-pack/operator-<version>.tgz | grep '^package/npm-shrinkwrap.json$'
 ```
 

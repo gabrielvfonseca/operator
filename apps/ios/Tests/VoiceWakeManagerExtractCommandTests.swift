@@ -3,11 +3,11 @@ import SwabbleKit
 import Testing
 @testable import Operator
 
-private let openclawTranscript = "hey operator do thing"
+private let operatorTranscript = "hey operator do thing"
 
-private func openclawSegments(postTriggerStart: TimeInterval) -> [WakeWordSegment] {
+private func operatorSegments(postTriggerStart: TimeInterval) -> [WakeWordSegment] {
     makeSegments(
-        transcript: openclawTranscript,
+        transcript: operatorTranscript,
         words: [
             ("hey", 0.0, 0.1),
             ("@gabrielvfonseca/operator", 0.2, 0.1),
@@ -26,9 +26,9 @@ private func openclawSegments(postTriggerStart: TimeInterval) -> [WakeWordSegmen
     }
 
     @Test func extractCommandTrimsTokensAndResult() {
-        let segments = openclawSegments(postTriggerStart: 0.9)
+        let segments = operatorSegments(postTriggerStart: 0.9)
         let cmd = VoiceWakeManager.extractCommand(
-            from: openclawTranscript,
+            from: operatorTranscript,
             segments: segments,
             triggers: ["  operator  "],
             minPostTriggerGap: 0.3)
@@ -36,9 +36,9 @@ private func openclawSegments(postTriggerStart: TimeInterval) -> [WakeWordSegmen
     }
 
     @Test func extractCommandReturnsNilWhenGapTooShort() {
-        let segments = openclawSegments(postTriggerStart: 0.35)
+        let segments = operatorSegments(postTriggerStart: 0.35)
         let cmd = VoiceWakeManager.extractCommand(
-            from: openclawTranscript,
+            from: operatorTranscript,
             segments: segments,
             triggers: ["@gabrielvfonseca/operator"],
             minPostTriggerGap: 0.3)
@@ -46,7 +46,7 @@ private func openclawSegments(postTriggerStart: TimeInterval) -> [WakeWordSegmen
     }
 
     @Test func extractCommandReturnsNilWhenNothingAfterTrigger() {
-        let transcript = "hey openclaw"
+        let transcript = "hey operator"
         let segments = makeSegments(
             transcript: transcript,
             words: [("hey", 0.0, 0.1), ("@gabrielvfonseca/operator", 0.2, 0.1)])
@@ -54,9 +54,9 @@ private func openclawSegments(postTriggerStart: TimeInterval) -> [WakeWordSegmen
     }
 
     @Test func extractCommandIgnoresEmptyTriggers() {
-        let segments = openclawSegments(postTriggerStart: 0.9)
+        let segments = operatorSegments(postTriggerStart: 0.9)
         let cmd = VoiceWakeManager.extractCommand(
-            from: openclawTranscript,
+            from: operatorTranscript,
             segments: segments,
             triggers: ["", "   ", "@gabrielvfonseca/operator"],
             minPostTriggerGap: 0.3)

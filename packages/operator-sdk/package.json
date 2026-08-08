@@ -1,5 +1,5 @@
 {
-  "name": "@operator/openclaw-sdk",
+  "name": "@operator/operator-sdk",
   "version": "0.0.0-private",
   "private": true,
   "files": [

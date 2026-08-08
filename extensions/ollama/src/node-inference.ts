@@ -490,7 +490,7 @@ export function createOllamaNodeInferenceTool(api: OperatorPluginApi): AnyAgentT
         return jsonResult({
           nodes,
           ...(modelNodes.length === 0 && {
-            hint: "No connected node advertises Ollama inference. Start Ollama and `openclaw node run` on the target machine, then approve any request shown by `openclaw nodes pending`.",
+            hint: "No connected node advertises Ollama inference. Start Ollama and `operator node run` on the target machine, then approve any request shown by `operator nodes pending`.",
           }),
         });
       }

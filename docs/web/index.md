@@ -10,7 +10,7 @@ The Gateway serves a small **browser Control UI** (Vite + Lit) from the same por
 
 - default: `http://<host>:18789/`
 - with `gateway.tls.enabled: true`: `https://<host>:18789/`
-- optional prefix: set `gateway.controlUi.basePath` (e.g. `/openclaw`)
+- optional prefix: set `gateway.controlUi.basePath` (e.g. `/operator`)
 
 Capabilities live in [Control UI](/web/control-ui). This page covers bind modes, security, and other web-facing surfaces.
 
@@ -21,7 +21,7 @@ Control UI is **enabled by default** when assets are present (`dist/control-ui`)
 ```json5
 {
   gateway: {
-    controlUi: { enabled: true, basePath: "/openclaw" }, // basePath optional
+    controlUi: { enabled: true, basePath: "/operator" }, // basePath optional
   },
 }
 ```

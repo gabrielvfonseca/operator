@@ -4,7 +4,7 @@
   "description": "Operator Mattermost channel plugin",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gabrielvfonseca/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "dependencies": {
@@ -12,19 +12,19 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@gabrielvfonseca/openclaw/plugin-sdk": "workspace:*",
-    "@gabrielvfonseca/openclaw": "workspace:*",
+    "@gabrielvfonseca/operator/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator": "workspace:*",
     "@operator/typescript-config": "workspace:*"
   },
   "peerDependencies": {
-    "@gabrielvfonseca/openclaw": ">=2026.7.2"
+    "@gabrielvfonseca/operator": ">=2026.7.2"
   },
   "peerDependenciesMeta": {
-    "@gabrielvfonseca/openclaw": {
+    "@gabrielvfonseca/operator": {
       "optional": true
     }
   },
-  "@gabrielvfonseca/openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],

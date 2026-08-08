@@ -408,7 +408,7 @@ export async function runConfigureWizard(
       }
       if (!snapshot.valid) {
         outro(
-          `Config invalid. Run \`${formatCliCommand("openclaw doctor")}\` to repair it, then re-run configure.`,
+          `Config invalid. Run \`${formatCliCommand("operator doctor")}\` to repair it, then re-run configure.`,
         );
         runtime.exit(1);
         return;

@@ -166,7 +166,7 @@ function resolvePluginModuleLoaderCacheEntry(
       aliasMap,
     });
   const transformOperatorDependencies = params.transformOperatorDependencies ?? tryNative;
-  const cacheKey = `${moduleConfigCacheKey}\0transform-openclaw=${transformOperatorDependencies ? "1" : "0"}`;
+  const cacheKey = `${moduleConfigCacheKey}\0transform-operator=${transformOperatorDependencies ? "1" : "0"}`;
   const scopedCacheKey = `${loaderFilename}::${
     params.sharedCacheScopeKey ??
     (params.cacheScopeKey ? `${params.cacheScopeKey}::${cacheKey}` : cacheKey)

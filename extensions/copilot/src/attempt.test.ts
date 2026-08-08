@@ -38,7 +38,7 @@ const dualWriteMock = vi.hoisted(() => ({
     const record = message as unknown as Record<string, unknown>;
     return {
       ...record,
-      __operator: { ...(record["__openclaw"] as object | undefined), mirrorIdentity: identity },
+      __operator: { ...(record["__operator"] as object | undefined), mirrorIdentity: identity },
     } as unknown as T;
   },
 }));
@@ -2829,7 +2829,7 @@ describe("runCopilotAttempt", () => {
         messages: Array<{
           role: string;
           idempotencyKey?: string;
-          __openclaw?: { mirrorIdentity?: string };
+          __operator?: { mirrorIdentity?: string };
         }>;
       };
       for (const [index, message] of args.messages.entries()) {
@@ -2840,7 +2840,7 @@ describe("runCopilotAttempt", () => {
         ) {
           continue;
         }
-        const identity = message["__openclaw"]?.mirrorIdentity ?? "";
+        const identity = message["__operator"]?.mirrorIdentity ?? "";
         // The current user and terminal assistant carry turn-stable identities.
         // Caller-passed history without an identity falls through to
         // the positional `${scope}:role:idx`.
@@ -2903,16 +2903,16 @@ describe("runCopilotAttempt", () => {
           role: string;
           content: unknown;
           idempotencyKey?: string;
-          __openclaw?: { mirrorIdentity?: string };
+          __operator?: { mirrorIdentity?: string };
         }>;
       };
       expect(args.messages.length).toBe(2);
       expect(args.messages[0]?.role).toBe("user");
       expect(args.messages[0]?.content).toBe("what's my name?");
       expect(args.messages[0]?.idempotencyKey).toBe("run-A:user");
-      expect(args.messages[0]?.["__openclaw"]?.mirrorIdentity).toBe("run-A:prompt");
+      expect(args.messages[0]?.["__operator"]?.mirrorIdentity).toBe("run-A:prompt");
       expect(args.messages[1]?.role).toBe("assistant");
-      expect(args.messages[1]?.["__openclaw"]?.mirrorIdentity).toBe("run-A:assistant:final");
+      expect(args.messages[1]?.["__operator"]?.mirrorIdentity).toBe("run-A:assistant:final");
     });
 
     it("does not duplicate synthetic user when caller passed the same prompt as the messages tail", async () => {
@@ -2999,19 +2999,19 @@ describe("runCopilotAttempt", () => {
       const calls = dualWriteMock.dualWriteCopilotTranscriptBestEffort.mock.calls;
       expect(calls.length).toBe(2);
       const turn1 = calls[0]?.[0] as {
-        messages: Array<{ role: string; __openclaw?: { mirrorIdentity?: string } }>;
+        messages: Array<{ role: string; __operator?: { mirrorIdentity?: string } }>;
       };
       const turn2 = calls[1]?.[0] as {
-        messages: Array<{ role: string; __openclaw?: { mirrorIdentity?: string } }>;
+        messages: Array<{ role: string; __operator?: { mirrorIdentity?: string } }>;
       };
       const turn1User = turn1.messages.find((m) => m.role === "user");
       const turn2User = turn2.messages.find((m) => m.role === "user");
       const turn1Assistant = turn1.messages.find((m) => m.role === "assistant");
       const turn2Assistant = turn2.messages.find((m) => m.role === "assistant");
-      expect(turn1User?.["__openclaw"]?.mirrorIdentity).toBe("run-1:prompt");
-      expect(turn2User?.["__openclaw"]?.mirrorIdentity).toBe("run-2:prompt");
-      expect(turn1Assistant?.["__openclaw"]?.mirrorIdentity).toBe("run-1:assistant:final");
-      expect(turn2Assistant?.["__openclaw"]?.mirrorIdentity).toBe("run-2:assistant:final");
+      expect(turn1User?.["__operator"]?.mirrorIdentity).toBe("run-1:prompt");
+      expect(turn2User?.["__operator"]?.mirrorIdentity).toBe("run-2:prompt");
+      expect(turn1Assistant?.["__operator"]?.mirrorIdentity).toBe("run-1:assistant:final");
+      expect(turn2Assistant?.["__operator"]?.mirrorIdentity).toBe("run-2:assistant:final");
     });
 
     it("two attempts with identical prompts but different runIds remain distinct (no content-fingerprint collapse)", async () => {
@@ -3045,14 +3045,14 @@ describe("runCopilotAttempt", () => {
       const secondCall = expectDefined(calls[1], "second Copilot transcript mirror call");
       const id1 = (
         firstCall[0] as {
-          messages: Array<{ role: string; __openclaw?: { mirrorIdentity?: string } }>;
+          messages: Array<{ role: string; __operator?: { mirrorIdentity?: string } }>;
         }
-      ).messages.find((m) => m.role === "user")?.["__openclaw"]?.mirrorIdentity;
+      ).messages.find((m) => m.role === "user")?.["__operator"]?.mirrorIdentity;
       const id2 = (
         secondCall[0] as {
-          messages: Array<{ role: string; __openclaw?: { mirrorIdentity?: string } }>;
+          messages: Array<{ role: string; __operator?: { mirrorIdentity?: string } }>;
         }
-      ).messages.find((m) => m.role === "user")?.["__openclaw"]?.mirrorIdentity;
+      ).messages.find((m) => m.role === "user")?.["__operator"]?.mirrorIdentity;
       expect(id1).toBe("run-X:prompt");
       expect(id2).toBe("run-Y:prompt");
       expect(id1).not.toBe(id2);
@@ -3596,7 +3596,7 @@ describe("runCopilotAttempt", () => {
 
       await runCopilotAttempt(
         makeParams({
-          initialReplayState: { sdkSessionId: "sess-openclaw" },
+          initialReplayState: { sdkSessionId: "sess-operator" },
           toolsAllow: ["@gabrielvfonseca/operator"],
         } as never),
         {

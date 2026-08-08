@@ -153,7 +153,7 @@ function expectMessageFields(
     expect(record.content).toEqual(fields.content);
   }
   if (fields.operator) {
-    const metadata = requireRecord(record["__openclaw"], "message metadata");
+    const metadata = requireRecord(record["__operator"], "message metadata");
     for (const [key, value] of Object.entries(fields.operator)) {
       expect(metadata[key]).toEqual(value);
     }
@@ -328,13 +328,13 @@ describe("readSessionMessages", () => {
     const marker = out[1] as {
       role: string;
       content?: Array<{ text?: string }>;
-      __openclaw?: { kind?: string; id?: string };
+      __operator?: { kind?: string; id?: string };
       timestamp?: number;
     };
     expect(marker.role).toBe("system");
     expect(marker.content?.[0]?.text).toBe("Compaction");
-    expect(marker["__openclaw"]?.kind).toBe("compaction");
-    expect(marker["__openclaw"]?.id).toBe("comp-1");
+    expect(marker["__operator"]?.kind).toBe("compaction");
+    expect(marker["__operator"]?.id).toBe("comp-1");
     expect(typeof marker.timestamp).toBe("number");
   });
 
@@ -394,7 +394,7 @@ describe("readSessionMessages", () => {
     });
   });
 
-  test("surfaces persisted user idempotency keys in __openclaw metadata (#79844)", async () => {
+  test("surfaces persisted user idempotency keys in __operator metadata (#79844)", async () => {
     const sessionId = "test-session-idempotency-key";
     writeTranscript(tmpDir, sessionId, [
       { type: "session", version: 1, id: sessionId },
@@ -1170,7 +1170,7 @@ describe("readSessionMessages", () => {
       const out = readSessionMessages(sessionId, wrongStorePath, sessionFile);
       expect(out).toHaveLength(1);
       expectMessageFields(out[0], message);
-      expect((out[0] as { __openclaw?: { seq?: number } })["__openclaw"]?.seq).toBe(1);
+      expect((out[0] as { __operator?: { seq?: number } })["__operator"]?.seq).toBe(1);
     },
   );
 
@@ -1268,7 +1268,7 @@ describe("readSessionMessages", () => {
       out.map((message) => ({
         role: (message as { role?: string }).role,
         content: (message as { content?: unknown }).content,
-        kind: (message as { __openclaw?: { kind?: string } })["__openclaw"]?.kind,
+        kind: (message as { __operator?: { kind?: string } })["__operator"]?.kind,
       })),
     ).toEqual([
       { role: "system", content: [{ type: "text", text: "Compaction" }], kind: "compaction" },
@@ -1979,13 +1979,13 @@ describe("oversized transcript line guards", () => {
 
     // The oversized line's id and parentId are extracted by regex from the
     // prefix bytes. parentId drives active-tree selection; id is attached
-    // to the __openclaw metadata. Both must be correct for the record to
+    // to the __operator metadata. Both must be correct for the record to
     // appear in the right position.
     expect(out).toHaveLength(2); // root-msg + oversized-child
     const oversized = out[1] as Record<string, unknown>;
     expect(oversized.role).toBe("assistant");
-    // id is preserved in __openclaw transcript metadata
-    const meta = (oversized as Record<string, Record<string, unknown>>)["__openclaw"];
+    // id is preserved in __operator transcript metadata
+    const meta = (oversized as Record<string, Record<string, unknown>>)["__operator"];
     expect(meta?.id).toBe("oversized-child");
     expect(meta?.idempotencyKey).toBe("oversized-key");
     expect(meta?.recordTimestampMs).toBe(Date.parse(timestamp));

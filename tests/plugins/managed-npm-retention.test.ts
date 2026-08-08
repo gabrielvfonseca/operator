@@ -24,8 +24,8 @@ describe("managed npm retention", () => {
       packageName,
       generationKey: "codex-v2",
     });
-    const oldPackageDir = path.join(oldProjectRoot, "node_modules", "@openclaw", "codex");
-    const activePackageDir = path.join(activeProjectRoot, "node_modules", "@openclaw", "codex");
+    const oldPackageDir = path.join(oldProjectRoot, "node_modules", "@operator", "codex");
+    const activePackageDir = path.join(activeProjectRoot, "node_modules", "@operator", "codex");
     fs.mkdirSync(oldPackageDir, { recursive: true });
     fs.mkdirSync(activePackageDir, { recursive: true });
     await markRetainedManagedNpmInstall({
@@ -52,7 +52,7 @@ describe("managed npm retention", () => {
   it("cleans retained packages from the legacy shared npm root", async () => {
     const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-retention-"));
     const npmDir = path.join(stateDir, "npm");
-    const packageDir = path.join(npmDir, "node_modules", "@openclaw", "codex");
+    const packageDir = path.join(npmDir, "node_modules", "@operator", "codex");
     fs.mkdirSync(packageDir, { recursive: true });
     await markRetainedManagedNpmInstall({
       packageDir,

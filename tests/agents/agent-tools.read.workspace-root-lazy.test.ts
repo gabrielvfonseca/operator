@@ -6,7 +6,7 @@ import { describe, expect, it, vi } from "vitest";
 // tools used to resolve their fs-safe root eagerly at construction. When the
 // agent's workspace dir does not exist yet (e.g. an unresolved `${ENV}`
 // placeholder in the authored config), that orphaned a rejecting promise:
-//   "[openclaw] Unhandled promise rejection: FsSafeError: root dir not found"
+//   "[operator] Unhandled promise rejection: FsSafeError: root dir not found"
 // The root must only be opened when a read/write/access operation actually runs.
 
 const rootSpy = vi.hoisted(() => vi.fn());

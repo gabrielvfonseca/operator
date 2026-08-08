@@ -5,7 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveGitHeadPath } from "./git-root.js";
-import { resolveOperatorPackageRootSync } from "./openclaw-root.js";
+import { resolveOperatorPackageRootSync } from "./operator-root.js";
 
 const formatCommit = (value?: string | null) => {
   if (!value) {

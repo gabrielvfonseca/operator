@@ -3,7 +3,7 @@ import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/normalization-core/number
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { probeGatewayUrl, probeLocalCommand } from "../../src/system-agent/probes.js";
 
-describe("openclaw probes", () => {
+describe("operator probes", () => {
   afterEach(() => {
     vi.restoreAllMocks();
     vi.unstubAllGlobals();

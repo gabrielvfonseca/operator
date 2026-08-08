@@ -13,8 +13,8 @@ const endpointMockState = vi.hoisted(() => ({
   responses: [] as Response[],
 }));
 
-vi.mock("openclaw/plugin-sdk/provider-web-search", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/provider-web-search")>();
+vi.mock("operator/plugin-sdk/provider-web-search", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/provider-web-search")>();
   const runEndpoint = async (
     params: { url: string; timeoutSeconds: number; init: RequestInit; signal?: AbortSignal },
     run: (response: Response) => Promise<unknown>,
@@ -60,7 +60,7 @@ describe("searxng client", () => {
         language: "en",
       }),
     ).toBe(
-      "https://search.example.com/searxng/search?q=openclaw&format=json&categories=general%2Cnews&language=en",
+      "https://search.example.com/searxng/search?q=operator&format=json&categories=general%2Cnews&language=en",
     );
   });
 

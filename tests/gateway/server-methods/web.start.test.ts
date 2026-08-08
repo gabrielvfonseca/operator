@@ -90,10 +90,10 @@ describe("webHandlers web.login.start", () => {
       channelId: "whatsapp",
       label: "WhatsApp",
       installSpec: "clawhub:@gabrielvfonseca/whatsapp",
-      installCommand: "openclaw plugins install clawhub:@gabrielvfonseca/whatsapp",
-      doctorFixCommand: "openclaw doctor --fix",
+      installCommand: "operator plugins install clawhub:@gabrielvfonseca/whatsapp",
+      doctorFixCommand: "operator doctor --fix",
       repairHint:
-        "Install the official external plugin with: openclaw plugins install clawhub:@gabrielvfonseca/whatsapp, or run: openclaw doctor --fix.",
+        "Install the official external plugin with: operator plugins install clawhub:@gabrielvfonseca/whatsapp, or run: operator doctor --fix.",
     });
     const respond = vi.fn();
 
@@ -115,7 +115,7 @@ describe("webHandlers web.login.start", () => {
       expect.objectContaining({
         code: "INVALID_REQUEST",
         message:
-          "web login provider is not available. Install the official external plugin with: openclaw plugins install clawhub:@gabrielvfonseca/whatsapp, or run: openclaw doctor --fix.",
+          "web login provider is not available. Install the official external plugin with: operator plugins install clawhub:@gabrielvfonseca/whatsapp, or run: operator doctor --fix.",
       }),
     );
     expect(mocks.resolveMissingOfficialExternalChannelPluginRepairHint).toHaveBeenCalledWith({
@@ -134,10 +134,10 @@ describe("webHandlers web.login.start", () => {
               channelId: "whatsapp",
               label: "WhatsApp",
               installSpec: "clawhub:@gabrielvfonseca/whatsapp",
-              installCommand: "openclaw plugins install clawhub:@gabrielvfonseca/whatsapp",
-              doctorFixCommand: "openclaw doctor --fix",
+              installCommand: "operator plugins install clawhub:@gabrielvfonseca/whatsapp",
+              doctorFixCommand: "operator doctor --fix",
               repairHint:
-                "Install the official external plugin with: openclaw plugins install clawhub:@gabrielvfonseca/whatsapp, or run: openclaw doctor --fix.",
+                "Install the official external plugin with: operator plugins install clawhub:@gabrielvfonseca/whatsapp, or run: operator doctor --fix.",
             }
           : channelId === "signal"
             ? {
@@ -145,10 +145,10 @@ describe("webHandlers web.login.start", () => {
                 channelId: "signal",
                 label: "Signal",
                 installSpec: "clawhub:@gabrielvfonseca/signal",
-                installCommand: "openclaw plugins install clawhub:@gabrielvfonseca/signal",
-                doctorFixCommand: "openclaw doctor --fix",
+                installCommand: "operator plugins install clawhub:@gabrielvfonseca/signal",
+                doctorFixCommand: "operator doctor --fix",
                 repairHint:
-                  "Install the official external plugin with: openclaw plugins install clawhub:@gabrielvfonseca/signal, or run: openclaw doctor --fix.",
+                  "Install the official external plugin with: operator plugins install clawhub:@gabrielvfonseca/signal, or run: operator doctor --fix.",
               }
             : null,
     );
@@ -183,7 +183,7 @@ describe("webHandlers web.login.start", () => {
       expect.objectContaining({
         code: "INVALID_REQUEST",
         message:
-          "web login provider is not available. Configured official external channel plugins are missing for WhatsApp, Signal. Install them with: openclaw plugins install clawhub:@gabrielvfonseca/whatsapp; openclaw plugins install clawhub:@gabrielvfonseca/signal, or run: openclaw doctor --fix.",
+          "web login provider is not available. Configured official external channel plugins are missing for WhatsApp, Signal. Install them with: operator plugins install clawhub:@gabrielvfonseca/whatsapp; operator plugins install clawhub:@gabrielvfonseca/signal, or run: operator doctor --fix.",
       }),
     );
   });

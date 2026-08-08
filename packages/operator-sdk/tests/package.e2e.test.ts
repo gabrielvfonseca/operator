@@ -1,4 +1,4 @@
-// OpenClaw SDK tests cover package behavior.
+// Operator SDK tests cover package behavior.
 import { spawn, spawnSync, type SpawnOptionsWithoutStdio } from "node:child_process";
 import { createReadStream } from "node:fs";
 import fs from "node:fs/promises";
@@ -275,7 +275,7 @@ function closeServer(server: Server): Promise<void> {
   });
 }
 
-async function startOpenClawRegistry(packages: PackedPackage[]): Promise<{
+async function startOperatorRegistry(packages: PackedPackage[]): Promise<{
   registryUrl: string;
   close: () => Promise<void>;
 }> {
@@ -341,7 +341,7 @@ async function startOpenClawRegistry(packages: PackedPackage[]): Promise<{
   };
 }
 
-describe("OpenClaw SDK package e2e", () => {
+describe("Operator SDK package e2e", () => {
   afterEach(async () => {
     await Promise.all(
       tempDirs.splice(0).map((dir) => fs.rm(dir, { recursive: true, force: true })),
@@ -387,7 +387,7 @@ describe("OpenClaw SDK package e2e", () => {
       repoRoot,
       entryRoot: path.join(repoRoot, "packages", "sdk"),
     });
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-sdk-consumer-"));
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-sdk-consumer-"));
     tempDirs.push(tempDir);
 
     for (const packageRoot of packageRoots) {
@@ -414,13 +414,13 @@ describe("OpenClaw SDK package e2e", () => {
     const sdkTarball =
       packedPackages.find((pkg) => pkg.manifest.name === "@operator/operator-sdk")?.tarball ?? "";
     expect(sdkTarball).not.toBe("");
-    const registry = await startOpenClawRegistry(packedPackages);
+    const registry = await startOperatorRegistry(packedPackages);
 
     await fs.writeFile(
       path.join(tempDir, "package.json"),
       JSON.stringify({ private: true, type: "module" }),
     );
-    await fs.writeFile(path.join(tempDir, ".npmrc"), `@openclaw:registry=${registry.registryUrl}`);
+    await fs.writeFile(path.join(tempDir, ".npmrc"), `@operator:registry=${registry.registryUrl}`);
     try {
       await runNpmCommand(["install", "--ignore-scripts", "--no-audit", "--no-fund", sdkTarball], {
         cwd: tempDir,
@@ -430,9 +430,9 @@ describe("OpenClaw SDK package e2e", () => {
     }
 
     const importScript = `
-      import { GatewayClientTransport, OpenClaw, normalizeGatewayEvent } from "@operator/operator-sdk";
+      import { GatewayClientTransport, Operator, normalizeGatewayEvent } from "@operator/operator-sdk";
       if (typeof GatewayClientTransport !== "function") throw new Error("missing transport export");
-      if (typeof OpenClaw !== "function") throw new Error("missing client export");
+      if (typeof Operator !== "function") throw new Error("missing client export");
       const event = normalizeGatewayEvent({
         event: "agent",
         payload: { runId: "pack-smoke", stream: "lifecycle", data: { phase: "start" } }

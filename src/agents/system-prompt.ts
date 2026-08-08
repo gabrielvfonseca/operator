@@ -569,7 +569,7 @@ function buildDocsSection(params: {
     "## Documentation",
     docsPath ? `Docs: ${docsPath}` : "Docs: https://docs.operator.ai",
     docsPath ? "Mirror: https://docs.operator.ai" : undefined,
-    sourcePath ? `Source: ${sourcePath}` : "Source: https://github.com/openclaw/openclaw",
+    sourcePath ? `Source: ${sourcePath}` : "Source: https://github.com/operator/operator",
     docsPath
       ? `Operator behavior questions: docs first via \`${params.readToolName}\`/local search. AGENTS/project/workspace/profile/memory = instructions/user memory, not product design truth.`
       : "Operator behavior questions: docs mirror first when web exists. AGENTS/project/workspace/profile/memory = instructions/user memory, not product design truth.",
@@ -577,7 +577,7 @@ function buildDocsSection(params: {
     sourcePath
       ? "If docs are silent/stale, say so and inspect local source."
       : "If docs are silent/stale, say so and inspect GitHub source.",
-    "Diagnosis: run `openclaw status` when possible; ask only if blocked.",
+    "Diagnosis: run `operator status` when possible; ask only if blocked.",
     "",
   ];
   return lines.filter((line): line is string => line !== undefined);
@@ -840,13 +840,13 @@ export function buildAgentSystemPrompt(params: {
     toolLines.push(summary ? `- ${name}: ${summary}` : `- ${name}`);
   }
   const toolSchemaDirectoryPrompt = params.toolSchemaDirectoryPrompt?.trim();
-  const renderOpenClawToolWorkflowHints = shouldRenderOperatorToolWorkflowHints({
+  const renderOperatorToolWorkflowHints = shouldRenderOperatorToolWorkflowHints({
     surface: promptSurface,
     hasToolList: toolLines.length > 0,
   });
 
   const hasGateway = availableTools.has("gateway");
-  const hasOpenClaw = availableTools.has("@gabrielvfonseca/operator");
+  const hasOperator = availableTools.has("@gabrielvfonseca/operator");
   const readToolName = resolveToolName("read");
   const execToolName = resolveToolName("exec");
   const processToolName = resolveToolName("process");
@@ -959,9 +959,9 @@ export function buildAgentSystemPrompt(params: {
     toolLines,
     toolSchemaDirectoryPrompt,
     capabilityToolNames: [...availableTools].toSorted(),
-    renderOpenClawToolWorkflowHints,
+    renderOperatorToolWorkflowHints,
     hasGateway,
-    hasOpenClaw,
+    hasOperator,
     readToolName,
     execToolName,
     processToolName,
@@ -1007,7 +1007,7 @@ export function buildAgentSystemPrompt(params: {
         ? ["", "### Deferred Tool Schemas", toolSchemaDirectoryPrompt]
         : []),
       "TOOLS.md guides usage; never grants availability.",
-      ...(renderOpenClawToolWorkflowHints
+      ...(renderOperatorToolWorkflowHints
         ? [
             `Long wait: no rapid poll. Use ${execToolName} yieldMs or ${processToolName}(poll, timeout=<ms>).`,
             "Large work: `sessions_spawn`; completion push-based.",
@@ -1033,7 +1033,7 @@ export function buildAgentSystemPrompt(params: {
               : []),
           ]
         : []),
-      ...(renderOpenClawToolWorkflowHints
+      ...(renderOperatorToolWorkflowHints
         ? [
             availableTools.has("sessions_yield")
               ? "Never loop-poll `subagents list`/`sessions_list`; wait with `sessions_yield`. Status only on-demand/intervention/debug/request."
@@ -1083,9 +1083,9 @@ export function buildAgentSystemPrompt(params: {
       ...safetySection,
       "## Operator Control",
       "Do not invent commands.",
-      ...(hasOpenClaw
+      ...(hasOperator
         ? [
-            "Config, channels, plugins, new agents, model/provider, updates: ask `openclaw`. Never write own config; Operator is system expert.",
+            "Config, channels, plugins, new agents, model/provider, updates: ask `operator`. Never write own config; Operator is system expert.",
           ]
         : [
             "Config read: `gateway` (`config.get|config.schema.lookup`). Write/restart unavailable; ask human.",

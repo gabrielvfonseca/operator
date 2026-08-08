@@ -3,12 +3,12 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fetchWithSsrFGuard } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import { withTempDir } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
-import type { OpenClawCrablineChannelDriverSelection } from "@openclaw/crabline";
+import type { OperatorCrablineChannelDriverSelection } from "@operator/crabline";
 import { describe, expect, it } from "vitest";
 import { createQaBusState } from "./bus-state.js";
 import { createQaCrablineTransportAdapter } from "./crabline-transport.js";
 
-function createSelection(channel: OpenClawCrablineChannelDriverSelection["channel"] = "telegram") {
+function createSelection(channel: OperatorCrablineChannelDriverSelection["channel"] = "telegram") {
   return {
     capabilityMatrixPath: "crabline-fake-provider-capabilities.json",
     channel,

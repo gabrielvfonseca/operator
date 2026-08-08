@@ -11,11 +11,11 @@ import {
   loadSqliteVecExtension,
   MEMORY_INDEX_PATHS_FTS_TABLE,
   requireNodeSqlite,
-} from "openclaw/plugin-sdk/memory-core-host-engine-storage";
+} from "operator/plugin-sdk/memory-core-host-engine-storage";
 import {
   ensureOperatorAgentDatabaseSchema,
   runSqliteImmediateTransactionSync,
-} from "openclaw/plugin-sdk/sqlite-runtime";
+} from "operator/plugin-sdk/sqlite-runtime";
 import {
   tryAcquireMemoryReindexLock,
   type MemoryReindexLockHandle,

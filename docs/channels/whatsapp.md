@@ -336,7 +336,7 @@ Direct chats match E.164 numbers; groups match WhatsApp group JIDs. Group allowl
 
 ## Personal-number and self-chat behavior
 
-When the linked self number is also present in `allowFrom`, self-chat safeguards activate: skip read receipts for self-chat turns, ignore mention-JID auto-trigger behavior that would ping yourself, and default replies to `[{identity.name}]` (or `[openclaw]`) when `messages.responsePrefix` is unset.
+When the linked self number is also present in `allowFrom`, self-chat safeguards activate: skip read receipts for self-chat turns, ignore mention-JID auto-trigger behavior that would ping yourself, and default replies to `[{identity.name}]` (or `[operator]`) when `messages.responsePrefix` is unset.
 
 ## Message normalization and context
 

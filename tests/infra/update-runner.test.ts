@@ -270,7 +270,7 @@ describe("runGatewayUpdate", () => {
       ]);
       await Promise.all([
         fs.symlink(storeRoot, packageRoot, "dir"),
-        fs.symlink(installDir, path.join(globalRoot, "hash-openclaw"), "dir"),
+        fs.symlink(installDir, path.join(globalRoot, "hash-operator"), "dir"),
       ]);
 
       const runCommand = async (argv: string[]) => {
@@ -521,7 +521,7 @@ describe("runGatewayUpdate", () => {
   };
 
   const npmGlobalInstallCommand = (spec: string, extraArgs: string[] = []) => {
-    const allowScriptsIdentity = spec.toLowerCase().startsWith("openclaw@")
+    const allowScriptsIdentity = spec.toLowerCase().startsWith("operator@")
       ? "@gabrielvfonseca/operator"
       : spec;
     return [
@@ -544,8 +544,8 @@ describe("runGatewayUpdate", () => {
     onBaseInstall?: () => Promise<CommandResult>;
     onOmitOptionalInstall?: () => Promise<CommandResult>;
   }) {
-    const baseInstallKey = npmGlobalInstallCommand("openclaw@latest");
-    const omitOptionalInstallKey = npmGlobalInstallCommand("openclaw@latest", ["--omit=optional"]);
+    const baseInstallKey = npmGlobalInstallCommand("operator@latest");
+    const omitOptionalInstallKey = npmGlobalInstallCommand("operator@latest", ["--omit=optional"]);
 
     return async (argv: string[]): Promise<CommandResult> => {
       const key = normalizeNpmFreshnessArgs(argv).join(" ");
@@ -2749,16 +2749,16 @@ describe("runGatewayUpdate", () => {
   it.each([
     {
       title: "updates global npm installs when detected",
-      expectedInstallCommand: npmGlobalInstallCommand("openclaw@latest"),
+      expectedInstallCommand: npmGlobalInstallCommand("operator@latest"),
     },
     {
       title: "uses update channel for global npm installs when tag is omitted",
-      expectedInstallCommand: npmGlobalInstallCommand("openclaw@beta"),
+      expectedInstallCommand: npmGlobalInstallCommand("operator@beta"),
       channel: "beta" as const,
     },
     {
       title: "updates global npm installs with tag override",
-      expectedInstallCommand: npmGlobalInstallCommand("openclaw@beta"),
+      expectedInstallCommand: npmGlobalInstallCommand("operator@beta"),
       tag: "beta",
     },
   ])("$title", async ({ expectedInstallCommand, channel, tag }) => {
@@ -2776,7 +2776,7 @@ describe("runGatewayUpdate", () => {
   });
 
   it("updates global npm installs from the GitHub main package spec", async () => {
-    const sourceSpec = "github:openclaw/openclaw#main";
+    const sourceSpec = "github:operator/operator#main";
     const { calls, result } = await runNpmGlobalUpdateCase({
       expectedInstallCommand: (argv) =>
         argv[0] === "npm" &&
@@ -2808,7 +2808,7 @@ describe("runGatewayUpdate", () => {
     const { calls, runCommand } = createGlobalInstallHarness({
       pkgRoot,
       npmRootOutput: nodeModules,
-      installCommand: npmGlobalInstallCommand("openclaw@latest"),
+      installCommand: npmGlobalInstallCommand("operator@latest"),
       onInstall: async () => {
         await writeGlobalPackageVersion(pkgRoot);
         await writeGatewayEntrypoint(pkgRoot);
@@ -2834,7 +2834,7 @@ describe("runGatewayUpdate", () => {
 
     expect(result.status).toBe("ok");
     expect(calls).toContain(doctorCommand);
-    expect(result.steps.map((step) => step.name)).toContain("openclaw doctor");
+    expect(result.steps.map((step) => step.name)).toContain("operator doctor");
     expect(doctorEnv?.OPERATOR_UPDATE_IN_PROGRESS).toBe("1");
     expect(doctorEnv?.OPERATOR_DOCTOR_DISABLE_CROSS_STATE_DIR_IMPORTS).toBe("1");
     expect(doctorEnv?.OPERATOR_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE).toBe("1");
@@ -2852,7 +2852,7 @@ describe("runGatewayUpdate", () => {
     const { calls, runCommand } = createGlobalInstallHarness({
       pkgRoot,
       npmRootOutput: nodeModules,
-      installCommand: npmGlobalInstallCommand("openclaw@latest"),
+      installCommand: npmGlobalInstallCommand("operator@latest"),
       onInstall: async () => {
         await writeGlobalPackageVersion(pkgRoot);
         await writeGatewayEntrypoint(pkgRoot);
@@ -2879,7 +2879,7 @@ describe("runGatewayUpdate", () => {
     expect(result.reason).toBe("doctor-failed");
     expect(calls).toContain(doctorCommand);
     const lastStep = result.steps.at(-1);
-    expect(lastStep?.name).toBe("openclaw doctor");
+    expect(lastStep?.name).toBe("operator doctor");
     expect(lastStep?.exitCode).toBe(1);
     expect(lastStep?.stderrTail).toBe("doctor refused migration");
   });
@@ -2889,7 +2889,7 @@ describe("runGatewayUpdate", () => {
     const { calls, runCommand } = createGlobalInstallHarness({
       pkgRoot,
       npmRootOutput: nodeModules,
-      installCommand: npmGlobalInstallCommand("openclaw@latest"),
+      installCommand: npmGlobalInstallCommand("operator@latest"),
       gitRootMode: "missing",
       onInstall: async () => writeGlobalPackageVersion(pkgRoot),
     });
@@ -2898,7 +2898,7 @@ describe("runGatewayUpdate", () => {
 
     expect(result.status).toBe("ok");
     expect(result.mode).toBe("npm");
-    expect(calls).toContain(npmGlobalInstallCommand("openclaw@latest"));
+    expect(calls).toContain(npmGlobalInstallCommand("operator@latest"));
   });
 
   it("rejects a tag override for the extended-stable global package channel", async () => {
@@ -2906,7 +2906,7 @@ describe("runGatewayUpdate", () => {
     const { calls, runCommand } = createGlobalInstallHarness({
       pkgRoot,
       npmRootOutput: nodeModules,
-      installCommand: npmGlobalInstallCommand("openclaw@latest"),
+      installCommand: npmGlobalInstallCommand("operator@latest"),
     });
 
     const result = await runWithCommand(runCommand, {
@@ -2922,7 +2922,7 @@ describe("runGatewayUpdate", () => {
       reason: "extended-stable-tag-unsupported",
       steps: [],
     });
-    expect(calls).not.toContain(npmGlobalInstallCommand("openclaw@latest"));
+    expect(calls).not.toContain(npmGlobalInstallCommand("operator@latest"));
   });
 
   it("cleans stale npm rename dirs before global update", async () => {
@@ -2981,7 +2981,7 @@ describe("runGatewayUpdate", () => {
 
   it("fails global npm update when the installed version misses the requested correction", async () => {
     const { calls, result } = await runNpmGlobalUpdateCase({
-      expectedInstallCommand: npmGlobalInstallCommand("openclaw@2026.3.23-2"),
+      expectedInstallCommand: npmGlobalInstallCommand("operator@2026.3.23-2"),
       tag: "2026.3.23-2",
     });
 
@@ -2991,12 +2991,12 @@ describe("runGatewayUpdate", () => {
     expect(result.steps.at(-1)?.stderrTail).toContain(
       "expected installed version 2026.3.23-2, found 2.0.0",
     );
-    expect(calls).toContain(npmGlobalInstallCommand("openclaw@2026.3.23-2"));
+    expect(calls).toContain(npmGlobalInstallCommand("operator@2026.3.23-2"));
   });
 
   it("fails global npm update when bundled runtime sidecars are missing after install", async () => {
     const { nodeModules, pkgRoot } = await createGlobalPackageFixture(tempDir);
-    const expectedInstallCommand = npmGlobalInstallCommand("openclaw@latest");
+    const expectedInstallCommand = npmGlobalInstallCommand("operator@latest");
     const { runCommand } = createGlobalInstallHarness({
       pkgRoot,
       npmRootOutput: nodeModules,
@@ -3051,7 +3051,7 @@ describe("runGatewayUpdate", () => {
     const { runCommand } = createGlobalInstallHarness({
       pkgRoot,
       npmRootOutput: nodeModules,
-      installCommand: npmGlobalInstallCommand("openclaw@latest"),
+      installCommand: npmGlobalInstallCommand("operator@latest"),
       onInstall: async (options) => {
         installEnv = options?.env;
         await writeGlobalPackageVersion(options?.packageRoot ?? pkgRoot);
@@ -3084,7 +3084,7 @@ describe("runGatewayUpdate", () => {
     const { runCommand } = createGlobalInstallHarness({
       pkgRoot,
       npmRootOutput: nodeModules,
-      installCommand: npmGlobalInstallCommand("openclaw@latest"),
+      installCommand: npmGlobalInstallCommand("operator@latest"),
       onInstall: async (options) => {
         await writeGlobalPackageVersion(options?.packageRoot ?? pkgRoot);
         if (options?.installPrefix) {
@@ -3126,7 +3126,7 @@ describe("runGatewayUpdate", () => {
     const { calls, runCommand } = createGlobalInstallHarness({
       pkgRoot,
       pnpmRootOutput: nodeModules,
-      installCommand: npmGlobalInstallCommand("openclaw@latest"),
+      installCommand: npmGlobalInstallCommand("operator@latest"),
       onInstall: async (options) => {
         await writeGlobalPackageVersion(options?.packageRoot ?? pkgRoot);
       },
@@ -3138,7 +3138,7 @@ describe("runGatewayUpdate", () => {
     expect(result.mode).toBe("pnpm");
     expect(result.after?.version).toBe("2.0.0");
     const npmPrefixedGlobalInstallCalls = calls.filter((call) =>
-      call.startsWith("npm i -g --allow-scripts=openclaw --prefix "),
+      call.startsWith("npm i -g --allow-scripts=operator --prefix "),
     );
     const pnpmAddGlobalCalls = calls.filter((call) => call.startsWith("pnpm add -g"));
     expect(npmPrefixedGlobalInstallCalls.length).toBeGreaterThan(0);
@@ -3179,7 +3179,7 @@ describe("runGatewayUpdate", () => {
 
       const { calls, runCommand } = createGlobalInstallHarness({
         pkgRoot,
-        installCommand: "bun add -g --trust openclaw@latest",
+        installCommand: "bun add -g --trust operator@latest",
         onInstall: async () => {
           await writeGlobalPackageVersion(pkgRoot);
         },
@@ -3191,11 +3191,11 @@ describe("runGatewayUpdate", () => {
       expect(result.mode).toBe("bun");
       expect(result.before?.version).toBe("1.0.0");
       expect(result.after?.version).toBe("2.0.0");
-      expect(calls).toContain("bun add -g --trust openclaw@latest");
+      expect(calls).toContain("bun add -g --trust operator@latest");
     });
   });
 
-  it("rejects git roots that are not a openclaw checkout", async () => {
+  it("rejects git roots that are not a operator checkout", async () => {
     await fs.mkdir(path.join(tempDir, ".git"));
     const cwdSpy = vi.spyOn(process, "cwd").mockReturnValue(tempDir);
     const { runner, calls } = createRunner({
@@ -3207,7 +3207,7 @@ describe("runGatewayUpdate", () => {
     cwdSpy.mockRestore();
 
     expect(result.status).toBe("error");
-    expect(result.reason).toBe("not-openclaw-root");
+    expect(result.reason).toBe("not-operator-root");
     expect(calls.filter((call) => call.includes("status --porcelain"))).toEqual([]);
   });
 
@@ -3227,7 +3227,7 @@ describe("runGatewayUpdate", () => {
 
     expect(result.status).toBe("error");
     expect(result.reason).toBe("doctor-entry-missing");
-    expect(result.steps.some((step) => step.name === "openclaw doctor entry")).toBe(true);
+    expect(result.steps.some((step) => step.name === "operator doctor entry")).toBe(true);
     expect(result.steps.at(-1)?.name).toMatch(/^git rollback/);
   });
 

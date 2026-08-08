@@ -61,7 +61,7 @@ Where does the **Gateway** run?
 </Tip>
 </Step>
 <Step title="CLI">
-  Local setup installs the global `openclaw` CLI via npm, pnpm, or bun,
+  Local setup installs the global `operator` CLI via npm, pnpm, or bun,
   preferring npm first. Node remains the recommended runtime for the Gateway
   itself. Existing compatible installations are reused.
 </Step>

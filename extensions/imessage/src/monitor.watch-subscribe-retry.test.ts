@@ -17,7 +17,7 @@ const attachIMessageMonitorAbortHandlerMock = vi.hoisted(() =>
   vi.fn<typeof attachIMessageMonitorAbortHandler>(() => () => {}),
 );
 
-vi.mock("openclaw/plugin-sdk/transport-ready-runtime", () => ({
+vi.mock("operator/plugin-sdk/transport-ready-runtime", () => ({
   waitForTransportReady: waitForTransportReadyMock,
 }));
 
@@ -78,7 +78,7 @@ describe("monitorIMessageProvider watch.subscribe startup retry", () => {
   });
 
   afterAll(() => {
-    vi.doUnmock("openclaw/plugin-sdk/transport-ready-runtime");
+    vi.doUnmock("operator/plugin-sdk/transport-ready-runtime");
     vi.doUnmock("./client.js");
     vi.doUnmock("./monitor/abort-handler.js");
     vi.resetModules();

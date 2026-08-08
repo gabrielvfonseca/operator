@@ -16,7 +16,7 @@ import {
   withOwnedSessionTranscriptWrites,
 } from "../../../../src/config/sessions/transcript-write-context.js";
 import { appendExactAssistantMessageToSessionTranscript } from "../../../../src/config/sessions/transcript.js";
-import { OPERATOR_TRANSCRIPT_ARTIFACT_API } from "../../../../src/shared/transcript-only-openclaw-assistant.js";
+import { OPERATOR_TRANSCRIPT_ARTIFACT_API } from "../../../../src/shared/transcript-only-operator-assistant.js";
 import { guardSessionManager } from "../../../../src/agents/session-tool-result-guard-wrapper.js";
 import {
   SessionWriteLockStaleError,

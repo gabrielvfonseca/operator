@@ -1,4 +1,4 @@
-/** Human-readable formatter for `openclaw message` action results. */
+/** Human-readable formatter for `operator message` action results. */
 import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { getTerminalTableWidth, renderTable } from "../../packages/terminal-core/src/table.js";

@@ -347,7 +347,7 @@ describe("release Telegram QA workflow", () => {
       type: "string",
     });
     expect(dispatchedWorkflow.on?.workflow_call?.secrets).toHaveProperty(
-      "OPERATOR_QA_CONVEX_SECRET_CI",
+      "OPENCLAW_QA_CONVEX_SECRET_CI",
     );
   });
 
@@ -550,12 +550,12 @@ describe("release Telegram QA workflow", () => {
     expect(validateStep?.run).toContain("JOB_TIMEOUT_MINUTES * 60 * 1000 < LEASE_TTL_MS");
 
     const runStep = job?.steps?.find((step) => step.name === "Run Telegram live lane");
-    expect(runStep?.env?.OPERATOR_QA_CREDENTIAL_ACQUIRE_TIMEOUT_MS).toBe("600000");
-    expect(runStep?.env?.OPERATOR_QA_CREDENTIAL_LEASE_TTL_MS).toBe("7200000");
-    expect(runStep?.env?.OPERATOR_LOG_LEVEL).toBe("trace");
-    expect(runStep?.env?.OPERATOR_QA_TELEGRAM_SUT_CLEANUP_TIMEOUT_MS).toBe("60000");
+    expect(runStep?.env?.OPENCLAW_QA_CREDENTIAL_ACQUIRE_TIMEOUT_MS).toBe("600000");
+    expect(runStep?.env?.OPENCLAW_QA_CREDENTIAL_LEASE_TTL_MS).toBe("7200000");
+    expect(runStep?.env?.OPENCLAW_LOG_LEVEL).toBe("trace");
+    expect(runStep?.env?.OPENCLAW_QA_TELEGRAM_SUT_CLEANUP_TIMEOUT_MS).toBe("60000");
     expect(runStep?.run).toContain("trap terminate_sut_uid_on_exit EXIT");
-    expect(runStep?.run).toContain('"$OPERATOR_QA_TELEGRAM_SUT_OPERATOR_COMMAND" --terminate-uid');
+    expect(runStep?.run).toContain('"$OPENCLAW_QA_TELEGRAM_SUT_OPENCLAW_COMMAND" --terminate-uid');
     expect(runStep?.run).toContain("run_qa_attempt preflight --scenario channel-canary");
     expect(runStep?.run).toContain('candidate_telegram_qa="$CANDIDATE_ROOT/extensions/qa-lab');
     expect(runStep?.run).toContain("grep -Fq '\"openai/gpt-5.5\": {'");
@@ -776,7 +776,7 @@ describe("release Telegram QA workflow", () => {
     expect(source).toContain("runtime_stage=verify-proc-visibility");
     expect(source).toContain("for _ in {1..100}; do");
     expect(source).toMatch(
-      /if tr "\\0" "\\n" <"\/proc\/\$\{control_pid\}\/environ" 2>\/dev\/null \|\n\s+grep -Fxq "OPERATOR_QA_PROC_CONTROL=visible"; then/u,
+      /if tr "\\0" "\\n" <"\/proc\/\$\{control_pid\}\/environ" 2>\/dev\/null \|\n\s+grep -Fxq "OPENCLAW_QA_PROC_CONTROL=visible"; then/u,
     );
     expect(source).toContain("proc_marker_visible=true\n                        break");
     expect(source).toContain("sleep 0.05");
@@ -811,7 +811,7 @@ describe("release Telegram QA workflow", () => {
     expect(source).toContain('for masked_path in "$RUNNER_HOME" /tmp /var/tmp /dev/shm');
     expect(source).not.toMatch(/^\s+node_bin="\$\(realpath -e "\$\(command -v node\)"\)"$/mu);
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
-    expect(source).toContain('temp_root="$(realpath -e "${OPERATOR_QA_TEMP_ROOT:?}")"');
+    expect(source).toContain('temp_root="$(realpath -e "${OPENCLAW_QA_TEMP_ROOT:?}")"');
     expect(source).toContain("sudo install -d -o root -g root -m 0700 /tmp/operator");
     expect(source).toContain(
       // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
@@ -833,7 +833,7 @@ describe("release Telegram QA workflow", () => {
     expect(source).toContain('export XDG_CONFIG_HOME="${temp_root}/xdg-config"');
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain('if [[ "${1:-}" == "--root-terminate-uid" ]]');
-    expect(source).toContain("OPERATOR_LOG_LEVEL");
+    expect(source).toContain("OPENCLAW_LOG_LEVEL");
     expect(source).toContain("capture_live_model_config() {");
     expect(source).toContain('capture_live_model_config "$config_path"');
     // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
@@ -957,7 +957,7 @@ describe("release Telegram QA workflow", () => {
     const preloadPath = join(workdir, "preload.mjs");
     writeFileSync(preloadPath, preloadSource ?? "");
     const env = { ...process.env };
-    delete env.OPERATOR_QA_SUT_PREENTRY_STOP;
+    delete env.OPENCLAW_QA_SUT_PREENTRY_STOP;
 
     const mainResult = spawnSync(process.execPath, ["--import", preloadPath, "-e", ""], {
       encoding: "utf8",

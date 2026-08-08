@@ -578,18 +578,18 @@ describe("firecrawl tools", () => {
     }
 
     const result = await tool.execute({
-      query: "openclaw docs",
+      query: "operator docs",
       count: 4,
     });
 
     expect(runFirecrawlSearch).toHaveBeenCalledWith({
       cfg: { test: true },
-      query: "openclaw docs",
+      query: "operator docs",
       count: 4,
     });
     expect(result).toEqual({
       cfg: { test: true },
-      query: "openclaw docs",
+      query: "operator docs",
       count: 4,
     });
   });
@@ -612,13 +612,13 @@ describe("firecrawl tools", () => {
     }
 
     await tool.execute({
-      query: "openclaw docs",
+      query: "operator docs",
       count: 4,
     });
 
     expect(runFirecrawlSearch).toHaveBeenCalledWith({
       cfg: { test: true },
-      query: "openclaw docs",
+      query: "operator docs",
       count: 4,
       access: "keyless",
     });
@@ -634,18 +634,18 @@ describe("firecrawl tools", () => {
     }
 
     await tool.execute({
-      query: "openclaw docs",
+      query: "operator docs",
       count: "4",
     });
 
     expect(runFirecrawlSearch).toHaveBeenCalledWith({
       cfg: { test: true },
-      query: "openclaw docs",
+      query: "operator docs",
       count: 4,
     });
     await expect(
       tool.execute({
-        query: "openclaw docs",
+        query: "operator docs",
         count: "4.5",
       }),
     ).rejects.toThrow("count must be an integer from 1 to 10");
@@ -1195,7 +1195,7 @@ describe("firecrawl tools", () => {
             },
           },
         } as OperatorConfig,
-        query: "openclaw malformed search",
+        query: "operator malformed search",
       }),
     ).rejects.toThrow("Firecrawl Search API error: malformed JSON response");
   });

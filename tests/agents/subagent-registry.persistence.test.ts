@@ -10,7 +10,7 @@ import { replaceSessionEntry } from "../../src/config/sessions/session-accessor.
 import type { SessionEntry } from "../../src/config/sessions/types.js";
 import { callGateway } from "../../src/gateway/call.js";
 import { onAgentEvent } from "../../src/infra/agent-events.js";
-import { closeOperatorStateDatabaseForTest } from "../../src/state/openclaw-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../../src/state/operator-state-db.js";
 import { captureEnv, setTestEnvValue, withEnv } from "../../src/test-utils/env.js";
 import { cleanupSessionStateForTest } from "../../src/test-utils/session-state-cleanup.js";
 import { scheduleOrphanRecovery } from "../../src/agents/subagent-orphan-recovery.js";

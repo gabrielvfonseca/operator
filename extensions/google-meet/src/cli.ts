@@ -1498,7 +1498,7 @@ export function registerGoogleMeetCli(params: {
           if (payload.joined && payload.join?.session?.id) {
             writeStdoutLine("joined: %s", payload.join.session.id);
           } else {
-            writeStdoutLine("joined: no (run `openclaw googlemeet join %s`)", payload.meetingUri);
+            writeStdoutLine("joined: no (run `operator googlemeet join %s`)", payload.meetingUri);
           }
           return;
         }
@@ -1545,7 +1545,7 @@ export function registerGoogleMeetCli(params: {
         if (join) {
           writeStdoutLine("joined: %s", join.session.id);
         } else {
-          writeStdoutLine("joined: no (run `openclaw googlemeet join %s`)", result.meetingUri);
+          writeStdoutLine("joined: no (run `operator googlemeet join %s`)", result.meetingUri);
         }
         return;
       }
@@ -1589,7 +1589,7 @@ export function registerGoogleMeetCli(params: {
       if (join) {
         writeStdoutLine("joined: %s", join.session.id);
       } else {
-        writeStdoutLine("joined: no (run `openclaw googlemeet join %s`)", result.meetingUri);
+        writeStdoutLine("joined: no (run `operator googlemeet join %s`)", result.meetingUri);
       }
     });
 

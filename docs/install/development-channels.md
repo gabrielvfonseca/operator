@@ -44,8 +44,8 @@ install paths:
 | `beta`            | dist-tag `beta`, falling back to `latest` when `beta` is missing or older                                                                                                              | latest beta git tag, falling back to the latest stable git tag when beta is missing or older                                                                       |
 | `dev`             | dist-tag `dev` (rare; most dev users run git installs)                                                                                                                                 | fetches, rebases the checkout on the upstream `main` branch, builds, and reinstalls the global CLI                                                                 |
 
-For `dev` git installs, the default checkout is `~/openclaw` (or
-`$OPERATOR_HOME/openclaw` when `OPERATOR_HOME` is set); override with
+For `dev` git installs, the default checkout is `~/operator` (or
+`$OPERATOR_HOME/operator` when `OPERATOR_HOME` is set); override with
 `OPERATOR_GIT_DIR`.
 
 <Tip>
@@ -68,7 +68,7 @@ operator update --tag beta
 operator update --channel dev
 
 # Install a specific npm package spec
-operator update --tag openclaw@2026.4.1-beta.1
+operator update --tag operator@2026.4.1-beta.1
 
 # Install from GitHub main once without persisting the channel
 operator update --tag main
@@ -79,7 +79,7 @@ Notes:
 - `--tag` applies to **package (npm) installs only**; git installs ignore it.
 - The tag is not persisted; the next `operator update` uses the configured
   channel.
-- `--tag main` maps to the npm-compatible spec `github:openclaw/openclaw#main`
+- `--tag main` maps to the npm-compatible spec `github:operator/operator#main`
   for that one run. For a persistent moving `main` install, use
   `operator update --channel dev` (package installs switch to a git checkout)
   or reinstall with the installer's git method:

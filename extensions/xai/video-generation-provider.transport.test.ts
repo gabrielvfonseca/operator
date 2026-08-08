@@ -11,14 +11,14 @@ const resolveApiKeyForProviderMock = vi.hoisted(() =>
   })),
 );
 
-vi.mock("openclaw/plugin-sdk/provider-auth-runtime", () => ({
+vi.mock("operator/plugin-sdk/provider-auth-runtime", () => ({
   resolveApiKeyForProvider: resolveApiKeyForProviderMock,
 }));
 
 async function buildTransportProofProvider() {
   vi.resetModules();
-  vi.doUnmock("openclaw/plugin-sdk/provider-http");
-  vi.doMock("openclaw/plugin-sdk/provider-auth-runtime", () => ({
+  vi.doUnmock("operator/plugin-sdk/provider-http");
+  vi.doMock("operator/plugin-sdk/provider-auth-runtime", () => ({
     resolveApiKeyForProvider: resolveApiKeyForProviderMock,
   }));
   const { buildXaiVideoGenerationProvider } = await import("./video-generation-provider.js");

@@ -31,14 +31,14 @@ describe("entry compile cache", () => {
   });
 
   it("resolves install roots from source and dist entry paths", () => {
-    expect(resolveEntryInstallRoot("/repo/openclaw/src/entry.ts")).toBe("/repo/openclaw");
-    expect(resolveEntryInstallRoot("/repo/openclaw/dist/entry.js")).toBe("/repo/openclaw");
-    expect(resolveEntryInstallRoot("/pkg/openclaw/entry.js")).toBe("/pkg/openclaw");
+    expect(resolveEntryInstallRoot("/repo/operator/src/entry.ts")).toBe("/repo/operator");
+    expect(resolveEntryInstallRoot("/repo/operator/dist/entry.js")).toBe("/repo/operator");
+    expect(resolveEntryInstallRoot("/pkg/operator/entry.js")).toBe("/pkg/operator");
   });
 
   it("treats git and source entry markers as source checkouts", async () => {
     const root = makeTempDir(tempDirs, "operator-compile-cache-source-");
-    await fs.writeFile(path.join(root, ".git"), "gitdir: .git/worktrees/openclaw\n", "utf8");
+    await fs.writeFile(path.join(root, ".git"), "gitdir: .git/worktrees/operator\n", "utf8");
 
     expect(isSourceCheckoutInstallRoot(root)).toBe(true);
   });
@@ -218,7 +218,7 @@ describe("entry compile cache", () => {
     runOperatorCompileCacheRespawnPlan(
       {
         command: "/usr/bin/node",
-        args: ["/repo/openclaw/dist/entry.js", "status"],
+        args: ["/repo/operator/dist/entry.js", "status"],
         env: { NODE_DISABLE_COMPILE_CACHE: "1" },
         detachForProcessTree: true,
       },
@@ -232,7 +232,7 @@ describe("entry compile cache", () => {
 
     expect(spawn).toHaveBeenCalledWith(
       "/usr/bin/node",
-      ["/repo/openclaw/dist/entry.js", "status"],
+      ["/repo/operator/dist/entry.js", "status"],
       {
         stdio: "inherit",
         env: { NODE_DISABLE_COMPILE_CACHE: "1" },
@@ -260,7 +260,7 @@ describe("entry compile cache", () => {
     runOperatorCompileCacheRespawnPlan(
       {
         command: "/usr/bin/node",
-        args: ["/repo/openclaw/dist/entry.js"],
+        args: ["/repo/operator/dist/entry.js"],
         env: {},
         detachForProcessTree: true,
       },
@@ -290,7 +290,7 @@ describe("entry compile cache", () => {
       runOperatorCompileCacheRespawnPlan(
         {
           command: "/usr/bin/node",
-          args: ["/repo/openclaw/dist/entry.js"],
+          args: ["/repo/operator/dist/entry.js"],
           env: {},
           detachForProcessTree: false,
         },

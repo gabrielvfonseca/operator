@@ -445,8 +445,8 @@ describe("skills cli commands", () => {
 
     expect(help).toContain("<skill-ref>");
     expect(help).toContain("@owner/slug");
-    expect(help).toContain("openclaw skills install @owner/weather");
-    expect(help).not.toContain("openclaw skills install weather");
+    expect(help).toContain("operator skills install @owner/weather");
+    expect(help).not.toContain("operator skills install weather");
   });
 
   it("documents owner-qualified ClawHub verify refs in command help", () => {
@@ -463,8 +463,8 @@ describe("skills cli commands", () => {
 
     expect(help).toContain("<skill-ref>");
     expect(help).toContain("@owner/slug");
-    expect(help).toContain("openclaw skills verify @owner/weather");
-    expect(help).not.toContain("openclaw skills verify weather");
+    expect(help).toContain("operator skills verify @owner/weather");
+    expect(help).not.toContain("operator skills verify weather");
   });
 
   it("installs a skill from a git source into the active workspace", async () => {
@@ -1100,12 +1100,12 @@ describe("skills cli commands", () => {
   it("includes verified ClawHub source URLs in verify JSON output", async () => {
     const provenance = {
       source: "server-resolved-github-import",
-      repo: "openclaw/skills",
+      repo: "operator/skills",
       commit: "0123456789abcdef0123456789abcdef01234567",
       path: "agentreceipt",
     };
     const verifiedSourceUrl =
-      "https://github.com/openclaw/skills/tree/0123456789abcdef0123456789abcdef01234567/agentreceipt";
+      "https://github.com/operator/skills/tree/0123456789abcdef0123456789abcdef01234567/agentreceipt";
     readVerifiedClawHubSkillSourceUrlMock.mockReturnValueOnce(verifiedSourceUrl);
     fetchClawHubSkillVerificationMock.mockResolvedValueOnce({
       schema: "clawhub.skill.verify.v1",
@@ -1132,7 +1132,7 @@ describe("skills cli commands", () => {
 
     expect(readVerifiedClawHubSkillSourceUrlMock).toHaveBeenCalledWith(provenance);
     const payload = JSON.parse(runtimeStdout.at(-1) ?? "{}") as {
-      openclaw?: { verifiedSourceUrl?: string };
+      operator?: { verifiedSourceUrl?: string };
     };
     expect(payload.operator?.verifiedSourceUrl).toBe(verifiedSourceUrl);
     expect(defaultRuntime.exit).not.toHaveBeenCalled();
@@ -1464,7 +1464,7 @@ describe("skills cli commands", () => {
     expect(defaultRuntime.log).not.toHaveBeenCalled();
     expect(runtimeErrors).toStrictEqual([]);
     expect(runtimeStdout.at(-1)).toContain("calendar");
-    expect(runtimeStdout.at(-1)).toContain("openclaw skills search");
+    expect(runtimeStdout.at(-1)).toContain("operator skills search");
   });
 });
 /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

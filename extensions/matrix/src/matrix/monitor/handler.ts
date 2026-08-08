@@ -132,11 +132,11 @@ const MATRIX_TOOL_PROGRESS_MAX_CHARS = 300;
 const loadMatrixSendModule = createLazyRuntimeModule(() => import("../send.js"));
 
 const loadAcpBindingRuntime = createLazyRuntimeModule(
-  () => import("openclaw/plugin-sdk/acp-binding-runtime"),
+  () => import("operator/plugin-sdk/acp-binding-runtime"),
 );
 
 const loadSessionBindingRuntime = createLazyRuntimeModule(
-  () => import("openclaw/plugin-sdk/session-binding-runtime"),
+  () => import("operator/plugin-sdk/session-binding-runtime"),
 );
 
 const loadMatrixReactionEvents = createLazyRuntimeModule(() => import("./reaction-events.js"));

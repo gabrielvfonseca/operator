@@ -17,7 +17,7 @@ const mocks = vi.hoisted(() => ({
     zonePath: "/tmp/operator.internal.db",
   })),
   formatBonjourInstanceName: vi.fn((name: string) => `${name} (Operator)`),
-  resolveBonjourCliPath: vi.fn(() => "/usr/local/bin/openclaw"),
+  resolveBonjourCliPath: vi.fn(() => "/usr/local/bin/operator"),
   resolveTailnetDnsHint: vi.fn(async () => "gateway.tailnet.example.ts.net"),
 }));
 
@@ -171,7 +171,7 @@ describe("startGatewayDiscovery", () => {
       canvasPort: 18789,
       sshPort: 2222,
       tailnetDns: "gateway.tailnet.example.ts.net",
-      cliPath: "/usr/local/bin/openclaw",
+      cliPath: "/usr/local/bin/operator",
       minimal: false,
     });
     expect(peer.service.advertise).toHaveBeenCalledTimes(1);

@@ -104,7 +104,7 @@ non-inference setup and repair, run `operator setup`; `operator onboard
 wizard can optionally verify the default model with a live completion, but
 Operator will not start until its own live inference check passes.
 
-In an interactive terminal, bare `openclaw` (no subcommand) routes by config
+In an interactive terminal, bare `operator` (no subcommand) routes by config
 state:
 
 - If the active config file is missing or has no authored settings (empty or
@@ -115,7 +115,7 @@ state:
 - If the config file is valid, it opens the normal agent TUI. A reachable
   configured Gateway with an agent and model goes directly to that UI without
   onboarding or Operator. On a configured install, reach Operator with
-  `/openclaw` inside the TUI or `operator setup`.
+  `/operator` inside the TUI or `operator setup`.
 
 Plaintext `ws://` is accepted for loopback, private IP literals, `.local`, and Tailnet `*.ts.net` gateway URLs. For other trusted private-DNS names, set `OPERATOR_ALLOW_INSECURE_PRIVATE_WS=1` in the onboarding process environment.
 
@@ -300,7 +300,7 @@ Some web-search providers trigger provider-specific follow-up prompts during onb
 
 ## Common follow-up commands
 
-Use `operator configure` later for targeted non-inference changes and `openclaw
+Use `operator configure` later for targeted non-inference changes and `operator
 channels add` for channel-only setup. For model provider or auth route changes,
 run `operator onboard` instead.
 

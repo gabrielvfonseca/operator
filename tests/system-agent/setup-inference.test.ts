@@ -31,7 +31,7 @@ import {
 } from "../../src/plugins/runtime.js";
 import { ensurePluginRegistryLoaded } from "../../src/plugins/runtime/runtime-registry-loader.js";
 import type { ProviderPlugin } from "../../src/plugins/types.js";
-import { disposeOperatorAgentDatabaseByPath } from "../../src/state/openclaw-agent-db.js";
+import { disposeOperatorAgentDatabaseByPath } from "../../src/state/operator-agent-db.js";
 import { cleanupSystemAgentSession, createSystemAgentSession } from "../../src/system-agent/agent-turn.js";
 import { runSystemAgentTurnWithDeps } from "../../src/system-agent/agent-turn.test-support.js";
 import { resolveSystemAgentConfiguredRouteFromConfig } from "../../src/system-agent/inference-route.js";
@@ -4206,7 +4206,7 @@ describe("activateSetupInference", () => {
 
   it("marks an unowned Codex package generation retained when the live test fails", async () => {
     const installProjectDir = await makeTempDir();
-    const packageDir = path.join(installProjectDir, "node_modules", "@openclaw", "codex");
+    const packageDir = path.join(installProjectDir, "node_modules", "@operator", "codex");
     await fs.mkdir(packageDir, { recursive: true });
     const transformConfig = vi.fn();
     const refreshPluginRegistry = vi.fn();

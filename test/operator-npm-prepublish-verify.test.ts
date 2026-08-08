@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  operatorNpmPrepublishVerifyUsage,
+  openClawNpmPrepublishVerifyUsage,
   parseOperatorNpmPrepublishVerifyArgs,
   usesPreparedLocalDependencyInstall,
 } from "../scripts/operator-npm-prepublish-verify.ts";
@@ -27,7 +27,7 @@ describe("parseOperatorNpmPrepublishVerifyArgs", () => {
 
   it("rejects missing, option-like, and extra arguments before installing", () => {
     expect(() => parseOperatorNpmPrepublishVerifyArgs([])).toThrow(
-      operatorNpmPrepublishVerifyUsage(),
+      openClawNpmPrepublishVerifyUsage(),
     );
     expect(() => parseOperatorNpmPrepublishVerifyArgs(["--tag"])).toThrow(
       "Unknown operator npm prepublish verifier option: --tag",

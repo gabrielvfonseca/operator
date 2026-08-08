@@ -1,4 +1,4 @@
-/** Row builders used by `openclaw models list` source orchestration. */
+/** Row builders used by `operator models list` source orchestration. */
 import type { NormalizedModelCatalogRow } from "@gabrielvfonseca/model-catalog-core/model-catalog-types";
 import {
   normalizeProviderId,

@@ -25,7 +25,7 @@ type PluginPackageJson = {
         type?: string;
         url?: string;
       };
-  openclaw?: {
+  operator?: {
     extensions?: string[];
     install?: {
       defaultChoice?: string;
@@ -111,7 +111,7 @@ type PublishablePluginPackageCandidate<TPackageJson extends PluginPackageJson = 
     readmeText?: string;
   };
 
-export const OPERATOR_PLUGIN_NPM_REPOSITORY_URL = "https://github.com/openclaw/openclaw";
+export const OPERATOR_PLUGIN_NPM_REPOSITORY_URL = "https://github.com/operator/operator";
 
 export function collectRequiredLatestDependencies(packageJson: PluginPackageJson): {
   dependencies: RequiredLatestDependency[];

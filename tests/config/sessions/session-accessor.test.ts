@@ -6,7 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { withTestTimeout } from "../../../test/helpers/promise.js";
 import type { MsgContext } from "../../../src/auto-reply/templating.js";
 import { onSessionTranscriptUpdate } from "../../../src/sessions/transcript-events.js";
-import { openOperatorAgentDatabase } from "../../../src/state/openclaw-agent-db.js";
+import { openOperatorAgentDatabase } from "../../../src/state/operator-agent-db.js";
 import { appendSqliteTrajectoryRuntimeEvents } from "../../../src/trajectory/runtime-store.sqlite.js";
 import type { TrajectoryEvent } from "../../../src/trajectory/types.js";
 import {

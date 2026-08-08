@@ -10,12 +10,12 @@ import type {
   DevicePairingPaired,
   DevicePairingPending,
   DeviceBootstrapTokens,
-} from "../state/openclaw-state-db.generated.js";
+} from "../state/operator-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
   type OperatorStateDatabaseOptions,
-} from "../state/openclaw-state-db.js";
+} from "../state/operator-state-db.js";
 import type {
   DeviceAuthToken,
   DeviceBootstrapTokenRecord,

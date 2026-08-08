@@ -23,7 +23,7 @@ function runCheck(cwd: string) {
 
 describe("check-composite-action-input-interpolation", () => {
   it("rejects direct inputs interpolation inside composite run blocks", () => {
-    const rootDir = createTempDir("openclaw-composite-action-inputs-");
+    const rootDir = createTempDir("operator-composite-action-inputs-");
     writeAction(
       rootDir,
       "unsafe",
@@ -48,7 +48,7 @@ describe("check-composite-action-input-interpolation", () => {
   });
 
   it("allows env indirection and ignores non-composite actions", () => {
-    const rootDir = createTempDir("openclaw-composite-action-inputs-");
+    const rootDir = createTempDir("operator-composite-action-inputs-");
     writeAction(
       rootDir,
       "safe",

@@ -9,7 +9,7 @@ const { fetchWithSsrFGuardMock } = vi.hoisted(() => ({
   fetchWithSsrFGuardMock: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/ssrf-runtime", () => ({
+vi.mock("operator/plugin-sdk/ssrf-runtime", () => ({
   fetchWithSsrFGuard: fetchWithSsrFGuardMock,
 }));
 
@@ -266,18 +266,18 @@ describe("ollama web search provider", () => {
     if (!tool) {
       throw new Error("Expected tool definition");
     }
-    const result = await tool.execute({ query: "openclaw docs", count: 3 });
+    const result = await tool.execute({ query: "operator docs", count: 3 });
 
     expectOllamaWebSearchRequest(fetchCall(), {
       url: "http://ollama.local:11434/api/experimental/web_search",
-      query: "openclaw docs",
+      query: "operator docs",
       maxResults: 3,
       policy: {
         allowPrivateNetwork: true,
         hostnameAllowlist: ["ollama.local"],
       },
     });
-    expect(result.query).toBe("openclaw docs");
+    expect(result.query).toBe("operator docs");
     expect(result.provider).toBe("ollama");
     expect(result.count).toBe(1);
     expectSingleSearchResultUrl(result.results, "https://operator.ai/docs");
@@ -412,7 +412,7 @@ describe("ollama web search provider", () => {
       release: vi.fn(async () => {}),
     });
 
-    await expect(runOllamaWebSearch({ query: "latest openclaw release" })).rejects.toThrow(
+    await expect(runOllamaWebSearch({ query: "latest operator release" })).rejects.toThrow(
       "ollama signin",
     );
   });

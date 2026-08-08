@@ -15,7 +15,7 @@ type PackedVersion = {
   archive: Buffer;
   dependencies?: Record<string, string>;
   integrity: string;
-  openclaw?: Record<string, unknown>;
+  operator?: Record<string, unknown>;
   optionalDependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;
   peerDependenciesMeta?: Record<string, { optional?: boolean }>;
@@ -98,7 +98,7 @@ async function packPlugin(params: {
   dependencies?: Record<string, string>;
   packageName: string;
   optionalDependencies?: Record<string, string>;
-  openclaw?: Record<string, unknown>;
+  operator?: Record<string, unknown>;
   peerDependencies?: Record<string, string>;
   peerDependenciesMeta?: Record<string, { optional?: boolean }>;
   pluginId: string;
@@ -415,7 +415,7 @@ describe("installPluginFromNpmSpec e2e", () => {
     }
   });
 
-  it("scrubs root openclaw materialized by required npm peers", async () => {
+  it("scrubs root operator materialized by required npm peers", async () => {
     const rootDir = await makeTempDir("npm-plugin-required-peer-e2e");
     const npmRoot = path.join(rootDir, "managed-npm");
     const packageName = `required-peer-plugin-${crypto.randomUUID().replace(/-/g, "").slice(0, 12)}`;
@@ -473,7 +473,7 @@ describe("installPluginFromNpmSpec e2e", () => {
     ) as {
       packages?: Record<string, unknown>;
     };
-    const rawOperatorLockEntry = rawLock.packages?.["node_modules/openclaw"] as
+    const rawOperatorLockEntry = rawLock.packages?.["node_modules/operator"] as
       | { peer?: unknown; version?: unknown }
       | undefined;
     expect(rawOperatorLockEntry?.peer).toBe(true);
@@ -495,7 +495,7 @@ describe("installPluginFromNpmSpec e2e", () => {
     ) as {
       packages?: Record<string, unknown>;
     };
-    expect(lock.packages?.["node_modules/openclaw"]).toBeUndefined();
+    expect(lock.packages?.["node_modules/operator"]).toBeUndefined();
     await expect(
       fs.lstat(path.join(projectRoot, "node_modules", "@gabrielvfonseca/operator")),
     ).rejects.toHaveProperty("code", "ENOENT");
@@ -655,7 +655,7 @@ describe("installPluginFromNpmSpec e2e", () => {
       await fs.readFile(path.join(projectRoot, "package.json"), "utf8"),
     ) as {
       dependencies?: Record<string, string>;
-      openclaw?: { managedPeerDependencies?: string[] };
+      operator?: { managedPeerDependencies?: string[] };
     };
     expect(["1.0.0", "^1.0.0"]).toContain(rootManifest.dependencies?.[runtimePeer]);
     expect(rootManifest.operator?.managedPeerDependencies ?? []).toContain(runtimePeer);
@@ -763,7 +763,7 @@ describe("installPluginFromNpmSpec e2e", () => {
       await fs.readFile(path.join(npmRoot, "package.json"), "utf8"),
     ) as {
       dependencies?: Record<string, string>;
-      openclaw?: { managedPeerDependencies?: string[] };
+      operator?: { managedPeerDependencies?: string[] };
     };
     expect(rootManifest.dependencies?.[laterPlugin]).toBeUndefined();
     expect(rootManifest.dependencies?.[runtimePeer]).toBeUndefined();
@@ -911,7 +911,7 @@ describe("installPluginFromNpmSpec e2e", () => {
         await fs.readFile(path.join(projectRoot, "package.json"), "utf8"),
       ) as {
         dependencies?: Record<string, string>;
-        openclaw?: { managedPeerDependencies?: string[] };
+        operator?: { managedPeerDependencies?: string[] };
       };
       expect(rootManifest.dependencies?.[blockedPlugin]).toBeUndefined();
       expect(rootManifest.dependencies?.[runtimePeer]).toBeUndefined();
@@ -964,7 +964,7 @@ describe("installPluginFromNpmSpec e2e", () => {
       await fs.readFile(path.join(projectRoot, "package.json"), "utf8"),
     ) as {
       dependencies?: Record<string, string>;
-      openclaw?: { managedPeerDependencies?: string[] };
+      operator?: { managedPeerDependencies?: string[] };
     };
     expect(rootManifest.dependencies?.[blockedPlugin]).toBe("1.0.0");
     expect(rootManifest.dependencies?.[missingPeer]).toBeUndefined();
@@ -1073,7 +1073,7 @@ describe("installPluginFromNpmSpec e2e", () => {
       await fs.readFile(path.join(blockedProjectRoot, "package.json"), "utf8"),
     ) as {
       dependencies?: Record<string, string>;
-      openclaw?: { managedPeerDependencies?: string[] };
+      operator?: { managedPeerDependencies?: string[] };
     };
     expect(rootManifest.dependencies?.[existingRootDependency]).toBe("1.0.0");
     expect(rootManifest.dependencies?.[blockedPlugin]).toBeUndefined();
@@ -1173,7 +1173,7 @@ describe("installPluginFromNpmSpec e2e", () => {
       ) as {
         packages?: Record<string, unknown>;
       };
-      expect(lock.packages?.["node_modules/openclaw"]).toBeUndefined();
+      expect(lock.packages?.["node_modules/operator"]).toBeUndefined();
       await expect(
         fs.lstat(path.join(projectRoot, "node_modules", "@gabrielvfonseca/operator")),
       ).rejects.toHaveProperty("code", "ENOENT");
@@ -1190,7 +1190,7 @@ describe("installPluginFromNpmSpec e2e", () => {
     ).resolves.toBe(true);
   });
 
-  it("keeps an earlier isolated openclaw peer link after later plugin installs", async () => {
+  it("keeps an earlier isolated operator peer link after later plugin installs", async () => {
     const rootDir = await makeTempDir("npm-plugin-peer-e2e");
     const npmRoot = path.join(rootDir, "managed-npm");
     const peerPackageName = `peer-plugin-${crypto.randomUUID().replace(/-/g, "").slice(0, 12)}`;
@@ -1254,7 +1254,7 @@ describe("installPluginFromNpmSpec e2e", () => {
     ) as {
       packages?: Record<string, unknown>;
     };
-    expect(lock.packages?.["node_modules/openclaw"]).toBeUndefined();
+    expect(lock.packages?.["node_modules/operator"]).toBeUndefined();
   });
 
   it("pins a mutable npm tag to the version resolved before install", async () => {

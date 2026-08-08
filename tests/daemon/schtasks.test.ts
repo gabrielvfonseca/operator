@@ -171,9 +171,9 @@ describe("resolveTaskScriptPath", () => {
       env: {
         USERPROFILE: "C:\\Users\\test",
         OPERATOR_PROFILE: "rescue",
-        OPERATOR_STATE_DIR: "C:\\State\\openclaw",
+        OPERATOR_STATE_DIR: "C:\\State\\operator",
       },
-      expected: path.join("C:\\State\\openclaw", "gateway.cmd"),
+      expected: path.join("C:\\State\\operator", "gateway.cmd"),
     },
     {
       name: "falls back to HOME when USERPROFILE is not set",
@@ -336,7 +336,7 @@ describe("readScheduledTaskCommand", () => {
         scriptLines: [
           "@echo off",
           "rem Operator Gateway",
-          "cd /d C:\\Projects\\openclaw",
+          "cd /d C:\\Projects\\operator",
           "set NODE_ENV=production",
           "set OPERATOR_PORT=18789",
           "node gateway.js --verbose",
@@ -346,7 +346,7 @@ describe("readScheduledTaskCommand", () => {
         const result = await readScheduledTaskCommand(env);
         expect(result).toEqual({
           programArguments: ["node", "gateway.js", "--verbose"],
-          workingDirectory: "C:\\Projects\\openclaw",
+          workingDirectory: "C:\\Projects\\operator",
           environment: {
             NODE_ENV: "production",
             OPERATOR_PORT: "18789",
@@ -366,7 +366,7 @@ describe("readScheduledTaskCommand", () => {
       {
         scriptLines: [
           "@echo off",
-          '"C:\\Program Files\\nodejs\\node.exe" C:\\Users\\test\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js gateway --port 18789',
+          '"C:\\Program Files\\nodejs\\node.exe" C:\\Users\\test\\AppData\\Roaming\\npm\\node_modules\\operator\\dist\\index.js gateway --port 18789',
         ],
       },
       async (env) => {
@@ -374,7 +374,7 @@ describe("readScheduledTaskCommand", () => {
         expect(result).toEqual({
           programArguments: [
             "C:\\Program Files\\nodejs\\node.exe",
-            "C:\\Users\\test\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js",
+            "C:\\Users\\test\\AppData\\Roaming\\npm\\node_modules\\operator\\dist\\index.js",
             "gateway",
             "--port",
             "18789",

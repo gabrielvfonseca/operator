@@ -14,9 +14,9 @@ describe("resolveDaemonInstallRuntimeInputs", () => {
     const originalArgv = process.argv;
     try {
       for (const [entrypoint, expected] of [
-        ["/Users/me/openclaw/src/cli/index.ts", true],
-        ["C:\\Users\\me\\openclaw\\src\\cli\\index.ts", true],
-        ["/Users/me/openclaw/dist/cli/index.js", false],
+        ["/Users/me/operator/src/cli/index.ts", true],
+        ["C:\\Users\\me\\operator\\src\\cli\\index.ts", true],
+        ["/Users/me/operator/dist/cli/index.js", false],
       ] as const) {
         process.argv = ["node", entrypoint];
         await expect(
@@ -57,11 +57,11 @@ describe("resolveDaemonNodeBinDir", () => {
   });
 });
 
-describe("resolveDaemonServicePathDirs openclaw discovery", () => {
-  it("uses the active openclaw command directory", () => {
+describe("resolveDaemonServicePathDirs operator discovery", () => {
+  it("uses the active operator command directory", () => {
     expect(
       resolveDaemonServicePathDirs({
-        argv: ["node", "/Users/testuser/.npm-global/bin/openclaw", "gateway", "install"],
+        argv: ["node", "/Users/testuser/.npm-global/bin/operator", "gateway", "install"],
         env: { PATH: "" },
         platform: "darwin",
       }),
@@ -95,7 +95,7 @@ describe("resolveDaemonServicePathDirs openclaw discovery", () => {
   );
 
   it.skipIf(process.platform === "win32")(
-    "ignores unrelated openclaw commands elsewhere on PATH",
+    "ignores unrelated operator commands elsewhere on PATH",
     () => {
       const root = fs.mkdtempSync(path.join(os.tmpdir(), "operator-daemon-path-"));
       try {
@@ -124,11 +124,11 @@ describe("resolveDaemonServicePathDirs openclaw discovery", () => {
 });
 
 describe("resolveDaemonServicePathDirs", () => {
-  it("combines node and active openclaw command directories", () => {
+  it("combines node and active operator command directories", () => {
     expect(
       resolveDaemonServicePathDirs({
         nodePath: "/opt/homebrew/opt/node/bin/node",
-        argv: ["node", "/Users/testuser/.npm-global/bin/openclaw", "gateway", "install"],
+        argv: ["node", "/Users/testuser/.npm-global/bin/operator", "gateway", "install"],
         env: { PATH: "" },
         platform: "darwin",
       }),

@@ -1039,7 +1039,7 @@ describe("runEmbeddedAgent overflow compaction trigger routing", () => {
         },
       },
       streamParams: { maxTokens: 64 },
-      runId: "request-stream-params-use-openclaw",
+      runId: "request-stream-params-use-operator",
     });
 
     expectMockCallFields(mockedRunEmbeddedAttempt, { agentHarnessId: "@gabrielvfonseca/operator" });
@@ -3144,7 +3144,7 @@ describe("runEmbeddedAgent overflow compaction trigger routing", () => {
             },
           },
         },
-        runId: "implicit-codex-full-plan-falls-back-openclaw",
+        runId: "implicit-codex-full-plan-falls-back-operator",
       });
     } finally {
       clearAgentHarnesses();

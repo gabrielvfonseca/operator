@@ -140,7 +140,7 @@ pub fn status(cli: &OperatorCli) -> Result<GatewaySnapshot, String> {
                     "{error}\nThe Gateway on the configured port rejected this profile's \
                      credentials. This may indicate another user's Gateway is using the \
                      port, or that this profile's stored token is stale. Run \
-                     `openclaw gateway status` in a terminal to inspect it, then retry."
+                     `operator gateway status` in a terminal to inspect it, then retry."
                 )
             } else {
                 error
@@ -218,7 +218,7 @@ pub fn dashboard(cli: &OperatorCli, snapshot: GatewaySnapshot) -> Result<ReadyGa
             Err(crate::cli::CliError::InvalidJson(_)) => {
                 return Err(
                     "The installed Operator CLI does not support the desktop dashboard \
-                 integration. Update Operator (for example: npm install -g openclaw@latest), \
+                 integration. Update Operator (for example: npm install -g operator@latest), \
                  then retry."
                         .to_string(),
                 );

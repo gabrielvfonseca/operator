@@ -13,7 +13,7 @@ const transcribeFirstAudioMock = vi.hoisted(() => vi.fn());
 const maybeSendAckReactionMock = vi.hoisted(() => vi.fn());
 const createStatusReactionControllerMock = vi.hoisted(() => vi.fn());
 
-vi.mock("openclaw/plugin-sdk/conversation-binding-runtime", () => ({
+vi.mock("operator/plugin-sdk/conversation-binding-runtime", () => ({
   resolveConfiguredBindingRoute: (...args: unknown[]) => resolveConfiguredBindingRouteMock(...args),
   ensureConfiguredBindingRouteReady: (...args: unknown[]) =>
     ensureConfiguredBindingRouteReadyMock(...args),
@@ -27,8 +27,8 @@ vi.mock("./ack-reaction.js", () => ({
   maybeSendAckReaction: (...args: unknown[]) => maybeSendAckReactionMock(...args),
 }));
 
-vi.mock("openclaw/plugin-sdk/routing", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/routing")>();
+vi.mock("operator/plugin-sdk/routing", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("operator/plugin-sdk/routing")>();
   return {
     ...actual,
     buildGroupHistoryKey: () => "group-key",

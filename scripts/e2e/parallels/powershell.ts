@@ -81,7 +81,7 @@ cfg.plugins = cfg.plugins && typeof cfg.plugins === "object" && !Array.isArray(c
 cfg.plugins.entries = { [payload.pluginId]: { enabled: true } };
 cfg.plugins.allow = [payload.pluginId];
 const stateDir = path.dirname(configPath);
-fs.rmSync(path.join(stateDir, "npm", "node_modules", "@openclaw", "codex"), { recursive: true, force: true });
+fs.rmSync(path.join(stateDir, "npm", "node_modules", "@operator", "codex"), { recursive: true, force: true });
 for (const op of payload.operations || []) {
   const segments = String(op.path || "").match(/(?:[^.[\\]]+)|(?:\\["((?:\\\\.|[^"\\\\])*)"\\])/g) || [];
   let cursor = cfg;
@@ -141,7 +141,7 @@ function Resolve-OperatorCommand {
     $shimCandidates += Join-Path $env:APPDATA 'npm\operator.cmd'
     $shimCandidates += Join-Path $env:APPDATA 'npm\operator.ps1'
   }
-  foreach ($name in @('operator.cmd', 'operator.ps1', 'openclaw')) {
+  foreach ($name in @('operator.cmd', 'operator.ps1', 'operator')) {
     $command = Get-Command $name -ErrorAction SilentlyContinue | Select-Object -First 1
     if ($command -and $command.Source) { $shimCandidates += $command.Source }
   }
@@ -161,10 +161,10 @@ function Resolve-OperatorCommand {
   }
   $entryCandidates = @()
   if ($env:APPDATA) {
-    $entryCandidates += Join-Path $env:APPDATA 'npm\node_modules\openclaw\operator.mjs'
+    $entryCandidates += Join-Path $env:APPDATA 'npm\node_modules\operator\operator.mjs'
   }
   if ($npmPrefix) {
-    $entryCandidates += Join-Path $npmPrefix 'node_modules\openclaw\operator.mjs'
+    $entryCandidates += Join-Path $npmPrefix 'node_modules\operator\operator.mjs'
   }
   foreach ($candidate in $entryCandidates) {
     if ($candidate -and (Test-Path $candidate)) {
@@ -172,7 +172,7 @@ function Resolve-OperatorCommand {
       return $script:OperatorResolvedCommand
     }
   }
-  throw 'openclaw command not found in PATH, APPDATA npm, or npm global prefix'
+  throw 'operator command not found in PATH, APPDATA npm, or npm global prefix'
 }
 function Invoke-Operator {
   param([Parameter(ValueFromRemainingArguments = $true)][string[]] $OperatorArgs)

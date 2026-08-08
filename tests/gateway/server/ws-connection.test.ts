@@ -109,7 +109,7 @@ describe("attachGatewayWsConnectionHandler", () => {
     Object.assign(socket, {
       [GATEWAY_WS_CONNECTION_KIND_PROPERTY]: "worker",
       [GATEWAY_WS_PREAUTH_BUDGET_PROPERTY]: workerBudget,
-      __openclawPreauthBudgetKey: "127.0.0.1",
+      __operatorPreauthBudgetKey: "127.0.0.1",
     });
 
     await connectTestWs({

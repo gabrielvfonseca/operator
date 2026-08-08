@@ -1,12 +1,12 @@
 ---
-summary: "Deploy OpenClaw on Render with Infrastructure-as-Code"
+summary: "Deploy Operator on Render with Infrastructure-as-Code"
 read_when:
-  - Deploying OpenClaw to Render
+  - Deploying Operator to Render
   - You want a declarative cloud deploy with Render Blueprints
 title: "Render"
 ---
 
-Deploy OpenClaw on [Render](https://render.com) using the repo's `render.yaml` Blueprint. It declares the service, disk, and environment variables in one file.
+Deploy Operator on [Render](https://render.com) using the repo's `render.yaml` Blueprint. It declares the service, disk, and environment variables in one file.
 
 ## Prerequisites
 
@@ -15,7 +15,7 @@ Deploy OpenClaw on [Render](https://render.com) using the repo's `render.yaml` B
 
 ## Deploy
 
-[Deploy to Render](https://render.com/deploy?repo=https://github.com/openclaw/openclaw)
+[Deploy to Render](https://render.com/deploy?repo=https://github.com/operator/operator)
 
 This creates a Render service from `render.yaml`, builds the Docker image, and deploys it. Your service URL follows the pattern `https://<service-name>.onrender.com`.
 
@@ -24,7 +24,7 @@ This creates a Render service from `render.yaml`, builds the Docker image, and d
 ```yaml
 services:
   - type: web
-    name: openclaw
+    name: operator
     runtime: docker
     plan: starter
     healthCheckPath: /health
@@ -32,13 +32,13 @@ services:
       - key: OPENCLAW_GATEWAY_PORT
         value: "8080"
       - key: OPENCLAW_STATE_DIR
-        value: /data/.openclaw
+        value: /data/.operator
       - key: OPENCLAW_WORKSPACE_DIR
         value: /data/workspace
       - key: OPENCLAW_GATEWAY_TOKEN
         generateValue: true # auto-generates a secure token
     disk:
-      name: openclaw-data
+      name: operator-data
       mountPath: /data
       sizeGB: 1
 ```
@@ -58,7 +58,7 @@ services:
 | Starter   | Never             | 1GB+          | Personal use, small teams     |
 | Standard+ | Never             | 1GB+          | Production, multiple channels |
 
-The Blueprint defaults to `starter`. To use the free tier, change `plan: free` in your fork's `render.yaml` — note that with no persistent disk, OpenClaw state resets on each deploy.
+The Blueprint defaults to `starter`. To use the free tier, change `plan: free` in your fork's `render.yaml` — note that with no persistent disk, Operator state resets on each deploy.
 
 ## After deployment
 
@@ -80,7 +80,7 @@ Edit variables in **Dashboard → your service → Environment**. Changes trigge
 
 ### Auto-deploy
 
-Render redeploys automatically when the connected repo's branch gets a new commit. If you deployed straight from `openclaw/openclaw` instead of your own fork, you have no push access to trigger that, so update by running a manual Blueprint sync from the Dashboard, or point the service at your own fork.
+Render redeploys automatically when the connected repo's branch gets a new commit. If you deployed straight from `operator/operator` instead of your own fork, you have no push access to trigger that, so update by running a manual Blueprint sync from the Dashboard, or point the service at your own fork.
 
 ## Custom domain
 
@@ -91,15 +91,15 @@ Render redeploys automatically when the connected repo's branch gets a new commi
 
 ## Scaling
 
-- **Vertical**: change the plan for more CPU/RAM. Usually sufficient for OpenClaw.
-- **Horizontal**: increase instance count (Standard plan and above). Requires sticky sessions or external state management since OpenClaw keeps runtime state on the local disk.
+- **Vertical**: change the plan for more CPU/RAM. Usually sufficient for Operator.
+- **Horizontal**: increase instance count (Standard plan and above). Requires sticky sessions or external state management since Operator keeps runtime state on the local disk.
 
 ## Backups and migration
 
 From the Render Dashboard shell, export state, config, auth profiles, and workspace at any time:
 
 ```bash
-openclaw backup create
+operator backup create
 ```
 
 This creates a portable backup archive. See [Backup](/cli/backup).
@@ -119,7 +119,7 @@ Free tier services spin down after 15 minutes of inactivity; the first request a
 
 ### Data loss after redeploy
 
-Happens on the free tier (no persistent disk). Upgrade to a paid plan, or regularly export a backup with `openclaw backup create` from the Render shell.
+Happens on the free tier (no persistent disk). Upgrade to a paid plan, or regularly export a backup with `operator backup create` from the Render shell.
 
 ### Health check failures
 
@@ -132,4 +132,4 @@ If builds succeed but deploys fail, the service may be taking too long to start 
 
 - Set up messaging channels: [Channels](/channels)
 - Configure the Gateway: [Gateway configuration](/gateway/configuration)
-- Keep OpenClaw up to date: [Updating](/install/updating)
+- Keep Operator up to date: [Updating](/install/updating)

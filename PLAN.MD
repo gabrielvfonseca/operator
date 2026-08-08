@@ -66,7 +66,7 @@ Repo convention uses `OPENCLAW_*` prefixes in tests (e.g. `OPENCLAW_OXLINT_SHARD
 ### Docs / AGENTS
 - `AGENTS.MD` — formatting line `oxfmt` to `biome check`.
 - `scripts/AGENTS.MD`, `scripts/README.MD` — oxlint to biome references.
-- `.agents/skills/*/SKILL.md` (`openclaw-refactor-docs`, `openclaw-ci-limits`, `openclaw-docker-e2e-authoring`) — `oxfmt` invocations to `biome format`/`biome check`.
+- `.agents/skills/*/SKILL.md` (`operator-refactor-docs`, `operator-ci-limits`, `operator-docker-e2e-authoring`) — `oxfmt` invocations to `biome format`/`biome check`.
 
 ### Tests (delete or surgically edit)
 - Delete `test/scripts/run-oxlint.test.ts`, `test/scripts/oxlint-config.test.ts`, `test/scripts/lint-suppressions.test.ts`, `test/scripts/format-docs.test.ts`.

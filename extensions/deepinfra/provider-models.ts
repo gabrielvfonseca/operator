@@ -19,7 +19,7 @@ const DEEPINFRA_MANIFEST_PROVIDER = buildManifestModelProviderConfig({
 });
 
 export const DEEPINFRA_BASE_URL = DEEPINFRA_MANIFEST_PROVIDER.baseUrl;
-const DEEPINFRA_MODELS_URL = `${DEEPINFRA_BASE_URL}/models?sort_by=openclaw&filter=with_meta`;
+const DEEPINFRA_MODELS_URL = `${DEEPINFRA_BASE_URL}/models?sort_by=operator&filter=with_meta`;
 
 const DEEPINFRA_DEFAULT_MODEL_ID = "deepseek-ai/DeepSeek-V4-Flash";
 export const DEEPINFRA_DEFAULT_MODEL_REF = `deepinfra/${DEEPINFRA_DEFAULT_MODEL_ID}`;
@@ -215,7 +215,7 @@ function manifestChatEntryToSurfaceModel(entry: ManifestChatModelEntry): DeepInf
 
 // Per-surface static fallback used only when no API key is configured or
 // live discovery fails. Kept deliberately minimal: the dynamic
-// `/v1/openai/models?sort_by=openclaw&filter=with_meta` projection is the
+// `/v1/openai/models?sort_by=operator&filter=with_meta` projection is the
 // real source of truth (140 tagged rows today), so every retired model
 // removed from the DeepInfra catalog disappears here automatically the
 // next time discovery runs. Newer entries — additional image-gen models,

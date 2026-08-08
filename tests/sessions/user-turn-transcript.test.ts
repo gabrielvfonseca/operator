@@ -385,7 +385,7 @@ describe("user turn transcript persistence", () => {
       ]);
     });
 
-    it("persists sender metadata as __openclaw envelope", async () => {
+    it("persists sender metadata as __operator envelope", async () => {
       const dir = createTempDir("operator-user-turn-append-sender-");
       const target = createSqliteTranscriptTarget({ dir });
 
@@ -424,7 +424,7 @@ describe("user turn transcript persistence", () => {
       ]);
     });
 
-    it("omits __openclaw when no sender metadata is provided", async () => {
+    it("omits __operator when no sender metadata is provided", async () => {
       const dir = createTempDir("operator-user-turn-append-nosender-");
       const target = createSqliteTranscriptTarget({ dir });
 
@@ -437,7 +437,7 @@ describe("user turn transcript persistence", () => {
         updateMode: "none",
       });
 
-      expect(appended?.message).not.toHaveProperty("__openclaw");
+      expect(appended?.message).not.toHaveProperty("__operator");
     });
 
     it("uses inline update mode by default", async () => {

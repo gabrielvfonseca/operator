@@ -10,9 +10,9 @@ Run the Operator Gateway in a rootless Podman container, managed by your current
 The model:
 
 - Podman runs the gateway container.
-- Your host `openclaw` CLI is the control plane.
+- Your host `operator` CLI is the control plane.
 - Persistent state lives on the host under `~/.operator` by default.
-- Day-to-day management uses `operator --container <name> ...` instead of `sudo -u openclaw`, `podman exec`, or a separate service user.
+- Day-to-day management uses `operator --container <name> ...` instead of `sudo -u operator`, `podman exec`, or a separate service user.
 
 ## Prerequisites
 
@@ -71,10 +71,10 @@ The model:
 
   <Step title="Manage the running container from the host CLI">
     ```bash
-    export OPERATOR_CONTAINER=openclaw
+    export OPERATOR_CONTAINER=operator
     ```
 
-    Then normal `openclaw` commands run inside that container automatically:
+    Then normal `operator` commands run inside that container automatically:
 
     ```bash
     operator dashboard --no-open
@@ -143,7 +143,7 @@ Useful env vars for the manual launcher (persist these in `~/.operator/.env`; th
 
 | Var                                        | Default          | Effect                                 |
 | ------------------------------------------ | ---------------- | -------------------------------------- |
-| `OPERATOR_PODMAN_CONTAINER`                | `openclaw`       | Container name                         |
+| `OPERATOR_PODMAN_CONTAINER`                | `operator`       | Container name                         |
 | `OPERATOR_PODMAN_IMAGE` / `OPERATOR_IMAGE` | `operator:local` | Image to run                           |
 | `OPERATOR_PODMAN_GATEWAY_HOST_PORT`        | `18789`          | Host port mapped to container `18789`  |
 | `OPERATOR_PODMAN_BRIDGE_HOST_PORT`         | `18790`          | Host port mapped to container `18790`  |
@@ -184,9 +184,9 @@ mounted state.
 
 ## Useful commands
 
-- **Container logs:** `podman logs -f openclaw`
-- **Stop container:** `podman stop openclaw`
-- **Remove container:** `podman rm -f openclaw`
+- **Container logs:** `podman logs -f operator`
+- **Stop container:** `podman stop operator`
+- **Remove container:** `podman rm -f operator`
 - **Open dashboard URL from host CLI:** `operator dashboard --no-open`
 - **Health/status via host CLI:** `operator gateway status --deep` (RPC probe + extra service scan)
 

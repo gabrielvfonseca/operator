@@ -12,9 +12,9 @@ const gatewayRuntime = vi.hoisted(() => ({
   callGatewayFromCli: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/gateway-runtime", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/gateway-runtime")>(
-    "openclaw/plugin-sdk/gateway-runtime",
+vi.mock("operator/plugin-sdk/gateway-runtime", async () => {
+  const actual = await vi.importActual<typeof import("operator/plugin-sdk/gateway-runtime")>(
+    "operator/plugin-sdk/gateway-runtime",
   );
   return {
     ...actual,

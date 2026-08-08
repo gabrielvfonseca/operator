@@ -337,7 +337,7 @@ describe("stageBundledPluginRuntime", () => {
     fs.writeFileSync(
       path.join(distCommandsDir, "commands.js"),
       [
-        "const registry = globalThis.__openclawTestPluginCommands ??= new Map();",
+        "const registry = globalThis.__operatorTestPluginCommands ??= new Map();",
         "export function registerPluginCommand(pluginId, command) {",
         // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "  registry.set(`/${command.name.toLowerCase()}`, { ...command, pluginId });",

@@ -11,14 +11,14 @@ describe("resolveTelegramMiniAppUrls", () => {
     const cfg = {
       gateway: {
         tailscale: { mode: "serve" },
-        controlUi: { basePath: "/openclaw/" },
+        controlUi: { basePath: "/operator/" },
       },
     } satisfies OperatorConfig;
 
     await expect(resolveTelegramMiniAppUrls({ cfg, runCommand })).resolves.toEqual({
       pageUrl: "https://host.tailnet.ts.net/__operator_tg_miniapp/",
-      controlUiUrl: "https://host.tailnet.ts.net/openclaw",
-      gatewayUrl: "wss://host.tailnet.ts.net/openclaw",
+      controlUiUrl: "https://host.tailnet.ts.net/operator",
+      gatewayUrl: "wss://host.tailnet.ts.net/operator",
     });
     expect(runCommand).toHaveBeenCalledWith(["tailscale", "status", "--json"], {
       timeoutMs: 5000,
@@ -32,7 +32,7 @@ describe("resolveTelegramMiniAppUrls", () => {
     }));
     const cfg = {
       gateway: {
-        tailscale: { mode: "serve", serviceName: "svc:openclaw" },
+        tailscale: { mode: "serve", serviceName: "svc:operator" },
       },
     } satisfies OperatorConfig;
 

@@ -405,7 +405,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
     readLastGatewayErrorLineMock.mockClear();
   });
 
-  it("preserves existing agents.list and bindings on onboard rerun (openclaw#84692)", async () => {
+  it("preserves existing agents.list and bindings on onboard rerun (operator#84692)", async () => {
     await withStateDir("state-preserve-agents-", async (stateDir) => {
       const workspace = path.join(stateDir, "@gabrielvfonseca/operator");
       const seededAgents = [
@@ -703,7 +703,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
     });
   }, 60_000);
 
-  it("preserves existing agents.list and bindings on remote onboard rerun (openclaw#84692)", async () => {
+  it("preserves existing agents.list and bindings on remote onboard rerun (operator#84692)", async () => {
     await withStateDir("state-remote-preserve-agents-", async (_stateDir) => {
       const port = getPseudoPort(30_000);
       const token = "tok_remote_seed";
@@ -816,7 +816,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
           runtime,
         ),
       ).rejects.toThrow(
-        /only waits for an already-running gateway unless you pass `--install-daemon` to `openclaw onboard`[\s\S]*openclaw onboard --install-daemon[\s\S]*openclaw onboard --skip-health/,
+        /only waits for an already-running gateway unless you pass `--install-daemon` to `operator onboard`[\s\S]*operator onboard --install-daemon[\s\S]*operator onboard --skip-health/,
       );
     });
   }, 60_000);
@@ -958,7 +958,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
       expect(parsed.installDaemon).toBe(true);
       expect(parsed.detail).toContain("1006 abnormal closure");
       expect(parsed.gateway?.wsUrl).toContain("ws://127.0.0.1:");
-      expect(parsed.hints).toContain("Run `openclaw gateway status --deep` for more detail.");
+      expect(parsed.hints).toContain("Run `operator gateway status --deep` for more detail.");
       expect(parsed.diagnostics?.service?.label).toBe("LaunchAgent");
       expect(parsed.diagnostics?.service?.loaded).toBe(true);
       expect(parsed.diagnostics?.service?.runtimeStatus).toBe("running");
@@ -992,7 +992,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
       expect(parsed.ok).toBe(false);
       expect(parsed.phase).toBe("gateway-health");
       expect(parsed.classification).toBe("service-stopped");
-      expect(parsed.hints).toContain("Fix: run `openclaw gateway restart`.");
+      expect(parsed.hints).toContain("Fix: run `operator gateway restart`.");
     });
   }, 60_000);
 

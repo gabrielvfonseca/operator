@@ -95,7 +95,7 @@ What still works without Playwright:
   `--depth`, `--efficient`) when a per-tab CDP WebSocket is available. This is
   a fallback for inspection and ref discovery; Playwright remains the primary
   action engine.
-- Page screenshots for the managed `openclaw` browser when a per-tab CDP
+- Page screenshots for the managed `operator` browser when a per-tab CDP
   WebSocket is available
 - Page screenshots for `existing-session` / Chrome MCP profiles
 - `existing-session` ref-based screenshots (`--ref`) from snapshot output
@@ -222,8 +222,8 @@ operator browser drag 10 11
 operator browser select 9 OptionA OptionB
 operator browser download e12 report.pdf
 operator browser waitfordownload report.pdf
-operator browser upload /tmp/openclaw/uploads/file.pdf
-operator browser upload /tmp/openclaw/uploads/file.pdf --ref e12
+operator browser upload /tmp/operator/uploads/file.pdf
+operator browser upload /tmp/operator/uploads/file.pdf --ref e12
 operator browser upload media://inbound/file.pdf
 operator browser fill --fields '[{"ref":"1","type":"text","value":"Ada"}]'
 operator browser dialog --accept
@@ -272,7 +272,7 @@ Notes:
   profiles return an unsupported-operation error.
 - Prefer atomic chooser uploads: pass the trigger `--ref` with the upload so Operator arms and clicks in one request. Paths-only `upload` remains supported when a later trigger is intentional. Use `--input-ref` or `--element` to set a file input directly. `dialog` is an arming call; run it before the click/press that triggers the dialog. If an action opens a modal, the action response includes `blockedByDialog` and `browserState.dialogs.pending`; pass that `dialogId` to respond directly. Dialogs handled outside Operator appear under `browserState.dialogs.recent`.
 - `click`/`type`/etc require a `ref` from `snapshot` (numeric `12`, role ref `e12`, or actionable ARIA ref `ax12`). CSS selectors are intentionally not supported for actions. Use `click-coords` when the visible viewport position is the only reliable target.
-- Download and trace paths are constrained to Operator temp roots: `/tmp/openclaw{,/downloads}` (fallback: `${os.tmpdir()}/openclaw/...`).
+- Download and trace paths are constrained to Operator temp roots: `/tmp/operator{,/downloads}` (fallback: `${os.tmpdir()}/operator/...`).
 - `upload` accepts files from the Operator temp uploads root and
   Operator-managed inbound media. Managed inbound media can be referenced as
   `media://inbound/<id>`, sandbox-relative `media/inbound/<id>`, or a resolved
@@ -351,7 +351,7 @@ You can wait on more than just time/text:
   - `operator browser wait --url "**/dash"`
 - Wait for load state:
   - `operator browser wait --load networkidle`
-  - Supported on managed `openclaw` and raw/remote CDP profiles. Profiles using the `existing-session` driver (including the default `user` profile) reject `networkidle`; use `--url`, `--text`, a selector, or `--fn` waits there.
+  - Supported on managed `operator` and raw/remote CDP profiles. Profiles using the `existing-session` driver (including the default `user` profile) reject `networkidle`; use `--url`, `--text`, a selector, or `--fn` waits there.
 - Wait for a JS predicate:
   - `operator browser wait --fn "window.ready===true"`
 - Wait for a selector to become visible:

@@ -230,10 +230,10 @@ describe("normalizeApiKeyInput", () => {
 
 describe("validateApiKeyInput", () => {
   it.each([
-    "openclaw onboard --auth-choice zai-coding-global",
-    "openclaw onboard --auth-choice=zai-coding-global",
-    "openclaw onboard --non-interactive --auth-choice zai-coding-global --zai-api-key $ZAI_API_KEY",
-    "openclaw onboard --non-interactive --auth-choice=zai-coding-global --zai-api-key $ZAI_API_KEY",
+    "operator onboard --auth-choice zai-coding-global",
+    "operator onboard --auth-choice=zai-coding-global",
+    "operator onboard --non-interactive --auth-choice zai-coding-global --zai-api-key $ZAI_API_KEY",
+    "operator onboard --non-interactive --auth-choice=zai-coding-global --zai-api-key $ZAI_API_KEY",
   ])("rejects pasted Operator onboarding command %p", (value) => {
     expect(validateApiKeyInput(value)).toBe(
       "Paste the API key value, not an Operator onboarding command.",

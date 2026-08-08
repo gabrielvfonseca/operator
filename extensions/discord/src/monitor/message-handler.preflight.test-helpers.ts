@@ -96,7 +96,7 @@ export function createDiscordPreflightArgs(params: {
     discordConfig: params.discordConfig,
     accountId: "default",
     token: "token",
-    runtime: {} as import("openclaw/plugin-sdk/runtime-env").RuntimeEnv,
+    runtime: {} as import("operator/plugin-sdk/runtime-env").RuntimeEnv,
     botUserId: params.botUserId ?? "operator-bot",
     guildHistories: new Map(),
     historyLimit: 0,

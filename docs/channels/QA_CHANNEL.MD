@@ -41,7 +41,7 @@ Account keys:
 - `enabled` - master toggle for this account.
 - `name` - optional display label.
 - `baseUrl` - synthetic bus URL. The account counts as configured once this is set.
-- `botUserId` - synthetic bot user id used in target grammar (default: `openclaw`).
+- `botUserId` - synthetic bot user id used in target grammar (default: `operator`).
 - `botDisplayName` - display name for outbound messages (default: `Operator QA`).
 - `pollTimeoutMs` - long-poll wait window. Integer between 100 and 30000 (default: 1000).
 - `allowFrom` - sender allowlist (user ids or `"*"`; default: `["*"]`). DMs are

@@ -264,11 +264,11 @@ describe("Control UI Vite config", () => {
     });
   });
 
-  it("resolves published OpenClaw packages before the broad plugin alias", () => {
+  it("resolves published Operator packages before the broad plugin alias", () => {
     const aliases = resolveExternalPackageAliasesForVite();
-    expect(aliases.find((alias) => alias.find === "@openclaw/libterminal/browser")).toEqual({
-      find: "@openclaw/libterminal/browser",
-      replacement: path.join(repoRoot, "node_modules/@openclaw/libterminal/dist/browser.js"),
+    expect(aliases.find((alias) => alias.find === "@operator/libterminal/browser")).toEqual({
+      find: "@operator/libterminal/browser",
+      replacement: path.join(repoRoot, "node_modules/@operator/libterminal/dist/browser.js"),
     });
   });
 
@@ -284,16 +284,16 @@ describe("Control UI Vite config", () => {
       (alias) =>
         alias.find instanceof RegExp && alias.replacement.includes("packages/net-policy/src/$1"),
     );
-    const broadOpenClawWildcardIndex = aliases.findIndex(
+    const broadOperatorWildcardIndex = aliases.findIndex(
       (alias) => alias.find instanceof RegExp && alias.replacement.includes("extensions/$1"),
     );
 
     expect(netPolicyIpIndex).toBeGreaterThanOrEqual(0);
     expect(netPolicyWildcardIndex).toBeGreaterThanOrEqual(0);
     expect(netPolicyPackageIndex).toBeGreaterThanOrEqual(0);
-    expect(broadOpenClawWildcardIndex).toBeGreaterThanOrEqual(0);
+    expect(broadOperatorWildcardIndex).toBeGreaterThanOrEqual(0);
     expect(netPolicyIpIndex).toBeLessThan(netPolicyPackageIndex);
-    expect(netPolicyWildcardIndex).toBeLessThan(broadOpenClawWildcardIndex);
+    expect(netPolicyWildcardIndex).toBeLessThan(broadOperatorWildcardIndex);
   });
 
   it("uses a browser-safe redactor for shared tool display imports", async () => {

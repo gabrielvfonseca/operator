@@ -94,7 +94,7 @@ describe("codex plugin lifecycle: pinned-old codex plugin with new Operator", ()
 
     expect(result.status).toBe("blocked");
     expect(result.remediation).toBe(
-      'Codex plugin version 2026.5.19 is older than Operator 2026.5.21. Run "openclaw plugins update codex" or unpin codex, then rerun "openclaw doctor --fix".',
+      'Codex plugin version 2026.5.19 is older than Operator 2026.5.21. Run "operator plugins update codex" or unpin codex, then rerun "operator doctor --fix".',
     );
   });
 
@@ -189,13 +189,13 @@ describe("codex plugin lifecycle: doctor migration safety matrix", () => {
       name: "mixed profile with defaults Operator pin",
       profileShape: "mixed" as const,
       config: { agents: { defaults: { agentRuntime: { id: "@gabrielvfonseca/operator" } } } },
-      expectedRemovedRuntimePins: ["agentRuntime.id=openclaw"],
+      expectedRemovedRuntimePins: ["agentRuntime.id=operator"],
     },
     {
       name: "mixed profile with main-agent Operator pin",
       profileShape: "mixed" as const,
       config: { agents: { list: { main: { agentRuntime: { id: "@gabrielvfonseca/operator" } } } } },
-      expectedRemovedRuntimePins: ["agentRuntime.id=openclaw"],
+      expectedRemovedRuntimePins: ["agentRuntime.id=operator"],
     },
   ])(
     "keeps codex auth and strips stale Operator runtime pins for $name",

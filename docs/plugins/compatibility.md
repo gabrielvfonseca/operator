@@ -67,16 +67,16 @@ areas. New plugin code should use the replacement in each area and in the
 specific migration guide; existing plugins can keep using a compatibility
 path until docs, diagnostics, and release notes announce a removal window.
 
-- legacy broad SDK imports such as `openclaw/plugin-sdk/compat`
+- legacy broad SDK imports such as `operator/plugin-sdk/compat`
 - legacy hook-only plugin shapes and `before_agent_start`
 - legacy `api.on("deactivate", ...)` cleanup hook names while plugins
   migrate to `gateway_stop`
 - legacy `activate(api)` plugin entrypoints while plugins migrate to
   `register(api)`
-- legacy SDK aliases such as `openclaw/extension-api`,
-  `openclaw/plugin-sdk/channel-runtime`, `openclaw/plugin-sdk/command-auth`
-  status builders, `openclaw/plugin-sdk/test-utils` (replaced by focused
-  `openclaw/plugin-sdk/*` test subpaths), and the `ClawdbotConfig` /
+- legacy SDK aliases such as `operator/extension-api`,
+  `operator/plugin-sdk/channel-runtime`, `operator/plugin-sdk/command-auth`
+  status builders, `operator/plugin-sdk/test-utils` (replaced by focused
+  `operator/plugin-sdk/*` test subpaths), and the `ClawdbotConfig` /
   `OperatorSchemaType` type aliases
 - bundled plugin allowlist and enablement behavior
 - legacy provider/channel env-var manifest metadata
@@ -95,7 +95,7 @@ path until docs, diagnostics, and release notes announce a removal window.
 - legacy channel SDK helpers for native message schemas, mention gating,
   inbound envelope formatting, and approval capability nesting
 - legacy channel route key and comparable-target helper aliases while
-  plugins move to `openclaw/plugin-sdk/channel-route`
+  plugins move to `operator/plugin-sdk/channel-route`
 - activation hints being replaced by manifest contribution ownership
 - `setup-api` runtime fallback while setup descriptors move to cold
   `setup.requiresRuntime: false` metadata
@@ -175,7 +175,7 @@ version being checked, install/source metadata checks, cold-path import
 checks, and deprecation/compatibility warnings. Use `--json` for stable
 machine-readable output in CI annotations. Operator core should expose
 contracts and fixtures the inspector can consume, but should not publish the
-inspector binary from the main `openclaw` package.
+inspector binary from the main `operator` package.
 
 ### Maintainer acceptance lane
 

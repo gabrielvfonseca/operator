@@ -52,15 +52,15 @@ DigitalOcean is a straightforward paid VPS path. For cheaper or free options:
     curl -fsSL https://operator.ai/install.sh | bash
 
     # Create the non-root user that will own Operator state and services.
-    adduser openclaw
-    usermod -aG sudo openclaw
-    loginctl enable-linger openclaw
+    adduser operator
+    usermod -aG sudo operator
+    loginctl enable-linger operator
 
-    su - openclaw
+    su - operator
     operator --version
     ```
 
-    Use the root shell only for system bootstrap. Run Operator commands as the non-root `openclaw` user so state lives under `/home/openclaw/.operator/` and the Gateway installs as that user's systemd `--user` service.
+    Use the root shell only for system bootstrap. Run Operator commands as the non-root `operator` user so state lives under `/home/operator/.operator/` and the Gateway installs as that user's systemd `--user` service.
 
   </Step>
 

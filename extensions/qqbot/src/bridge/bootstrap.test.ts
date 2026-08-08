@@ -10,15 +10,15 @@ const mocks = vi.hoisted(() => ({
   resolveApprovalOverGateway: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/media-runtime", () => ({
+vi.mock("operator/plugin-sdk/media-runtime", () => ({
   readRemoteMediaBuffer: (...args: unknown[]) => mocks.readRemoteMediaBuffer(...args),
 }));
 
-vi.mock("openclaw/plugin-sdk/runtime-config-snapshot", () => ({
+vi.mock("operator/plugin-sdk/runtime-config-snapshot", () => ({
   getRuntimeConfig: mocks.getRuntimeConfig,
 }));
 
-vi.mock("openclaw/plugin-sdk/approval-gateway-runtime", () => ({
+vi.mock("operator/plugin-sdk/approval-gateway-runtime", () => ({
   resolveApprovalOverGateway: mocks.resolveApprovalOverGateway,
 }));
 

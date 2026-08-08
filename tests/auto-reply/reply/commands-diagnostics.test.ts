@@ -263,7 +263,7 @@ function createDiagnosticsHandlerForTest(
             expiresAtMs: Date.now() + 60_000,
             allowedDecisions: ["allow-once", "deny"] as const,
             host: "gateway" as const,
-            command: "openclaw gateway diagnostics export --json",
+            command: "operator gateway diagnostics export --json",
             cwd: "/tmp",
           },
         }
@@ -323,7 +323,7 @@ describe("diagnostics command", () => {
     expect(command).toContain("diagnostics");
     expect(command).toContain("export");
     expect(command).toContain("--json");
-    expect(command).not.toBe("openclaw gateway diagnostics export --json");
+    expect(command).not.toBe("operator gateway diagnostics export --json");
   });
 
   it("uses the originating Telegram route for native diagnostics followups", async () => {

@@ -328,7 +328,7 @@ describe("google web search provider", () => {
       await tool?.execute({ query: "Operator provider key fallback" });
 
       expect(getFetchHeaders(mockFetch)["x-goog-api-key"]).toBe("AIza-provider-test");
-      expect(getFetchHeaders(mockFetch)["x-goog-api-client"]).toMatch(/^openclaw\//u);
+      expect(getFetchHeaders(mockFetch)["x-goog-api-client"]).toMatch(/^operator\//u);
     });
   });
 
@@ -363,7 +363,7 @@ describe("google web search provider", () => {
       await tool?.execute({ query: "Operator plugin key precedence" });
 
       expect(getFetchHeaders(mockFetch)["x-goog-api-key"]).toBe("AIza-plugin-test");
-      expect(getFetchHeaders(mockFetch)["x-goog-api-client"]).toMatch(/^openclaw\//u);
+      expect(getFetchHeaders(mockFetch)["x-goog-api-client"]).toMatch(/^operator\//u);
     });
   });
 

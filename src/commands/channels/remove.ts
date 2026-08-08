@@ -130,7 +130,7 @@ export async function channelsRemoveCommand(
   } else {
     if (!rawChannel) {
       runtime.error(
-        `Missing channel. Use ${formatCliCommand("openclaw channels remove --channel <name>")} or run ${formatCliCommand("openclaw channels status")} to inspect configured channels.`,
+        `Missing channel. Use ${formatCliCommand("operator channels remove --channel <name>")} or run ${formatCliCommand("operator channels status")} to inspect configured channels.`,
       );
       runtime.exit(1);
       return;
@@ -176,7 +176,7 @@ export async function channelsRemoveCommand(
   if (!plugin) {
     if (resolvedPluginState?.catalogEntry) {
       runtime.error(
-        `Channel plugin "${resolvedPluginState.catalogEntry.id}" is not installed. Run ${formatCliCommand(`openclaw channels add --channel ${resolvedPluginState.catalogEntry.id}`)} first.`,
+        `Channel plugin "${resolvedPluginState.catalogEntry.id}" is not installed. Run ${formatCliCommand(`operator channels add --channel ${resolvedPluginState.catalogEntry.id}`)} first.`,
       );
       runtime.exit(1);
       return;
@@ -203,7 +203,7 @@ export async function channelsRemoveCommand(
   if (deleteConfig) {
     if (!plugin.config.deleteAccount) {
       runtime.error(
-        `${formatUnsupportedChannelActionMessage({ channel, action: "delete" })} Use ${formatCliCommand(`openclaw channels remove --channel ${channel}`)} to disable it without deleting config.`,
+        `${formatUnsupportedChannelActionMessage({ channel, action: "delete" })} Use ${formatCliCommand(`operator channels remove --channel ${channel}`)} to disable it without deleting config.`,
       );
       runtime.exit(1);
       return;
@@ -220,7 +220,7 @@ export async function channelsRemoveCommand(
   } else {
     if (!plugin.config.setAccountEnabled) {
       runtime.error(
-        `${formatUnsupportedChannelActionMessage({ channel, action: "disable" })} Use ${formatCliCommand(`openclaw channels remove --channel ${channel} --delete`)} only if you want to remove config.`,
+        `${formatUnsupportedChannelActionMessage({ channel, action: "disable" })} Use ${formatCliCommand(`operator channels remove --channel ${channel} --delete`)} only if you want to remove config.`,
       );
       runtime.exit(1);
       return;

@@ -286,7 +286,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
       "projects",
       "codex-v1",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "codex",
     );
     const nextInstallPath = path.join(
@@ -295,7 +295,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
       "projects",
       "codex-v2",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "codex",
     );
     fs.mkdirSync(previousInstallPath, { recursive: true });
@@ -337,7 +337,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
       "projects",
       "codex-v1",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "codex",
     );
     const nextInstallPath = path.join(
@@ -346,7 +346,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
       "projects",
       "codex-v2",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "codex",
     );
     fs.mkdirSync(previousInstallPath, { recursive: true });
@@ -388,7 +388,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
       "projects",
       "voice-call-v1",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "voice-call",
     );
     const nextInstallPath = path.join(
@@ -397,7 +397,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
       "projects",
       "voice-call-v2",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "voice-call",
     );
     fs.mkdirSync(previousInstallPath, { recursive: true });
@@ -438,7 +438,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
       "projects",
       "codex-v1",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "codex",
     );
     const nextInstallPath = path.join(
@@ -447,7 +447,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
       "projects",
       "codex-v2",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "codex",
     );
     fs.mkdirSync(previousInstallPath, { recursive: true });
@@ -491,7 +491,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
       "projects",
       "codex-v1",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "codex",
     );
     const firstNextInstallPath = path.join(
@@ -500,7 +500,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
       "projects",
       "codex-v2",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "codex",
     );
     const secondPreviousInstallPath = path.join(
@@ -509,7 +509,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
       "projects",
       "voice-call-v1",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "voice-call",
     );
     const secondNextInstallPath = path.join(
@@ -518,7 +518,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
       "projects",
       "voice-call-v2",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "voice-call",
     );
     fs.mkdirSync(firstPreviousInstallPath, { recursive: true });
@@ -578,7 +578,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
       "projects",
       "codex-v2",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "codex",
     );
     fs.mkdirSync(installPath, { recursive: true });
@@ -618,7 +618,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
       "projects",
       "codex-v2",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "codex",
     );
     fs.mkdirSync(installPath, { recursive: true });

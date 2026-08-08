@@ -117,8 +117,8 @@ if [[ ! "${BUILD_NUMBER}" =~ ^[0-9]+$ ]]; then
   exit 1
 fi
 
-RESOLVED_GIT_COMMIT="$(openclaw_resolve_git_commit "${ROOT_DIR}")"
-RESOLVED_BUILD_TIMESTAMP="$(openclaw_resolve_build_timestamp)"
+RESOLVED_GIT_COMMIT="$(operator_resolve_git_commit "${ROOT_DIR}")"
+RESOLVED_BUILD_TIMESTAMP="$(operator_resolve_build_timestamp)"
 
 prepare_build_dir
 

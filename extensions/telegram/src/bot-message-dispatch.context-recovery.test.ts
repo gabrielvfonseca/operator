@@ -268,7 +268,7 @@ describeTelegramDispatch("dispatchTelegramMessage context-recovery", () => {
         groupHistories,
         sendChatActionHandler,
         turn: {
-          storePath: "/tmp/openclaw/telegram-sessions.json",
+          storePath: "/tmp/operator/telegram-sessions.json",
           recordInboundSession,
           record: {
             updateLastRoute: {

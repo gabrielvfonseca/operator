@@ -22,7 +22,7 @@ export function isCaptureQueryPreset(
   value: string,
 ): value is Parameters<
   ReturnType<
-    typeof import("openclaw/plugin-sdk/proxy-capture").getDebugProxyCaptureStore
+    typeof import("operator/plugin-sdk/proxy-capture").getDebugProxyCaptureStore
   >["queryPreset"]
 >[0] {
   return CAPTURE_QUERY_PRESETS.has(value);

@@ -69,11 +69,11 @@ type QaRuntimeParityScenarioReport = {
   runtimeParityUsage: RuntimeParityUsagePolicy;
   drift: RuntimeParityDrift | "missing";
   driftDetails?: string;
-  openclawStatus: "pass" | "fail" | "missing";
+  operatorStatus: "pass" | "fail" | "missing";
   codexStatus: "pass" | "fail" | "missing";
-  openclawTokens: number;
+  operatorTokens: number;
   codexTokens: number;
-  openclawToolCalls: number;
+  operatorToolCalls: number;
   codexToolCalls: number;
 };
 
@@ -280,7 +280,7 @@ function describeLiveUsageFailure(scenarioName: string, scenario: QaRuntimeParit
   const missing = [
     scenario.operatorTokens > 0
       ? undefined
-      : `${scenario.operatorStatus === "pass" ? "@gabrielvfonseca/operator" : "openclaw failed"}=0`,
+      : `${scenario.operatorStatus === "pass" ? "@gabrielvfonseca/operator" : "operator failed"}=0`,
     scenario.codexTokens > 0
       ? undefined
       : `${scenario.codexStatus === "pass" ? "codex" : "codex failed"}=0`,
@@ -662,18 +662,18 @@ export function buildQaRuntimeParityReport(params: {
         runtimeParityUsage: resolveRuntimeParityUsagePolicy(undefined),
         drift: "missing",
         driftDetails: scenario.details,
-        openclawStatus: "missing",
+        operatorStatus: "missing",
         codexStatus: "missing",
-        openclawTokens: 0,
+        operatorTokens: 0,
         codexTokens: 0,
-        openclawToolCalls: 0,
+        operatorToolCalls: 0,
         codexToolCalls: 0,
       } satisfies QaRuntimeParityScenarioReport;
     }
     driftCounts[parity.drift] += 1;
-    const openclawCell = parity.cells.operator;
+    const operatorCell = parity.cells.operator;
     const codexCell = parity.cells.codex;
-    const openclawStatus = runtimeParityCellStatus(openclawCell);
+    const operatorStatus = runtimeParityCellStatus(operatorCell);
     const codexStatus = runtimeParityCellStatus(codexCell);
     const parityStatus = isRuntimeParityResultPass(parity) ? "pass" : "fail";
     const runtimeParityUsage = resolveRuntimeParityUsagePolicy(parity.runtimeParityUsage);
@@ -683,11 +683,11 @@ export function buildQaRuntimeParityReport(params: {
       runtimeParityUsage,
       drift: parity.drift,
       driftDetails: parity.driftDetails,
-      openclawStatus,
+      operatorStatus,
       codexStatus,
-      openclawTokens: openclawCell.usage.totalTokens,
+      operatorTokens: operatorCell.usage.totalTokens,
       codexTokens: codexCell.usage.totalTokens,
-      openclawToolCalls: openclawCell.toolCalls.length,
+      operatorToolCalls: operatorCell.toolCalls.length,
       codexToolCalls: codexCell.toolCalls.length,
     } satisfies QaRuntimeParityScenarioReport;
     if (parityStatus === "fail") {
@@ -768,13 +768,13 @@ export function renderQaRuntimeParityMarkdownReport(report: QaRuntimeParityRepor
   lines.push("## Scenario Comparison", "");
   for (const scenario of report.scenarios) {
     const usageNotApplicable = scenario.runtimeParityUsage.expectation === "not-applicable";
-    const openclawTokens = usageNotApplicable ? "N/A" : String(scenario.operatorTokens);
+    const operatorTokens = usageNotApplicable ? "N/A" : String(scenario.operatorTokens);
     const codexTokens = usageNotApplicable ? "N/A" : String(scenario.codexTokens);
     lines.push(`### ${scenario.name}`, "");
     lines.push(`- status: ${scenario.status}`);
     lines.push(`- drift: ${scenario.drift}`);
     lines.push(
-      `- operator: ${scenario.operatorStatus} (${scenario.operatorToolCalls} tool calls, ${openclawTokens} tokens)`,
+      `- operator: ${scenario.operatorStatus} (${scenario.operatorToolCalls} tool calls, ${operatorTokens} tokens)`,
     );
     lines.push(
       `- codex: ${scenario.codexStatus} (${scenario.codexToolCalls} tool calls, ${codexTokens} tokens)`,

@@ -46,7 +46,7 @@ export const defaultTelegramNativeCommandDeps: TelegramNativeCommandDeps = {
   },
   async runModelsAuthLoginFlow(opts) {
     const { runModelsAuthLoginFlow } = await import(
-      "openclaw/plugin-sdk/provider-auth-login-flow-runtime"
+      "operator/plugin-sdk/provider-auth-login-flow-runtime"
     );
     return await runModelsAuthLoginFlow(opts);
   },

@@ -49,7 +49,7 @@ non-interactive examples. `operator onboard --modern` remains a compatibility
 entry for the same inference-gated Operator assistant.
 
 <Note>
-`operator setup` is for mutable config installs. In Nix mode (`OPERATOR_NIX_MODE=1`) Operator refuses setup writes because the config file is managed by Nix. Use the first-party [nix-operator Quick Start](https://github.com/openclaw/nix-openclaw#quick-start) or the equivalent source config for another Nix package.
+`operator setup` is for mutable config installs. In Nix mode (`OPERATOR_NIX_MODE=1`) Operator refuses setup writes because the config file is managed by Nix. Use the first-party [nix-operator Quick Start](https://github.com/operator/nix-operator#quick-start) or the equivalent source config for another Nix package.
 </Note>
 
 ## Options

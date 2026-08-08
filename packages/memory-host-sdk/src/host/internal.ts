@@ -27,11 +27,11 @@ import {
   detectMime,
   estimateStringChars,
   truncateUtf16Safe,
-} from "./openclaw-runtime-io.js";
+} from "./operator-runtime-io.js";
 import {
   resolveCanonicalRootMemoryFile,
   shouldSkipRootMemoryAuxiliaryPath,
-} from "./openclaw-runtime-memory.js";
+} from "./operator-runtime-memory.js";
 import { retryTransientMemoryRead } from "./read-retry.js";
 
 export { hashText } from "./hash.js";
@@ -130,7 +130,7 @@ function shouldDescendMemoryEntry(
   if (shouldSkipPath?.(entry.path)) {
     return false;
   }
-  return entry.kind === "directory" && entry.name !== ".openclaw-repair";
+  return entry.kind === "directory" && entry.name !== ".operator-repair";
 }
 
 async function collectMemoryFilesFromDir(

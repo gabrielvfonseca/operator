@@ -21,8 +21,8 @@ describe("catalog session menu", () => {
     const container = document.createElement("div");
     containers.push(container);
     document.body.append(container);
-    render(html`<openclaw-catalog-session-menu></openclaw-catalog-session-menu>`, container);
-    const menu = container.querySelector("openclaw-catalog-session-menu") as CatalogMenuElement;
+    render(html`<operator-catalog-session-menu></operator-catalog-session-menu>`, container);
+    const menu = container.querySelector("operator-catalog-session-menu") as CatalogMenuElement;
     await menu.updateComplete;
     const dropdown = menu.querySelector<HTMLElement & { open: boolean }>("wa-dropdown");
     const items = [...menu.querySelectorAll<CatalogMenuItem>("wa-dropdown-item")];
@@ -46,16 +46,16 @@ describe("catalog session menu", () => {
       order.push(backingState ? action : "cleared");
     });
     render(
-      html`<openclaw-catalog-session-menu
+      html`<operator-catalog-session-menu
         .onAction=${onAction}
         .onClose=${() => {
           backingState = null;
           order.push("close");
         }}
-      ></openclaw-catalog-session-menu>`,
+      ></operator-catalog-session-menu>`,
       container,
     );
-    const menu = container.querySelector("openclaw-catalog-session-menu") as CatalogMenuElement;
+    const menu = container.querySelector("operator-catalog-session-menu") as CatalogMenuElement;
     await menu.updateComplete;
 
     menu.querySelectorAll<CatalogMenuItem>("wa-dropdown-item")[index]?.click();
@@ -71,13 +71,13 @@ describe("catalog session menu", () => {
     containers.push(container);
     document.body.append(container);
     render(
-      html`<openclaw-catalog-session-menu
+      html`<operator-catalog-session-menu
         .terminalDisabled=${true}
         .onAction=${onAction}
-      ></openclaw-catalog-session-menu>`,
+      ></operator-catalog-session-menu>`,
       container,
     );
-    const menu = container.querySelector("openclaw-catalog-session-menu") as CatalogMenuElement;
+    const menu = container.querySelector("operator-catalog-session-menu") as CatalogMenuElement;
     await menu.updateComplete;
     const terminal = menu.querySelector<CatalogMenuItem>('wa-dropdown-item[value="terminal"]');
 

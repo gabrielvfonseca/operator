@@ -186,7 +186,7 @@ describe("persistPluginInstall", () => {
       codex: {
         source: "clawhub",
         spec: "clawhub:@gabrielvfonseca/codex",
-        installPath: "/tmp/openclaw/extensions/codex",
+        installPath: "/tmp/operator/extensions/codex",
       },
     });
     planPluginUninstall.mockReturnValueOnce({
@@ -205,7 +205,7 @@ describe("persistPluginInstall", () => {
         directory: false,
       },
       directoryRemoval: {
-        target: "/tmp/openclaw/extensions/codex",
+        target: "/tmp/operator/extensions/codex",
       },
     });
     applyPluginUninstallDirectoryRemoval.mockResolvedValueOnce({
@@ -223,7 +223,7 @@ describe("persistPluginInstall", () => {
       install: {
         source: "npm",
         spec: "@gabrielvfonseca/codex",
-        installPath: "/tmp/openclaw/npm/node_modules/@gabrielvfonseca/codex",
+        installPath: "/tmp/operator/npm/node_modules/@gabrielvfonseca/codex",
       },
     });
 
@@ -234,7 +234,7 @@ describe("persistPluginInstall", () => {
             codex: {
               source: "clawhub",
               spec: "clawhub:@gabrielvfonseca/codex",
-              installPath: "/tmp/openclaw/extensions/codex",
+              installPath: "/tmp/operator/extensions/codex",
             },
           },
         },
@@ -243,14 +243,14 @@ describe("persistPluginInstall", () => {
       deleteFiles: true,
     });
     expect(applyPluginUninstallDirectoryRemoval).toHaveBeenCalledWith({
-      target: "/tmp/openclaw/extensions/codex",
+      target: "/tmp/operator/extensions/codex",
     });
     const cleanupOrder =
       applyPluginUninstallDirectoryRemoval.mock.invocationCallOrder[0] ?? Number.MAX_SAFE_INTEGER;
     const refreshOrder = refreshPluginRegistry.mock.invocationCallOrder[0] ?? 0;
     expect(cleanupOrder).toBeLessThan(refreshOrder);
     expect(runtimeLogs.join("\n")).toContain(
-      "Removed previous plugin install directory: /tmp/openclaw/extensions/codex",
+      "Removed previous plugin install directory: /tmp/operator/extensions/codex",
     );
   });
 
@@ -273,7 +273,7 @@ describe("persistPluginInstall", () => {
       codex: {
         source: "npm",
         spec: "@gabrielvfonseca/codex",
-        installPath: "/tmp/openclaw/npm/node_modules/@gabrielvfonseca/codex",
+        installPath: "/tmp/operator/npm/node_modules/@gabrielvfonseca/codex",
       },
     });
 
@@ -287,7 +287,7 @@ describe("persistPluginInstall", () => {
       install: {
         source: "npm",
         spec: "@gabrielvfonseca/codex@latest",
-        installPath: "/tmp/openclaw/npm/node_modules/@gabrielvfonseca/codex",
+        installPath: "/tmp/operator/npm/node_modules/@gabrielvfonseca/codex",
       },
     });
 
@@ -315,7 +315,7 @@ describe("persistPluginInstall", () => {
     const previousInstallPath = path.join(
       previousProjectRoot,
       "node_modules",
-      "@openclaw",
+      "@operator",
       "codex",
     );
     const nextInstallPath = path.join(
@@ -324,7 +324,7 @@ describe("persistPluginInstall", () => {
       "projects",
       "codex-v2",
       "node_modules",
-      "@openclaw",
+      "@operator",
       "codex",
     );
     fs.mkdirSync(previousInstallPath, { recursive: true });
@@ -434,7 +434,7 @@ describe("persistPluginInstall", () => {
       install: {
         source: "npm",
         spec: "@gabrielvfonseca/discord",
-        installPath: "/tmp/openclaw/npm/node_modules/@gabrielvfonseca/discord/index.ts",
+        installPath: "/tmp/operator/npm/node_modules/@gabrielvfonseca/discord/index.ts",
       },
     });
 
@@ -451,9 +451,9 @@ describe("persistPluginInstall", () => {
       "active config source: /tmp/operator-upstream/extensions/discord/index.ts",
     );
     expect(runtimeLogs.join("\n")).toContain(
-      "installed npm source: /tmp/openclaw/npm/node_modules/@gabrielvfonseca/discord/index.ts",
+      "installed npm source: /tmp/operator/npm/node_modules/@gabrielvfonseca/discord/index.ts",
     );
-    expect(runtimeLogs.join("\n")).toContain("openclaw plugins doctor");
+    expect(runtimeLogs.join("\n")).toContain("operator plugins doctor");
   });
 
   it("does not warn when the config-selected source is inside the npm install path", async () => {
@@ -476,7 +476,7 @@ describe("persistPluginInstall", () => {
         {
           id: "discord",
           origin: "config",
-          source: "/tmp/openclaw/npm/node_modules/@gabrielvfonseca/discord/dist/index.js",
+          source: "/tmp/operator/npm/node_modules/@gabrielvfonseca/discord/dist/index.js",
           status: "loaded",
         },
       ],
@@ -493,7 +493,7 @@ describe("persistPluginInstall", () => {
       install: {
         source: "npm",
         spec: "@gabrielvfonseca/discord",
-        installPath: "/tmp/openclaw/npm/node_modules/@gabrielvfonseca/discord",
+        installPath: "/tmp/operator/npm/node_modules/@gabrielvfonseca/discord",
       },
     });
 
