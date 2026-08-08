@@ -1,0 +1,5 @@
+require("./rolldown-runtime-u92d-OFm.cjs");
+const require_plugin_registry = require("./plugin-registry-qeG97tX7.cjs");
+exports.resolveManifestContractOwnerPluginId = require_plugin_registry.resolveManifestContractOwnerPluginId;
+exports.resolveManifestContractPluginIds = require_plugin_registry.resolveManifestContractPluginIds;
+exports.resolveManifestContractPluginIdsByCompatibilityRuntimePath = require_plugin_registry.resolveManifestContractPluginIdsByCompatibilityRuntimePath;

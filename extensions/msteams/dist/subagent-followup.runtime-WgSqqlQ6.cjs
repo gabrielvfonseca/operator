@@ -1,0 +1,78 @@
+require("./rolldown-runtime-u92d-OFm.cjs");
+require("./tokens-DMN4UzIu.cjs");
+const require_subagent_registry_read = require("./subagent-registry-read-LeoF2Gsl.cjs");
+const require_run_wait = require("./run-wait-BNfiubiD.cjs");
+const require_subagent_followup_hints = require("./subagent-followup-hints-CTfwXQyv.cjs");
+//#region src/cron/isolated-agent/subagent-followup.ts
+/** Reads or waits for descendant subagent summaries after isolated cron orchestration. */
+function resolveCronSubagentTimings() {
+	const fastTestMode = process.env.OPERATOR_TEST_FAST === "1";
+	return {
+		waitMinMs: fastTestMode ? 10 : 3e4,
+		finalReplyGraceMs: fastTestMode ? 50 : 5e3,
+		gracePollMs: fastTestMode ? 8 : 200
+	};
+}
+/** Reads completed descendant subagent replies when the orchestrator only emitted interim text. */
+async function readDescendantSubagentFallbackReply(params) {
+	const descendants = require_subagent_registry_read.listDescendantRunsForRequester(params.sessionKey).filter((entry) => typeof entry.endedAt === "number" && entry.endedAt >= params.runStartedAt && entry.childSessionKey.trim().length > 0).toSorted((a, b) => (a.endedAt ?? 0) - (b.endedAt ?? 0));
+	if (descendants.length === 0) return;
+	const latestByChild = /* @__PURE__ */ new Map();
+	for (const entry of descendants) {
+		const childKey = entry.childSessionKey.trim();
+		if (!childKey) continue;
+		const current = latestByChild.get(childKey);
+		if (!current || (entry.endedAt ?? 0) >= (current.endedAt ?? 0)) latestByChild.set(childKey, entry);
+	}
+	const replies = [];
+	const latestRuns = [...latestByChild.values()].toSorted((a, b) => (a.endedAt ?? 0) - (b.endedAt ?? 0)).slice(-4);
+	for (const entry of latestRuns) {
+		const frozenResultText = entry.completion?.resultText;
+		const frozenReply = typeof frozenResultText === "string" && frozenResultText.trim() ? frozenResultText.trim() : void 0;
+		const usesInternalTranscript = entry.execution?.transcriptTarget !== void 0;
+		let reply = usesInternalTranscript ? frozenReply : void 0;
+		if (!reply && !usesInternalTranscript) reply = (await require_run_wait.readLatestAssistantReply({ sessionKey: entry.childSessionKey }))?.trim();
+		if (!reply && frozenReply) reply = frozenReply;
+		if (!reply || reply.toUpperCase() === "NO_REPLY".toUpperCase()) continue;
+		replies.push(reply);
+	}
+	if (replies.length === 0) return;
+	if (replies.length === 1) return replies[0];
+	return replies.join("\n\n");
+}
+/**
+* Waits for descendant subagents to complete using a push-based approach:
+* each active descendant run is awaited via `agent.wait` (gateway RPC) instead
+* of a busy-poll loop.  After all active runs settle, a short grace period
+* polls the cron agent's session for a post-orchestration synthesis message.
+*/
+async function waitForDescendantSubagentSummary(params) {
+	const timings = resolveCronSubagentTimings();
+	const initialReply = params.initialReply?.trim();
+	const deadline = Date.now() + Math.max(timings.waitMinMs, Math.floor(params.timeoutMs));
+	const getActiveRuns = () => require_subagent_registry_read.listDescendantRunsForRequester(params.sessionKey).filter((entry) => typeof entry.endedAt !== "number");
+	const initialActiveRuns = getActiveRuns();
+	if (!(params.observedActiveDescendants === true || initialActiveRuns.length > 0)) return initialReply;
+	await require_run_wait.waitForAgentRunsToDrain({
+		deadlineAtMs: deadline,
+		initialPendingRunIds: initialActiveRuns.map((entry) => entry.runId),
+		getPendingRunIds: () => getActiveRuns().map((entry) => entry.runId)
+	});
+	const gracePeriodDeadline = Math.min(Date.now() + timings.finalReplyGraceMs, deadline);
+	const resolveUsableLatestReply = async () => {
+		const latest = (await require_run_wait.readLatestAssistantReply({ sessionKey: params.sessionKey }))?.trim();
+		if (latest && latest.toUpperCase() !== "NO_REPLY".toUpperCase() && (latest !== initialReply || !require_subagent_followup_hints.isLikelyInterimCronMessage(latest))) return latest;
+	};
+	while (Date.now() < gracePeriodDeadline) {
+		const latest = await resolveUsableLatestReply();
+		if (latest) return latest;
+		await new Promise((resolve) => {
+			setTimeout(resolve, timings.gracePollMs);
+		});
+	}
+	const latest = await resolveUsableLatestReply();
+	if (latest) return latest;
+}
+//#endregion
+exports.readDescendantSubagentFallbackReply = readDescendantSubagentFallbackReply;
+exports.waitForDescendantSubagentSummary = waitForDescendantSubagentSummary;

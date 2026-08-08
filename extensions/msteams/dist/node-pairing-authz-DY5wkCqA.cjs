@@ -1,0 +1,19 @@
+const require_node_commands = require("./node-commands-DQ3xnEUk.cjs");
+//#region src/infra/node-pairing-authz.ts
+const OPERATOR_PAIRING_SCOPE = "operator.pairing";
+const OPERATOR_WRITE_SCOPE = "operator.write";
+const OPERATOR_ADMIN_SCOPE = "operator.admin";
+/** Map declared node commands to the least operator scopes needed for approval. */
+function resolveNodePairApprovalScopes(commands) {
+	const normalized = Array.isArray(commands) ? commands.filter((command) => typeof command === "string") : [];
+	if (normalized.some((command) => require_node_commands.NODE_ADMIN_PAIR_APPROVAL_COMMANDS.some((allowed) => allowed === command))) return [OPERATOR_PAIRING_SCOPE, OPERATOR_ADMIN_SCOPE];
+	if (normalized.length > 0) return [OPERATOR_PAIRING_SCOPE, OPERATOR_WRITE_SCOPE];
+	return [OPERATOR_PAIRING_SCOPE];
+}
+//#endregion
+Object.defineProperty(exports, "resolveNodePairApprovalScopes", {
+	enumerable: true,
+	get: function() {
+		return resolveNodePairApprovalScopes;
+	}
+});

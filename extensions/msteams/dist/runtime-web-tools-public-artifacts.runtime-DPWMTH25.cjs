@@ -1,0 +1,4 @@
+require("./rolldown-runtime-u92d-OFm.cjs");
+const require_web_provider_public_artifacts = require("./web-provider-public-artifacts-B2zorOn0.cjs");
+exports.resolveBundledWebFetchProvidersFromPublicArtifacts = require_web_provider_public_artifacts.resolveBundledWebFetchProvidersFromPublicArtifacts;
+exports.resolveBundledWebSearchProvidersFromPublicArtifacts = require_web_provider_public_artifacts.resolveBundledWebSearchProvidersFromPublicArtifacts;

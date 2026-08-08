@@ -1,0 +1,12 @@
+require("./rolldown-runtime-u92d-OFm.cjs");
+const require_state_migrations = require("./state-migrations-Dvj8tU9T.cjs");
+exports.autoMigrateLegacyPluginDoctorState = require_state_migrations.autoMigrateLegacyPluginDoctorState;
+exports.autoMigrateLegacyState = require_state_migrations.autoMigrateLegacyState;
+exports.autoMigrateLegacyStateDir = require_state_migrations.autoMigrateLegacyStateDir;
+exports.autoMigrateLegacyTaskStateSidecars = require_state_migrations.autoMigrateLegacyTaskStateSidecars;
+exports.detectLegacyStateMigrations = require_state_migrations.detectLegacyStateMigrations;
+exports.migrateLegacyAgentDir = require_state_migrations.migrateLegacyAgentDir;
+exports.resetAutoMigrateLegacyStateDirForTest = require_state_migrations.resetAutoMigrateLegacyStateDirForTest;
+exports.resetAutoMigrateLegacyStateForTest = require_state_migrations.resetAutoMigrateLegacyStateForTest;
+exports.resetAutoMigrateLegacyTaskStateSidecarsForTest = require_state_migrations.resetAutoMigrateLegacyTaskStateSidecarsForTest;
+exports.runLegacyStateMigrations = require_state_migrations.runLegacyStateMigrations;

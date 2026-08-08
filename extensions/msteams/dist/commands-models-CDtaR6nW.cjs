@@ -1,0 +1,506 @@
+require("./plugins-_-82JYfc.cjs");
+const require_agent_scope = require("./agent-scope-Ce0XqMNr.cjs");
+const require_agent_scope_config = require("./agent-scope-config-DpWhyljG.cjs");
+const require_current_plugin_metadata_snapshot = require("./current-plugin-metadata-snapshot-C2Dl5h_D.cjs");
+const require_registry = require("./registry-raOBfWNF.cjs");
+require("./workspace-oX0zfOZq.cjs");
+const require_model_selection_shared = require("./model-selection-shared-BMKAPuuQ.cjs");
+const require_model_selection_normalize = require("./model-selection-normalize-BrB-lt0o.cjs");
+const require_codex_plugin_diagnostics = require("./codex-plugin-diagnostics-DuedamAL.cjs");
+const require_openai_routing = require("./openai-routing-B2l3ny9C.cjs");
+const require_policy = require("./policy-DHgMAqLv.cjs");
+require("./model-selection-BvFurMxy.cjs");
+const require_cli_backends = require("./cli-backends-CxeCBxgS.cjs");
+const require_model_catalog = require("./model-catalog-BFgB2-Jk.cjs");
+const require_model_visibility_policy = require("./model-visibility-policy-BAqBH6Uw.cjs");
+const require_command_gates = require("./command-gates-DksUxtOK.cjs");
+const require_model_provider_auth = require("./model-provider-auth-Bk7aSJ7D.cjs");
+const require_model_catalog_browse = require("./model-catalog-browse-CLWkIZaN.cjs");
+const require_model_auth_label = require("./model-auth-label-oN9N-rOu.cjs");
+const require_agent_runtime_label = require("./agent-runtime-label-UoVo0nrE.cjs");
+const require_model_catalog_visibility = require("./model-catalog-visibility-DGu1_zhC.cjs");
+const require_model_picker_visibility = require("./model-picker-visibility-DXXEYKgU.cjs");
+let _gabrielvfonseca_normalization_core_number_coercion = require("@gabrielvfonseca/normalization-core/number-coercion");
+let _gabrielvfonseca_normalization_core_string_coerce = require("@gabrielvfonseca/normalization-core/string-coerce");
+//#region src/auto-reply/reply/commands-models.ts
+const PAGE_SIZE_DEFAULT = 20;
+const PAGE_SIZE_MAX = 100;
+const MODELS_ADD_DEPRECATED_TEXT = "⚠️ /models add is deprecated. Use /models to browse providers and /model to switch models.";
+function isModelsBrowseVisibleProvider(provider) {
+	return !require_model_picker_visibility.isRetiredModelPickerProvider(provider);
+}
+function usesUnfilteredCatalogModels(provider, cliRuntimeProviders) {
+	return cliRuntimeProviders.has(require_model_selection_normalize.normalizeProviderId(provider));
+}
+function normalizeRuntimeChoiceId(runtime) {
+	const normalized = (0, _gabrielvfonseca_normalization_core_string_coerce.normalizeLowercaseStringOrEmpty)(runtime);
+	if (!normalized || normalized === "auto" || normalized === "default") return "@gabrielvfonseca/operator";
+	return normalized;
+}
+function buildRuntimeChoice(params) {
+	const id = normalizeRuntimeChoiceId(params.runtime);
+	const label = require_agent_runtime_label.resolveAgentRuntimeLabel({
+		config: params.cfg,
+		resolvedHarness: id
+	});
+	return {
+		id,
+		label,
+		description: id === "@gabrielvfonseca/operator" ? "Use the built-in Operator runtime." : params.cli ? `Run ${params.provider} models through ${label}.` : `Use the ${label} runtime selected by the effective harness policy.`
+	};
+}
+function buildDefaultRuntimeChoice(params) {
+	const harnessPolicy = require_policy.resolveAgentHarnessPolicy({
+		config: params.cfg,
+		provider: params.provider,
+		modelId: params.modelId,
+		agentId: params.agentId
+	});
+	return buildRuntimeChoice({
+		cfg: params.cfg,
+		provider: params.provider,
+		runtime: harnessPolicy.runtime
+	});
+}
+function addRuntimeChoice(choices, choice) {
+	if (!choices.some((existing) => existing.id === choice.id)) choices.push(choice);
+	return choices;
+}
+async function buildModelsProviderData(cfg, agentId, options = {}) {
+	const resolvedDefault = require_codex_plugin_diagnostics.resolveDefaultModelForAgent({
+		cfg,
+		agentId
+	});
+	const workspaceDir = options.workspaceDir ?? (agentId ? require_agent_scope_config.resolveAgentWorkspaceDir(cfg, agentId) : void 0) ?? require_agent_scope_config.resolveDefaultAgentWorkspaceDir();
+	const metadataSnapshot = require_current_plugin_metadata_snapshot.getCurrentPluginMetadataSnapshot({
+		config: cfg,
+		workspaceDir,
+		env: process.env,
+		allowScopedSnapshot: true
+	});
+	const cliRuntimeProviders = new Set(require_cli_backends.listCliRuntimeModelBackendBindings().map((binding) => require_model_selection_normalize.normalizeProviderId(binding.runtime)));
+	const snapshot = await require_model_catalog_browse.loadModelCatalogSnapshotForBrowse({
+		cfg,
+		view: options.view ?? "default",
+		loadCatalog: ({ readOnly }) => require_model_catalog.loadModelCatalogSnapshot({
+			config: cfg,
+			readOnly,
+			metadataSnapshot
+		})
+	});
+	const catalog = snapshot.entries;
+	const visibilityPolicy = require_model_visibility_policy.createModelVisibilityPolicy({
+		cfg,
+		catalog,
+		defaultProvider: resolvedDefault.provider,
+		defaultModel: resolvedDefault.model,
+		agentId,
+		...require_model_visibility_policy.RUNTIME_MODEL_VISIBILITY_NORMALIZATION
+	});
+	const authChecker = require_model_provider_auth.createProviderAuthChecker({
+		cfg,
+		workspaceDir,
+		agentId,
+		allowPluginSyntheticAuth: false,
+		discoverExternalCliAuth: false,
+		allowPreparedRuntimeAuth: true
+	});
+	const logicalModelKey = (entry) => require_openai_routing.openAIModelCatalogRoutePolicy.resolveIdentity(entry)?.key ?? require_model_selection_shared.modelCatalogLogicalKey(entry);
+	const incompatibleModelKeys = /* @__PURE__ */ new Set();
+	const hasAuth = options.view === "all" ? async () => true : authChecker;
+	const visibleCatalog = await require_model_catalog_visibility.resolveLogicalVisibleModelCatalog({
+		cfg,
+		catalog,
+		defaultProvider: resolvedDefault.provider,
+		defaultModel: resolvedDefault.model,
+		agentId,
+		workspaceDir,
+		view: options.view,
+		routePolicy: require_openai_routing.openAIModelCatalogRoutePolicy,
+		routeVariants: snapshot.routeVariants,
+		evaluateEntry: async (entry, routeVariants) => {
+			const identity = require_openai_routing.openAIModelCatalogRoutePolicy.resolveIdentity(entry);
+			const evaluation = await authChecker.evaluateModelAuth(entry.provider, {
+				modelId: identity?.id ?? entry.id,
+				observedRoutes: routeVariants.map((variant) => ({
+					api: variant.api,
+					baseUrl: variant.baseUrl
+				}))
+			});
+			if (evaluation.routeResolution?.kind === "incompatible") incompatibleModelKeys.add(logicalModelKey(entry));
+			return require_model_catalog_visibility.resolveLogicalModelCatalogEntryState({
+				entry,
+				evaluation,
+				authBacked: options.view === "all" || evaluation.availability === true,
+				routePolicy: require_openai_routing.openAIModelCatalogRoutePolicy
+			});
+		}
+	});
+	const aliasIndex = require_model_selection_shared.buildModelAliasIndex({
+		cfg,
+		defaultProvider: resolvedDefault.provider
+	});
+	const restrictToProviderWildcards = options.view !== "all" && visibilityPolicy.hasProviderWildcards;
+	const byProvider = /* @__PURE__ */ new Map();
+	const add = (p, m) => {
+		const key = require_model_selection_normalize.normalizeProviderId(p);
+		if (!isModelsBrowseVisibleProvider(key)) return;
+		if (restrictToProviderWildcards && !usesUnfilteredCatalogModels(key, cliRuntimeProviders) && !visibilityPolicy.allows({
+			provider: key,
+			model: m
+		})) return;
+		const set = byProvider.get(key) ?? /* @__PURE__ */ new Set();
+		set.add(m);
+		byProvider.set(key, set);
+	};
+	const addRawModelRef = (raw) => {
+		const trimmed = (0, _gabrielvfonseca_normalization_core_string_coerce.normalizeOptionalString)(raw);
+		if (!trimmed) return;
+		const resolved = require_model_selection_shared.resolveModelRefFromString({
+			raw: trimmed,
+			defaultProvider: !trimmed.includes("/") ? require_model_selection_shared.resolveBareModelDefaultProvider({
+				cfg,
+				catalog,
+				model: trimmed,
+				defaultProvider: resolvedDefault.provider
+			}) : resolvedDefault.provider,
+			aliasIndex
+		});
+		if (!resolved) return;
+		if (incompatibleModelKeys.has(logicalModelKey({
+			provider: resolved.ref.provider,
+			id: resolved.ref.model
+		}))) return;
+		add(resolved.ref.provider, resolved.ref.model);
+	};
+	const addModelConfigEntries = () => {
+		const modelConfig = cfg.agents?.defaults?.model;
+		if (typeof modelConfig === "string") addRawModelRef(modelConfig);
+		else if (modelConfig && typeof modelConfig === "object") {
+			addRawModelRef(modelConfig.primary);
+			for (const fallback of modelConfig.fallbacks ?? []) addRawModelRef(fallback);
+		}
+		const imageConfig = cfg.agents?.defaults?.imageModel;
+		if (typeof imageConfig === "string") addRawModelRef(imageConfig);
+		else if (imageConfig && typeof imageConfig === "object") {
+			addRawModelRef(imageConfig.primary);
+			for (const fallback of imageConfig.fallbacks ?? []) addRawModelRef(fallback);
+		}
+	};
+	for (const entry of visibleCatalog) {
+		if (incompatibleModelKeys.has(logicalModelKey(entry))) continue;
+		add(entry.provider, entry.id);
+	}
+	for (const entry of catalog) if (usesUnfilteredCatalogModels(entry.provider, cliRuntimeProviders) && await hasAuth(entry.provider, {
+		modelId: entry.id,
+		api: entry.api,
+		baseUrl: entry.baseUrl
+	})) add(entry.provider, entry.id);
+	for (const raw of visibilityPolicy.exactModelRefs) addRawModelRef(raw);
+	if (!incompatibleModelKeys.has(logicalModelKey({
+		provider: resolvedDefault.provider,
+		id: resolvedDefault.model
+	}))) add(resolvedDefault.provider, resolvedDefault.model);
+	addModelConfigEntries();
+	const providers = [...byProvider.keys()].toSorted();
+	const modelNames = /* @__PURE__ */ new Map();
+	for (const entry of [...catalog, ...visibleCatalog]) if (entry.name && entry.name !== entry.id) modelNames.set(`${require_model_selection_normalize.normalizeProviderId(entry.provider)}/${entry.id}`, entry.name);
+	const runtimeChoicesByProvider = /* @__PURE__ */ new Map();
+	const runtimeBindings = [{
+		provider: "openai",
+		runtime: "codex",
+		cli: false
+	}, ...require_cli_backends.listCliRuntimeModelBackendBindings().map((binding) => ({
+		provider: binding.provider,
+		runtime: binding.runtime,
+		cli: true
+	}))];
+	for (const binding of runtimeBindings) {
+		const provider = require_model_selection_normalize.normalizeProviderId(binding.provider);
+		const defaultModelId = provider === require_model_selection_normalize.normalizeProviderId(resolvedDefault.provider) ? resolvedDefault.model : void 0;
+		const choices = runtimeChoicesByProvider.get(provider) ?? [buildDefaultRuntimeChoice({
+			cfg,
+			agentId,
+			provider,
+			modelId: defaultModelId
+		})];
+		addRuntimeChoice(choices, buildRuntimeChoice({
+			cfg,
+			provider,
+			runtime: "@gabrielvfonseca/operator"
+		}));
+		addRuntimeChoice(choices, buildRuntimeChoice({
+			cfg,
+			provider,
+			runtime: binding.runtime,
+			cli: binding.cli
+		}));
+		runtimeChoicesByProvider.set(provider, choices);
+	}
+	return {
+		byProvider,
+		providers,
+		resolvedDefault,
+		modelNames,
+		runtimeChoicesByProvider
+	};
+}
+function formatProviderLine(params) {
+	return `- ${params.provider} (${params.count})`;
+}
+function parseListArgs(tokens) {
+	const provider = (0, _gabrielvfonseca_normalization_core_string_coerce.normalizeOptionalString)(tokens[0]);
+	let page = 1;
+	let all = false;
+	for (const token of tokens.slice(1)) {
+		const lower = (0, _gabrielvfonseca_normalization_core_string_coerce.normalizeLowercaseStringOrEmpty)(token);
+		if (lower === "all" || lower === "--all") {
+			all = true;
+			continue;
+		}
+		if (lower.startsWith("page=")) {
+			const value = (0, _gabrielvfonseca_normalization_core_number_coercion.parseStrictPositiveInteger)(lower.slice(5));
+			if (value !== void 0) page = value;
+			continue;
+		}
+		const pageToken = (0, _gabrielvfonseca_normalization_core_number_coercion.parseStrictPositiveInteger)(lower);
+		if (pageToken !== void 0) page = pageToken;
+	}
+	let pageSize = PAGE_SIZE_DEFAULT;
+	for (const token of tokens) {
+		const lower = (0, _gabrielvfonseca_normalization_core_string_coerce.normalizeLowercaseStringOrEmpty)(token);
+		if (lower.startsWith("limit=") || lower.startsWith("size=")) {
+			const value = (0, _gabrielvfonseca_normalization_core_number_coercion.parseStrictPositiveInteger)(lower.slice(lower.indexOf("=") + 1));
+			if (value !== void 0) pageSize = Math.min(PAGE_SIZE_MAX, value);
+		}
+	}
+	return {
+		action: "list",
+		provider: provider ? require_model_selection_normalize.normalizeProviderId(provider) : void 0,
+		page,
+		pageSize,
+		all
+	};
+}
+function parseModelsArgs(raw) {
+	const trimmed = raw.trim();
+	if (!trimmed) return { action: "providers" };
+	const tokens = trimmed.split(/\s+/g).filter(Boolean);
+	switch ((0, _gabrielvfonseca_normalization_core_string_coerce.normalizeLowercaseStringOrEmpty)(tokens[0])) {
+		case "providers": return { action: "providers" };
+		case "list": return parseListArgs(tokens.slice(1));
+		case "add": return {
+			action: "add",
+			provider: (0, _gabrielvfonseca_normalization_core_string_coerce.normalizeOptionalString)(tokens[1]),
+			modelId: (0, _gabrielvfonseca_normalization_core_string_coerce.normalizeOptionalString)(tokens.slice(2).join(" "))
+		};
+		default: return parseListArgs(tokens);
+	}
+}
+function resolveProviderLabel(params) {
+	const harnessPolicy = require_policy.resolveAgentHarnessPolicy({
+		config: params.cfg,
+		provider: params.provider,
+		agentId: params.agentId
+	});
+	const acceptedProviderIds = require_openai_routing.listOpenAIAuthProfileProvidersForAgentRuntime({
+		provider: params.provider,
+		harnessRuntime: harnessPolicy.runtime,
+		config: params.cfg
+	});
+	const authLabel = require_model_auth_label.resolveModelAuthLabel({
+		provider: params.provider,
+		acceptedProviderIds,
+		cfg: params.cfg,
+		sessionEntry: params.sessionEntry,
+		agentDir: params.agentDir,
+		workspaceDir: params.workspaceDir
+	});
+	if (!authLabel || authLabel === "unknown") return params.provider;
+	return `${params.provider} · 🔑 ${authLabel}`;
+}
+function formatModelsAvailableHeader(params) {
+	return `Models (${resolveProviderLabel({
+		provider: params.provider,
+		cfg: params.cfg,
+		agentId: params.agentId,
+		agentDir: params.agentDir,
+		workspaceDir: params.workspaceDir,
+		sessionEntry: params.sessionEntry
+	})}) — ${params.total} available`;
+}
+function buildModelsMenuText(params) {
+	return [
+		"Providers:",
+		...params.providers.map((provider) => formatProviderLine({
+			provider,
+			count: params.byProvider.get(provider)?.size ?? 0
+		})),
+		"",
+		"Use: /models <provider>",
+		"Switch: /model <provider/model>"
+	].join("\n");
+}
+function buildProviderInfos(params) {
+	return params.providers.map((provider) => ({
+		id: provider,
+		count: params.byProvider.get(provider)?.size ?? 0
+	}));
+}
+async function resolveModelsCommandReply(params) {
+	const body = params.commandBodyNormalized.trim();
+	if (!body.startsWith("/models")) return null;
+	const parsed = parseModelsArgs(body.replace(/^\/models\b/i, "").trim());
+	const { byProvider, providers, modelNames } = await buildModelsProviderData(params.cfg, params.agentId, {
+		...parsed.action === "list" && parsed.all ? { view: "all" } : {},
+		workspaceDir: params.workspaceDir
+	});
+	const commandPlugin = params.surface ? require_registry.getChannelPlugin(params.surface) : null;
+	const providerInfos = buildProviderInfos({
+		providers,
+		byProvider
+	});
+	if (parsed.action === "providers") {
+		const channelData = commandPlugin?.commands?.buildModelsMenuChannelData?.({ providers: providerInfos }) ?? commandPlugin?.commands?.buildModelsProviderChannelData?.({ providers: providerInfos });
+		if (channelData) return {
+			text: "Select a provider:",
+			channelData
+		};
+		return { text: buildModelsMenuText({
+			providers,
+			byProvider
+		}) };
+	}
+	if (parsed.action === "add") return { text: MODELS_ADD_DEPRECATED_TEXT };
+	const { provider, page, pageSize, all } = parsed;
+	if (!provider) {
+		const channelData = commandPlugin?.commands?.buildModelsProviderChannelData?.({ providers: providerInfos });
+		if (channelData) return {
+			text: "Select a provider:",
+			channelData
+		};
+		return { text: buildModelsMenuText({
+			providers,
+			byProvider
+		}) };
+	}
+	if (!byProvider.has(provider)) return { text: [
+		`Unknown provider: ${provider}`,
+		"",
+		"Available providers:",
+		...providers.map((entry) => `- ${entry}`),
+		"",
+		"Use: /models <provider>"
+	].join("\n") };
+	const models = [...byProvider.get(provider) ?? /* @__PURE__ */ new Set()].toSorted();
+	const total = models.length;
+	if (total === 0) return { text: [
+		`Models (${resolveProviderLabel({
+			provider,
+			cfg: params.cfg,
+			agentId: params.agentId,
+			agentDir: params.agentDir,
+			workspaceDir: params.workspaceDir,
+			sessionEntry: params.sessionEntry
+		})}) — none`,
+		"",
+		"Browse: /models",
+		"Switch: /model <provider/model>"
+	].join("\n") };
+	const interactivePageSize = 8;
+	const interactiveTotalPages = Math.max(1, Math.ceil(total / interactivePageSize));
+	const interactivePage = Math.max(1, Math.min(page, interactiveTotalPages));
+	const interactiveChannelData = commandPlugin?.commands?.buildModelsListChannelData?.({
+		provider,
+		models,
+		currentModel: params.currentModel,
+		currentPage: interactivePage,
+		totalPages: interactiveTotalPages,
+		pageSize: interactivePageSize,
+		modelNames
+	});
+	if (interactiveChannelData) return {
+		text: formatModelsAvailableHeader({
+			provider,
+			total,
+			cfg: params.cfg,
+			agentId: params.agentId,
+			agentDir: params.agentDir,
+			workspaceDir: params.workspaceDir,
+			sessionEntry: params.sessionEntry
+		}),
+		channelData: interactiveChannelData
+	};
+	const effectivePageSize = all ? total : pageSize;
+	const pageCount = effectivePageSize > 0 ? Math.ceil(total / effectivePageSize) : 1;
+	const safePage = all ? 1 : Math.max(1, Math.min(page, pageCount));
+	if (!all && page !== safePage) return { text: [
+		`Page out of range: ${page} (valid: 1-${pageCount})`,
+		"",
+		`Try: /models list ${provider} ${safePage}`,
+		`All: /models list ${provider} all`
+	].join("\n") };
+	const startIndex = (safePage - 1) * effectivePageSize;
+	const endIndexExclusive = Math.min(total, startIndex + effectivePageSize);
+	const pageModels = models.slice(startIndex, endIndexExclusive);
+	const lines = [`Models (${resolveProviderLabel({
+		provider,
+		cfg: params.cfg,
+		agentId: params.agentId,
+		agentDir: params.agentDir,
+		workspaceDir: params.workspaceDir,
+		sessionEntry: params.sessionEntry
+	})}) — showing ${startIndex + 1}-${endIndexExclusive} of ${total} (page ${safePage}/${pageCount})`];
+	for (const id of pageModels) lines.push(`- ${provider}/${id}`);
+	lines.push("", "Switch: /model <provider/model>");
+	if (!all && safePage < pageCount) lines.push(`More: /models list ${provider} ${safePage + 1}`);
+	if (!all) lines.push(`All: /models list ${provider} all`);
+	return { text: lines.join("\n") };
+}
+const handleModelsCommand = async (params, allowTextCommands) => {
+	if (!allowTextCommands) return null;
+	const commandBodyNormalized = params.command.commandBodyNormalized.trim();
+	if (!commandBodyNormalized.startsWith("/models")) return null;
+	const parsed = parseModelsArgs(commandBodyNormalized.replace(/^\/models\b/i, "").trim());
+	const unauthorized = require_command_gates.rejectUnauthorizedCommand(params, "/models");
+	if (unauthorized) return unauthorized;
+	if (parsed.action === "add") return {
+		shouldContinue: false,
+		reply: { text: MODELS_ADD_DEPRECATED_TEXT }
+	};
+	const modelsAgentId = params.sessionKey ? require_agent_scope.resolveSessionAgentId({
+		sessionKey: params.sessionKey,
+		config: params.cfg
+	}) : params.agentId ?? "main";
+	const currentAgentId = params.agentId ?? "main";
+	const modelsAgentDir = modelsAgentId === currentAgentId && params.agentDir ? params.agentDir : require_agent_scope_config.resolveAgentDir(params.cfg, modelsAgentId);
+	const targetSessionEntry = params.sessionStore?.[params.sessionKey] ?? params.sessionEntry;
+	const reply = await resolveModelsCommandReply({
+		cfg: params.cfg,
+		commandBodyNormalized,
+		surface: params.ctx.Surface,
+		currentModel: params.model ? `${params.provider}/${params.model}` : void 0,
+		agentId: modelsAgentId,
+		agentDir: modelsAgentDir,
+		workspaceDir: targetSessionEntry?.spawnedWorkspaceDir ?? (modelsAgentId === currentAgentId ? params.workspaceDir : void 0),
+		sessionEntry: targetSessionEntry
+	});
+	if (!reply) return null;
+	return {
+		reply,
+		shouldContinue: false
+	};
+};
+//#endregion
+Object.defineProperty(exports, "handleModelsCommand", {
+	enumerable: true,
+	get: function() {
+		return handleModelsCommand;
+	}
+});
+Object.defineProperty(exports, "resolveModelsCommandReply", {
+	enumerable: true,
+	get: function() {
+		return resolveModelsCommandReply;
+	}
+});

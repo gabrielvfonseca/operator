@@ -1,0 +1,89 @@
+const require_conversation_binding_context = require("./conversation-binding-context-XssjEZBB.cjs");
+const require_runtime = require("./runtime-DUfj3X7c.cjs");
+const require_session_binding_service = require("./session-binding-service-Bu6XDLmS.cjs");
+let _gabrielvfonseca_normalization_core_string_coerce = require("@gabrielvfonseca/normalization-core/string-coerce");
+//#region src/auto-reply/reply/conversation-binding-input.ts
+function resolveBindingChannel(ctx, commandChannel) {
+	return (0, _gabrielvfonseca_normalization_core_string_coerce.normalizeLowercaseStringOrEmpty)(require_session_binding_service.normalizeConversationText(ctx.OriginatingChannel ?? commandChannel ?? ctx.Surface ?? ctx.Provider));
+}
+function resolveBindingAccountId(params) {
+	const channel = resolveBindingChannel(params.ctx, params.commandChannel);
+	const plugin = require_runtime.getActivePluginChannelRegistry()?.channels.find((entry) => entry.plugin.id === channel)?.plugin;
+	return require_session_binding_service.normalizeConversationText(params.ctx.AccountId) || require_session_binding_service.normalizeConversationText(plugin?.config.defaultAccountId?.(params.cfg)) || "default";
+}
+function resolveBindingThreadId(threadId) {
+	return (threadId != null ? require_session_binding_service.normalizeConversationText(String(threadId)) : void 0) || void 0;
+}
+function resolveConversationBindingContextFromMessage(params) {
+	const channel = resolveBindingChannel(params.ctx);
+	return require_conversation_binding_context.resolveConversationBindingContext({
+		cfg: params.cfg,
+		channel,
+		accountId: resolveBindingAccountId({
+			ctx: params.ctx,
+			cfg: params.cfg,
+			commandChannel: channel
+		}),
+		chatType: params.ctx.ChatType,
+		threadId: resolveBindingThreadId(params.ctx.MessageThreadId),
+		threadParentId: params.ctx.ThreadParentId,
+		senderId: params.senderId ?? params.ctx.SenderId,
+		sessionKey: params.sessionKey ?? params.ctx.SessionKey,
+		parentSessionKey: params.parentSessionKey ?? params.ctx.ParentSessionKey,
+		from: params.ctx.From,
+		originatingTo: params.ctx.OriginatingTo,
+		commandTo: params.commandTo,
+		fallbackTo: params.ctx.To,
+		nativeChannelId: params.ctx.NativeChannelId
+	});
+}
+function resolveConversationBindingContextFromAcpCommand(params) {
+	return resolveConversationBindingContextFromMessage({
+		cfg: params.cfg,
+		ctx: params.ctx,
+		senderId: params.command.senderId,
+		sessionKey: params.sessionKey,
+		parentSessionKey: params.ctx.ParentSessionKey,
+		commandTo: params.command.to
+	});
+}
+function resolveConversationBindingChannelFromMessage(ctx, commandChannel) {
+	return resolveBindingChannel(ctx, commandChannel);
+}
+function resolveConversationBindingAccountIdFromMessage(params) {
+	return resolveBindingAccountId(params);
+}
+function resolveConversationBindingThreadIdFromMessage(ctx) {
+	return resolveBindingThreadId(ctx.MessageThreadId);
+}
+//#endregion
+Object.defineProperty(exports, "resolveConversationBindingAccountIdFromMessage", {
+	enumerable: true,
+	get: function() {
+		return resolveConversationBindingAccountIdFromMessage;
+	}
+});
+Object.defineProperty(exports, "resolveConversationBindingChannelFromMessage", {
+	enumerable: true,
+	get: function() {
+		return resolveConversationBindingChannelFromMessage;
+	}
+});
+Object.defineProperty(exports, "resolveConversationBindingContextFromAcpCommand", {
+	enumerable: true,
+	get: function() {
+		return resolveConversationBindingContextFromAcpCommand;
+	}
+});
+Object.defineProperty(exports, "resolveConversationBindingContextFromMessage", {
+	enumerable: true,
+	get: function() {
+		return resolveConversationBindingContextFromMessage;
+	}
+});
+Object.defineProperty(exports, "resolveConversationBindingThreadIdFromMessage", {
+	enumerable: true,
+	get: function() {
+		return resolveConversationBindingThreadIdFromMessage;
+	}
+});
