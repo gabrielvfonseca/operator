@@ -8,8 +8,8 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "types": "./dist/base.d.ts",
+      "default": "./dist/base.json"
     },
     "./base": {
       "types": "./dist/base.d.ts",
@@ -37,14 +37,13 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "../../node_modules/.bin/tsc -p tsconfig.json",
     "clean": "rm -rf dist"
   },
   "dependencies": {
     "typescript": "6.0.3"
   },
   "devDependencies": {
-    "@types/node": "26.1.0",
-    "@operator/typescript-config": "workspace:*"
+    "@types/node": "26.1.0"
   }
 }
