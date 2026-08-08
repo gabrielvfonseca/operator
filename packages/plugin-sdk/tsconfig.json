@@ -2,11 +2,12 @@
   "compilerOptions": {
     "declaration": true,
     "declarationMap": false,
-    "emitDeclarationOnly": true,
+    "emitDeclarationOnly": false,
     "ignoreDeprecations": "6.0",
     "incremental": true,
     "noEmit": false,
     "noEmitOnError": false,
+    "allowImportingTsExtensions": false,
     "outDir": "dist",
     "rootDir": "../..",
     "tsBuildInfoFile": "dist/.tsbuildinfo"
