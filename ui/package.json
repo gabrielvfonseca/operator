@@ -9,11 +9,11 @@
     "test": "vitest run --config vitest.config.ts"
   },
   "dependencies": {
-    "@operator/uirouter": "0.1.0",
-    "@operator/fs-safe": "0.4.1",
-    "@operator/libterminal": "0.3.2",
-    "@operator/crabline": "0.1.11",
-    "@operator/proxyline": "0.3.3",
+    "@operator/uirouter": "workspace:*",
+    "@operator/fs-safe": "workspace:*",
+    "@operator/libterminal": "workspace:*",
+    "@operator/crabline": "workspace:*",
+    "@operator/proxyline": "workspace:*",
     "@awesome.me/webawesome": "3.10.0",
     "@codemirror/commands": "6.10.4",
     "@codemirror/language": "6.12.4",
