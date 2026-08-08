@@ -1,0 +1,20 @@
+{
+  "extends": "/Users/gabrielfonseca/Documents/operator/src/typescript-config/core.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "types": ["node"],
+    "noEmit": false,
+    "rewriteRelativeImportExtensions": true,
+    "noImplicitOverride": false
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.ts",
+    "**/*.tests.ts"
+  ]
+}
