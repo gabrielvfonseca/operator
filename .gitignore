@@ -308,3 +308,14 @@ extensions/discord/assets/embedded-app-sdk.mjs
 /.opengrep-out/
 /.crabbox-artifacts
 .comux*
+
+# Next.js build artifacts
+**/.next/
+**/.next/**
+
+# Backup files
+*.bak
+*.backup
+
+# Temporary files
+*.tmp
